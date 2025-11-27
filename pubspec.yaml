@@ -21,8 +21,10 @@ dependencies:
 
   #Icons
   cupertino_icons: ^1.0.8
+  #Extra Widgets
+  go_router: ^17.0.0
   #state management#
-  get: ^4.7.2
+  get: ^4.7.3
 
 
   #------- packages end ----------#
