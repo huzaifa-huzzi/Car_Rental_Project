@@ -1,4 +1,5 @@
 import 'package:car_rental_project/Resources/Theme.dart';
+import 'package:car_rental_project/SideScreen/SidebarScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         /// LOGIN route
         GoRoute(
           path: '/login',
-          builder: (context, state) => const LoginScreen(),
+          builder: (context, state) => const SidebarScreen(),
         ),
 
 
