@@ -18,6 +18,19 @@ class IconString {
   static const String  settingIcon = 'assets/icons/Settings.png';
   static const String  notificationIcon = 'assets/icons/NotificationIcon.png';
 
+  /// Car Inventory Icons
+  static const String  dropdownIcon = 'assets/icons/dropdownIcon.png';
+  static const String  filterIcon = 'assets/icons/filterIcon.png';
+  static const String  previewOne = 'assets/icons/Preview-1.png';
+  static const String  previewTwo = 'assets/icons/Preview-2.png';
+  static const String  previewThree = 'assets/icons/Preview-3.png';
+  static const String  sortIcon = 'assets/icons/Sort.png';
+  static const String  seatIcon = 'assets/icons/SeatIcon.png';
+  static const String  transmissionIcon = 'assets/icons/TransmissionIcon.png';
+  static const String  gasPumpIcon = 'assets/icons/GasPump.png';
+  static const String  backScreenIcon = 'assets/icons/BackScreenIcon.png';
+  static const String  capacityIcon = 'assets/icons/CapacityIcon.png';
+
 
 
 
