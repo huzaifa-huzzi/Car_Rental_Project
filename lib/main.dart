@@ -1,3 +1,4 @@
+import 'package:car_rental_project/Car%20Inventory/Car%20Inventory%20Screen.dart';
 import 'package:car_rental_project/Resources/Theme.dart';
 import 'package:car_rental_project/SideScreen/SidebarScreen.dart';
 import 'package:flutter/material.dart';
@@ -14,12 +15,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final router = GoRouter(
-      initialLocation: '/login',
+      initialLocation: '/carInventory',
       routes: [
         /// LOGIN route
         GoRoute(
-          path: '/login',
-          builder: (context, state) => const SidebarScreen(),
+          path: '/carInventory',
+          builder: (context, state) => const CarInventory(),
         ),
 
 

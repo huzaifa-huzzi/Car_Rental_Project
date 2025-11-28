@@ -1,6 +1,8 @@
 
 
 class IconString {
+    /// Logo
+  static const String  logo = 'assets/icons/Logo.png';
 
     /// SideBar Icons
   static const String  dashboardIcon = 'assets/icons/dashboardIcon.png';
