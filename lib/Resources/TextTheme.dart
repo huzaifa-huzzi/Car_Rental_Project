@@ -44,9 +44,8 @@ class TTextTheme {
   }
 
 
-
   static TextStyle btnOne(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 14),fontWeight: FontWeight.w500,color: AppColors.quadrantalTextColor);
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 12, 14),fontWeight: FontWeight.w500,color: AppColors.quadrantalTextColor);
   }
 
   static TextStyle btnTwo(BuildContext context){

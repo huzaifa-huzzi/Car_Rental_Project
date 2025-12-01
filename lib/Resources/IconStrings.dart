@@ -3,6 +3,7 @@
 class IconString {
     /// Logo
   static const String  logo = 'assets/icons/Logo.png';
+  static const String  symbol = 'assets/icons/symbol.png';
 
     /// SideBar Icons
   static const String  dashboardIcon = 'assets/icons/dashboardIcon.png';
@@ -14,6 +15,7 @@ class IconString {
   static const String  maintenanceIcon = 'assets/icons/maintenance.png';
   static const String  paymentIcon = 'assets/icons/payment.png';
   static const String  logoutIcon = 'assets/icons/logout.png';
+  static const String  menuIcon = 'assets/icons/menu.png';
 
   /// AppBar Icons
   static const String  searchIcon = 'assets/icons/Search.png';
