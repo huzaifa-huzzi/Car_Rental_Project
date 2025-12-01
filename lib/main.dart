@@ -1,4 +1,6 @@
-import 'package:car_rental_project/Car%20Inventory/Car%20Inventory%20Screen.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Inventory%20Screens/PreviewOneScreen.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Inventory%20Screens/PreviewThreeScreen.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Inventory%20Screens/PreviewTwoScreen.dart';
 import 'package:car_rental_project/Resources/Theme.dart';
 import 'package:car_rental_project/SideScreen/SidebarScreen.dart';
 import 'package:flutter/material.dart';
@@ -43,9 +45,14 @@ class _MyAppState extends State<MyApp> {
           routes: [
             GoRoute(
               path: '/carInventory',
-              builder: (context, state) => const CarInventory(),
+              builder: (context, state) => const PreviewOneScreen(),
+            ),GoRoute(
+              path: '/carInventory',
+              builder: (context, state) => const PreviewTwoScreen(),
+            ),GoRoute(
+              path: '/carInventory',
+              builder: (context, state) => const PreviewThreeScreen(),
             ),
-            // Add other routes here
           ],
         ),
       ],

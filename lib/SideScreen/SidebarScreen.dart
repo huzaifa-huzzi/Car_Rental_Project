@@ -1,3 +1,4 @@
+import 'package:car_rental_project/Car%20Inventory/Car%20Inventory%20Screens/PreviewOneScreen.dart';
 import 'package:car_rental_project/SideScreen/Widget/MobileAppbar.dart';
 import 'package:car_rental_project/SideScreen/Widget/SidebarComponentWidget.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,7 @@ import 'SideBarController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
-import 'package:car_rental_project/Car%20Inventory/Car%20Inventory%20Screen.dart';
+import 'package:car_rental_project/Resources/AppSizes.dart';
 
 class SidebarScreen extends StatelessWidget {
   final Function(String) onTap;
@@ -19,7 +20,7 @@ class SidebarScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final bool isMobile = width < 600;
+    final bool isMobile = AppSizes.isMobile(context);
     final double sidebarWidth = width > 1100 ? 240 : 150;
 
     /// Sidebar content
@@ -30,11 +31,18 @@ class SidebarScreen extends StatelessWidget {
           children: [
             if (showLogo)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSizes.horizontalPadding(context),
+                  vertical: AppSizes.verticalPadding(context) / 2,
+                ),
                 child: Row(
                   children: [
-                    Image.asset(IconString.symbol, width: 30, height: 32),
-                    const SizedBox(width: 8),
+                    Image.asset(
+                      IconString.symbol,
+                      width: AppSizes.isMobile(context) ? 30 : 36,
+                      height: AppSizes.isMobile(context) ? 32 : 38,
+                    ),
+                    SizedBox(width: AppSizes.horizontalPadding(context) / 2),
                     Text(
                       "Softsnip",
                       style: TTextTheme.h6Style(context)
@@ -43,7 +51,7 @@ class SidebarScreen extends StatelessWidget {
                   ],
                 ),
               ),
-            const SizedBox(height: 10),
+            SizedBox(height: AppSizes.verticalPadding(context) / 2),
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
@@ -54,6 +62,7 @@ class SidebarScreen extends StatelessWidget {
                     iconPath: IconString.dashboardIcon,
                     title: "Dashboard",
                     onTap: onTap,
+                    scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.menuItem(
                     context,
@@ -61,6 +70,7 @@ class SidebarScreen extends StatelessWidget {
                     iconPath: IconString.carInventoryIcon,
                     title: "Car Inventory",
                     onTap: onTap,
+                    scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.menuItem(
                     context,
@@ -68,6 +78,7 @@ class SidebarScreen extends StatelessWidget {
                     iconPath: IconString.customerIcon,
                     title: "Customers",
                     onTap: onTap,
+                    scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.menuItem(
                     context,
@@ -75,6 +86,7 @@ class SidebarScreen extends StatelessWidget {
                     iconPath: IconString.agreementIcon,
                     title: "Re-agreement",
                     onTap: onTap,
+                    scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.menuItem(
                     context,
@@ -82,11 +94,13 @@ class SidebarScreen extends StatelessWidget {
                     iconPath: IconString.paymentIcon,
                     title: "Payment",
                     onTap: onTap,
+                    scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.expenseMenuItem(
                     context,
                     controller,
                     onTap: onTap,
+                    scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.menuItem(
                     context,
@@ -94,24 +108,28 @@ class SidebarScreen extends StatelessWidget {
                     iconPath: IconString.maintenanceIcon,
                     title: "Maintenance",
                     onTap: onTap,
+                    scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.menuItem(
                     context,
                     controller,
                     iconPath: IconString.incomeIcon,
                     title: "Income",
-                    trailing: SidebarComponents.redDotWithNumber(controller.incomeRedDot.value, context),
+                    trailing: SidebarComponents.redDotWithNumber(
+                        controller.incomeRedDot.value, context),
                     onTap: onTap,
+                    scaffoldKey: _scaffoldKey,
                   ),
-                  const SizedBox(height: 60),
+                  SizedBox(height: AppSizes.verticalPadding(context) * 2),
                   SidebarComponents.menuItem(
                     context,
                     controller,
                     iconPath: IconString.logoutIcon,
                     title: "Logout",
                     onTap: onTap,
+                    scaffoldKey: _scaffoldKey,
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: AppSizes.verticalPadding(context) / 2),
                 ],
               ),
             ),
@@ -120,7 +138,7 @@ class SidebarScreen extends StatelessWidget {
       );
     }
 
-     /// mobile appbar
+    /// Mobile AppBar
     if (isMobile) {
       return Scaffold(
         key: _scaffoldKey,
@@ -137,11 +155,10 @@ class SidebarScreen extends StatelessWidget {
           ),
         ),
         body: SafeArea(
-          child: child ?? const CarInventory(),
+          child: child ?? const PreviewOneScreen(),
         ),
       );
     }
-
 
     /// Web / Tablet layout
     return Scaffold(
@@ -154,12 +171,11 @@ class SidebarScreen extends StatelessWidget {
               child: sidebarContent(showLogo: true),
             ),
             Expanded(
-              child: child ?? const CarInventory(),
+              child: child ?? const PreviewOneScreen(),
             ),
           ],
         ),
       ),
     );
   }
-
 }
