@@ -21,8 +21,9 @@ dependencies:
 
   #Icons
   cupertino_icons: ^1.0.8
-  #Extra Widgets
+  #Extra Screen usage helper functions
   go_router: ^17.0.0
+  google_fonts: ^6.3.2
   #state management#
   get: ^4.7.3
 

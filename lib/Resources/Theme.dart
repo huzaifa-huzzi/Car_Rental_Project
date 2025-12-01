@@ -1,20 +1,18 @@
+import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
-
+import 'package:google_fonts/google_fonts.dart';
+import 'Colors.dart';
 
 class TAppTheme {
   TAppTheme._();
 
-  /// Light Theme
-  static ThemeData lightTheme = ThemeData(
-    useMaterial3:true ,
-    fontFamily:"poppins",
-    brightness: Brightness.light,
-    primaryColor: Color(0xFF0085FF),
-    // scaffoldBackgroundColor: AppColors.backgroundScreenColor,
-   // textTheme:TTextTheme.lightTextTheme,
-  );
-
-  /// Dark Theme (In future if needed we will add it )
-  static ThemeData darkTheme = ThemeData();
-
+  static ThemeData lightTheme(BuildContext context) {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      primaryColor: AppColors.primaryColor,
+      scaffoldBackgroundColor: AppColors.backgroundOfScreenColor,
+      fontFamily: GoogleFonts.poppins().fontFamily,
+    );
+  }
 }
