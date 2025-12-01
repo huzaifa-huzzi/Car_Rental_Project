@@ -24,7 +24,7 @@ import 'package:flutter/material.dart';
 class TTextTheme {
 
   static TextStyle h1Style(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 32),fontWeight: FontWeight.w600,color: AppColors.textColor);
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 22, 32),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
 
   static TextStyle h3Style(BuildContext context){
@@ -105,8 +105,13 @@ class TTextTheme {
     );
   }
 
+  static TextStyle smallX(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 11),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
+    );
+  }
+
   static TextStyle smallXX(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 11),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 11),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
     );
   }
 
@@ -116,7 +121,7 @@ class TTextTheme {
   }
 
   static TextStyle pOne(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 11),fontWeight: FontWeight.w400,color: AppColors.blackColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 12),fontWeight: FontWeight.w400,color: AppColors.blackColor,
     );
   }
 
