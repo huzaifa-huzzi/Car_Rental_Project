@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 
-class PreviewThreeScreen extends StatelessWidget {
-  const PreviewThreeScreen({super.key});
+class GridViewScreen extends StatelessWidget {
+  const GridViewScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

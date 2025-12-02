@@ -1,13 +1,13 @@
-import 'package:car_rental_project/Car%20Inventory/Widgets/CardListHeaderWidget.dart';
-import 'package:car_rental_project/Car%20Inventory/Widgets/CardListTableWidget.dart';
-import 'package:car_rental_project/Car%20Inventory/Widgets/HeaderWebWidget.dart';
-import 'package:car_rental_project/Car%20Inventory/Widgets/PaginationWidget.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/TableViewScreen/Widgets/CardListHeaderWidget.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/TableViewScreen/Widgets/CardListTableWidget.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/TableViewScreen/Widgets/HeaderWebWidget.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/PaginationWidget.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 
-class PreviewOneScreen extends StatelessWidget {
-  const PreviewOneScreen({super.key});
+class TableViewScreen extends StatelessWidget {
+  const TableViewScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

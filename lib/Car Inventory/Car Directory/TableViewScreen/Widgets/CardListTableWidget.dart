@@ -1,5 +1,5 @@
-import 'package:car_rental_project/Car%20Inventory/Car%20Inventory%20Screens/CarInventoryController.dart';
-import 'package:car_rental_project/Car%20Inventory/Widgets/ButtonWidget.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/CarDirectoryController.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';

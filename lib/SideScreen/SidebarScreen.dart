@@ -1,4 +1,4 @@
-import 'package:car_rental_project/Car%20Inventory/Car%20Inventory%20Screens/PreviewOneScreen.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/TableViewScreen/TableViewScreen.dart';
 import 'package:car_rental_project/SideScreen/Widget/MobileAppbar.dart';
 import 'package:car_rental_project/SideScreen/Widget/SidebarComponentWidget.dart';
 import 'package:flutter/material.dart';
@@ -166,7 +166,7 @@ class SidebarScreen extends StatelessWidget {
           ),
         ),
         body: SafeArea(
-          child: child ?? const PreviewOneScreen(),
+          child: child ?? const TableViewScreen(),
         ),
       );
     }
@@ -182,7 +182,7 @@ class SidebarScreen extends StatelessWidget {
               child: sidebarContent(showLogo: true),
             ),
             Expanded(
-              child: child ?? const PreviewOneScreen(),
+              child: child ?? const TableViewScreen(),
             ),
           ],
         ),
