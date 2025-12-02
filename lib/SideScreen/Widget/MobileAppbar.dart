@@ -47,58 +47,58 @@ class MobileTopBar extends StatelessWidget {
     return  SizedBox(
       height: AppSizes.buttonHeight(context),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
 
           SizedBox(width: AppSizes.padding(context)),
 
-          // Logo + Text Centered
           Expanded(
-            child: Align(
-              alignment: Alignment.center,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset(
-                    IconString.symbol,
-                    width: logoSize,
-                    height: logoSize,
-                  ),
-                  SizedBox(width: AppSizes.padding(context) / 2),
-                  Text(
-                    "Softsnip",
-                    style: TTextTheme.h6Style(context).copyWith(
-                      fontWeight: FontWeight.w600,
-                      fontSize: fontSize,
+            child: Center(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Row(
+                  children: [
+                    Image.asset(
+                      IconString.symbol,
+                      width: logoSize,
+                      height: logoSize,
                     ),
-                  ),
-                ],
+                    SizedBox(width: AppSizes.padding(context) / 2),
+                    Text(
+                      "Softsnip",
+                      style: TTextTheme.h6Style(context).copyWith(
+                        fontWeight: FontWeight.w600,
+                        fontSize: fontSize,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
 
-          // Right side icons
+          /// RIGHT SIDE ICONS
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              // Add
+
+              /// Add Button
               GestureDetector(
                 onTap: onAddPressed,
                 child: Container(
                   width: containerSize,
                   height: containerSize,
-                  margin: EdgeInsets.symmetric(horizontal: AppSizes.padding(context) / 4),
                   decoration: BoxDecoration(
                     color: AppColors.primaryColor,
                     borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
                   ),
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: iconSize,
-                  ),
+                  child: Icon(Icons.add, color: Colors.white, size: iconSize),
                 ),
               ),
 
-              // Notification
+              SizedBox(width: 6),
+
+              /// Notification Icon
               GestureDetector(
                 onTap: onNotificationPressed,
                 child: Stack(
@@ -107,7 +107,6 @@ class MobileTopBar extends StatelessWidget {
                     Container(
                       width: containerSize,
                       height: containerSize,
-                      margin: EdgeInsets.symmetric(horizontal: AppSizes.padding(context) / 4),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
@@ -121,8 +120,8 @@ class MobileTopBar extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      top: 7,
-                      right: 8,
+                      top: 3,
+                      right: 3,
                       child: Container(
                         width: 6,
                         height: 6,
@@ -136,11 +135,12 @@ class MobileTopBar extends StatelessWidget {
                 ),
               ),
 
-              // Profile picture
+              SizedBox(width: 6),
+
+              /// Profile Photo
               Container(
                 width: containerSize,
                 height: containerSize,
-                margin: EdgeInsets.symmetric(horizontal: AppSizes.padding(context) / 4),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
@@ -153,12 +153,14 @@ class MobileTopBar extends StatelessWidget {
                   ),
                 ),
               ),
+
               SizedBox(width: AppSizes.padding(context)),
             ],
           ),
         ],
       ),
     );
+
 
   }
 }

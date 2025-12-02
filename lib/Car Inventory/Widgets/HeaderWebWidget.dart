@@ -58,7 +58,7 @@ class HeaderWebWidget extends StatelessWidget {
                       ),
                       color: Colors.white,
                     ),
-                    child: const Icon(Icons.arrow_back),
+                    child:  Image.asset(IconString.backScreenIcon),
                   ),
                 ),
 
@@ -94,13 +94,13 @@ class HeaderWebWidget extends StatelessWidget {
                 ),
 
               if (showAddButton)
-                SizedBox(width: AppSizes.padding(context)),
+                SizedBox(width: AppSizes.padding(context) * 0.4), 
 
               _iconButton(IconString.searchIcon, onSearchPressed, context),
-              SizedBox(width: AppSizes.padding(context)),
+              SizedBox(width: AppSizes.padding(context) * 0.4),
 
               _iconButton(IconString.settingIcon, onSettingsPressed, context),
-              SizedBox(width: AppSizes.padding(context)),
+              SizedBox(width: AppSizes.padding(context) * 0.4),
 
               Stack(
                 children: [
@@ -110,8 +110,8 @@ class HeaderWebWidget extends StatelessWidget {
                       context
                   ),
                   Positioned(
-                    top: 4,
-                    right: 4,
+                    top: 12,
+                    right: 9,
                     child: Container(
                       width: 8,
                       height: 8,
@@ -124,14 +124,14 @@ class HeaderWebWidget extends StatelessWidget {
                 ],
               ),
 
-              SizedBox(width: AppSizes.padding(context) * 1.2),
+              SizedBox(width: AppSizes.padding(context) * 1),
 
               /// Profile
               Row(
                 children: [
                   CircleAvatar(
                     radius: AppSizes.buttonHeight(context) * 0.4,
-                    backgroundImage: NetworkImage(profileImageUrl),
+                    backgroundImage: AssetImage(profileImageUrl),
                   ),
                   SizedBox(width: AppSizes.padding(context) / 2),
                    Column(
@@ -156,27 +156,50 @@ class HeaderWebWidget extends StatelessWidget {
     );
   }
 
-  /// UNIVERSAL Icon Button
+   /// Universal Icons used in it
   Widget _iconButton(
       String iconPath,
       VoidCallback? onTap,
       BuildContext context,
       ) {
+    bool isMobile = AppSizes.isMobile(context);
+    bool isTablet = AppSizes.isTablet(context);
+
+
+    double containerSize = isMobile
+        ? AppSizes.buttonHeight(context) * 0.5
+        : isTablet
+        ? AppSizes.buttonHeight(context) * 0.6
+        : AppSizes.buttonHeight(context) * 0.7;
+
+
+    double iconSize = isMobile
+        ? 12
+        : isTablet
+        ? 14
+        : 16;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: AppSizes.buttonHeight(context),
-        height: AppSizes.buttonHeight(context),
+        width: containerSize,
+        height: containerSize,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(
-            AppSizes.borderRadius(context),
+            AppSizes.borderRadius(context) * 0.8,
           ),
         ),
         child: Center(
-          child: Image.asset(iconPath, width: 18, height: 18),
+          child: Image.asset(
+            iconPath,
+            width: iconSize,
+            height: iconSize,
+          ),
         ),
       ),
     );
   }
+
+
 }

@@ -90,6 +90,12 @@ class TTextTheme {
     );
   }
 
+  static TextStyle titleseven(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 11),fontWeight: FontWeight.w400,color: AppColors.blackColor,
+    );
+  }
+
+
   static TextStyle titleSmallTexts(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 14),fontWeight: FontWeight.w500,color: AppColors.textColor,
     );
@@ -106,7 +112,7 @@ class TTextTheme {
   }
 
   static TextStyle smallX(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 11),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 10),fontWeight: FontWeight.w300,color: AppColors.quadrantalTextColor,
     );
   }
 
@@ -119,6 +125,8 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 10),fontWeight: FontWeight.w400,color: AppColors.secondTextColor,
     );
   }
+
+
 
   static TextStyle pOne(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 12),fontWeight: FontWeight.w400,color: AppColors.blackColor,

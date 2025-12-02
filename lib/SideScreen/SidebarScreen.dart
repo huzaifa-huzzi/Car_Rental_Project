@@ -142,7 +142,18 @@ class SidebarScreen extends StatelessWidget {
     if (isMobile) {
       return Scaffold(
         key: _scaffoldKey,
-        drawer: Drawer(child: sidebarContent(showLogo: false)),
+        drawer: Drawer(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.transparent,
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              hoverColor: Colors.transparent,
+            ),
+            child: sidebarContent(showLogo: false),
+          ),
+        ),
         appBar: AppBar(
           backgroundColor: AppColors.secondaryColor,
           elevation: 0,
