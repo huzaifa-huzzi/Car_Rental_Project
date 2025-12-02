@@ -23,102 +23,100 @@ class CarListTableWidget extends StatelessWidget {
 
     return Obx(() {
 
-      return Expanded(
-        child: Container(
-          margin: EdgeInsets.all(tablePadding),
+      // **FIX 1: Removed Outer Expanded**
+      return Container( // <--- No Expanded here
+        margin: EdgeInsets.all(tablePadding),
 
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SizedBox(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: SizedBox(
 
-              width: (columnWidth * 11) + actionColumnWidth,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// ---------- TABLE HEADINGS ----------
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: tablePadding, vertical: 12),
-                    decoration: BoxDecoration(
-                      color: AppColors.secondaryColor,
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizes.borderRadius(context))),
+            width: (columnWidth * 11) + actionColumnWidth,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// ---------- TABLE HEADINGS (Horizontal Scroll for Header is fine) ----------
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: tablePadding, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: AppColors.secondaryColor,
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizes.borderRadius(context))),
+                  ),
+                  child: SingleChildScrollView( // Keeping this for horizontal alignment
+                    scrollDirection: Axis.horizontal,
+                    child: SizedBox(
+                      width: (columnWidth * 11) + actionColumnWidth,
+                      child: Row(
+                        children: [
+                          _headerCell("Car Brand", context),
+                          _headerCell("Car Model", context),
+                          _headerCell("Year", context),
+                          _headerCell("Registration", context),
+                          _headerCell("Body Type", context),
+                          _headerCell("Status", context),
+                          _headerCell("Transmission", context),
+                          _headerCell("Capacity", context),
+                          _headerCell("Fuel Type", context),
+                          _headerCell("Engine Size", context),
+                          _headerCell("Price List", context),
+                          _headerCell("Action", context, isAction: true),
+                        ],
+                      ),
                     ),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: SizedBox(
-                        width: (columnWidth * 11) + actionColumnWidth,
-                        child: Row(
-                          children: [
-                            _headerCell("Car Brand", context),
-                            _headerCell("Car Model", context),
-                            _headerCell("Year", context),
-                            _headerCell("Registration", context),
-                            _headerCell("Body Type", context),
-                            _headerCell("Status", context),
-                            _headerCell("Transmission", context),
-                            _headerCell("Capacity", context),
-                            _headerCell("Fuel Type", context),
-                            _headerCell("Engine Size", context),
-                            _headerCell("Price List", context),
-                            _headerCell("Action", context, isAction: true),
-                          ],
+                  ),
+                ),
+
+                /// ---------- TABLE BODY (Vertical Scroll Removed)----------
+                // **FIX 2: Removed Inner Expanded AND SingleChildScrollView**
+                Column( // <--- Now uses only the necessary Column to stack rows
+                  children: controller.carList.map((car) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(color: Colors.black12),
                         ),
                       ),
-                    ),
-                  ),
+                      child: Row(
+                        children: [
+                          _dataCell(car["brand"] ?? "", context),
+                          _dataCell(car["model"] ?? "", context),
+                          _dataCell(car["year"] ?? "", context),
+                          _dataCell(car["chasis"] ?? "", context),
+                          _styledDataCell(car["rental"] ?? "", context),
+                          _statusDataCell(car["status"] ?? "", context),
+                          _styledDataCell(car["usage"] ?? "", context),
+                          _dataCell(car["seats"] ?? "", context),
+                          _dataCell(car["fuel"] ?? "", context),
+                          _dataCell(car["engine"] ?? "", context),
+                          _dataCell(car["price"] ?? "", context),
 
-                  /// ---------- SCROLLABLE BODY (Vertical Scroll)----------
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: controller.carList.map((car) {
-                          return Container(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(color: Colors.black12),
+                          /// ACTION BUTTON
+                          SizedBox(
+                            width: actionColumnWidth,
+                            height: 34,
+                            child: Center(
+                              child: AddButton(
+                                text: "View",
+                                onTap: () {},
+                                borderRadius: 6,
                               ),
                             ),
-                            child: Row(
-                              children: [
-                                _dataCell(car["brand"] ?? "", context),
-                                _dataCell(car["model"] ?? "", context),
-                                _dataCell(car["year"] ?? "", context),
-                                _dataCell(car["chasis"] ?? "", context),
-                                _styledDataCell(car["rental"] ?? "", context),
-                                _statusDataCell(car["status"] ?? "", context),
-                                _styledDataCell(car["usage"] ?? "", context),
-                                _dataCell(car["seats"] ?? "", context),
-                                _dataCell(car["fuel"] ?? "", context),
-                                _dataCell(car["engine"] ?? "", context),
-                                _dataCell(car["price"] ?? "", context),
-
-                                /// ACTION BUTTON
-                                SizedBox(
-                                  width: actionColumnWidth,
-                                  height: 34,
-                                  child: Center(
-                                    child: AddButton(
-                                      text: "View",
-                                      onTap: () {},
-                                      borderRadius: 6,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }).toList(),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                ],
-              ),
+                    );
+                  }).toList(),
+                ),
+              ],
             ),
           ),
         ),
       );
     });
   }
+
+  // ... (Header and Data cell functions remain the same)
 
   /// HEADER CELL Widget
   Widget _headerCell(String title, BuildContext context, {bool isAction = false}) {
@@ -131,8 +129,8 @@ class CarListTableWidget extends StatelessWidget {
           if (isAction) const Spacer(),
 
           Text(
-            title,
-            style: TTextTheme.smallXX(context)
+              title,
+              style: TTextTheme.smallXX(context)
           ),
 
           const SizedBox(width: 6),
@@ -245,9 +243,9 @@ class CarListTableWidget extends StatelessWidget {
               ),
             ),
             child: Text(
-              text,
-              overflow: TextOverflow.ellipsis,
-              style: TTextTheme.pOne(context)
+                text,
+                overflow: TextOverflow.ellipsis,
+                style: TTextTheme.pOne(context)
             ),
           ),
         ),
