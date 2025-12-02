@@ -20,30 +20,33 @@ class TableViewScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundOfScreenColor,
-      body: Column(
-        children: [
-          if (isDesktopOrTablet)
-            HeaderWebWidget(mainTitle: 'Cars'),
-          if (isDesktopOrTablet)
-            SizedBox(height: baseVerticalSpace * 0.5),
-
-          CardListHeaderWidget(),
-
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  CarListTableWidget(),
-
-                  PaginationBar(isMobile: isMobile, tablePadding: tablePadding),
 
 
-                  SizedBox(height: baseVerticalSpace * 1.25),
-                ],
-              ),
-            ),
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+
+
+            if (isDesktopOrTablet)
+              HeaderWebWidget(mainTitle: 'Cars'),
+
+
+            if (isDesktopOrTablet)
+              SizedBox(height: baseVerticalSpace * 0.5),
+
+
+            CardListHeaderWidget(),
+
+
+            CarListTableWidget(),
+
+            PaginationBar(isMobile: isMobile, tablePadding: tablePadding),
+
+            // 5. Bottom Space
+            SizedBox(height: baseVerticalSpace * 1.25),
+
+          ],
+        ),
       ),
     );
   }

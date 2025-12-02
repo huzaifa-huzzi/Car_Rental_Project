@@ -1,4 +1,5 @@
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/TableViewScreen/TableViewScreen.dart';
+import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/SideScreen/Widget/MobileAppbar.dart';
 import 'package:car_rental_project/SideScreen/Widget/SidebarComponentWidget.dart';
 import 'package:flutter/material.dart';
@@ -160,7 +161,7 @@ class SidebarScreen extends StatelessWidget {
           centerTitle: true,
           title: MobileTopBar(
             scaffoldKey: _scaffoldKey,
-            profileImageUrl: "https://i.pravatar.cc/300",
+            profileImageUrl: ImageString.userImage,
             onAddPressed: () {},
             onNotificationPressed: () {},
           ),

@@ -1,5 +1,6 @@
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
@@ -30,7 +31,7 @@ class HeaderWebWidget extends StatelessWidget {
     this.onSearchPressed,
     this.onSettingsPressed,
     this.onNotificationPressed,
-    this.profileImageUrl = "https://i.pravatar.cc/300",
+    this.profileImageUrl = ImageString.userImage,
   });
 
   @override
@@ -156,7 +157,7 @@ class HeaderWebWidget extends StatelessWidget {
     );
   }
 
-   /// Universal Icons used in it
+   /// Universal Icons
   Widget _iconButton(
       String iconPath,
       VoidCallback? onTap,

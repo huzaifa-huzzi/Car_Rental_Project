@@ -162,35 +162,49 @@ class PaginationBar extends StatelessWidget {
 
 
     if (isText) {
+      final bool isPrev = text == "Prev";
+
       return TextButton(
         onPressed: buttonAction,
         child: Container(
           height: size,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: isPrev
+                ? AppColors.secondaryColor
+                : Colors.white,
             borderRadius: BorderRadius.circular(4),
-            border: Border.all(color: isButtonDisabled ? disabledColor.withOpacity(0.2) : AppColors.sideBoxesColor),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
-              if (text == "Prev") Icon(Icons.chevron_left, size: 18, color: isButtonDisabled ? disabledColor : enabledColor),
+              if (text == "Prev")
+                Icon(
+                  Icons.chevron_left,
+                  size: 18,
+                  color: isButtonDisabled ? disabledColor : enabledColor,
+                ),
               Text(
                 text,
                 style: baseStyle?.copyWith(
-                    color: isButtonDisabled ? disabledColor : enabledColor,
-                    fontWeight: FontWeight.normal
+                  color: isPrev
+                      ? AppColors.tertiaryTextColor
+                      : (isButtonDisabled ? disabledColor : enabledColor),
+                  fontWeight: FontWeight.normal,
                 ),
               ),
-
-              if (text == "Next") Icon(Icons.chevron_right, size: 18, color: isButtonDisabled ? disabledColor : enabledColor),
+              if (text == "Next")
+                Icon(
+                  Icons.chevron_right,
+                  size: 18,
+                  color: isButtonDisabled ? disabledColor : enabledColor,
+                ),
             ],
           ),
         ),
       );
     }
+
 
 
     return GestureDetector(

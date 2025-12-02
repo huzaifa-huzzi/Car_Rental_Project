@@ -1,5 +1,5 @@
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/GridViewScreen.dart';
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ListViewScreen.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/GridViewScreen/GridViewScreen.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ListViewScreen/ListViewScreen.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/TableViewScreen/TableViewScreen.dart';
 import 'package:car_rental_project/Resources/Theme.dart';
 import 'package:car_rental_project/SideScreen/SidebarScreen.dart';
