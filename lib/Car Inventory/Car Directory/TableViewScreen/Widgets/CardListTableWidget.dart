@@ -23,8 +23,8 @@ class CarListTableWidget extends StatelessWidget {
 
     return Obx(() {
 
-      // **FIX 1: Removed Outer Expanded**
-      return Container( // <--- No Expanded here
+
+      return Container(
         margin: EdgeInsets.all(tablePadding),
 
         child: SingleChildScrollView(
@@ -35,14 +35,14 @@ class CarListTableWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /// ---------- TABLE HEADINGS (Horizontal Scroll for Header is fine) ----------
+                /// ---------- TABLE HEADINGS  ----------
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: tablePadding, vertical: 12),
                   decoration: BoxDecoration(
                     color: AppColors.secondaryColor,
                     borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizes.borderRadius(context))),
                   ),
-                  child: SingleChildScrollView( // Keeping this for horizontal alignment
+                  child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: SizedBox(
                       width: (columnWidth * 11) + actionColumnWidth,
@@ -67,8 +67,8 @@ class CarListTableWidget extends StatelessWidget {
                 ),
 
                 /// ---------- TABLE BODY (Vertical Scroll Removed)----------
-                // **FIX 2: Removed Inner Expanded AND SingleChildScrollView**
-                Column( // <--- Now uses only the necessary Column to stack rows
+
+                Column(
                   children: controller.carList.map((car) {
                     return Container(
                       padding: const EdgeInsets.symmetric(vertical: 12),
@@ -115,8 +115,6 @@ class CarListTableWidget extends StatelessWidget {
       );
     });
   }
-
-  // ... (Header and Data cell functions remain the same)
 
   /// HEADER CELL Widget
   Widget _headerCell(String title, BuildContext context, {bool isAction = false}) {

@@ -3,8 +3,14 @@ import 'dart:math';
 
 class CarInventoryController extends GetxController {
   RxInt selectedView = 0.obs;
+  RxBool isFilterOpen = false.obs;
+  RxString selectedBrand = "".obs;
 
-  /// --- PAGINATION STATE ---
+  void toggleFilter() {
+    isFilterOpen.value = !isFilterOpen.value;
+  }
+
+  ///PAGINATION STATE
   final RxInt currentPage = 1.obs;
   final int pageSize = 8;
 
