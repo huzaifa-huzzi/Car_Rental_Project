@@ -1,3 +1,4 @@
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/CarInventoryMainScreen.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/GridViewScreen/GridViewScreen.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ListViewScreen/ListViewScreen.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/TableViewScreen/TableViewScreen.dart';
@@ -44,14 +45,18 @@ class _MyAppState extends State<MyApp> {
           },
           routes: [
             GoRoute(
-              path: '/carInventory',
+              path: '/TableView',
               builder: (context, state) => const TableViewScreen(),
             ),GoRoute(
-              path: '/carInventory',
+              path: '/ListView',
               builder: (context, state) => const ListViewScreen(),
             ),GoRoute(
-              path: '/carInventory',
+              path: '/GridView',
               builder: (context, state) => const GridViewScreen(),
+            ),
+            GoRoute(
+              path: '/carInventory',
+              builder: (context, state) =>  CarInventoryMainScreen(),
             ),
           ],
         ),

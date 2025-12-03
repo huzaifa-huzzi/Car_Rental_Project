@@ -2,15 +2,23 @@ import 'package:get/get.dart';
 import 'dart:math';
 
 class CarInventoryController extends GetxController {
-  RxInt selectedView = 0.obs;
-  RxBool isFilterOpen = false.obs;
-  RxString selectedBrand = "".obs;
+  var selectedBrand = "".obs;
+  var selectedModel = "".obs;
+  var selectedYear = "".obs;
+  var selectedBodyType = "".obs;
+  var selectedStatus = "".obs;
+  var selectedTransmission = "".obs;
+  var selectedFuel = "".obs;
 
-  void toggleFilter() {
-    isFilterOpen.value = !isFilterOpen.value;
+
+  var selectedView = 0.obs;
+
+  void selectView(int index) {
+    selectedView.value = index;
   }
 
-  ///PAGINATION STATE
+  /// Reusable Widget Controller
+   // pagination  Widget
   final RxInt currentPage = 1.obs;
   final int pageSize = 8;
 
@@ -54,7 +62,14 @@ class CarInventoryController extends GetxController {
     }
   }
 
-  /// --- DUMMY DATA SETUP ---
+
+  /// Table View Screen
+  RxBool isFilterOpen = false.obs;
+  void toggleFilter() {
+    isFilterOpen.value = !isFilterOpen.value;
+  }
+
+  // DUMMY DATA SETUP
   final _random = Random();
 
   String _getRandomStatus() {
@@ -72,7 +87,6 @@ class CarInventoryController extends GetxController {
     List<String> years = ["2023", "2022", "2020", "2018", "2017"];
     List<String> chassis = ["WVC-098", "HFC-082", "XYZ-345", "ABC-123", "QWE-678"];
 
-    // 20 data entries
     carList.value = List.generate(20, (i) {
       int index = i % brands.length;
       return {
@@ -90,4 +104,12 @@ class CarInventoryController extends GetxController {
       };
     });
   }
+
+
+  /// ListView Screen
+
+
+
+
+
 }

@@ -1,5 +1,5 @@
-import 'package:car_rental_project/Car Inventory/Car Directory/CarDirectoryController.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/CarInventoryController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
@@ -126,13 +126,14 @@ class CardListHeaderWidget extends StatelessWidget {
                       isSelected: controller.selectedView.value == 2,
                       onTap: () {
                         controller.selectedView.value = 2;
-                        if (onGridModernView != null) onGridModernView!();
+                        if (onGridModernView != null) onGridView!();
                       },
                       size: isMobile ? 32.0 : buttonHeight * 0.85,
                     ),
-                    SizedBox(width: AppSizes.padding(context) * 0.4),
+                    SizedBox(width: AppSizes.padding(context) * 0.7),
                     AddButton(
                         text: "Add Car",
+                        width:120,
                         onTap: (){})
                   ],
                 );
@@ -153,15 +154,14 @@ class CardListHeaderWidget extends StatelessWidget {
 
   /// ----------Extra Widgets (used in the above code)----------///
 
-  // Filter container
   Widget _buildFilterContainer(BuildContext context) {
+    final CarInventoryController controller = Get.put(CarInventoryController());
     const int totalItems = 9;
 
     return LayoutBuilder(
       builder: (context, constraints) {
         double width = constraints.maxWidth;
         double wrapSpacing = AppSizes.padding(context);
-
 
         double dynamicPadding = AppSizes.padding(context);
         double horizontalMargin = AppSizes.horizontalPadding(context);
@@ -178,27 +178,26 @@ class CardListHeaderWidget extends StatelessWidget {
         if (width > 1500) {
           itemsPerRow = totalItems;
         } else if (width > 1100) {
-          itemsPerRow = 4;
+          itemsPerRow = 9;
         } else if (width > 700) {
+          itemsPerRow = 8;
+        } else if (width > 450) {
           itemsPerRow = 3;
-        } else if(width > 450 ) {
-          itemsPerRow = 2;
-        } else{
+        } else {
           itemsPerRow = 1;
         }
 
         double availableScreenWidth = width - (2 * horizontalMargin);
-
         double effectiveItemArea = availableScreenWidth - (2 * containerPadding);
-
         double totalSpacingInRow = (itemsPerRow - 1) * wrapSpacing;
-
         double itemWidth = (effectiveItemArea - totalSpacingInRow) / itemsPerRow;
 
         return Container(
           width: double.infinity,
           padding: EdgeInsets.all(containerPadding),
-          margin: EdgeInsets.symmetric(horizontal: horizontalMargin, vertical: AppSizes.padding(context) * 0.5),
+          margin: EdgeInsets.symmetric(
+              horizontal: horizontalMargin,
+              vertical: AppSizes.padding(context) * 0.5),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
@@ -207,28 +206,113 @@ class CardListHeaderWidget extends StatelessWidget {
             spacing: wrapSpacing,
             runSpacing: AppSizes.padding(context) * 0.75,
             children: [
+              /// BRAND
               _filterItem(
                 "Car Brand",
-                _dropdownBox(["BMW","Aston","Range Rover"], context),
+                _dropdownBox(
+                    ["BMW", "Aston", "Range Rover"],
+                    controller.selectedBrand,
+                    context,
+                    placeholder: "Select"),
                 context,
                 itemWidth: itemWidth,
               ),
 
-              _filterItem("Car Model", _staticDisplayBox(["Corolla", "Civic"],context), context, itemWidth: itemWidth),
-              _filterItem("Car Year", _staticDisplayBox(["2025", "2024"],context), context, itemWidth: itemWidth),
-              _filterItem("Body Type", _staticDisplayBox(["Sedan", "SUV"],context), context, itemWidth: itemWidth),
-              _filterItem("Car Status", _staticDisplayBox(["Available", "unavailbale"],context), context, itemWidth: itemWidth),
-              _filterItem("Transmission", _staticDisplayBox(["Auto", "Manual"],context), context, itemWidth: itemWidth),
-              _filterItem("Fuel", _staticDisplayBox(["Petrol", "Hybrid"],context), context, itemWidth: itemWidth),
-              _filterItem("Engine Size", _textFieldBox("2.5[L]", context), context, itemWidth: itemWidth),
-              _filterItem("Price (Under)", _textFieldBox(r"$ 1600 (W)", context), context, itemWidth: itemWidth),
+              /// MODEL
+              _filterItem(
+                "Car Model",
+                _dropdownBox(
+                    ["Corolla", "Civic"],
+                    controller.selectedModel,
+                    context,
+                    placeholder: "Select"),
+                context,
+                itemWidth: itemWidth,
+              ),
+
+              /// YEAR
+              _filterItem(
+                "Car Year",
+                _dropdownBox(
+                    ["2025", "2024"],
+                    controller.selectedYear,
+                    context,
+                    placeholder: "Select"),
+                context,
+                itemWidth: itemWidth,
+              ),
+
+              /// BODY TYPE
+              _filterItem(
+                "Body Type",
+                _dropdownBox(
+                    ["Sedan", "SUV"],
+                    controller.selectedBodyType,
+                    context,
+                    placeholder: "Select"),
+                context,
+                itemWidth: itemWidth,
+              ),
+
+              /// STATUS
+              _filterItem(
+                "Car Status",
+                _dropdownBox(
+                    ["Available", "Unavailable"],
+                    controller.selectedStatus,
+                    context,
+                    placeholder: "Select"),
+                context,
+                itemWidth: itemWidth,
+              ),
+
+              /// TRANSMISSION
+              _filterItem(
+                "Transmission",
+                _dropdownBox(
+                    ["Auto", "Manual"],
+                    controller.selectedTransmission,
+                    context,
+                    placeholder: "Select"),
+                context,
+                itemWidth: itemWidth,
+              ),
+
+              /// FUEL
+              _filterItem(
+                "Fuel",
+                _dropdownBox(
+                    ["Petrol", "Hybrid"],
+                    controller.selectedFuel,
+                    context,
+                    placeholder: "Select"),
+                context,
+                itemWidth: itemWidth,
+              ),
+
+              /// ENGINE
+              _filterItem(
+                "Engine Size",
+                _textFieldBox("2.5[L]", context),
+                context,
+                itemWidth: itemWidth,
+              ),
+
+              /// PRICE
+              _filterItem(
+                "Price (Under)",
+                _textFieldBox(r"$ 1600 (W)", context),
+                context,
+                itemWidth: itemWidth,
+              ),
             ],
           ),
         );
       },
     );
   }
-   // filter Item
+
+  // filter Item
   Widget _filterItem(String title, Widget child, BuildContext context, {required double itemWidth}) {
     return SizedBox(
       width: itemWidth,
@@ -239,136 +323,57 @@ class CardListHeaderWidget extends StatelessWidget {
             title,
             style: TTextTheme.btnFour(context),
           ),
-          SizedBox(height: AppSizes.padding(context) * 0.3), // Responsive spacing
+          SizedBox(height: AppSizes.padding(context) * 0.3),
           child,
         ],
       ),
     );
   }
 
-   // dropdown Widget
-  Widget _dropdownBox(List<String> items,BuildContext context ,{bool isFunctional = false}) {
-    final CarInventoryController controller = Get.find<CarInventoryController>();
-
+  //dropdowns
+  Widget _dropdownBox(
+      List<String> items,
+      RxString selectedRx,
+      BuildContext context, {
+        String placeholder = "Select",
+      }) {
     return Obx(() {
-
-      String? selectedValue = controller.selectedBrand.value.isEmpty
-          ? null
-          : controller.selectedBrand.value;
-
-      final double leftPadding = AppSizes.padding(context) * 0.5;
-
+      String? selectedValue =
+      selectedRx.value.isEmpty ? null : selectedRx.value;
 
       return Container(
         height: 38,
+        padding: EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
           color: AppColors.secondaryColor,
-          borderRadius: BorderRadius.circular(AppSizes.borderRadius(context) * 0.8), // Responsive border radius
+          borderRadius: BorderRadius.circular(AppSizes.borderRadius(context) * 0.8),
         ),
-        padding: EdgeInsets.symmetric(horizontal: leftPadding),
         child: DropdownButton<String>(
-
           value: selectedValue,
-          underline: const SizedBox(),
           isExpanded: true,
-          icon: Icon(Icons.keyboard_arrow_down, size: AppSizes.padding(context) * 0.8, color: AppColors.blackColor), // Using padding for size estimate
-          dropdownColor: AppColors.secondaryColor,
-          style: TTextTheme.titleTwo(context),
-          hint: Container(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Toyota",
-              style:  TTextTheme.titleTwo(context),
-            ),
-          ),
-
-          items: items.asMap().entries.map((entry) {
-            final int index = entry.key;
-            final String e = entry.value;
-            final bool isLastItem = index == items.length - 1;
-
-            return DropdownMenuItem<String>(
+          underline: SizedBox(),
+          icon: Icon(Icons.keyboard_arrow_down, size: 20),
+          hint: Text(placeholder, style: TTextTheme.titleTwo(context)),
+          items: items.map((e) {
+            return DropdownMenuItem(
               value: e,
-              child: SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 0, bottom: 0),
-                      child: Text(
-                        e,
-                        style: const TextStyle(fontSize: 13, color: AppColors.blackColor),
-                      ),
-                    ),
-
-                    if (!isLastItem)
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: AppSizes.padding(context) * 0.2, horizontal: 0),
-                        child: const Divider(
-                          color: AppColors.quadrantalTextColor,
-                          height: 1,
-                          thickness: 1,
-                          indent: 0,
-                          endIndent: 0,
-                        ),
-                      ),
-                  ],
-                ),
-              ),
+              child: Text(e),
             );
           }).toList(),
-
           onChanged: (v) {
             if (v != null) {
-              controller.selectedBrand.value = v;
+              selectedRx.value = v;
             }
-          },
-
-          selectedItemBuilder: (BuildContext context) {
-            return items.map<Widget>((String item) {
-              return Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  item,
-                  style:  TTextTheme.titleTwo(context),
-                ),
-              );
-            }).toList();
           },
         ),
       );
     });
   }
-      // static display widget
-  Widget _staticDisplayBox(List<String> items,BuildContext context) {
-    final String staticText = items.first;
 
-    return Container(
-      width: double.infinity,
-      height: 38,
-      decoration: BoxDecoration(
-        color: AppColors.secondaryColor,
-        borderRadius: BorderRadius.circular(AppSizes.borderRadius(context) * 0.8),
-      ),
-      padding: EdgeInsets.symmetric(horizontal: AppSizes.padding(context) * 0.5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            staticText,
-            style:  TTextTheme.titleTwo(context),
-          ),
-          Icon(Icons.keyboard_arrow_down, size: AppSizes.padding(context) * 0.8, color: AppColors.blackColor),
-        ],
-      ),
-    );
-  }
 
-    // textField Widget
+
+
+  // textField Widget
   Widget _textFieldBox(String label, BuildContext context) {
     return Container(
       width: double.infinity,
@@ -408,7 +413,6 @@ class CardListHeaderWidget extends StatelessWidget {
       child: Container(
         width: size,
         height: size,
-        margin: EdgeInsets.symmetric(horizontal: AppSizes.padding(context) * 0.1),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.textColor : Colors.white,
           borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
