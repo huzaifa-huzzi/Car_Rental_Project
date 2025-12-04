@@ -18,6 +18,7 @@ class CarInventoryMainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final horizontalPadding = AppSizes.horizontalPadding(context);
+    final isWeb = AppSizes.isWeb(context);
 
     return Scaffold(
       backgroundColor: AppColors.backgroundOfScreenColor,
@@ -26,7 +27,9 @@ class CarInventoryMainScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: Column(
             children: [
-              HeaderWebWidget(mainTitle: 'Cars'),
+              if (isWeb) HeaderWebWidget(mainTitle: 'Cars'),
+
+
               CardListHeaderWidget(),
 
               Obx(() {
@@ -48,5 +51,6 @@ class CarInventoryMainScreen extends StatelessWidget {
     );
   }
 }
+
 
 

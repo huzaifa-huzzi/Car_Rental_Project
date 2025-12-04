@@ -26,6 +26,8 @@ class CardListHeaderWidget extends StatelessWidget {
     bool isMobile = AppSizes.isMobile(context);
     final CarInventoryController controller = Get.put(CarInventoryController());
     final double buttonHeight = isMobile ? 38.0 : AppSizes.buttonHeight(context) * 0.8;
+    bool isWeb = AppSizes.isWeb(context);
+    bool isTablet = AppSizes.isTablet(context);
 
     return Column(
       children: [
@@ -49,8 +51,9 @@ class CardListHeaderWidget extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius:
-                      BorderRadius.circular(AppSizes.borderRadius(context)),
+                      borderRadius: BorderRadius.circular(
+                        AppSizes.borderRadius(context),
+                      ),
                     ),
                     child: Row(
                       children: [
@@ -79,7 +82,6 @@ class CardListHeaderWidget extends StatelessWidget {
                   ),
 
                   SizedBox(width: AppSizes.padding(context) * 0.75),
-
                   // FILTER BUTTON
                   Obx(() {
                     return _headerButton(
@@ -98,46 +100,51 @@ class CardListHeaderWidget extends StatelessWidget {
 
               // RIGHT SECTION
               Obx(() {
-                return Row(
-                  children: [
-                    _selectableIconButton(
-                      context: context,
-                      iconPath: IconString.previewOne,
-                      isSelected: controller.selectedView.value == 0,
-                      onTap: () {
-                        controller.selectedView.value = 0;
-                        if (onListView != null) onListView!();
-                      },
-                      size: isMobile ? 32.0 : buttonHeight * 0.85,
+                return Container(
+                  padding: EdgeInsets.symmetric(
+                    vertical: AppSizes.padding(context) * 0.1,
+                    horizontal: AppSizes.padding(context) * 0.1,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(
+                      AppSizes.borderRadius(context),
                     ),
-                    _selectableIconButton(
-                      context: context,
-                      iconPath: IconString.previewTwo,
-                      isSelected: controller.selectedView.value == 1,
-                      onTap: () {
-                        controller.selectedView.value = 1;
-                        if (onGridView != null) onGridView!();
-                      },
-                      size: isMobile ? 32.0 : buttonHeight * 0.85,
-                    ),
-                    _selectableIconButton(
-                      context: context,
-                      iconPath: IconString.previewThree,
-                      isSelected: controller.selectedView.value == 2,
-                      onTap: () {
-                        controller.selectedView.value = 2;
-                        if (onGridModernView != null) onGridView!();
-                      },
-                      size: isMobile ? 32.0 : buttonHeight * 0.85,
-                    ),
-                    SizedBox(width: AppSizes.padding(context) * 0.7),
-                    AddButton(
-                        text: "Add Car",
-                        width:120,
-                        onTap: (){})
-                  ],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _selectableIconButton(
+                        context: context,
+                        iconPath: IconString.previewOne,
+                        isSelected: controller.selectedView.value == 0,
+                        onTap: () => controller.selectedView.value = 0,
+                        size: isMobile ? 32.0 : buttonHeight * 0.85,
+                      ),
+                      _selectableIconButton(
+                        context: context,
+                        iconPath: IconString.previewTwo,
+                        isSelected: controller.selectedView.value == 1,
+                        onTap: () => controller.selectedView.value = 1,
+                        size: isMobile ? 32.0 : buttonHeight * 0.85,
+                      ),
+                      _selectableIconButton(
+                        context: context,
+                        iconPath: IconString.previewThree,
+                        isSelected: controller.selectedView.value == 2,
+                        onTap: () => controller.selectedView.value = 2,
+                        size: isMobile ? 32.0 : buttonHeight * 0.85,
+                      ),
+                    ],
+                  ),
                 );
               }),
+              if (isWeb)
+                AddButton(
+                  text: "Add Car",
+                  width: 120,
+                  onTap: () {},
+                ),
             ],
           ),
         ),
@@ -188,16 +195,19 @@ class CardListHeaderWidget extends StatelessWidget {
         }
 
         double availableScreenWidth = width - (2 * horizontalMargin);
-        double effectiveItemArea = availableScreenWidth - (2 * containerPadding);
+        double effectiveItemArea =
+            availableScreenWidth - (2 * containerPadding);
         double totalSpacingInRow = (itemsPerRow - 1) * wrapSpacing;
-        double itemWidth = (effectiveItemArea - totalSpacingInRow) / itemsPerRow;
+        double itemWidth =
+            (effectiveItemArea - totalSpacingInRow) / itemsPerRow;
 
         return Container(
           width: double.infinity,
           padding: EdgeInsets.all(containerPadding),
           margin: EdgeInsets.symmetric(
-              horizontal: horizontalMargin,
-              vertical: AppSizes.padding(context) * 0.5),
+            horizontal: horizontalMargin,
+            vertical: AppSizes.padding(context) * 0.5,
+          ),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
@@ -210,10 +220,11 @@ class CardListHeaderWidget extends StatelessWidget {
               _filterItem(
                 "Car Brand",
                 _dropdownBox(
-                    ["BMW", "Aston", "Range Rover"],
-                    controller.selectedBrand,
-                    context,
-                    placeholder: "Select"),
+                  ["BMW", "Aston", "Range Rover"],
+                  controller.selectedBrand,
+                  context,
+                  placeholder: "Select",
+                ),
                 context,
                 itemWidth: itemWidth,
               ),
@@ -222,10 +233,11 @@ class CardListHeaderWidget extends StatelessWidget {
               _filterItem(
                 "Car Model",
                 _dropdownBox(
-                    ["Corolla", "Civic"],
-                    controller.selectedModel,
-                    context,
-                    placeholder: "Select"),
+                  ["Corolla", "Civic"],
+                  controller.selectedModel,
+                  context,
+                  placeholder: "Select",
+                ),
                 context,
                 itemWidth: itemWidth,
               ),
@@ -234,10 +246,11 @@ class CardListHeaderWidget extends StatelessWidget {
               _filterItem(
                 "Car Year",
                 _dropdownBox(
-                    ["2025", "2024"],
-                    controller.selectedYear,
-                    context,
-                    placeholder: "Select"),
+                  ["2025", "2024"],
+                  controller.selectedYear,
+                  context,
+                  placeholder: "Select",
+                ),
                 context,
                 itemWidth: itemWidth,
               ),
@@ -246,10 +259,11 @@ class CardListHeaderWidget extends StatelessWidget {
               _filterItem(
                 "Body Type",
                 _dropdownBox(
-                    ["Sedan", "SUV"],
-                    controller.selectedBodyType,
-                    context,
-                    placeholder: "Select"),
+                  ["Sedan", "SUV"],
+                  controller.selectedBodyType,
+                  context,
+                  placeholder: "Select",
+                ),
                 context,
                 itemWidth: itemWidth,
               ),
@@ -258,10 +272,11 @@ class CardListHeaderWidget extends StatelessWidget {
               _filterItem(
                 "Car Status",
                 _dropdownBox(
-                    ["Available", "Unavailable"],
-                    controller.selectedStatus,
-                    context,
-                    placeholder: "Select"),
+                  ["Available", "Unavailable"],
+                  controller.selectedStatus,
+                  context,
+                  placeholder: "Select",
+                ),
                 context,
                 itemWidth: itemWidth,
               ),
@@ -270,10 +285,11 @@ class CardListHeaderWidget extends StatelessWidget {
               _filterItem(
                 "Transmission",
                 _dropdownBox(
-                    ["Auto", "Manual"],
-                    controller.selectedTransmission,
-                    context,
-                    placeholder: "Select"),
+                  ["Auto", "Manual"],
+                  controller.selectedTransmission,
+                  context,
+                  placeholder: "Select",
+                ),
                 context,
                 itemWidth: itemWidth,
               ),
@@ -282,10 +298,11 @@ class CardListHeaderWidget extends StatelessWidget {
               _filterItem(
                 "Fuel",
                 _dropdownBox(
-                    ["Petrol", "Hybrid"],
-                    controller.selectedFuel,
-                    context,
-                    placeholder: "Select"),
+                  ["Petrol", "Hybrid"],
+                  controller.selectedFuel,
+                  context,
+                  placeholder: "Select",
+                ),
                 context,
                 itemWidth: itemWidth,
               ),
@@ -313,40 +330,44 @@ class CardListHeaderWidget extends StatelessWidget {
   }
 
   // filter Item
-  Widget _filterItem(String title, Widget child, BuildContext context, {required double itemWidth}) {
+  Widget _filterItem(
+    String title,
+    Widget child,
+    BuildContext context, {
+    required double itemWidth,
+  }) {
     return SizedBox(
       width: itemWidth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: TTextTheme.btnFour(context),
-          ),
+          Text(title, style: TTextTheme.btnFour(context)),
           SizedBox(height: AppSizes.padding(context) * 0.3),
           child,
         ],
       ),
     );
   }
-  // dropdown
+
   Widget _dropdownBox(
-      List<String> items,
-      RxString selectedRx,
-      BuildContext context, {
-        String placeholder = "Select",
-      }) {
+    List<String> items,
+    RxString selectedRx,
+    BuildContext context, {
+    String placeholder = "Select",
+  }) {
     return Obx(() {
-      String? selectedValue =
-      selectedRx.value.isEmpty ? null : selectedRx.value;
+      String? selectedValue = selectedRx.value.isEmpty
+          ? null
+          : selectedRx.value;
 
       return Container(
         height: 38,
-        padding: EdgeInsets.symmetric(horizontal: 4),
+        padding: EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
           color: AppColors.secondaryColor,
-          borderRadius:
-          BorderRadius.circular(AppSizes.borderRadius(context) * 0.8),
+          borderRadius: BorderRadius.circular(
+            AppSizes.borderRadius(context) * 0.8,
+          ),
         ),
         child: DropdownButton<String>(
           value: selectedValue,
@@ -356,19 +377,14 @@ class CardListHeaderWidget extends StatelessWidget {
           dropdownColor: AppColors.secondaryColor,
           hint: Text(placeholder, style: TTextTheme.titleThree(context)),
 
-
           selectedItemBuilder: (context) {
             return items.map((item) {
               return Align(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  item,
-                  style: TTextTheme.titleTwo(context),
-                ),
+                child: Text(item, style: TTextTheme.titleTwo(context)),
               );
             }).toList();
           },
-
 
           items: List.generate(items.length, (index) {
             bool isLast = index == items.length - 1;
@@ -403,9 +419,6 @@ class CardListHeaderWidget extends StatelessWidget {
     });
   }
 
-
-
-
   // textField Widget
   Widget _textFieldBox(String label, BuildContext context) {
     return Container(
@@ -413,10 +426,14 @@ class CardListHeaderWidget extends StatelessWidget {
       height: 38,
 
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppSizes.borderRadius(context) * 0.8),
+        borderRadius: BorderRadius.circular(
+          AppSizes.borderRadius(context) * 0.8,
+        ),
         color: AppColors.secondaryColor,
       ),
-      padding: EdgeInsets.symmetric(horizontal: AppSizes.padding(context) * 0.5),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSizes.padding(context) * 0.5,
+      ),
 
       child: Center(
         child: TextField(
@@ -433,7 +450,7 @@ class CardListHeaderWidget extends StatelessWidget {
     );
   }
 
-     // SelectedIconButton Widget
+  // SelectedIconButton Widget
   Widget _selectableIconButton({
     required BuildContext context,
     required String iconPath,
@@ -447,8 +464,10 @@ class CardListHeaderWidget extends StatelessWidget {
         width: size,
         height: size,
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.textColor : Colors.white,
-          borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+          color: isSelected ? AppColors.textColor : Colors.transparent,
+          borderRadius: BorderRadius.circular(
+            AppSizes.borderRadius(context) * 0.7,
+          ),
         ),
         child: Center(
           child: Image.asset(
@@ -475,7 +494,10 @@ class CardListHeaderWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: AppSizes.padding(context) * 0.7, vertical: AppSizes.padding(context) * 0.5),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSizes.padding(context) * 0.7,
+          vertical: AppSizes.padding(context) * 0.5,
+        ),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
@@ -489,15 +511,19 @@ class CardListHeaderWidget extends StatelessWidget {
               icon,
               width: AppSizes.padding(context) * 0.6,
               height: AppSizes.padding(context) * 0.6,
-              color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor ,
+              color: isOpen
+                  ? AppColors.primaryColor
+                  : AppColors.secondTextColor,
             ),
             if (!isMobile) ...[
               SizedBox(width: AppSizes.padding(context) * 0.4),
               Text(
-                  text,
-                  style: TTextTheme.btnTwo(context)?.copyWith(
-                    color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor,
-                  )
+                text,
+                style: TTextTheme.btnTwo(context)?.copyWith(
+                  color: isOpen
+                      ? AppColors.primaryColor
+                      : AppColors.secondTextColor,
+                ),
               ),
             ],
             SizedBox(width: AppSizes.padding(context) * 0.3),
@@ -506,7 +532,9 @@ class CardListHeaderWidget extends StatelessWidget {
               child: Icon(
                 Icons.keyboard_arrow_down,
                 size: AppSizes.padding(context) * 0.65,
-                color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor ,
+                color: isOpen
+                    ? AppColors.primaryColor
+                    : AppColors.secondTextColor,
               ),
             ),
           ],
