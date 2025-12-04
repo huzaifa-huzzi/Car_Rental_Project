@@ -1,7 +1,3 @@
-
-/// still have to make changes in it
-
-
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
@@ -67,8 +63,6 @@ class CarListCard extends StatelessWidget {
             ),
             child: _innerWhiteCard(context),
           ),
-
-          //  GREY PANEL
           Positioned(
             right: 0,
             top: 0,
@@ -80,6 +74,7 @@ class CarListCard extends StatelessWidget {
     );
   }
 
+  /// ------ Extra widgets
 
   // INNER CONTENT
   Widget _innerWhiteCard(BuildContext context) {
@@ -266,7 +261,7 @@ class CarListCard extends StatelessWidget {
     );
   }
 
-  //  edit and delete widget
+  //  Edit and delete widget
   Widget _buildEditDelete(BuildContext context) {
     return Container(
       height: 165,
@@ -288,9 +283,6 @@ class CarListCard extends StatelessWidget {
       ),
     );
   }
-
-
-
 
   // SMALL BUTTON widget
   Widget _smallAction(BuildContext context, String text,
@@ -314,11 +306,7 @@ class CarListCard extends StatelessWidget {
           children: [
             Text(
               text,
-              style: TTextTheme.smallX(context)?.copyWith(
-                fontSize: 12,
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-              ),
+              style: TTextTheme.btnTwo(context),
             ),
           ],
         ),
