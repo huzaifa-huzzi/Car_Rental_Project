@@ -329,8 +329,7 @@ class CardListHeaderWidget extends StatelessWidget {
       ),
     );
   }
-
-  //dropdowns
+  // dropdown
   Widget _dropdownBox(
       List<String> items,
       RxString selectedRx,
@@ -343,23 +342,57 @@ class CardListHeaderWidget extends StatelessWidget {
 
       return Container(
         height: 38,
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: EdgeInsets.symmetric(horizontal: 4),
         decoration: BoxDecoration(
           color: AppColors.secondaryColor,
-          borderRadius: BorderRadius.circular(AppSizes.borderRadius(context) * 0.8),
+          borderRadius:
+          BorderRadius.circular(AppSizes.borderRadius(context) * 0.8),
         ),
         child: DropdownButton<String>(
           value: selectedValue,
           isExpanded: true,
           underline: SizedBox(),
           icon: Icon(Icons.keyboard_arrow_down, size: 20),
-          hint: Text(placeholder, style: TTextTheme.titleTwo(context)),
-          items: items.map((e) {
+          dropdownColor: AppColors.secondaryColor,
+          hint: Text(placeholder, style: TTextTheme.titleThree(context)),
+
+
+          selectedItemBuilder: (context) {
+            return items.map((item) {
+              return Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  item,
+                  style: TTextTheme.titleTwo(context),
+                ),
+              );
+            }).toList();
+          },
+
+
+          items: List.generate(items.length, (index) {
+            bool isLast = index == items.length - 1;
+
             return DropdownMenuItem(
-              value: e,
-              child: Text(e),
+              value: items[index],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(items[index], style: TTextTheme.titleTwo(context)),
+                  if (!isLast)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 7),
+                      child: Divider(
+                        thickness: 0.4,
+                        height: 4,
+                        color: AppColors.quadrantalTextColor,
+                      ),
+                    ),
+                ],
+              ),
             );
-          }).toList(),
+          }),
+
           onChanged: (v) {
             if (v != null) {
               selectedRx.value = v;
