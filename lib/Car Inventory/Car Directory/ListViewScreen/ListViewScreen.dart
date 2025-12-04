@@ -1,8 +1,5 @@
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ListViewScreen/Widgets/CarListItemWidget.dart'; // Assuming this imports CarListCard
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/CardListHeaderWidget.dart';
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/HeaderWebWidget.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ListViewScreen/Widgets/CarListItemWidget.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/PaginationWidget.dart';
-import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
@@ -106,16 +103,14 @@ class ListViewScreen extends StatelessWidget {
 
 
         if (needHorizontalScroll) {
-          // Fixed width (e.g., 900) is needed when horizontal scrolling is required.
           return SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: SizedBox(
-              width: 900, // Cards ki required minimum width
+              width: 900,
               child: cardListContent,
             ),
           );
         } else {
-          // Desktop par normal vertical flow
           return cardListContent;
         }
       },
