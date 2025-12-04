@@ -1,4 +1,4 @@
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ListViewScreen/Widgets/CarListItemWidget.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ListViewScreen/Widgets/CarListItemWidget.dart'; // Assuming this imports CarListCard
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/CardListHeaderWidget.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/HeaderWebWidget.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/PaginationWidget.dart';
@@ -13,57 +13,112 @@ class ListViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = AppSizes.isMobile(context);
+    final isTab = AppSizes.isTablet(context);
+    final needHorizontalScroll = isMobile || isTab;
     final tablePadding = AppSizes.padding(context);
     final baseVerticalSpace = AppSizes.verticalPadding(context);
 
-    return Column(
-      children: [
-        // --- Direct use of CarListItemWidget ---
-        CarListItemWidget(
-          carImage: ImageString.astonPic,
-          carName: 'Aston Martin',
-          carYear: '2025',
-          transmission: 'Automatic',
-          capacity: '2 seats',
-          price: '\$130 /Weekly',
-          status: 'Available',
-          registrationId: 'HFC-052',
-        ),
-        CarListItemWidget(
-          carImage: ImageString.rangePic,
-          carName: 'Range Rover Velar',
-          carYear: '2024',
-          transmission: 'Automatic',
-          capacity: '4 seats',
-          price: '\$130 /Weekly',
-          status: 'Available',
-          registrationId: 'HFC-053',
-        ),
-        CarListItemWidget(
-          carImage: ImageString.bmwPic,
-          carName: 'BMW LX3',
-          carYear: '2023',
-          transmission: 'Automatic',
-          capacity: '4 seats',
-          price: '\$130 /Weekly',
-          status: 'Available',
-          registrationId: 'HFC-054',
-        ),
-        CarListItemWidget(
-          carImage: ImageString.audiPic,
-          carName: 'AUDI Q7',
-          carYear: '2024',
-          transmission: 'Automatic',
-          capacity: '4 seats',
-          price: '\$130 /Weekly',
-          status: 'Available',
-          registrationId: 'HFC-055',
-        ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        Widget cardListContent = Column(
+          children: [
 
-        PaginationBar(isMobile: isMobile, tablePadding: tablePadding),
+            CarListCard(
+              image: ImageString.astonPic,
+              name: "Aston",
+              secondname: "Matrin",
+              model: "2025",
+              transmission: "Automatic",
+              capacity: "2 seats",
+              price: "\$130 / weekly",
+              status: "Available",
+              regId: "HPC-982",
+              onView: () {},
+              onEdit: () {},
+              onDelete: () {},
+            ),
 
-        SizedBox(height: baseVerticalSpace * 1.25),
-      ],
+            CarListCard(
+              image: ImageString.bmwPic,
+              name: "Range Rover",
+              secondname: "Velar",
+              model: "2024",
+              transmission: "Automatic",
+              capacity: "2 seats",
+              price: "\$130 / weekly",
+              status: "Maintenance",
+              regId: "HPC-982",
+              onView: () {},
+              onEdit: () {},
+              onDelete: () {},
+            ),
+
+            CarListCard(
+              image:ImageString.bmwPic ,
+              name: "BMW",
+              secondname: "LX3",
+              model: "2023",
+              transmission: "Automatic",
+              capacity: "2 seats",
+              price: "\$130/weekly",
+              status: "Available",
+              regId: "HPC-982",
+              onView: () {},
+              onEdit: () {},
+              onDelete: () {},
+            ),
+
+            CarListCard(
+              image: ImageString.audiPic,
+              name: "Audi",
+              secondname: "Q7",
+              model: "2024",
+              transmission: "Automatic",
+              capacity: "2 seats",
+              price: "\$130 / weekly",
+              status: "unavailable",
+              regId: "HPC-982",
+              onView: () {},
+              onEdit: () {},
+              onDelete: () {},
+            ),
+            CarListCard(
+              image: ImageString.astonPic,
+              name: "Aston",
+              secondname: "Matrin",
+              model: "2025",
+              transmission: "Automatic",
+              capacity: "2 seats",
+              price: "\$130 / weekly",
+              status: "Available",
+              regId: "HPC-982",
+              onView: () {},
+              onEdit: () {},
+              onDelete: () {},
+            ),
+
+
+            PaginationBar(isMobile: isMobile, tablePadding: tablePadding),
+
+            SizedBox(height: baseVerticalSpace * 1.25),
+          ],
+        );
+
+
+        if (needHorizontalScroll) {
+          // Fixed width (e.g., 900) is needed when horizontal scrolling is required.
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: SizedBox(
+              width: 900, // Cards ki required minimum width
+              child: cardListContent,
+            ),
+          );
+        } else {
+          // Desktop par normal vertical flow
+          return cardListContent;
+        }
+      },
     );
   }
 }

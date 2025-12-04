@@ -1,172 +1,153 @@
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
-import 'package:car_rental_project/Resources/Colors.dart';
-import 'package:car_rental_project/Resources/TextTheme.dart';
+
+/// still have to make changes in it
+
+
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
-import 'package:car_rental_project/Resources/IconStrings.dart'; // Ensure this file exists
+import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/TextTheme.dart';
+import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Car Inventory/Car Directory/ReusableWidget/ButtonWidget.dart';
 
-class CarListItemWidget extends StatelessWidget {
-  final String carImage;
-  final String carName;
-  final String carYear;
+class CarListCard extends StatelessWidget {
+  final String image;
+  final String name;
+  final String secondname;
+  final String model;
   final String transmission;
   final String capacity;
   final String price;
   final String status;
-  final String registrationId;
+  final String regId;
+  final VoidCallback? onView;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
 
-  const CarListItemWidget({
+  const CarListCard({
     super.key,
-    required this.carImage,
-    required this.carName,
-    required this.carYear,
+    required this.image,
+    required this.name,
+    required this.secondname,
+    required this.model,
     required this.transmission,
     required this.capacity,
     required this.price,
     required this.status,
-    required this.registrationId,
+    required this.regId,
+    this.onView,
+    this.onEdit,
+    this.onDelete,
   });
 
-  @override
   Widget build(BuildContext context) {
-    bool isWeb = AppSizes.isWeb(context);
-    bool isSmallScreen = !isWeb;
-
     final cardPadding = AppSizes.padding(context);
 
-    Color statusColor = AppColors.blackColor;
-    Color statusBGColor = Colors.transparent;
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSizes.horizontalPadding(context),
+        vertical: AppSizes.verticalPadding(context) * 0.5,
+      ),
+      child: Stack(
+        children: [
+          // WHITE CARD
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(cardPadding * 0.9),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius:
+              BorderRadius.circular(AppSizes.borderRadius(context)),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color.fromRGBO(0, 0, 0, 0.05),
+                  offset: Offset(0, 2),
+                  blurRadius: 4,
+                ),
+              ],
+            ),
+            child: _innerWhiteCard(context),
+          ),
 
-    if (status == "Available") {
-      statusBGColor = AppColors.availableBackgroundColor;
-      statusColor = Colors.white;
-    }
-
-    // Main Item Container
-    final Widget content = Container(
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: AppSizes.horizontalPadding(context), vertical: AppSizes.verticalPadding(context) * 0.3),
-      padding: EdgeInsets.all(cardPadding),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-        boxShadow: const [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.05),
-            offset: Offset(0, 2),
-            blurRadius: 4,
+          //  GREY PANEL
+          Positioned(
+            right: 0,
+            top: 0,
+            bottom: 0,
+            child: _buildEditDelete(context),
           ),
         ],
       ),
-
-      // *** HORIZONTAL SCROLL LOGIC APPLIED HERE ***
-      child: isSmallScreen
-          ? SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width < 800 ? 800 : null,
-          child: _buildRowContent(context, isWeb, isSmallScreen, statusColor, statusBGColor),
-        ),
-      )
-          : _buildRowContent(context, isWeb, isSmallScreen, statusColor, statusBGColor),
     );
-
-    return content;
   }
 
-  // --- New Helper Function to build the internal Row content ---
-  Widget _buildRowContent(BuildContext context, bool isWeb, bool isSmallScreen, Color statusColor, Color statusBGColor) {
+
+  // INNER CONTENT
+  Widget _innerWhiteCard(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // 1. CAR INFO (Image, Name, Status)
-        _buildCarInfo(context, isWeb, carImage, carName, carYear, status, statusColor, statusBGColor, registrationId),
-
-        // Flexible space between Car Info and Specs (Only on Large Screens)
-        if (!isSmallScreen) Expanded(child: SizedBox()),
-
-        // 2. CAR SPECIFICATIONS (Transmission, Capacity, Price)
-        // Specs will be spaced out by SizedBox (padding) on small screens for scroll
-        _buildCarSpecs(context, transmission, capacity, price),
-
-        // 3. ACTIONS (View, Edit, Delete)
-        // Add required spacing before actions on small screens for better scroll visibility
-        SizedBox(width: AppSizes.padding(context) * (isSmallScreen ? 2 : 0)),
-        _buildActions(context),
+        _buildCarImage(context),
+        SizedBox(width: AppSizes.padding(context)),
+        _buildCarDetails(context),
+        SizedBox(width: AppSizes.padding(context)),
+        _buildSpecs(context),
+        SizedBox(width: AppSizes.padding(context)),
+        AddButton(text: 'View', onTap: (){}),
       ],
     );
   }
 
+  //  IMAGE
+  Widget _buildCarImage(BuildContext context) {
+    double width = AppSizes.isWeb(context) ? 140 : 100;
 
-  // --- Helper Widgets (Skipping unchanged content for brevity, focusing on Actions) ---
+    String img = image.startsWith("assets/") ? image : "assets/images/$image";
 
-  Widget _buildCarInfo(BuildContext context, bool isWeb, String image, String name, String year, String status, Color textColor, Color statusBGColor, String regId) {
-    // ... (Content remains same as last version)
-    final imageWidth = AppSizes.isWeb(context) ? 140.0 : 100.0;
-    String adjustedImage = image.startsWith('assets/') ? image : 'assets/images/$image';
-
-    return Row(
-      children: [
-        // Image
-        Image.asset(
-          adjustedImage,
-          width: imageWidth,
-          height: imageWidth * 0.65,
-          fit: BoxFit.contain,
-          errorBuilder: (context, error, stackTrace) {
-            return Container(
-              width: imageWidth,
-              height: imageWidth * 0.65,
-              color: Colors.grey[200],
-              child: Center(child: Text("Car Img", style: TextStyle(fontSize: 10))),
-            );
-          },
+    return ClipRRect(
+      borderRadius:
+      BorderRadius.circular(AppSizes.borderRadius(context) * 0.6),
+      child: Image.asset(
+        img,
+        width: width,
+        height: width * 0.65,
+        fit: BoxFit.cover,
+        errorBuilder: (c, e, s) => Container(
+          width: width,
+          height: width * 0.65,
+          color: AppColors.quadrantalTextColor,
+          child: Center(
+              child: Text("Img", style: TTextTheme.titleTwo(context))),
         ),
-        SizedBox(width: AppSizes.padding(context) * 0.75),
+      ),
+    );
+  }
 
-        // Text Info
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
+  // DETAILS
+  Widget _buildCarDetails(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _titleBlock(context),
+        SizedBox(height: 6),
+        _statusBadge(context),
+        SizedBox(height: 6),
+
+        Row(
           children: [
-            Text(
-              "$name $year",
-              style: TTextTheme.titleOne(context),
-            ),
-
-            Text(
-              "Martin",
-              style: TTextTheme.titleOne(context)?.copyWith(fontWeight: FontWeight.bold, fontSize: AppSizes.isMobile(context) ? 16 : 18),
-            ),
-
-            if (status == "Available")
-              Column(
-                children: [
-                  SizedBox(height: AppSizes.padding(context) * 0.2),
-
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: AppSizes.padding(context) * 0.6, vertical: AppSizes.padding(context) * 0.2),
-                    decoration: BoxDecoration(
-                      color: statusBGColor,
-                      borderRadius: BorderRadius.circular(AppSizes.borderRadius(context) * 0.5),
-                    ),
-                    child: Text(
-                      status,
-                      style: TTextTheme.smallX(context)?.copyWith(
-                        color: textColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppColors.textColor,
+                borderRadius: BorderRadius.circular(6),
               ),
-
-            SizedBox(height: AppSizes.padding(context) * 0.2),
-
-            // Registration ID
-            Text(
-              "Registration | $regId",
-              style: TTextTheme.smallX(context)?.copyWith(color: AppColors.secondTextColor),
+              child: Text("Registration", style: TTextTheme.titleeight(context)),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppColors.secondaryColor,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Text("$regId", style: TTextTheme.titleseven(context)),
             ),
           ],
         ),
@@ -174,101 +155,110 @@ class CarListItemWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildCarSpecs(BuildContext context, String transmission, String capacity, String price) {
-    // ... (Content remains same as last version)
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(right: AppSizes.padding(context) * 1.5),
-          child: _specDetailColumn(context, IconString.transmissionIcon, "Transmission", transmission),
-        ),
-
-        Padding(
-          padding: EdgeInsets.only(right: AppSizes.padding(context) * 1.5),
-          child: _specDetailColumn(context, IconString.capacityIcon, "Capacity", capacity),
-        ),
-
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Price", style: TTextTheme.smallX(context)?.copyWith(color: AppColors.secondTextColor)),
-            SizedBox(height: AppSizes.padding(context) * 0.1),
-            Text(price, style: TTextTheme.titleTwo(context)?.copyWith(color: AppColors.textColor, fontWeight: FontWeight.bold)),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _specDetailColumn(BuildContext context, String iconPath, String label, String value) {
-    final iconSize = AppSizes.padding(context) * 1.0;
-
+  // NAME + MODEL
+  Widget _titleBlock(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            Image.asset(
-              iconPath,
-              width: iconSize,
-              height: iconSize,
-              color: AppColors.secondTextColor,
-            ),
-            SizedBox(width: AppSizes.padding(context) * 0.2),
-            Text(label, style: TTextTheme.smallX(context)?.copyWith(color: AppColors.secondTextColor)),
+            Text("$name", style: TTextTheme.titleSix(context)),
+            SizedBox(width: 5),
+            Text("$model", style: TTextTheme.titleSix(context)),
           ],
         ),
-        SizedBox(height: AppSizes.padding(context) * 0.1),
-        Text(
-          value,
-          style: TTextTheme.titleTwo(context)?.copyWith(color: AppColors.blackColor, fontWeight: FontWeight.bold),
-        ),
+        Text(secondname, style: TTextTheme.h3Style(context)),
       ],
     );
   }
 
-  // --- ACTIONS FIX ---
-  Widget _buildActions(BuildContext context) {
-    // Adjusted padding values to closely match the visual size of the buttons in the design
-    final horizontalPadding = AppSizes.padding(context) * 0.4;
-    final verticalPadding = AppSizes.padding(context) * 0.4;
-    final space = SizedBox(width: AppSizes.padding(context) * 0.4);
+  // STATUS BADGE
+  Widget _statusBadge(BuildContext context) {
+    Color bg = Colors.transparent;
+    Color txt = Colors.black;
 
+    String s = status.toLowerCase();
+
+    if (s == "available") {
+      bg = AppColors.availableBackgroundColor;
+      txt = Colors.white;
+    } else if (s == "maintenance") {
+      bg = AppColors.maintenanceBackgroundColor;
+      txt = Colors.black;
+    } else if (s == "unavailable") {
+      bg = AppColors.sideBoxesColor;
+      txt = AppColors.secondTextColor;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration:
+      BoxDecoration(color: bg, borderRadius: BorderRadius.circular(8)),
+      child: Text(
+        status,
+        style: TTextTheme.smallX(context)
+            ?.copyWith(color: txt, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  // SPECS widget
+  Widget _buildSpecs(BuildContext context) {
     return Row(
-      // Keep alignment right for the whole list item, but contents flow naturally
-      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        // 1. VIEW Button (Red/Primary) - Needs more width than the other buttons
-        AddButton(
-          text: "View",
-          onTap: (){},
-          height: 40,
-          width: 90, // Fixed width
-          borderRadius: AppSizes.borderRadius(context) * 0.8,
-        ),
+        _specBlock(context, IconString.transmissionIcon, "Transmission",
+            transmission),
+        SizedBox(width: AppSizes.padding(context) * 2),
+        _specBlock(context, IconString.capacityIcon, "Capacity", capacity),
+        SizedBox(width: AppSizes.padding(context) * 2),
+        _priceBlock(context),
+      ],
+    );
+  }
 
-        // --- GAP between View and Edit/Delete Container ---
-        SizedBox(width: AppSizes.padding(context) * 0.75),
-
-        // 2. EDIT / DELETE Wrapper (AppColors.sideBoxesColor)
+  Widget _specBlock(
+      BuildContext context, String icon, String title, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
         Container(
-          // Padding inside the grey box to wrap the two buttons
-          padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+          width: 28,
+          height: 28,
           decoration: BoxDecoration(
-            color: AppColors.sideBoxesColor, // Light Grey Background
-            borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+            color: AppColors.secondaryColor,
+            borderRadius: BorderRadius.circular(6),
           ),
-          child: Row(
+          child: Center(
+            child: Image.asset(
+              icon,
+              width: 16,
+              height: 16,
+              color: AppColors.blackColor,
+            ),
+          ),
+        ),
+        SizedBox(height: 6),
+        Text(title, style: TTextTheme.titleFour(context)),
+        SizedBox(height: 4),
+        Text(value, style: TTextTheme.titleSmallTexts(context)),
+      ],
+    );
+  }
+
+  Widget _priceBlock(BuildContext context) {
+    String amount = price.split(RegExp(r'\/'))[0].trim();
+    String period = price.contains("/") ? "/" + price.split("/")[1].trim() : "";
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("Price", style: TTextTheme.titleFour(context)),
+        SizedBox(height: 4),
+        RichText(
+          text: TextSpan(
             children: [
-              // EDIT Button (Icon + Text)
-              _actionButton(context,  "Edit"),
-
-              // Space between Edit and Delete
-              SizedBox(width: AppSizes.padding(context) * 0.5),
-
-              // DELETE Button (Icon + Text)
-              _actionButton(context, "Delete"),
+              TextSpan(text: amount + " ", style: TTextTheme.h5Style(context)),
+              TextSpan(text: period, style: TTextTheme.titleTwo(context)),
             ],
           ),
         ),
@@ -276,25 +266,62 @@ class CarListItemWidget extends StatelessWidget {
     );
   }
 
-  // Custom Action Button (Edit/Delete) with Icon and Text
-  Widget _actionButton(BuildContext context, String text) {
-    return GestureDetector(
-      // Add tap functionality here if needed
-      onTap: (){},
+  //  edit and delete widget
+  Widget _buildEditDelete(BuildContext context) {
+    return Container(
+      height: 165,
+      width: 170,
+      decoration: BoxDecoration(
+        color: AppColors.sideBoxesColor,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(AppSizes.borderRadius(context)),
+          bottomRight: Radius.circular(AppSizes.borderRadius(context)),
+        ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-
-          SizedBox(width: AppSizes.padding(context) * 0.1),
-          // Text
-          Text(
-            text,
-            style: TTextTheme.smallX(context)?.copyWith(
-              color: AppColors.blackColor, // Text color
-              fontSize: 12,
-            ),
-          ),
+          _smallAction(context, "Edit", onEdit),
+          SizedBox(width: 5),
+          _smallAction(context, "Delete", onDelete),
         ],
+      ),
+    );
+  }
+
+
+
+
+  // SMALL BUTTON widget
+  Widget _smallAction(BuildContext context, String text,
+      VoidCallback? onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 14),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromRGBO(0, 0, 0, 0.08),
+              blurRadius: 3,
+              offset: Offset(0, 1),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Text(
+              text,
+              style: TTextTheme.smallX(context)?.copyWith(
+                fontSize: 12,
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

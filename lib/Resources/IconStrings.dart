@@ -34,6 +34,8 @@ class IconString {
   static const String  gasPumpIcon = 'assets/icons/GasPump.png';
   static const String  backScreenIcon = 'assets/icons/BackScreenIcon.png';
   static const String  capacityIcon = 'assets/icons/CapacityIcon.png';
+  static const String  deleteIcon = 'assets/icons/DeleteIcon.png';
+  static const String  editIcon = 'assets/icons/EditIcon.png';
 
 
 

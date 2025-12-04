@@ -99,6 +99,11 @@ class TTextTheme {
     );
   }
 
+  static TextStyle titleeight(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 11),fontWeight: FontWeight.w400,color: Colors.white,
+    );
+  }
+
 
   static TextStyle titleSmallTexts(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 14),fontWeight: FontWeight.w500,color: AppColors.textColor,
