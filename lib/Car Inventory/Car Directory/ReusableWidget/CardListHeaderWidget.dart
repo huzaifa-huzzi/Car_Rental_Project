@@ -25,7 +25,9 @@ class CardListHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isMobile = AppSizes.isMobile(context);
     final CarInventoryController controller = Get.put(CarInventoryController());
-    final double buttonHeight = isMobile ? 38.0 : AppSizes.buttonHeight(context) * 0.8;
+    final double buttonHeight = isMobile
+        ? 38.0
+        : AppSizes.buttonHeight(context) * 0.8;
     bool isWeb = AppSizes.isWeb(context);
     bool isTablet = AppSizes.isTablet(context);
 
@@ -100,51 +102,54 @@ class CardListHeaderWidget extends StatelessWidget {
 
               // RIGHT SECTION
               Obx(() {
-                return Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: AppSizes.padding(context) * 0.1,
-                    horizontal: AppSizes.padding(context) * 0.1,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(
-                      AppSizes.borderRadius(context),
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: AppSizes.padding(context) * 0.1,
+                        horizontal: AppSizes.padding(context) * 0.2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(
+                          AppSizes.borderRadius(context),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _selectableIconButton(
+                            context: context,
+                            iconPath: IconString.previewOne,
+                            isSelected: controller.selectedView.value == 0,
+                            onTap: () => controller.selectedView.value = 0,
+                            size: isMobile ? 32.0 : buttonHeight * 0.85,
+                          ),
+                          _selectableIconButton(
+                            context: context,
+                            iconPath: IconString.previewTwo,
+                            isSelected: controller.selectedView.value == 1,
+                            onTap: () => controller.selectedView.value = 1,
+                            size: isMobile ? 32.0 : buttonHeight * 0.85,
+                          ),
+                          _selectableIconButton(
+                            context: context,
+                            iconPath: IconString.previewThree,
+                            isSelected: controller.selectedView.value == 2,
+                            onTap: () => controller.selectedView.value = 2,
+                            size: isMobile ? 32.0 : buttonHeight * 0.85,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _selectableIconButton(
-                        context: context,
-                        iconPath: IconString.previewOne,
-                        isSelected: controller.selectedView.value == 0,
-                        onTap: () => controller.selectedView.value = 0,
-                        size: isMobile ? 32.0 : buttonHeight * 0.85,
-                      ),
-                      _selectableIconButton(
-                        context: context,
-                        iconPath: IconString.previewTwo,
-                        isSelected: controller.selectedView.value == 1,
-                        onTap: () => controller.selectedView.value = 1,
-                        size: isMobile ? 32.0 : buttonHeight * 0.85,
-                      ),
-                      _selectableIconButton(
-                        context: context,
-                        iconPath: IconString.previewThree,
-                        isSelected: controller.selectedView.value == 2,
-                        onTap: () => controller.selectedView.value = 2,
-                        size: isMobile ? 32.0 : buttonHeight * 0.85,
-                      ),
-                    ],
-                  ),
+                    SizedBox(width: AppSizes.padding(context) * 1.5),
+                    if (isWeb)
+                      AddButton(text: "Add Car", width: 120, onTap: () {}),
+                  ],
                 );
               }),
-              if (isWeb)
-                AddButton(
-                  text: "Add Car",
-                  width: 120,
-                  onTap: () {},
-                ),
+
             ],
           ),
         ),
