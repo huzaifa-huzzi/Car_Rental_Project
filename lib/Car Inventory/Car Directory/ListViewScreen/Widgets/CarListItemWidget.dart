@@ -5,7 +5,7 @@ import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Car Inventory/Car Directory/ReusableWidget/ButtonWidget.dart';
 
-class CarListCard extends StatelessWidget {
+class CarListCard extends StatefulWidget {
   final String image;
   final String name;
   final String secondname;
@@ -35,48 +35,103 @@ class CarListCard extends StatelessWidget {
     this.onDelete,
   });
 
+  @override
+  State<CarListCard> createState() => _CarListCardState();
+}
+
+class _CarListCardState extends State<CarListCard> {
+  bool isHover = false;
+
+  @override
   Widget build(BuildContext context) {
     final cardPadding = AppSizes.padding(context);
 
-    return Padding(
+    return  Padding(
       padding: EdgeInsets.symmetric(
         horizontal: AppSizes.horizontalPadding(context),
         vertical: AppSizes.verticalPadding(context) * 0.5,
       ),
-      child: Stack(
-        children: [
-          // WHITE CARD
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(cardPadding * 0.9),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius:
-              BorderRadius.circular(AppSizes.borderRadius(context)),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.05),
-                  offset: Offset(0, 2),
-                  blurRadius: 4,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          double whiteWidth;
+
+          if (AppSizes.isWeb(context)) {
+            whiteWidth = 800;                     // web fixed
+          } else if (constraints.maxWidth > 600) {
+            whiteWidth = constraints.maxWidth - 170;   // tablet
+          } else {
+            whiteWidth = constraints.maxWidth;         // mobile full width
+          }
+
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // LEFT WHITE CARD — HOVERABLE
+              MouseRegion(
+                onEnter: (_) {
+                  if (AppSizes.isWeb(context)) {
+                    setState(() => isHover = true);
+                  }
+                  if (AppSizes.isMobile(context)) {
+                    setState(() => isHover = true);
+                  }
+                  if (AppSizes.isTablet(context)) {
+                    setState(() => isHover = true);
+                  }
+                },
+                onExit: (_) {
+                  if (AppSizes.isWeb(context)) {
+                    setState(() => isHover = false);
+                  }
+                  if (AppSizes.isMobile(context)) {
+                    setState(() => isHover = false);
+                  }
+                  if (AppSizes.isTablet(context)) {
+                    setState(() => isHover = false);
+                  }
+                },
+                child: Container(
+                  width: whiteWidth,
+                  padding: EdgeInsets.all(cardPadding * 0.8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(AppSizes.borderRadius(context)),
+                      bottomLeft: Radius.circular(AppSizes.borderRadius(context)),
+                    ),
+                    border: Border.all(
+                      color: isHover ? AppColors.primaryColor : Colors.transparent,
+                      width: 2,
+                    ),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.05),
+                        offset: Offset(0, 2),
+                        blurRadius: 4,
+                      ),
+                    ],
+                  ),
+                  child: _innerWhiteCard(context),
                 ),
-              ],
-            ),
-            child: _innerWhiteCard(context),
-          ),
-          Positioned(
-            right: 0,
-            top: 0,
-            bottom: 0,
-            child: _buildEditDelete(context),
-          ),
-        ],
+              ),
+
+              // RIGHT SIDE PANEL
+              if (constraints.maxWidth > 600)
+                _buildEditDelete(context)
+              else
+                SizedBox.shrink(),
+            ],
+          );
+        },
       ),
     );
+
+
+
+
+
   }
 
-  /// ------ Extra widgets
-
-  // INNER CONTENT
   Widget _innerWhiteCard(BuildContext context) {
     return Row(
       children: [
@@ -91,11 +146,12 @@ class CarListCard extends StatelessWidget {
     );
   }
 
-  //  IMAGE
   Widget _buildCarImage(BuildContext context) {
     double width = AppSizes.isWeb(context) ? 140 : 100;
 
-    String img = image.startsWith("assets/") ? image : "assets/images/$image";
+    String img = widget.image.startsWith("assets/")
+        ? widget.image
+        : "assets/images/${widget.image}";
 
     return ClipRRect(
       borderRadius:
@@ -105,18 +161,10 @@ class CarListCard extends StatelessWidget {
         width: width,
         height: width * 0.65,
         fit: BoxFit.cover,
-        errorBuilder: (c, e, s) => Container(
-          width: width,
-          height: width * 0.65,
-          color: AppColors.quadrantalTextColor,
-          child: Center(
-              child: Text("Img", style: TTextTheme.titleTwo(context))),
-        ),
       ),
     );
   }
 
-  // DETAILS
   Widget _buildCarDetails(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,7 +173,6 @@ class CarListCard extends StatelessWidget {
         SizedBox(height: 6),
         _statusBadge(context),
         SizedBox(height: 6),
-
         Row(
           children: [
             Container(
@@ -142,7 +189,8 @@ class CarListCard extends StatelessWidget {
                 color: AppColors.secondaryColor,
                 borderRadius: BorderRadius.circular(6),
               ),
-              child: Text("$regId", style: TTextTheme.titleseven(context)),
+              child: Text(widget.regId,
+                  style: TTextTheme.titleseven(context)),
             ),
           ],
         ),
@@ -150,29 +198,27 @@ class CarListCard extends StatelessWidget {
     );
   }
 
-  // NAME + MODEL
   Widget _titleBlock(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            Text("$name", style: TTextTheme.titleSix(context)),
+            Text(widget.name, style: TTextTheme.titleSix(context)),
             SizedBox(width: 5),
-            Text("$model", style: TTextTheme.titleSix(context)),
+            Text(widget.model, style: TTextTheme.titleSix(context)),
           ],
         ),
-        Text(secondname, style: TTextTheme.h3Style(context)),
+        Text(widget.secondname, style: TTextTheme.h3Style(context)),
       ],
     );
   }
 
-  // STATUS BADGE
   Widget _statusBadge(BuildContext context) {
     Color bg = Colors.transparent;
     Color txt = Colors.black;
 
-    String s = status.toLowerCase();
+    String s = widget.status.toLowerCase();
 
     if (s == "available") {
       bg = AppColors.availableBackgroundColor;
@@ -187,24 +233,23 @@ class CarListCard extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration:
-      BoxDecoration(color: bg, borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(8)),
       child: Text(
-        status,
+        widget.status,
         style: TTextTheme.smallX(context)
             ?.copyWith(color: txt, fontWeight: FontWeight.bold),
       ),
     );
   }
 
-  // SPECS widget
   Widget _buildSpecs(BuildContext context) {
     return Row(
       children: [
         _specBlock(context, IconString.transmissionIcon, "Transmission",
-            transmission),
+            widget.transmission),
         SizedBox(width: AppSizes.padding(context) * 2),
-        _specBlock(context, IconString.capacityIcon, "Capacity", capacity),
+        _specBlock(context, IconString.capacityIcon, "Capacity",
+            widget.capacity),
         SizedBox(width: AppSizes.padding(context) * 2),
         _priceBlock(context),
       ],
@@ -241,8 +286,9 @@ class CarListCard extends StatelessWidget {
   }
 
   Widget _priceBlock(BuildContext context) {
-    String amount = price.split(RegExp(r'\/'))[0].trim();
-    String period = price.contains("/") ? "/" + price.split("/")[1].trim() : "";
+    String amount = widget.price.split(RegExp(r'\/'))[0].trim();
+    String period =
+    widget.price.contains("/") ? "/" + widget.price.split("/")[1].trim() : "";
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -252,7 +298,7 @@ class CarListCard extends StatelessWidget {
         RichText(
           text: TextSpan(
             children: [
-              TextSpan(text: amount + " ", style: TTextTheme.h5Style(context)),
+              TextSpan(text: "$amount ", style: TTextTheme.h5Style(context)),
               TextSpan(text: period, style: TTextTheme.titleTwo(context)),
             ],
           ),
@@ -261,11 +307,23 @@ class CarListCard extends StatelessWidget {
     );
   }
 
-  //  Edit and delete widget
+  // edit /Delete widget
   Widget _buildEditDelete(BuildContext context) {
+    final double boxWidth = AppSizes.isWeb(context)
+        ? 170
+        : AppSizes.isTablet(context)
+        ? 150
+        : 130;
+
+    final double boxHeight = AppSizes.isWeb(context)
+        ? 155
+        : AppSizes.isTablet(context)
+        ? 135
+        : 115;
+
     return Container(
-      height: 165,
-      width: 170,
+      height: boxHeight,
+      width: boxWidth,
       decoration: BoxDecoration(
         color: AppColors.sideBoxesColor,
         borderRadius: BorderRadius.only(
@@ -276,17 +334,17 @@ class CarListCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _smallAction(context, "Edit", onEdit),
-          SizedBox(width: 5),
-          _smallAction(context, "Delete", onDelete),
+          _smallAction(context, "Edit", widget.onEdit),
+          SizedBox(width: AppSizes.padding(context) * 0.4),
+          _smallAction(context, "Delete", widget.onDelete),
         ],
       ),
     );
   }
 
-  // SMALL BUTTON widget
-  Widget _smallAction(BuildContext context, String text,
-      VoidCallback? onTap) {
+
+
+  Widget _smallAction(BuildContext context, String text, VoidCallback? onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -304,10 +362,7 @@ class CarListCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Text(
-              text,
-              style: TTextTheme.btnTwo(context),
-            ),
+            Text(text, style: TTextTheme.btnTwo(context)),
           ],
         ),
       ),
