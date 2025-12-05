@@ -97,6 +97,8 @@ class _CarListCardState extends State<CarListCard> {
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(AppSizes.borderRadius(context)),
                       bottomLeft: Radius.circular(AppSizes.borderRadius(context)),
+                      bottomRight: Radius.circular(AppSizes.borderRadius(context)),
+                      topRight: Radius.circular(AppSizes.borderRadius(context)),
                     ),
                     border: Border.all(
                       color: isHover ? AppColors.primaryColor : Colors.transparent,
@@ -124,11 +126,10 @@ class _CarListCardState extends State<CarListCard> {
       ),
     );
 
-
-
-
-
   }
+
+
+
  /// ---------- Extra Widgets
 
 

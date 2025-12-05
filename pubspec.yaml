@@ -24,6 +24,7 @@ dependencies:
   #Extra Screen usage helper functions
   go_router: ^17.0.0
   google_fonts: ^6.3.2
+  url_strategy: ^0.3.0
   #state management#
   get: ^4.7.3
 

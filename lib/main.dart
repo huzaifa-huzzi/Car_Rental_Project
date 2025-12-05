@@ -6,11 +6,11 @@ import 'package:car_rental_project/Resources/Theme.dart';
 import 'package:car_rental_project/SideScreen/SidebarScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 void main() {
-  setUrlStrategy(PathUrlStrategy());
+  setPathUrlStrategy();
   runApp(const MyApp());
 }
 
