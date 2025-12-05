@@ -56,17 +56,16 @@ class _CarListCardState extends State<CarListCard> {
           double whiteWidth;
 
           if (AppSizes.isWeb(context)) {
-            whiteWidth = 800;                     // web fixed
+            whiteWidth = 800;
           } else if (constraints.maxWidth > 600) {
-            whiteWidth = constraints.maxWidth - 170;   // tablet
+            whiteWidth = constraints.maxWidth - 170;
           } else {
-            whiteWidth = constraints.maxWidth;         // mobile full width
+            whiteWidth = constraints.maxWidth;
           }
 
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // LEFT WHITE CARD — HOVERABLE
               MouseRegion(
                 onEnter: (_) {
                   if (AppSizes.isWeb(context)) {
@@ -115,7 +114,6 @@ class _CarListCardState extends State<CarListCard> {
                 ),
               ),
 
-              // RIGHT SIDE PANEL
               if (constraints.maxWidth > 600)
                 _buildEditDelete(context)
               else
@@ -131,7 +129,10 @@ class _CarListCardState extends State<CarListCard> {
 
 
   }
+ /// ---------- Extra Widgets
 
+
+   // innerWhiteCard
   Widget _innerWhiteCard(BuildContext context) {
     return Row(
       children: [
@@ -145,7 +146,7 @@ class _CarListCardState extends State<CarListCard> {
       ],
     );
   }
-
+   // carImage Widget
   Widget _buildCarImage(BuildContext context) {
     double width = AppSizes.isWeb(context) ? 140 : 100;
 
@@ -164,7 +165,7 @@ class _CarListCardState extends State<CarListCard> {
       ),
     );
   }
-
+   // car details widget
   Widget _buildCarDetails(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,6 +199,7 @@ class _CarListCardState extends State<CarListCard> {
     );
   }
 
+   // title block widget
   Widget _titleBlock(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,7 +215,7 @@ class _CarListCardState extends State<CarListCard> {
       ],
     );
   }
-
+   // status badge widget
   Widget _statusBadge(BuildContext context) {
     Color bg = Colors.transparent;
     Color txt = Colors.black;
@@ -242,6 +244,7 @@ class _CarListCardState extends State<CarListCard> {
     );
   }
 
+  // build specs widget
   Widget _buildSpecs(BuildContext context) {
     return Row(
       children: [
@@ -255,6 +258,7 @@ class _CarListCardState extends State<CarListCard> {
       ],
     );
   }
+
 
   Widget _specBlock(
       BuildContext context, String icon, String title, String value) {
@@ -284,7 +288,7 @@ class _CarListCardState extends State<CarListCard> {
       ],
     );
   }
-
+   // price block widget
   Widget _priceBlock(BuildContext context) {
     String amount = widget.price.split(RegExp(r'\/'))[0].trim();
     String period =
@@ -342,8 +346,7 @@ class _CarListCardState extends State<CarListCard> {
     );
   }
 
-
-
+  // small action widgets
   Widget _smallAction(BuildContext context, String text, VoidCallback? onTap) {
     return GestureDetector(
       onTap: onTap,
