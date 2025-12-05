@@ -65,6 +65,7 @@ class CarInventoryController extends GetxController {
 
   /// Table View Screen
   RxBool isFilterOpen = false.obs;
+  var hoveredRowIndex = (-1).obs;
   void toggleFilter() {
     isFilterOpen.value = !isFilterOpen.value;
   }

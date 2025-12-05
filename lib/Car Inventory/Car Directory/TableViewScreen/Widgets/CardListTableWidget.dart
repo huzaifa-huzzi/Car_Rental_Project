@@ -15,22 +15,16 @@ class CarListTableWidget extends StatelessWidget {
   final double columnWidth = 120.0;
   final double actionColumnWidth = 100.0;
 
-
   @override
   Widget build(BuildContext context) {
-
     final tablePadding = AppSizes.padding(context);
 
     return Obx(() {
-
-
       return Container(
         margin: EdgeInsets.all(tablePadding),
-
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: SizedBox(
-
             width: (columnWidth * 11) + actionColumnWidth,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,46 +60,52 @@ class CarListTableWidget extends StatelessWidget {
                   ),
                 ),
 
-                /// ---------- TABLE BODY (Vertical Scroll Removed)----------
-
+                /// ---------- TABLE BODY (Hoverable Rows) ----------
                 Column(
-                  children: controller.carList.map((car) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(color: Colors.black12),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          _dataCell(car["brand"] ?? "", context),
-                          _dataCell(car["model"] ?? "", context),
-                          _dataCell(car["year"] ?? "", context),
-                          _dataCell(car["chasis"] ?? "", context),
-                          _styledDataCell(car["rental"] ?? "", context),
-                          _statusDataCell(car["status"] ?? "", context),
-                          _styledDataCell(car["usage"] ?? "", context),
-                          _dataCell(car["seats"] ?? "", context),
-                          _dataCell(car["fuel"] ?? "", context),
-                          _dataCell(car["engine"] ?? "", context),
-                          _dataCell(car["price"] ?? "", context),
+                  children: controller.carList.asMap().entries.map((entry) {
+                    int rowIndex = entry.key;
+                    var car = entry.value;
 
-                          /// ACTION BUTTON
-                          SizedBox(
-                            width: actionColumnWidth,
-                            height: 34,
-                            child: Center(
-                              child: AddButton(
-                                text: "View",
-                                onTap: () {},
-                                borderRadius: 6,
+                    return Obx(() {
+                      bool isHovered = controller.hoveredRowIndex.value == rowIndex;
+
+                      return MouseRegion(
+                        onEnter: (_) => controller.hoveredRowIndex.value = rowIndex,
+                        onExit: (_) => controller.hoveredRowIndex.value = -1,
+                        child: Container(
+                          color: isHovered ? Colors.white : Colors.transparent,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: Row(
+                            children: [
+                              _dataCell(car["brand"] ?? "", context),
+                              _dataCell(car["model"] ?? "", context),
+                              _dataCell(car["year"] ?? "", context),
+                              _dataCell(car["chasis"] ?? "", context),
+                              _styledDataCell(car["rental"] ?? "", context),
+                              _statusDataCell(car["status"] ?? "", context),
+                              _styledDataCell(car["usage"] ?? "", context),
+                              _dataCell(car["seats"] ?? "", context),
+                              _dataCell(car["fuel"] ?? "", context),
+                              _dataCell(car["engine"] ?? "", context),
+                              _dataCell(car["price"] ?? "", context),
+
+                              /// ACTION BUTTON
+                              SizedBox(
+                                width: actionColumnWidth,
+                                height: 34,
+                                child: Center(
+                                  child: AddButton(
+                                    text: "View",
+                                    onTap: () {},
+                                    borderRadius: 6,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
+                        ),
+                      );
+                    });
                   }).toList(),
                 ),
               ],
@@ -116,37 +116,31 @@ class CarListTableWidget extends StatelessWidget {
     });
   }
 
-  /// HEADER CELL Widget
+   /// --------- Extra Widgets ---------///
+
+  // HEADER CELL Widget
   Widget _headerCell(String title, BuildContext context, {bool isAction = false}) {
     return SizedBox(
       width: isAction ? actionColumnWidth : columnWidth,
       child: Row(
-
         mainAxisAlignment: isAction ? MainAxisAlignment.center : MainAxisAlignment.start,
         children: [
           if (isAction) const Spacer(),
-
-          Text(
-              title,
-              style: TTextTheme.smallXX(context)
-          ),
-
+          Text(title, style: TTextTheme.smallXX(context)),
           const SizedBox(width: 6),
-
           Image.asset(
             IconString.sortIcon,
             color: AppColors.blackColor,
             height: 16,
             width: 16,
           ),
-
           if (isAction) const Spacer(),
         ],
       ),
     );
   }
 
-  ///  DATA CELL Widget
+  // DATA CELL Widget
   Widget _dataCell(String text, BuildContext context) {
     return SizedBox(
       width: columnWidth,
@@ -161,34 +155,21 @@ class CarListTableWidget extends StatelessWidget {
     );
   }
 
-  ///  STATUS DATA CELL Widget (For badges like Available/Maintenance/Unavailable)
+  // STATUS DATA CELL Widget
   Widget _statusDataCell(String text, BuildContext context) {
-
     Color statusColor = Colors.transparent;
     Color textColor = Colors.black;
-
     String status = text.toLowerCase();
 
-
     if (status == "available") {
-
       statusColor = AppColors.availableBackgroundColor;
       textColor = Colors.white;
-
     } else if (status == "maintenance") {
-
       statusColor = AppColors.maintenanceBackgroundColor;
       textColor = Colors.black;
-
     } else if (status == "unavailable") {
-
       statusColor = AppColors.sideBoxesColor;
       textColor = AppColors.secondTextColor;
-
-    } else {
-
-      statusColor = Colors.transparent;
-      textColor = Colors.black;
     }
 
     return SizedBox(
@@ -198,11 +179,9 @@ class CarListTableWidget extends StatelessWidget {
         child: Align(
           alignment: Alignment.centerLeft,
           child: Container(
-
             padding: statusColor == Colors.transparent
                 ? EdgeInsets.zero
                 : const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-
             decoration: BoxDecoration(
               color: statusColor,
               borderRadius: BorderRadius.circular(4),
@@ -220,9 +199,7 @@ class CarListTableWidget extends StatelessWidget {
     );
   }
 
-
-
-  ///  STYLED DATA CELL Widget
+  // STYLED DATA CELL Widget
   Widget _styledDataCell(String text, BuildContext context) {
     return Expanded(
       child: Padding(
@@ -230,7 +207,6 @@ class CarListTableWidget extends StatelessWidget {
         child: Align(
           alignment: Alignment.center,
           child: Container(
-
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: AppColors.secondaryColor,
@@ -241,9 +217,9 @@ class CarListTableWidget extends StatelessWidget {
               ),
             ),
             child: Text(
-                text,
-                overflow: TextOverflow.ellipsis,
-                style: TTextTheme.pOne(context)
+              text,
+              overflow: TextOverflow.ellipsis,
+              style: TTextTheme.pOne(context),
             ),
           ),
         ),
