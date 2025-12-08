@@ -6,6 +6,7 @@ import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
+import 'package:go_router/go_router.dart';
 
 class CarListTableWidget extends StatelessWidget {
   CarListTableWidget({super.key});
@@ -96,7 +97,9 @@ class CarListTableWidget extends StatelessWidget {
                                 child: Center(
                                   child: AddButton(
                                     text: "View",
-                                    onTap: () {},
+                                    onTap: () {
+                                      context.go('/addNewCar');
+                                    },
                                     borderRadius: 6,
                                   ),
                                 ),
