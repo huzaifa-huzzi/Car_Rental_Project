@@ -64,6 +64,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 12),fontWeight: FontWeight.w400,color: Colors.white);
   }
 
+  static TextStyle btnCancel(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 14),fontWeight: FontWeight.w400,color: AppColors.textColor);
+  }
+
   static TextStyle titleOne(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 18),fontWeight: FontWeight.w600,color: AppColors.textColor,
     );
@@ -138,7 +142,7 @@ class TTextTheme {
 
 
   static TextStyle pOne(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 12),fontWeight: FontWeight.w400,color: AppColors.blackColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 12),fontWeight: FontWeight.w400,color: AppColors.textColor,
     );
   }
 
@@ -153,12 +157,22 @@ class TTextTheme {
   }
 
   static TextStyle documnetsUpsideText(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 10),fontWeight: FontWeight.w500,color: AppColors.textColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 12),fontWeight: FontWeight.w500,color: AppColors.textColor,
     );
   }
 
   static TextStyle documnetIsnideSmallText(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 14),fontWeight: FontWeight.w500,color: AppColors.secondTextColor,
+    );
+  }
+
+  static TextStyle documnetIsnideSmallText2(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 10),fontWeight: FontWeight.w500,color: AppColors.tertiaryTextColor,
+    );
+  }
+
+  static TextStyle insidetextfieldWrittenText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 10),fontWeight: FontWeight.w400,color: AppColors.blackColor,
     );
   }
 

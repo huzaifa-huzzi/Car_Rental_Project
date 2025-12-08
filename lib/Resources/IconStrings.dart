@@ -5,6 +5,12 @@ class IconString {
   static const String  logo = 'assets/icons/Logo.png';
   static const String  symbol = 'assets/icons/symbol.png';
 
+  /// Universal Icons ( used in whole project)
+  static const String  dropdownIcon = 'assets/icons/dropdownIcon.png';
+  static const String  upsideDropdownIcon = 'assets/icons/upsidedropdownICon.png';
+  static const String  addIcon = 'assets/icons/AddIcon.png';
+  static const String  uploadIcon = 'assets/icons/uploadIcon.png';
+
     /// SideBar Icons
   static const String  dashboardIcon = 'assets/icons/dashboardIcon.png';
   static const String  carInventoryIcon = 'assets/icons/CarInventory.png';
@@ -22,8 +28,7 @@ class IconString {
   static const String  settingIcon = 'assets/icons/Settings.png';
   static const String  notificationIcon = 'assets/icons/NotificationIcon.png';
 
-  /// Car Inventory Icons
-  static const String  dropdownIcon = 'assets/icons/dropdownIcon.png';
+  /// Car Inventory Icon
   static const String  filterIcon = 'assets/icons/filterIcon.png';
   static const String  previewOne = 'assets/icons/Preview-1.png';
   static const String  previewTwo = 'assets/icons/Preview-2.png';
@@ -36,6 +41,7 @@ class IconString {
   static const String  capacityIcon = 'assets/icons/CapacityIcon.png';
   static const String  deleteIcon = 'assets/icons/DeleteIcon.png';
   static const String  editIcon = 'assets/icons/EditIcon.png';
+  static const String  saveVehicleIcon = 'assets/icons/savevehicleIcon.png';
 
 
 

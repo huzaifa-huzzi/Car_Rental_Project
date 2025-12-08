@@ -8,6 +8,8 @@ class AddButton extends StatelessWidget {
   final double? width;
   final VoidCallback onTap;
   final double borderRadius;
+  final Widget? icon; // now supports any widget (Icon or Image)
+  final bool isIconLeft;
 
   const AddButton({
     super.key,
@@ -16,6 +18,8 @@ class AddButton extends StatelessWidget {
     this.height,
     this.width,
     this.borderRadius = 8,
+    this.icon,
+    this.isIconLeft = true,
   });
 
   @override
@@ -31,9 +35,41 @@ class AddButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         child: Center(
-          child: Text(
+          child: icon != null
+              ? Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (isIconLeft) ...[
+                SizedBox(
+                  width: height != null ? height! * 0.5 : 20,
+                  height: height != null ? height! * 0.5 : 20,
+                  child: icon,
+                ),
+                const SizedBox(width: 8),
+              ],
+              Flexible(
+                child: Text(
+                  text,
+                  style: TTextTheme.btnTwo(context)
+                      .copyWith(color: Colors.white),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              if (!isIconLeft) ...[
+                const SizedBox(width: 8),
+                SizedBox(
+                  width: height != null ? height! * 0.5 : 20,
+                  height: height != null ? height! * 0.5 : 20,
+                  child: icon,
+                ),
+              ],
+            ],
+          )
+              : Text(
             text,
-            style: TTextTheme.btnTwo(context).copyWith(color: Colors.white),
+            style: TTextTheme.btnTwo(context)
+                .copyWith(color: Colors.white),
           ),
         ),
       ),

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class CardListHeaderWidget extends StatelessWidget {
   final VoidCallback? onFilter;
@@ -145,7 +146,9 @@ class CardListHeaderWidget extends StatelessWidget {
                     ),
                     SizedBox(width: AppSizes.padding(context) * 1.5),
                     if (isWeb)
-                      AddButton(text: "Add Car", width: 120, onTap: () {}),
+                      AddButton(text: "Add Car", width: 120, onTap: () {
+                        context.go('/addNewCar');
+                      }),
                   ],
                 );
               }),

@@ -27,7 +27,7 @@ class CarInventoryMainScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: Column(
             children: [
-              if (isWeb) HeaderWebWidget(mainTitle: 'Cars'),
+              if (isWeb) HeaderWebWidget(mainTitle: 'Cars',showProfile: true,showNotification: true,showSettings: true,showSearch: true,),
 
 
               CardListHeaderWidget(),

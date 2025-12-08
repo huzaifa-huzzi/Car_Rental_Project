@@ -8,6 +8,7 @@ class ImageString{
   static const String bmwPic = 'assets/Images/CarInventoryPics/BmwPic.png';
   static const String astonPic = 'assets/Images/CarInventoryPics/AstionPic.png';
   static const String rangePic = 'assets/Images/CarInventoryPics/RangePic.png';
+  static const String corollaPicone = 'assets/Images/CarInventoryPics/corollaPic.png';
 
 
 }

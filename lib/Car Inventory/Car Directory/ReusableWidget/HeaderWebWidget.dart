@@ -1,22 +1,29 @@
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:go_router/go_router.dart';
 
 class HeaderWebWidget extends StatelessWidget {
   final bool showBack;
   final bool showSmallTitle;
   final bool showAddButton;
+  final bool showSearch;
+  final bool showSettings;
+  final bool showNotification;
+  final bool showProfile;
+
   final String mainTitle;
   final String? smallTitle;
+
   final VoidCallback? onAddPressed;
   final VoidCallback? onBackPressed;
   final VoidCallback? onSearchPressed;
   final VoidCallback? onSettingsPressed;
   final VoidCallback? onNotificationPressed;
+
   final String profileImageUrl;
 
   const HeaderWebWidget({
@@ -32,6 +39,11 @@ class HeaderWebWidget extends StatelessWidget {
     this.onSettingsPressed,
     this.onNotificationPressed,
     this.profileImageUrl = ImageString.userImage,
+
+    this.showSearch = false,
+    this.showSettings = false,
+    this.showNotification = false,
+    this.showProfile = false,
   });
 
   @override
@@ -44,27 +56,40 @@ class HeaderWebWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ///  Titles
+          /// LEFT SIDE (Back + Titles)
           Row(
             children: [
               if (showBack)
                 GestureDetector(
-                  onTap: onBackPressed,
+                  onTap: () {
+                    final router = GoRouter.of(context);
+
+                    if (router.canPop()) {
+                      router.pop();
+                    } else {
+                      router.go('/carInventory');
+                    }
+                  },
                   child: Container(
-                    width: AppSizes.buttonHeight(context),
-                    height: AppSizes.buttonHeight(context),
+                    width: AppSizes.buttonHeight(context) * 0.7,
+                    height: AppSizes.buttonHeight(context) * 0.7,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(
-                        AppSizes.borderRadius(context),
+                        AppSizes.borderRadius(context) * 0.7,
                       ),
                       color: Colors.white,
                     ),
-                    child:  Image.asset(IconString.backScreenIcon),
+                    child: Center(
+                      child: Image.asset(
+                        IconString.backScreenIcon,
+                        width: AppSizes.buttonHeight(context) * 0.45,
+                        height: AppSizes.buttonHeight(context) * 0.45,
+                      ),
+                    ),
                   ),
                 ),
 
-              if (showBack)
-                SizedBox(width: AppSizes.padding(context)),
+              if (showBack) SizedBox(width: AppSizes.padding(context)),
 
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,73 +108,113 @@ class HeaderWebWidget extends StatelessWidget {
             ],
           ),
 
-          ///  Icons & Profile
+          /// RIGHT SIDE (Conditional Icons)
           Row(
             children: [
               if (showAddButton)
-                AddButton(
-                  text: "Add Car",
-                  height: AppSizes.buttonHeight(context),
-                  width: AppSizes.buttonWidth(context),
-                  onTap: onAddPressed ?? () {},
+                Container(
+                  height: AppSizes.buttonHeight(context) * 0.5,
+                  width: AppSizes.buttonHeight(context) * 0.5,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(AppSizes.borderRadius(context) * 0.5),
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.add,
+                      size: AppSizes.buttonHeight(context) * 0.4,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
 
+
+
+
               if (showAddButton)
-                SizedBox(width: AppSizes.padding(context) * 0.4), 
+                SizedBox(width: AppSizes.padding(context) * 0.4),
 
-              _iconButton(IconString.searchIcon, onSearchPressed, context),
-              SizedBox(width: AppSizes.padding(context) * 0.4),
-
-              _iconButton(IconString.settingIcon, onSettingsPressed, context),
-              SizedBox(width: AppSizes.padding(context) * 0.4),
-
-              Stack(
-                children: [
-                  _iconButton(
-                      IconString.notificationIcon,
-                      onNotificationPressed,
-                      context
-                  ),
-                  Positioned(
-                    top: 12,
-                    right: 9,
-                    child: Container(
-                      width: 8,
-                      height: 8,
-                      decoration:  BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.primaryColor,
-                      ),
+              /// Search Icon
+              if (showSearch)
+                Row(
+                  children: [
+                    _iconButton(
+                      IconString.searchIcon,
+                      onSearchPressed,
+                      context,
                     ),
-                  )
-                ],
-              ),
+                    SizedBox(width: AppSizes.padding(context) * 0.4),
+                  ],
+                ),
 
-              SizedBox(width: AppSizes.padding(context) * 1),
+              /// Settings Icon
+              if (showSettings)
+                Row(
+                  children: [
+                    _iconButton(
+                      IconString.settingIcon,
+                      onSettingsPressed,
+                      context,
+                    ),
+                    SizedBox(width: AppSizes.padding(context) * 0.4),
+                  ],
+                ),
+
+              /// Notification Icon
+              if (showNotification)
+                Row(
+                  children: [
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        _iconButton(
+                          IconString.notificationIcon,
+                          onNotificationPressed,
+                          context,
+                        ),
+                        Positioned(
+                          top: AppSizes.isMobile(context) ? 0 : 12,
+                          right: AppSizes.isMobile(context) ? 0 : 9,
+                          child: Container(
+                            width: 8,
+                            height: 8,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: AppSizes.padding(context)),
+                  ],
+                ),
+
 
               /// Profile
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: AppSizes.buttonHeight(context) * 0.4,
-                    backgroundImage: AssetImage(profileImageUrl),
-                  ),
-                  SizedBox(width: AppSizes.padding(context) / 2),
-                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Abram Schleiter",
-                        style: TTextTheme.titleTwo(context),
-                      ),
-                      Text(
-                        "Admin",
-                        style: TTextTheme.titleFour(context),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              if (showProfile)
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: AppSizes.buttonHeight(context) * 0.4,
+                      backgroundImage: AssetImage(profileImageUrl),
+                    ),
+                    SizedBox(width: AppSizes.padding(context) / 2),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Abram Schleiter",
+                          style: TTextTheme.titleTwo(context),
+                        ),
+                        Text(
+                          "Admin",
+                          style: TTextTheme.titleFour(context),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
             ],
           )
         ],
@@ -157,7 +222,7 @@ class HeaderWebWidget extends StatelessWidget {
     );
   }
 
-   /// Universal Icons
+  /// UNIVERSAL ICON BUTTON
   Widget _iconButton(
       String iconPath,
       VoidCallback? onTap,
@@ -166,13 +231,11 @@ class HeaderWebWidget extends StatelessWidget {
     bool isMobile = AppSizes.isMobile(context);
     bool isTablet = AppSizes.isTablet(context);
 
-
     double containerSize = isMobile
         ? AppSizes.buttonHeight(context) * 0.5
         : isTablet
         ? AppSizes.buttonHeight(context) * 0.6
         : AppSizes.buttonHeight(context) * 0.7;
-
 
     double iconSize = isMobile
         ? 12
@@ -201,6 +264,4 @@ class HeaderWebWidget extends StatelessWidget {
       ),
     );
   }
-
-
 }

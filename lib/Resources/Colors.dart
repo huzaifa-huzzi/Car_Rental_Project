@@ -14,7 +14,7 @@ class AppColors {
   static const Color maintenanceBackgroundColor = Color(0xFFFF7F8F);
   static const Color iconsBackgroundColor = Color(0xFFFFDADF);
   static const Color sideBoxesColor = Color(0xFFE0E2E5);// grey-line
-  static const Color backgroundOfUsableButtons = Color(0xFFF6F9FB); // grey-subtle Color
+  static const Color backgroundOfUsableButtons = Color(0xFFF6F9FB);
 
 
 
