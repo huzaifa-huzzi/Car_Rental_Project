@@ -6,7 +6,6 @@ import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
-import 'package:go_router/go_router.dart';
 
 class CarListTableWidget extends StatelessWidget {
   CarListTableWidget({super.key});
@@ -61,7 +60,7 @@ class CarListTableWidget extends StatelessWidget {
                   ),
                 ),
 
-                /// ---------- TABLE BODY (Hoverable Rows) ----------
+                /// ---------- TABLE BODY ----------
                 Column(
                   children: controller.carList.asMap().entries.map((entry) {
                     int rowIndex = entry.key;
@@ -98,7 +97,6 @@ class CarListTableWidget extends StatelessWidget {
                                   child: AddButton(
                                     text: "View",
                                     onTap: () {
-                                      context.go('/addNewCar');
                                     },
                                     borderRadius: 6,
                                   ),

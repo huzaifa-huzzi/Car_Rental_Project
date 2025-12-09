@@ -48,31 +48,53 @@ class HeaderWebWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = AppSizes.isMobile(context);
+    final isTablet = AppSizes.isTablet(context);
+
+    const double minHorizontalPadding = 12.0;
+    const double minInternalSpacing = 8.0;
+
+    final double actualHorizontalPadding = AppSizes.horizontalPadding(context);
+    final double finalHorizontalPadding = actualHorizontalPadding > minHorizontalPadding
+        ? actualHorizontalPadding
+        : minHorizontalPadding;
+
+    final double actualInternalSpacing = AppSizes.padding(context);
+    final double finalInternalSpacing = actualInternalSpacing > minInternalSpacing
+        ? actualInternalSpacing
+        : minInternalSpacing;
+
+    final double webIconSize = AppSizes.buttonHeight(context) * 0.7;
+    final double tabletIconSize = AppSizes.buttonHeight(context) * 0.6;
+
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: AppSizes.verticalPadding(context),
-        horizontal: AppSizes.horizontalPadding(context),
+        horizontal: finalHorizontalPadding,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           /// LEFT SIDE (Back + Titles)
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               if (showBack)
                 GestureDetector(
                   onTap: () {
                     final router = GoRouter.of(context);
 
-                    if (router.canPop()) {
+                    if (onBackPressed != null) {
+                      onBackPressed!();
+                    } else if (router.canPop()) {
                       router.pop();
                     } else {
                       router.go('/carInventory');
                     }
                   },
                   child: Container(
-                    width: AppSizes.buttonHeight(context) * 0.7,
-                    height: AppSizes.buttonHeight(context) * 0.7,
+                    width: isMobile ? 30 : AppSizes.buttonHeight(context) * 0.7,
+                    height: isMobile ? 30 : AppSizes.buttonHeight(context) * 0.7,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(
                         AppSizes.borderRadius(context) * 0.7,
@@ -82,57 +104,64 @@ class HeaderWebWidget extends StatelessWidget {
                     child: Center(
                       child: Image.asset(
                         IconString.backScreenIcon,
-                        width: AppSizes.buttonHeight(context) * 0.45,
-                        height: AppSizes.buttonHeight(context) * 0.45,
+                        width: isMobile ? 18 : AppSizes.buttonHeight(context) * 0.45,
+                        height: isMobile ? 18 : AppSizes.buttonHeight(context) * 0.45,
                       ),
                     ),
                   ),
                 ),
 
-              if (showBack) SizedBox(width: AppSizes.padding(context)),
+              if (showBack) SizedBox(width: finalInternalSpacing),
 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (showSmallTitle)
+
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (showSmallTitle)
+                      Text(
+                        smallTitle ?? "",
+                        style: TTextTheme.titleUpperHeading(context),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     Text(
-                      smallTitle ?? "",
-                      style: TTextTheme.titleUpperHeading(context),
+                      mainTitle,
+                      style: TTextTheme.titleOne(context),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  Text(
-                    mainTitle,
-                    style: TTextTheme.titleOne(context),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
 
           /// RIGHT SIDE (Conditional Icons)
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               if (showAddButton)
-                Container(
-                  height: AppSizes.buttonHeight(context) * 0.5,
-                  width: AppSizes.buttonHeight(context) * 0.5,
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    borderRadius: BorderRadius.circular(AppSizes.borderRadius(context) * 0.5),
-                  ),
-                  child: Center(
-                    child: Icon(
-                      Icons.add,
-                      size: AppSizes.buttonHeight(context) * 0.4,
-                      color: Colors.white,
+                GestureDetector(
+                  onTap: onAddPressed,
+                  child: Container(
+                    height: isMobile ? 24.0 : AppSizes.buttonHeight(context) * 0.5,
+                    width: isMobile ? 24.0 : AppSizes.buttonHeight(context) * 0.5,
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius: BorderRadius.circular(AppSizes.borderRadius(context) * 0.5),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.add,
+                        size: isMobile ? 14.0 : AppSizes.buttonHeight(context) * 0.4,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
 
 
-
-
               if (showAddButton)
-                SizedBox(width: AppSizes.padding(context) * 0.4),
+                SizedBox(width: finalInternalSpacing * 0.5),
 
               /// Search Icon
               if (showSearch)
@@ -143,7 +172,7 @@ class HeaderWebWidget extends StatelessWidget {
                       onSearchPressed,
                       context,
                     ),
-                    SizedBox(width: AppSizes.padding(context) * 0.4),
+                    SizedBox(width: finalInternalSpacing * 0.5),
                   ],
                 ),
 
@@ -156,7 +185,7 @@ class HeaderWebWidget extends StatelessWidget {
                       onSettingsPressed,
                       context,
                     ),
-                    SizedBox(width: AppSizes.padding(context) * 0.4),
+                    SizedBox(width: finalInternalSpacing * 0.5),
                   ],
                 ),
 
@@ -173,8 +202,8 @@ class HeaderWebWidget extends StatelessWidget {
                           context,
                         ),
                         Positioned(
-                          top: AppSizes.isMobile(context) ? 0 : 12,
-                          right: AppSizes.isMobile(context) ? 0 : 9,
+                          top: isMobile ? -2 : (isTablet ? 6 : 12),
+                          right: isMobile ? -2 : (isTablet ? 4 : 9),
                           child: Container(
                             width: 8,
                             height: 8,
@@ -186,7 +215,7 @@ class HeaderWebWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(width: AppSizes.padding(context)),
+                    SizedBox(width: finalInternalSpacing),
                   ],
                 ),
 
@@ -195,24 +224,37 @@ class HeaderWebWidget extends StatelessWidget {
               if (showProfile)
                 Row(
                   children: [
-                    CircleAvatar(
-                      radius: AppSizes.buttonHeight(context) * 0.4,
-                      backgroundImage: AssetImage(profileImageUrl),
-                    ),
-                    SizedBox(width: AppSizes.padding(context) / 2),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Abram Schleiter",
-                          style: TTextTheme.titleTwo(context),
+                    Container(
+                      width: isMobile ? 24.0 : (isTablet ? tabletIconSize : webIconSize),
+                      height: isMobile ? 24.0 : (isTablet ? tabletIconSize : webIconSize),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(isMobile ? 6.0 : AppSizes.borderRadius(context) * 0.8),
+                        image: DecorationImage(
+                          image: AssetImage(profileImageUrl),
+                          fit: BoxFit.cover,
                         ),
-                        Text(
-                          "Admin",
-                          style: TTextTheme.titleFour(context),
-                        ),
-                      ],
+                      ),
                     ),
+
+                    if (!isMobile)
+                      Row(
+                        children: [
+                          SizedBox(width: finalInternalSpacing / 2),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Abram Schleiter",
+                                style: TTextTheme.titleTwo(context),
+                              ),
+                              Text(
+                                "Admin",
+                                style: TTextTheme.titleFour(context),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                   ],
                 ),
             ],
@@ -232,13 +274,14 @@ class HeaderWebWidget extends StatelessWidget {
     bool isTablet = AppSizes.isTablet(context);
 
     double containerSize = isMobile
-        ? AppSizes.buttonHeight(context) * 0.5
+        ? 24.0
         : isTablet
         ? AppSizes.buttonHeight(context) * 0.6
         : AppSizes.buttonHeight(context) * 0.7;
 
+
     double iconSize = isMobile
-        ? 12
+        ? 14.0
         : isTablet
         ? 14
         : 16;

@@ -4,6 +4,7 @@ import 'package:car_rental_project/SideScreen/Widget/MobileAppbar.dart';
 import 'package:car_rental_project/SideScreen/Widget/SidebarComponentWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'SideBarController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
@@ -156,13 +157,16 @@ class SidebarScreen extends StatelessWidget {
           ),
         ),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: AppColors.secondaryColor,
           elevation: 0,
           centerTitle: true,
           title: MobileTopBar(
             scaffoldKey: _scaffoldKey,
             profileImageUrl: ImageString.userImage,
-            onAddPressed: () {},
+            onAddPressed: () {
+              context.go('/addNewCar');
+            },
             onNotificationPressed: () {},
           ),
         ),

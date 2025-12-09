@@ -30,4 +30,6 @@ class SideBarController extends GetxController {
   void setIncomeRedDot(int value) {
     incomeRedDot.value = value;
   }
+
+   /// Mobile appbar code
 }
