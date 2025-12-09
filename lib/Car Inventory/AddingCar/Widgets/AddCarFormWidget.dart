@@ -410,7 +410,6 @@ class AddCarFormWidget extends StatelessWidget {
           child: Container(
             height: 140,
             width: double.infinity,
-            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: isUploaded ? Colors.white : Colors.white,
               borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
@@ -459,7 +458,6 @@ class AddCarFormWidget extends StatelessWidget {
                   ),
                 ),
 
-                //  DELETE ICON
                 if (isUploaded)
                   Positioned(
                     top: -8,

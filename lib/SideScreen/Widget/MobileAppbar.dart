@@ -203,8 +203,8 @@ class _MobileTopBarState extends State<MobileTopBar> with WidgetsBindingObserver
                         ),
                       ),
                       Positioned(
-                        top: 3,
-                        right: 3,
+                        top: 6,
+                        right: 5,
                         child: Container(
                           width: 6,
                           height: 6,
