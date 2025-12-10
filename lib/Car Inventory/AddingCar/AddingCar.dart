@@ -10,7 +10,8 @@ class AddingCarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isMobile = AppSizes.isMobile(context);
 
-    return SingleChildScrollView(
+    // 1. SingleChildScrollView ko 'body' variable mein store karein
+    Widget content = SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: AppSizes.horizontalPadding(context),
@@ -45,5 +46,15 @@ class AddingCarScreen extends StatelessWidget {
         ),
       ),
     );
+
+
+    if (isMobile) {
+      return Scaffold(
+        body: SafeArea(child: content),
+      );
+    }
+
+
+    return content;
   }
 }

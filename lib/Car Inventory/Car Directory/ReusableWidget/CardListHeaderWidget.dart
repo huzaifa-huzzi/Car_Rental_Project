@@ -147,7 +147,10 @@ class CardListHeaderWidget extends StatelessWidget {
                     SizedBox(width: AppSizes.padding(context) * 1.5),
                     if (isWeb)
                       AddButton(text: "Add Car", width: 120, onTap: () {
-                        context.go('/addNewCar');
+                        context.push(
+                          '/addNewCar',
+                          extra: {"hideMobileAppBar": true},
+                        );
                       }),
                   ],
                 );

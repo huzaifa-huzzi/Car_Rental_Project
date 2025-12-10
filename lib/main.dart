@@ -65,14 +65,11 @@ class _MyAppState extends State<MyApp> {
               path: '/carInventory/GridView',
               builder: (context, state) => const GridViewScreen(),
             ),
-            GoRoute(
-              path: '/addNewCar',
-              builder: (context, state) => AddingCarScreen(),
-            ),
+
           ],
         ),
 
-        /// --------------------------------
+        /// Routes without the appbars needed in the screens
         GoRoute(
           path: '/cardetails',
           builder: (context, state) {
@@ -81,6 +78,18 @@ class _MyAppState extends State<MyApp> {
 
             return SidebarScreen.wrapWithSidebarIfNeeded(
               child: CarDetailsScreen(),
+              hideMobileAppBar: hideMobile,
+            );
+          },
+        ),
+        GoRoute(
+          path: '/addNewCar',
+          builder: (context, state) {
+            final extras = state.extra as Map<String, dynamic>?;
+            final hideMobile = extras?["hideMobileAppBar"] == true;
+
+            return SidebarScreen.wrapWithSidebarIfNeeded(
+              child: AddingCarScreen(),
               hideMobileAppBar: hideMobile,
             );
           },

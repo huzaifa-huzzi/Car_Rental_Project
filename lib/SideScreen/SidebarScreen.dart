@@ -162,7 +162,10 @@ class SidebarScreen extends StatelessWidget {
     scaffoldKey: _scaffoldKey,
     profileImageUrl: ImageString.userImage,
     onAddPressed: () {
-    context.go('/addNewCar');
+      context.push(
+        '/addNewCar',
+        extra: {"hideMobileAppBar": true},
+      );
     },
     onNotificationPressed: () {},
     ),
