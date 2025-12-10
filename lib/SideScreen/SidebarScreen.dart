@@ -24,6 +24,7 @@ class SidebarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final bool isMobile = AppSizes.isMobile(context);
+    final bool isTab = AppSizes.isMobile(context);
     final double sidebarWidth = width > 1100 ? 240 : 150;
 
     /// Sidebar content
@@ -176,10 +177,43 @@ class SidebarScreen extends StatelessWidget {
     ),
     );
     }
+    /// Tab Appbar
+    if (isTab) {
+      return Scaffold(
+        key: _scaffoldKey,
+        drawer: Drawer(
+          backgroundColor: Colors.white,
+          child: sidebarContent(showLogo: false),
+        ),
+
+        appBar: hideMobileAppBar
+            ? null
+            : AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: AppColors.secondaryColor,
+          elevation: 0,
+          centerTitle: true,
+          title: MobileTopBar(
+            scaffoldKey: _scaffoldKey,
+            profileImageUrl: ImageString.userImage,
+            onAddPressed: () {
+              context.push(
+                '/addNewCar',
+                extra: {"hideMobileAppBar": true},
+              );
+            },
+            onNotificationPressed: () {},
+          ),
+        ),
+
+        body: SafeArea(
+          child: child ?? const TableViewScreen(),
+        ),
+      );
+    }
 
 
-
-    /// Web / Tablet layout
+    /// Web
     return Scaffold(
       body: SafeArea(
         child: Row(
@@ -196,6 +230,8 @@ class SidebarScreen extends StatelessWidget {
         ),
       ),
     );
+
+
   }
 
   static Widget wrapWithSidebarIfNeeded({
