@@ -16,8 +16,9 @@ class SidebarScreen extends StatelessWidget {
   final Widget? child;
   final SideBarController controller = Get.put(SideBarController());
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final bool hideMobileAppBar;
 
-  SidebarScreen({super.key, required this.onTap, this.child});
+  SidebarScreen({super.key, required this.onTap, this.child,  this.hideMobileAppBar = false});
 
   @override
   Widget build(BuildContext context) {
@@ -140,41 +141,40 @@ class SidebarScreen extends StatelessWidget {
       );
     }
 
+
     /// Mobile AppBar
     if (isMobile) {
-      return Scaffold(
-        key: _scaffoldKey,
-        drawer: Drawer(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.transparent,
-          child: Theme(
-            data: Theme.of(context).copyWith(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              hoverColor: Colors.transparent,
-            ),
-            child: sidebarContent(showLogo: false),
-          ),
-        ),
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: AppColors.secondaryColor,
-          elevation: 0,
-          centerTitle: true,
-          title: MobileTopBar(
-            scaffoldKey: _scaffoldKey,
-            profileImageUrl: ImageString.userImage,
-            onAddPressed: () {
-              context.go('/addNewCar');
-            },
-            onNotificationPressed: () {},
-          ),
-        ),
-        body: SafeArea(
-          child: child ?? const TableViewScreen(),
-        ),
-      );
+    return Scaffold(
+    key: _scaffoldKey,
+      drawer: Drawer(
+        backgroundColor: Colors.white,
+        child: sidebarContent(showLogo: false),
+      ),
+
+    appBar: hideMobileAppBar
+    ? null
+        : AppBar(
+    automaticallyImplyLeading: false,
+    backgroundColor: AppColors.secondaryColor,
+    elevation: 0,
+    centerTitle: true,
+    title: MobileTopBar(
+    scaffoldKey: _scaffoldKey,
+    profileImageUrl: ImageString.userImage,
+    onAddPressed: () {
+    context.go('/addNewCar');
+    },
+    onNotificationPressed: () {},
+    ),
+    ),
+
+    body: SafeArea(
+    child: child ?? const TableViewScreen(),
+    ),
+    );
     }
+
+
 
     /// Web / Tablet layout
     return Scaffold(
@@ -194,4 +194,24 @@ class SidebarScreen extends StatelessWidget {
       ),
     );
   }
+
+  static Widget wrapWithSidebarIfNeeded({
+    required Widget child,
+    bool hideMobileAppBar = false,
+  }) {
+    return Builder(builder: (context) {
+      bool isMobile = AppSizes.isMobile(context);
+
+      if (isMobile && hideMobileAppBar) {
+        return child;
+      } else {
+        return SidebarScreen(
+          onTap: (value) {},
+          hideMobileAppBar: hideMobileAppBar,
+          child: child,
+        );
+      }
+    });
+  }
+
 }

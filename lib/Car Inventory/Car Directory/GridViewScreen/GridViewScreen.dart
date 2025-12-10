@@ -4,7 +4,7 @@ import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:flutter/material.dart';
 
-// Dummy Data for demonstration (using ImageString.astonPic repeatedly for consistency)
+
 final List<Map<String, String>> dummyCarData = [
   {
     'image': ImageString.astonPic,
@@ -78,7 +78,7 @@ final List<Map<String, String>> dummyCarData = [
 class GridViewScreen extends StatelessWidget {
   const GridViewScreen({super.key});
 
-  // A helper function to create a list of CarGridItem widgets from dummy data
+
   List<Widget> _buildCarGridItems() {
     return dummyCarData.map((car) {
       return CarGridItem(
@@ -101,7 +101,7 @@ class GridViewScreen extends StatelessWidget {
     final tablePadding = AppSizes.padding(context);
     final baseVerticalSpace = AppSizes.verticalPadding(context);
 
-    // Responsive logic for GridView columns and aspect ratio
+
     int crossAxisCount;
     double childAspectRatio;
 
@@ -116,29 +116,29 @@ class GridViewScreen extends StatelessWidget {
       childAspectRatio = 1.8;
     }
 
-    // Creating the list of widgets once
+
     final carGridItems = _buildCarGridItems();
 
     return SingleChildScrollView(
       child: Column(
         children: [
-          // Padding for the grid content
+
           Padding(
             padding: EdgeInsets.symmetric(horizontal: AppSizes.horizontalPadding(context)),
             child: GridView.count(
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(), // Scroll managed by SingleChildScrollView
+              physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: crossAxisCount,
               mainAxisSpacing: baseVerticalSpace,
               crossAxisSpacing: baseVerticalSpace,
               childAspectRatio: childAspectRatio,
-              children: carGridItems, // Directly passing the list of widgets
+              children: carGridItems,
             ),
           ),
 
           SizedBox(height: baseVerticalSpace * 1.5),
 
-          // Pagination Bar (Keep this below the grid)
+
           Padding(
             padding: EdgeInsets.symmetric(horizontal: AppSizes.horizontalPadding(context)),
             child: PaginationBar(isMobile: isMobile, tablePadding: tablePadding),

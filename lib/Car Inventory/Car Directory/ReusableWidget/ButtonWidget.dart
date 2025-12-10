@@ -8,7 +8,7 @@ class AddButton extends StatelessWidget {
   final double? width;
   final VoidCallback onTap;
   final double borderRadius;
-  final Widget? icon; // now supports any widget (Icon or Image)
+  final Widget? icon;
   final bool isIconLeft;
 
   const AddButton({

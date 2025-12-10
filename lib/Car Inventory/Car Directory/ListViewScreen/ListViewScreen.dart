@@ -3,6 +3,7 @@ import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidge
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
+import 'package:go_router/go_router.dart';
 
 class ListViewScreen extends StatelessWidget {
   const ListViewScreen({super.key});
@@ -30,7 +31,12 @@ class ListViewScreen extends StatelessWidget {
               price: "\$130 / weekly",
               status: "Available",
               regId: "HPC-982",
-              onView: () {},
+              onView: () {
+                context.push(
+                  '/cardetails',
+                  extra: {"hideMobileAppBar": true},
+                );
+              },
               onEdit: () {},
               onDelete: () {},
             ),
@@ -45,7 +51,12 @@ class ListViewScreen extends StatelessWidget {
               price: "\$130 / weekly",
               status: "Maintenance",
               regId: "HPC-982",
-              onView: () {},
+              onView: () {
+                context.push(
+                  '/cardetails',
+                  extra: {"hideMobileAppBar": true},
+                );
+              },
               onEdit: () {},
               onDelete: () {},
             ),
@@ -60,7 +71,12 @@ class ListViewScreen extends StatelessWidget {
               price: "\$130/weekly",
               status: "Available",
               regId: "HPC-982",
-              onView: () {},
+              onView: () {
+                context.push(
+                  '/cardetails',
+                  extra: {"hideMobileAppBar": true},
+                );
+              },
               onEdit: () {},
               onDelete: () {},
             ),
@@ -75,7 +91,12 @@ class ListViewScreen extends StatelessWidget {
               price: "\$130 / weekly",
               status: "unavailable",
               regId: "HPC-982",
-              onView: () {},
+              onView: () {
+                context.push(
+                  '/cardetails',
+                  extra: {"hideMobileAppBar": true},
+                );
+              },
               onEdit: () {},
               onDelete: () {},
             ),
@@ -89,7 +110,12 @@ class ListViewScreen extends StatelessWidget {
               price: "\$130 / weekly",
               status: "Available",
               regId: "HPC-982",
-              onView: () {},
+              onView: () {
+                context.push(
+                  '/cardetails',
+                  extra: {"hideMobileAppBar": true},
+                );
+              },
               onEdit: () {},
               onDelete: () {},
             ),

@@ -1,8 +1,9 @@
-import 'package:car_rental_project/Car%20Inventory/AddingCar/AddingCar.dart';
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/CarInventoryMainScreen.dart';
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/GridViewScreen/GridViewScreen.dart';
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ListViewScreen/ListViewScreen.dart';
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/TableViewScreen/TableViewScreen.dart';
+import 'package:car_rental_project/Car Inventory/AddingCar/AddingCar.dart';
+import 'package:car_rental_project/Car Inventory/Car Details/CarDetails.dart';
+import 'package:car_rental_project/Car Inventory/Car Directory/CarInventoryMainScreen.dart';
+import 'package:car_rental_project/Car Inventory/Car Directory/GridViewScreen/GridViewScreen.dart';
+import 'package:car_rental_project/Car Inventory/Car Directory/ListViewScreen/ListViewScreen.dart';
+import 'package:car_rental_project/Car Inventory/Car Directory/TableViewScreen/TableViewScreen.dart';
 import 'package:car_rental_project/Resources/Theme.dart';
 import 'package:car_rental_project/SideScreen/SidebarScreen.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,10 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     final router = GoRouter(
       initialLocation: '/carInventory',
+
       routes: [
+
+        /// SHELL ROUTE (Sidebar Layout)
         ShellRoute(
           builder: (context, state, child) {
             return SidebarScreen(
@@ -38,32 +42,48 @@ class _MyAppState extends State<MyApp> {
                   case "Car Inventory":
                     GoRouter.of(context).go('/carInventory');
                     break;
-                // Add other cases for other screens
                 }
               },
               child: child,
             );
           },
+
           routes: [
             GoRoute(
-              path: 'carInventory/TableView',
+              path: '/carInventory',
+              builder: (context, state) => CarInventoryMainScreen(),
+            ),
+            GoRoute(
+              path: '/carInventory/TableView',
               builder: (context, state) => const TableViewScreen(),
-            ),GoRoute(
-              path: 'carInventory/ListView',
+            ),
+            GoRoute(
+              path: '/carInventory/ListView',
               builder: (context, state) => const ListViewScreen(),
-            ),GoRoute(
-              path: 'carInventory/GridView',
+            ),
+            GoRoute(
+              path: '/carInventory/GridView',
               builder: (context, state) => const GridViewScreen(),
             ),
             GoRoute(
-              path: '/carInventory',
-              builder: (context, state) =>  CarInventoryMainScreen(),
-            ),
-            GoRoute(
               path: '/addNewCar',
-              builder: (context, state) =>  AddingCarScreen(),
+              builder: (context, state) => AddingCarScreen(),
             ),
           ],
+        ),
+
+        /// --------------------------------
+        GoRoute(
+          path: '/cardetails',
+          builder: (context, state) {
+            final extras = state.extra as Map<String, dynamic>?;
+            final hideMobile = extras?["hideMobileAppBar"] == true;
+
+            return SidebarScreen.wrapWithSidebarIfNeeded(
+              child: CarDetailsScreen(),
+              hideMobileAppBar: hideMobile,
+            );
+          },
         ),
       ],
     );

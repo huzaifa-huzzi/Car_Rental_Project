@@ -4,6 +4,7 @@ import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Car Inventory/Car Directory/ReusableWidget/ButtonWidget.dart';
+import 'package:go_router/go_router.dart';
 
 class CarListCard extends StatefulWidget {
   final String image;
@@ -102,7 +103,7 @@ class _CarListCardState extends State<CarListCard> {
                     ),
                     border: Border.all(
                       color: isHover ? AppColors.primaryColor : Colors.transparent,
-                      width: 2,
+                      width: 0.5,
                     ),
                     boxShadow: const [
                       BoxShadow(
@@ -143,7 +144,12 @@ class _CarListCardState extends State<CarListCard> {
         SizedBox(width: AppSizes.padding(context)),
         _buildSpecs(context),
         SizedBox(width: AppSizes.padding(context)),
-        AddButton(text: 'View', onTap: (){}),
+        AddButton(text: 'View', onTap: (){
+          context.push(
+            '/cardetails',
+            extra: {"hideMobileAppBar": true},
+          );
+        }),
       ],
     );
   }

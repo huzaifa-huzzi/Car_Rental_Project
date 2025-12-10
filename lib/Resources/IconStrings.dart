@@ -42,6 +42,18 @@ class IconString {
   static const String  deleteIcon = 'assets/icons/DeleteIcon.png';
   static const String  editIcon = 'assets/icons/EditIcon.png';
   static const String  saveVehicleIcon = 'assets/icons/savevehicleIcon.png';
+  static const String  accelerationIcon = 'assets/icons/AccelerationIcon.png';
+  static const String  carValueIcon = 'assets/icons/carValueIcon.png';
+  static const String  colorIcon = 'assets/icons/ColorIcon.png';
+  static const String  engineSizeIcon = 'assets/icons/EngineSizeIcon.png';
+  static const String  milageIcon = 'assets/icons/MilageIcon.png';
+  static const String  modelYearIcon = 'assets/icons/ModelYearIcon.png';
+  static const String  speedIcon = 'assets/icons/speedIcon.png';
+  static const String  rangeIcon = 'assets/icons/RangeIcon.png';
+  static const String  registrationIcon = 'assets/icons/RegistrationIcon.png';
+  static const String  taxIcon = 'assets/icons/TaxIcon.png';
+  static const String  uploadedIcon = 'assets/icons/uploadedIcon.png';
+  static const String  verifiedIcon = 'assets/icons/verifiedIcon.png';
 
 
 

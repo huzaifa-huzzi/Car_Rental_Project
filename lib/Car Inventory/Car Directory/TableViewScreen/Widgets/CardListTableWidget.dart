@@ -1,11 +1,14 @@
+import 'package:car_rental_project/Car%20Inventory/Car%20Details/CarDetails.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/CarInventoryController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
+import 'package:car_rental_project/SideScreen/SidebarScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
+import 'package:go_router/go_router.dart';
 
 class CarListTableWidget extends StatelessWidget {
   CarListTableWidget({super.key});
@@ -94,9 +97,13 @@ class CarListTableWidget extends StatelessWidget {
                                 width: actionColumnWidth,
                                 height: 34,
                                 child: Center(
-                                  child: AddButton(
+                                  child:AddButton(
                                     text: "View",
                                     onTap: () {
+                                      context.push(
+                                        '/cardetails',
+                                        extra: {"hideMobileAppBar": true},
+                                      );
                                     },
                                     borderRadius: 6,
                                   ),

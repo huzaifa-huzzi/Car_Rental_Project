@@ -140,11 +140,12 @@ class HeaderWebWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (showAddButton)
-                GestureDetector(
+                isMobile
+                    ? GestureDetector(
                   onTap: onAddPressed,
                   child: Container(
-                    height: isMobile ? 24.0 : AppSizes.buttonHeight(context) * 0.5,
-                    width: isMobile ? 24.0 : AppSizes.buttonHeight(context) * 0.5,
+                    height: 24.0,
+                    width: 24.0,
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,
                       borderRadius: BorderRadius.circular(AppSizes.borderRadius(context) * 0.5),
@@ -152,16 +153,37 @@ class HeaderWebWidget extends StatelessWidget {
                     child: Center(
                       child: Icon(
                         Icons.add,
-                        size: isMobile ? 14.0 : AppSizes.buttonHeight(context) * 0.4,
+                        size: 14.0,
                         color: Colors.white,
+                      ),
+                    ),
+                  ),
+                )
+                    :
+                GestureDetector(
+                  onTap: onAddPressed,
+                  child: Container(
+                    height: 40.0,
+                    padding: EdgeInsets.symmetric(horizontal: finalInternalSpacing),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius: BorderRadius.circular(AppSizes.borderRadius(context) * 0.5),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Add Car",
+                        style: TTextTheme.btnWhiteColor(context)
                       ),
                     ),
                   ),
                 ),
 
 
-              if (showAddButton)
+              if (showAddButton && isMobile)
                 SizedBox(width: finalInternalSpacing * 0.5),
+
+              if (showAddButton && !isMobile)
+                SizedBox(width: finalInternalSpacing),
 
               /// Search Icon
               if (showSearch)
@@ -202,8 +224,8 @@ class HeaderWebWidget extends StatelessWidget {
                           context,
                         ),
                         Positioned(
-                          top: isMobile ? -2 : (isTablet ? 6 : 12),
-                          right: isMobile ? -2 : (isTablet ? 4 : 9),
+                          top: isMobile ? 2 : (isTablet ? 6 : 12),
+                          right: isMobile ? 2 : (isTablet ? 4 : 9),
                           child: Container(
                             width: 8,
                             height: 8,

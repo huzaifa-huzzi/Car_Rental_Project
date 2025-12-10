@@ -4,6 +4,7 @@ import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Car Inventory/Car Directory/ReusableWidget/ButtonWidget.dart';
+import 'package:go_router/go_router.dart';
 
 class CarGridItem extends StatelessWidget {
   final String image;
@@ -365,7 +366,12 @@ class CarGridItem extends StatelessWidget {
           Expanded(
             child: AddButton(
               text: AppSizes.isMobile(context) ? 'View' : 'View Car',
-              onTap: onView ?? () {},
+              onTap: onView ?? () {
+                context.push(
+                  '/cardetails',
+                  extra: {"hideMobileAppBar": true},
+                );
+              },
               height: buttonHeight,
             ),
           ),

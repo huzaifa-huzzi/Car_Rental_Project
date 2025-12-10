@@ -9,6 +9,10 @@ class ImageString{
   static const String astonPic = 'assets/Images/CarInventoryPics/AstionPic.png';
   static const String rangePic = 'assets/Images/CarInventoryPics/RangePic.png';
   static const String corollaPicone = 'assets/Images/CarInventoryPics/corollaPic.png';
+  static const String corollaPicTwo = 'assets/Images/CarInventoryPics/corolla-2.png';
+  static const String corollaPicThree = 'assets/Images/CarInventoryPics/corolla-3.png';
+  static const String corollaPicFour = 'assets/Images/CarInventoryPics/corolla-4.png';
+  static const String corollaPicFive = 'assets/Images/CarInventoryPics/corolla-5.png';
 
 
 }
