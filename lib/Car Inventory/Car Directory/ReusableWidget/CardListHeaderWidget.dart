@@ -25,91 +25,137 @@ class CardListHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isMobile = AppSizes.isMobile(context);
+    bool isWeb = AppSizes.isWeb(context);
+
     final CarInventoryController controller = Get.put(CarInventoryController());
+
+    final double screenWidth = MediaQuery.of(context).size.width;
+
+
+    const double narrowThreshold = 350.0;
+    const double veryNarrowThreshold = 280.0;
+    const double tightSpacingThreshold = 380.0;
+    const double filterTextHideThreshold = 450.0;
+    const double overflowFixThreshold = 400.0;
+
+
+
+    final double horizontalPadding = screenWidth < veryNarrowThreshold ? 4.0 : AppSizes.horizontalPadding(context);
+
+    final double smallSpacing = screenWidth < veryNarrowThreshold ? 4.0 : AppSizes.padding(context) * 0.75;
+
     final double buttonHeight = isMobile
         ? 38.0
         : AppSizes.buttonHeight(context) * 0.8;
-    bool isWeb = AppSizes.isWeb(context);
-    bool isTablet = AppSizes.isTablet(context);
+
+    final double searchBoxWidth = isMobile ? 140 : AppSizes.buttonWidth(context) * 1.5;
+
+
+    final bool showFilterText = screenWidth >= filterTextHideThreshold && !isMobile;
+
+
+    final double viewToggleSize = screenWidth < veryNarrowThreshold ? 28.0 : isMobile ? 32.0 : buttonHeight * 0.85;
+
 
     return Column(
       children: [
         Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(
-            horizontal: AppSizes.horizontalPadding(context),
+            horizontal: horizontalPadding, // Use scaled padding (4.0 at 270px)
             vertical: AppSizes.verticalPadding(context),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  // Search Box
-                  Container(
-                    width: isMobile ? 140 : AppSizes.buttonWidth(context) * 1.5,
-                    height: buttonHeight,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppSizes.padding(context) * 0.5,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(
-                        AppSizes.borderRadius(context),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          IconString.searchIcon,
-                          color: AppColors.secondTextColor,
-                          width: 18,
-                          height: 18,
+              // LEFT SECTION: Search Box & Filter Button
+              Expanded( // FIX 1: Wrap Left Row in Expanded to give max space to Search/Filter and push the right side
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Search Box
+                    Expanded( // FIX 2: Search Box takes up available space
+                      child: Container(
+                        // Remove fixed width constraint here
+                        height: buttonHeight,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppSizes.padding(context) * 0.5,
                         ),
-                        SizedBox(width: AppSizes.padding(context) * 0.4),
-                        Expanded(
-                          child: TextField(
-                            cursorColor: AppColors.blackColor,
-                            style: TTextTheme.smallX(context),
-                            decoration: InputDecoration(
-                              isCollapsed: true,
-                              contentPadding: EdgeInsets.zero,
-                              hintText: "Search client name, car, etc",
-                              hintStyle: TTextTheme.smallX(context),
-                              border: InputBorder.none,
-                            ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(
+                            AppSizes.borderRadius(context),
                           ),
                         ),
-                      ],
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              IconString.searchIcon,
+                              color: AppColors.secondTextColor,
+                              width: 18,
+                              height: 18,
+                            ),
+                            SizedBox(width: AppSizes.padding(context) * 0.4),
+                            Expanded(
+                              child: TextField(
+                                cursorColor: AppColors.blackColor,
+                                style: TTextTheme.smallX(context),
+                                decoration: InputDecoration(
+                                  isCollapsed: true,
+                                  contentPadding: EdgeInsets.zero,
+                                  // Shorter hint text for aggressive screens
+                                  hintText: screenWidth < 350 ? "Search..." : "Search client...",
+                                  hintStyle: TTextTheme.smallX(context),
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
 
-                  SizedBox(width: AppSizes.padding(context) * 0.75),
-                  // FILTER BUTTON
-                  Obx(() {
-                    return _headerButton(
-                      context: context,
-                      icon: IconString.filterIcon,
-                      text: "Filter",
-                      isOpen: controller.isFilterOpen.value,
-                      onTap: () {
-                        controller.toggleFilter();
-                        if (onFilter != null) onFilter!();
-                      },
-                    );
-                  }),
-                ],
+                    SizedBox(width: smallSpacing), // Use scaled spacing (4.0 at 270px)
+
+                    // FILTER BUTTON
+                    Obx(() {
+                      return _headerButton(
+                        context: context,
+                        icon: IconString.filterIcon,
+                        text: "Filter",
+                        isOpen: controller.isFilterOpen.value,
+                        showText: showFilterText, // Show text only on wider screens
+                        onTap: () {
+                          controller.toggleFilter();
+                          if (onFilter != null) onFilter!();
+                        },
+                      );
+                    }),
+                  ],
+                ),
               ),
 
-              // RIGHT SECTION
+              SizedBox(width: smallSpacing), // Space between Left and Right sections
+
+              // RIGHT SECTION: View Toggles & Add Button (mainAxisSize: MainAxisSize.min is crucial here)
               Obx(() {
+                final bool isUltraTight = screenWidth < tightSpacingThreshold;
+
+                final double buttonGap = isUltraTight ? 1.0 : 4.0;
+
+                // Adjust space between View Toggles and Add Button (minimal space below 400px)
+                final double addCarButtonSpacing = screenWidth < overflowFixThreshold ?
+                AppSizes.padding(context) * 0.75 :
+                AppSizes.padding(context) * 1.5;
+
                 return Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
                       padding: EdgeInsets.symmetric(
-                        vertical: AppSizes.padding(context) * 0.1,
-                        horizontal: AppSizes.padding(context) * 0.2,
+                        // Aggressively reduced padding for screens < 380px
+                        vertical: isUltraTight ? 2.0 : AppSizes.padding(context) * 0.1,
+                        horizontal: isUltraTight ? 4.0 : AppSizes.padding(context) * 0.2,
                       ),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -125,37 +171,44 @@ class CardListHeaderWidget extends StatelessWidget {
                             iconPath: IconString.previewOne,
                             isSelected: controller.selectedView.value == 0,
                             onTap: () => controller.selectedView.value = 0,
-                            size: isMobile ? 32.0 : buttonHeight * 0.85,
+                            size: viewToggleSize, // Use scaled size (28.0 at 270px)
                           ),
+
+                          SizedBox(width: buttonGap), // Minimal space
+
                           _selectableIconButton(
                             context: context,
                             iconPath: IconString.previewTwo,
                             isSelected: controller.selectedView.value == 1,
                             onTap: () => controller.selectedView.value = 1,
-                            size: isMobile ? 32.0 : buttonHeight * 0.85,
+                            size: viewToggleSize,
                           ),
+
+                          SizedBox(width: buttonGap),
+
                           _selectableIconButton(
                             context: context,
                             iconPath: IconString.previewThree,
                             isSelected: controller.selectedView.value == 2,
                             onTap: () => controller.selectedView.value = 2,
-                            size: isMobile ? 32.0 : buttonHeight * 0.85,
+                            size: viewToggleSize,
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(width: AppSizes.padding(context) * 1.5),
-                    if (isWeb)
+
+                    if (isWeb) ...[
+                      SizedBox(width: addCarButtonSpacing),
                       AddButton(text: "Add Car", width: 120, onTap: () {
                         context.push(
                           '/addNewCar',
                           extra: {"hideMobileAppBar": true},
                         );
                       }),
+                    ],
                   ],
                 );
               }),
-
             ],
           ),
         ),
@@ -172,19 +225,28 @@ class CardListHeaderWidget extends StatelessWidget {
 
   /// ----------Extra Widgets (used in the above code)----------///
 
+  // Filter container widget
   Widget _buildFilterContainer(BuildContext context) {
     final CarInventoryController controller = Get.put(CarInventoryController());
     const int totalItems = 9;
+    final double width = MediaQuery.of(context).size.width;
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        double width = constraints.maxWidth;
-        double wrapSpacing = AppSizes.padding(context);
 
+        const double narrowScreenMargin = 8.0;
+        const double narrowScreenPadding = 10.0;
+        const double narrowWrapSpacing = 8.0;
+
+        double wrapSpacing = AppSizes.padding(context);
         double dynamicPadding = AppSizes.padding(context);
         double horizontalMargin = AppSizes.horizontalPadding(context);
 
-        if (AppSizes.isWeb(context)) {
+        if (width < 350) {
+          horizontalMargin = narrowScreenMargin;
+          dynamicPadding = narrowScreenPadding;
+          wrapSpacing = narrowWrapSpacing;
+        } else if (AppSizes.isWeb(context)) {
           dynamicPadding = AppSizes.padding(context) * 1.5;
           horizontalMargin = AppSizes.horizontalPadding(context) * 1.5;
         }
@@ -192,6 +254,7 @@ class CardListHeaderWidget extends StatelessWidget {
         double containerPadding = dynamicPadding;
 
         int itemsPerRow;
+        double itemWidth;
 
         if (width > 1500) {
           itemsPerRow = totalItems;
@@ -205,12 +268,14 @@ class CardListHeaderWidget extends StatelessWidget {
           itemsPerRow = 1;
         }
 
-        double availableScreenWidth = width - (2 * horizontalMargin);
-        double effectiveItemArea =
-            availableScreenWidth - (2 * containerPadding);
-        double totalSpacingInRow = (itemsPerRow - 1) * wrapSpacing;
-        double itemWidth =
-            (effectiveItemArea - totalSpacingInRow) / itemsPerRow;
+        if (itemsPerRow == 1) {
+          itemWidth = double.infinity;
+        } else {
+          double availableScreenWidth = width - (2 * horizontalMargin);
+          double effectiveItemArea = availableScreenWidth - (2 * containerPadding);
+          double totalSpacingInRow = (itemsPerRow - 1) * wrapSpacing;
+          itemWidth = (effectiveItemArea - totalSpacingInRow) / itemsPerRow;
+        }
 
         return Container(
           width: double.infinity,
@@ -342,13 +407,13 @@ class CardListHeaderWidget extends StatelessWidget {
 
   // filter Item
   Widget _filterItem(
-    String title,
-    Widget child,
-    BuildContext context, {
-    required double itemWidth,
-  }) {
+      String title,
+      Widget child,
+      BuildContext context, {
+        required double itemWidth,
+      }) {
     return SizedBox(
-      width: itemWidth,
+      width: itemWidth == double.infinity ? null : itemWidth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -360,12 +425,13 @@ class CardListHeaderWidget extends StatelessWidget {
     );
   }
 
+  // dropdown Box widget
   Widget _dropdownBox(
-    List<String> items,
-    RxString selectedRx,
-    BuildContext context, {
-    String placeholder = "Select",
-  }) {
+      List<String> items,
+      RxString selectedRx,
+      BuildContext context, {
+        String placeholder = "Select",
+      }) {
     return Obx(() {
       String? selectedValue = selectedRx.value.isEmpty
           ? null
@@ -469,6 +535,8 @@ class CardListHeaderWidget extends StatelessWidget {
     required VoidCallback onTap,
     double size = 38.0,
   }) {
+    final double iconPadding = size * 0.2;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -483,8 +551,8 @@ class CardListHeaderWidget extends StatelessWidget {
         child: Center(
           child: Image.asset(
             iconPath,
-            width: AppSizes.padding(context) * 0.75,
-            height: AppSizes.padding(context) * 0.75,
+            width: size - iconPadding,
+            height: size - iconPadding,
             color: isSelected ? Colors.white : AppColors.blackColor,
           ),
         ),
@@ -498,16 +566,20 @@ class CardListHeaderWidget extends StatelessWidget {
     required String icon,
     required String text,
     required bool isOpen,
+    required bool showText,
     VoidCallback? onTap,
   }) {
     bool isMobile = AppSizes.isMobile(context);
+
+    final double horizontalPadding = showText ? AppSizes.padding(context) * 0.7 : 8.0;
+    final double verticalPadding = AppSizes.padding(context) * 0.5;
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(
-          horizontal: AppSizes.padding(context) * 0.7,
-          vertical: AppSizes.padding(context) * 0.5,
+          horizontal: horizontalPadding,
+          vertical: verticalPadding,
         ),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -517,6 +589,7 @@ class CardListHeaderWidget extends StatelessWidget {
           ),
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
               icon,
@@ -526,7 +599,7 @@ class CardListHeaderWidget extends StatelessWidget {
                   ? AppColors.primaryColor
                   : AppColors.secondTextColor,
             ),
-            if (!isMobile) ...[
+            if (showText && !isMobile) ...[
               SizedBox(width: AppSizes.padding(context) * 0.4),
               Text(
                 text,

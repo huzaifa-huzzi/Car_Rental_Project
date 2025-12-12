@@ -47,11 +47,9 @@ class CarDetailsScreen extends StatelessWidget {
       ),
     );
 
-    if (isMobile) {
-      return Scaffold(
-        body: SafeArea(child: body),
-      );
-    }
-    return body;
+    return Scaffold(
+      body: SafeArea(child: body),
+    );
+
   }
 }

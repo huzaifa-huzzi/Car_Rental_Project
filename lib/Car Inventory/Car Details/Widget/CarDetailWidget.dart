@@ -81,11 +81,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(borderRadius),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
+
         ],
       ),
       child: child,
@@ -310,8 +306,15 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Toyota Corolla 2024",
-                  style: TTextTheme.h1Style(context)),
+              Expanded(
+                child: Text(
+                  "Toyota Corolla 2024",
+                  style: TTextTheme.h1Style(context),
+                  softWrap: true,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
 
               Row(
                 children: [
@@ -444,9 +447,6 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
 //  Specifications Widget
   Widget _buildSpecificationsSection(BuildContext context) {
     final spacing = AppSizes.padding(context);
-    final isMobile = AppSizes.isMobile(context);
-
-    final int crossAxisCount = isMobile ? 3 : 5;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -457,23 +457,41 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
         ),
         SizedBox(height: spacing),
 
-        GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: specifications.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: crossAxisCount,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 16,
-            childAspectRatio: isMobile ? 3 : 4.2,
-          ),
-          itemBuilder: (_, i) {
-            return _buildSpecTile(
-              context,
-              specifications[i]['icon'] as String,
-              specifications[i]['title'] as String,
-              specifications[i]['value'] as String,
-              isMobile: isMobile,
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final double totalWidth = constraints.maxWidth;
+            final double horizontalSpacing = 10;
+
+            double itemWidth;
+            int columns;
+
+            if (totalWidth >= 550) {
+              columns = 5;
+            } else if (totalWidth >= 350) {
+              columns = 3;
+            } else {
+              columns = 2;
+            }
+            final double totalSpacing = horizontalSpacing * (columns - 1);
+            itemWidth = (totalWidth - totalSpacing) / columns;
+
+            final List<Widget> specWidgets = specifications.map((spec) {
+              return SizedBox(
+                width: itemWidth,
+                child: _buildSpecTile(
+                  context,
+                  spec['icon'] as String,
+                  spec['title'] as String,
+                  spec['value'] as String,
+                  isMobile: columns <= 3,
+                ),
+              );
+            }).toList();
+
+            return Wrap(
+              spacing: horizontalSpacing,
+              runSpacing: 16,
+              children: specWidgets,
             );
           },
         ),
@@ -513,7 +531,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
           SizedBox(width: spacing),
 
           // TITLE + VALUE
-          Expanded(
+          Expanded( // <-- YAHAN PEHLE SE Expanded HAI
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -561,20 +579,25 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
 
         SizedBox(width: 14),
 
-        // TITLE + VALUE
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style:  TTextTheme.titleseven(context),
-            ),
-            SizedBox(height: 3),
-            Text(
-              value,
-              style: TTextTheme.pThree(context),
-            ),
-          ],
+        // TITLE + VALUE (Wrapped in Expanded)
+        Expanded( // <--- Naya Expanded widget add kiya gaya hai
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TTextTheme.titleseven(context),
+                softWrap: true, // Re-added softWrap for long titles
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: 3),
+              Text(
+                value,
+                style: TTextTheme.pThree(context),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -586,6 +609,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
     final spacing = AppSizes.padding(context);
     final isMobile = AppSizes.isMobile(context);
 
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -595,36 +619,56 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
         ),
         SizedBox(height: spacing),
 
-        GridView.count(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          crossAxisCount: isMobile ? 3 : 3,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: isMobile ? 0.97 : 4.8,
-          children: [
-            _buildDocumentTile(
-              context,
-              "Registration",
-              "1HFC-052",
-              true,
-              isMobile: isMobile,
-            ),
-            _buildDocumentTile(
-              context,
-              "Tax Token",
-              "Uploaded",
-              true,
-              isMobile: isMobile,
-            ),
-            _buildDocumentTile(
-              context,
-              "Incoherence Paper",
-              "Uploaded",
-              true,
-              isMobile: isMobile,
-            ),
-          ],
+        LayoutBuilder(
+            builder: (context, constraints) {
+              final double totalWidth = constraints.maxWidth;
+              int docColumnCount;
+
+              if (totalWidth < 350) {
+                docColumnCount = 2;
+              } else {
+                docColumnCount = 3;
+              }
+
+              final double mobileRatio = 0.85;
+              final double webRatio = 4.8;
+
+              final double calculatedRatio = isMobile ? mobileRatio : webRatio;
+              final finalRatio = docColumnCount == 2 ? 0.75 : calculatedRatio;
+
+
+              return GridView.count(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                crossAxisCount: docColumnCount,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: finalRatio,
+                children: [
+                  _buildDocumentTile(
+                    context,
+                    "Registration",
+                    "1HFC-052",
+                    true,
+                    isMobile: isMobile,
+                  ),
+                  _buildDocumentTile(
+                    context,
+                    "Tax Token",
+                    "Uploaded",
+                    true,
+                    isMobile: isMobile,
+                  ),
+                  _buildDocumentTile(
+                    context,
+                    "Incoherence Paper",
+                    "Uploaded",
+                    true,
+                    isMobile: isMobile,
+                  ),
+                ],
+              );
+            }
         ),
       ],
     );
@@ -749,34 +793,41 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
   }
 
 
-// --- Icon Button (Used for Edit/Delete) ---
+// Icon Button (Used for Edit/Delete) Widget
   Widget _buildIconButton(
       BuildContext context,
       IconData icon, {
         VoidCallback? onTap,
         String? label,
       }) {
+    final bool isVeryNarrow = AppSizes.isMobile(context) && MediaQuery.of(context).size.width < 350;
+
+
+    final double horizontalPadding = (label != null || isVeryNarrow) ? 8 : 6;
+    final double verticalPadding = isVeryNarrow ? 6 : 8;
+    final double iconSize = isVeryNarrow ? 16 : 18;
+
+
     return Padding(
       padding: const EdgeInsets.only(left: 4.0),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
           padding: EdgeInsets.symmetric(
-            horizontal: label != null ? 12 : 10,
-            vertical: 8,
+            horizontal: horizontalPadding,
+            vertical: verticalPadding,   
           ),
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(AppSizes.borderRadius(context) * 0.5),
-            border: Border.all(color: AppColors.quadrantalTextColor, width: 0.5),
+            borderRadius: BorderRadius.circular(7),
+           border: Border.all(color: AppColors.tertiaryTextColor,width: 1),
           ),
 
           child: Row(
             children: [
-              Icon(icon, size: 18, color: AppColors.secondTextColor),
+              Icon(icon, size: iconSize, color: AppColors.secondTextColor),
 
               if (label != null) ...[
-                SizedBox(width: 6),
+                SizedBox(width: 4),
                 Text(
                   label,
                   style: TTextTheme.btnFive(context),

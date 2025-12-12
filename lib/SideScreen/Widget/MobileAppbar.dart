@@ -34,7 +34,6 @@ class _MobileTopBarState extends State<MobileTopBar> with WidgetsBindingObserver
 
   @override
   void dispose() {
-
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -53,7 +52,7 @@ class _MobileTopBarState extends State<MobileTopBar> with WidgetsBindingObserver
     });
   }
 
-  /// Helper function to build the Menu Icon Container
+  /// Helper function
   Widget _buildMenuIconButton(BuildContext context, double containerSize, double iconSize) {
 
     final Color iconColor = _isDrawerOpen ? AppColors.primaryColor : AppColors.textColor;
@@ -82,46 +81,38 @@ class _MobileTopBarState extends State<MobileTopBar> with WidgetsBindingObserver
 
   @override
   Widget build(BuildContext context) {
-    const double minHorizontalPadding = 12.0;
-    const double minInternalSpacing = 8.0;
+    final double screenWidth = MediaQuery.of(context).size.width;
+    const double narrowThreshold = 350;
+    const double veryNarrowThreshold = 280;
 
-    final double actualHorizontalPadding = AppSizes.horizontalPadding(context);
-    final double finalHorizontalPadding = actualHorizontalPadding > minHorizontalPadding
-        ? actualHorizontalPadding
-        : minHorizontalPadding;
+    final double horizontalPadding = screenWidth < veryNarrowThreshold ? 6.0 : AppSizes.horizontalPadding(context);
 
-    final double actualInternalSpacing = AppSizes.padding(context);
-    final double finalInternalSpacing = actualInternalSpacing > minInternalSpacing
-        ? actualInternalSpacing
-        : minInternalSpacing;
+    final double internalSpacing = screenWidth < veryNarrowThreshold ? 4.0 : 8.0;
 
 
-    double containerSize = AppSizes.isMobile(context)
-        ? 28
-        : AppSizes.isTablet(context)
-        ? 32
-        : 36;
+    double containerSize;
+    if (screenWidth < veryNarrowThreshold) {
+      containerSize = 24;
+    } else if (screenWidth < narrowThreshold) {
+      containerSize = 28;
+    } else {
+      containerSize = AppSizes.isMobile(context) ? 28 : AppSizes.isTablet(context) ? 32 : 36;
+    }
 
-    double iconSize = AppSizes.isMobile(context)
-        ? 16
-        : AppSizes.isTablet(context)
-        ? 18
-        : 20;
 
-    double logoSize = AppSizes.isMobile(context)
-        ? 24
-        : AppSizes.isTablet(context)
-        ? 28
-        : 32;
+    double iconSize = containerSize * 0.65;
 
-    double fontSize = AppSizes.isMobile(context)
-        ? 15
-        : AppSizes.isTablet(context)
-        ? 16
-        : 18;
+
+    double logoSize = containerSize * 1.0;
+
+
+    double fontSize = screenWidth < veryNarrowThreshold ? 13 :
+    screenWidth < narrowThreshold ? 15 : 16;
+
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: finalHorizontalPadding),
+
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: SizedBox(
         height: AppSizes.buttonHeight(context),
         child: Row(
@@ -130,9 +121,9 @@ class _MobileTopBarState extends State<MobileTopBar> with WidgetsBindingObserver
 
             _buildMenuIconButton(context, containerSize, iconSize),
 
-            SizedBox(width: finalInternalSpacing),
+            SizedBox(width: internalSpacing),
 
-            /// CENTER: Logo and Title
+            /// 2. CENTER: Logo and Title
             Flexible(
               child: Center(
                 child: FittedBox(
@@ -145,7 +136,7 @@ class _MobileTopBarState extends State<MobileTopBar> with WidgetsBindingObserver
                         width: logoSize,
                         height: logoSize,
                       ),
-                      SizedBox(width: finalInternalSpacing / 2),
+                      SizedBox(width: internalSpacing / 2),
                       Text(
                         "Softsnip",
                         style: TTextTheme.h6Style(context).copyWith(
@@ -159,9 +150,9 @@ class _MobileTopBarState extends State<MobileTopBar> with WidgetsBindingObserver
               ),
             ),
 
-            SizedBox(width: finalInternalSpacing),
+            SizedBox(width: internalSpacing),
 
-            /// RIGHT SIDE ICONS
+            /// 3. RIGHT SIDE ICONS
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -179,7 +170,7 @@ class _MobileTopBarState extends State<MobileTopBar> with WidgetsBindingObserver
                   ),
                 ),
 
-                const SizedBox(width: 6),
+                SizedBox(width: internalSpacing),
 
                 /// Notification Icon
                 GestureDetector(
@@ -203,11 +194,11 @@ class _MobileTopBarState extends State<MobileTopBar> with WidgetsBindingObserver
                         ),
                       ),
                       Positioned(
-                        top: 6,
-                        right: 5,
+                        top: 4,
+                        right: 4,
                         child: Container(
-                          width: 6,
-                          height: 6,
+                          width: 4,
+                          height: 4,
                           decoration: BoxDecoration(
                             color: AppColors.primaryColor,
                             shape: BoxShape.circle,
@@ -218,7 +209,7 @@ class _MobileTopBarState extends State<MobileTopBar> with WidgetsBindingObserver
                   ),
                 ),
 
-                const SizedBox(width: 6),
+                SizedBox(width: internalSpacing),
 
                 /// Profile Photo
                 Container(
