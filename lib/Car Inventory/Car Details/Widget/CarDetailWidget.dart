@@ -676,14 +676,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
                 status,
                 style: TTextTheme.titleseven(context),
               ),
-              SizedBox(width: 2,),
-
-              Image.asset(
-                IconString.verifiedIcon,
-                height: 18,
-                width: 18,
-              ),
-              SizedBox(width: 3,),
+              SizedBox(width: 6,),
               Image.asset(
                 IconString.uploadedIcon,
                 height: 18,
@@ -731,17 +724,11 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
                   status,
                   style:  TTextTheme.titleseven(context),
                 ),
-                SizedBox(width: 6),
-                Image.asset(
-                  IconString.verifiedIcon,
-                  height: 22,
-                  width: 22,
-                ),
-              ],
+             ]
             ),
           ],
         ),
-        SizedBox(width: 4),
+        SizedBox(width: 6),
         Image.asset(
           IconString.uploadedIcon,
           height: 22,
@@ -776,7 +763,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
 
           child: Row(
             children: [
-              Icon(icon, size: 18, color: AppColors.textColor),
+              Icon(icon, size: 18, color: AppColors.secondTextColor),
 
               if (label != null) ...[
                 SizedBox(width: 6),
