@@ -23,8 +23,11 @@ class SidebarScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+
     final bool isMobile = AppSizes.isMobile(context);
-    final bool isTab = AppSizes.isMobile(context);
+
+    final bool isTab = !isMobile && width < 1100;
+
     final double sidebarWidth = width > 1100 ? 240 : 150;
 
     /// Sidebar content
@@ -145,39 +148,40 @@ class SidebarScreen extends StatelessWidget {
 
     /// Mobile AppBar
     if (isMobile) {
-    return Scaffold(
-    key: _scaffoldKey,
-      drawer: Drawer(
-        backgroundColor: Colors.white,
-        child: sidebarContent(showLogo: false),
-      ),
+      return Scaffold(
+        key: _scaffoldKey,
+        drawer: Drawer(
+          backgroundColor: Colors.white,
+          child: sidebarContent(showLogo: false),
+        ),
 
-    appBar: hideMobileAppBar
-    ? null
-        : AppBar(
-    automaticallyImplyLeading: false,
-    backgroundColor: AppColors.secondaryColor,
-    elevation: 0,
-    centerTitle: true,
-    title: MobileTopBar(
-    scaffoldKey: _scaffoldKey,
-    profileImageUrl: ImageString.userImage,
-    onAddPressed: () {
-      context.push(
-        '/addNewCar',
-        extra: {"hideMobileAppBar": true},
+        appBar: hideMobileAppBar
+            ? null
+            : AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: AppColors.secondaryColor,
+          elevation: 0,
+          centerTitle: true,
+          title: MobileTopBar(
+            scaffoldKey: _scaffoldKey,
+            profileImageUrl: ImageString.userImage,
+            onAddPressed: () {
+              context.push(
+                '/addNewCar',
+                extra: {"hideMobileAppBar": true},
+              );
+            },
+            onNotificationPressed: () {},
+          ),
+        ),
+
+        body: SafeArea(
+          child: child ?? const TableViewScreen(),
+        ),
       );
-    },
-    onNotificationPressed: () {},
-    ),
-    ),
-
-    body: SafeArea(
-    child: child ?? const TableViewScreen(),
-    ),
-    );
     }
-    /// Tab Appbar
+
+    /// TABLET APPBAR
     if (isTab) {
       return Scaffold(
         key: _scaffoldKey,
@@ -213,7 +217,7 @@ class SidebarScreen extends StatelessWidget {
     }
 
 
-    /// Web
+    /// Web (Wide Screen View)
     return Scaffold(
       body: SafeArea(
         child: Row(
@@ -239,9 +243,10 @@ class SidebarScreen extends StatelessWidget {
     bool hideMobileAppBar = false,
   }) {
     return Builder(builder: (context) {
-      bool isMobile = AppSizes.isMobile(context);
+      bool isNarrowScreen = AppSizes.isMobile(context) || (MediaQuery.of(context).size.width < 1100 && !AppSizes.isMobile(context));
 
-      if (isMobile && hideMobileAppBar) {
+
+      if (isNarrowScreen && hideMobileAppBar) {
         return child;
       } else {
         return SidebarScreen(
