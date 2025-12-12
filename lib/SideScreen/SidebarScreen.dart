@@ -2,6 +2,7 @@ import 'package:car_rental_project/Car%20Inventory/Car%20Directory/TableViewScre
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/SideScreen/Widget/MobileAppbar.dart';
 import 'package:car_rental_project/SideScreen/Widget/SidebarComponentWidget.dart';
+import 'package:car_rental_project/SideScreen/Widget/TabAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -152,9 +153,12 @@ class SidebarScreen extends StatelessWidget {
         key: _scaffoldKey,
         drawer: Drawer(
           backgroundColor: Colors.white,
-          child: sidebarContent(showLogo: false),
+          surfaceTintColor: Colors.transparent,
+          child: Container(
+            color: Colors.white,
+            child: sidebarContent(showLogo: false),
+          ),
         ),
-
         appBar: hideMobileAppBar
             ? null
             : AppBar(
@@ -187,9 +191,12 @@ class SidebarScreen extends StatelessWidget {
         key: _scaffoldKey,
         drawer: Drawer(
           backgroundColor: Colors.white,
-          child: sidebarContent(showLogo: false),
+          surfaceTintColor: Colors.transparent,
+          child: Container(
+            color: Colors.white,
+            child: sidebarContent(showLogo: false),
+          ),
         ),
-
         appBar: hideMobileAppBar
             ? null
             : AppBar(
@@ -197,7 +204,7 @@ class SidebarScreen extends StatelessWidget {
           backgroundColor: AppColors.secondaryColor,
           elevation: 0,
           centerTitle: true,
-          title: MobileTopBar(
+          title: TabAppBar(
             scaffoldKey: _scaffoldKey,
             profileImageUrl: ImageString.userImage,
             onAddPressed: () {

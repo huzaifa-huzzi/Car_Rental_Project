@@ -217,9 +217,7 @@ class _TabAppBarState extends State<TabAppBar> with WidgetsBindingObserver {
                     ],
                   ),
                 ),
-
                 const SizedBox(width: 6),
-
                 /// Profile Photo
                 Container(
                   width: containerSize,
