@@ -23,6 +23,7 @@ class AddCarFormWidget extends StatelessWidget {
     final isMobile = AppSizes.isMobile(context);
     final isTablet = AppSizes.isTablet(context);
     int columnCount = isMobile ? 2 : (isTablet ? 2 : 3);
+    final double spacing = AppSizes.padding(context);
 
     return Container(
       width: double.infinity,
@@ -39,7 +40,7 @@ class AddCarFormWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
+            // ... (Existing CAR DETAILS and GRID FORM)
             /// CAR DETAILS
             Text(TextString.addScreenTitle, style: TTextTheme.h7Style(context)),
             SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
@@ -78,6 +79,7 @@ class AddCarFormWidget extends StatelessWidget {
               },
             ),
 
+
             SizedBox(height: AppSizes.verticalPadding(context)),
 
             // ------------------ IMAGE UPLOAD ------------------
@@ -112,9 +114,10 @@ class AddCarFormWidget extends StatelessWidget {
             SizedBox(height: AppSizes.verticalPadding(context)),
             Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
-            /// DOCUMENTS SECTION
+            /// DOCUMENTS SECTION (Modified)
             _documentsSection(context),
-            SizedBox(height: AppSizes.verticalPadding(context) * 2),
+            // Removed SizedBox here, as spacing is now managed within _documentsSection
+            SizedBox(height: AppSizes.verticalPadding(context)), // Fixed gap before button section
 
             ///BUTTON SECTION
             _buttonSection(context, isMobile),
@@ -126,7 +129,7 @@ class AddCarFormWidget extends StatelessWidget {
 
 
   /// ---------- Extra Widgets --------///
-
+  // ... (Existing _buildDropdown and _buildTextField are unchanged)
   Widget _buildDropdown(
       BuildContext context,
       String label,
@@ -225,12 +228,6 @@ class AddCarFormWidget extends StatelessWidget {
     });
   }
 
-
-
-
-
-
-
 //  Main TextField
   Widget _buildTextField(BuildContext context, String label, TextEditingController controller, {String? prefix, bool isLast = false}) {
     return Column(
@@ -259,10 +256,9 @@ class AddCarFormWidget extends StatelessWidget {
     );
   }
 
-
-
   //  IMAGE UPLOAD BOX Widget
   Widget _imageBox(BuildContext context) {
+    // ... (Unchanged _imageBox implementation)
     return GestureDetector(
       onTap: () => controller.pickImage(),
       child: Obx(() {
@@ -350,11 +346,11 @@ class AddCarFormWidget extends StatelessWidget {
   }
 
   //  DOCUMENT NAME FIELD Widget
-  Widget _documentNameField(BuildContext context, String label, TextEditingController controller) {
+  Widget _documentNameField(BuildContext context, int index, TextEditingController controller) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: TTextTheme.titleTwo(context)),
+        Text(" Document Name", style: TTextTheme.titleTwo(context)),
         SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
         Container(
           padding: EdgeInsets.symmetric(horizontal: AppSizes.padding(context)),
@@ -379,7 +375,8 @@ class AddCarFormWidget extends StatelessWidget {
 
 
 //  DOCUMENT BOX Widget
-  Widget _documentBox(BuildContext context, Rx<DocumentHolder?> selectedDoc, {String? hintText}) {
+  Widget _documentBox(BuildContext context, int index, Rx<DocumentHolder?> selectedDoc) {
+
     bool _isImageFile(String fileName) {
       final imageExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
       final lowerCaseName = fileName.toLowerCase();
@@ -389,6 +386,8 @@ class AddCarFormWidget extends StatelessWidget {
       final docValue = selectedDoc.value;
       final bool isUploaded = docValue != null;
       final bool isImage = isUploaded && _isImageFile(docValue!.name);
+      final String hintText = controller.defaultDocumentNames[index];
+
 
       ImageProvider? imageProvider;
       if (isImage) {
@@ -400,7 +399,7 @@ class AddCarFormWidget extends StatelessWidget {
       }
 
       return GestureDetector(
-        onTap: isUploaded ? null : () => controller.pickDocument(selectedDoc),
+        onTap: isUploaded ? null : () => controller.pickDocument(index),
         child: DottedBorder(
           borderType: BorderType.RRect,
           radius: Radius.circular(AppSizes.borderRadius(context)),
@@ -437,7 +436,7 @@ class AddCarFormWidget extends StatelessWidget {
                         child: Image.asset(IconString.uploadIcon, color: AppColors.primaryColor),
                       ),
                       const SizedBox(height: 10),
-                      Text(hintText ?? "Registration", style: TTextTheme.documnetIsnideSmallText(context)),
+                      Text(hintText, style: TTextTheme.documnetIsnideSmallText(context)),
                       Text("SVG,PNG,JPG", style:TTextTheme.documnetIsnideSmallText2(context)),
                     ],
                   )
@@ -463,7 +462,7 @@ class AddCarFormWidget extends StatelessWidget {
                     top: -8,
                     right: -8,
                     child: GestureDetector(
-                      onTap: () => selectedDoc.value = null,
+                      onTap: () => controller.removeDocumentSlot(index),
                       child: CircleAvatar(
                         radius: 12,
                         backgroundColor: Colors.white,
@@ -480,108 +479,60 @@ class AddCarFormWidget extends StatelessWidget {
   }
 
 
+
+
 //-----ADD document box widget
   Widget _addDocumentBox(BuildContext context) {
-    bool _isImageFile(String fileName) {
-      final imageExtensions = ['.jpg', '.jpeg', '.png', '.svg'];
-      final lowerCaseName = fileName.toLowerCase();
-      return imageExtensions.any((ext) => lowerCaseName.endsWith(ext));
+    if (controller.selectedDocuments.length >= controller.maxDocuments) {
+      return SizedBox.shrink();
     }
+
+
     return GestureDetector(
-      onTap: () {
-        controller.pickDocument(controller.selectedDoc3);
-      },
-
-      child: Obx(() {
-        final docValue = controller.selectedDoc3.value;
-        final bool isUploaded = docValue != null;
-        final bool isImage = isUploaded && _isImageFile(docValue!.name);
-
-        ImageProvider? imageProvider;
-        if (isImage) {
-          if (kIsWeb && docValue!.bytes != null) {
-            imageProvider = MemoryImage(docValue.bytes!);
-          } else if (!kIsWeb && docValue!.path != null) {
-            imageProvider = FileImage(File(docValue.path!));
-          }
-        }
-
-        return DottedBorder(
-          borderType: BorderType.RRect,
-          radius: Radius.circular(AppSizes.borderRadius(context)),
-          dashPattern: [8, 6],
-          color: isUploaded ? AppColors.primaryColor : AppColors.tertiaryTextColor,
-          strokeWidth: isUploaded ? 2 : 1,
-          child: Container(
-            height: 140, // FIX: Height set to 140 to match _documentBox and prevent overflow
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: isUploaded ? Colors.white : Colors.white,
-              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-              image: isImage && imageProvider != null
-                  ? DecorationImage(
-                image: imageProvider,
-                fit: BoxFit.cover,
-              )
-                  : null,
-            ),
-            child: Stack(
-              clipBehavior: Clip.none,
+      onTap: () => controller.addDocumentSlot(),
+      child: DottedBorder(
+        borderType: BorderType.RRect,
+        radius: Radius.circular(AppSizes.borderRadius(context)),
+        dashPattern: [8, 6],
+        color: AppColors.tertiaryTextColor,
+        strokeWidth: 1,
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Center(
-                  child: !isUploaded
-                      ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: AppColors.iconsBackgroundColor,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Image.asset(IconString.addIcon, color: AppColors.primaryColor),
-                      ),
-                      SizedBox(height: 10),
-                      Text("Add Document", style: TTextTheme.documnetIsnideSmallText(context)),
-                    ],
-                  )
-                      : isImage
-                      ? Container()
-                      : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.insert_drive_file, size: 40, color: AppColors.primaryColor),
-                      SizedBox(height: 8),
-                      Text(
-                        docValue!.name,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ],
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.iconsBackgroundColor,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Image.asset(
+                    IconString.addIcon,
+                    color: AppColors.primaryColor,
                   ),
                 ),
-
-
-                if (isUploaded)
-                  Positioned(
-                    top: -8,
-                    right: -8,
-                    child: GestureDetector(
-                      onTap: () => controller.selectedDoc3.value = null,
-                      child: CircleAvatar(
-                        radius: 12,
-                        backgroundColor: Colors.white,
-                        child: Image.asset(IconString.deleteIcon, color: AppColors.primaryColor),
-                      ),
-                    ),
-                  ),
+                const SizedBox(height: 6),
+                Text(
+                  "Add Document",
+                  style: TTextTheme.documnetIsnideSmallText(context),
+                  textAlign: TextAlign.center,
+                ),
               ],
             ),
           ),
-        );
-      }),
+        ),
+      ),
     );
   }
+
 
 
 //-----DOCUMENTS SECTION
@@ -590,70 +541,75 @@ class AddCarFormWidget extends StatelessWidget {
     final double spacing = AppSizes.padding(context);
 
     Widget heading = Text(
-      "Upload Documents (Tax token, insurance papers, etc.)",
+      "Upload Document (Tax Token paper, Insurance papers, etc.)",
       style: TTextTheme.titleTwo(context),
     );
 
-    if (isMobile) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+    return Obx(() {
+      final documentCount = controller.selectedDocuments.length;
+      List<Widget> documentWidgets = [];
+
+      for (int i = 0; i < documentCount; i++) {
+        Widget docSlot = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _documentNameField(context, i, controller.documentNameControllers[i]),
+            SizedBox(height: spacing * 0.5),
+            _documentBox(context, i, controller.selectedDocuments[i]),
+          ],
+        );
+
+        documentWidgets.add(docSlot);
+      }
+      documentWidgets.add(_addDocumentBox(context));
+      final finalDocumentWidgets = documentWidgets.where((widget) => widget is! SizedBox).toList();
+
+
+      if (isMobile) {
+        List<Widget> mobileStack = [
           heading,
           SizedBox(height: spacing * 0.5),
+        ];
+
+        for (int i = 0; i < finalDocumentWidgets.length; i++) {
+          mobileStack.add(finalDocumentWidgets[i]);
+          if (i < finalDocumentWidgets.length - 1) {
+            mobileStack.add(SizedBox(height: spacing));
+          }
+        }
 
 
-          _documentNameField(context, "Car Document 1", controller.docName1Controller),
-          SizedBox(height: spacing * 0.5),
-          _documentBox(context, controller.selectedDoc1, hintText: "Registration"),
-          SizedBox(height: spacing),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: mobileStack,
+        );
+      } else {
+        // Tablet/Web: Grid layout. GridView's mainAxisSpacing handles vertical gap.
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            heading,
+            SizedBox(height: spacing * 0.5),
 
-
-          _documentNameField(context, "Car Document 2", controller.docName2Controller),
-          SizedBox(height: spacing * 0.5),
-          _documentBox(context, controller.selectedDoc2, hintText: "Insurance"),
-          SizedBox(height: spacing),
-
-          // 3. Add Document Box
-          _addDocumentBox(context),
-        ],
-      );
-    } else {
-
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          heading,
-          SizedBox(height: spacing * 0.5),
-
-
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(child: _documentNameField(context, "Car Document 1", controller.docName1Controller)),
-              SizedBox(width: spacing),
-              Expanded(child: _documentNameField(context, "Car Document 2", controller.docName2Controller)),
-              SizedBox(width: spacing),
-              Expanded(child: Container()),
-            ],
-          ),
-          SizedBox(height: spacing * 0.5),
-
-
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(child: _documentBox(context, controller.selectedDoc1, hintText: "Registration")),
-              SizedBox(width: spacing),
-              Expanded(child: _documentBox(context, controller.selectedDoc2, hintText: "Insurance")),
-              SizedBox(width: spacing),
-              Expanded(child: _addDocumentBox(context)),
-            ],
-          ),
-        ],
-      );
-    }
+            GridView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: spacing,
+                mainAxisSpacing: spacing,
+                childAspectRatio: 1.0,
+              ),
+              itemCount: finalDocumentWidgets.length,
+              itemBuilder: (context, index) {
+                return finalDocumentWidgets[index];
+              },
+            ),
+          ],
+        );
+      }
+    });
   }
-
 
 
   // Button Section

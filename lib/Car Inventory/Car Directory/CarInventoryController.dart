@@ -17,8 +17,9 @@ class DocumentHolder {
   final String? path;
   final Uint8List? bytes;
   final String name;
+  final String defaultHint;
 
-  DocumentHolder({this.path, this.bytes, required this.name});
+  DocumentHolder({this.path, this.bytes, required this.name, required this.defaultHint});
 }
 
 
@@ -135,25 +136,71 @@ class CarInventoryController extends GetxController {
 
 
  /// AddingCar Screen
- final  seatsController = TextEditingController();
- final engineController = TextEditingController();
- final colorController = TextEditingController();
- final  regController = TextEditingController();
- final  valueController = TextEditingController();
- final  weeklyRentController = TextEditingController();
+  final seatsController = TextEditingController();
+  final engineController = TextEditingController();
+  final colorController = TextEditingController();
+  final regController = TextEditingController();
+  final valueController = TextEditingController();
+  final weeklyRentController = TextEditingController();
   var openedDropdown = "".obs;
-  Rx<DocumentHolder?> selectedDoc1 = Rx<DocumentHolder?>(null);
-  Rx<DocumentHolder?> selectedDoc2 = Rx<DocumentHolder?>(null);
-  Rx<DocumentHolder?> selectedDoc3 = Rx<DocumentHolder?>(null);
 
-  TextEditingController docName1Controller = TextEditingController();
-  TextEditingController docName2Controller = TextEditingController();
+  // New Dynamic Document Lists
+  RxList<Rx<DocumentHolder?>> selectedDocuments = <Rx<DocumentHolder?>>[].obs;
+  RxList<TextEditingController> documentNameControllers = <TextEditingController>[].obs;
 
-
-
-  RxList<ImageHolder> selectedImages = <ImageHolder>[].obs;
+  final List<String> defaultDocumentNames = ["Document", "Document", "Document", "Document", "Document", "Document"];
+  final int maxDocuments = 6;
 
 
+  // Initial state: Only "Add Document" button is shown.
+
+  void addDocumentSlot() {
+    if (selectedDocuments.length < maxDocuments) {
+      String defaultHint = defaultDocumentNames[selectedDocuments.length];
+
+      documentNameControllers.add(TextEditingController());
+
+      selectedDocuments.add(Rx<DocumentHolder?>(null));
+    } else {
+      Get.snackbar("Limit Reached", "You can only add a maximum of $maxDocuments documents.");
+    }
+  }
+
+  void removeDocumentSlot(int index) {
+    if (index >= 0 && index < selectedDocuments.length) {
+      documentNameControllers[index].dispose();
+      documentNameControllers.removeAt(index);
+
+      selectedDocuments.removeAt(index);
+
+    }
+  }
+
+
+  Future<void> pickDocument(int index) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'doc', 'docx', 'png', 'jpg', 'jpeg'],
+      withData: kIsWeb ? true : false,
+      withReadStream: kIsWeb ? false : true,
+    );
+
+    if (result != null && result.files.isNotEmpty) {
+      final file = result.files.first;
+      String name = file.name;
+      String defaultHint = defaultDocumentNames[index];
+
+      if (kIsWeb) {
+        if (file.bytes != null) {
+          selectedDocuments[index].value = DocumentHolder(bytes: file.bytes, name: name, defaultHint: defaultHint);
+        }
+      } else {
+        if (file.path != null) {
+          selectedDocuments[index].value = DocumentHolder(path: file.path, name: name, defaultHint: defaultHint);
+        }
+      }
+    }
+  }
   Future<void> pickImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -167,54 +214,23 @@ class CarInventoryController extends GetxController {
         if (kIsWeb) {
 
           if (file.bytes != null) {
-            selectedImages.add(ImageHolder(bytes: file.bytes));
+            selectedImages.add(ImageHolder(bytes: file.bytes, name: file.name));
           }
         } else {
 
           if (file.path != null) {
-            selectedImages.add(ImageHolder(path: file.path));
+            selectedImages.add(ImageHolder(path: file.path, name: file.name));
           }
         }
       }
     }
   }
 
-  void toggleDropdown(String id) {
-    if (openedDropdown.value == id) {
-      openedDropdown.value = "";
-    } else {
-      openedDropdown.value = id;
-    }
-  }
-
+  RxList<ImageHolder> selectedImages = <ImageHolder>[].obs;
 
   void removeImage(int index) {
     if (index >= 0 && index < selectedImages.length) {
       selectedImages.removeAt(index);
-    }
-
-
-
-  }
-
-  Future<void> pickDocument(Rx<DocumentHolder?> doc) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc', 'docx', 'png', 'jpg', 'jpeg'],
-      withData: kIsWeb,
-    );
-
-    if (result != null && result.files.isNotEmpty) {
-      final file = result.files.first;
-      if (kIsWeb) {
-        if (file.bytes != null) {
-          doc.value = DocumentHolder(bytes: file.bytes, name: file.name);
-        }
-      } else {
-        if (file.path != null) {
-          doc.value = DocumentHolder(path: file.path, name: file.name);
-        }
-      }
     }
   }
 
