@@ -295,7 +295,6 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
     final spacing = AppSizes.padding(context);
 
     if (isMobile) {
-      // MOBILE LAYOUT FIXES
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -500,7 +499,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
   }
 
 
-//  Specification Tile for Mobile UI
+//  Specification Tile
   Widget _buildSpecTile(
       BuildContext context, String icon, String title, String value, {required bool isMobile}) {
     final double iconSize = isMobile ? 26 : 38;
@@ -531,7 +530,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
           SizedBox(width: spacing),
 
           // TITLE + VALUE
-          Expanded( // <-- YAHAN PEHLE SE Expanded HAI
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -580,14 +579,14 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
         SizedBox(width: 14),
 
         // TITLE + VALUE (Wrapped in Expanded)
-        Expanded( // <--- Naya Expanded widget add kiya gaya hai
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 title,
                 style: TTextTheme.titleseven(context),
-                softWrap: true, // Re-added softWrap for long titles
+                softWrap: true,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -624,17 +623,25 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
               final double totalWidth = constraints.maxWidth;
               int docColumnCount;
 
+
               if (totalWidth < 350) {
                 docColumnCount = 2;
               } else {
                 docColumnCount = 3;
               }
 
-              final double mobileRatio = 0.85;
-              final double webRatio = 4.8;
+              final double defaultMobileRatio = 0.85;
+              final double defaultWebRatio = 4.8;
 
-              final double calculatedRatio = isMobile ? mobileRatio : webRatio;
-              final finalRatio = docColumnCount == 2 ? 0.75 : calculatedRatio;
+              final double tightRatioForTwoColumns = 1.0;
+
+              final double finalRatio;
+
+              if (docColumnCount == 2) {
+                finalRatio = tightRatioForTwoColumns;
+              } else {
+                finalRatio = isMobile ? defaultMobileRatio : defaultWebRatio;
+              }
 
 
               return GridView.count(
@@ -676,7 +683,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
 
 
 
-//  Document Tile for Mobile UI
+//  Document Tile
   Widget _buildDocumentTile(
       BuildContext context,
       String title,
@@ -742,7 +749,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
       );
     }
 
-    // WEB LAYOUT (Unchanged)
+    // WEB LAYOUT
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -773,12 +780,12 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
                 style: TTextTheme.pThree(context)),
             SizedBox(height: 4),
             Row(
-              children: [
-                Text(
-                  status,
-                  style:  TTextTheme.titleseven(context),
-                ),
-             ]
+                children: [
+                  Text(
+                    status,
+                    style:  TTextTheme.titleseven(context),
+                  ),
+                ]
             ),
           ],
         ),
@@ -815,11 +822,11 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
         child: Container(
           padding: EdgeInsets.symmetric(
             horizontal: horizontalPadding,
-            vertical: verticalPadding,   
+            vertical: verticalPadding,
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(7),
-           border: Border.all(color: AppColors.tertiaryTextColor,width: 1),
+            border: Border.all(color: AppColors.tertiaryTextColor,width: 1),
           ),
 
           child: Row(
@@ -839,5 +846,4 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
       ),
     );
   }
-
 }
