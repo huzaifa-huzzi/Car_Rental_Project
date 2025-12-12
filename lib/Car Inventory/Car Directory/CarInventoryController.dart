@@ -144,7 +144,6 @@ class CarInventoryController extends GetxController {
   final weeklyRentController = TextEditingController();
   var openedDropdown = "".obs;
 
-  // New Dynamic Document Lists
   RxList<Rx<DocumentHolder?>> selectedDocuments = <Rx<DocumentHolder?>>[].obs;
   RxList<TextEditingController> documentNameControllers = <TextEditingController>[].obs;
 

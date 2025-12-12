@@ -22,7 +22,6 @@ class AddCarFormWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = AppSizes.isMobile(context);
     final isTablet = AppSizes.isTablet(context);
-    int columnCount = isMobile ? 2 : (isTablet ? 2 : 3);
     final double spacing = AppSizes.padding(context);
 
     return Container(
@@ -40,7 +39,6 @@ class AddCarFormWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ... (Existing CAR DETAILS and GRID FORM)
             /// CAR DETAILS
             Text(TextString.addScreenTitle, style: TTextTheme.h7Style(context)),
             SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
@@ -53,14 +51,39 @@ class AddCarFormWidget extends StatelessWidget {
             ///GRID FORM
             LayoutBuilder(
               builder: (context, constraints) {
+
+                int currentColumnCount;
+
+                if (constraints.maxWidth >= 900) {
+                  currentColumnCount = 3;
+                }
+                else if (constraints.maxWidth >= 500) {
+                  currentColumnCount = 2;
+                }
+                else {
+                  currentColumnCount = 1;
+                }
+
+                double calculatedAspectRatio;
+
+                if (currentColumnCount == 1) {
+                  calculatedAspectRatio = 5.8;
+                } else if (currentColumnCount == 2) {
+                  calculatedAspectRatio = 4.1;
+                } else {
+                  calculatedAspectRatio = 3.2;
+                }
+
+
                 return GridView(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: columnCount,
+                    crossAxisCount: currentColumnCount, // Use dynamic column count
                     crossAxisSpacing: AppSizes.padding(context),
                     mainAxisSpacing: AppSizes.padding(context),
-                    childAspectRatio: isMobile ? 2.9 : 3.2,
+                    // Use the calculated and safe ratio
+                    childAspectRatio: calculatedAspectRatio,
                   ),
                   children: [
                     _buildDropdown(context, "Car Brand", ["Toyota", "Honda", "BMW"], controller.selectedBrand, id: 'car Brand'),
@@ -82,7 +105,7 @@ class AddCarFormWidget extends StatelessWidget {
 
             SizedBox(height: AppSizes.verticalPadding(context)),
 
-            // ------------------ IMAGE UPLOAD ------------------
+            /// IMAGE UPLOAD
             Text("Upload Car Images", style: TTextTheme.titleTwo(context)),
             SizedBox(height: AppSizes.verticalPadding(context)),
             _imageBox(context),
@@ -90,7 +113,7 @@ class AddCarFormWidget extends StatelessWidget {
             Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
 
-            // ------------------ DESCRIPTION ------------------
+            /// DESCRIPTION
             SizedBox(height: AppSizes.verticalPadding(context)),
             Text(TextString.descriptionTitle, style: TTextTheme.titleTwo(context)),
             SizedBox(height: AppSizes.verticalPadding(context) * 0.5),
@@ -114,10 +137,9 @@ class AddCarFormWidget extends StatelessWidget {
             SizedBox(height: AppSizes.verticalPadding(context)),
             Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
-            /// DOCUMENTS SECTION (Modified)
+            /// DOCUMENTS SECTION
             _documentsSection(context),
-            // Removed SizedBox here, as spacing is now managed within _documentsSection
-            SizedBox(height: AppSizes.verticalPadding(context)), // Fixed gap before button section
+            SizedBox(height: AppSizes.verticalPadding(context)),
 
             ///BUTTON SECTION
             _buttonSection(context, isMobile),
@@ -128,8 +150,10 @@ class AddCarFormWidget extends StatelessWidget {
   }
 
 
-  /// ---------- Extra Widgets --------///
-  // ... (Existing _buildDropdown and _buildTextField are unchanged)
+  /// ---------- Extra Widgets  --------///
+
+  // _buildDropdown Widget
+
   Widget _buildDropdown(
       BuildContext context,
       String label,
@@ -140,7 +164,7 @@ class AddCarFormWidget extends StatelessWidget {
     return LayoutBuilder(builder: (context, constraints) {
       return Obx(() {
         bool isOpen = controller.openedDropdown.value == id;
-
+        // Rest of _buildDropdown logic
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -149,7 +173,6 @@ class AddCarFormWidget extends StatelessWidget {
 
             GestureDetector(
               onTap: () {
-
                 if (controller.openedDropdown.value == id) {
                   controller.openedDropdown.value = "";
                 } else {
@@ -228,7 +251,7 @@ class AddCarFormWidget extends StatelessWidget {
     });
   }
 
-//  Main TextField
+  // TextField Widget
   Widget _buildTextField(BuildContext context, String label, TextEditingController controller, {String? prefix, bool isLast = false}) {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -258,7 +281,6 @@ class AddCarFormWidget extends StatelessWidget {
 
   //  IMAGE UPLOAD BOX Widget
   Widget _imageBox(BuildContext context) {
-    // ... (Unchanged _imageBox implementation)
     return GestureDetector(
       onTap: () => controller.pickImage(),
       child: Obx(() {
@@ -350,7 +372,7 @@ class AddCarFormWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(" Document Name", style: TTextTheme.titleTwo(context)),
+        Text("Document Name", style: TTextTheme.titleTwo(context)),
         SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
         Container(
           padding: EdgeInsets.symmetric(horizontal: AppSizes.padding(context)),
@@ -487,6 +509,35 @@ class AddCarFormWidget extends StatelessWidget {
       return SizedBox.shrink();
     }
 
+    final isMobile = AppSizes.isMobile(context);
+
+
+    Widget content = Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.iconsBackgroundColor,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Image.asset(
+              IconString.addIcon,
+              color: AppColors.primaryColor,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            "Add Document",
+            style: TTextTheme.documnetIsnideSmallText(context),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+
 
     return GestureDetector(
       onTap: () => controller.addDocumentSlot(),
@@ -498,36 +549,18 @@ class AddCarFormWidget extends StatelessWidget {
         strokeWidth: 1,
         child: Container(
           width: double.infinity,
+          constraints: isMobile ? BoxConstraints(minHeight: 180) : null,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
           ),
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppColors.iconsBackgroundColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Image.asset(
-                    IconString.addIcon,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  "Add Document",
-                  style: TTextTheme.documnetIsnideSmallText(context),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
+
+          child: isMobile
+              ? AspectRatio(
+            aspectRatio: 1.8,
+            child: content,
+          )
+              : content,
         ),
       ),
     );
@@ -541,7 +574,7 @@ class AddCarFormWidget extends StatelessWidget {
     final double spacing = AppSizes.padding(context);
 
     Widget heading = Text(
-      "Upload Document (Tax Token paper, Insurance papers, etc.)",
+      "Upload Document (Tax Token Paper,Insurance paper,etx MAX 6)",
       style: TTextTheme.titleTwo(context),
     );
 
@@ -558,7 +591,6 @@ class AddCarFormWidget extends StatelessWidget {
             _documentBox(context, i, controller.selectedDocuments[i]),
           ],
         );
-
         documentWidgets.add(docSlot);
       }
       documentWidgets.add(_addDocumentBox(context));
@@ -568,13 +600,14 @@ class AddCarFormWidget extends StatelessWidget {
       if (isMobile) {
         List<Widget> mobileStack = [
           heading,
-          SizedBox(height: spacing * 0.5),
+          SizedBox(height: spacing * 0.7),
         ];
 
         for (int i = 0; i < finalDocumentWidgets.length; i++) {
           mobileStack.add(finalDocumentWidgets[i]);
+
           if (i < finalDocumentWidgets.length - 1) {
-            mobileStack.add(SizedBox(height: spacing));
+            mobileStack.add(SizedBox(height: spacing * 2));
           }
         }
 
@@ -584,26 +617,36 @@ class AddCarFormWidget extends StatelessWidget {
           children: mobileStack,
         );
       } else {
-        // Tablet/Web: Grid layout. GridView's mainAxisSpacing handles vertical gap.
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             heading,
-            SizedBox(height: spacing * 0.5),
+            SizedBox(height: spacing * 0.7),
 
-            GridView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: spacing,
-                mainAxisSpacing: spacing,
-                childAspectRatio: 1.0,
-              ),
-              itemCount: finalDocumentWidgets.length,
-              itemBuilder: (context, index) {
-                return finalDocumentWidgets[index];
-              },
+            LayoutBuilder(
+                builder: (context, constraints) {
+                  int docColumnCount;
+                  if (constraints.maxWidth < 600) {
+                    docColumnCount = 2;
+                  } else {
+                    docColumnCount = 3;
+                  }
+
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: docColumnCount,
+                      crossAxisSpacing: spacing,
+                      mainAxisSpacing: spacing,
+                      childAspectRatio: 0.98,
+                    ),
+                    itemCount: finalDocumentWidgets.length,
+                    itemBuilder: (context, index) {
+                      return finalDocumentWidgets[index];
+                    },
+                  );
+                }
             ),
           ],
         );
