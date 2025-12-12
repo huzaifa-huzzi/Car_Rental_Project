@@ -485,13 +485,18 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
 //  Specification Tile for Mobile UI
   Widget _buildSpecTile(
       BuildContext context, String icon, String title, String value, {required bool isMobile}) {
+    final double iconSize = isMobile ? 26 : 38;
+    final double spacing = isMobile ? 9 : 14;
+    final double textSpacing = isMobile ? 2 : 3;
+
     if (isMobile) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // ICON BOX
           Container(
-            height: 26,
-            width: 26,
+            height: iconSize,
+            width: iconSize,
             decoration: BoxDecoration(
               color: AppColors.secondaryColor,
               borderRadius: BorderRadius.circular(10),
@@ -505,20 +510,25 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
             ),
           ),
 
-          SizedBox(width: 9),
+          SizedBox(width: spacing),
 
+          // TITLE + VALUE
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style:  TTextTheme.titleseven(context),
+                  style: TTextTheme.titleseven(context),
+                  softWrap: true,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: 1),
+                SizedBox(height: textSpacing),
                 Text(
                   value,
                   style: TTextTheme.pThree(context),
+                  softWrap: true,
                   maxLines: null,
                 ),
               ],

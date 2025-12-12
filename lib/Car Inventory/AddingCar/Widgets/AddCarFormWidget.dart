@@ -21,8 +21,6 @@ class AddCarFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = AppSizes.isMobile(context);
-    final isTablet = AppSizes.isTablet(context);
-    final double spacing = AppSizes.padding(context);
 
     return Container(
       width: double.infinity,
@@ -51,52 +49,45 @@ class AddCarFormWidget extends StatelessWidget {
             ///GRID FORM
             LayoutBuilder(
               builder: (context, constraints) {
+                final double totalWidth = constraints.maxWidth;
+                final double spacing = AppSizes.padding(context);
+                double itemWidth;
+                int columns;
 
-                int currentColumnCount;
 
-                if (constraints.maxWidth >= 900) {
-                  currentColumnCount = 3;
+                if (totalWidth >= 900) {
+                  columns = 3;
                 }
-                else if (constraints.maxWidth >= 500) {
-                  currentColumnCount = 2;
+                else if (totalWidth >= 550) {
+                  columns = 3;
                 }
                 else {
-                  currentColumnCount = 1;
+                  columns = 2;
                 }
 
-                double calculatedAspectRatio;
 
-                if (currentColumnCount == 1) {
-                  calculatedAspectRatio = 5.8;
-                } else if (currentColumnCount == 2) {
-                  calculatedAspectRatio = 4.1;
+                if (columns == 1) {
+                  itemWidth = totalWidth;
                 } else {
-                  calculatedAspectRatio = 3.2;
+                  final double totalSpacing = spacing * (columns - 1);
+                  itemWidth = (totalWidth - totalSpacing) / columns;
                 }
 
-
-                return GridView(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: currentColumnCount, // Use dynamic column count
-                    crossAxisSpacing: AppSizes.padding(context),
-                    mainAxisSpacing: AppSizes.padding(context),
-                    // Use the calculated and safe ratio
-                    childAspectRatio: calculatedAspectRatio,
-                  ),
+                return Wrap(
+                  spacing: spacing,
+                  runSpacing: spacing,
                   children: [
-                    _buildDropdown(context, "Car Brand", ["Toyota", "Honda", "BMW"], controller.selectedBrand, id: 'car Brand'),
-                    _buildDropdown(context, "Car Model", ["Corolla", "Civic", "X5"], controller.selectedModel,id: 'car Model'),
-                    _buildDropdown(context, "Car Model Year", ["2020", "2021", "2022"], controller.selectedYear,id: 'Year'),
-                    _buildDropdown(context, "Car Body Type", ["Sedan", "SUV", "Truck"], controller.selectedBodyType,id: 'Body type'),
-                    _buildDropdown(context, "Car Transmission", ["Automatic", "Manual"], controller.selectedTransmission,id: 'Transmission'),
-                    _buildTextField(context, "Car Seats", controller.seatsController),
-                    _buildTextField(context, "Car Engine Size", controller.engineController),
-                    _buildTextField(context, "Car Color", controller.colorController),
-                    _buildTextField(context, "Weekly Rent (AUD)", controller.weeklyRentController, prefix: "\$ "),
-                    _buildTextField(context, "Car Registration Number", controller.regController),
-                    _buildTextField(context, "Car Value", controller.valueController, prefix: "\$"),
+                    SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Brand", ["Toyota", "Honda", "BMW"], controller.selectedBrand, id: 'car Brand')),
+                    SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Model", ["Corolla", "Civic", "X5"], controller.selectedModel,id: 'car Model')),
+                    SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Model Year", ["2020", "2021", "2022"], controller.selectedYear,id: 'Year')),
+                    SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Body Type", ["Sedan", "SUV", "Truck"], controller.selectedBodyType,id: 'Body type')),
+                    SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Transmission", ["Automatic", "Manual"], controller.selectedTransmission,id: 'Transmission')),
+                    SizedBox(width: itemWidth, child: _buildTextField(context, "Car Seats", controller.seatsController)),
+                    SizedBox(width: itemWidth, child: _buildTextField(context, "Car Engine Size", controller.engineController)),
+                    SizedBox(width: itemWidth, child: _buildTextField(context, "Car Color", controller.colorController)),
+                    SizedBox(width: itemWidth, child: _buildTextField(context, "Weekly Rent (AUD)", controller.weeklyRentController, prefix: "\$ ")),
+                    SizedBox(width: itemWidth, child: _buildTextField(context, "Car Registration Number", controller.regController)),
+                    SizedBox(width: itemWidth, child: _buildTextField(context, "Car Value", controller.valueController, prefix: "\$")),
                   ],
                 );
               },
@@ -153,7 +144,6 @@ class AddCarFormWidget extends StatelessWidget {
   /// ---------- Extra Widgets  --------///
 
   // _buildDropdown Widget
-
   Widget _buildDropdown(
       BuildContext context,
       String label,
@@ -161,123 +151,98 @@ class AddCarFormWidget extends StatelessWidget {
       RxString selected, {
         required String id,
       }) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return Obx(() {
-        bool isOpen = controller.openedDropdown.value == id;
-        // Rest of _buildDropdown logic
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(label, style: TTextTheme.titleTwo(context)),
-            SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
 
-            GestureDetector(
-              onTap: () {
-                if (controller.openedDropdown.value == id) {
-                  controller.openedDropdown.value = "";
-                } else {
-                  controller.openedDropdown.value = id;
-                }
-              },
-
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(
-                  color: AppColors.secondaryColor,
-                  borderRadius: BorderRadius.circular(
-                    AppSizes.borderRadius(context),
-                  ),
-                ),
-
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    isExpanded: true,
-                    dropdownColor: AppColors.secondaryColor,
-
-                    value: selected.value.isEmpty ? null : selected.value,
-                    hint: Text("$label", style: TTextTheme.titleFour(context)),
-
-                    icon: Image.asset(
-                      isOpen
-                          ? IconString.upsideDropdownIcon
-                          : IconString.dropdownIcon,
-                      height: 18,
-                    ),
-
-                    selectedItemBuilder: (context) {
-                      return items.map((item) {
-                        return Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(item, style: TTextTheme.titleTwo(context)),
-                        );
-                      }).toList();
-                    },
-
-                    items: items.asMap().entries.map((entry) {
-                      int index = entry.key;
-                      String item = entry.value;
-
-                      return DropdownMenuItem<String>(
-                        value: item,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: Text(item, style: TTextTheme.titleTwo(context)),
-                            ),
-                            if (index != items.length - 1)
-                              Divider(
-                                height: 1,
-                                thickness: 0.5,
-                                color: AppColors.quadrantalTextColor,
-                              ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-
-                    onChanged: (value) {
-                      selected.value = value!;
-                      controller.openedDropdown.value = "";
-                    },
-                  ),
-                ),
-              ),
-            ),
-          ],
-        );
-      });
-    });
-  }
-
-  // TextField Widget
-  Widget _buildTextField(BuildContext context, String label, TextEditingController controller, {String? prefix, bool isLast = false}) {
-    return Column(
+    return Obx(() {
+      bool isOpen = controller.openedDropdown.value == id;
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label, style: TTextTheme.titleTwo(context)),
           SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
-          TextField(
-            controller: controller,
-            cursorColor: AppColors.blackColor,
-            keyboardType: prefix != null ? TextInputType.number : TextInputType.text,
-            style: TTextTheme.insidetextfieldWrittenText(context),
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: AppColors.secondaryColor,
-              hintText: "Enter $label",
-              hintStyle: TTextTheme.titleFour(context),
-              prefixText: prefix,
-              border: OutlineInputBorder(
+          GestureDetector(
+            onTap: () {
+              if (controller.openedDropdown.value == id) {
+                controller.openedDropdown.value = "";
+              } else {
+                controller.openedDropdown.value = id;
+              }
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: AppColors.secondaryColor,
                 borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-                borderSide: BorderSide.none,
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  dropdownColor: AppColors.secondaryColor,
+                  value: selected.value.isEmpty ? null : selected.value,
+                  hint: Text("$label", style: TTextTheme.titleFour(context)),
+                  icon: Image.asset(
+                    isOpen
+                        ? IconString.upsideDropdownIcon
+                        : IconString.dropdownIcon,
+                    height: 18,
+                  ),
+                  selectedItemBuilder: (context) {
+                    return items.map((item) {
+                      return Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(item, style: TTextTheme.titleTwo(context)),
+                      );
+                    }).toList();
+                  },
+                  items: items.map((item) {
+                    return DropdownMenuItem<String>(
+                      value: item,
+                      child: Text(item, style: TTextTheme.titleTwo(context)),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    selected.value = value!;
+                    controller.openedDropdown.value = "";
+                  },
+                ),
               ),
             ),
           ),
-        ]
+        ],
+      );
+    });
+  }
+
+
+//  TextField Widgets
+  Widget _buildTextField(BuildContext context, String label, TextEditingController controller,
+      {String? prefix}) {
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: TTextTheme.titleTwo(context)),
+        SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
+        TextField(
+          controller: controller,
+          cursorColor: AppColors.blackColor,
+          keyboardType: prefix != null ? TextInputType.number : TextInputType.text,
+          style: TTextTheme.insidetextfieldWrittenText(context),
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: AppColors.secondaryColor,
+            hintText: "Enter $label",
+            hintStyle: TTextTheme.titleFour(context),
+            prefixText: prefix,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+              borderSide: BorderSide.none,
+            ),
+          ),
+        ),
+      ],
     );
   }
+
 
   //  IMAGE UPLOAD BOX Widget
   Widget _imageBox(BuildContext context) {
