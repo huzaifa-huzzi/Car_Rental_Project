@@ -10,6 +10,10 @@ class CustomPrimaryButton extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
   final Color borderColor;
+  final String? iconPath;
+  final double? height;
+  final double? width;
+  final BorderRadius? borderRadius;
 
   const CustomPrimaryButton({
     super.key,
@@ -19,49 +23,56 @@ class CustomPrimaryButton extends StatelessWidget {
     this.backgroundColor = Colors.white,
     this.textColor = AppColors.textColor,
     this.borderColor = AppColors.quadrantalTextColor,
+    this.iconPath,
+    this.height,
+    this.width,
+    this.borderRadius,
   });
 
   @override
   Widget build(BuildContext context) {
     final VoidCallback? effectiveOnTap = isLoading ? null : onTap;
 
-    final double buttonHeight = AppSizes.buttonHeight(context);
-    final double verticalPadding = AppSizes.isWeb(context)
-        ? buttonHeight * 0.15  // web ke liye kam padding
-        : buttonHeight * 0.35; // mobile/tablet
-    final EdgeInsets buttonPadding = EdgeInsets.symmetric(
-      vertical: verticalPadding,
-      horizontal: AppSizes.padding(context) * 0.5,
-    );
-
     return GestureDetector(
       onTap: effectiveOnTap,
       child: Container(
-        padding: buttonPadding,
+        height: height ?? AppSizes.buttonHeight(context),
+        width: width,
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-          border: Border.all(
-            color: borderColor,
-            width: 1.0,
-          ),
+          borderRadius: borderRadius ?? BorderRadius.circular(AppSizes.borderRadius(context)),
+          border: Border.all(color: borderColor, width: 1),
         ),
-        alignment: Alignment.center,
         child: isLoading
-            ? SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(
-            color: textColor,
-            strokeWidth: 2,
+            ? Center(
+          child: SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(
+              color: textColor,
+              strokeWidth: 2,
+            ),
           ),
         )
-            : Text(
-          text,
-          style: TTextTheme.btnCancel(context),
+            : Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (iconPath != null) ...[
+              Image.asset(
+                iconPath!,
+                width: 18,
+                height: 18,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(width: 6),
+            ],
+            Text(
+              text,
+              style: TTextTheme.btnCancel(context).copyWith(color: textColor),
+            ),
+          ],
         ),
       ),
     );
   }
-
 }

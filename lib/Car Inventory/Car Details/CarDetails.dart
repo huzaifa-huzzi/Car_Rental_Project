@@ -1,4 +1,5 @@
 import 'package:car_rental_project/Car%20Inventory/Car%20Details/Widget/CarDetailWidget.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Details/Widget/PreviewOverlay.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/HeaderWebWidget.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,6 @@ class CarDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// HEADER
             HeaderWebWidget(
               mainTitle: 'Car Details',
               showBack: true,
@@ -48,8 +48,14 @@ class CarDetailsScreen extends StatelessWidget {
     );
 
     return Scaffold(
-      body: SafeArea(child: body),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            body,
+            CarDocumentPreviewOverlay(),
+          ],
+        ),
+      ),
     );
-
   }
 }

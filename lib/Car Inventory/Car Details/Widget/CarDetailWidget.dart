@@ -1,8 +1,10 @@
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/CarInventoryController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
+import 'package:get/get.dart';
 import '../../../Resources/IconStrings.dart' show IconString;
 import '../../../Resources/TextString.dart' show TextString;
 
@@ -738,11 +740,16 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
                 style: TTextTheme.titleseven(context),
               ),
               SizedBox(width: 6,),
-              Image.asset(
-                IconString.uploadedIcon,
-                height: 18,
-                width: 18,
-              ),
+    GestureDetector(
+    onTap: () {
+    Get.find<CarInventoryController>()
+        .open(ImageString.corollaPicone);
+    },
+    child: Image.asset(
+    IconString.uploadedIcon,
+    height: 22,
+    width: 22,
+    )),
             ],
           ),
         ],
@@ -790,11 +797,18 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
           ],
         ),
         SizedBox(width: 6),
-        Image.asset(
-          IconString.uploadedIcon,
-          height: 22,
-          width: 22,
+        GestureDetector(
+          onTap: () {
+            Get.find<CarInventoryController>()
+                .open(ImageString.corollaPicone);
+          },
+          child: Image.asset(
+            IconString.uploadedIcon,
+            height: 22,
+            width: 22,
+          ),
         ),
+
       ],
     );
   }

@@ -151,7 +151,6 @@ class CarInventoryController extends GetxController {
   final int maxDocuments = 6;
 
 
-  // Initial state: Only "Add Document" button is shown.
 
   void addDocumentSlot() {
     if (selectedDocuments.length < maxDocuments) {
@@ -233,8 +232,19 @@ class CarInventoryController extends GetxController {
     }
   }
 
-  /// Car Details Screen
+  /// Car Details Screen getx
+  RxBool isOpen = false.obs;
+  RxString imagePath = ''.obs;
 
+  void open(String assetPath) {
+    imagePath.value = assetPath;
+    isOpen.value = true;
+  }
+
+  void close() {
+    isOpen.value = false;
+    imagePath.value = '';
+  }
 
 
 

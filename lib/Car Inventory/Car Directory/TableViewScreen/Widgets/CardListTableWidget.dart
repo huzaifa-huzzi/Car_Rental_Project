@@ -103,7 +103,7 @@ class CarListTableWidget extends StatelessWidget {
                                         extra: {"hideMobileAppBar": true},
                                       );
                                     },
-                                    borderRadius: 6,
+                                    borderRadius: BorderRadius.circular(6),
                                   ),
                                 ),
                               ),
