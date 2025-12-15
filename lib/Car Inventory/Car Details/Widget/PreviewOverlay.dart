@@ -29,15 +29,18 @@ class CarDocumentPreviewOverlay extends StatelessWidget {
               builder: (context, constraints) {
                 double overlayWidth = constraints.maxWidth * 0.55;
                 overlayWidth = overlayWidth.clamp(300, 700);
+                final bool isWeb = AppSizes.isWeb(context);
 
                 double buttonWidth = (overlayWidth / 2 - 8).clamp(200, double.infinity);
 
                 return Container(
                   width: overlayWidth,
-                  padding: EdgeInsets.all(AppSizes.padding(context)),
+                  padding: EdgeInsets.all(AppSizes.padding(context)/2),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                    borderRadius: BorderRadius.circular(
+                      AppSizes.borderRadius(context),
+                    ),
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -59,88 +62,89 @@ class CarDocumentPreviewOverlay extends StatelessWidget {
                       // Title + Logo
                       Row(
                         children: [
-                          Text(
-                            "Registration",
-                            style: TTextTheme.titleOne(context),
-                          ),
+                          Text("Registration", style: TTextTheme.titleOne(context)),
                           const Spacer(),
-                          Image.asset(
-                            IconString.symbol,
-                            width: 26,
-                            height: 26,
-                          ),
+                          Image.asset(IconString.symbol, width: 26, height: 26),
                           const SizedBox(width: 6),
-                           Text(
-                            "SoftShip",
-                            style: TTextTheme.h6Style(context),
-                          ),
+                          Text("SoftShip", style: TTextTheme.h6Style(context)),
                         ],
                       ),
 
                       SizedBox(height: AppSizes.verticalPadding(context) / 2),
 
                       // Image Preview
-                      DottedBorder(
-                        color: Colors.redAccent,
-                        strokeWidth: 1,
-                        dashPattern: const [6, 4],
-                        borderType: BorderType.RRect,
-                        radius: Radius.circular(10),
-                        child: Container(
-                          width: double.infinity,
-                          height: AppSizes.cardHeight(context) + 100,
-                          padding: EdgeInsets.all(12),
-                          child: Center(
-                            child: Image.asset(
-                              controller.imagePath.value,
-                              fit: BoxFit.contain,
+                      Center(
+                        child: SizedBox(
+                          width: isWeb ? 300 : double.infinity,
+                          child: DottedBorder(
+                            color: Colors.redAccent,
+                            strokeWidth: 1,
+                            dashPattern: const [6, 4],
+                            borderType: BorderType.RRect,
+                            radius: const Radius.circular(10),
+                            child: Container(
+                              height: AppSizes.cardHeight(context) + 80,
+                              padding: const EdgeInsets.all(6),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.asset(
+                                  controller.imagePath.value,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
 
+
                       SizedBox(height: AppSizes.verticalPadding(context)),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Flexible(
-                            fit: FlexFit.tight,
-                            child: CustomPrimaryButton(
-                              text: "Print",
-                              iconPath: IconString.printIcon,
-                              onTap: () {},
-                              height: buttonHeight,
-                              backgroundColor: AppColors.iconsBackgroundColor,
-                              borderColor: Colors.transparent,
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(5),
-                                bottomLeft: Radius.circular(5),
+                      Center(
+                        child: SizedBox(
+                          width: AppSizes.isWeb(context) ? 260 : double.infinity,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Expanded(
+                                child: CustomPrimaryButton(
+                                  text: "Print",
+                                  iconPath: IconString.printIcon,
+                                  onTap: () {},
+                                  height: buttonHeight,
+                                  backgroundColor: AppColors.iconsBackgroundColor,
+                                  borderColor: Colors.transparent,
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(5),
+                                    bottomLeft: Radius.circular(5),
+                                  ),
+                                ),
                               ),
-                            ),
+                              Expanded(
+                                child: AddButton(
+                                  text: "Download",
+                                  onTap: () {},
+                                  icon: Image.asset(
+                                    IconString.downloadIcon,
+                                    color: Colors.white,
+                                  ),
+                                  isIconLeft: true,
+                                  height: buttonHeight,
+                                  borderRadius: const BorderRadius.only(
+                                    topRight: Radius.circular(5),
+                                    bottomRight: Radius.circular(5),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          Flexible(
-                            fit: FlexFit.tight,
-                            child: AddButton(
-                              text: "Download",
-                              onTap: () {},
-                              icon: Image.asset(
-                                IconString.downloadIcon,
-                                color: Colors.white,
-                              ),
-                              isIconLeft: true,
-                              height: buttonHeight,
-                              borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(5),
-                                bottomRight: Radius.circular(5),
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
+
                     ],
                   ),
                 );
+
               },
             ),
           ),

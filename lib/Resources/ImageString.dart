@@ -13,6 +13,7 @@ class ImageString{
   static const String corollaPicThree = 'assets/Images/CarInventoryPics/corolla-3.png';
   static const String corollaPicFour = 'assets/Images/CarInventoryPics/corolla-4.png';
   static const String corollaPicFive = 'assets/Images/CarInventoryPics/corolla-5.png';
+  static const String registrationForm = 'assets/Images/CarInventoryPics/RegistrationForm.png';
 
 
 }

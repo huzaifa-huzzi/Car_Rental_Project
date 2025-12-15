@@ -580,7 +580,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
 
         SizedBox(width: 14),
 
-        // TITLE + VALUE (Wrapped in Expanded)
+        // TITLE + VALUE
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -742,8 +742,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
               SizedBox(width: 6,),
     GestureDetector(
     onTap: () {
-    Get.find<CarInventoryController>()
-        .open(ImageString.corollaPicone);
+    Get.find<CarInventoryController>().open(ImageString.registrationForm);
     },
     child: Image.asset(
     IconString.uploadedIcon,
@@ -799,8 +798,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
         SizedBox(width: 6),
         GestureDetector(
           onTap: () {
-            Get.find<CarInventoryController>()
-                .open(ImageString.corollaPicone);
+            Get.find<CarInventoryController>().open(ImageString.registrationForm);
           },
           child: Image.asset(
             IconString.uploadedIcon,
