@@ -7,7 +7,7 @@ class AddButton extends StatelessWidget {
   final double? height;
   final double? width;
   final VoidCallback onTap;
-  final BorderRadius? borderRadius; // <-- changed to BorderRadius?
+  final BorderRadius? borderRadius;
   final Widget? icon;
   final bool isIconLeft;
 
@@ -17,7 +17,7 @@ class AddButton extends StatelessWidget {
     required this.onTap,
     this.height,
     this.width,
-    this.borderRadius, // <-- nullable BorderRadius
+    this.borderRadius,
     this.icon,
     this.isIconLeft = true,
   });
@@ -32,7 +32,7 @@ class AddButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           color: AppColors.primaryColor,
-          borderRadius: borderRadius ?? BorderRadius.circular(8), // default 8
+          borderRadius: borderRadius ?? BorderRadius.circular(8),
         ),
         child: Center(
           child: icon != null

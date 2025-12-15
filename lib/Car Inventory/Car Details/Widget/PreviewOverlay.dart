@@ -138,7 +138,6 @@ class CarDocumentPreviewOverlay extends StatelessWidget {
                           ),
                         ],
                       ),
-
                     ],
                   ),
                 );

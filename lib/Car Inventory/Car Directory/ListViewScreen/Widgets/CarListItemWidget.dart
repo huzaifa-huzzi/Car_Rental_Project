@@ -131,7 +131,7 @@ class _CarListCardState extends State<CarListCard> {
 
 
 
- /// ---------- Extra Widgets
+ /// ---------- Extra Widgets----------//
 
 
    // innerWhiteCard
@@ -246,7 +246,7 @@ class _CarListCardState extends State<CarListCard> {
       child: Text(
         widget.status,
         style: TTextTheme.smallX(context)
-            ?.copyWith(color: txt, fontWeight: FontWeight.bold),
+            ?.copyWith(color: txt),
       ),
     );
   }

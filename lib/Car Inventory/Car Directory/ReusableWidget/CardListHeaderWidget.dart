@@ -62,21 +62,21 @@ class CardListHeaderWidget extends StatelessWidget {
         Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(
-            horizontal: horizontalPadding, // Use scaled padding (4.0 at 270px)
+            horizontal: horizontalPadding,
             vertical: AppSizes.verticalPadding(context),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // LEFT SECTION: Search Box & Filter Button
-              Expanded( // FIX 1: Wrap Left Row in Expanded to give max space to Search/Filter and push the right side
+              Expanded(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // Search Box
-                    Expanded( // FIX 2: Search Box takes up available space
+                    (isWeb)
+                        ? SizedBox(
+                      width: 260,
                       child: Container(
-                        // Remove fixed width constraint here
                         height: buttonHeight,
                         padding: EdgeInsets.symmetric(
                           horizontal: AppSizes.padding(context) * 0.5,
@@ -103,8 +103,49 @@ class CardListHeaderWidget extends StatelessWidget {
                                 decoration: InputDecoration(
                                   isCollapsed: true,
                                   contentPadding: EdgeInsets.zero,
-                                  // Shorter hint text for aggressive screens
-                                  hintText: screenWidth < 350 ? "Search..." : "Search client...",
+                                  hintText: screenWidth < 350
+                                      ? "Search..."
+                                      : "Search client name, car, etc...",
+                                  hintStyle: TTextTheme.smallX(context),
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                        : Expanded(
+                      child: Container(
+                        height: buttonHeight,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppSizes.padding(context) * 0.5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(
+                            AppSizes.borderRadius(context),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              IconString.searchIcon,
+                              color: AppColors.secondTextColor,
+                              width: 18,
+                              height: 18,
+                            ),
+                            SizedBox(width: AppSizes.padding(context) * 0.4),
+                            Expanded(
+                              child: TextField(
+                                cursorColor: AppColors.blackColor,
+                                style: TTextTheme.smallX(context),
+                                decoration: InputDecoration(
+                                  isCollapsed: true,
+                                  contentPadding: EdgeInsets.zero,
+                                  hintText: screenWidth < 350
+                                      ? "Search..."
+                                      : "Search client name, car, etc...",
                                   hintStyle: TTextTheme.smallX(context),
                                   border: InputBorder.none,
                                 ),
@@ -115,7 +156,8 @@ class CardListHeaderWidget extends StatelessWidget {
                       ),
                     ),
 
-                    SizedBox(width: smallSpacing), // Use scaled spacing (4.0 at 270px)
+
+                    SizedBox(width: smallSpacing),
 
                     // FILTER BUTTON
                     Obx(() {
@@ -124,7 +166,7 @@ class CardListHeaderWidget extends StatelessWidget {
                         icon: IconString.filterIcon,
                         text: "Filter",
                         isOpen: controller.isFilterOpen.value,
-                        showText: showFilterText, // Show text only on wider screens
+                        showText: showFilterText,
                         onTap: () {
                           controller.toggleFilter();
                           if (onFilter != null) onFilter!();
@@ -135,15 +177,13 @@ class CardListHeaderWidget extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(width: smallSpacing), // Space between Left and Right sections
+              SizedBox(width: smallSpacing),
 
-              // RIGHT SECTION: View Toggles & Add Button (mainAxisSize: MainAxisSize.min is crucial here)
               Obx(() {
                 final bool isUltraTight = screenWidth < tightSpacingThreshold;
 
                 final double buttonGap = isUltraTight ? 1.0 : 4.0;
 
-                // Adjust space between View Toggles and Add Button (minimal space below 400px)
                 final double addCarButtonSpacing = screenWidth < overflowFixThreshold ?
                 AppSizes.padding(context) * 0.75 :
                 AppSizes.padding(context) * 1.5;
@@ -153,7 +193,6 @@ class CardListHeaderWidget extends StatelessWidget {
                   children: [
                     Container(
                       padding: EdgeInsets.symmetric(
-                        // Aggressively reduced padding for screens < 380px
                         vertical: isUltraTight ? 2.0 : AppSizes.padding(context) * 0.1,
                         horizontal: isUltraTight ? 4.0 : AppSizes.padding(context) * 0.2,
                       ),
@@ -171,10 +210,10 @@ class CardListHeaderWidget extends StatelessWidget {
                             iconPath: IconString.previewOne,
                             isSelected: controller.selectedView.value == 0,
                             onTap: () => controller.selectedView.value = 0,
-                            size: viewToggleSize, // Use scaled size (28.0 at 270px)
+                            size: viewToggleSize,
                           ),
 
-                          SizedBox(width: buttonGap), // Minimal space
+                          SizedBox(width: buttonGap),
 
                           _selectableIconButton(
                             context: context,

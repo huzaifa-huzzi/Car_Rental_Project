@@ -24,32 +24,32 @@ import 'package:flutter/material.dart';
 class TTextTheme {
 
   static TextStyle h1Style(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 22, 32),fontWeight: FontWeight.w600,color: AppColors.textColor);
+    return _textStyle(fontSize:AppTextSizes.size(context, 22, 22, 32),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
 
   static TextStyle h3Style(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 26),fontWeight: FontWeight.w600,color: AppColors.textColor);
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 26),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
 
   static TextStyle h5Style(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 22),fontWeight: FontWeight.w600,color: AppColors.textColor);
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 22),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
 
   static TextStyle h6Style(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 20),fontWeight: FontWeight.w500,color: AppColors.textColor);
+    return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 20),fontWeight: FontWeight.w500,color: AppColors.textColor);
   }
 
   static TextStyle h7Style(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 20),fontWeight: FontWeight.w600,color: AppColors.textColor);
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 20),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
 
 
   static TextStyle btnOne(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 12, 14),fontWeight: FontWeight.w500,color: AppColors.quadrantalTextColor);
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 12),fontWeight: FontWeight.w500,color: AppColors.quadrantalTextColor);
   }
 
   static TextStyle btnTwo(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 12),fontWeight: FontWeight.w400,color: AppColors.secondTextColor);
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 12, 12),fontWeight: FontWeight.w400,color: AppColors.secondTextColor);
   }
 
   static TextStyle btnThree(BuildContext context){
@@ -57,37 +57,37 @@ class TTextTheme {
   }
 
   static TextStyle btnFour(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 12),fontWeight: FontWeight.w400,color: AppColors.textColor);
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w400,color: AppColors.textColor);
   }
   static TextStyle btnFive(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 12),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor);
+    return _textStyle(fontSize:AppTextSizes.size(context, 9, 9, 12),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor);
   }
 
   static TextStyle btnWhiteColor(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 12),fontWeight: FontWeight.w400,color: Colors.white);
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 12),fontWeight: FontWeight.w400,color: Colors.white);// (only for web)
   }
 
   static TextStyle btnCancel(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 14),fontWeight: FontWeight.w400,color: AppColors.textColor);
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.textColor);
   }
 
   static TextStyle titleOne(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 18),fontWeight: FontWeight.w600,color: AppColors.textColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 18),fontWeight: FontWeight.w600,color: AppColors.textColor,
     );
   }
 
   static TextStyle titleTwo(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 12),fontWeight: FontWeight.w500,color: AppColors.blackColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w500,color: AppColors.blackColor,
     );
   }
 
   static TextStyle titleThree(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 11),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
     );
   }
 
   static TextStyle titleFour(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 10),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 10),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
     );
   }
 
@@ -98,23 +98,23 @@ class TTextTheme {
   }
 
   static TextStyle titleSix(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 14),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 14),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
     );
   }
 
   static TextStyle titleseven(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 11),fontWeight: FontWeight.w400,color: AppColors.textColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 11, 11),fontWeight: FontWeight.w400,color: AppColors.textColor,
     );
   }
 
   static TextStyle titleeight(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 11),fontWeight: FontWeight.w400,color: Colors.white,
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 11),fontWeight: FontWeight.w400,color: Colors.white,
     );
   }
 
 
   static TextStyle titleSmallTexts(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 14),fontWeight: FontWeight.w500,color: AppColors.textColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 14),fontWeight: FontWeight.w500,color: AppColors.textColor,
     );
   }
 
@@ -124,17 +124,17 @@ class TTextTheme {
   }
 
   static TextStyle titleUpperHeading(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 12),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 12, 12),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
     );
   }
 
   static TextStyle smallX(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 10),fontWeight: FontWeight.w300,color: AppColors.quadrantalTextColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 11),fontWeight: FontWeight.w300,color: AppColors.quadrantalTextColor,
     );
   }
 
   static TextStyle smallXX(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 11),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 10),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
     );
   }
 
@@ -146,7 +146,7 @@ class TTextTheme {
 
 
   static TextStyle pOne(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 12),fontWeight: FontWeight.w400,color: AppColors.textColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 11, 11),fontWeight: FontWeight.w400,color: AppColors.textColor,
     );
   }
 
@@ -156,7 +156,7 @@ class TTextTheme {
   }
 
   static TextStyle pThree(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 9),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 11),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
     );
   }
 
@@ -171,12 +171,12 @@ class TTextTheme {
   }
 
   static TextStyle documnetIsnideSmallText(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 14),fontWeight: FontWeight.w500,color: AppColors.secondTextColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w500,color: AppColors.secondTextColor,
     );
   }
 
   static TextStyle documnetIsnideSmallText2(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 10),fontWeight: FontWeight.w500,color: AppColors.tertiaryTextColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 10),fontWeight: FontWeight.w500,color: AppColors.tertiaryTextColor,
     );
   }
 

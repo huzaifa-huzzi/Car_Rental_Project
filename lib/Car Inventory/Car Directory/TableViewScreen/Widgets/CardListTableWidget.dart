@@ -196,7 +196,6 @@ class CarListTableWidget extends StatelessWidget {
               text,
               style: TTextTheme.titleseven(context)?.copyWith(
                 color: textColor,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ),

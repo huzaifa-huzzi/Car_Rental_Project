@@ -116,6 +116,7 @@ class AddCarFormWidget extends StatelessWidget {
                 color: AppColors.secondaryColor,
               ),
               child: TextField(
+                cursorColor: AppColors.blackColor,
                 maxLines: 6,
                 decoration: InputDecoration(
                   hintText: TextString.descriptionTextFieldText,
