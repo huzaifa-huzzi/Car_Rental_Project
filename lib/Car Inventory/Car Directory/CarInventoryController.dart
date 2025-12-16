@@ -45,46 +45,40 @@ class CarInventoryController extends GetxController {
   /// Reusable Widget Controller
    // pagination  Widget
   final RxInt currentPage = 1.obs;
-  final int pageSize = 8;
+
+  // Make pageSize reactive
+  final RxInt pageSize = 8.obs;
 
   RxList<Map<String, dynamic>> carList = <Map<String, dynamic>>[].obs;
 
-
-  int get totalPages => (carList.length / pageSize).ceil();
-
+  int get totalPages => (carList.length / pageSize.value).ceil();
 
   RxList<Map<String, dynamic>> get displayedCarList {
-    int start = (currentPage.value - 1) * pageSize;
-    int end = start + pageSize;
-    if (end > carList.length) {
-      end = carList.length;
-    }
-
+    int start = (currentPage.value - 1) * pageSize.value;
+    int end = start + pageSize.value;
+    if (end > carList.length) end = carList.length;
 
     if (carList.isEmpty) return <Map<String, dynamic>>[].obs;
 
     return carList.sublist(start, end).obs;
   }
 
-
   void goToPreviousPage() {
-    if (currentPage.value > 1) {
-      currentPage.value--;
-    }
+    if (currentPage.value > 1) currentPage.value--;
   }
-
 
   void goToNextPage() {
-    if (currentPage.value < totalPages) {
-      currentPage.value++;
-    }
+    if (currentPage.value < totalPages) currentPage.value++;
   }
 
-
   void goToPage(int page) {
-    if (page >= 1 && page <= totalPages) {
-      currentPage.value = page;
-    }
+    if (page >= 1 && page <= totalPages) currentPage.value = page;
+  }
+
+  /// Set a new page size from dropdown
+  void setPageSize(int newSize) {
+    pageSize.value = newSize;
+    currentPage.value = 1;
   }
 
 
@@ -238,7 +232,7 @@ class CarInventoryController extends GetxController {
   /// Car Details Screen getx
   RxInt selectedIndex = 0.obs;
 
-  
+
   void changeImage(int index) {
     selectedIndex.value = index;
   }

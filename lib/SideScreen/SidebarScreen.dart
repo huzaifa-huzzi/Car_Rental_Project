@@ -225,20 +225,13 @@ class SidebarScreen extends StatelessWidget {
     required Widget child,
     bool hideMobileAppBar = false,
   }) {
-    return Builder(builder: (context) {
-      bool isNarrowScreen = AppSizes.isMobile(context) || (MediaQuery.of(context).size.width < 1100 && !AppSizes.isMobile(context));
-
-
-      if (isNarrowScreen && hideMobileAppBar) {
-        return child;
-      } else {
-        return SidebarScreen(
-          onTap: (value) {},
-          hideMobileAppBar: hideMobileAppBar,
-          child: child,
-        );
-      }
-    });
+    return SidebarScreen(
+      onTap: (value) {},
+      hideMobileAppBar: hideMobileAppBar,
+      child: child,
+    );
   }
+
+
 
 }

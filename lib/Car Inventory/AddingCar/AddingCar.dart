@@ -9,7 +9,7 @@ class AddingCarScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    // ✅ VARIABLES ALWAYS HERE
+
     final bool isMobile = AppSizes.isMobile(context);
     final bool isTablet = AppSizes.isTablet(context);
     final bool isWeb = AppSizes.isWeb(context);

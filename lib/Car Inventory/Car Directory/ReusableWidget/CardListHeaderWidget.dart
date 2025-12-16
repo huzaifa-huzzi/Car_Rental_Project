@@ -23,244 +23,217 @@ class CardListHeaderWidget extends StatelessWidget {
   });
 
   @override
+  @override
   Widget build(BuildContext context) {
-    bool isMobile = AppSizes.isMobile(context);
-    bool isWeb = AppSizes.isWeb(context);
-
-    final CarInventoryController controller = Get.put(CarInventoryController());
+    final bool isMobile = AppSizes.isMobile(context);
+    final bool isTablet = AppSizes.isTablet(context);
+    final bool isWeb = AppSizes.isWeb(context);
+    final controller = Get.find<CarInventoryController>();
 
     final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isSmallMobile = screenWidth <= 300;
 
-
-    const double narrowThreshold = 350.0;
-    const double veryNarrowThreshold = 280.0;
-    const double tightSpacingThreshold = 380.0;
+    const double minimumRowWidth = 720.0;
     const double filterTextHideThreshold = 450.0;
-    const double overflowFixThreshold = 400.0;
+    const double tightSpacingThreshold = 380.0;
+
+    final double horizontalPadding =
+    screenWidth < 280 ? 4.0 : AppSizes.horizontalPadding(context);
+
+    final double smallSpacing =
+    screenWidth < 280 ? 4.0 : AppSizes.padding(context) * 0.75;
+
+    final double buttonHeight =
+    isMobile ? 38.0 : AppSizes.buttonHeight(context) * 0.8;
+
+    final bool showFilterText =
+        screenWidth >= filterTextHideThreshold && !isMobile;
+
+    final double viewToggleSize =
+    isSmallMobile ? 28.0 : isMobile ? 32.0 : buttonHeight * 0.85;
 
 
-
-    final double horizontalPadding = screenWidth < veryNarrowThreshold ? 4.0 : AppSizes.horizontalPadding(context);
-
-    final double smallSpacing = screenWidth < veryNarrowThreshold ? 4.0 : AppSizes.padding(context) * 0.75;
-
-    final double buttonHeight = isMobile
-        ? 38.0
-        : AppSizes.buttonHeight(context) * 0.8;
-
-    final double searchBoxWidth = isMobile ? 140 : AppSizes.buttonWidth(context) * 1.5;
-
-
-    final bool showFilterText = screenWidth >= filterTextHideThreshold && !isMobile;
-
-
-    final double viewToggleSize = screenWidth < veryNarrowThreshold ? 28.0 : isMobile ? 32.0 : buttonHeight * 0.85;
-
-
-    return Column(
-      children: [
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(
-            horizontal: horizontalPadding,
-            vertical: AppSizes.verticalPadding(context),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Search Box
-                    (isWeb)
-                        ? SizedBox(
-                      width: 260,
-                      child: Container(
-                        height: buttonHeight,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: AppSizes.padding(context) * 0.5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(
-                            AppSizes.borderRadius(context),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              IconString.searchIcon,
-                              color: AppColors.secondTextColor,
-                              width: 18,
-                              height: 18,
-                            ),
-                            SizedBox(width: AppSizes.padding(context) * 0.4),
-                            Expanded(
-                              child: TextField(
-                                cursorColor: AppColors.blackColor,
-                                style: TTextTheme.titleTwo(context),
-                                decoration: InputDecoration(
-                                  isCollapsed: true,
-                                  contentPadding: EdgeInsets.zero,
-                                  hintText: screenWidth < 350
-                                      ? "Search..."
-                                      : "Search client name, car, etc...",
-                                  hintStyle: TTextTheme.smallX(context),
-                                  border: InputBorder.none,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                        : Expanded(
-                      child: Container(
-                        height: buttonHeight,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: AppSizes.padding(context) * 0.5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(
-                            AppSizes.borderRadius(context),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              IconString.searchIcon,
-                              color: AppColors.secondTextColor,
-                              width: 18,
-                              height: 18,
-                            ),
-                            SizedBox(width: AppSizes.padding(context) * 0.4),
-                            Expanded(
-                              child: TextField(
-                                cursorColor: AppColors.blackColor,
-                                style: TTextTheme.smallX(context),
-                                decoration: InputDecoration(
-                                  isCollapsed: true,
-                                  contentPadding: EdgeInsets.zero,
-                                  hintText: screenWidth < 350
-                                      ? "Search..."
-                                      : "Search client name, car, etc...",
-                                  hintStyle: TTextTheme.smallX(context),
-                                  border: InputBorder.none,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-
-                    SizedBox(width: smallSpacing),
-
-                    // FILTER BUTTON
-                    Obx(() {
-                      return _headerButton(
-                        context: context,
-                        icon: IconString.filterIcon,
-                        text: "Filter",
-                        isOpen: controller.isFilterOpen.value,
-                        showText: showFilterText,
-                        onTap: () {
-                          controller.toggleFilter();
-                          if (onFilter != null) onFilter!();
-                        },
-                      );
-                    }),
-                  ],
+    Widget searchBar({required bool compact}) {
+      return Container(
+        height: buttonHeight,
+        padding: EdgeInsets.symmetric(horizontal: AppSizes.padding(context) * 0.5),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+        ),
+        child: Row(
+          children: [
+            Image.asset(
+              IconString.searchIcon,
+              color: AppColors.secondTextColor,
+              width: 18,
+              height: 18,
+            ),
+            SizedBox(width: AppSizes.padding(context) * 0.4),
+            Expanded(
+              child: TextField(
+                cursorColor: AppColors.blackColor,
+                style: compact ? TTextTheme.smallX(context) : TTextTheme.titleTwo(context),
+                decoration: InputDecoration(
+                  isCollapsed: true,
+                  contentPadding: EdgeInsets.zero,
+                  hintText: isMobile || isTablet
+                      ? "Search..."
+                      : "Search client name, car, etc",
+                  hintStyle: TTextTheme.smallX(context),
+                  border: InputBorder.none,
                 ),
               ),
+            ),
+          ],
+        ),
+      );
+    }
 
-              SizedBox(width: smallSpacing),
+    Widget filterButton = Obx(() {
+      return _headerButton(
+        context: context,
+        icon: IconString.filterIcon,
+        text: "Filter",
+        isOpen: controller.isFilterOpen.value,
+        showText: showFilterText,
+        onTap: controller.toggleFilter,
+      );
+    });
 
-              Obx(() {
-                final bool isUltraTight = screenWidth < tightSpacingThreshold;
+    Widget viewToggle = Obx(() {
+      final bool isUltraTight = screenWidth < tightSpacingThreshold;
+      final double gap = isUltraTight ? 1.0 : 4.0;
 
-                final double buttonGap = isUltraTight ? 1.0 : 4.0;
+      return Container(
+        padding: EdgeInsets.symmetric(
+          vertical: isUltraTight ? 2 : 6,
+          horizontal: isUltraTight ? 4 : 6,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _selectableIconButton(
+              context: context,
+              iconPath: IconString.previewOne,
+              isSelected: controller.selectedView.value == 0,
+              onTap: () => controller.selectedView.value = 0,
+              size: viewToggleSize,
+            ),
+            SizedBox(width: gap),
+            _selectableIconButton(
+              context: context,
+              iconPath: IconString.previewTwo,
+              isSelected: controller.selectedView.value == 1,
+              onTap: () => controller.selectedView.value = 1,
+              size: viewToggleSize,
+            ),
+            SizedBox(width: gap),
+            _selectableIconButton(
+              context: context,
+              iconPath: IconString.previewThree,
+              isSelected: controller.selectedView.value == 2,
+              onTap: () => controller.selectedView.value = 2,
+              size: viewToggleSize,
+            ),
+          ],
+        ),
+      );
+    });
 
-                final double addCarButtonSpacing = screenWidth < overflowFixThreshold ?
-                AppSizes.padding(context) * 0.75 :
-                AppSizes.padding(context) * 1.5;
+    Widget addCarButton = AddButton(
+      text: "Add Car",
+      width: 120,
+      onTap: () {
+        context.push('/addNewCar', extra: {"hideMobileAppBar": true});
+      },
+    );
 
-                return Row(
-                  mainAxisSize: MainAxisSize.min,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final double maxWidth = constraints.maxWidth;
+
+
+            if (maxWidth >= minimumRowWidth) {
+              return Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: horizontalPadding,
+                  vertical: AppSizes.verticalPadding(context),
+                ),
+                child: Row(
                   children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: isUltraTight ? 2.0 : AppSizes.padding(context) * 0.1,
-                        horizontal: isUltraTight ? 4.0 : AppSizes.padding(context) * 0.2,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(
-                          AppSizes.borderRadius(context),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _selectableIconButton(
-                            context: context,
-                            iconPath: IconString.previewOne,
-                            isSelected: controller.selectedView.value == 0,
-                            onTap: () => controller.selectedView.value = 0,
-                            size: viewToggleSize,
-                          ),
-
-                          SizedBox(width: buttonGap),
-
-                          _selectableIconButton(
-                            context: context,
-                            iconPath: IconString.previewTwo,
-                            isSelected: controller.selectedView.value == 1,
-                            onTap: () => controller.selectedView.value = 1,
-                            size: viewToggleSize,
-                          ),
-
-                          SizedBox(width: buttonGap),
-
-                          _selectableIconButton(
-                            context: context,
-                            iconPath: IconString.previewThree,
-                            isSelected: controller.selectedView.value == 2,
-                            onTap: () => controller.selectedView.value = 2,
-                            size: viewToggleSize,
-                          ),
-                        ],
-                      ),
+                    // LEFT SIDE
+                    Row(
+                      children: [
+                        SizedBox(width: 220, child: searchBar(compact: false)),
+                        SizedBox(width: smallSpacing),
+                        filterButton,
+                      ],
                     ),
-
-                    if (isWeb) ...[
-                      SizedBox(width: addCarButtonSpacing),
-                      AddButton(text: "Add Car", width: 120, onTap: () {
-                        context.push(
-                          '/addNewCar',
-                          extra: {"hideMobileAppBar": true},
-                        );
-                      }),
-                    ],
+                    const Spacer(),
+                    // RIGHT SIDE
+                    Row(
+                      children: [
+                        viewToggle,
+                        if (isWeb) ...[const SizedBox(width: 16), addCarButton],
+                      ],
+                    ),
                   ],
-                );
-              }),
-            ],
-          ),
+                ),
+              );
+            }
+
+            //  MOBILE / TABLET widget
+            final bool forceScroll = maxWidth < 200;
+
+            Widget content = Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // LEFT SIDE
+                Flexible(
+                  flex: 3,
+                  child: SizedBox(
+                    width: maxWidth < 260 ? 140 : 200,
+                    child: searchBar(compact: true),
+                  ),
+                ),
+                SizedBox(width: smallSpacing),
+                filterButton,
+                const Spacer(),
+                // RIGHT SIDE
+                viewToggle,
+                if (isWeb) ...[const SizedBox(width: 12), addCarButton],
+              ],
+            );
+
+            // SCROLL SAFETY
+            if (forceScroll) {
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(children: [content]),
+              );
+            }
+
+            return content;
+          },
         ),
 
-        // FILTER AREA
         Obx(() {
           return controller.isFilterOpen.value
               ? _buildFilterContainer(context)
-              : SizedBox();
+              : const SizedBox.shrink();
         }),
       ],
     );
   }
+
 
   /// ----------Extra Widgets (used in the above code)----------///
 

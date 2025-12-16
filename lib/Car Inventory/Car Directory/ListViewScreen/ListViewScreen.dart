@@ -12,7 +12,8 @@ class ListViewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = AppSizes.isMobile(context);
     final isTab = AppSizes.isTablet(context);
-    final needHorizontalScroll = isMobile || isTab;
+    final isWeb = AppSizes.isWeb(context);
+    final needHorizontalScroll = isMobile || isTab || isWeb; // web also scrollable now
     final tablePadding = AppSizes.padding(context);
     final baseVerticalSpace = AppSizes.verticalPadding(context);
 
@@ -20,7 +21,6 @@ class ListViewScreen extends StatelessWidget {
       builder: (context, constraints) {
         Widget cardListContent = Column(
           children: [
-
             CarListCard(
               image: ImageString.astonPic,
               name: "Aston",
@@ -32,15 +32,11 @@ class ListViewScreen extends StatelessWidget {
               status: "Available",
               regId: "HPC-982",
               onView: () {
-                context.push(
-                  '/cardetails',
-                  extra: {"hideMobileAppBar": true},
-                );
+                context.push('/cardetails', extra: {"hideMobileAppBar": true});
               },
               onEdit: () {},
               onDelete: () {},
             ),
-
             CarListCard(
               image: ImageString.bmwPic,
               name: "Range Rover",
@@ -52,17 +48,13 @@ class ListViewScreen extends StatelessWidget {
               status: "Maintenance",
               regId: "HPC-982",
               onView: () {
-                context.push(
-                  '/cardetails',
-                  extra: {"hideMobileAppBar": true},
-                );
+                context.push('/cardetails', extra: {"hideMobileAppBar": true});
               },
               onEdit: () {},
               onDelete: () {},
             ),
-
             CarListCard(
-              image:ImageString.bmwPic ,
+              image: ImageString.bmwPic,
               name: "BMW",
               secondname: "LX3",
               model: "2023",
@@ -72,15 +64,11 @@ class ListViewScreen extends StatelessWidget {
               status: "Available",
               regId: "HPC-982",
               onView: () {
-                context.push(
-                  '/cardetails',
-                  extra: {"hideMobileAppBar": true},
-                );
+                context.push('/cardetails', extra: {"hideMobileAppBar": true});
               },
               onEdit: () {},
               onDelete: () {},
             ),
-
             CarListCard(
               image: ImageString.audiPic,
               name: "Audi",
@@ -92,48 +80,32 @@ class ListViewScreen extends StatelessWidget {
               status: "unavailable",
               regId: "HPC-982",
               onView: () {
-                context.push(
-                  '/cardetails',
-                  extra: {"hideMobileAppBar": true},
-                );
+                context.push('/cardetails', extra: {"hideMobileAppBar": true});
               },
               onEdit: () {},
               onDelete: () {},
             ),
-            CarListCard(
-              image: ImageString.astonPic,
-              name: "Aston",
-              secondname: "Matrin",
-              model: "2025",
-              transmission: "Automatic",
-              capacity: "2 seats",
-              price: "\$130 / weekly",
-              status: "Available",
-              regId: "HPC-982",
-              onView: () {
-                context.push(
-                  '/cardetails',
-                  extra: {"hideMobileAppBar": true},
-                );
-              },
-              onEdit: () {},
-              onDelete: () {},
-            ),
-
-
             PaginationBar(isMobile: isMobile, tablePadding: tablePadding),
-
             SizedBox(height: baseVerticalSpace * 1.25),
           ],
         );
 
-
+        // Use horizontal scroll if needed
         if (needHorizontalScroll) {
           return SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: SizedBox(
-              width: 900,
-              child: cardListContent,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minWidth: constraints.maxWidth,
+              ),
+              child: SizedBox(
+                width: isMobile
+                    ? 900
+                    : isTab
+                    ? 1000
+                    : isWeb ? 1100:1200,
+                child: cardListContent,
+              ),
             ),
           );
         } else {

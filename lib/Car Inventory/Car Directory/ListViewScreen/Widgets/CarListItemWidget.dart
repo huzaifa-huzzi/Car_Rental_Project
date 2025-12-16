@@ -98,8 +98,6 @@ class _CarListCardState extends State<CarListCard> {
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(AppSizes.borderRadius(context)),
                       bottomLeft: Radius.circular(AppSizes.borderRadius(context)),
-                      bottomRight: Radius.circular(AppSizes.borderRadius(context)),
-                      topRight: Radius.circular(AppSizes.borderRadius(context)),
                     ),
                     border: Border.all(
                       color: isHover ? AppColors.primaryColor : Colors.transparent,
@@ -131,10 +129,10 @@ class _CarListCardState extends State<CarListCard> {
 
 
 
- /// ---------- Extra Widgets----------//
+  /// ---------- Extra Widgets----------//
 
 
-   // innerWhiteCard
+  // innerWhiteCard
   Widget _innerWhiteCard(BuildContext context) {
     return Row(
       children: [
@@ -153,9 +151,9 @@ class _CarListCardState extends State<CarListCard> {
       ],
     );
   }
-   // carImage Widget
+  // carImage Widget
   Widget _buildCarImage(BuildContext context) {
-    double width = AppSizes.isWeb(context) ? 140 : 100;
+    double width = AppSizes.isWeb(context) ? 140 : 140;
 
     String img = widget.image.startsWith("assets/")
         ? widget.image
@@ -172,7 +170,7 @@ class _CarListCardState extends State<CarListCard> {
       ),
     );
   }
-   // car details widget
+  // car details widget
   Widget _buildCarDetails(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,7 +204,7 @@ class _CarListCardState extends State<CarListCard> {
     );
   }
 
-   // title block widget
+  // title block widget
   Widget _titleBlock(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -222,7 +220,7 @@ class _CarListCardState extends State<CarListCard> {
       ],
     );
   }
-   // status badge widget
+  // status badge widget
   Widget _statusBadge(BuildContext context) {
     Color bg = Colors.transparent;
     Color txt = Colors.black;
@@ -295,7 +293,7 @@ class _CarListCardState extends State<CarListCard> {
       ],
     );
   }
-   // price block widget
+  // price block widget
   Widget _priceBlock(BuildContext context) {
     String amount = widget.price.split(RegExp(r'\/'))[0].trim();
     String period =

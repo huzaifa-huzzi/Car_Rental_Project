@@ -16,26 +16,29 @@ class PaginationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Obx(() {
       final alignment = isMobile ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween;
 
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: tablePadding, vertical: 12),
-        child: Row(
-          mainAxisAlignment: alignment,
-          children: [
-
-            if (!isMobile)
-              _resultsPerPageDropdown(context),
-
-            _paginationControls(context),
-          ],
-        ),
+      Widget rowContent = Row(
+        mainAxisAlignment: alignment,
+        children: [
+          if (!isMobile) _resultsPerPageDropdown(context),
+          _paginationControls(context),
+        ],
       );
+
+      if (isMobile) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          child: rowContent,
+        );
+      } else {
+        return rowContent;
+      }
     });
   }
+
 
 
   ///  RESULTS PER PAGE DROPDOWN (Left side content for web only )
@@ -83,47 +86,54 @@ class PaginationBar extends StatelessWidget {
   }
 
 
-  /// ----------------- PAGINATION CONTROLS (Prev | 1 2 3 4 | Next) -----------------
+  /// ----------------- PAGINATION CONTROLS -----------------
   Widget _paginationControls(BuildContext context) {
-
     final double buttonSize = isMobile ? 32 : 36;
 
     Widget prevButton = _pageButton(context, "Prev", onTap: () {}, isText: true);
-
-
     Widget nextButton = _pageButton(context, "Next", onTap: () {}, isText: true);
-
 
     List<Widget> pageButtons = [];
     final int total = controller.totalPages;
-
-
     int maxDisplayPages = total > 4 ? 4 : total;
 
     for (int i = 1; i <= maxDisplayPages; i++) {
       pageButtons.add(_pageButton(
         context,
         i.toString(),
-
         isSelected: controller.currentPage.value == i,
         onTap: () => controller.goToPage(i),
         size: buttonSize,
       ));
     }
 
-
-    return Row(
+    Widget paginationRow = Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         prevButton,
-        const SizedBox(width: 8),
-        ...pageButtons,
-        const SizedBox(width: 8),
+        const SizedBox(width: 4),
+        ...pageButtons.map((w) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 2),
+          child: w,
+        )),
+        const SizedBox(width: 4),
         nextButton,
       ],
     );
+
+    if (isMobile) {
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        child: paginationRow, // no ConstrainedBox
+      );
+    } else {
+      return paginationRow;
+    }
+
   }
 
-  /// ----------------- INDIVIDUAL PAGE BUTTON -----------------
+
   Widget _pageButton(BuildContext context, String text, {
     required VoidCallback onTap,
     bool isSelected = false,
