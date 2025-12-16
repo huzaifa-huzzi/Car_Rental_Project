@@ -11,6 +11,7 @@ class CarDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isMobile = AppSizes.isMobile(context);
+    bool isWeb = AppSizes.isWeb(context);
 
     Widget body = SingleChildScrollView(
       child: Padding(
@@ -26,8 +27,8 @@ class CarDetailsScreen extends StatelessWidget {
               showBack: true,
               showSmallTitle: true,
               smallTitle: 'Cars/Cars Details',
-              showSearch: !isMobile,
-              showSettings: !isMobile,
+              showSearch: isWeb,
+              showSettings: isWeb,
               showAddButton: true,
               showNotification: true,
               showProfile: true,

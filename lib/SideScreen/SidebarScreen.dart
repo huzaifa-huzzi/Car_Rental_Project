@@ -24,12 +24,11 @@ class SidebarScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-
     final bool isMobile = AppSizes.isMobile(context);
+    final bool isTab = AppSizes.isTablet(context);
+    final bool isWeb = AppSizes.isWeb(context);
+    final double sidebarWidth = isWeb ? 240 : 150;
 
-    final bool isTab = !isMobile && width < 1100;
-
-    final double sidebarWidth = width > 1100 ? 240 : 150;
 
     /// Sidebar content
     Widget sidebarContent({bool showLogo = true}) {
@@ -146,18 +145,14 @@ class SidebarScreen extends StatelessWidget {
       );
     }
 
+    // Appbars
 
-    /// Mobile AppBar
     if (isMobile) {
       return Scaffold(
         key: _scaffoldKey,
         drawer: Drawer(
           backgroundColor: Colors.white,
-          surfaceTintColor: Colors.transparent,
-          child: Container(
-            color: Colors.white,
-            child: sidebarContent(showLogo: false),
-          ),
+          child: sidebarContent(showLogo: false),
         ),
         appBar: hideMobileAppBar
             ? null
@@ -170,32 +165,20 @@ class SidebarScreen extends StatelessWidget {
             scaffoldKey: _scaffoldKey,
             profileImageUrl: ImageString.userImage,
             onAddPressed: () {
-              context.push(
-                '/addNewCar',
-                extra: {"hideMobileAppBar": true},
-              );
+              context.push('/addNewCar', extra: {"hideMobileAppBar": true});
             },
             onNotificationPressed: () {},
           ),
         ),
-
-        body: SafeArea(
-          child: child ?? const TableViewScreen(),
-        ),
+        body: SafeArea(child: child ?? const TableViewScreen()),
       );
     }
-
-    /// TABLET APPBAR
-    if (isTab) {
+    else if (isTab) {
       return Scaffold(
         key: _scaffoldKey,
         drawer: Drawer(
           backgroundColor: Colors.white,
-          surfaceTintColor: Colors.transparent,
-          child: Container(
-            color: Colors.white,
-            child: sidebarContent(showLogo: false),
-          ),
+          child: sidebarContent(showLogo: false),
         ),
         appBar: hideMobileAppBar
             ? null
@@ -208,39 +191,32 @@ class SidebarScreen extends StatelessWidget {
             scaffoldKey: _scaffoldKey,
             profileImageUrl: ImageString.userImage,
             onAddPressed: () {
-              context.push(
-                '/addNewCar',
-                extra: {"hideMobileAppBar": true},
-              );
+              context.push('/addNewCar', extra: {"hideMobileAppBar": true});
             },
             onNotificationPressed: () {},
           ),
         ),
-
+        body: SafeArea(child: child ?? const TableViewScreen()),
+      );
+    }
+    else {
+      //  WEB ONLY
+      return Scaffold(
         body: SafeArea(
-          child: child ?? const TableViewScreen(),
+          child: Row(
+            children: [
+              Container(
+                width: sidebarWidth,
+                color: Colors.white,
+                child: sidebarContent(showLogo: true),
+              ),
+              Expanded(child: child ?? const TableViewScreen()),
+            ],
+          ),
         ),
       );
     }
 
-
-    /// Web (Wide Screen View)
-    return Scaffold(
-      body: SafeArea(
-        child: Row(
-          children: [
-            Container(
-              width: sidebarWidth,
-              color: Colors.white,
-              child: sidebarContent(showLogo: true),
-            ),
-            Expanded(
-              child: child ?? const TableViewScreen(),
-            ),
-          ],
-        ),
-      ),
-    );
 
 
   }

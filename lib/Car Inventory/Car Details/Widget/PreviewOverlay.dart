@@ -30,11 +30,18 @@ class CarDocumentPreviewOverlay extends StatelessWidget {
                 double overlayWidth = constraints.maxWidth * 0.55;
                 overlayWidth = overlayWidth.clamp(300, 700);
                 final bool isWeb = AppSizes.isWeb(context);
+                final bool isMobile = AppSizes.isMobile(context);
+                final screenwidth = MediaQuery.sizeOf(context).width;
+                final bool isTablet = !isWeb && screenwidth >= 600;
 
                 double buttonWidth = (overlayWidth / 2 - 8).clamp(200, double.infinity);
 
                 return Container(
-                  width: overlayWidth,
+                  width: isWeb
+                      ? overlayWidth * 0.75
+                      : isTablet
+                      ? overlayWidth * 0.85
+                      : isMobile ? overlayWidth * 0.95:overlayWidth,
                   padding: EdgeInsets.all(AppSizes.padding(context)/2),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -75,7 +82,11 @@ class CarDocumentPreviewOverlay extends StatelessWidget {
                       // Image Preview
                       Center(
                         child: SizedBox(
-                          width: isWeb ? 300 : double.infinity,
+                          width: isWeb
+                              ? 300
+                              : isTablet
+                              ? 270
+                              : isMobile ? 230 :overlayWidth,
                           child: DottedBorder(
                             color: Colors.redAccent,
                             strokeWidth: 1,
@@ -84,7 +95,7 @@ class CarDocumentPreviewOverlay extends StatelessWidget {
                             radius: const Radius.circular(10),
                             child: Container(
                               height: AppSizes.cardHeight(context) + 80,
-                              padding: const EdgeInsets.all(6),
+                              padding: const EdgeInsets.all(8),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: Image.asset(
@@ -96,6 +107,7 @@ class CarDocumentPreviewOverlay extends StatelessWidget {
                           ),
                         ),
                       ),
+
 
 
                       SizedBox(height: AppSizes.verticalPadding(context)),

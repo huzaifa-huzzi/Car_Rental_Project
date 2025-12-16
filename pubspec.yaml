@@ -50,7 +50,6 @@ flutter:
 
   # ---------- Local Assets --------- #
   assets:
-    - assets/logo/
     - assets/icons/
     - assets/Images/CarInventoryPics/
 

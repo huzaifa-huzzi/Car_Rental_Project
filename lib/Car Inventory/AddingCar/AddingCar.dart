@@ -8,49 +8,50 @@ class AddingCarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isMobile = AppSizes.isMobile(context);
 
-    Widget content = SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSizes.horizontalPadding(context),
-          vertical: AppSizes.verticalPadding(context),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+    // ✅ VARIABLES ALWAYS HERE
+    final bool isMobile = AppSizes.isMobile(context);
+    final bool isTablet = AppSizes.isTablet(context);
+    final bool isWeb = AppSizes.isWeb(context);
 
-            /// HEADER
-            HeaderWebWidget(
-              mainTitle: 'Add New Car',
-              showBack: true,
-              showSmallTitle: true,
-              smallTitle: 'car/Add car Details',
-
-              /// Responsive Icons
-              showSearch: !isMobile,
-              showSettings: !isMobile,
-              showAddButton: isMobile,
-              showNotification: true,
-              showProfile: true,
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSizes.horizontalPadding(context),
+              vertical: AppSizes.verticalPadding(context),
             ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
 
-            SizedBox(height: AppSizes.verticalPadding(context) * 1.2),
+                /// HEADER
+                HeaderWebWidget(
+                  mainTitle: 'Add New Car',
+                  showBack: true,
+                  showSmallTitle: true,
+                  smallTitle: 'car/Add car Details',
 
-            /// FORM AREA
-            AddCarFormWidget(),
+                  /// Responsive Icons
+                  showSearch: isWeb,
+                  showSettings: isWeb,
+                  showAddButton: false,
+                  showNotification: true,
+                  showProfile: true,
+                ),
 
-            SizedBox(height: AppSizes.verticalPadding(context) * 2),
-          ],
+                SizedBox(height: AppSizes.verticalPadding(context) * 1.2),
+
+                /// FORM AREA
+                AddCarFormWidget(),
+
+                SizedBox(height: AppSizes.verticalPadding(context) * 2),
+              ],
+            ),
+          ),
         ),
       ),
     );
-
-
-    return Scaffold(
-
-      body: SafeArea(child: content),
-    );
-
   }
 }

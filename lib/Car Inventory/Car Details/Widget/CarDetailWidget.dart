@@ -626,32 +626,41 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
               int docColumnCount;
 
 
-              if (totalWidth < 350) {
+              if (totalWidth < 200) {
+                docColumnCount = 1;
+              } else if (totalWidth < 350) {
                 docColumnCount = 2;
               } else {
                 docColumnCount = 3;
               }
 
-              final double defaultMobileRatio = 0.85;
+
+              final double defaultMobileRatio = 0.70;
               final double defaultWebRatio = 4.8;
 
-              final double tightRatioForTwoColumns = 1.0;
+              final double tightRatioForTwoColumns = 0.8;
 
               final double finalRatio;
 
-              if (docColumnCount == 2) {
+
+              if (docColumnCount == 1) {
+                finalRatio = 1;
+              } else if (docColumnCount == 2) {
                 finalRatio = tightRatioForTwoColumns;
               } else {
                 finalRatio = isMobile ? defaultMobileRatio : defaultWebRatio;
               }
 
 
+
               return GridView.count(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 crossAxisCount: docColumnCount,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
+
+                mainAxisSpacing: docColumnCount == 1 ? 1 : 10,
+                crossAxisSpacing: docColumnCount == 1 ? 1 : 10,
+
                 childAspectRatio: finalRatio,
                 children: [
                   _buildDocumentTile(

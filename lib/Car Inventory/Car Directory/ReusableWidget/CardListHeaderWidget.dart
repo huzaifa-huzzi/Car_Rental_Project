@@ -99,7 +99,7 @@ class CardListHeaderWidget extends StatelessWidget {
                             Expanded(
                               child: TextField(
                                 cursorColor: AppColors.blackColor,
-                                style: TTextTheme.smallX(context),
+                                style: TTextTheme.titleTwo(context),
                                 decoration: InputDecoration(
                                   isCollapsed: true,
                                   contentPadding: EdgeInsets.zero,

@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
+import 'package:get/get.dart';
 
 
-class TabAppBar extends StatefulWidget {
+class TabAppBar extends StatefulWidget implements PreferredSizeWidget {
   final VoidCallback? onAddPressed;
   final VoidCallback? onNotificationPressed;
   final String profileImageUrl;
@@ -21,6 +22,9 @@ class TabAppBar extends StatefulWidget {
 
   @override
   State<TabAppBar> createState() => _TabAppBarState();
+
+  @override
+  Size get preferredSize => Size.fromHeight(AppSizes.buttonHeight(Get.context!));
 }
 
 class _TabAppBarState extends State<TabAppBar> with WidgetsBindingObserver {

@@ -50,6 +50,15 @@ class HeaderWebWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = AppSizes.isMobile(context);
     final isTablet = AppSizes.isTablet(context);
+    final isWeb = AppSizes.isWeb(context);
+    final bool isCompact = isMobile || isTablet;
+
+    final double addButtonSize = isMobile
+        ? 24.0
+        : isTablet
+        ? AppSizes.buttonHeight(context) * 0.6
+        : AppSizes.buttonHeight(context) * 0.7;
+
 
     const double minHorizontalPadding = 12.0;
     const double minInternalSpacing = 8.0;
@@ -139,51 +148,57 @@ class HeaderWebWidget extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
+
+
               if (showAddButton)
-                isMobile
+                isCompact
                     ? GestureDetector(
                   onTap: onAddPressed,
                   child: Container(
-                    height: 24.0,
-                    width: 24.0,
+                    width: addButtonSize,
+                    height: addButtonSize,
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.circular(AppSizes.borderRadius(context) * 0.5),
+                      borderRadius: BorderRadius.circular(
+                        AppSizes.borderRadius(context) * 0.8,
+                      ),
                     ),
                     child: Center(
                       child: Icon(
                         Icons.add,
-                        size: 14.0,
+                        size: isMobile ? 14.0 : 16.0,
                         color: Colors.white,
                       ),
                     ),
                   ),
                 )
-                    :
-                GestureDetector(
+                    : GestureDetector(
                   onTap: onAddPressed,
                   child: Container(
                     height: 40.0,
                     padding: EdgeInsets.symmetric(horizontal: finalInternalSpacing),
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.circular(AppSizes.borderRadius(context) * 0.5),
+                      borderRadius: BorderRadius.circular(
+                        AppSizes.borderRadius(context) * 0.5,
+                      ),
                     ),
                     child: Center(
                       child: Text(
                         "Add Car",
-                        style: TTextTheme.btnWhiteColor(context)
+                        style: TTextTheme.btnWhiteColor(context),
                       ),
                     ),
                   ),
                 ),
 
 
-              if (showAddButton && isMobile)
-                SizedBox(width: finalInternalSpacing * 0.5),
+              if (showAddButton && isCompact)
+                SizedBox(width: finalInternalSpacing * 0.6),
 
-              if (showAddButton && !isMobile)
+              if (showAddButton && !isCompact)
                 SizedBox(width: finalInternalSpacing),
+
 
               /// Search Icon
               if (showSearch)
@@ -258,7 +273,7 @@ class HeaderWebWidget extends StatelessWidget {
                       ),
                     ),
 
-                    if (!isMobile)
+                    if (isWeb)
                       Row(
                         children: [
                           SizedBox(width: finalInternalSpacing / 2),
@@ -277,6 +292,7 @@ class HeaderWebWidget extends StatelessWidget {
                           ),
                         ],
                       ),
+
                   ],
                 ),
             ],
