@@ -103,13 +103,6 @@ class _CarListCardState extends State<CarListCard> {
                       color: isHover ? AppColors.primaryColor : Colors.transparent,
                       width: 0.5,
                     ),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color.fromRGBO(0, 0, 0, 0.05),
-                        offset: Offset(0, 2),
-                        blurRadius: 4,
-                      ),
-                    ],
                   ),
                   child: _innerWhiteCard(context),
                 ),
@@ -327,8 +320,8 @@ class _CarListCardState extends State<CarListCard> {
     final double boxHeight = AppSizes.isWeb(context)
         ? 155
         : AppSizes.isTablet(context)
-        ? 135
-        : 115;
+        ? 128
+        : 119;
 
     return Container(
       height: boxHeight,
@@ -360,13 +353,6 @@ class _CarListCardState extends State<CarListCard> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.08),
-              blurRadius: 3,
-              offset: Offset(0, 1),
-            ),
-          ],
         ),
         child: Row(
           children: [
