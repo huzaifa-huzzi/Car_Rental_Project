@@ -123,8 +123,19 @@ class GridViewScreen extends StatelessWidget {
       child: Column(
         children: [
 
+          SizedBox(
+            height: AppSizes.isMobile(context)
+                ? AppSizes.verticalPadding(context) * 1.2
+                : AppSizes.isTablet(context)
+                ? AppSizes.verticalPadding(context) * 0.9
+                : AppSizes.verticalPadding(context) * 0.4,
+          ),
+
+
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppSizes.horizontalPadding(context)),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSizes.horizontalPadding(context),
+            ),
             child: GridView.count(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),

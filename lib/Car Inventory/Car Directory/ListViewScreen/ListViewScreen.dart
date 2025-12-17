@@ -13,7 +13,7 @@ class ListViewScreen extends StatelessWidget {
     final isMobile = AppSizes.isMobile(context);
     final isTab = AppSizes.isTablet(context);
     final isWeb = AppSizes.isWeb(context);
-    final needHorizontalScroll = isMobile || isTab || isWeb; // web also scrollable now
+    final needHorizontalScroll = isMobile || isTab || isWeb;
     final tablePadding = AppSizes.padding(context);
     final baseVerticalSpace = AppSizes.verticalPadding(context);
 
@@ -90,7 +90,7 @@ class ListViewScreen extends StatelessWidget {
           ],
         );
 
-        // Use horizontal scroll if needed
+
         if (needHorizontalScroll) {
           return SingleChildScrollView(
             scrollDirection: Axis.horizontal,

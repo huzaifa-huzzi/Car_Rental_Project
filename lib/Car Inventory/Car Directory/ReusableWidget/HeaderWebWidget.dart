@@ -77,6 +77,9 @@ class HeaderWebWidget extends StatelessWidget {
     final double tabletIconSize = AppSizes.buttonHeight(context) * 0.6;
 
     return Container(
+      margin: EdgeInsets.only(
+        bottom: isMobile ? 12 : 0,
+      ),
       padding: EdgeInsets.symmetric(
         vertical: AppSizes.verticalPadding(context),
         horizontal: finalHorizontalPadding,
@@ -85,66 +88,72 @@ class HeaderWebWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           /// LEFT SIDE (Back + Titles)
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (showBack)
-                GestureDetector(
-                  onTap: () {
-                    final router = GoRouter.of(context);
+          Expanded(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (showBack)
+                  GestureDetector(
+                    onTap: () {
+                      final router = GoRouter.of(context);
 
-                    if (onBackPressed != null) {
-                      onBackPressed!();
-                    } else if (router.canPop()) {
-                      router.pop();
-                    } else {
-                      router.go('/carInventory');
-                    }
-                  },
-                  child: Container(
-                    width: isMobile ? 30 : AppSizes.buttonHeight(context) * 0.7,
-                    height: isMobile ? 30 : AppSizes.buttonHeight(context) * 0.7,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                        AppSizes.borderRadius(context) * 0.7,
+                      if (onBackPressed != null) {
+                        onBackPressed!();
+                      } else if (router.canPop()) {
+                        router.pop();
+                      } else {
+                        router.go('/carInventory');
+                      }
+                    },
+                    child: Container(
+                      width: isMobile ? 30 : AppSizes.buttonHeight(context) * 0.7,
+                      height: isMobile ? 30 : AppSizes.buttonHeight(context) * 0.7,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          AppSizes.borderRadius(context) * 0.7,
+                        ),
+                        color: Colors.white,
                       ),
-                      color: Colors.white,
-                    ),
-                    child: Center(
-                      child: Image.asset(
-                        IconString.backScreenIcon,
-                        width: isMobile ? 18 : AppSizes.buttonHeight(context) * 0.45,
-                        height: isMobile ? 18 : AppSizes.buttonHeight(context) * 0.45,
+                      child: Center(
+                        child: Image.asset(
+                          IconString.backScreenIcon,
+                          width: isMobile ? 18 : AppSizes.buttonHeight(context) * 0.45,
+                          height: isMobile ? 18 : AppSizes.buttonHeight(context) * 0.45,
+                        ),
                       ),
                     ),
                   ),
-                ),
 
-              if (showBack) SizedBox(width: finalInternalSpacing),
+                if (showBack) SizedBox(width: finalInternalSpacing),
 
 
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (showSmallTitle)
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (showSmallTitle)
+                        Text(
+                          smallTitle ?? "",
+                          style: TTextTheme.titleUpperHeading(context),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+
                       Text(
-                        smallTitle ?? "",
-                        style: TTextTheme.titleUpperHeading(context),
+                        mainTitle,
+                        style: TTextTheme.titleOne(context),
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                    Text(
-                      mainTitle,
-                      style: TTextTheme.titleOne(context),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
 
-          /// RIGHT SIDE (Conditional Icons)
+          /// RIGHT SIDE
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -155,8 +164,9 @@ class HeaderWebWidget extends StatelessWidget {
                     ? GestureDetector(
                   onTap: onAddPressed,
                   child: Container(
+
                     width: addButtonSize,
-                    height: addButtonSize,
+                    height: addButtonSize/2,
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,
                       borderRadius: BorderRadius.circular(
@@ -175,7 +185,7 @@ class HeaderWebWidget extends StatelessWidget {
                     : GestureDetector(
                   onTap: onAddPressed,
                   child: Container(
-                    height: 40.0,
+                    height: 30.0,
                     padding: EdgeInsets.symmetric(horizontal: finalInternalSpacing),
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,

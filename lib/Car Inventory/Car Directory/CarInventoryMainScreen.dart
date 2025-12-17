@@ -27,8 +27,7 @@ class CarInventoryMainScreen extends StatelessWidget {
           child: Column(
             children: [
               if (AppSizes.isWeb(context)) HeaderWebWidget(mainTitle: 'Cars',showProfile: true,showNotification: true,showSettings: true,showSearch: true,),
-
-
+              SizedBox(height: 20,),
               CardListHeaderWidget(),
 
               Obx(() {
