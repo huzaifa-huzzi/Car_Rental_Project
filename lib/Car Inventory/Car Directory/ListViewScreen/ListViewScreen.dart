@@ -1,4 +1,5 @@
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ListViewScreen/Widgets/CarListItemWidget.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/AlertDialogs.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/PaginationWidget.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,15 @@ class ListViewScreen extends StatelessWidget {
       builder: (context, constraints) {
         Widget cardListContent = Column(
           children: [
+
+            SizedBox(
+              height: AppSizes.isMobile(context)
+                  ? AppSizes.verticalPadding(context) * 1.2
+                  : AppSizes.isTablet(context)
+                  ? AppSizes.verticalPadding(context) * 0.9
+                  : AppSizes.verticalPadding(context) * 0.4,
+            ),
+
             CarListCard(
               image: ImageString.astonPic,
               name: "Aston",
@@ -34,8 +44,38 @@ class ListViewScreen extends StatelessWidget {
               onView: () {
                 context.push('/cardetails', extra: {"hideMobileAppBar": true});
               },
-              onEdit: () {},
-              onDelete: () {},
+              onEdit: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) => ResponsiveConfirmDialog(
+                    type: DialogType.edit,
+                    onCancel: () {
+                    context.pop();
+                    },
+                    onConfirm: () {
+                      context.pop();
+                    },
+                  ),
+                );
+
+              },
+              onDelete: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) => ResponsiveConfirmDialog(
+                    type: DialogType.delete,
+                    onCancel: () {
+                      context.pop();
+                    },
+                    onConfirm: () {
+                      context.pop();
+                    },
+                  ),
+                );
+
+              },
             ),
             CarListCard(
               image: ImageString.bmwPic,
@@ -50,8 +90,38 @@ class ListViewScreen extends StatelessWidget {
               onView: () {
                 context.push('/cardetails', extra: {"hideMobileAppBar": true});
               },
-              onEdit: () {},
-              onDelete: () {},
+              onEdit: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) => ResponsiveConfirmDialog(
+                    type: DialogType.edit,
+                    onCancel: () {
+                      context.pop();
+                    },
+                    onConfirm: () {
+                      context.pop();
+                    },
+                  ),
+                );
+
+              },
+              onDelete: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) => ResponsiveConfirmDialog(
+                    type: DialogType.delete,
+                    onCancel: () {
+                      context.pop();
+                    },
+                    onConfirm: () {
+                      context.pop();
+                    },
+                  ),
+                );
+
+              },
             ),
             CarListCard(
               image: ImageString.bmwPic,
@@ -66,8 +136,36 @@ class ListViewScreen extends StatelessWidget {
               onView: () {
                 context.push('/cardetails', extra: {"hideMobileAppBar": true});
               },
-              onEdit: () {},
-              onDelete: () {},
+              onEdit: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) => ResponsiveConfirmDialog(
+                    type: DialogType.edit,
+                    onCancel: (){
+                      context.pop();
+                    },
+                    onConfirm: () {
+                      context.pop();
+                    },
+                  ),
+                );
+
+              },
+              onDelete: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) => ResponsiveConfirmDialog(
+                    type: DialogType.delete,
+                    onCancel: () => Navigator.pop(context),
+                    onConfirm: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                );
+
+              },
             ),
             CarListCard(
               image: ImageString.audiPic,
@@ -82,8 +180,34 @@ class ListViewScreen extends StatelessWidget {
               onView: () {
                 context.push('/cardetails', extra: {"hideMobileAppBar": true});
               },
-              onEdit: () {},
-              onDelete: () {},
+              onEdit: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) => ResponsiveConfirmDialog(
+                    type: DialogType.edit,
+                    onCancel: () => Navigator.pop(context),
+                    onConfirm: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                );
+
+              },
+              onDelete: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) => ResponsiveConfirmDialog(
+                    type: DialogType.delete,
+                    onCancel: () => Navigator.pop(context),
+                    onConfirm: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                );
+
+              },
             ),
             PaginationBar(isMobile: isMobile, tablePadding: tablePadding),
             SizedBox(height: baseVerticalSpace * 1.25),

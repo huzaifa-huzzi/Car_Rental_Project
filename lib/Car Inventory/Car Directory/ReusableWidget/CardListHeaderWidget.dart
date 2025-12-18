@@ -107,7 +107,7 @@ class CardListHeaderWidget extends StatelessWidget {
 
       return Container(
         padding: EdgeInsets.symmetric(
-          vertical: isUltraTight ? 2 : 6,
+          vertical: isUltraTight ? 2 : 2,
           horizontal: isUltraTight ? 4 : 6,
         ),
         decoration: BoxDecoration(
@@ -148,6 +148,7 @@ class CardListHeaderWidget extends StatelessWidget {
     Widget addCarButton = AddButton(
       text: "Add Car",
       width: 120,
+      height: 40,
       onTap: () {
         context.push('/addNewCar', extra: {"hideMobileAppBar": true});
       },

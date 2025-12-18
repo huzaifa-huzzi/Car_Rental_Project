@@ -257,7 +257,6 @@ class _CarListCardState extends State<CarListCard> {
     );
   }
 
-
   Widget _specBlock(
       BuildContext context, String icon, String title, String value) {
     return Column(

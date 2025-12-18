@@ -276,7 +276,7 @@ class CarGridItem extends StatelessWidget {
       padding: EdgeInsets.all(padding),
       child: LayoutBuilder(
           builder: (context, bConstraints) {
-            double btnHeight = bConstraints.maxWidth < 150 ? 27 : 32;
+            double btnHeight = bConstraints.maxWidth < 150 ? 29 : 35;
             return Row(
               children: [
                 Expanded(

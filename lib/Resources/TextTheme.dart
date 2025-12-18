@@ -71,6 +71,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.textColor);
   }
 
+  static TextStyle btnConfirm(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w500,color: Colors.white);
+  }
+
   static TextStyle titleOne(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 18),fontWeight: FontWeight.w600,color: AppColors.textColor,
     );

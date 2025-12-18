@@ -1,10 +1,12 @@
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/CarInventoryController.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/AlertDialogs.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import '../../../Resources/IconStrings.dart' show IconString;
 import '../../../Resources/TextString.dart' show TextString;
 
@@ -319,9 +321,35 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
 
               Row(
                 children: [
-                  _buildIconButton(context, Icons.edit),
+                  _buildIconButton(context, IconString.editIcon,onTap: (){
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (_) => ResponsiveConfirmDialog(
+                        type: DialogType.edit,
+                        onCancel: () => Navigator.pop(context),
+                        onConfirm: () {
+                          context.pop();
+                        },
+                      ),
+                    );
+
+                  }),
                   SizedBox(width: 8),
-                  _buildIconButton(context, Icons.delete_outline),
+                  _buildIconButton(context, IconString.deleteIcon,onTap: (){
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (_) => ResponsiveConfirmDialog(
+                        type: DialogType.delete,
+                        onCancel: () => context.pop(),
+                        onConfirm: () {
+                          context.pop();
+                        },
+                      ),
+                    );
+
+                  }),
                 ],
               ),
             ],
@@ -395,12 +423,37 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
               children: [
                 _buildIconButton(
                   context,
-                  Icons.edit,
+                 IconString.editIcon,
                   label: "Edit",
-                  onTap: () {},
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (_) => ResponsiveConfirmDialog(
+                        type: DialogType.edit,
+                        onCancel: () => Navigator.pop(context),
+                        onConfirm: () {
+                          context.pop();
+                        },
+                      ),
+                    );
+                  },
                 ),
                 SizedBox(width: 8),
-                _buildIconButton(context, Icons.delete_outline),
+                _buildIconButton(context, IconString.deleteIcon,onTap: (){
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (_) => ResponsiveConfirmDialog(
+                      type: DialogType.delete,
+                      onCancel: () => Navigator.pop(context),
+                      onConfirm: () {
+                        context.pop();
+                      },
+                    ),
+                  );
+
+                }),
               ],
             ),
           ],
@@ -605,11 +658,11 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
   }
 
 
-//  Documents Section for Mobile
+//  Documents Section
   Widget _buildCarDocumentsSection(BuildContext context) {
     final spacing = AppSizes.padding(context);
     final isMobile = AppSizes.isMobile(context);
-
+    final tab = AppSizes.isTablet(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -619,227 +672,192 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
           style: TTextTheme.titleSix(context),
         ),
         SizedBox(height: spacing),
-
         LayoutBuilder(
-            builder: (context, constraints) {
-              final double totalWidth = constraints.maxWidth;
-              int docColumnCount;
+          builder: (context, constraints) {
+            final double totalWidth = constraints.maxWidth;
 
+            double itemWidth;
+            double gap = 15.0;
 
-              if (totalWidth < 200) {
-                docColumnCount = 1;
-              } else if (totalWidth < 350) {
-                docColumnCount = 2;
-              } else {
-                docColumnCount = 3;
-              }
-
-
-              final double defaultMobileRatio = 0.70;
-              final double defaultWebRatio = 4.8;
-
-              final double tightRatioForTwoColumns = 0.8;
-
-              final double finalRatio;
-
-
-              if (docColumnCount == 1) {
-                finalRatio = 1;
-              } else if (docColumnCount == 2) {
-                finalRatio = tightRatioForTwoColumns;
-              } else {
-                finalRatio = isMobile ? defaultMobileRatio : defaultWebRatio;
-              }
-
-
-
-              return GridView.count(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                crossAxisCount: docColumnCount,
-
-                mainAxisSpacing: docColumnCount == 1 ? 1 : 10,
-                crossAxisSpacing: docColumnCount == 1 ? 1 : 10,
-
-                childAspectRatio: finalRatio,
-                children: [
-                  _buildDocumentTile(
-                    context,
-                    "Registration",
-                    "1HFC-052",
-                    true,
-                    isMobile: isMobile,
-                  ),
-                  _buildDocumentTile(
-                    context,
-                    "Tax Token",
-                    "Uploaded",
-                    true,
-                    isMobile: isMobile,
-                  ),
-                  _buildDocumentTile(
-                    context,
-                    "Incoherence Paper",
-                    "Uploaded",
-                    true,
-                    isMobile: isMobile,
-                  ),
-                ],
-              );
+            if (totalWidth < 250) {
+              itemWidth = totalWidth;
+            } else if (totalWidth < 480) {
+              itemWidth = (totalWidth - gap) / 2;
+            } else {
+              itemWidth = (totalWidth - (gap * 2)) / 3;
             }
+
+            return Wrap(
+              spacing: gap,
+              runSpacing: 12.0,
+              children: [
+                SizedBox(
+                  width: itemWidth,
+                  child: _buildDocumentTile(
+                    context, "Registration", "1HFC-052", true,
+                    isMobile: isMobile, tab: tab,
+                  ),
+                ),
+                SizedBox(
+                  width: itemWidth,
+                  child: _buildDocumentTile(
+                    context, "Tax Token", "Uploaded", true,
+                    isMobile: isMobile, tab: tab,
+                  ),
+                ),
+                SizedBox(
+                  width: itemWidth,
+                  child: _buildDocumentTile(
+                    context, "Incoherence Paper", "Uploaded", true,
+                    isMobile: isMobile, tab: tab,
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ],
     );
   }
 
-
-
-//  Document Tile
   Widget _buildDocumentTile(
       BuildContext context,
       String title,
       String status,
       bool uploaded,
-      {required bool isMobile}
+      {required bool isMobile, required bool tab}
       ) {
-    String iconPath;
+    String iconPath = (title.toLowerCase().contains("tax") ||
+        title.toLowerCase().contains("paper"))
+        ? IconString.taxIcon
+        : IconString.registrationIcon;
 
-    if (title.toLowerCase().contains("tax") || title.toLowerCase().contains("paper")) {
-      iconPath = IconString.taxIcon;
-    } else {
-      iconPath = IconString.registrationIcon;
-    }
-
-    if (isMobile) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: isMobile
+          ? Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             height: 26,
             width: 26,
-            padding: EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               color: AppColors.secondaryColor,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Center(
-              child: Image.asset(
-                iconPath,
-                height: 18,
-                width: 18,
-              ),
-            ),
+            child: Image.asset(iconPath),
           ),
-          SizedBox(height: 8),
-
+          const SizedBox(height: 4),
           Text(
             title,
             textAlign: TextAlign.center,
             style: TTextTheme.pThree(context),
-            maxLines: 2,
+            maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          SizedBox(height: 4),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                status,
-                style: TTextTheme.titleseven(context),
+              Flexible(
+                child: Text(
+                  status,
+                  style: TTextTheme.titleseven(context),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-              SizedBox(width: 6,),
-    GestureDetector(
-    onTap: () {
-    Get.find<CarInventoryController>().open(ImageString.registrationForm);
-    },
-    child: Image.asset(
-    IconString.uploadedIcon,
-    height: 22,
-    width: 22,
-    )),
+              const SizedBox(width: 4),
+              GestureDetector(
+                onTap: () => Get.find<CarInventoryController>()
+                    .open(ImageString.registrationForm),
+                child: Image.asset(
+                  IconString.uploadedIcon,
+                  height: 16,
+                  width: 16,
+                ),
+              ),
             ],
           ),
         ],
-      );
-    }
-
-    // WEB LAYOUT
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        // ICON BOX
-        Container(
-          height: 40,
-          width: 40,
-          decoration: BoxDecoration(
-            color: AppColors.secondaryColor,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Center(
-            child: Image.asset(
-              iconPath,
-              height: 22,
-              width: 22,
+      )
+          : Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            height: tab ? 32 : 38,
+            width: tab ? 32 : 38,
+            decoration: BoxDecoration(
+              color: AppColors.secondaryColor,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Center(
+              child: Image.asset(iconPath, height: 18, width: 18),
             ),
           ),
-        ),
-        SizedBox(width: 14),
-        // TITLE + STATUS
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-                title,
-                style: TTextTheme.pThree(context)),
-            SizedBox(height: 4),
-            Row(
-                children: [
-                  Text(
-                    status,
-                    style:  TTextTheme.titleseven(context),
-                  ),
-                ]
+          const SizedBox(width: 8),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title,
+                  style: TTextTheme.pThree(context),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        status,
+                        style: TTextTheme.titleseven(context),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    GestureDetector(
+                      onTap: () => Get.find<CarInventoryController>()
+                          .open(ImageString.registrationForm),
+                      child: Image.asset(
+                        IconString.uploadedIcon,
+                        height: 16,
+                        width: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
-        SizedBox(width: 6),
-        GestureDetector(
-          onTap: () {
-            Get.find<CarInventoryController>().open(ImageString.registrationForm);
-          },
-          child: Image.asset(
-            IconString.uploadedIcon,
-            height: 22,
-            width: 22,
           ),
-        ),
-
-      ],
+        ],
+      ),
     );
   }
+
 
 
 // Icon Button (Used for Edit/Delete) Widget
   Widget _buildIconButton(
       BuildContext context,
-      IconData icon, {
+      String iconPath, {
         VoidCallback? onTap,
         String? label,
       }) {
-    final bool isVeryNarrow = AppSizes.isMobile(context) && MediaQuery.of(context).size.width < 350;
-
+    final bool isVeryNarrow =
+        AppSizes.isMobile(context) &&
+            MediaQuery.of(context).size.width < 350;
 
     final double horizontalPadding = (label != null || isVeryNarrow) ? 8 : 6;
     final double verticalPadding = isVeryNarrow ? 6 : 8;
     final double iconSize = isVeryNarrow ? 16 : 18;
 
-
     return Padding(
       padding: const EdgeInsets.only(left: 4.0),
-      child: GestureDetector(
+      child: InkWell(
         onTap: onTap,
+        borderRadius: BorderRadius.circular(7),
         child: Container(
           padding: EdgeInsets.symmetric(
             horizontal: horizontalPadding,
@@ -847,15 +865,23 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(7),
-            border: Border.all(color: AppColors.tertiaryTextColor,width: 1),
+            border: Border.all(
+              color: AppColors.tertiaryTextColor,
+              width: 1,
+            ),
           ),
-
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, size: iconSize, color: AppColors.secondTextColor),
+              Image.asset(
+                iconPath,
+                width: iconSize,
+                height: iconSize,
+                color: AppColors.secondTextColor,
+              ),
 
               if (label != null) ...[
-                SizedBox(width: 4),
+                const SizedBox(width: 4),
                 Text(
                   label,
                   style: TTextTheme.btnFive(context),
@@ -867,4 +893,5 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
       ),
     );
   }
+
 }

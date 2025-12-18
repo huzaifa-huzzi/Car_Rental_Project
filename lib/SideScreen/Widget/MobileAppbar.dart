@@ -194,11 +194,11 @@ class _MobileTopBarState extends State<MobileTopBar> with WidgetsBindingObserver
                         ),
                       ),
                       Positioned(
-                        top: 4,
-                        right: 4,
+                        top: 6,
+                        right: 6,
                         child: Container(
-                          width: 4,
-                          height: 4,
+                          width: 6,
+                          height: 6,
                           decoration: BoxDecoration(
                             color: AppColors.primaryColor,
                             shape: BoxShape.circle,

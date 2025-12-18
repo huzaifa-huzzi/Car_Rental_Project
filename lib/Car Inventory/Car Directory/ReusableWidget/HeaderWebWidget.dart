@@ -166,7 +166,7 @@ class HeaderWebWidget extends StatelessWidget {
                   child: Container(
 
                     width: addButtonSize,
-                    height: addButtonSize/2,
+                    height: addButtonSize,
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,
                       borderRadius: BorderRadius.circular(
@@ -185,7 +185,7 @@ class HeaderWebWidget extends StatelessWidget {
                     : GestureDetector(
                   onTap: onAddPressed,
                   child: Container(
-                    height: 30.0,
+                    height: 40.0,
                     padding: EdgeInsets.symmetric(horizontal: finalInternalSpacing),
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,
@@ -249,8 +249,8 @@ class HeaderWebWidget extends StatelessWidget {
                           context,
                         ),
                         Positioned(
-                          top: isMobile ? 2 : (isTablet ? 6 : 12),
-                          right: isMobile ? 2 : (isTablet ? 4 : 9),
+                          top: isMobile ? 2 : (isTablet ? 8 : 10),
+                          right: isMobile ? 2 : (isTablet ? 8 : 9),
                           child: Container(
                             width: 8,
                             height: 8,
