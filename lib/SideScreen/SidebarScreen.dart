@@ -23,7 +23,10 @@ class SidebarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
     final bool isMobile = AppSizes.isMobile(context);
     final bool isTab = AppSizes.isTablet(context);
     final bool isWeb = AppSizes.isWeb(context);
@@ -145,11 +148,12 @@ class SidebarScreen extends StatelessWidget {
       );
     }
 
-    // Appbars
-
+    /// Appbars
     if (isMobile) {
       return Scaffold(
+        backgroundColor: Colors.white,
         key: _scaffoldKey,
+        drawerScrimColor: Colors.transparent,
         drawer: Drawer(
           backgroundColor: Colors.white,
           child: sidebarContent(showLogo: false),
@@ -175,10 +179,14 @@ class SidebarScreen extends StatelessWidget {
     }
     else if (isTab) {
       return Scaffold(
+        backgroundColor: Colors.white,
         key: _scaffoldKey,
+        drawerScrimColor: Colors.transparent,
         drawer: Drawer(
           backgroundColor: Colors.white,
           child: sidebarContent(showLogo: false),
+          surfaceTintColor: Colors.transparent,
+          shadowColor: Colors.transparent,
         ),
         appBar: hideMobileAppBar
             ? null
@@ -200,7 +208,6 @@ class SidebarScreen extends StatelessWidget {
       );
     }
     else {
-      //  WEB ONLY
       return Scaffold(
         body: SafeArea(
           child: Row(
@@ -216,7 +223,6 @@ class SidebarScreen extends StatelessWidget {
         ),
       );
     }
-
 
 
   }

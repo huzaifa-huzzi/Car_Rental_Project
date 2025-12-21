@@ -241,202 +241,62 @@ class CardListHeaderWidget extends StatelessWidget {
   // Filter container widget
   Widget _buildFilterContainer(BuildContext context) {
     final CarInventoryController controller = Get.put(CarInventoryController());
-    const int totalItems = 9;
-    final double width = MediaQuery.of(context).size.width;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-
-        const double narrowScreenMargin = 8.0;
-        const double narrowScreenPadding = 10.0;
-        const double narrowWrapSpacing = 8.0;
-
-        double wrapSpacing = AppSizes.padding(context);
-        double dynamicPadding = AppSizes.padding(context);
-        double horizontalMargin = AppSizes.horizontalPadding(context);
-
-        if (width < 350) {
-          horizontalMargin = narrowScreenMargin;
-          dynamicPadding = narrowScreenPadding;
-          wrapSpacing = narrowWrapSpacing;
-        } else if (AppSizes.isWeb(context)) {
-          dynamicPadding = AppSizes.padding(context) * 1.5;
-          horizontalMargin = AppSizes.horizontalPadding(context) * 1.5;
-        }
-
-        double containerPadding = dynamicPadding;
-
-        int itemsPerRow;
-        double itemWidth;
-
-        if (width > 1500) {
-          itemsPerRow = totalItems;
-        } else if (width > 1100) {
-          itemsPerRow = 9;
-        } else if (width > 700) {
-          itemsPerRow = 8;
-        } else if (width > 450) {
-          itemsPerRow = 3;
-        } else {
-          itemsPerRow = 1;
-        }
-
-        if (itemsPerRow == 1) {
-          itemWidth = double.infinity;
-        } else {
-          double availableScreenWidth = width - (2 * horizontalMargin);
-          double effectiveItemArea = availableScreenWidth - (2 * containerPadding);
-          double totalSpacingInRow = (itemsPerRow - 1) * wrapSpacing;
-          itemWidth = (effectiveItemArea - totalSpacingInRow) / itemsPerRow;
-        }
-
-        return Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(containerPadding),
-          margin: EdgeInsets.symmetric(
-            horizontal: horizontalMargin,
-            vertical: AppSizes.padding(context) * 0.5,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-          ),
-          child: Wrap(
-            spacing: wrapSpacing,
-            runSpacing: AppSizes.padding(context) * 0.75,
-            children: [
-              /// BRAND
-              _filterItem(
-                "Car Brand",
-                _dropdownBox(
-                  ["BMW", "Aston", "Range Rover"],
-                  controller.selectedBrand,
-                  context,
-                  placeholder: "Select",
-                ),
-                context,
-                itemWidth: itemWidth,
-              ),
-
-              /// MODEL
-              _filterItem(
-                "Car Model",
-                _dropdownBox(
-                  ["Corolla", "Civic"],
-                  controller.selectedModel,
-                  context,
-                  placeholder: "Select",
-                ),
-                context,
-                itemWidth: itemWidth,
-              ),
-
-              /// YEAR
-              _filterItem(
-                "Car Year",
-                _dropdownBox(
-                  ["2025", "2024"],
-                  controller.selectedYear,
-                  context,
-                  placeholder: "Select",
-                ),
-                context,
-                itemWidth: itemWidth,
-              ),
-
-              /// BODY TYPE
-              _filterItem(
-                "Body Type",
-                _dropdownBox(
-                  ["Sedan", "SUV"],
-                  controller.selectedBodyType,
-                  context,
-                  placeholder: "Select",
-                ),
-                context,
-                itemWidth: itemWidth,
-              ),
-
-              /// STATUS
-              _filterItem(
-                "Car Status",
-                _dropdownBox(
-                  ["Available", "Unavailable"],
-                  controller.selectedStatus,
-                  context,
-                  placeholder: "Select",
-                ),
-                context,
-                itemWidth: itemWidth,
-              ),
-
-              /// TRANSMISSION
-              _filterItem(
-                "Transmission",
-                _dropdownBox(
-                  ["Auto", "Manual"],
-                  controller.selectedTransmission,
-                  context,
-                  placeholder: "Select",
-                ),
-                context,
-                itemWidth: itemWidth,
-              ),
-
-              /// FUEL
-              _filterItem(
-                "Fuel",
-                _dropdownBox(
-                  ["Petrol", "Hybrid"],
-                  controller.selectedFuel,
-                  context,
-                  placeholder: "Select",
-                ),
-                context,
-                itemWidth: itemWidth,
-              ),
-
-              /// ENGINE
-              _filterItem(
-                "Engine Size",
-                _textFieldBox("2.5[L]", context),
-                context,
-                itemWidth: itemWidth,
-              ),
-
-              /// PRICE
-              _filterItem(
-                "Price (Under)",
-                _textFieldBox(r"$ 1600 (W)", context),
-                context,
-                itemWidth: itemWidth,
-              ),
-            ],
-          ),
-        );
-      },
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.symmetric(
+        horizontal: AppSizes.horizontalPadding(context),
+        vertical: AppSizes.padding(context) * 0.5,
+      ),
+      padding: EdgeInsets.all(AppSizes.padding(context)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+      ),
+      child: Wrap(
+        spacing: 16,
+        runSpacing: 16,
+        alignment: WrapAlignment.start,
+        children: [
+          _filterItem("Car Brand", _dropdownBox(["BMW", "Aston", "Range Rover"], controller.selectedBrand, context), context),
+          _filterItem("Car Model", _dropdownBox(["Corolla", "Civic"], controller.selectedModel, context), context),
+          _filterItem("Car Year", _dropdownBox(["2025", "2024"], controller.selectedYear, context), context),
+          _filterItem("Body Type", _dropdownBox(["Sedan", "SUV"], controller.selectedBodyType, context), context),
+          _filterItem("Car Status", _dropdownBox(["Available", "Unavailable"], controller.selectedStatus, context), context),
+          _filterItem("Transmission", _dropdownBox(["Auto", "Manual"], controller.selectedTransmission, context), context),
+          _filterItem("Fuel", _dropdownBox(["Petrol", "Hybrid"], controller.selectedFuel, context), context),
+          _filterItem("Engine Size", _textFieldBox("2.5[L]", context), context),
+          _filterItem("Price (Under)", _textFieldBox(r"$ 1600 (W)", context), context),
+        ],
+      ),
     );
   }
 
-  // filter Item
-  Widget _filterItem(
-      String title,
-      Widget child,
-      BuildContext context, {
-        required double itemWidth,
-      }) {
+ // filter Item Widget
+  Widget _filterItem(String title, Widget child, BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double itemWidth = screenWidth < 500 ? (screenWidth - 60) / 2 : 140;
+
     return SizedBox(
-      width: itemWidth == double.infinity ? null : itemWidth,
+      width: screenWidth < 500 ? itemWidth : 130,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: TTextTheme.btnFour(context)),
-          SizedBox(height: AppSizes.padding(context) * 0.3),
+          Text(
+            title,
+            style: TTextTheme.btnFour(context),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 6),
           child,
         ],
       ),
     );
   }
+
+
 
   // dropdown Box widget
   Widget _dropdownBox(
@@ -446,69 +306,73 @@ class CardListHeaderWidget extends StatelessWidget {
         String placeholder = "Select",
       }) {
     return Obx(() {
-      String? selectedValue = selectedRx.value.isEmpty
-          ? null
-          : selectedRx.value;
-
-      return Container(
-        height: 38,
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        decoration: BoxDecoration(
-          color: AppColors.secondaryColor,
-          borderRadius: BorderRadius.circular(
-            AppSizes.borderRadius(context) * 0.8,
+      return PopupMenuButton<String>(
+        offset: const Offset(0, 40),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        color: AppColors.secondaryColor,
+        elevation: 4,
+        tooltip: '',
+        child: Container(
+          height: 38,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            color: AppColors.secondaryColor,
+            borderRadius: BorderRadius.circular(AppSizes.borderRadius(context) * 0.8),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  selectedRx.value.isEmpty ? placeholder : selectedRx.value,
+                  style: selectedRx.value.isEmpty
+                      ? TTextTheme.btnOne(context)
+                      : TTextTheme.dropdowninsideText(context),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const Icon(Icons.keyboard_arrow_down, size: 22, color: Colors.black),
+            ],
           ),
         ),
-        child: DropdownButton<String>(
-          value: selectedValue,
-          isExpanded: true,
-          underline: SizedBox(),
-          icon: Icon(Icons.keyboard_arrow_down, size: 20),
-          dropdownColor: AppColors.secondaryColor,
-          hint: Text(placeholder, style: TTextTheme.titleThree(context)),
-
-          selectedItemBuilder: (context) {
-            return items.map((item) {
-              return Align(
-                alignment: Alignment.centerLeft,
-                child: Text(item, style: TTextTheme.titleTwo(context)),
-              );
-            }).toList();
-          },
-
-          items: List.generate(items.length, (index) {
+        onSelected: (v) => selectedRx.value = v,
+        itemBuilder: (context) {
+          return items.asMap().entries.map((entry) {
+            int index = entry.key;
+            String value = entry.value;
             bool isLast = index == items.length - 1;
 
-            return DropdownMenuItem(
-              value: items[index],
+            return PopupMenuItem<String>(
+              value: value,
+              padding: EdgeInsets.zero,
+              height: 45,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(items[index], style: TTextTheme.titleTwo(context)),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    child: Text(
+                      value,
+                      style: TTextTheme.dropdowninsideText(context),
+                    ),
+                  ),
                   if (!isLast)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 7),
-                      child: Divider(
-                        thickness: 0.4,
-                        height: 4,
-                        color: AppColors.quadrantalTextColor,
-                      ),
+                    Divider(
+                      height: 1,
+                      thickness: 0.5,
+                      color: AppColors.quadrantalTextColor,
+                      indent: 0,
+                      endIndent: 0,
                     ),
                 ],
               ),
             );
-          }),
-
-          onChanged: (v) {
-            if (v != null) {
-              selectedRx.value = v;
-            }
-          },
-        ),
+          }).toList();
+        },
       );
     });
   }
-
   // textField Widget
   Widget _textFieldBox(String label, BuildContext context) {
     return Container(
@@ -527,7 +391,8 @@ class CardListHeaderWidget extends StatelessWidget {
 
       child: Center(
         child: TextField(
-          style: TextStyle(color: AppColors.blackColor, fontSize: 13),
+          cursorColor: AppColors.blackColor,
+          style: TTextTheme.insidetextfieldWrittenText(context),
           decoration: InputDecoration(
             hintText: label,
             hintStyle: TTextTheme.titleTwo(context),

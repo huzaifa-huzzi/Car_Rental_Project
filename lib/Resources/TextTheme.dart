@@ -59,6 +59,11 @@ class TTextTheme {
   static TextStyle btnFour(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w400,color: AppColors.textColor);
   }
+
+  static TextStyle dropdowninsideText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w500,color: AppColors.blackColor);
+  }
+
   static TextStyle btnFive(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 9, 9, 12),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor);
   }
@@ -155,7 +160,7 @@ class TTextTheme {
   }
 
   static TextStyle pTwo(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 10),fontWeight: FontWeight.w400,color: AppColors.secondTextColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 10),fontWeight: FontWeight.w400,color: AppColors.secondTextColor,
     );
   }
 
@@ -185,7 +190,7 @@ class TTextTheme {
   }
 
   static TextStyle insidetextfieldWrittenText(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 10),fontWeight: FontWeight.w400,color: AppColors.blackColor,
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 10),fontWeight: FontWeight.w500,color: AppColors.blackColor,
     );
   }
 

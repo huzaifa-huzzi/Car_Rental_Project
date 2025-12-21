@@ -232,7 +232,7 @@ class _TabAppBarState extends State<TabAppBar> with WidgetsBindingObserver {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-                    child: Image.network(
+                    child: Image.asset(
                       widget.profileImageUrl,
                       fit: BoxFit.cover,
                     ),

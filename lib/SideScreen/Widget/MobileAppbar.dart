@@ -221,7 +221,7 @@ class _MobileTopBarState extends State<MobileTopBar> with WidgetsBindingObserver
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-                    child: Image.network(
+                    child: Image.asset(
                       widget.profileImageUrl,
                       fit: BoxFit.cover,
                     ),

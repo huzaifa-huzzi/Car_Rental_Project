@@ -152,62 +152,94 @@ class AddCarFormWidget extends StatelessWidget {
       RxString selected, {
         required String id,
       }) {
-
     return Obx(() {
       bool isOpen = controller.openedDropdown.value == id;
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label, style: TTextTheme.titleTwo(context)),
-          SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
-          GestureDetector(
-            onTap: () {
-              if (controller.openedDropdown.value == id) {
-                controller.openedDropdown.value = "";
-              } else {
-                controller.openedDropdown.value = id;
-              }
-            },
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                color: AppColors.secondaryColor,
-                borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+          const SizedBox(height: 6),
+
+          LayoutBuilder(builder: (context, constraints) {
+            return PopupMenuButton<String>(
+              constraints: BoxConstraints(
+                minWidth: constraints.maxWidth,
+                maxWidth: constraints.maxWidth,
               ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  dropdownColor: AppColors.secondaryColor,
-                  value: selected.value.isEmpty ? null : selected.value,
-                  hint: Text("$label", style: TTextTheme.titleFour(context)),
-                  icon: Image.asset(
-                    isOpen
-                        ? IconString.upsideDropdownIcon
-                        : IconString.dropdownIcon,
-                    height: 18,
-                  ),
-                  selectedItemBuilder: (context) {
-                    return items.map((item) {
-                      return Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(item, style: TTextTheme.titleTwo(context)),
-                      );
-                    }).toList();
-                  },
-                  items: items.map((item) {
-                    return DropdownMenuItem<String>(
-                      value: item,
-                      child: Text(item, style: TTextTheme.titleTwo(context)),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    selected.value = value!;
-                    controller.openedDropdown.value = "";
-                  },
+              offset: const Offset(0, 45),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              color: AppColors.secondaryColor,
+              elevation: 4,
+              tooltip: '',
+              onOpened: () => controller.openedDropdown.value = id,
+              onCanceled: () => controller.openedDropdown.value = "",
+              onSelected: (value) {
+                selected.value = value;
+                controller.openedDropdown.value = "";
+              },
+              child: Container(
+                height: 45,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: AppColors.secondaryColor,
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        selected.value.isEmpty ? label : selected.value,
+                        style: selected.value.isEmpty
+                            ? TTextTheme.btnOne(context)
+                            : TTextTheme.dropdowninsideText(context),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Image.asset(
+                      isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon,
+                      height: 18,
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ),
+              itemBuilder: (context) {
+                return items.asMap().entries.map((entry) {
+                  int index = entry.key;
+                  String value = entry.value;
+                  bool isLast = index == items.length - 1;
+
+                  return PopupMenuItem<String>(
+                    value: value,
+                    padding: EdgeInsets.zero,
+                    height: 48,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          child: Text(
+                            value,
+                            style: TTextTheme.dropdowninsideText(context),
+                          ),
+                        ),
+                        if (!isLast)
+                          Divider(
+                            height: 1,
+                            thickness: 1,
+                            color: AppColors.quadrantalTextColor.withOpacity(0.2),
+                            indent: 0,
+                            endIndent: 0,
+                          ),
+                      ],
+                    ),
+                  );
+                }).toList();
+              },
+            );
+          }),
         ],
       );
     });

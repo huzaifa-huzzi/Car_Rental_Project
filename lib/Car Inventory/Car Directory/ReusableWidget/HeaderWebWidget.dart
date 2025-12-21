@@ -78,14 +78,15 @@ class HeaderWebWidget extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.only(
-        bottom: isMobile ? 12 : 0,
+        bottom: isMobile ? 8 : 0,
       ),
       padding: EdgeInsets.symmetric(
-        vertical: AppSizes.verticalPadding(context),
+        vertical: AppSizes.verticalPadding(context) * 0.5,
         horizontal: finalHorizontalPadding,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           /// LEFT SIDE (Back + Titles)
           Expanded(
@@ -249,8 +250,8 @@ class HeaderWebWidget extends StatelessWidget {
                           context,
                         ),
                         Positioned(
-                          top: isMobile ? 2 : (isTablet ? 8 : 10),
-                          right: isMobile ? 2 : (isTablet ? 8 : 9),
+                          top: isMobile ? 2 : (isTablet ? 8 : 11.5),
+                          right: isMobile ? 2 : (isTablet ? 8 : 10),
                           child: Container(
                             width: 8,
                             height: 8,
