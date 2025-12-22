@@ -33,6 +33,7 @@ class CarGridItem extends StatelessWidget {
   });
 
   @override
+  @override
   Widget build(BuildContext context) {
     final borderRadius = AppSizes.borderRadius(context);
     bool isHover = false;
@@ -44,13 +45,19 @@ class CarGridItem extends StatelessWidget {
           onExit: (_) => setState(() => isHover = false),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 180),
-            constraints: const BoxConstraints(minHeight: 280),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(borderRadius),
               border: isHover
                   ? Border.all(color: AppColors.primaryColor, width: 1)
                   : null,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                )
+              ],
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -58,13 +65,11 @@ class CarGridItem extends StatelessWidget {
               children: [
                 _buildHeader(context),
 
-                Flexible(
-                  flex: 4,
-                  fit: FlexFit.loose,
-                  child: _buildCarImage(context),
-                ),
+                _buildCarImage(context),
 
                 _buildResponsiveDetails(context),
+
+                const SizedBox(height: 8),
 
                 _buildActions(context),
               ],
@@ -120,24 +125,20 @@ class CarGridItem extends StatelessWidget {
    // car Image widget
   Widget _buildCarImage(BuildContext context) {
     String img = image.startsWith("assets/") ? image : "assets/images/$image";
+    double screenWidth = MediaQuery.of(context).size.width;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final availableWidth = constraints.maxWidth;
-        final double adaptiveHeight = constraints.maxHeight > 70 ? constraints.maxHeight : 70;
+    double h = screenWidth < 600 ? 90 : 110;
 
-        return Container(
-          width: availableWidth,
-          alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: Image.asset(
-            img,
-            fit: BoxFit.contain,
-            height: adaptiveHeight,
-            filterQuality: FilterQuality.medium,
-          ),
-        );
-      },
+    return Container(
+      width: double.infinity,
+      height: h,
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Image.asset(
+        img,
+        fit: BoxFit.contain,
+        filterQuality: FilterQuality.high,
+      ),
     );
   }
 

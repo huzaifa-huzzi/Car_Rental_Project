@@ -41,6 +41,7 @@ class ListViewScreen extends StatelessWidget {
               price: "\$130 / weekly",
               status: "Available",
               regId: "HPC-982",
+              regId2: "123-567",
               onView: () {
                 context.push('/cardetails', extra: {"hideMobileAppBar": true});
               },
@@ -87,6 +88,7 @@ class ListViewScreen extends StatelessWidget {
               price: "\$130 / weekly",
               status: "Maintenance",
               regId: "HPC-982",
+              regId2: "123-567",
               onView: () {
                 context.push('/cardetails', extra: {"hideMobileAppBar": true});
               },
@@ -131,6 +133,7 @@ class ListViewScreen extends StatelessWidget {
               transmission: "Automatic",
               capacity: "2 seats",
               price: "\$130/weekly",
+              regId2: "123-567",
               status: "Available",
               regId: "HPC-982",
               onView: () {
@@ -175,6 +178,7 @@ class ListViewScreen extends StatelessWidget {
               transmission: "Automatic",
               capacity: "2 seats",
               price: "\$130 / weekly",
+              regId2: "123-567",
               status: "unavailable",
               regId: "HPC-982",
               onView: () {
@@ -227,7 +231,7 @@ class ListViewScreen extends StatelessWidget {
                     ? 900
                     : isTab
                     ? 1000
-                    : isWeb ? 1100:1200,
+                    : isWeb ? 1400:1400,
                 child: cardListContent,
               ),
             ),

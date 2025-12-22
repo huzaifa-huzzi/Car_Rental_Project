@@ -98,61 +98,60 @@ class GridViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = AppSizes.isMobile(context);
-    final tablePadding = AppSizes.padding(context);
+    final isTablet = AppSizes.isTablet(context);
     final baseVerticalSpace = AppSizes.verticalPadding(context);
 
-
     int crossAxisCount;
-    double childAspectRatio;
+    double extent;
 
     if (AppSizes.isWeb(context)) {
       crossAxisCount = 3;
-      childAspectRatio = 0.85;
-    } else if (AppSizes.isTablet(context)) {
+      extent = 340;
+    } else if (isTablet) {
       crossAxisCount = 2;
-      childAspectRatio = 0.8;
+      extent = 325;
     } else {
       crossAxisCount = 1;
-      childAspectRatio = 1.8;
+      extent = 250;
     }
-
 
     final carGridItems = _buildCarGridItems();
 
     return SingleChildScrollView(
       child: Column(
         children: [
-
+          // Top Spacing
           SizedBox(
-            height: AppSizes.isMobile(context)
-                ? AppSizes.verticalPadding(context) * 1.2
-                : AppSizes.isTablet(context)
-                ? AppSizes.verticalPadding(context) * 0.9
-                : AppSizes.verticalPadding(context) * 0.4,
+            height: isMobile
+                ? baseVerticalSpace * 1.2
+                : isTablet
+                ? baseVerticalSpace * 0.9
+                : baseVerticalSpace * 0.4,
           ),
-
 
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: AppSizes.horizontalPadding(context),
             ),
-            child: GridView.count(
+            child: GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: crossAxisCount,
-              mainAxisSpacing: baseVerticalSpace,
-              crossAxisSpacing: baseVerticalSpace,
-              childAspectRatio: childAspectRatio,
-              children: carGridItems,
+              itemCount: carGridItems.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                mainAxisSpacing: baseVerticalSpace,
+                crossAxisSpacing: baseVerticalSpace,
+                mainAxisExtent: extent,
+              ),
+              itemBuilder: (context, index) => carGridItems[index],
             ),
           ),
 
           SizedBox(height: baseVerticalSpace * 1.5),
 
-
           Padding(
             padding: EdgeInsets.symmetric(horizontal: AppSizes.horizontalPadding(context)),
-            child: PaginationBar(isMobile: isMobile, tablePadding: tablePadding),
+            child: PaginationBar(isMobile: isMobile, tablePadding: AppSizes.padding(context)),
           ),
           SizedBox(height: baseVerticalSpace * 1.25),
         ],
