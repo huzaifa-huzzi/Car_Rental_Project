@@ -25,12 +25,11 @@ class CarListTableWidget extends StatelessWidget {
         margin: EdgeInsets.all(tablePadding),
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: Column( // Removed unnecessary SizedBox here
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /// ---------- TABLE HEADINGS ----------
               Container(
-                // Ensure padding here matches the data row start
                 padding: EdgeInsets.only(left: tablePadding, top: 12, bottom: 12),
                 decoration: BoxDecoration(
                   color: AppColors.secondaryColor,
@@ -70,7 +69,6 @@ class CarListTableWidget extends StatelessWidget {
                       onExit: (_) => controller.hoveredRowIndex.value = -1,
                       child: Container(
                         color: isHovered ? Colors.white : Colors.transparent,
-                        // Added tablePadding to the LEFT to match the Header
                         padding: EdgeInsets.only(left: tablePadding, top: 12, bottom: 12),
                         child: Row(
                           children: [
@@ -78,7 +76,7 @@ class CarListTableWidget extends StatelessWidget {
                             _dataCell(car["model"] ?? "", context),
                             _dataCell(car["year"] ?? "", context),
                             _dataCell(car["chasis"] ?? "", context),
-                            _styledDataCell(car["rental"] ?? "", context), // FIXED: No longer overflows
+                            _styledDataCell(car["rental"] ?? "", context),
                             _statusDataCell(car["status"] ?? "", context),
                             _styledDataCell(car["usage"] ?? "", context),
                             _dataCell(car["seats"] ?? "", context),
@@ -92,7 +90,9 @@ class CarListTableWidget extends StatelessWidget {
                               child: Center(
                                 child: AddButton(
                                   text: "View",
-                                  onTap: () {},
+                                  onTap: () {
+                                    context.go('/cardetails');
+                                  },
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                               ),
