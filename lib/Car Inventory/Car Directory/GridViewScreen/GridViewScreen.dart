@@ -91,6 +91,7 @@ class GridViewScreen extends StatelessWidget {
         status: car['status']!,
         regId: car['regId']!,
         fuelType: car['fuelType']!,
+        regId2: '123-45',
       );
     }).toList();
   }
@@ -106,13 +107,13 @@ class GridViewScreen extends StatelessWidget {
 
     if (AppSizes.isWeb(context)) {
       crossAxisCount = 3;
-      extent = 340;
+      extent = 360;
     } else if (isTablet) {
       crossAxisCount = 2;
-      extent = 325;
+      extent = 340;
     } else {
       crossAxisCount = 1;
-      extent = 250;
+      extent = 260;
     }
 
     final carGridItems = _buildCarGridItems();
@@ -153,7 +154,7 @@ class GridViewScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: AppSizes.horizontalPadding(context)),
             child: PaginationBar(isMobile: isMobile, tablePadding: AppSizes.padding(context)),
           ),
-          SizedBox(height: baseVerticalSpace * 1.25),
+          SizedBox(height: baseVerticalSpace * 1.35),
         ],
       ),
     );

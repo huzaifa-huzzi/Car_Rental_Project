@@ -104,26 +104,37 @@ class CarInventoryController extends GetxController {
 
     List<String> brands = ["Aston", "BMW", "Audi", "Ford", "Honda"];
     List<String> models = ["Martin", "X7", "A4", "Focus", "Civic"];
+    List<String> transmission = ["Automatic", "Manual", ];
     List<String> years = ["2023", "2022", "2020", "2018", "2017"];
     List<String> chassis = ["WVC-098", "HFC-082", "XYZ-345", "ABC-123", "QWE-678"];
 
-    carList.value = List.generate(20, (i) {
+    carList.value = List.generate(10, (i) {
       int index = i % brands.length;
+
+      String getStatus(int i) {
+        if (i % 3 == 0) return "Available";
+        if (i % 3 == 1) return "Maintenance";
+        return "Unavailable";
+      }
+
       return {
+        "vin": "${chassis[index]}-${i + 1}",
+        "reg": "REG-00${i + 1}",
         "brand": brands[index],
+        "make": "Martin",
         "model": models[index],
         "year": years[index],
-        "chasis": chassis[index],
-        "rental": "Sedan",
-        "status": _getRandomStatus(),
-        "usage": "Auto",
-        "seats": "2 Person",
+        "bodyType": "Sedan",
+        "status": getStatus(i),
+        "transmission": transmission[index],
+        "capacity": "4 Seats",
         "fuel": "Petrol",
-        "engine": "2.0 (L)",
+        "engine": "2.0L",
         "price": "120\$ Weekly",
       };
     });
   }
+
 
 
   /// ListView Screen

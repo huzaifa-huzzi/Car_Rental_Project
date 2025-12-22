@@ -39,14 +39,16 @@ class CarListTableWidget extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
+                    _headerCell("VIN Number", context),
+                    _headerCell("Car Registration", context),
                     _headerCell("Car Brand", context),
+                    _headerCell("Car Make", context),
                     _headerCell("Car Model", context),
-                    _headerCell("Year", context),
-                    _headerCell("Registration", context),
+                    _headerCell("Car Year", context),
                     _headerCell("Body Type", context),
-                    _headerCell("Status", context),
-                    _headerCell("Transmission", context),
-                    _headerCell("Capacity", context),
+                    _headerCell("Car Status", context),
+                    _headerCell("Car Transmission", context),
+                    _headerCell("Car Capacity", context),
                     _headerCell("Fuel Type", context),
                     _headerCell("Engine Size", context),
                     _headerCell("Price List", context),
@@ -55,9 +57,9 @@ class CarListTableWidget extends StatelessWidget {
                 ),
               ),
 
-              /// ---------- TABLE BODY ----------
+              /// ---------- TABLE BODY ----------///
               Column(
-                children: controller.carList.asMap().entries.map((entry) {
+                children: controller.displayedCarList.asMap().entries.map((entry) {
                   int rowIndex = entry.key;
                   var car = entry.value;
 
@@ -72,17 +74,19 @@ class CarListTableWidget extends StatelessWidget {
                         padding: EdgeInsets.only(left: tablePadding, top: 12, bottom: 12),
                         child: Row(
                           children: [
-                            _dataCell(car["brand"] ?? "", context),
-                            _dataCell(car["model"] ?? "", context),
-                            _dataCell(car["year"] ?? "", context),
-                            _dataCell(car["chasis"] ?? "", context),
-                            _styledDataCell(car["rental"] ?? "", context),
-                            _statusDataCell(car["status"] ?? "", context),
-                            _styledDataCell(car["usage"] ?? "", context),
-                            _dataCell(car["seats"] ?? "", context),
-                            _dataCell(car["fuel"] ?? "", context),
-                            _dataCell(car["engine"] ?? "", context),
-                            _dataCell(car["price"] ?? "", context),
+                            _dataCell(car["vin"] ?? "N/A", context),
+                            _dataCell(car["reg"] ?? "N/A", context),
+                            _dataCell(car["brand"] ?? "N/A", context),
+                            _dataCell(car["make"] ?? "N/A", context),
+                            _dataCell(car["model"] ?? "N/A", context),
+                            _dataCell(car["year"] ?? "N/A", context),
+                            _styledDataCell(car["bodyType"] ?? "N/A", context),
+                            _statusDataCell(car["status"] ?? "N/A", context),
+                            _styledDataCell(car["transmission"] ?? "N/A", context),
+                            _dataCell(car["capacity"] ?? "N/A", context),
+                            _dataCell(car["fuel"] ?? "N/A", context),
+                            _dataCell(car["engine"] ?? "N/A", context),
+                            _dataCell(car["price"] ?? "N/A", context),
 
                             /// ACTION BUTTON
                             SizedBox(
@@ -90,9 +94,7 @@ class CarListTableWidget extends StatelessWidget {
                               child: Center(
                                 child: AddButton(
                                   text: "View",
-                                  onTap: () {
-                                    context.go('/cardetails');
-                                  },
+                                  onTap: () => context.go('/cardetails'),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                               ),

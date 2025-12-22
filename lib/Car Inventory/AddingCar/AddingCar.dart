@@ -31,7 +31,7 @@ class AddingCarScreen extends StatelessWidget {
                   mainTitle: 'Add New Car',
                   showBack: true,
                   showSmallTitle: true,
-                  smallTitle: 'car/Add car Details',
+                  smallTitle: 'Car/Add car Details',
 
                   /// Responsive Icons
                   showSearch: isWeb,

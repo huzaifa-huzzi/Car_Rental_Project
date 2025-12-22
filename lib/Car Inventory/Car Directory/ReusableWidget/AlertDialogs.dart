@@ -3,84 +3,77 @@ import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 
-enum DialogType { edit, delete }
-
-class ResponsiveConfirmDialog extends StatelessWidget {
-  final DialogType type;
+class ResponsiveDeleteDialog extends StatelessWidget {
   final VoidCallback onConfirm;
   final VoidCallback onCancel;
 
-  const ResponsiveConfirmDialog({
+  const ResponsiveDeleteDialog({
     super.key,
-    required this.type,
     required this.onConfirm,
     required this.onCancel,
   });
 
   @override
   Widget build(BuildContext context) {
-    final bool isDelete = type == DialogType.delete;
-
     return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 8),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 16),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          double maxWidth = constraints.maxWidth.clamp(200, 420);
+          double maxWidth = constraints.maxWidth.clamp(200, 350);
 
           return ConstrainedBox(
             constraints: BoxConstraints(maxWidth: maxWidth),
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  /// ICON
+                  /// DELETE ICON
                   Container(
-                    padding:  EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: isDelete
-                          ? AppColors.iconsBackgroundColor
-                          : AppColors.secondaryColor,
+                      color: AppColors.iconsBackgroundColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Image.asset(
-                      isDelete ? IconString.deleteIcon : IconString.editIcon,
-                      width: 20,
-                      height: 20,
-                      color: isDelete ? AppColors.primaryColor: AppColors.quadrantalTextColor,
+                      IconString.deleteIcon,
+                      width: 24,
+                      height: 24,
+                      color: AppColors.primaryColor,
                     ),
                   ),
 
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
 
                   /// TITLE
                   Text(
-                    isDelete ? "Delete" : "Edit",
-                    style: TTextTheme.titleTwo(context)),
+                    "Delete",
+                    style: TTextTheme.titleTwo(context),
+                  ),
 
-
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 8),
 
                   /// MESSAGE
                   Text(
-                    isDelete
-                        ? "Are you sure want to delete?"
-                        : "Are you sure want to Edit?",
+                    "Are you sure you want to delete?",
                     textAlign: TextAlign.center,
-                    style: TTextTheme.titleFour(context)),
+                    style: TTextTheme.titleFour(context),
+                  ),
 
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 24),
 
-                  /// BUTTONS
+                  /// BUTTONS (Cancel & Confirm)
                   Wrap(
-                    spacing: 10,
+                    spacing: 12,
                     runSpacing: 10,
+                    alignment: WrapAlignment.center,
                     children: [
+                      // Cancel Button
                       SizedBox(
-                        width: maxWidth < 260 ? double.infinity : 120,
+                        width: maxWidth < 280 ? double.infinity : 120,
                         child: OutlinedButton(
                           onPressed: onCancel,
                           style: OutlinedButton.styleFrom(
@@ -99,25 +92,28 @@ class ResponsiveConfirmDialog extends StatelessWidget {
                           ),
                         ),
                       ),
-            SizedBox(
-              width: maxWidth < 260 ? double.infinity : 120,
-              child: ElevatedButton(
-                onPressed: onConfirm,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: isDelete ? Colors.red : Colors.blue,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Text(
-                  "Confirm",
-                  style: TTextTheme.btnConfirm(context).copyWith(
-                    color: isDelete ? Colors.white : Colors.black,
-                  ),
-                ),
-              ),
-            ),
+
+                      // Confirm Delete Button
+                      SizedBox(
+                        width: maxWidth < 280 ? double.infinity : 120,
+                        child: ElevatedButton(
+                          onPressed: onConfirm,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            elevation: 0,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: Text(
+                            "Delete",
+                            style: TTextTheme.btnConfirm(context).copyWith(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ],

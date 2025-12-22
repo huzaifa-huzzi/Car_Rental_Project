@@ -15,6 +15,7 @@ class CarGridItem extends StatelessWidget {
   final String price;
   final String status;
   final String regId;
+  final String regId2;
   final String fuelType;
   final VoidCallback? onView;
 
@@ -28,11 +29,11 @@ class CarGridItem extends StatelessWidget {
     required this.price,
     required this.status,
     required this.regId,
+    required this.regId2,
     required this.fuelType,
     this.onView,
   });
 
-  @override
   @override
   Widget build(BuildContext context) {
     final borderRadius = AppSizes.borderRadius(context);
@@ -153,31 +154,57 @@ class CarGridItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           isMobile
-              ? Row(
-            children: [
-              _statusBadge(context),
-              const SizedBox(width: 4),
-              Expanded(child: _buildRegistrationBadge(context)),
-            ],
+              ? SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            child: Row(
+              children: [
+                _statusBadge(context),
+                const SizedBox(width: 8),
+                _buildRegistrationBadge(context),
+                const SizedBox(width: 8),
+                _vinregistrationBadge(context),
+              ],
+            ),
           )
               : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _statusBadge(context),
-              const SizedBox(height: 4),
-              _buildRegistrationBadge(context),
+              const SizedBox(height: 6),
+              LayoutBuilder(
+                  builder: (context, constraints) {
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(minWidth: constraints.maxWidth),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildRegistrationBadge(context),
+                            const SizedBox(width: 18),
+                            _vinregistrationBadge(context),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+              ),
             ],
           ),
-          const SizedBox(height: 8),
+
+          const SizedBox(height: 10),
+
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
             child: Row(
               children: [
                 _specItem(context, IconString.transmissionIcon, transmission),
-                const SizedBox(width: 8),
+                const SizedBox(width: 12),
                 _specItem(context, IconString.seatIcon, capacity),
-                const SizedBox(width: 8),
+                const SizedBox(width: 12),
                 _specItem(context, IconString.gasPumpIcon, fuelType),
               ],
             ),
@@ -249,6 +276,49 @@ class CarGridItem extends StatelessWidget {
           ),
           child: Text(
             regId,
+            style: TTextTheme.titleseven(context),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+  }
+
+   // VinBadge Widget
+  Widget _vinregistrationBadge(BuildContext context) {
+    final double padH = AppSizes.isMobile(context) ? 6 : 8;
+    final double padV = AppSizes.isMobile(context) ? 3 : 4;
+    final double radius = AppSizes.isMobile(context) ? 4 : 6;
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: padH, vertical: padV),
+          decoration: BoxDecoration(
+            color: AppColors.backgroundOfVin,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(radius),
+              bottomLeft: Radius.circular(radius),
+            ),
+          ),
+          child: Text(
+            "VIN",
+            style: TTextTheme.titleeight(context),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: padH, vertical: padV),
+          decoration: BoxDecoration(
+            color: AppColors.secondaryColor,
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(radius),
+              bottomRight: Radius.circular(radius),
+            ),
+          ),
+          child: Text(
+            regId2,
             style: TTextTheme.titleseven(context),
             overflow: TextOverflow.ellipsis,
           ),

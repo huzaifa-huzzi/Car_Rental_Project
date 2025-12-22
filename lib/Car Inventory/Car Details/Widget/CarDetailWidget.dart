@@ -321,34 +321,22 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
 
               Row(
                 children: [
-                  _buildIconButton(context, IconString.editIcon,onTap: (){
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (_) => ResponsiveConfirmDialog(
-                        type: DialogType.edit,
-                        onCancel: () => Navigator.pop(context),
-                        onConfirm: () {
-                          context.pop();
-                        },
-                      ),
-                    );
-
-                  }),
+                  _buildIconButton(context, IconString.editIcon,onTap: (){}),
                   SizedBox(width: 8),
                   _buildIconButton(context, IconString.deleteIcon,onTap: (){
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (_) => ResponsiveConfirmDialog(
-                        type: DialogType.delete,
-                        onCancel: () => context.pop(),
-                        onConfirm: () {
-                          context.pop();
-                        },
-                      ),
-                    );
-
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) =>
+                            ResponsiveDeleteDialog(
+                              onCancel: () {
+                                context.pop();
+                              },
+                              onConfirm: () {
+                                context.pop();
+                              },
+                            ),
+                      );
                   }),
                 ],
               ),
@@ -426,17 +414,6 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
                  IconString.editIcon,
                   label: "Edit",
                   onTap: () {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (_) => ResponsiveConfirmDialog(
-                        type: DialogType.edit,
-                        onCancel: () => Navigator.pop(context),
-                        onConfirm: () {
-                          context.pop();
-                        },
-                      ),
-                    );
                   },
                 ),
                 SizedBox(width: 8),
@@ -444,13 +421,15 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
                   showDialog(
                     context: context,
                     barrierDismissible: false,
-                    builder: (_) => ResponsiveConfirmDialog(
-                      type: DialogType.delete,
-                      onCancel: () => Navigator.pop(context),
-                      onConfirm: () {
-                        context.pop();
-                      },
-                    ),
+                    builder: (_) =>
+                        ResponsiveDeleteDialog(
+                          onCancel: () {
+                            context.pop();
+                          },
+                          onConfirm: () {
+                            context.pop();
+                          },
+                        ),
                   );
 
                 }),
