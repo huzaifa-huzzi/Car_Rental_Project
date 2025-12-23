@@ -421,8 +421,12 @@ class EditCarWidget extends StatelessWidget {
                       top: -8,
                       right: -8,
                       child: GestureDetector(
-                        onTap: () => controller.removeImage2(index),
-                        child:Image.asset(IconString.deleteIcon, color: AppColors.primaryColor),
+                        onTap: () => controller.removeDocumentSlot(index),
+                        child: CircleAvatar(
+                          radius: 13,
+                          backgroundColor: Colors.white,
+                          child: Image.asset(IconString.deleteIcon, color: AppColors.primaryColor),
+                        ),
                       ),
                     ),
                   ],
@@ -553,10 +557,10 @@ class EditCarWidget extends StatelessWidget {
                   Positioned(
                     top: -8,
                     right: -8,
-                    child: GestureDetector(
-                      onTap: () => controller.removeDocumentSlot2(index),
+                    child:  GestureDetector(
+                      onTap: () => controller.removeDocumentSlot(index),
                       child: CircleAvatar(
-                        radius: 12,
+                        radius: 14,
                         backgroundColor: Colors.white,
                         child: Image.asset(IconString.deleteIcon, color: AppColors.primaryColor),
                       ),

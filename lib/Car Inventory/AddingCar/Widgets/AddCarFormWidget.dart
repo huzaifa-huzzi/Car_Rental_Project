@@ -351,7 +351,7 @@ class AddCarFormWidget extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () => controller.removeImage(index),
                         child: CircleAvatar(
-                          radius: 12,
+                          radius: 13,
                           backgroundColor: Colors.white,
                           child: Image.asset(IconString.deleteIcon, color: AppColors.primaryColor),
                         ),
@@ -486,7 +486,7 @@ class AddCarFormWidget extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () => controller.removeDocumentSlot(index),
                       child: CircleAvatar(
-                        radius: 12,
+                        radius: 14,
                         backgroundColor: Colors.white,
                         child: Image.asset(IconString.deleteIcon, color: AppColors.primaryColor),
                       ),
