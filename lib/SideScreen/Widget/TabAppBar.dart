@@ -207,8 +207,8 @@ class _TabAppBarState extends State<TabAppBar> with WidgetsBindingObserver {
                         ),
                       ),
                       Positioned(
-                        top: 6,
-                        right: 5,
+                        top: 8,
+                        right: 7,
                         child: Container(
                           width: 6,
                           height: 6,

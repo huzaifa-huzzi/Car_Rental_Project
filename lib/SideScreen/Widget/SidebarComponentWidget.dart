@@ -8,13 +8,17 @@ import '../SideBarController.dart' show SideBarController;
 class SidebarComponents {
 
   /// Helper: Close drawer if mobile
-  static void closeDrawerIfMobile(BuildContext context, GlobalKey<ScaffoldState> scaffoldKey) {
-    if (MediaQuery.of(context).size.width < 600) {
-      if (scaffoldKey.currentState != null && scaffoldKey.currentState!.isDrawerOpen) {
-        scaffoldKey.currentState!.closeDrawer();
+  static void closeDrawerIfMobile(
+      BuildContext context,
+      GlobalKey<ScaffoldState> scaffoldKey,
+      ) {
+    if (scaffoldKey.currentState != null) {
+      if (scaffoldKey.currentState!.isDrawerOpen) {
+        Navigator.of(context).pop();
       }
     }
   }
+
 
   /// Menu item
   static Widget menuItem(
@@ -26,7 +30,12 @@ class SidebarComponents {
         required Function(String) onTap,
         required GlobalKey<ScaffoldState> scaffoldKey,
       }) {
-    return InkWell(
+    return  InkWell(
+      hoverColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      focusColor: Colors.transparent,
+
       onTap: () {
         controller.selectMenu(title);
         onTap(title);
@@ -38,7 +47,7 @@ class SidebarComponents {
           margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
-            color: active ? AppColors.secondaryColor : null,
+            color: active ? AppColors.secondaryColor : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
@@ -47,7 +56,9 @@ class SidebarComponents {
                 iconPath,
                 width: 20,
                 height: 20,
-                color: active ? AppColors.primaryColor : AppColors.quadrantalTextColor,
+                color: active
+                    ? AppColors.primaryColor
+                    : AppColors.quadrantalTextColor,
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -55,7 +66,9 @@ class SidebarComponents {
                   title,
                   overflow: TextOverflow.ellipsis,
                   style: TTextTheme.btnOne(context).copyWith(
-                    color: active ? AppColors.textColor : AppColors.quadrantalTextColor,
+                    color: active
+                        ? AppColors.textColor
+                        : AppColors.quadrantalTextColor,
                   ),
                 ),
               ),
@@ -65,6 +78,7 @@ class SidebarComponents {
         );
       }),
     );
+
   }
 
   /// Expense menu item with sub-items
@@ -80,6 +94,10 @@ class SidebarComponents {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InkWell(
+            hoverColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            focusColor: Colors.transparent,
             onTap: () {
               controller.toggleExpensesSub();
               onTap("Expenses");

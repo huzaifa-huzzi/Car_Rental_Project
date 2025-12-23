@@ -2,7 +2,7 @@
 class ImageString{
 
 
-   /// Car inventory
+   /// Car inventory Icons
   static const String userImage = 'assets/Images/CarInventoryPics/User Image.png';
   static const String audiPic = 'assets/Images/CarInventoryPics/AudiPic.png';
   static const String bmwPic = 'assets/Images/CarInventoryPics/BmwPic.png';

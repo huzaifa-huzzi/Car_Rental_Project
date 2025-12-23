@@ -61,86 +61,75 @@ class SidebarScreen extends StatelessWidget {
                   ],
                 ),
               ),
+
             SizedBox(height: AppSizes.verticalPadding(context) / 2),
+
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
+                shrinkWrap: true,
                 children: [
                   SidebarComponents.menuItem(
-                    context,
-                    controller,
+                    context, controller,
                     iconPath: IconString.dashboardIcon,
                     title: "Dashboard",
-                    onTap: onTap,
-                    scaffoldKey: _scaffoldKey,
+                    onTap: onTap, scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.menuItem(
-                    context,
-                    controller,
+                    context, controller,
                     iconPath: IconString.carInventoryIcon,
                     title: "Car Inventory",
-                    onTap: onTap,
-                    scaffoldKey: _scaffoldKey,
+                    onTap: onTap, scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.menuItem(
-                    context,
-                    controller,
+                    context, controller,
                     iconPath: IconString.customerIcon,
                     title: "Customers",
-                    onTap: onTap,
-                    scaffoldKey: _scaffoldKey,
+                    onTap: onTap, scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.menuItem(
-                    context,
-                    controller,
+                    context, controller,
                     iconPath: IconString.agreementIcon,
                     title: "Re-agreement",
-                    onTap: onTap,
-                    scaffoldKey: _scaffoldKey,
+                    onTap: onTap, scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.menuItem(
-                    context,
-                    controller,
+                    context, controller,
                     iconPath: IconString.paymentIcon,
                     title: "Payment",
-                    onTap: onTap,
-                    scaffoldKey: _scaffoldKey,
+                    onTap: onTap, scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.expenseMenuItem(
-                    context,
-                    controller,
-                    onTap: onTap,
-                    scaffoldKey: _scaffoldKey,
+                    context, controller,
+                    onTap: onTap, scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.menuItem(
-                    context,
-                    controller,
+                    context, controller,
                     iconPath: IconString.maintenanceIcon,
                     title: "Maintenance",
-                    onTap: onTap,
-                    scaffoldKey: _scaffoldKey,
+                    onTap: onTap, scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.menuItem(
-                    context,
-                    controller,
+                    context, controller,
                     iconPath: IconString.incomeIcon,
                     title: "Income",
                     trailing: SidebarComponents.redDotWithNumber(
                         controller.incomeRedDot.value, context),
-                    onTap: onTap,
-                    scaffoldKey: _scaffoldKey,
+                    onTap: onTap, scaffoldKey: _scaffoldKey,
                   ),
-                  SizedBox(height: AppSizes.verticalPadding(context) * 2),
-                  SidebarComponents.menuItem(
-                    context,
-                    controller,
-                    iconPath: IconString.logoutIcon,
-                    title: "Logout",
-                    onTap: onTap,
-                    scaffoldKey: _scaffoldKey,
-                  ),
-                  SizedBox(height: AppSizes.verticalPadding(context) / 2),
                 ],
+              ),
+            ),
+
+            Padding(
+              padding: EdgeInsets.only(bottom: AppSizes.verticalPadding(context) / 2),
+              child: SidebarComponents.menuItem(
+                context,
+                controller,
+                iconPath: IconString.logoutIcon,
+                title: "Logout",
+                onTap: onTap,
+                scaffoldKey: _scaffoldKey,
               ),
             ),
           ],
@@ -154,59 +143,88 @@ class SidebarScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         key: _scaffoldKey,
         drawerScrimColor: Colors.transparent,
-        drawer: Drawer(
-          backgroundColor: Colors.white,
-          child: sidebarContent(showLogo: false),
+        drawer: Theme(
+          data: Theme.of(context).copyWith(
+            canvasColor: Colors.white,
+          ),
+          child: Drawer(
+            elevation: 0,
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+            child: sidebarContent(showLogo: false),
+          ),
         ),
         appBar: hideMobileAppBar
             ? null
             : AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.secondaryColor,
+          surfaceTintColor: Colors.transparent,
           elevation: 0,
           centerTitle: true,
           title: MobileTopBar(
             scaffoldKey: _scaffoldKey,
             profileImageUrl: ImageString.userImage,
             onAddPressed: () {
-              context.push('/addNewCar', extra: {"hideMobileAppBar": true});
+              context.go(
+                '/addNewCar',
+                extra: {"hideMobileAppBar": true},
+              );
+
             },
-            onNotificationPressed: () {},
           ),
         ),
+
         body: SafeArea(child: child ?? const TableViewScreen()),
       );
     }
+
     else if (isTab) {
       return Scaffold(
         backgroundColor: Colors.white,
         key: _scaffoldKey,
+
         drawerScrimColor: Colors.transparent,
-        drawer: Drawer(
-          backgroundColor: Colors.white,
-          child: sidebarContent(showLogo: false),
-          surfaceTintColor: Colors.transparent,
-          shadowColor: Colors.transparent,
+        drawer: Theme(
+          data: Theme.of(context).copyWith(
+            canvasColor: Colors.white,
+          ),
+          child: Drawer(
+            elevation: 0,
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+            child: sidebarContent(showLogo: false),
+          ),
         ),
+
+
         appBar: hideMobileAppBar
             ? null
             : AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.secondaryColor,
+          surfaceTintColor: Colors.transparent,
           elevation: 0,
           centerTitle: true,
           title: TabAppBar(
             scaffoldKey: _scaffoldKey,
             profileImageUrl: ImageString.userImage,
             onAddPressed: () {
-              context.push('/addNewCar', extra: {"hideMobileAppBar": true});
+              context.go(
+                '/addNewCar',
+                extra: {"hideMobileAppBar": true},
+              );
+
             },
-            onNotificationPressed: () {},
           ),
         ),
+
         body: SafeArea(child: child ?? const TableViewScreen()),
       );
     }
+
     else {
       return Scaffold(
         body: SafeArea(
