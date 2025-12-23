@@ -264,5 +264,101 @@ class CarInventoryController extends GetxController {
   }
 
 
+  /// Editing Car Screen
+  final seats2Controller = TextEditingController();
+  final engine2Controller = TextEditingController();
+  final color2Controller = TextEditingController();
+  final reg2Controller = TextEditingController();
+  final vin2Controller = TextEditingController();
+  final value2Controller = TextEditingController();
+  final weekly2RentController = TextEditingController();
+  var openedDropdown2 = "".obs;
+
+  var selectedBrand2 = "".obs;
+  var selectedModel2 = "".obs;
+  var selectedYear2 = "".obs;
+  var selectedBodyType2 = "".obs;
+  var selectedStatus2 = "".obs;
+  var selectedTransmission2 = "".obs;
+  var selectedFuel2 = "".obs;
+
+
+
+  RxList<Rx<DocumentHolder?>> selectedDocuments2 = <Rx<DocumentHolder?>>[].obs;
+  RxList<TextEditingController> documentNameControllers2 = <TextEditingController>[].obs;
+
+  final List<String> defaultDocumentNames2 = ["Document", "Document", "Document", "Document", "Document", "Document"];
+  final int maxDocuments2 = 6;
+
+
+
+  void addDocumentSlot2() {
+    if (selectedDocuments2.length < maxDocuments2) {
+      documentNameControllers2.add(TextEditingController());
+      selectedDocuments2.add(Rx<DocumentHolder?>(null));
+    }
+  }
+
+
+  void removeDocumentSlot2(int index) {
+    documentNameControllers2[index].dispose();
+    documentNameControllers2.removeAt(index);
+    selectedDocuments2.removeAt(index);
+  }
+
+
+
+  Future<void> pickDocument2(int index) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'doc', 'docx', 'png', 'jpg', 'jpeg'],
+      withData: kIsWeb ? true : false,
+      withReadStream: kIsWeb ? false : true,
+    );
+
+    if (result != null && result.files.isNotEmpty) {
+      final file = result.files.first;
+      String name = file.name;
+      String defaultHint = defaultDocumentNames2[index];
+
+      if (kIsWeb) {
+        if (file.bytes != null) {
+          selectedDocuments2[index].value = DocumentHolder(bytes: file.bytes, name: name, defaultHint: defaultHint);
+        }
+      } else {
+        if (file.path != null) {
+          selectedDocuments2[index].value = DocumentHolder(path: file.path, name: name, defaultHint: defaultHint);
+        }
+      }
+    }
+  }
+
+  Future<void> pickImage2() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['png', 'jpg', 'jpeg', 'svg'],
+      withData: kIsWeb ? true : false,
+      withReadStream: kIsWeb ? false : true,
+    );
+
+    if (result != null) {
+      for (var file in result.files) {
+        if (kIsWeb && file.bytes != null) {
+          selectedImages2.add(ImageHolder(bytes: file.bytes, name: file.name));
+        } else if (!kIsWeb && file.path != null) {
+          selectedImages2.add(ImageHolder(path: file.path, name: file.name));
+        }
+      }
+    }
+  }
+
+
+  RxList<ImageHolder> selectedImages2 = <ImageHolder>[].obs;
+
+  void removeImage2(int index) {
+    selectedImages2.removeAt(index);
+  }
+
+
 
 }

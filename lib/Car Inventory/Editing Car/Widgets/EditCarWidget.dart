@@ -12,9 +12,22 @@ import 'package:get/get.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+import 'dart:io';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/CarInventoryController.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/customPrimaryButton.dart';
+import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
+import 'package:car_rental_project/Resources/TextTheme.dart';
+import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:car_rental_project/Resources/AppSizes.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 class EditCarWidget extends StatelessWidget {
   EditCarWidget({super.key});
-
 
   final CarInventoryController controller = Get.find<CarInventoryController>();
 
@@ -28,15 +41,13 @@ class EditCarWidget extends StatelessWidget {
       padding: EdgeInsets.all(AppSizes.padding(context)),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(
-          AppSizes.borderRadius(context),
-        ),
+        borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
       ),
-
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            /// HEADER
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -64,7 +75,6 @@ class EditCarWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-
                 const SizedBox(width: 10),
                 CustomPrimaryButton(
                   text: "Edit",
@@ -83,8 +93,7 @@ class EditCarWidget extends StatelessWidget {
             Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
             SizedBox(height: AppSizes.verticalPadding(context)),
 
-
-            ///GRID FORM
+            /// GRID FORM
             LayoutBuilder(
               builder: (context, constraints) {
                 final double totalWidth = constraints.maxWidth;
@@ -92,17 +101,13 @@ class EditCarWidget extends StatelessWidget {
                 double itemWidth;
                 int columns;
 
-
                 if (totalWidth >= 900) {
                   columns = 3;
-                }
-                else if (totalWidth >= 550) {
+                } else if (totalWidth >= 550) {
                   columns = 3;
-                }
-                else {
+                } else {
                   columns = 2;
                 }
-
 
                 if (columns == 1) {
                   itemWidth = totalWidth;
@@ -115,24 +120,65 @@ class EditCarWidget extends StatelessWidget {
                   spacing: spacing,
                   runSpacing: spacing,
                   children: [
-                    SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Make", ["Toyota", "Honda", "BMW"], controller.selectedBrand, id: 'car Brand')),
-                    SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Model", ["Corolla", "Civic", "X5"], controller.selectedModel,id: 'car Model')),
-                    SizedBox(width: itemWidth, child: _buildDropdown(context, "Car  Year", ["2020", "2021", "2022"], controller.selectedYear,id: 'Year')),
-                    SizedBox(width: itemWidth, child: _buildTextField(context, "Car Registration Number", controller.regController)),
-                    SizedBox(width: itemWidth, child: _buildTextField(context, "VIN Number", controller.vinController)),
-                    SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Body Type", ["Sedan", "SUV", "Truck"], controller.selectedBodyType,id: 'Body type')),
-                    SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Transmission", ["Automatic", "Manual"], controller.selectedTransmission,id: 'Transmission')),
-                    SizedBox(width: itemWidth, child: _buildTextField(context, "Car Seats", controller.seatsController)),
-                    SizedBox(width: itemWidth, child: _buildTextField(context, "Car Engine Size", controller.engineController)),
-                    SizedBox(width: itemWidth, child: _buildTextField(context, "Car Color", controller.colorController)),
-                    SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Fuel Type", ["Petrol", "Diesel"], controller.selectedFuel,id: 'fuel')),
-                    SizedBox(width: itemWidth, child: _buildTextField(context, "Car Value", controller.valueController, prefix: "\$")),
-                    SizedBox(width: itemWidth, child: _buildTextField(context, "Weekly Rent (AUD)", controller.weeklyRentController, prefix: "\$ ")),
+                    SizedBox(
+                        width: itemWidth,
+                        child: _buildDropdown(context, "Car Make",
+                            ["Toyota", "Honda", "BMW"], controller.selectedBrand2,
+                            id: 'car Brand')),
+                    SizedBox(
+                        width: itemWidth,
+                        child: _buildDropdown(context, "Car Model",
+                            ["Corolla", "Civic", "X5"], controller.selectedModel2,
+                            id: 'car Model')),
+                    SizedBox(
+                        width: itemWidth,
+                        child: _buildDropdown(
+                            context, "Car Year", ["2020", "2021", "2022"], controller.selectedYear2,
+                            id: 'Year')),
+                    SizedBox(
+                        width: itemWidth,
+                        child: _buildTextField(context, "Car Registration Number",
+                            controller.reg2Controller)),
+                    SizedBox(
+                        width: itemWidth,
+                        child: _buildTextField(context, "VIN Number", controller.vin2Controller)),
+                    SizedBox(
+                        width: itemWidth,
+                        child: _buildDropdown(context, "Car Body Type",
+                            ["Sedan", "SUV", "Truck"], controller.selectedBodyType2,
+                            id: 'Body type')),
+                    SizedBox(
+                        width: itemWidth,
+                        child: _buildDropdown(context, "Car Transmission",
+                            ["Automatic", "Manual"], controller.selectedTransmission2,
+                            id: 'Transmission')),
+                    SizedBox(
+                        width: itemWidth,
+                        child: _buildTextField(context, "Car Seats", controller.seats2Controller)),
+                    SizedBox(
+                        width: itemWidth,
+                        child:
+                        _buildTextField(context, "Car Engine Size", controller.engine2Controller)),
+                    SizedBox(
+                        width: itemWidth,
+                        child: _buildTextField(context, "Car Color", controller.color2Controller)),
+                    SizedBox(
+                        width: itemWidth,
+                        child: _buildDropdown(context, "Car Fuel Type",
+                            ["Petrol", "Diesel"], controller.selectedFuel2,
+                            id: 'fuel')),
+                    SizedBox(
+                        width: itemWidth,
+                        child:
+                        _buildTextField(context, "Car Value", controller.value2Controller, prefix: "\$")),
+                    SizedBox(
+                        width: itemWidth,
+                        child: _buildTextField(context, "Weekly Rent (AUD)",
+                            controller.weekly2RentController, prefix: "\$ ")),
                   ],
                 );
               },
             ),
-
 
             SizedBox(height: AppSizes.verticalPadding(context)),
 
@@ -142,7 +188,6 @@ class EditCarWidget extends StatelessWidget {
             _imageBox(context),
             SizedBox(height: AppSizes.verticalPadding(context)),
             Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-
 
             /// DESCRIPTION
             SizedBox(height: AppSizes.verticalPadding(context)),
@@ -173,7 +218,7 @@ class EditCarWidget extends StatelessWidget {
             _documentsSection(context),
             SizedBox(height: AppSizes.verticalPadding(context)),
 
-            ///BUTTON SECTION
+            /// BUTTON SECTION
             _buttonSection(context, isMobile),
           ],
         ),
@@ -181,10 +226,7 @@ class EditCarWidget extends StatelessWidget {
     );
   }
 
-
   /// ---------- Extra Widgets  --------///
-
-  // _buildDropdown Widget
   Widget _buildDropdown(
       BuildContext context,
       String label,
@@ -193,14 +235,13 @@ class EditCarWidget extends StatelessWidget {
         required String id,
       }) {
     return Obx(() {
-      bool isOpen = controller.openedDropdown.value == id;
+      bool isOpen = controller.openedDropdown2.value == id;
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label, style: TTextTheme.titleTwo(context)),
           const SizedBox(height: 6),
-
           LayoutBuilder(builder: (context, constraints) {
             return PopupMenuButton<String>(
               constraints: BoxConstraints(
@@ -212,11 +253,11 @@ class EditCarWidget extends StatelessWidget {
               color: AppColors.secondaryColor,
               elevation: 4,
               tooltip: '',
-              onOpened: () => controller.openedDropdown.value = id,
-              onCanceled: () => controller.openedDropdown.value = "",
+              onOpened: () => controller.openedDropdown2.value = id,
+              onCanceled: () => controller.openedDropdown2.value = "",
               onSelected: (value) {
                 selected.value = value;
-                controller.openedDropdown.value = "";
+                controller.openedDropdown2.value = "";
               },
               child: Container(
                 height: 45,
@@ -270,8 +311,6 @@ class EditCarWidget extends StatelessWidget {
                             height: 1,
                             thickness: 1,
                             color: AppColors.quadrantalTextColor.withOpacity(0.2),
-                            indent: 0,
-                            endIndent: 0,
                           ),
                       ],
                     ),
@@ -285,11 +324,8 @@ class EditCarWidget extends StatelessWidget {
     });
   }
 
-
-//  TextField Widgets
   Widget _buildTextField(BuildContext context, String label, TextEditingController controller,
       {String? prefix}) {
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -316,11 +352,9 @@ class EditCarWidget extends StatelessWidget {
     );
   }
 
-
-  //  IMAGE UPLOAD BOX Widget
   Widget _imageBox(BuildContext context) {
     return GestureDetector(
-      onTap: () => controller.pickImage(),
+      onTap: () => controller.pickImage2(),
       child: Obx(() {
         return DottedBorder(
           borderType: BorderType.RRect,
@@ -336,7 +370,7 @@ class EditCarWidget extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
             ),
-            child: controller.selectedImages.isEmpty
+            child: controller.selectedImages2.isEmpty
                 ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -346,7 +380,7 @@ class EditCarWidget extends StatelessWidget {
                     color: AppColors.iconsBackgroundColor,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child:  Image.asset(IconString.uploadIcon, color: AppColors.primaryColor),
+                  child: Image.asset(IconString.uploadIcon, color: AppColors.primaryColor),
                 ),
                 const SizedBox(height: 10),
                 Text("Click to upload Images", style: TTextTheme.btnOne(context)),
@@ -356,7 +390,7 @@ class EditCarWidget extends StatelessWidget {
                 : Wrap(
               spacing: 12,
               runSpacing: 12,
-              children: controller.selectedImages.asMap().entries.map((entry) {
+              children: controller.selectedImages2.asMap().entries.map((entry) {
                 int index = entry.key;
                 final imageHolder = entry.value;
 
@@ -387,12 +421,8 @@ class EditCarWidget extends StatelessWidget {
                       top: -8,
                       right: -8,
                       child: GestureDetector(
-                        onTap: () => controller.removeImage(index),
-                        child: CircleAvatar(
-                          radius: 12,
-                          backgroundColor: Colors.white,
-                          child: Image.asset(IconString.deleteIcon, color: AppColors.primaryColor),
-                        ),
+                        onTap: () => controller.removeImage2(index),
+                        child:Image.asset(IconString.deleteIcon, color: AppColors.primaryColor),
                       ),
                     ),
                   ],
@@ -404,6 +434,8 @@ class EditCarWidget extends StatelessWidget {
       }),
     );
   }
+
+
 
   //  DOCUMENT NAME FIELD Widget
   Widget _documentNameField(BuildContext context, int index, TextEditingController controller) {
@@ -446,7 +478,7 @@ class EditCarWidget extends StatelessWidget {
       final docValue = selectedDoc.value;
       final bool isUploaded = docValue != null;
       final bool isImage = isUploaded && _isImageFile(docValue!.name);
-      final String hintText = controller.defaultDocumentNames[index];
+      final String hintText = controller.defaultDocumentNames2[index];
 
 
       ImageProvider? imageProvider;
@@ -459,7 +491,7 @@ class EditCarWidget extends StatelessWidget {
       }
 
       return GestureDetector(
-        onTap: isUploaded ? null : () => controller.pickDocument(index),
+        onTap: isUploaded ? null : () => controller.pickDocument2(index),
         child: DottedBorder(
           borderType: BorderType.RRect,
           radius: Radius.circular(AppSizes.borderRadius(context)),
@@ -522,7 +554,7 @@ class EditCarWidget extends StatelessWidget {
                     top: -8,
                     right: -8,
                     child: GestureDetector(
-                      onTap: () => controller.removeDocumentSlot(index),
+                      onTap: () => controller.removeDocumentSlot2(index),
                       child: CircleAvatar(
                         radius: 12,
                         backgroundColor: Colors.white,
@@ -543,7 +575,7 @@ class EditCarWidget extends StatelessWidget {
 
 //-----ADD document box widget
   Widget _addDocumentBox(BuildContext context) {
-    if (controller.selectedDocuments.length >= controller.maxDocuments) {
+    if (controller.selectedDocuments2.length >= controller.maxDocuments) {
       return SizedBox.shrink();
     }
 
@@ -578,7 +610,7 @@ class EditCarWidget extends StatelessWidget {
 
 
     return GestureDetector(
-      onTap: () => controller.addDocumentSlot(),
+      onTap: () => controller.addDocumentSlot2(),
       child: DottedBorder(
         borderType: BorderType.RRect,
         radius: Radius.circular(AppSizes.borderRadius(context)),
@@ -617,16 +649,16 @@ class EditCarWidget extends StatelessWidget {
     );
 
     return Obx(() {
-      final documentCount = controller.selectedDocuments.length;
+      final documentCount = controller.selectedDocuments2.length;
       List<Widget> documentWidgets = [];
 
       for (int i = 0; i < documentCount; i++) {
         Widget docSlot = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _documentNameField(context, i, controller.documentNameControllers[i]),
+            _documentNameField(context, i, controller.documentNameControllers2[i]),
             SizedBox(height: spacing * 0.5),
-            _documentBox(context, i, controller.selectedDocuments[i]),
+            _documentBox(context, i, controller.selectedDocuments2[i]),
           ],
         );
         documentWidgets.add(docSlot);
