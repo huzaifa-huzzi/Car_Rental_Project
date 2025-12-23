@@ -46,6 +46,7 @@ class ListViewScreen extends StatelessWidget {
                 context.push('/cardetails', extra: {"hideMobileAppBar": true});
               },
               onEdit: () {
+                context.push('/editCar', extra: {"hideMobileAppBar": true});
               },
               onDelete: () {
                 showDialog(
@@ -78,7 +79,7 @@ class ListViewScreen extends StatelessWidget {
                 context.push('/cardetails', extra: {"hideMobileAppBar": true});
               },
               onEdit: () {
-
+                context.push('/editCar', extra: {"hideMobileAppBar": true});
               },
         onDelete: () {
           showDialog(
@@ -111,6 +112,7 @@ class ListViewScreen extends StatelessWidget {
                 context.push('/cardetails', extra: {"hideMobileAppBar": true});
               },
               onEdit: () {
+                context.push('/editCar', extra: {"hideMobileAppBar": true});
               },
                 onDelete: () {
                   showDialog(
@@ -140,7 +142,7 @@ class ListViewScreen extends StatelessWidget {
               status: "unavailable",
               regId: "HPC-982",
               onView: () {
-                context.push('/cardetails', extra: {"hideMobileAppBar": true});
+                context.push('/editCar', extra: {"hideMobileAppBar": true});
               },
               onEdit: () {
 

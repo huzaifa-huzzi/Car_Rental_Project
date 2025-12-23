@@ -58,6 +58,7 @@ class CarListTableWidget extends StatelessWidget {
               ),
 
               /// ---------- TABLE BODY ----------///
+
               Column(
                 children: controller.displayedCarList.asMap().entries.map((entry) {
                   int rowIndex = entry.key;
@@ -66,43 +67,54 @@ class CarListTableWidget extends StatelessWidget {
                   return Obx(() {
                     bool isHovered = controller.hoveredRowIndex.value == rowIndex;
 
-                    return MouseRegion(
-                      onEnter: (_) => controller.hoveredRowIndex.value = rowIndex,
-                      onExit: (_) => controller.hoveredRowIndex.value = -1,
-                      child: Container(
-                        color: isHovered ? Colors.white : Colors.transparent,
-                        padding: EdgeInsets.only(left: tablePadding, top: 12, bottom: 12),
-                        child: Row(
-                          children: [
-                            _dataCell(car["vin"] ?? "N/A", context),
-                            _dataCell(car["reg"] ?? "N/A", context),
-                            _dataCell(car["brand"] ?? "N/A", context),
-                            _dataCell(car["make"] ?? "N/A", context),
-                            _dataCell(car["model"] ?? "N/A", context),
-                            _dataCell(car["year"] ?? "N/A", context),
-                            _styledDataCell(car["bodyType"] ?? "N/A", context),
-                            _statusDataCell(car["status"] ?? "N/A", context),
-                            _styledDataCell(car["transmission"] ?? "N/A", context),
-                            _dataCell(car["capacity"] ?? "N/A", context),
-                            _dataCell(car["fuel"] ?? "N/A", context),
-                            _dataCell(car["engine"] ?? "N/A", context),
-                            _dataCell(car["price"] ?? "N/A", context),
+                    final bool enableHover = !AppSizes.isMobile(context);
 
-                            /// ACTION BUTTON
-                            SizedBox(
-                              width: actionColumnWidth,
-                              child: Center(
-                                child: AddButton(
-                                  text: "View",
-                                  onTap: () => context.go('/cardetails'),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
+                    Widget rowContent = Container(
+                      color: (enableHover && isHovered) ? Colors.white : Colors.transparent,
+                      padding: EdgeInsets.only(left: tablePadding, top: 12, bottom: 12),
+                      child: Row(
+                        children: [
+                          _dataCell(car["vin"] ?? "N/A", context),
+                          _dataCell(car["reg"] ?? "N/A", context),
+                          _dataCell(car["brand"] ?? "N/A", context),
+                          _dataCell(car["make"] ?? "N/A", context),
+                          _dataCell(car["model"] ?? "N/A", context),
+                          _dataCell(car["year"] ?? "N/A", context),
+                          _styledDataCell(car["bodyType"] ?? "N/A", context),
+                          _statusDataCell(car["status"] ?? "N/A", context),
+                          _styledDataCell(car["transmission"] ?? "N/A", context),
+                          _dataCell(car["capacity"] ?? "N/A", context),
+                          _dataCell(car["fuel"] ?? "N/A", context),
+                          _dataCell(car["engine"] ?? "N/A", context),
+                          _dataCell(car["price"] ?? "N/A", context),
+
+                          /// ACTION BUTTON
+                          SizedBox(
+                            width: actionColumnWidth,
+                            child: Center(
+                              child: AddButton(
+                                text: "View",
+                                onTap: () {
+                                  context.push('/cardetails', extra: {"hideMobileAppBar": true});
+                                },
+                                borderRadius: BorderRadius.circular(6),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     );
+
+                    if (enableHover) {
+                      return MouseRegion(
+                        onEnter: (_) => controller.hoveredRowIndex.value = rowIndex,
+                        onExit: (_) => controller.hoveredRowIndex.value = -1,
+                        cursor: SystemMouseCursors.click,
+                        child: rowContent,
+                      );
+                    } else {
+                      return rowContent;
+                    }
                   });
                 }).toList(),
               ),

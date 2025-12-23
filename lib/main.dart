@@ -4,6 +4,7 @@ import 'package:car_rental_project/Car Inventory/Car Directory/CarInventoryMainS
 import 'package:car_rental_project/Car Inventory/Car Directory/GridViewScreen/GridViewScreen.dart';
 import 'package:car_rental_project/Car Inventory/Car Directory/ListViewScreen/ListViewScreen.dart';
 import 'package:car_rental_project/Car Inventory/Car Directory/TableViewScreen/TableViewScreen.dart';
+import 'package:car_rental_project/Car%20Inventory/Editing%20Car/EditingCar.dart';
 import 'package:car_rental_project/Resources/Theme.dart';
 import 'package:car_rental_project/SideScreen/SidebarScreen.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +91,18 @@ class _MyAppState extends State<MyApp> {
 
             return SidebarScreen.wrapWithSidebarIfNeeded(
               child: AddingCarScreen(),
+              hideMobileAppBar: hideMobile,
+            );
+          },
+        ),
+        GoRoute(
+          path: '/editCar',
+          builder: (context, state) {
+            final extras = state.extra as Map<String, dynamic>?;
+            final hideMobile = extras?["hideMobileAppBar"] == true;
+
+            return SidebarScreen.wrapWithSidebarIfNeeded(
+              child: EditCarScreen(),
               hideMobileAppBar: hideMobile,
             );
           },

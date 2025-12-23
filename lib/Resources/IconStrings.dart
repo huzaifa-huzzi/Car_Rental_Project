@@ -57,6 +57,8 @@ class IconString {
   static const String  crossIcon = 'assets/icons/crossIcon.png';
   static const String  downloadIcon = 'assets/icons/download2Icon.png';
   static const String  printIcon = 'assets/icons/printIcon.png';
+  static const String  vinNumberIcon = 'assets/icons/VinNumberIcon.png';
+  static const String  editIcon2 = 'assets/icons/Edit-Icon2.png';
 
 
 

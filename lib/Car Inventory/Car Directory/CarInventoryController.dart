@@ -104,12 +104,14 @@ class CarInventoryController extends GetxController {
 
     List<String> brands = ["Aston", "BMW", "Audi", "Ford", "Honda"];
     List<String> models = ["Martin", "X7", "A4", "Focus", "Civic"];
-    List<String> transmission = ["Automatic", "Manual", ];
+    List<String> transmissions = ["Auto", "Manual"];
     List<String> years = ["2023", "2022", "2020", "2018", "2017"];
     List<String> chassis = ["WVC-098", "HFC-082", "XYZ-345", "ABC-123", "QWE-678"];
 
     carList.value = List.generate(10, (i) {
       int index = i % brands.length;
+
+      int transIndex = i % transmissions.length;
 
       String getStatus(int i) {
         if (i % 3 == 0) return "Available";
@@ -126,7 +128,7 @@ class CarInventoryController extends GetxController {
         "year": years[index],
         "bodyType": "Sedan",
         "status": getStatus(i),
-        "transmission": transmission[index],
+        "transmission": transmissions[transIndex],
         "capacity": "4 Seats",
         "fuel": "Petrol",
         "engine": "2.0L",
@@ -148,6 +150,7 @@ class CarInventoryController extends GetxController {
   final engineController = TextEditingController();
   final colorController = TextEditingController();
   final regController = TextEditingController();
+  final vinController = TextEditingController();
   final valueController = TextEditingController();
   final weeklyRentController = TextEditingController();
   var openedDropdown = "".obs;

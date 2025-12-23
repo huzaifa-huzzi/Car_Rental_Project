@@ -125,7 +125,7 @@ class PaginationBar extends StatelessWidget {
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
-        child: paginationRow, // no ConstrainedBox
+        child: paginationRow,
       );
     } else {
       return paginationRow;

@@ -10,6 +10,7 @@ class CustomPrimaryButton extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
   final Color borderColor;
+  final Color iconColor;
   final String? iconPath;
   final double? height;
   final double? width;
@@ -23,6 +24,7 @@ class CustomPrimaryButton extends StatelessWidget {
     this.backgroundColor = Colors.white,
     this.textColor = AppColors.textColor,
     this.borderColor = AppColors.quadrantalTextColor,
+    this.iconColor = AppColors.primaryColor,
     this.iconPath,
     this.height,
     this.width,
@@ -62,6 +64,7 @@ class CustomPrimaryButton extends StatelessWidget {
                 iconPath!,
                 width: 18,
                 height: 18,
+                color:iconColor ,
                 fit: BoxFit.contain,
               ),
               const SizedBox(width: 6),

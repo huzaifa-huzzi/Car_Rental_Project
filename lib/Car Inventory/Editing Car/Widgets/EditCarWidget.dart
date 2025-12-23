@@ -12,8 +12,8 @@ import 'package:get/get.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-class AddCarFormWidget extends StatelessWidget {
-  AddCarFormWidget({super.key});
+class EditCarWidget extends StatelessWidget {
+  EditCarWidget({super.key});
 
 
   final CarInventoryController controller = Get.find<CarInventoryController>();
@@ -37,10 +37,48 @@ class AddCarFormWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// CAR DETAILS
-            Text(TextString.addScreenTitle, style: TTextTheme.h7Style(context)),
-            SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
-            Text(TextString.addScreenDescription, style: TTextTheme.titleThree(context)),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Image.asset(
+                    IconString.editIcon2,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        TextString.addEditCarScreenTitle,
+                        style: TTextTheme.h7Style(context),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        TextString.addEditCarDescription,
+                        style: TTextTheme.titleThree(context),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(width: 10),
+                CustomPrimaryButton(
+                  text: "Edit",
+                  iconPath: IconString.editIcon,
+                  width: isMobile ? 75 : 110,
+                  height: isMobile ? 32 : 38,
+                  textColor: AppColors.primaryColor,
+                  borderColor: AppColors.primaryColor,
+                  onTap: () {
+                    print("Edit Tapped");
+                  },
+                ),
+              ],
+            ),
             SizedBox(height: AppSizes.verticalPadding(context)),
             Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
             SizedBox(height: AppSizes.verticalPadding(context)),
@@ -108,7 +146,7 @@ class AddCarFormWidget extends StatelessWidget {
 
             /// DESCRIPTION
             SizedBox(height: AppSizes.verticalPadding(context)),
-            Text(TextString.descriptionTitle, style: TTextTheme.titleTwo(context)),
+            Text(TextString.addEditDescriptionTitle, style: TTextTheme.titleTwo(context)),
             SizedBox(height: AppSizes.verticalPadding(context) * 0.5),
 
             Container(
@@ -121,7 +159,7 @@ class AddCarFormWidget extends StatelessWidget {
                 cursorColor: AppColors.blackColor,
                 maxLines: 6,
                 decoration: InputDecoration(
-                  hintText: TextString.descriptionTextFieldText,
+                  hintText: TextString.addEditDescriptionTextFieldText,
                   hintStyle: TTextTheme.pOne(context),
                   border: InputBorder.none,
                 ),

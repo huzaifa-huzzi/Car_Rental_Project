@@ -30,36 +30,30 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
 
   final List<Map<String, dynamic>> specifications = const [
     {
+      'title': 'Vin Number',
+      'value': '123-456',
+      'icon': IconString.vinNumberIcon
+    },
+    {
+      'title': 'Registration',
+      'value': '1HFC-052',
+      'icon': IconString.registrationIcon
+    },
+    {
       'title': 'Transmission',
       'value': 'Automatic',
       'icon': IconString.transmissionIcon
     },
     {'title': 'Capacity', 'value': '4 Seats', 'icon': IconString.seatIcon},
-    {
-      'title': 'Range',
-      'value': '400 miles on a full tank',
-      'icon': IconString.rangeIcon
-    },
+    {'title': 'Engine Size', 'value': '2.5(L)', 'icon': IconString.engineSizeIcon},
+    {'title': 'Car Values', 'value': '35000\$Aud', 'icon': IconString.carValueIcon},
+    {'title': 'Mileage', 'value': '43000(Km)', 'icon': IconString.milageIcon},
     {
       'title': 'Fuel',
       'value': 'Petrol',
       'icon': IconString.gasPumpIcon
     },
-    {'title': 'Top Speed', 'value': '120 mph', 'icon': IconString.speedIcon},
-    {
-      'title': 'Color',
-      'value': 'Silver',
-      'icon': IconString.colorIcon
-    },
-    {
-      'title': 'Acceleration',
-      'value': '8.0 seconds(0-60mph)',
-      'icon': IconString.accelerationIcon
-    },
-    {'title': 'Model Year', 'value': '2017', 'icon': IconString.modelYearIcon},
-    {'title': 'Car Values', 'value': '35000\$Aud', 'icon': IconString.carValueIcon},
-    {'title': 'Mileage', 'value': '43000(Km)', 'icon': IconString.milageIcon},
-    {'title': 'Engine Size', 'value': '2.5(L)', 'icon': IconString.engineSizeIcon},
+
   ];
 
   @override
@@ -499,7 +493,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
             int columns;
 
             if (totalWidth >= 550) {
-              columns = 5;
+              columns = 4;
             } else if (totalWidth >= 350) {
               columns = 3;
             } else {
@@ -523,7 +517,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
 
             return Wrap(
               spacing: horizontalSpacing,
-              runSpacing: 16,
+              runSpacing: 20,
               children: specWidgets,
             );
           },
@@ -536,7 +530,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
 //  Specification Tile
   Widget _buildSpecTile(
       BuildContext context, String icon, String title, String value, {required bool isMobile}) {
-    final double iconSize = isMobile ? 26 : 38;
+    final double iconSize = isMobile ? 26 : 35;
     final double spacing = isMobile ? 9 : 14;
     final double textSpacing = isMobile ? 2 : 3;
 
@@ -595,8 +589,8 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
       children: [
         // ICON BOX
         Container(
-          height: 38,
-          width: 38,
+          height: 36,
+          width: 36,
           decoration: BoxDecoration(
             color: AppColors.secondaryColor,
             borderRadius: BorderRadius.circular(10),
@@ -604,8 +598,8 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
           child: Center(
             child: Image.asset(
               icon,
-              height: 20,
-              width: 20,
+              height: 19,
+              width: 19,
             ),
           ),
         ),
@@ -637,7 +631,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
   }
 
 
-//  Documents Section
+//  Documents Section Widget
   Widget _buildCarDocumentsSection(BuildContext context) {
     final spacing = AppSizes.padding(context);
     final isMobile = AppSizes.isMobile(context);
@@ -646,51 +640,28 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Car document",
-          style: TTextTheme.titleSix(context),
-        ),
+        Text("Car document", style: TTextTheme.titleSix(context)),
         SizedBox(height: spacing),
         LayoutBuilder(
           builder: (context, constraints) {
             final double totalWidth = constraints.maxWidth;
+            double gap = 6.0;
 
             double itemWidth;
-            double gap = 15.0;
-
-            if (totalWidth < 250) {
-              itemWidth = totalWidth;
-            } else if (totalWidth < 480) {
+            if (totalWidth < 600) {
               itemWidth = (totalWidth - gap) / 2;
             } else {
-              itemWidth = (totalWidth - (gap * 2)) / 3;
+              itemWidth = (totalWidth - (gap * 3)) / 4;
             }
 
             return Wrap(
               spacing: gap,
               runSpacing: 12.0,
               children: [
-                SizedBox(
-                  width: itemWidth,
-                  child: _buildDocumentTile(
-                    context, "Registration", "1HFC-052", true,
-                    isMobile: isMobile, tab: tab,
-                  ),
-                ),
-                SizedBox(
-                  width: itemWidth,
-                  child: _buildDocumentTile(
-                    context, "Tax Token", "Uploaded", true,
-                    isMobile: isMobile, tab: tab,
-                  ),
-                ),
-                SizedBox(
-                  width: itemWidth,
-                  child: _buildDocumentTile(
-                    context, "Incoherence Paper", "Uploaded", true,
-                    isMobile: isMobile, tab: tab,
-                  ),
-                ),
+                _buildSizedBoxTile(itemWidth, context, "Registration", "1HFC-052", isMobile, tab),
+                _buildSizedBoxTile(itemWidth, context, "Tax Token", "Uploaded", isMobile, tab),
+                _buildSizedBoxTile(itemWidth, context, "Incoherence Paper", "Uploaded", isMobile, tab),
+                _buildSizedBoxTile(itemWidth, context, "Vin Number", "123-45", isMobile, tab),
               ],
             );
           },
@@ -699,6 +670,18 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
     );
   }
 
+// Helper method to keep Wrap clean
+  Widget _buildSizedBoxTile(double width, BuildContext context, String title, String status, bool isMobile, bool tab) {
+    return SizedBox(
+      width: width,
+      child: _buildDocumentTile(
+        context, title, status, true,
+        isMobile: isMobile, tab: tab,
+      ),
+    );
+  }
+
+  // DocumnetTile Widget
   Widget _buildDocumentTile(
       BuildContext context,
       String title,
@@ -706,28 +689,36 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
       bool uploaded,
       {required bool isMobile, required bool tab}
       ) {
-    String iconPath = (title.toLowerCase().contains("tax") ||
-        title.toLowerCase().contains("paper"))
-        ? IconString.taxIcon
-        : IconString.registrationIcon;
+
+    String iconPath;
+    String lowerTitle = title.toLowerCase();
+
+    if (lowerTitle.contains("tax") || lowerTitle.contains("paper")) {
+      iconPath = IconString.taxIcon;
+    } else if (lowerTitle.contains("vin")) {
+      iconPath = IconString.vinNumberIcon;
+    } else {
+      iconPath = IconString.registrationIcon;
+    }
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 4),
       child: isMobile
           ? Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: 26,
-            width: 26,
-            padding: const EdgeInsets.all(5),
+            height: 28,
+            width: 28,
+            padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
               color: AppColors.secondaryColor,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
             ),
-            child: Image.asset(iconPath),
+            child: Image.asset(iconPath, fit: BoxFit.contain),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           Text(
             title,
             textAlign: TextAlign.center,
@@ -746,21 +737,23 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
                 ),
               ),
               const SizedBox(width: 4),
-              GestureDetector(
-                onTap: () => Get.find<CarInventoryController>()
-                    .open(ImageString.registrationForm),
-                child: Image.asset(
-                  IconString.uploadedIcon,
-                  height: 16,
-                  width: 16,
+              if (uploaded)
+                GestureDetector(
+                  onTap: () => Get.find<CarInventoryController>()
+                      .open(ImageString.registrationForm),
+                  child: Image.asset(
+                    IconString.uploadedIcon,
+                    height: 14,
+                    width: 14,
+                  ),
                 ),
-              ),
             ],
           ),
         ],
       )
           : Row(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             height: tab ? 32 : 38,
@@ -773,7 +766,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
               child: Image.asset(iconPath, height: 18, width: 18),
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 6),
           Flexible(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -795,16 +788,17 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const SizedBox(width: 4),
-                    GestureDetector(
-                      onTap: () => Get.find<CarInventoryController>()
-                          .open(ImageString.registrationForm),
-                      child: Image.asset(
-                        IconString.uploadedIcon,
-                        height: 16,
-                        width: 16,
+                    const SizedBox(width: 7),
+                    if (uploaded)
+                      GestureDetector(
+                        onTap: () => Get.find<CarInventoryController>()
+                            .open(ImageString.registrationForm),
+                        child: Image.asset(
+                          IconString.uploadedIcon,
+                          height: 16,
+                          width: 16,
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ],
