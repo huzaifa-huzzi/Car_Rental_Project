@@ -43,7 +43,7 @@ class CarInventoryController extends GetxController {
   }
 
   /// Reusable Widget Controller
-   // pagination  Widget
+  // pagination  Widget
   final RxInt currentPage = 1.obs;
 
   // Make pageSize reactive
@@ -136,6 +136,8 @@ class CarInventoryController extends GetxController {
       };
     });
   }
+
+
 
 
 

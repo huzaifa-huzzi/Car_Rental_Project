@@ -65,38 +65,38 @@ class ListViewScreen extends StatelessWidget {
               },
             ),
             CarListCard(
-              image: ImageString.bmwPic,
-              name: "Range Rover",
-              secondname: "Velar",
-              model: "2024",
-              transmission: "Automatic",
-              capacity: "2 seats",
-              price: "\$130 / weekly",
-              status: "Maintenance",
-              regId: "HPC-982",
-              regId2: "123-567",
-              onView: () {
-                context.push('/cardetails', extra: {"hideMobileAppBar": true});
-              },
-              onEdit: () {
-                context.push('/editCar', extra: {"hideMobileAppBar": true});
-              },
-        onDelete: () {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (_) =>
-                ResponsiveDeleteDialog(
-                  onCancel: () {
-                    context.pop();
-                  },
-                  onConfirm: () {
-                    context.pop();
-                  },
-                ),
-          );
-        }
-        ),
+                image: ImageString.bmwPic,
+                name: "Range Rover",
+                secondname: "Velar",
+                model: "2024",
+                transmission: "Automatic",
+                capacity: "2 seats",
+                price: "\$130 / weekly",
+                status: "Maintenance",
+                regId: "HPC-982",
+                regId2: "123-567",
+                onView: () {
+                  context.push('/cardetails', extra: {"hideMobileAppBar": true});
+                },
+                onEdit: () {
+                  context.push('/editCar', extra: {"hideMobileAppBar": true});
+                },
+                onDelete: () {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (_) =>
+                        ResponsiveDeleteDialog(
+                          onCancel: () {
+                            context.pop();
+                          },
+                          onConfirm: () {
+                            context.pop();
+                          },
+                        ),
+                  );
+                }
+            ),
             CarListCard(
               image: ImageString.bmwPic,
               name: "BMW",
@@ -114,21 +114,21 @@ class ListViewScreen extends StatelessWidget {
               onEdit: () {
                 context.push('/editCar', extra: {"hideMobileAppBar": true});
               },
-                onDelete: () {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (_) =>
-                        ResponsiveDeleteDialog(
-                          onCancel: () {
-                            context.pop();
-                          },
-                          onConfirm: () {
-                            context.pop();
-                          },
-                        ),
-                  );
-                },
+              onDelete: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) =>
+                      ResponsiveDeleteDialog(
+                        onCancel: () {
+                          context.pop();
+                        },
+                        onConfirm: () {
+                          context.pop();
+                        },
+                      ),
+                );
+              },
             ),
             CarListCard(
               image: ImageString.audiPic,
@@ -147,23 +147,36 @@ class ListViewScreen extends StatelessWidget {
               onEdit: () {
 
               },
-                onDelete: () {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (_) =>
-                        ResponsiveDeleteDialog(
-                          onCancel: () {
-                            context.pop();
-                          },
-                          onConfirm: () {
-                            context.pop();
-                          },
-                        ),
-                  );
-                },
+              onDelete: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) =>
+                      ResponsiveDeleteDialog(
+                        onCancel: () {
+                          context.pop();
+                        },
+                        onConfirm: () {
+                          context.pop();
+                        },
+                      ),
+                );
+              },
             ),
-            PaginationBar(isMobile: isMobile, tablePadding: tablePadding),
+            Padding(
+              padding: EdgeInsets.only(
+                left: isMobile ? tablePadding : 0,
+                right: tablePadding,
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: PaginationBar(
+                  isMobile: isMobile,
+                  tablePadding: tablePadding,
+                ),
+              ),
+            ),
+
             SizedBox(height: baseVerticalSpace * 1.25),
           ],
         );
@@ -181,7 +194,7 @@ class ListViewScreen extends StatelessWidget {
                     ? 900
                     : isTab
                     ? 1000
-                    : isWeb ? 1400:1400,
+                    : isWeb ? 1100:1400,
                 child: cardListContent,
               ),
             ),

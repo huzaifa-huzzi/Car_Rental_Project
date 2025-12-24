@@ -231,7 +231,7 @@ class AddCarFormWidget extends StatelessWidget {
                           Divider(
                             height: 1,
                             thickness: 1,
-                            color: AppColors.quadrantalTextColor.withOpacity(0.2),
+                            color: AppColors.quadrantalTextColor,
                             indent: 0,
                             endIndent: 0,
                           ),
@@ -505,64 +505,58 @@ class AddCarFormWidget extends StatelessWidget {
 
 //-----ADD document box widget
   Widget _addDocumentBox(BuildContext context) {
-    if (controller.selectedDocuments.length >= controller.maxDocuments) {
-      return SizedBox.shrink();
-    }
+    final spacing = AppSizes.padding(context);
 
-    final isMobile = AppSizes.isMobile(context);
-
-
-    Widget content = Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.iconsBackgroundColor,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Image.asset(
-              IconString.addIcon,
-              color: AppColors.primaryColor,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Opacity(
+          opacity: 0,
+          child: Column(
+            children: [
+              Text("Document Name", style: TTextTheme.titleTwo(context)),
+              SizedBox(height:4),
+              const SizedBox(height: 45),
+            ],
           ),
-          const SizedBox(height: 6),
-          Text(
-            "Add Document",
-            style: TTextTheme.documnetIsnideSmallText(context),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-
-
-    return GestureDetector(
-      onTap: () => controller.addDocumentSlot(),
-      child: DottedBorder(
-        borderType: BorderType.RRect,
-        radius: Radius.circular(AppSizes.borderRadius(context)),
-        dashPattern: [8, 6],
-        color: AppColors.tertiaryTextColor,
-        strokeWidth: 1,
-        child: Container(
-          width: double.infinity,
-          constraints: isMobile ? BoxConstraints(minHeight: 180) : null,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-          ),
-
-          child: isMobile
-              ? AspectRatio(
-            aspectRatio: 1.8,
-            child: content,
-          )
-              : content,
         ),
-      ),
+        SizedBox(height: spacing * 0.5),
+        GestureDetector(
+          onTap: () => controller.addDocumentSlot(),
+          child: DottedBorder(
+            borderType: BorderType.RRect,
+            radius: Radius.circular(AppSizes.borderRadius(context)),
+            dashPattern: const [8, 6],
+            color: AppColors.tertiaryTextColor,
+            strokeWidth: 1,
+            child: Container(
+              height: 200,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+              ),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppColors.iconsBackgroundColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Image.asset(IconString.addIcon, color: AppColors.primaryColor),
+                    ),
+                    const SizedBox(height: 6),
+                    Text("Add Document", style: TTextTheme.documnetIsnideSmallText(context)),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -574,7 +568,7 @@ class AddCarFormWidget extends StatelessWidget {
     final double spacing = AppSizes.padding(context);
 
     Widget heading = Text(
-      "Upload Document (Tax Token Paper,Insurance paper,etx MAX 6)",
+      "Upload Document (Tax Token Paper, Insurance paper, etc MAX 6)",
       style: TTextTheme.titleTwo(context),
     );
 
@@ -583,74 +577,50 @@ class AddCarFormWidget extends StatelessWidget {
       List<Widget> documentWidgets = [];
 
       for (int i = 0; i < documentCount; i++) {
-        Widget docSlot = Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _documentNameField(context, i, controller.documentNameControllers[i]),
-            SizedBox(height: spacing * 0.5),
-            _documentBox(context, i, controller.selectedDocuments[i]),
-          ],
+        documentWidgets.add(
+          Column(
+            key: ValueKey("doc_slot_$i"),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _documentNameField(context, i, controller.documentNameControllers[i]),
+              SizedBox(height: 8),
+              _documentBox(context, i, controller.selectedDocuments[i]),
+            ],
+          ),
         );
-        documentWidgets.add(docSlot);
       }
-      documentWidgets.add(_addDocumentBox(context));
-      final finalDocumentWidgets = documentWidgets.where((widget) => widget is! SizedBox).toList();
 
+      if (documentCount < controller.maxDocuments) {
+        documentWidgets.add(_addDocumentBox(context));
+      }
 
-      if (isMobile) {
-        List<Widget> mobileStack = [
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           heading,
-          SizedBox(height: spacing * 0.7),
-        ];
+          const SizedBox(height: 30),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final double totalWidth = constraints.maxWidth;
 
-        for (int i = 0; i < finalDocumentWidgets.length; i++) {
-          mobileStack.add(finalDocumentWidgets[i]);
+              int columns = isMobile ? 1 : (totalWidth < 650 ? 2 : 3);
 
-          if (i < finalDocumentWidgets.length - 1) {
-            mobileStack.add(SizedBox(height: spacing * 2));
-          }
-        }
+              final double itemWidth = (totalWidth - (spacing * (columns - 1))) / columns;
 
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: mobileStack,
-        );
-      } else {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            heading,
-            SizedBox(height: spacing * 0.7),
-
-            LayoutBuilder(
-                builder: (context, constraints) {
-                  int docColumnCount;
-                  if (constraints.maxWidth < 600) {
-                    docColumnCount = 2;
-                  } else {
-                    docColumnCount = 3;
-                  }
-
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: docColumnCount,
-                      crossAxisSpacing: spacing,
-                      mainAxisSpacing: spacing,
-                      childAspectRatio: 0.98,
-                    ),
-                    itemCount: finalDocumentWidgets.length,
-                    itemBuilder: (context, index) {
-                      return finalDocumentWidgets[index];
-                    },
+              return Wrap(
+                spacing: spacing,
+                runSpacing: 13,
+                children: documentWidgets.map((widget) {
+                  return SizedBox(
+                    width: itemWidth,
+                    child: widget,
                   );
-                }
-            ),
-          ],
-        );
-      }
+                }).toList(),
+              );
+            },
+          ),
+        ],
+      );
     });
   }
 

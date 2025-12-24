@@ -241,33 +241,34 @@ class CardListHeaderWidget extends StatelessWidget {
   // Filter container widget
   Widget _buildFilterContainer(BuildContext context) {
     final CarInventoryController controller = Get.put(CarInventoryController());
-
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(
-        horizontal: AppSizes.horizontalPadding(context),
-        vertical: AppSizes.padding(context) * 0.5,
-      ),
-      padding: EdgeInsets.all(AppSizes.padding(context)),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-      ),
-      child: Wrap(
-        spacing: 16,
-        runSpacing: 16,
-        alignment: WrapAlignment.start,
-        children: [
-          _filterItem("Car Brand", _dropdownBox(["BMW", "Aston", "Range Rover"], controller.selectedBrand, context), context),
-          _filterItem("Car Model", _dropdownBox(["Corolla", "Civic"], controller.selectedModel, context), context),
-          _filterItem("Car Year", _dropdownBox(["2025", "2024"], controller.selectedYear, context), context),
-          _filterItem("Body Type", _dropdownBox(["Sedan", "SUV"], controller.selectedBodyType, context), context),
-          _filterItem("Car Status", _dropdownBox(["Available", "Unavailable"], controller.selectedStatus, context), context),
-          _filterItem("Transmission", _dropdownBox(["Auto", "Manual"], controller.selectedTransmission, context), context),
-          _filterItem("Fuel", _dropdownBox(["Petrol", "Hybrid"], controller.selectedFuel, context), context),
-          _filterItem("Engine Size", _textFieldBox("2.5[L]", context), context),
-          _filterItem("Price (Under)", _textFieldBox(r"$ 1600 (W)", context), context),
-        ],
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        margin: EdgeInsets.symmetric(
+          horizontal: AppSizes.horizontalPadding(context),
+          vertical: AppSizes.padding(context) * 0.5,
+        ),
+        padding: EdgeInsets.all(AppSizes.padding(context)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+        ),
+        child: Wrap(
+          spacing: 16,
+          runSpacing: 16,
+          crossAxisAlignment: WrapCrossAlignment.start,
+          children: [
+            _filterItem("Car Brand", _dropdownBox(["BMW", "Aston", "Range Rover"], controller.selectedBrand, context), context),
+            _filterItem("Car Model", _dropdownBox(["Corolla", "Civic"], controller.selectedModel, context), context),
+            _filterItem("Car Year", _dropdownBox(["2025", "2024"], controller.selectedYear, context), context),
+            _filterItem("Body Type", _dropdownBox(["Sedan", "SUV"], controller.selectedBodyType, context), context),
+            _filterItem("Car Status", _dropdownBox(["Available", "Unavailable"], controller.selectedStatus, context), context),
+            _filterItem("Transmission", _dropdownBox(["Auto", "Manual"], controller.selectedTransmission, context), context),
+            _filterItem("Fuel", _dropdownBox(["Petrol", "Hybrid"], controller.selectedFuel, context), context),
+            _filterItem("Engine Size", _textFieldBox("2.5[L]", context), context),
+            _filterItem("Price (Under)", _textFieldBox(r"$ 1600 (W)", context), context),
+          ],
+        ),
       ),
     );
   }
