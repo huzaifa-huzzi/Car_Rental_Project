@@ -370,8 +370,8 @@ class EditCarWidget extends StatelessWidget {
                   child: Image.asset(IconString.uploadIcon, color: AppColors.primaryColor),
                 ),
                 const SizedBox(height: 10),
-                Text("Click to upload Images", style: TTextTheme.btnOne(context)),
-                Text("SVG, PNG, JPG", style: TTextTheme.documnetIsnideSmallText2(context)),
+                Text(TextString.uploadTitle, style: TTextTheme.btnOne(context)),
+                Text(TextString.uploadSubtitle, style: TTextTheme.documnetIsnideSmallText2(context)),
               ],
             )
                 : Wrap(
@@ -408,7 +408,7 @@ class EditCarWidget extends StatelessWidget {
                       top: -8,
                       right: -8,
                       child: GestureDetector(
-                        onTap: () => controller.removeDocumentSlot(index),
+                        onTap: () => controller.removeImage2(index),
                         child: CircleAvatar(
                           radius: 13,
                           backgroundColor: Colors.white,
@@ -433,7 +433,7 @@ class EditCarWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Document Name", style: TTextTheme.titleTwo(context)),
+        Text(TextString.documentName, style: TTextTheme.titleTwo(context)),
         SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
         Container(
           padding: EdgeInsets.symmetric(horizontal: AppSizes.padding(context)),
@@ -446,7 +446,7 @@ class EditCarWidget extends StatelessWidget {
             style:  TTextTheme.insidetextfieldWrittenText(context),
             controller: controller,
             decoration: InputDecoration(
-              hintText: "Write your document name",
+              hintText: TextString.documentSubtitle,
               border: InputBorder.none,
               hintStyle: TTextTheme.titleFour(context),
             ),
@@ -520,7 +520,7 @@ class EditCarWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Text(hintText, style: TTextTheme.documnetIsnideSmallText(context)),
-                      Text("SVG,PNG,JPG", style:TTextTheme.documnetIsnideSmallText2(context)),
+                      Text(TextString.uploadSubtitle, style:TTextTheme.documnetIsnideSmallText2(context)),
                     ],
                   )
                       : isImage
@@ -575,7 +575,7 @@ class EditCarWidget extends StatelessWidget {
           opacity: 0,
           child: Column(
             children: [
-              Text("Document Name", style: TTextTheme.titleTwo(context)),
+              Text(TextString.uploadTitle, style: TTextTheme.titleTwo(context)),
               SizedBox(height:4),
               const SizedBox(height: 45),
             ],
@@ -610,7 +610,7 @@ class EditCarWidget extends StatelessWidget {
                       child: Image.asset(IconString.addIcon, color: AppColors.primaryColor),
                     ),
                     const SizedBox(height: 6),
-                    Text("Add Document", style: TTextTheme.documnetIsnideSmallText(context)),
+                    Text(TextString.addDocument, style: TTextTheme.documnetIsnideSmallText(context)),
                   ],
                 ),
               ),
@@ -629,7 +629,7 @@ class EditCarWidget extends StatelessWidget {
     final double spacing = AppSizes.padding(context);
 
     Widget heading = Text(
-      "Upload Document (Tax Token Paper, Insurance paper, etc MAX 6)",
+      TextString.uploadMax6,
       style: TTextTheme.titleTwo(context),
     );
 

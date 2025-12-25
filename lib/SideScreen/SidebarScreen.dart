@@ -1,5 +1,6 @@
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/TableViewScreen/TableViewScreen.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/SideScreen/Widget/MobileAppbar.dart';
 import 'package:car_rental_project/SideScreen/Widget/SidebarComponentWidget.dart';
 import 'package:car_rental_project/SideScreen/Widget/TabAppBar.dart';
@@ -72,31 +73,31 @@ class SidebarScreen extends StatelessWidget {
                   SidebarComponents.menuItem(
                     context, controller,
                     iconPath: IconString.dashboardIcon,
-                    title: "Dashboard",
+                    title: TextString.dashboardTitle,
                     onTap: onTap, scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.menuItem(
                     context, controller,
                     iconPath: IconString.carInventoryIcon,
-                    title: "Car Inventory",
+                    title: TextString.carInventoryTitle,
                     onTap: onTap, scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.menuItem(
                     context, controller,
                     iconPath: IconString.customerIcon,
-                    title: "Customers",
+                    title: TextString.customersTitle,
                     onTap: onTap, scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.menuItem(
                     context, controller,
                     iconPath: IconString.agreementIcon,
-                    title: "Re-agreement",
+                    title: TextString.reAgreementTitle,
                     onTap: onTap, scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.menuItem(
                     context, controller,
                     iconPath: IconString.paymentIcon,
-                    title: "Payment",
+                    title: TextString.paymentTitle,
                     onTap: onTap, scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.expenseMenuItem(
@@ -106,13 +107,13 @@ class SidebarScreen extends StatelessWidget {
                   SidebarComponents.menuItem(
                     context, controller,
                     iconPath: IconString.maintenanceIcon,
-                    title: "Maintenance",
+                    title: TextString.maintenanceTitle,
                     onTap: onTap, scaffoldKey: _scaffoldKey,
                   ),
                   SidebarComponents.menuItem(
                     context, controller,
                     iconPath: IconString.incomeIcon,
-                    title: "Income",
+                    title: TextString.incomeTitle,
                     trailing: SidebarComponents.redDotWithNumber(
                         controller.incomeRedDot.value, context),
                     onTap: onTap, scaffoldKey: _scaffoldKey,
@@ -127,7 +128,7 @@ class SidebarScreen extends StatelessWidget {
                 context,
                 controller,
                 iconPath: IconString.logoutIcon,
-                title: "Logout",
+                title: TextString.logoutTitle,
                 onTap: onTap,
                 scaffoldKey: _scaffoldKey,
               ),

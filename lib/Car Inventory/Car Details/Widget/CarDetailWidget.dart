@@ -296,7 +296,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Sedan", style: TTextTheme.titleSix(context)),
+          Text(TextString.carDetailTitle, style: TTextTheme.titleSix(context)),
 
           SizedBox(height: 4),
 
@@ -305,7 +305,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
             children: [
               Expanded(
                 child: Text(
-                  "Toyota Corolla 2024",
+                 TextString.carDetailSubtitle,
                   style: TTextTheme.h1Style(context),
                   softWrap: true,
                   maxLines: 1,
@@ -345,7 +345,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
               color: AppColors.availableBackgroundColor,
               borderRadius: BorderRadius.circular(6),
             ),
-            child: Text("Available",
+            child: Text(TextString.carDetailStatus,
               style:TTextTheme.titleeight(context),
             ),
           ),
@@ -362,7 +362,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
 
               SizedBox(height: 3),
 
-              Text("/Weekly",
+              Text(TextString.carDetailweekly,
                   style: TTextTheme.titleFour(context)),
             ],
           ),
@@ -371,7 +371,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
           SizedBox(height: 15.0),
 
           // About Section
-          Text("About",
+          Text(TextString.carDetailabout,
               style: TTextTheme.titleSix(context)),
           SizedBox(height: 6),
 
@@ -396,9 +396,9 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Sedan", style: TTextTheme.titleSix(context)),
+                  Text(TextString.carDetailTitle, style: TTextTheme.titleSix(context)),
                   SizedBox(height: 4),
-                  Text("Toyota Corolla 2024",
+                  Text(TextString.carDetailSubtitle,
                       style: TTextTheme.h1Style(context)),
                 ],
               ),
@@ -441,7 +441,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
             color: AppColors.availableBackgroundColor,
             borderRadius: BorderRadius.circular(6),
           ),
-          child: Text("Available",
+          child: Text(TextString.carDetailStatus,
               style: TTextTheme.titleFour(context).copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
         ),
         SizedBox(height: spacing),
@@ -454,13 +454,13 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
         Column(
           children: [
 
-            Text("/Weekly",
+            Text(TextString.carDetailweekly,
                 style: TTextTheme.titleFour(context)),
           ],
         ),
 
         SizedBox(height: spacing * 1.5),
-        Text("About",
+        Text(TextString.carDetailabout,
             style:TTextTheme.titleSix(context)),
         SizedBox(height: 6),
         Text(
@@ -482,7 +482,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Specifications",
+          TextString.carDetailsSpecifications,
           style: TTextTheme.titleSix(context),
         ),
         SizedBox(height: spacing),
@@ -643,7 +643,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Car document", style: TTextTheme.titleSix(context)),
+        Text(TextString.carDetailsCarDocuments, style: TTextTheme.titleSix(context)),
         SizedBox(height: spacing),
         LayoutBuilder(
           builder: (context, constraints) {
@@ -673,7 +673,6 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
     );
   }
 
-// Helper method to keep Wrap clean
   Widget _buildSizedBoxTile(double width, BuildContext context, String title, String status, bool isMobile, bool tab) {
     return SizedBox(
       width: width,

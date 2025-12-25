@@ -99,7 +99,7 @@ class AddCarFormWidget extends StatelessWidget {
             SizedBox(height: AppSizes.verticalPadding(context)),
 
             /// IMAGE UPLOAD
-            Text("Upload Car Images", style: TTextTheme.titleTwo(context)),
+            Text(TextString.uploadImageTitle, style: TTextTheme.titleTwo(context)),
             SizedBox(height: AppSizes.verticalPadding(context)),
             _imageBox(context),
             SizedBox(height: AppSizes.verticalPadding(context)),
@@ -311,8 +311,8 @@ class AddCarFormWidget extends StatelessWidget {
                   child:  Image.asset(IconString.uploadIcon, color: AppColors.primaryColor),
                 ),
                 const SizedBox(height: 10),
-                Text("Click to upload Images", style: TTextTheme.btnOne(context)),
-                Text("SVG, PNG, JPG", style: TTextTheme.documnetIsnideSmallText2(context)),
+                Text(TextString.uploadTitle, style: TTextTheme.btnOne(context)),
+                Text(TextString.uploadSubtitle, style: TTextTheme.documnetIsnideSmallText2(context)),
               ],
             )
                 : Wrap(
@@ -372,7 +372,7 @@ class AddCarFormWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Document Name", style: TTextTheme.titleTwo(context)),
+        Text(TextString.documentName, style: TTextTheme.titleTwo(context)),
         SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
         Container(
           padding: EdgeInsets.symmetric(horizontal: AppSizes.padding(context)),
@@ -385,7 +385,7 @@ class AddCarFormWidget extends StatelessWidget {
             style:  TTextTheme.insidetextfieldWrittenText(context),
             controller: controller,
             decoration: InputDecoration(
-              hintText: "Write your document name",
+              hintText: TextString.documentSubtitle,
               border: InputBorder.none,
               hintStyle: TTextTheme.titleFour(context),
             ),
@@ -459,7 +459,7 @@ class AddCarFormWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Text(hintText, style: TTextTheme.documnetIsnideSmallText(context)),
-                      Text("SVG,PNG,JPG", style:TTextTheme.documnetIsnideSmallText2(context)),
+                      Text(TextString.uploadSubtitle, style:TTextTheme.documnetIsnideSmallText2(context)),
                     ],
                   )
                       : isImage
@@ -514,7 +514,7 @@ class AddCarFormWidget extends StatelessWidget {
           opacity: 0,
           child: Column(
             children: [
-              Text("Document Name", style: TTextTheme.titleTwo(context)),
+              Text(TextString.documentName, style: TTextTheme.titleTwo(context)),
               SizedBox(height:4),
               const SizedBox(height: 45),
             ],
@@ -549,7 +549,7 @@ class AddCarFormWidget extends StatelessWidget {
                       child: Image.asset(IconString.addIcon, color: AppColors.primaryColor),
                     ),
                     const SizedBox(height: 6),
-                    Text("Add Document", style: TTextTheme.documnetIsnideSmallText(context)),
+                    Text(TextString.addDocument, style: TTextTheme.documnetIsnideSmallText(context)),
                   ],
                 ),
               ),
@@ -568,7 +568,7 @@ class AddCarFormWidget extends StatelessWidget {
     final double spacing = AppSizes.padding(context);
 
     Widget heading = Text(
-      "Upload Document (Tax Token Paper, Insurance paper, etc MAX 6)",
+      TextString.uploadMax6,
       style: TTextTheme.titleTwo(context),
     );
 

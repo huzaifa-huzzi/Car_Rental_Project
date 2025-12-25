@@ -1,3 +1,4 @@
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
@@ -162,7 +163,7 @@ class _CarListCardState extends State<CarListCard> {
                 color: AppColors.backgroundOfVin,
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(6), bottomLeft: Radius.circular(6)),
               ),
-              child: Text("VIN", style: TTextTheme.titleeight(context)),
+              child: Text(TextString.vin, style: TTextTheme.titleeight(context)),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -184,7 +185,7 @@ class _CarListCardState extends State<CarListCard> {
                 color: AppColors.textColor,
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(6), bottomLeft: Radius.circular(6)),
               ),
-              child: Text("Registration", style: TTextTheme.titleeight(context)),
+              child: Text(TextString.registration, style: TTextTheme.titleeight(context)),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -229,7 +230,7 @@ class _CarListCardState extends State<CarListCard> {
 
   Widget _buildSpecs(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround, // Distributes icons evenly
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         _specBlock(context, IconString.transmissionIcon, "Transmission", widget.transmission),
         _specBlock(context, IconString.capacityIcon, "Capacity", widget.capacity),
@@ -271,7 +272,7 @@ class _CarListCardState extends State<CarListCard> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Price", style: TTextTheme.titleFour(context)),
+        Text(TextString.price, style: TTextTheme.titleFour(context)),
         const SizedBox(height: 6),
         RichText(
           text: TextSpan(

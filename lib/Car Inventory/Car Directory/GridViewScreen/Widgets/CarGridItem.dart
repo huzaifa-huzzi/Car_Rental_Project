@@ -1,3 +1,4 @@
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
@@ -260,7 +261,7 @@ class CarGridItem extends StatelessWidget {
             ),
           ),
           child: Text(
-            "Registration",
+            TextString.registration,
             style: TTextTheme.titleeight(context),
             overflow: TextOverflow.ellipsis,
           ),
@@ -303,7 +304,7 @@ class CarGridItem extends StatelessWidget {
             ),
           ),
           child: Text(
-            "VIN",
+            TextString.vin,
             style: TTextTheme.titleeight(context),
             overflow: TextOverflow.ellipsis,
           ),
