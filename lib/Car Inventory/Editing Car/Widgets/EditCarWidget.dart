@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/CarInventoryController.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/AlertDialogs.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/customPrimaryButton.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:go_router/go_router.dart';
 
 
 class EditCarWidget extends StatelessWidget {
@@ -86,7 +88,21 @@ class EditCarWidget extends StatelessWidget {
                   height: 38,
                   textColor: AppColors.secondTextColor,
                   borderColor: AppColors.sideBoxesColor,
-                  onTap: () => print("Delete Tapped"),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (_) => ResponsiveDeleteDialog(
+                        onCancel: () {
+                          context.pop();
+                        },
+                        onConfirm: () {
+                          context.pop();
+                        },
+                      ),
+                    );
+
+                  },
                 ),
               ],
             ),
