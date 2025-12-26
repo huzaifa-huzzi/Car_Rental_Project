@@ -30,7 +30,7 @@ class CarListTableWidget extends StatelessWidget {
             children: [
               /// ---------- TABLE HEADINGS ----------
               Container(
-                padding: EdgeInsets.only(left: tablePadding, top: 12, bottom: 12),
+                padding: EdgeInsets.only(left: tablePadding, top: 9, bottom: 12),
                 decoration: BoxDecoration(
                   color: AppColors.secondaryColor,
                   borderRadius: BorderRadius.vertical(
@@ -40,15 +40,14 @@ class CarListTableWidget extends StatelessWidget {
                 child: Row(
                   children: [
                     _headerCell("VIN Number", context),
-                    _headerCell("Car Registration", context),
-                    _headerCell("Car Brand", context),
-                    _headerCell("Car Make", context),
-                    _headerCell("Car Model", context),
-                    _headerCell("Car Year", context),
+                    _headerCell("Registration", context),
+                    _headerCell("Make", context),
+                    _headerCell("Model", context),
+                    _headerCell("Year", context),
                     _headerCell("Body Type", context),
-                    _headerCell("Car Status", context),
-                    _headerCell("Car Transmission", context),
-                    _headerCell("Car Capacity", context),
+                    _headerCell("Status", context),
+                    _headerCell("Transmission", context),
+                    _headerCell("Capacity", context),
                     _headerCell("Fuel Type", context),
                     _headerCell("Engine Size", context),
                     _headerCell("Price List", context),
@@ -76,7 +75,6 @@ class CarListTableWidget extends StatelessWidget {
                         children: [
                           _dataCell(car["vin"] ?? "N/A", context),
                           _dataCell(car["reg"] ?? "N/A", context),
-                          _dataCell(car["brand"] ?? "N/A", context),
                           _dataCell(car["make"] ?? "N/A", context),
                           _dataCell(car["model"] ?? "N/A", context),
                           _dataCell(car["year"] ?? "N/A", context),

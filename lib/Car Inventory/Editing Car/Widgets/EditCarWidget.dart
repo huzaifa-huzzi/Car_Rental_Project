@@ -63,16 +63,30 @@ class EditCarWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 10),
+
+                /// EDIT BUTTON
                 CustomPrimaryButton(
-                  text: "Edit",
+                  text: MediaQuery.of(context).size.width < 900 ? "" : "Edit",
                   iconPath: IconString.editIcon,
-                  width: isMobile ? 75 : 110,
-                  height: isMobile ? 32 : 38,
+                  width: MediaQuery.of(context).size.width < 900 ? 40 : 110,
+                  height: 38,
                   textColor: AppColors.primaryColor,
                   borderColor: AppColors.primaryColor,
-                  onTap: () {
-                    print("Edit Tapped");
-                  },
+                  onTap: () => print("Edit Tapped"),
+                ),
+
+                const SizedBox(width: 8),
+
+                /// DELETE BUTTON
+                CustomPrimaryButton(
+                  text: MediaQuery.of(context).size.width < 900 ? "" : "Delete",
+                  iconPath: IconString.deleteIcon,
+                  iconColor: AppColors.secondTextColor,
+                  width: MediaQuery.of(context).size.width < 900 ? 40 : 110,
+                  height: 38,
+                  textColor: AppColors.secondTextColor,
+                  borderColor: AppColors.sideBoxesColor,
+                  onTap: () => print("Delete Tapped"),
                 ),
               ],
             ),
