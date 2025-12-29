@@ -65,7 +65,10 @@ class SidebarComponents {
                 child: Text(
                   title,
                   overflow: TextOverflow.ellipsis,
-                  style: TTextTheme.btnOne(context).copyWith(
+                  style: (active
+                      ? TTextTheme.btnSix(context)
+                      : TTextTheme.btnOne(context)
+                  ).copyWith(
                     color: active
                         ? AppColors.textColor
                         : AppColors.quadrantalTextColor,
@@ -122,7 +125,10 @@ class SidebarComponents {
                   Expanded(
                     child: Text(
                       "Expenses",
-                      style: TTextTheme.btnOne(context).copyWith(
+                      style: (expanded
+                          ? TTextTheme.btnSix(context)
+                          : TTextTheme.btnOne(context)
+                      ).copyWith(
                         color: expanded ? AppColors.textColor : AppColors.quadrantalTextColor,
                       ),
                     ),
@@ -168,7 +174,10 @@ class SidebarComponents {
             alignment: Alignment.centerLeft,
             child: Text(
               title,
-              style: TTextTheme.btnOne(context).copyWith(
+              style: (isActive
+                  ? TTextTheme.btnSix(context)
+                  : TTextTheme.btnOne(context)
+              ).copyWith(
                   color: isActive ? AppColors.primaryColor : AppColors.secondTextColor),
             ),
           ),

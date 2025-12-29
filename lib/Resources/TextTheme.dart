@@ -60,6 +60,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w400,color: AppColors.textColor);
   }
 
+  static TextStyle btnSix(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 14),fontWeight: FontWeight.w500,color: AppColors.textColor);
+  }
+
   static TextStyle dropdowninsideText(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w500,color: AppColors.blackColor);
   }
@@ -166,6 +170,11 @@ class TTextTheme {
 
   static TextStyle pThree(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 11),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
+    );
+  }
+
+  static TextStyle pFour(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 10),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
     );
   }
 

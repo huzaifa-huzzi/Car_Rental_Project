@@ -65,11 +65,17 @@ class CarListTableWidget extends StatelessWidget {
 
                   return Obx(() {
                     bool isHovered = controller.hoveredRowIndex.value == rowIndex;
-
                     final bool enableHover = !AppSizes.isMobile(context);
 
+
+
                     Widget rowContent = Container(
-                      color: (enableHover && isHovered) ? Colors.white : Colors.transparent,
+                      decoration: BoxDecoration(
+                        color: (enableHover && isHovered) ? Colors.white : Colors.transparent,
+                        border: Border(
+                          bottom: BorderSide(color: AppColors.sideBoxesColor, width: 0.5),
+                        ),
+                      ),
                       padding: EdgeInsets.only(left: tablePadding, top: 12, bottom: 12),
                       child: Row(
                         children: [
@@ -115,7 +121,7 @@ class CarListTableWidget extends StatelessWidget {
                     }
                   });
                 }).toList(),
-              ),
+              )
             ],
           ),
         ),

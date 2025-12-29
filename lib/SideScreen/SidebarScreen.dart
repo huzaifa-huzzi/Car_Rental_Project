@@ -1,4 +1,3 @@
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/TableViewScreen/TableViewScreen.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/SideScreen/Widget/MobileAppbar.dart';
@@ -20,19 +19,16 @@ class SidebarScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final bool hideMobileAppBar;
 
-  SidebarScreen({super.key, required this.onTap, this.child,  this.hideMobileAppBar = false});
+  SidebarScreen({super.key, required this.onTap, this.child, this.hideMobileAppBar = false});
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery
-        .of(context)
-        .size
-        .width;
     final bool isMobile = AppSizes.isMobile(context);
     final bool isTab = AppSizes.isTablet(context);
     final bool isWeb = AppSizes.isWeb(context);
     final double sidebarWidth = isWeb ? 240 : 150;
 
+    final String currentRoute = GoRouterState.of(context).uri.toString();
 
     /// Sidebar content
     Widget sidebarContent({bool showLogo = true}) {
@@ -48,202 +44,81 @@ class SidebarScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Image.asset(
-                      IconString.symbol,
-                      width: AppSizes.isMobile(context) ? 30 : 36,
-                      height: AppSizes.isMobile(context) ? 32 : 38,
-                    ),
+                    Image.asset(IconString.symbol, width: isMobile ? 30 : 36, height: isMobile ? 32 : 38),
                     SizedBox(width: AppSizes.horizontalPadding(context) / 2),
-                    Text(
-                      "Softsnip",
-                      style: TTextTheme.h6Style(context)
-                          .copyWith(fontWeight: FontWeight.w600),
-                    ),
+                    Text("Softsnip", style: TTextTheme.h6Style(context).copyWith(fontWeight: FontWeight.w600)),
                   ],
                 ),
               ),
-
             SizedBox(height: AppSizes.verticalPadding(context) / 2),
-
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 children: [
-                  SidebarComponents.menuItem(
-                    context, controller,
-                    iconPath: IconString.dashboardIcon,
-                    title: TextString.dashboardTitle,
-                    onTap: onTap, scaffoldKey: _scaffoldKey,
-                  ),
-                  SidebarComponents.menuItem(
-                    context, controller,
-                    iconPath: IconString.carInventoryIcon,
-                    title: TextString.carInventoryTitle,
-                    onTap: onTap, scaffoldKey: _scaffoldKey,
-                  ),
-                  SidebarComponents.menuItem(
-                    context, controller,
-                    iconPath: IconString.customerIcon,
-                    title: TextString.customersTitle,
-                    onTap: onTap, scaffoldKey: _scaffoldKey,
-                  ),
-                  SidebarComponents.menuItem(
-                    context, controller,
-                    iconPath: IconString.agreementIcon,
-                    title: TextString.reAgreementTitle,
-                    onTap: onTap, scaffoldKey: _scaffoldKey,
-                  ),
-                  SidebarComponents.menuItem(
-                    context, controller,
-                    iconPath: IconString.paymentIcon,
-                    title: TextString.paymentTitle,
-                    onTap: onTap, scaffoldKey: _scaffoldKey,
-                  ),
-                  SidebarComponents.expenseMenuItem(
-                    context, controller,
-                    onTap: onTap, scaffoldKey: _scaffoldKey,
-                  ),
-                  SidebarComponents.menuItem(
-                    context, controller,
-                    iconPath: IconString.maintenanceIcon,
-                    title: TextString.maintenanceTitle,
-                    onTap: onTap, scaffoldKey: _scaffoldKey,
-                  ),
-                  SidebarComponents.menuItem(
-                    context, controller,
-                    iconPath: IconString.incomeIcon,
-                    title: TextString.incomeTitle,
-                    trailing: SidebarComponents.redDotWithNumber(
-                        controller.incomeRedDot.value, context),
-                    onTap: onTap, scaffoldKey: _scaffoldKey,
-                  ),
+                  // Dashboard
+                  SidebarComponents.menuItem(context, controller, iconPath: IconString.dashboardIcon, title: TextString.dashboardTitle,
+                      onTap: (val) => context.go('/dashboard'), scaffoldKey: _scaffoldKey),
+
+                  SidebarComponents.menuItem(context, controller, iconPath: IconString.carInventoryIcon, title: TextString.carInventoryTitle,
+                      onTap: (val) => context.go('/carInventory'), scaffoldKey: _scaffoldKey),
+
+                  SidebarComponents.menuItem(context, controller, iconPath: IconString.customerIcon, title: TextString.customersTitle,
+                      onTap: (val) => context.go('/customers'), scaffoldKey: _scaffoldKey),
+
+                  SidebarComponents.menuItem(context, controller, iconPath: IconString.agreementIcon, title: TextString.reAgreementTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
+                  SidebarComponents.menuItem(context, controller, iconPath: IconString.paymentIcon, title: TextString.paymentTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
+                  SidebarComponents.expenseMenuItem(context, controller, onTap: onTap, scaffoldKey: _scaffoldKey),
+                  SidebarComponents.menuItem(context, controller, iconPath: IconString.maintenanceIcon, title: TextString.maintenanceTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
+                  SidebarComponents.menuItem(context, controller, iconPath: IconString.incomeIcon, title: TextString.incomeTitle,
+                      trailing: SidebarComponents.redDotWithNumber(controller.incomeRedDot.value, context), onTap: onTap, scaffoldKey: _scaffoldKey),
                 ],
               ),
             ),
-
             Padding(
               padding: EdgeInsets.only(bottom: AppSizes.verticalPadding(context) / 2),
-              child: SidebarComponents.menuItem(
-                context,
-                controller,
-                iconPath: IconString.logoutIcon,
-                title: TextString.logoutTitle,
-                onTap: onTap,
-                scaffoldKey: _scaffoldKey,
-              ),
+              child: SidebarComponents.menuItem(context, controller, iconPath: IconString.logoutIcon, title: TextString.logoutTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
             ),
           ],
         ),
       );
     }
 
-    /// Appbars
-    if (isMobile) {
+    void handleAddButtonPressed() {
+      if (currentRoute.contains('/customers')) {
+        context.push('/addNewCustomer', extra: {"hideMobileAppBar": true});
+      } else {
+        context.push('/addNewCar', extra: {"hideMobileAppBar": true});
+      }
+    }
+
+    // Mobile/Tablet/Web Appbars
+    if (isMobile || isTab) {
       return Scaffold(
         backgroundColor: Colors.white,
         key: _scaffoldKey,
-        drawerScrimColor: Colors.transparent,
-        drawer: Theme(
-          data: Theme.of(context).copyWith(
-            canvasColor: Colors.white,
-          ),
-          child: Drawer(
-            elevation: 0,
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.transparent,
-            shadowColor: Colors.transparent,
-            child: sidebarContent(showLogo: false),
-          ),
-        ),
-        appBar: hideMobileAppBar
-            ? null
-            : AppBar(
+        drawer: Drawer(backgroundColor: Colors.white, child: sidebarContent(showLogo: false)),
+        appBar: hideMobileAppBar ? null : AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.secondaryColor,
-          surfaceTintColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
-          title: MobileTopBar(
-            scaffoldKey: _scaffoldKey,
-            profileImageUrl: ImageString.userImage,
-            onAddPressed: () {
-              context.go(
-                '/addNewCar',
-                extra: {"hideMobileAppBar": true},
-              );
-
-            },
-          ),
+          title: isMobile
+              ? MobileTopBar(scaffoldKey: _scaffoldKey, profileImageUrl: ImageString.userImage, onAddPressed: handleAddButtonPressed)
+              : TabAppBar(scaffoldKey: _scaffoldKey, profileImageUrl: ImageString.userImage, onAddPressed: handleAddButtonPressed),
         ),
-
-        body: SafeArea(child: child ?? const TableViewScreen()),
+        body: SafeArea(child: child ?? const SizedBox.shrink()),
       );
-    }
-
-    else if (isTab) {
-      return Scaffold(
-        backgroundColor: Colors.white,
-        key: _scaffoldKey,
-
-        drawerScrimColor: Colors.transparent,
-        drawer: Theme(
-          data: Theme.of(context).copyWith(
-            canvasColor: Colors.white,
-          ),
-          child: Drawer(
-            elevation: 0,
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.transparent,
-            shadowColor: Colors.transparent,
-            child: sidebarContent(showLogo: false),
-          ),
-        ),
-
-
-        appBar: hideMobileAppBar
-            ? null
-            : AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: AppColors.secondaryColor,
-          surfaceTintColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
-          title: TabAppBar(
-            scaffoldKey: _scaffoldKey,
-            profileImageUrl: ImageString.userImage,
-            onAddPressed: () {
-              context.go(
-                '/addNewCar',
-                extra: {"hideMobileAppBar": true},
-              );
-
-            },
-          ),
-        ),
-
-        body: SafeArea(child: child ?? const TableViewScreen()),
-      );
-    }
-
-    else {
+    } else {
       return Scaffold(
         body: SafeArea(
           child: Row(
             children: [
-              Container(
-                width: sidebarWidth,
-                color: Colors.white,
-                child: sidebarContent(showLogo: true),
-              ),
-              Expanded(child: child ?? const TableViewScreen()),
+              Container(width: sidebarWidth, color: Colors.white, child: sidebarContent(showLogo: true)),
+              Expanded(child: child ?? const SizedBox.shrink()),
             ],
           ),
         ),
       );
     }
-
-
   }
 
   static Widget wrapWithSidebarIfNeeded({
