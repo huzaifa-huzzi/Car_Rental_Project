@@ -1,4 +1,5 @@
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/CarInventoryController.dart';
+import 'package:car_rental_project/Customers/CustomersController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ class PaginationBarOfCustomers extends StatelessWidget {
   final bool isMobile;
   final double tablePadding;
 
-  final CarInventoryController controller = Get.find<CarInventoryController>();
+  final CustomerController controller = Get.put(CustomerController());
 
 
   PaginationBarOfCustomers({super.key, required this.isMobile, required this.tablePadding});

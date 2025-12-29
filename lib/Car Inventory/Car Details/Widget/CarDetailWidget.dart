@@ -31,12 +31,12 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
   final List<Map<String, dynamic>> specifications = const [
     {
       'title': 'Vin Number',
-      'value': '123-456',
+      'value': 'JTNBA3HK003001234',
       'icon': IconString.vinNumberIcon
     },
     {
       'title': 'Registration',
-      'value': '1HFC-052',
+      'value': '1234567890',
       'icon': IconString.registrationIcon
     },
     {
@@ -661,10 +661,10 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
               spacing: gap,
               runSpacing: 12.0,
               children: [
-                _buildSizedBoxTile(itemWidth, context, "Registration", "1HFC-052", isMobile, tab),
+                _buildSizedBoxTile(itemWidth, context, "Registration", "1234567890", isMobile, tab),
                 _buildSizedBoxTile(itemWidth, context, "Tax Token", "Uploaded", isMobile, tab),
                 _buildSizedBoxTile(itemWidth, context, "Incoherence Paper", "Uploaded", isMobile, tab),
-                _buildSizedBoxTile(itemWidth, context, "Vin Number", "123-45", isMobile, tab),
+                _buildSizedBoxTile(itemWidth, context, "Vin Number", "JTNBA3HK003001234", isMobile, tab),
               ],
             );
           },
@@ -673,6 +673,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
     );
   }
 
+   // Box Tile
   Widget _buildSizedBoxTile(double width, BuildContext context, String title, String status, bool isMobile, bool tab) {
     return SizedBox(
       width: width,

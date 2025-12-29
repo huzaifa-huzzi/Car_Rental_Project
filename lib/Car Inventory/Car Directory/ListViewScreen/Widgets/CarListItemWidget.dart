@@ -104,28 +104,29 @@ class _CarListCardState extends State<CarListCard> {
 
   /// --------- Extra Widgets --------- ///
 
-  // Inner Cards Widget
+  // White Card Widget
   Widget _innerWhiteCard(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildCarImageWithStatus(context),
-        SizedBox(width: AppSizes.padding(context) * 1.2),
+        SizedBox(width: AppSizes.padding(context) * 0.8),
 
         Expanded(
           flex: 4,
           child: _buildCarDetails(context),
         ),
+
         Expanded(
           flex: 6,
           child: _buildSpecs(context),
         ),
 
         Padding(
-          padding: EdgeInsets.only(left: AppSizes.padding(context)),
+          padding: EdgeInsets.only(left: AppSizes.padding(context) * 0.5),
           child: SizedBox(
-            width: 110,
-            height: 42,
+            width: 85,
+            height: 38,
             child: AddButton(
                 text: 'View',
                 onTap: widget.onView ?? () {
@@ -138,7 +139,7 @@ class _CarListCardState extends State<CarListCard> {
     );
   }
 
-  //  Car Details Widgets
+   // Car Details Widget
   Widget _buildCarDetails(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,56 +148,67 @@ class _CarListCardState extends State<CarListCard> {
         Row(
           children: [
             Text(widget.name, style: TTextTheme.titleSix(context)),
-            const SizedBox(width: 6),
+            const SizedBox(width: 4),
             Text(widget.model, style: TTextTheme.titleSix(context)),
           ],
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 2),
         Text(widget.secondname, style: TTextTheme.h3Style(context)),
-        const SizedBox(height: 12),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: AppColors.backgroundOfVin,
-                borderRadius: const BorderRadius.only(topLeft: Radius.circular(6), bottomLeft: Radius.circular(6)),
-              ),
-              child: Text(TextString.vin, style: TTextTheme.titleeight(context)),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: AppColors.secondaryColor,
-                borderRadius: const BorderRadius.only(topRight: Radius.circular(6), bottomRight: Radius.circular(6)),
-              ),
-              child: Text(widget.regId2, style: TTextTheme.titleseven(context)),
-            ),
-          ],
-        ),
         const SizedBox(height: 8),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: AppColors.textColor,
-                borderRadius: const BorderRadius.only(topLeft: Radius.circular(6), bottomLeft: Radius.circular(6)),
-              ),
-              child: Text(TextString.registration, style: TTextTheme.titleeight(context)),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: AppColors.secondaryColor,
-                borderRadius: const BorderRadius.only(topRight: Radius.circular(6), bottomRight: Radius.circular(6)),
-              ),
-              child: Text(widget.regId, style: TTextTheme.titleseven(context)),
-            ),
-          ],
+
+        _scrollableIdRow(TextString.registration, widget.regId, AppColors.textColor, context),
+
+        const SizedBox(height: 6),
+
+        _scrollableIdRow(TextString.vin, widget.regId2, AppColors.backgroundOfVin, context),
+      ],
+    );
+  }
+
+  // Scrollable Widget for Specs
+  Widget _scrollableIdRow(String label, String value, Color labelBg, BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: labelBg,
+            borderRadius: const BorderRadius.only(topLeft: Radius.circular(6), bottomLeft: Radius.circular(6)),
+          ),
+          child: Text(label, style: TTextTheme.titleeight(context)),
         ),
+        Flexible(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: AppColors.secondaryColor,
+              borderRadius: const BorderRadius.only(topRight: Radius.circular(6), bottomRight: Radius.circular(6)),
+            ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                value,
+                style: TTextTheme.titleseven(context),
+                maxLines: 1,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+   // Build Specs Widget
+  Widget _buildSpecs(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        _specBlock(context, IconString.transmissionIcon, "Transmission", widget.transmission),
+        const SizedBox(width: 8),
+        _specBlock(context, IconString.capacityIcon, "Seats", widget.capacity),
+        const SizedBox(width: 8),
+        _priceBlock(context),
       ],
     );
   }
@@ -223,18 +235,6 @@ class _CarListCardState extends State<CarListCard> {
           left: 0,
           child: _statusBadge(context),
         ),
-      ],
-    );
-  }
-
-
-  Widget _buildSpecs(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        _specBlock(context, IconString.transmissionIcon, "Transmission", widget.transmission),
-        _specBlock(context, IconString.capacityIcon, "Capacity", widget.capacity),
-        _priceBlock(context),
       ],
     );
   }
@@ -316,10 +316,17 @@ class _CarListCardState extends State<CarListCard> {
     );
   }
 
-  // 7. Edit / Delete Section
+  //  Edit / Delete Widget
   Widget _buildEditDelete(BuildContext context) {
-    final double boxWidth = AppSizes.isWeb(context) ? 155 : 150;
-    final double boxHeight = AppSizes.isWeb(context) ? 155 : 125;
+
+    final double boxWidth = AppSizes.isWeb(context)
+        ? 155
+        : AppSizes.isTablet(context) ? 160 : 150;
+
+    final double boxHeight = AppSizes.isWeb(context)
+        ? 146
+        : AppSizes.isTablet(context) ? 120 : 115;
+
 
     return Container(
       height: boxHeight,

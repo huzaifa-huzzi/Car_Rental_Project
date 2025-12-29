@@ -75,7 +75,6 @@ class CarInventoryController extends GetxController {
     if (page >= 1 && page <= totalPages) currentPage.value = page;
   }
 
-  /// Set a new page size from dropdown
   void setPageSize(int newSize) {
     pageSize.value = newSize;
     currentPage.value = 1;
@@ -89,7 +88,6 @@ class CarInventoryController extends GetxController {
     isFilterOpen.value = !isFilterOpen.value;
   }
 
-  // DUMMY DATA SETUP
   final _random = Random();
 
   String _getRandomStatus() {
@@ -106,11 +104,9 @@ class CarInventoryController extends GetxController {
     List<String> models = ["Martin", "X7", "A4", "Focus", "Civic"];
     List<String> transmissions = ["Auto", "Manual"];
     List<String> years = ["2023", "2022", "2020", "2018", "2017"];
-    List<String> chassis = ["WVC-098", "HFC-082", "XYZ-345", "ABC-123", "QWE-678"];
 
     carList.value = List.generate(10, (i) {
       int index = i % brands.length;
-
       int transIndex = i % transmissions.length;
 
       String getStatus(int i) {
@@ -120,8 +116,8 @@ class CarInventoryController extends GetxController {
       }
 
       return {
-        "vin": "${chassis[index]}-${i + 1}",
-        "reg": "REG-00${i + 1}",
+        "vin": "JTNBA3HK003001234",
+        "reg": "1234567890",
         "brand": brands[index],
         "make": "Martin",
         "model": models[index],

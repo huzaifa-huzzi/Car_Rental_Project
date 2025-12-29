@@ -14,7 +14,7 @@ final List<Map<String, String>> dummyCarData = [
     'capacity': '2',
     'price': '120 /Weekly',
     'status': 'Available',
-    'regId': 'NFC-053',
+    'regId': '1234567890',
     'fuelType': 'Petrol',
   },
   {
@@ -25,7 +25,7 @@ final List<Map<String, String>> dummyCarData = [
     'capacity': '4',
     'price': '120 /Weekly',
     'status': 'Available',
-    'regId': 'NFC-054',
+    'regId': '1234567890',
     'fuelType': 'Petrol',
   },
   {
@@ -36,7 +36,7 @@ final List<Map<String, String>> dummyCarData = [
     'capacity': '6',
     'price': '120 /Weekly',
     'status': 'Maintenance',
-    'regId': 'NFC-055',
+    'regId': '1234567890',
     'fuelType': 'Petrol',
   },
   {
@@ -47,7 +47,7 @@ final List<Map<String, String>> dummyCarData = [
     'capacity': '4',
     'price': '120 /Weekly',
     'status': 'Available',
-    'regId': 'NFC-052',
+    'regId': '1234567890',
     'fuelType': 'Petrol',
   },
   {
@@ -58,7 +58,7 @@ final List<Map<String, String>> dummyCarData = [
     'capacity': '6',
     'price': '120 /Weekly',
     'status': 'Maintenance',
-    'regId': 'NFC-052',
+    'regId': '1234567890',
     'fuelType': 'Petrol',
   },
   {
@@ -69,7 +69,7 @@ final List<Map<String, String>> dummyCarData = [
     'capacity': '2',
     'price': '120 /Weekly',
     'status': 'Available',
-    'regId': 'NFC-052',
+    'regId': '1234567890',
     'fuelType': 'Petrol',
   },
 ];
@@ -91,7 +91,7 @@ class GridViewScreen extends StatelessWidget {
         status: car['status']!,
         regId: car['regId']!,
         fuelType: car['fuelType']!,
-        regId2: '123-45',
+        regId2: 'JTNBA3HK003001234',
       );
     }).toList();
   }

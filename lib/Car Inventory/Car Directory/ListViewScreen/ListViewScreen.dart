@@ -40,8 +40,8 @@ class ListViewScreen extends StatelessWidget {
               capacity: "2 seats",
               price: "\$130 / weekly",
               status: "Available",
-              regId: "HPC-982",
-              regId2: "123-567",
+              regId: "1234567890",
+              regId2: "JTNBA3HK003001234",
               onView: () {
                 context.push('/cardetails', extra: {"hideMobileAppBar": true});
               },
@@ -73,8 +73,8 @@ class ListViewScreen extends StatelessWidget {
                 capacity: "2 seats",
                 price: "\$130 / weekly",
                 status: "Maintenance",
-                regId: "HPC-982",
-                regId2: "123-567",
+                regId: "1234567890",
+                regId2: "JTNBA3HK003001234",
                 onView: () {
                   context.push('/cardetails', extra: {"hideMobileAppBar": true});
                 },
@@ -105,9 +105,9 @@ class ListViewScreen extends StatelessWidget {
               transmission: "Automatic",
               capacity: "2 seats",
               price: "\$130/weekly",
-              regId2: "123-567",
+              regId2: "JTNBA3HK003001234",
               status: "Available",
-              regId: "HPC-982",
+              regId: "1234567890",
               onView: () {
                 context.push('/cardetails', extra: {"hideMobileAppBar": true});
               },
@@ -138,9 +138,9 @@ class ListViewScreen extends StatelessWidget {
               transmission: "Automatic",
               capacity: "2 seats",
               price: "\$130 / weekly",
-              regId2: "123-567",
+              regId2: "JTNBA3HK003001234",
               status: "unavailable",
-              regId: "HPC-982",
+              regId: "1234567890",
               onView: () {
                 context.push('/editCar', extra: {"hideMobileAppBar": true});
               },

@@ -8,11 +8,13 @@ import 'package:get/get.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:go_router/go_router.dart';
 
+
 class CarListTableWidget extends StatelessWidget {
   CarListTableWidget({super.key});
 
   final controller = Get.put(CarInventoryController());
 
+  final double vinColumnWidth = 180.0;
   final double columnWidth = 120.0;
   final double actionColumnWidth = 100.0;
 
@@ -25,6 +27,7 @@ class CarListTableWidget extends StatelessWidget {
         margin: EdgeInsets.all(tablePadding),
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -39,7 +42,7 @@ class CarListTableWidget extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    _headerCell("VIN Number", context),
+                    _headerCell("VIN Number", context, customWidth: vinColumnWidth),
                     _headerCell("Registration", context),
                     _headerCell("Make", context),
                     _headerCell("Model", context),
@@ -56,8 +59,7 @@ class CarListTableWidget extends StatelessWidget {
                 ),
               ),
 
-              /// ---------- TABLE BODY ----------///
-
+              /// ---------- TABLE BODY ----------
               Column(
                 children: controller.displayedCarList.asMap().entries.map((entry) {
                   int rowIndex = entry.key;
@@ -67,58 +69,50 @@ class CarListTableWidget extends StatelessWidget {
                     bool isHovered = controller.hoveredRowIndex.value == rowIndex;
                     final bool enableHover = !AppSizes.isMobile(context);
 
-
-
-                    Widget rowContent = Container(
-                      decoration: BoxDecoration(
-                        color: (enableHover && isHovered) ? Colors.white : Colors.transparent,
-                        border: Border(
-                          bottom: BorderSide(color: AppColors.sideBoxesColor, width: 0.5),
+                    return MouseRegion(
+                      onEnter: (_) => controller.hoveredRowIndex.value = rowIndex,
+                      onExit: (_) => controller.hoveredRowIndex.value = -1,
+                      cursor: SystemMouseCursors.click,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: (enableHover && isHovered) ? Colors.white : Colors.transparent,
+                          border: Border(
+                            bottom: BorderSide(color: AppColors.sideBoxesColor, width: 0.5),
+                          ),
                         ),
-                      ),
-                      padding: EdgeInsets.only(left: tablePadding, top: 12, bottom: 12),
-                      child: Row(
-                        children: [
-                          _dataCell(car["vin"] ?? "N/A", context),
-                          _dataCell(car["reg"] ?? "N/A", context),
-                          _dataCell(car["make"] ?? "N/A", context),
-                          _dataCell(car["model"] ?? "N/A", context),
-                          _dataCell(car["year"] ?? "N/A", context),
-                          _styledDataCell(car["bodyType"] ?? "N/A", context),
-                          _statusDataCell(car["status"] ?? "N/A", context),
-                          _styledDataCell(car["transmission"] ?? "N/A", context),
-                          _dataCell(car["capacity"] ?? "N/A", context),
-                          _dataCell(car["fuel"] ?? "N/A", context),
-                          _dataCell(car["engine"] ?? "N/A", context),
-                          _dataCell(car["price"] ?? "N/A", context),
+                        padding: EdgeInsets.only(left: tablePadding, top: 12, bottom: 12),
+                        child: Row(
+                          children: [
+                            _dataCell(car["vin"] ?? "N/A", context, customWidth: vinColumnWidth),
+                            _dataCell(car["reg"] ?? "N/A", context),
+                            _dataCell(car["make"] ?? "N/A", context),
+                            _dataCell(car["model"] ?? "N/A", context),
+                            _dataCell(car["year"] ?? "N/A", context),
+                            _styledDataCell(car["bodyType"] ?? "N/A", context),
+                            _statusDataCell(car["status"] ?? "N/A", context),
+                            _styledDataCell(car["transmission"] ?? "N/A", context),
+                            _dataCell(car["capacity"] ?? "N/A", context),
+                            _dataCell(car["fuel"] ?? "N/A", context),
+                            _dataCell(car["engine"] ?? "N/A", context),
+                            _dataCell(car["price"] ?? "N/A", context),
 
-                          /// ACTION BUTTON
-                          SizedBox(
-                            width: actionColumnWidth,
-                            child: Center(
-                              child: AddButton(
-                                text: "View",
-                                onTap: () {
-                                  context.push('/cardetails', extra: {"hideMobileAppBar": true});
-                                },
-                                borderRadius: BorderRadius.circular(6),
+                            /// ACTION BUTTON
+                            SizedBox(
+                              width: actionColumnWidth,
+                              child: Center(
+                                child: AddButton(
+                                  text: "View",
+                                  onTap: () {
+                                    context.push('/cardetails', extra: {"hideMobileAppBar": true});
+                                  },
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
-
-                    if (enableHover) {
-                      return MouseRegion(
-                        onEnter: (_) => controller.hoveredRowIndex.value = rowIndex,
-                        onExit: (_) => controller.hoveredRowIndex.value = -1,
-                        cursor: SystemMouseCursors.click,
-                        child: rowContent,
-                      );
-                    } else {
-                      return rowContent;
-                    }
                   });
                 }).toList(),
               )
@@ -131,24 +125,28 @@ class CarListTableWidget extends StatelessWidget {
 
   /// --------- Extra Widgets ---------///
 
-  // HEADER CELL Widget
-  Widget _headerCell(String title, BuildContext context,
-      {bool isAction = false}) {
+
+   // header Cell Widget
+  Widget _headerCell(String title, BuildContext context, {bool isAction = false, double? customWidth}) {
     return SizedBox(
-      width: isAction ? actionColumnWidth : columnWidth,
+      width: isAction ? actionColumnWidth : (customWidth ?? columnWidth),
       child: Row(
-        mainAxisAlignment: isAction
-            ? MainAxisAlignment.center
-            : MainAxisAlignment.start,
+        mainAxisAlignment: isAction ? MainAxisAlignment.center : MainAxisAlignment.start,
         children: [
           if (isAction) const Spacer(),
-          Text(title, style: TTextTheme.smallXX(context)),
-          const SizedBox(width: 6),
+          Flexible(
+            child: Text(
+              title,
+              style: TTextTheme.smallXX(context),
+              maxLines: 1,
+            ),
+          ),
+          const SizedBox(width: 4),
           Image.asset(
             IconString.sortIcon,
             color: AppColors.blackColor,
-            height: 16,
-            width: 16,
+            height: 14,
+            width: 14,
           ),
           if (isAction) const Spacer(),
         ],
@@ -156,16 +154,17 @@ class CarListTableWidget extends StatelessWidget {
     );
   }
 
-  // DATA CELL Widget
-  Widget _dataCell(String text, BuildContext context) {
+  // data cell Widget
+  Widget _dataCell(String text, BuildContext context, {double? customWidth}) {
     return SizedBox(
-      width: columnWidth,
+      width: customWidth ?? columnWidth,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4.0),
         child: Text(
           text,
           style: TTextTheme.pOne(context),
-          overflow: TextOverflow.ellipsis,
+          softWrap: false,
+          overflow: TextOverflow.visible,
         ),
       ),
     );
