@@ -2,6 +2,7 @@ import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidge
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/CarInventoryController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -99,7 +100,7 @@ class CustomerListTableWidget extends StatelessWidget {
                                 width: 71,
                                 height: 34,
                                 onTap: () {
-                                  context.push('/cardetails', extra: {"hideMobileAppBar": true});
+                                  context.push('/customerDetails', extra: {"hideMobileAppBar": true});
                                 },
                                 borderRadius: BorderRadius.circular(6),
                               ),
@@ -153,9 +154,9 @@ class CustomerListTableWidget extends StatelessWidget {
       width: width,
       child: Row(
         children: [
-          const CircleAvatar(
+          CircleAvatar(
             radius: 18,
-            backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+            backgroundImage: AssetImage(ImageString.customerUser),
           ),
           const SizedBox(width: 12),
           Expanded(

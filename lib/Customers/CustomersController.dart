@@ -16,7 +16,6 @@ class CustomerController extends  GetxController {
   // pagination  Widget
   final RxInt currentPage = 1.obs;
 
-  // Make pageSize reactive
   final RxInt pageSize = 8.obs;
 
   RxList<Map<String, dynamic>> carList = <Map<String, dynamic>>[].obs;
@@ -51,6 +50,18 @@ class CustomerController extends  GetxController {
   }
 
 
+  // Delete Popup
+  RxBool isOpen = false.obs;
+  RxString imagePath = ''.obs;
+
+  void open(String assetPath) {
+    isOpen.value = true;
+  }
+
+  void close() {
+    isOpen.value = false;
+    imagePath.value = '';
+  }
 
 
 
