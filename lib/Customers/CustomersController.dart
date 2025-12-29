@@ -50,11 +50,12 @@ class CustomerController extends  GetxController {
   }
 
 
-  // Delete Popup
+  /// CustomersDetails
   RxBool isOpen = false.obs;
   RxString imagePath = ''.obs;
 
   void open(String assetPath) {
+    imagePath.value = assetPath;
     isOpen.value = true;
   }
 

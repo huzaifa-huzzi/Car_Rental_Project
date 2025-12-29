@@ -24,7 +24,6 @@ class ResponsiveCardDetails extends StatelessWidget {
 
           const SizedBox(height: 20),
 
-          // Card 01
           _buildRow(isMobile, "Card Number 01"),
 
           if (isMobile) const Padding(
@@ -32,7 +31,6 @@ class ResponsiveCardDetails extends StatelessWidget {
             child: Divider(color: Color(0xffE5E7EB), thickness: 1),
           ) else const SizedBox(height: 22),
 
-          // Card 02
           _buildRow(isMobile, "Card Number 02"),
         ],
       ),
@@ -46,7 +44,7 @@ class ResponsiveCardDetails extends StatelessWidget {
     return isMobile ? _mobileRow(label) : _webRow();
   }
 
-  // --- WEB / TABLET VIEW Widget
+  //  WEB / TABLET VIEW Widget
   Widget _webRow() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +59,7 @@ class ResponsiveCardDetails extends StatelessWidget {
     );
   }
 
-  // --- MOBILE VIEW Widget
+  //  MOBILE VIEW Widget
   Widget _mobileRow(String label) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,9 +67,12 @@ class ResponsiveCardDetails extends StatelessWidget {
         Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.black87)),
         const SizedBox(height: 12),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _brand(),
-            _item("Card Number", "41xxx xxxx xxxx 5609", expanded: false, isMobile: true),
+            Flexible(
+              child: _item("Card Number", "41xxx xxxx xxxx 5609", expanded: false, isMobile: true),
+            ),
           ],
         ),
         const SizedBox(height: 12),
@@ -86,7 +87,41 @@ class ResponsiveCardDetails extends StatelessWidget {
     );
   }
 
-   // brand Widget
+  //  Item Widget
+  Widget _item(String title, String value, {bool expanded = true, required bool isMobile}) {
+    bool hideLabel = isMobile && title == "Card Number";
+
+    Widget content = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (!hideLabel) ...[
+          Text(title,
+              style: const TextStyle(fontSize: 12, color: Color(0xFF6B7280), fontWeight: FontWeight.w400)),
+          const SizedBox(height: 4),
+        ],
+        Text(
+          value,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF1F2937)),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+        ),
+      ],
+    );
+
+    if (expanded) {
+      return Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: content,
+          )
+      );
+    }
+    return content;
+  }
+
+  // brand Widget
   Widget _brand() {
     return Container(
       margin: const EdgeInsets.only(right: 12),
@@ -104,30 +139,4 @@ class ResponsiveCardDetails extends StatelessWidget {
     );
   }
 
-  // Item Widget
-  Widget _item(String title, String value, {bool expanded = true, required bool isMobile}) {
-    bool hideLabel = isMobile && title == "Card Number";
-
-    Widget content = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (!hideLabel) ...[
-          Text(title,
-              style: const TextStyle(fontSize: 12, color: Color(0xFF6B7280), fontWeight: FontWeight.w400)),
-          const SizedBox(height: 4),
-        ],
-        Text(value,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF1F2937))),
-      ],
-    );
-
-    if (expanded) {
-      return Expanded(flex: 2, child: Padding(
-        padding: const EdgeInsets.only(right: 8),
-        child: content,
-      ));
-    }
-    return content;
-  }
 }

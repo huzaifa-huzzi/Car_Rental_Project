@@ -1,5 +1,10 @@
+import 'package:car_rental_project/Customers/CustomersController.dart';
 import 'package:car_rental_project/Customers/CustomersDetails/Widget/ResponsiveCardDetails.dart';
+import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../../Resources/Colors.dart' show AppColors;
 
 class CustomerDetailWidget extends StatelessWidget {
   const CustomerDetailWidget({super.key});
@@ -139,24 +144,38 @@ class CustomerDetailWidget extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 35),
+          const SizedBox(height: 32),
 
 
           /// 5. CARD DETAILS
           ResponsiveCardDetails(),
-          const SizedBox(height: 35),
+          const SizedBox(height: 32),
 
-          /// 6. DOCUMENTS SECTION (Transparent Background)
-          _buildSectionHeader("Customer Documents"),
-          const SizedBox(height: 12),
+          /// 6. DOCUMENTS SECTION
           _buildBorderedContainer(
-            child: Wrap(
-              spacing: 30,
-              runSpacing: 20,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _documentBox(context, "Gov ID", "H-FC-052"),
-                _documentBox(context, "Passport", "Uploaded"),
-                _documentBox(context, "Driving License", "Uploaded"),
+                Text(
+                  "Customer Documents",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey.shade400,
+                      fontWeight: FontWeight.w500
+                  ),
+                ),
+                const SizedBox(height: 25),
+
+                Wrap(
+                  spacing: 40,
+                  runSpacing: 30,
+                  children: [
+                    _documentBox(context, "Gov ID", "HFC-052"),
+                    _documentBox(context, "Passport", "Uploaded"),
+                    _documentBox(context, "Driving License", "Uploaded"),
+                  ],
+                ),
               ],
             ),
           ),
@@ -166,7 +185,7 @@ class CustomerDetailWidget extends StatelessWidget {
     );
   }
 
-  /// --- UI COMPONENTS ---
+  /// --- UI COMPONENTS ---///
 
   Widget _buildHeader(BuildContext context, bool isMobile) {
     Widget profileImg = Container(
@@ -174,7 +193,7 @@ class CustomerDetailWidget extends StatelessWidget {
       height: 100,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.red.withOpacity(0.5), width: 1.5),
+        border: Border.all(color: AppColors.primaryColor, width: 1),
         image: const DecorationImage(
           image: AssetImage("assets/Images/Customers/CustomerUser.png"),
           fit: BoxFit.cover,
@@ -196,9 +215,9 @@ class CustomerDetailWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              _headerActionBtn(Icons.edit_note, null, isDelete: false),
+              _headerActionBtn(IconString.editIcon, null, isDelete: false),
               const SizedBox(width: 10),
-              _headerActionBtn(Icons.delete_outline, null, isDelete: true),
+              _headerActionBtn(IconString.deleteIcon, null, isDelete: true),
             ],
           ),
           const SizedBox(height: 10),
@@ -214,9 +233,9 @@ class CustomerDetailWidget extends StatelessWidget {
         profileImg,
         const SizedBox(width: 20),
         Expanded(child: details),
-        _headerActionBtn(Icons.edit_note, "Edit", isDelete: false),
+        _headerActionBtn(IconString.editIcon, "Edit", isDelete: false),
         const SizedBox(width: 12),
-        _headerActionBtn(Icons.delete_outline, null, isDelete: true),
+        _headerActionBtn(IconString.deleteIcon, null, isDelete: true),
       ],
     );
   }
@@ -224,22 +243,50 @@ class CustomerDetailWidget extends StatelessWidget {
 
   Widget _documentBox(BuildContext context, String label, String status) {
     return SizedBox(
-      width: 200,
+      width: 210,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.description_outlined, color: Colors.blueGrey, size: 24),
-          const SizedBox(width: 8), // Text ke qareeb kiya
+          Container(
+            width: 34,
+            height: 34,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: AppColors.secondaryColor,
+            ),
+            child:  Center(
+              child: Image.asset(IconString.taxIcon),
+            ),
+          ),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(label, style: TextStyle(fontSize: 10, color: Colors.grey.shade500)),
+                const SizedBox(height: 2),
                 Row(
                   children: [
-                    Text(status, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-                    const SizedBox(width: 4), // Eye icon text ke bilkul qareeb
-                    const Icon(Icons.remove_red_eye_outlined, size: 16, color: Colors.grey),
+                    Flexible(
+                      child: Text(
+                        status,
+                        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    GestureDetector(
+                      onTap: () {
+                        final controller = Get.put(CustomerController());
+                        controller.open(ImageString.registrationForm);
+                      },
+                      child: Image.asset(
+                        IconString.uploadedIcon,
+                        height: 16,
+                        width: 16,
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -373,14 +420,27 @@ class CustomerDetailWidget extends StatelessWidget {
   }
 
 
-  Widget _headerActionBtn(IconData icon, String? label, {required bool isDelete}) {
+  Widget _headerActionBtn(String iconPath, String? label, {required bool isDelete}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: label != null ? 14 : 10, vertical: 8),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: Colors.grey.shade200)),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: isDelete ? Colors.red : Colors.grey.shade700),
-          if (label != null) ...[const SizedBox(width: 8), Text(label, style: const TextStyle(fontSize: 13))],
+          Image.asset(
+            iconPath,
+            height: 20,
+            width: 20,
+          ),
+          if (label != null) ...[
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+            ),
+          ],
         ],
       ),
     );

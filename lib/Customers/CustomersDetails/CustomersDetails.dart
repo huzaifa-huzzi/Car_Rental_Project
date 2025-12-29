@@ -16,7 +16,6 @@ class CustomerDetails extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            // 1. Main Content (Neeche wali layer)
             Positioned.fill(
               child: SingleChildScrollView(
                 child: Padding(
@@ -52,8 +51,6 @@ class CustomerDetails extends StatelessWidget {
               ),
             ),
 
-            // 2. Delete Popup (Upar wali layer)
-            // Error fix karne ke liye Positioned.fill ya Center use karna zaroori hai
             Positioned.fill(
               child: CustomersDeletePopup(),
             ),
