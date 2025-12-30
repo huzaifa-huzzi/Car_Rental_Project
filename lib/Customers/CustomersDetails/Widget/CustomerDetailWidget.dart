@@ -1,9 +1,13 @@
 import 'package:car_rental_project/Customers/CustomersController.dart';
 import 'package:car_rental_project/Customers/CustomersDetails/Widget/ResponsiveCardDetails.dart';
+import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/DeletePopup.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
+import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+import '../../../Car Inventory/Car Directory/ReusableWidget/AlertDialogs.dart';
 import '../../../Resources/Colors.dart' show AppColors;
 
 class CustomerDetailWidget extends StatelessWidget {
@@ -36,7 +40,7 @@ class CustomerDetailWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("Personal Info",
-                  style: TextStyle(fontSize: 14, color: Colors.grey.shade400, fontWeight: FontWeight.w500),
+                  style: TTextTheme.titleSix(context),
                 ),
                 const SizedBox(height: 25),
                 LayoutBuilder(
@@ -48,19 +52,19 @@ class CustomerDetailWidget extends StatelessWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(child: _responsiveInfoItem(context, Icons.mail_outline, "Email", "Contact@SoftSnip.com.au")),
+                            Expanded(child: _responsiveInfoItem(context, IconString.smsIcon, "Email", "Contact@SoftSnip.com.au")),
                             if (showGrid) ...[
                               const SizedBox(width: 20),
-                              Expanded(child: _responsiveInfoItem(context, Icons.phone_outlined, "Contact Number", "+12 3456 7890")),
+                              Expanded(child: _responsiveInfoItem(context, IconString.callIcon, "Contact Number", "+12 3456 7890")),
                               const SizedBox(width: 20),
-                              Expanded(child: _responsiveInfoItem(context, Icons.location_on_outlined, "Address", "Toronto, California, 1234")),
+                              Expanded(child: _responsiveInfoItem(context, IconString.location, "Address", "Toronto, California, 1234")),
                             ],
                           ],
                         ),
 
                         if (!showGrid) ...[
-                          _responsiveInfoItem(context, Icons.phone_outlined, "Contact Number", "+12 3456 7890"),
-                          _responsiveInfoItem(context, Icons.location_on_outlined, "Address", "Toronto, California, 1234"),
+                          _responsiveInfoItem(context, IconString.callIcon, "Contact Number", "+12 3456 7890"),
+                          _responsiveInfoItem(context, IconString.location, "Address", "Toronto, California, 1234"),
                         ],
 
                         const SizedBox(height: 20),
@@ -68,17 +72,17 @@ class CustomerDetailWidget extends StatelessWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(child: _responsiveInfoItem(context, Icons.calendar_today_outlined, "Date of Birth", "12/03/2001")),
+                            Expanded(child: _responsiveInfoItem(context, IconString.birthIcon, "Date of Birth", "12/03/2001")),
                             if (showGrid) ...[
                               const SizedBox(width: 20),
-                              Expanded(child: _responsiveInfoItem(context, Icons.badge_outlined, "NID Number", "123 456 789")),
+                              Expanded(child: _responsiveInfoItem(context,IconString.nidIcon, "NID Number", "123 456 789")),
                               const SizedBox(width: 20),
                               const Spacer(),
                             ] else ...[
                             ],
                           ],
                         ),
-                        if (!showGrid) _responsiveInfoItem(context, Icons.badge_outlined, "NID Number", "123 456 789"),
+                        if (!showGrid) _responsiveInfoItem(context, IconString.nidIcon, "NID Number", "123 456 789"),
                       ],
                     );
                   },
@@ -92,17 +96,12 @@ class CustomerDetailWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildSectionHeader("Customer Note"),
+              _buildSectionHeader("Customer Note",context),
               const SizedBox(height: 12),
               Text(
                 "Audi A8 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys. Renowned for its powerful performance and advanced technology features, the A8 provides a refined driving experience with exceptional comfort. Audi A8 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys.",
                 textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey.shade700,
-                  height: 1.6,
-                  letterSpacing: 0.3,
-                ),
+                style: TTextTheme.pOne(context),
               ),
             ],
           ),
@@ -116,12 +115,7 @@ class CustomerDetailWidget extends StatelessWidget {
               children: [
                 Text(
                   "License Details",
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey.shade400,
-                      fontWeight: FontWeight.w500
-                  ),
-                ),
+                  style:  TTextTheme.titleSix(context)),
                 const SizedBox(height: 25),
 
                 LayoutBuilder(
@@ -133,10 +127,10 @@ class CustomerDetailWidget extends StatelessWidget {
                       runSpacing: 30,
                       alignment: WrapAlignment.start,
                       children: [
-                        _responsiveLicenseItem(context, Icons.person_outline, "License Name", "Carly Hevy"),
-                        _responsiveLicenseItem(context, Icons.credit_card_outlined, "License Number", "1245985642"),
-                        _responsiveLicenseItem(context, Icons.credit_card, "Card Number", "1243567434"),
-                        _responsiveLicenseItem(context, Icons.calendar_today_outlined, "Expiry Date", "12/02/2035"),
+                        _responsiveLicenseItem(context, IconString.licenseName, "License Name", "Carly Hevy"),
+                        _responsiveLicenseItem(context,IconString.licesnseNo, "License Number", "1245985642"),
+                        _responsiveLicenseItem(context, IconString.licenseCard, "Card Number", "1243567434"),
+                        _responsiveLicenseItem(context, IconString.expiryDate, "Expiry Date", "12/02/2035"),
                       ],
                     );
                   },
@@ -159,12 +153,7 @@ class CustomerDetailWidget extends StatelessWidget {
               children: [
                 Text(
                   "Customer Documents",
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey.shade400,
-                      fontWeight: FontWeight.w500
-                  ),
-                ),
+                  style: TTextTheme.titleSix(context)),
                 const SizedBox(height: 25),
 
                 Wrap(
@@ -188,6 +177,9 @@ class CustomerDetailWidget extends StatelessWidget {
   /// --- UI COMPONENTS ---///
 
   Widget _buildHeader(BuildContext context, bool isMobile) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool showDeleteText = screenWidth > 1100;
+
     Widget profileImg = Container(
       width: 100,
       height: 100,
@@ -204,8 +196,8 @@ class CustomerDetailWidget extends StatelessWidget {
     Widget details = Column(
       crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
-        Text("Carlie Harvy", style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
-        Text("Driver", style: TextStyle(fontSize: 14, color: Colors.grey.shade500)),
+        Text("Carlie Harvy", style: TTextTheme.h1Style(context)),
+        Text("Driver", style: TTextTheme.titleDriver(context)),
       ],
     );
 
@@ -215,9 +207,34 @@ class CustomerDetailWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              _headerActionBtn(IconString.editIcon, null, isDelete: false),
+              _headerActionBtn(
+                  IconString.editIcon,
+                  context, null,
+                  isDelete: false,
+                  onTap: (){
+
+                  }),
               const SizedBox(width: 10),
-              _headerActionBtn(IconString.deleteIcon, null, isDelete: true),
+              _headerActionBtn(
+                  IconString.deleteIcon,
+                  context, null,
+                  isDelete: true,
+                onTap: (){
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (_) =>
+                        ResponsiveDeleteDialog(
+                          onCancel: () {
+                            context.pop();
+                          },
+                          onConfirm: () {
+                            context.pop();
+                          },
+                        ),
+                  );
+                }
+              ),
             ],
           ),
           const SizedBox(height: 10),
@@ -233,9 +250,35 @@ class CustomerDetailWidget extends StatelessWidget {
         profileImg,
         const SizedBox(width: 20),
         Expanded(child: details),
-        _headerActionBtn(IconString.editIcon, "Edit", isDelete: false),
+        _headerActionBtn(
+            IconString.editIcon,
+            context, "Edit",
+            isDelete: false,
+            onTap: (){},
+        ),
         const SizedBox(width: 12),
-        _headerActionBtn(IconString.deleteIcon, null, isDelete: true),
+        _headerActionBtn(
+            IconString.deleteIcon,
+            context,
+            showDeleteText ? "Delete" : null,
+            isDelete: true,
+            onTap: (){
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (_) =>
+                    ResponsiveDeleteDialog(
+                      onCancel: () {
+                        context.pop();
+                      },
+                      onConfirm: () {
+                        context.pop();
+                      },
+                    ),
+              );
+
+            }
+        ),
       ],
     );
   }
@@ -264,14 +307,14 @@ class CustomerDetailWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(label, style: TextStyle(fontSize: 10, color: Colors.grey.shade500)),
+                Text(label, style: TTextTheme.titleFour(context)),
                 const SizedBox(height: 2),
                 Row(
                   children: [
                     Flexible(
                       child: Text(
                         status,
-                        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
+                        style: TTextTheme.titleseven(context),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -301,18 +344,13 @@ class CustomerDetailWidget extends StatelessWidget {
 
   /// --- COMMON HELPERS ---
 
-  Widget _buildSectionHeader(String title) {
+  Widget _buildSectionHeader(String title,BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0), // Heading aur box ke beech gap
+      padding: const EdgeInsets.only(bottom: 12.0),
       child: Text(
         title,
-        textAlign: TextAlign.start, // Isse heading hamesha left par rahegi
-        style: TextStyle(
-          fontSize: 15,
-          color: Colors.grey.shade400,
-          fontWeight: FontWeight.w500,
-          letterSpacing: 0.2,
-        ),
+        textAlign: TextAlign.start,
+        style: TTextTheme.titleSix(context)
       ),
     );
   }
@@ -330,12 +368,11 @@ class CustomerDetailWidget extends StatelessWidget {
     );
   }
 
-  Widget _responsiveLicenseItem(BuildContext context, IconData icon, String label, String value) {
+  Widget _responsiveLicenseItem(BuildContext context, String iconPath, String label, String value) {
     final double screenWidth = MediaQuery.of(context).size.width;
     bool isMobile = screenWidth < 600;
 
     return Container(
-      // Mobile par full width, Web/Tab par auto-width content ke hisab se
       width: isMobile ? double.infinity : null,
       constraints: BoxConstraints(minWidth: isMobile ? 0 : 160),
       child: IntrinsicWidth(
@@ -345,10 +382,10 @@ class CustomerDetailWidget extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                  color: const Color(0xFFF8F9FB),
+                  color: AppColors.secondaryColor,
                   borderRadius: BorderRadius.circular(10)
               ),
-              child: Icon(icon, size: 18, color: Colors.black87),
+              child: Image.asset(iconPath, width: 18, height: 18),
             ),
             const SizedBox(width: 12),
             Flexible(
@@ -356,11 +393,11 @@ class CustomerDetailWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(label, style: TextStyle(fontSize: 11, color: Colors.grey.shade400)),
+                  Text(label, style: TTextTheme.titleFour(context)),
                   const SizedBox(height: 2),
                   Text(
                     value,
-                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
+                    style: TTextTheme.titleseven(context),
                     softWrap: false,
                   ),
                 ],
@@ -373,12 +410,11 @@ class CustomerDetailWidget extends StatelessWidget {
   }
 
 
-  Widget _responsiveInfoItem(BuildContext context, IconData icon, String label, String value, {double? width}) {
+  Widget _responsiveInfoItem(BuildContext context, String iconPath, String label, String value, {double? width}) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final bool isSmallMobile = screenWidth < 600;
 
     return Container(
-      // Mobile par full width, Web/Tab par calculated width taaki alignment barabar rahe
       width: isSmallMobile ? double.infinity : width,
       margin: const EdgeInsets.only(bottom: 10),
       child: Row(
@@ -388,10 +424,10 @@ class CustomerDetailWidget extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: const Color(0xFFF8F9FB),
+              color: AppColors.secondaryColor,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, size: 18, color: Colors.black87),
+            child: Image.asset(iconPath, width: 18, height: 18),
           ),
           const SizedBox(width: 15),
           Expanded(
@@ -399,16 +435,11 @@ class CustomerDetailWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(label, style: TextStyle(fontSize: 11, color: Colors.grey.shade400)),
+                Text(label, style: TTextTheme.titleFour(context)),
                 const SizedBox(height: 2),
                 Text(
                   value,
-                  style: const TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                    overflow: TextOverflow.ellipsis
-                  ),
+                  style: TTextTheme.titleseven(context),
                   maxLines: 1,
                 ),
               ],
@@ -420,28 +451,40 @@ class CustomerDetailWidget extends StatelessWidget {
   }
 
 
-  Widget _headerActionBtn(String iconPath, String? label, {required bool isDelete}) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: label != null ? 14 : 10, vertical: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Row(
-        children: [
-          Image.asset(
-            iconPath,
-            height: 20,
-            width: 20,
+  Widget _headerActionBtn(
+      String iconPath,
+      BuildContext context,
+      String? label,
+      {required bool isDelete, required VoidCallback onTap}
+      ) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: label != null ? 14 : 10, vertical: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color:  AppColors.tertiaryTextColor,
           ),
-          if (label != null) ...[
-            const SizedBox(width: 8),
-            Text(
-              label,
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              iconPath,
+              height: 20,
+              width: 20,
             ),
+            if (label != null) ...[
+              const SizedBox(width: 8),
+              Text(
+                label,
+                style: TTextTheme.btnTwo(context)
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

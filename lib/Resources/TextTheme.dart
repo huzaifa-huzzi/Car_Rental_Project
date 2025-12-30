@@ -94,6 +94,11 @@ class TTextTheme {
     );
   }
 
+  static TextStyle titleDriver(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 16),fontWeight: FontWeight.w400,color: AppColors.secondTextColor,
+    );
+  }
+
   static TextStyle titleThree(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
     );

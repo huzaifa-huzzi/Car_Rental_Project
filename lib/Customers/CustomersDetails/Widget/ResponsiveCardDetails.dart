@@ -1,4 +1,6 @@
+import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 
 class ResponsiveCardDetails extends StatelessWidget {
@@ -19,19 +21,19 @@ class ResponsiveCardDetails extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("Card Details",
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Color(0xFF374151))),
+           Text("Card Details",
+              style: TTextTheme.titleSix(context)),
 
           const SizedBox(height: 20),
 
-          _buildRow(isMobile, "Card Number 01"),
+          _buildRow(isMobile, "Card Number 01",context),
 
           if (isMobile) const Padding(
             padding: EdgeInsets.symmetric(vertical: 20),
-            child: Divider(color: Color(0xffE5E7EB), thickness: 1),
+            child: Divider(color: Colors.white, thickness: 1),
           ) else const SizedBox(height: 22),
 
-          _buildRow(isMobile, "Card Number 02"),
+          _buildRow(isMobile, "Card Number 02",context),
         ],
       ),
     );
@@ -40,55 +42,90 @@ class ResponsiveCardDetails extends StatelessWidget {
   /// -------- Extra Widgets (helper Widgets)----------///
 
   // Row Widget
-  Widget _buildRow(bool isMobile, String label) {
-    return isMobile ? _mobileRow(label) : _webRow();
+  Widget _buildRow(bool isMobile, String label, BuildContext context) {
+    return isMobile ? _mobileRow(label, context) : _webRow(context);
   }
 
   //  WEB / TABLET VIEW Widget
-  Widget _webRow() {
+  Widget _webRow(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _brand(),
-        _item("Card Number", "41xxx xxxx xxxx 5609", isMobile: false),
-        _item("Card Holder Name", "Jong Ali", isMobile: false),
-        _item("Country", "Australia", isMobile: false),
-        _item("Expiry date", "05/2029", isMobile: false),
-        _item("CVC or CVV", "067", isMobile: false),
+        Expanded(
+          flex: 3,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Card Number", style: TTextTheme.btnFour(context)),
+              const SizedBox(height: 3),
+              Row(
+                children: [
+                  _brand(),
+                  Expanded(
+                    child: Text(
+                      "41xxx xxxx xxxx 5609",
+                      style: TTextTheme.titleSmallTexts(context),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(width: 8),
+        _item("Card Holder Name", "Jong Ali", context: context, isMobile: false),
+        _item("Country", "Australia", context: context, isMobile: false),
+        _item("Expiry date", "05/2029", context: context, isMobile: false),
+        _item("CVC or CVV", "067", context: context, isMobile: false),
       ],
     );
   }
 
   //  MOBILE VIEW Widget
-  Widget _mobileRow(String label) {
+  Widget _mobileRow(String label, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.black87)),
+        Text(
+            label,
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.black87)
+        ),
         const SizedBox(height: 12),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _brand(),
             Flexible(
-              child: _item("Card Number", "41xxx xxxx xxxx 5609", expanded: false, isMobile: true),
+              child: _item(
+                  "Card Number",
+                  "41xxx xxxx xxxx 5609",
+                  context: context,
+                  expanded: false,
+                  isMobile: true
+              ),
             ),
           ],
         ),
         const SizedBox(height: 12),
-        _item("Card Holder Name", "Jong Ali", expanded: false, isMobile: true),
+        _item("Card Holder Name", "Jong Ali", context: context, expanded: false, isMobile: true),
         const SizedBox(height: 12),
-        _item("Country", "Australia", expanded: false, isMobile: true),
+        _item("Country", "Australia", context: context, expanded: false, isMobile: true),
         const SizedBox(height: 12),
-        _item("Expiry date", "05/2029", expanded: false, isMobile: true),
+        _item("Expiry date", "05/2029", context: context, expanded: false, isMobile: true),
         const SizedBox(height: 12),
-        _item("CVC or CVV", "067", expanded: false, isMobile: true),
+        _item("CVC or CVV", "067", context: context, expanded: false, isMobile: true),
       ],
     );
   }
 
   //  Item Widget
-  Widget _item(String title, String value, {bool expanded = true, required bool isMobile}) {
+  Widget _item(String title, String value, {
+    bool expanded = true,
+    required BuildContext context,
+    required bool isMobile,
+  }) {
     bool hideLabel = isMobile && title == "Card Number";
 
     Widget content = Column(
@@ -96,13 +133,12 @@ class ResponsiveCardDetails extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (!hideLabel) ...[
-          Text(title,
-              style: const TextStyle(fontSize: 12, color: Color(0xFF6B7280), fontWeight: FontWeight.w400)),
+          Text(title, style: TTextTheme.btnFour(context)),
           const SizedBox(height: 4),
         ],
         Text(
           value,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF1F2937)),
+          style: TTextTheme.titleSmallTexts(context),
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
         ),
@@ -111,11 +147,11 @@ class ResponsiveCardDetails extends StatelessWidget {
 
     if (expanded) {
       return Expanded(
-          flex: 2,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: content,
-          )
+        flex: 2,
+        child: Padding(
+          padding: const EdgeInsets.only(right: 8),
+          child: content,
+        ),
       );
     }
     return content;
@@ -128,11 +164,10 @@ class ResponsiveCardDetails extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xffE5E7EB)),
-        color: const Color(0xffF9FAFB),
+        color: AppColors.secondaryColor,
       ),
       child: Image.asset(
-        IconString.licenseIcon,
+        IconString.visaIcon,
         height: 18,
         errorBuilder: (context, error, stackTrace) => const Icon(Icons.credit_card, size: 18, color: Colors.grey),
       ),

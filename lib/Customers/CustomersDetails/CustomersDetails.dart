@@ -52,7 +52,7 @@ class CustomerDetails extends StatelessWidget {
             ),
 
             Positioned.fill(
-              child: CustomersDeletePopup(),
+              child: CustomerDeletePopup(),
             ),
           ],
         ),

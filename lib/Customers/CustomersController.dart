@@ -1,56 +1,59 @@
-
-
 import 'package:get/get.dart';
 
-class CustomerController extends  GetxController {
-   /// TableView Screen
+class CustomerController extends GetxController {
   var selectAge = "".obs;
-
   RxBool isFilterOpen = false.obs;
   var hoveredRowIndex = (-1).obs;
+
   void toggleFilter() {
     isFilterOpen.value = !isFilterOpen.value;
   }
 
-  /// Reusable Widget Controller
-  // pagination  Widget
-  final RxInt currentPage = 1.obs;
+   /// Pagination
+  // Pagination State
+  final RxInt currentPage2 = 1.obs;
+  final RxInt pageSize2 = 8.obs;
+  final RxInt selectedView2 = 0.obs;
 
-  final RxInt pageSize = 8.obs;
+  RxList<Map<String, dynamic>> carList2 = <Map<String, dynamic>>[].obs;
 
-  RxList<Map<String, dynamic>> carList = <Map<String, dynamic>>[].obs;
+  @override
+  void onInit() {
+    super.onInit();
+    carList2.addAll(List.generate(50, (index) => {"id": index, "name": "Customer $index"}));
+  }
 
-  int get totalPages => (carList.length / pageSize.value).ceil();
+  int get totalPages {
+    if (carList2.isEmpty) return 1;
+    return (carList2.length / pageSize2.value).ceil();
+  }
 
-  RxList<Map<String, dynamic>> get displayedCarList {
-    int start = (currentPage.value - 1) * pageSize.value;
-    int end = start + pageSize.value;
-    if (end > carList.length) end = carList.length;
-
-    if (carList.isEmpty) return <Map<String, dynamic>>[].obs;
-
-    return carList.sublist(start, end).obs;
+  List<Map<String, dynamic>> get displayedCarList {
+    int start = (currentPage2.value - 1) * pageSize2.value;
+    if (start >= carList2.length) return [];
+    int end = start + pageSize2.value;
+    return carList2.sublist(start, end > carList2.length ? carList2.length : end);
   }
 
   void goToPreviousPage() {
-    if (currentPage.value > 1) currentPage.value--;
+    if (currentPage2.value > 1) currentPage2.value--;
   }
 
   void goToNextPage() {
-    if (currentPage.value < totalPages) currentPage.value++;
+    if (currentPage2.value < totalPages) currentPage2.value++;
   }
 
   void goToPage(int page) {
-    if (page >= 1 && page <= totalPages) currentPage.value = page;
+    if (page >= 1 && page <= totalPages) currentPage2.value = page;
   }
 
   void setPageSize(int newSize) {
-    pageSize.value = newSize;
-    currentPage.value = 1;
+    pageSize2.value = newSize;
+    currentPage2.value = 1;
   }
 
-
-  /// CustomersDetails
+  /// CustomerDetail Screen
+  // Popup Logic
   RxBool isOpen = false.obs;
   RxString imagePath = ''.obs;
 
@@ -63,8 +66,4 @@ class CustomerController extends  GetxController {
     isOpen.value = false;
     imagePath.value = '';
   }
-
-
-
-
 }

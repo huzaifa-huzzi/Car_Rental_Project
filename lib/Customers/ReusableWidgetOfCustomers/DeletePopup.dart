@@ -9,10 +9,10 @@ import 'package:dotted_border/dotted_border.dart';
 import '../../../Resources/Colors.dart';
 import '../../../Resources/TextTheme.dart';
 
-class CustomersDeletePopup extends StatelessWidget {
-  CustomersDeletePopup({super.key});
+class CustomerDeletePopup extends StatelessWidget {
+  CustomerDeletePopup({super.key});
 
-  final controller = Get.put(CustomerController());
+  final controller = Get.find<CustomerController>();
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +88,7 @@ class CustomersDeletePopup extends StatelessWidget {
                               ? 270
                               : isMobile ? 230 :overlayWidth,
                           child: DottedBorder(
-                            color: Colors.redAccent,
+                            color: AppColors.primaryColor,
                             strokeWidth: 1,
                             dashPattern: const [6, 4],
                             borderType: BorderType.RRect,

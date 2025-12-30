@@ -59,8 +59,20 @@ class IconString {
   static const String  printIcon = 'assets/icons/printIcon.png';
   static const String  vinNumberIcon = 'assets/icons/VinNumberIcon.png';
   static const String  editIcon2 = 'assets/icons/Edit-Icon2.png';
+
      /// Customers Icon
   static const String  licenseIcon = 'assets/icons/LicenseIcon.png';
+  static const String  birthIcon = 'assets/icons/birth.png';
+  static const String  callIcon = 'assets/icons/call.png';
+  static const String  expiryDate = 'assets/icons/Expiry-date.png';
+  static const String  licenseName = 'assets/icons/License Name.png';
+  static const String  licenseCard = 'assets/icons/License-card.png';
+  static const String  licesnseNo = 'assets/icons/LicesnseNo.png';
+  static const String  location = 'assets/icons/location.png';
+  static const String  masterCardIcon = 'assets/icons/MasterCardIcon.png';
+  static const String  nidIcon = 'assets/icons/Nid.png';
+  static const String  smsIcon = 'assets/icons/sms.png';
+  static const String  visaIcon = 'assets/icons/VisaIcon.png';
 
 
 

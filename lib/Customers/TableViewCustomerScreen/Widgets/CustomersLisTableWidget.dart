@@ -1,5 +1,5 @@
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/CarInventoryController.dart';
+import 'package:car_rental_project/Customers/CustomersController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
@@ -12,10 +12,10 @@ import 'package:go_router/go_router.dart';
 class CustomerListTableWidget extends StatelessWidget {
   CustomerListTableWidget({super.key});
 
-  final controller = Get.put(CarInventoryController());
+  final controller = Get.put(CustomerController());
 
 
-  final double clientColWidth = 220.0;
+  final double clientColWidth = 210.0;
   final double ageColWidth = 100.0;
   final double phoneColWidth = 150.0;
   final double addressColWidth = 200.0;
