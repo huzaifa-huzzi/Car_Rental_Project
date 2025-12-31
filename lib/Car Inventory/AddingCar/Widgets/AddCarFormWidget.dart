@@ -100,7 +100,7 @@ class AddCarFormWidget extends StatelessWidget {
               SizedBox(height: AppSizes.verticalPadding(context)),
 
               /// IMAGE UPLOAD
-              Text(TextString.uploadImageTitle, style: TTextTheme.titleTwo(context)),
+              Text(TextString.uploadImageTitle, style: TTextTheme.btnSix(context)),
               SizedBox(height: AppSizes.verticalPadding(context)),
               _imageBox(context),
               SizedBox(height: AppSizes.verticalPadding(context)),
@@ -109,7 +109,7 @@ class AddCarFormWidget extends StatelessWidget {
 
               /// DESCRIPTION
               SizedBox(height: AppSizes.verticalPadding(context)),
-              Text(TextString.descriptionTitle, style: TTextTheme.titleTwo(context)),
+              Text(TextString.descriptionTitle, style: TTextTheme.btnSix(context)),
               SizedBox(height: AppSizes.verticalPadding(context) * 0.5),
 
               Container(

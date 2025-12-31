@@ -201,7 +201,7 @@ class EditCarWidget extends StatelessWidget {
               SizedBox(height: AppSizes.verticalPadding(context)),
 
               /// IMAGE UPLOAD
-              Text("Upload Car Images", style: TTextTheme.titleTwo(context)),
+              Text("Upload Car Images", style: TTextTheme.btnSix(context)),
               SizedBox(height: AppSizes.verticalPadding(context)),
               _imageBox(context),
               SizedBox(height: AppSizes.verticalPadding(context)),
@@ -209,7 +209,7 @@ class EditCarWidget extends StatelessWidget {
 
               /// DESCRIPTION
               SizedBox(height: AppSizes.verticalPadding(context)),
-              Text(TextString.addEditDescriptionTitle, style: TTextTheme.titleTwo(context)),
+              Text(TextString.addEditDescriptionTitle, style: TTextTheme.btnSix(context)),
               SizedBox(height: AppSizes.verticalPadding(context) * 0.5),
 
               Container(

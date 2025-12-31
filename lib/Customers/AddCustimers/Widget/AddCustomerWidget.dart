@@ -67,7 +67,7 @@ class AddCustomerWidget extends StatelessWidget {
 
               /// CUSTOMER NOTE SECTION
               SizedBox(height: spacing),
-              Text("Customer Note", style: TTextTheme.titleTwo(context)),
+              Text("Customer Note", style: TTextTheme.btnSix(context)),
               SizedBox(height: 8),
               _buildLargeTextField(context, "Describe the customer Note...", controller.noteController),
 
@@ -76,7 +76,7 @@ class AddCustomerWidget extends StatelessWidget {
 
               /// LICENSE DETAILS SECTION
               SizedBox(height: spacing),
-              Text("License Details", style: TTextTheme.h7Style(context).copyWith(fontSize: 18)),
+              Text("License Details", style: TTextTheme.btnSix(context)),
               SizedBox(height: spacing),
               _buildResponsiveGrid(context, [
                 _buildTextField(context, "License Holder Name", controller.licenseNameController),
@@ -90,7 +90,7 @@ class AddCustomerWidget extends StatelessWidget {
 
               /// DOCUMENTS UPLOAD SECTION
               SizedBox(height: spacing),
-              Text("Upload Personal document (Gov. Id, Passport... etc.  MAX6)", style: TTextTheme.titleTwo(context)),
+              Text("Upload Personal document (Gov. Id, Passport etc.  MAX6)", style: TTextTheme.btnSix(context)),
               SizedBox(height: spacing),
               _documentsSection(context),
 
@@ -98,7 +98,7 @@ class AddCustomerWidget extends StatelessWidget {
               Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
               /// CARD DETAILS SECTION
-              Text("Add Card Details", style: TTextTheme.h7Style(context).copyWith(fontSize: 18)),
+              Text("Add Card Details", style: TTextTheme.btnSix(context)),
               SizedBox(height: spacing),
 
               Center(
