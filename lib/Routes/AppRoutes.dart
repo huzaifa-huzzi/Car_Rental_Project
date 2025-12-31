@@ -58,7 +58,7 @@ class AppNavigation {
       ),
       GoRoute(
         path: '/addNewCustomer',
-        builder: (context, state) => _wrapSidebar(state, const AddCustomersScreen()),
+        builder: (context, state) => _wrapSidebar(state, const AddCustomerScreen()),
       ),
       GoRoute(
         path: '/editCustomers',

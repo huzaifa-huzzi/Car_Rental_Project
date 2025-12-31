@@ -1,12 +1,8 @@
-import 'dart:io';
-import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:math';
 import 'package:flutter/foundation.dart' show kIsWeb, Uint8List;
-
-import '../../Resources/ImageString.dart' show ImageString;
 
 class ImageHolder {
   final String? path;

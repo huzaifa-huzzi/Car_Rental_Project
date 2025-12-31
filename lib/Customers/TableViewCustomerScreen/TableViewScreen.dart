@@ -9,6 +9,7 @@ import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 
 class TableViewCustomerScreen extends StatelessWidget {
@@ -30,7 +31,20 @@ class TableViewCustomerScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: Column(
             children: [
-              if (AppSizes.isWeb(context)) HeaderWebCustomersWidget(mainTitle: 'Customers',showProfile: true,showNotification: true,showSettings: true,showSearch: true,),
+              if (AppSizes.isWeb(context))
+                HeaderWebCustomersWidget(
+                  mainTitle: 'Customers',
+                  showProfile: true,
+                  showNotification: true,
+                  showSettings: true,
+                  showSearch: true,
+          onAddPressed: () {
+            context.push(
+              '/addNewCustomer',
+              extra: {"hideMobileAppBar": true},
+            );
+          }
+                ),
               SizedBox(height: 3,),
               CardListHeaderCustomerWidget(),
               SizedBox(height: 2,),

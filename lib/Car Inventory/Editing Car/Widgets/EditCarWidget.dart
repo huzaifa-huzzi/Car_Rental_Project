@@ -24,220 +24,222 @@ class EditCarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = AppSizes.isMobile(context);
 
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.all(AppSizes.padding(context)),
-      padding: EdgeInsets.all(AppSizes.padding(context)),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /// HEADER
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
-                  child: Image.asset(
-                    IconString.editIcon2,
-                    fit: BoxFit.contain,
+    return Center(
+      child: Container(
+        width: 800,
+        margin: EdgeInsets.all(AppSizes.padding(context)),
+        padding: EdgeInsets.all(AppSizes.padding(context)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// HEADER
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: Image.asset(
+                      IconString.editIcon2,
+                      fit: BoxFit.contain,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          TextString.addEditCarScreenTitle,
+                          style: TTextTheme.h7Style(context),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          TextString.addEditCarDescription,
+                          style: TTextTheme.titleThree(context),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+
+                  /// EDIT BUTTON
+                  CustomPrimaryButton(
+                    text: MediaQuery.of(context).size.width < 900 ? "" : "Edit",
+                    iconPath: IconString.editIcon,
+                    width: MediaQuery.of(context).size.width < 900 ? 40 : 110,
+                    height: 38,
+                    textColor: AppColors.primaryColor,
+                    borderColor: AppColors.primaryColor,
+                    onTap: () => print("Edit Tapped"),
+                  ),
+
+                  const SizedBox(width: 8),
+
+                  /// DELETE BUTTON
+                  CustomPrimaryButton(
+                    text: MediaQuery.of(context).size.width < 900 ? "" : "Delete",
+                    iconPath: IconString.deleteIcon,
+                    iconColor: AppColors.secondTextColor,
+                    width: MediaQuery.of(context).size.width < 900 ? 40 : 110,
+                    height: 38,
+                    textColor: AppColors.secondTextColor,
+                    borderColor: AppColors.sideBoxesColor,
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) => ResponsiveDeleteDialog(
+                          onCancel: () {
+                            context.pop();
+                          },
+                          onConfirm: () {
+                            context.pop();
+                          },
+                        ),
+                      );
+
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: AppSizes.verticalPadding(context) / 2),
+              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+              SizedBox(height: AppSizes.verticalPadding(context)),
+
+              /// GRID FORM
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final double totalWidth = constraints.maxWidth;
+                  final double spacing = AppSizes.padding(context);
+                  double itemWidth;
+                  int columns;
+
+                  if (totalWidth >= 900) {
+                    columns = 3;
+                  } else if (totalWidth >= 550) {
+                    columns = 3;
+                  } else {
+                    columns = 2;
+                  }
+
+                  if (columns == 1) {
+                    itemWidth = totalWidth;
+                  } else {
+                    final double totalSpacing = spacing * (columns - 1);
+                    itemWidth = (totalWidth - totalSpacing) / columns;
+                  }
+
+                  return Wrap(
+                    spacing: spacing,
+                    runSpacing: spacing,
                     children: [
-                      Text(
-                        TextString.addEditCarScreenTitle,
-                        style: TTextTheme.h7Style(context),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        TextString.addEditCarDescription,
-                        style: TTextTheme.titleThree(context),
-                      ),
+                      SizedBox(
+                          width: itemWidth,
+                          child: _buildDropdown(context, "Car Make",
+                              ["Toyota", "Honda", "BMW"], controller.selectedBrand2,
+                              id: 'car Brand')),
+                      SizedBox(
+                          width: itemWidth,
+                          child: _buildDropdown(context, "Car Model",
+                              ["Corolla", "Civic", "X5"], controller.selectedModel2,
+                              id: 'car Model')),
+                      SizedBox(
+                          width: itemWidth,
+                          child: _buildDropdown(
+                              context, "Car Year", ["2020", "2021", "2022"], controller.selectedYear2,
+                              id: 'Year')),
+                      SizedBox(
+                          width: itemWidth,
+                          child: _buildTextField(context, "Car Registration Number",
+                              controller.reg2Controller)),
+                      SizedBox(
+                          width: itemWidth,
+                          child: _buildTextField(context, "VIN Number", controller.vin2Controller)),
+                      SizedBox(
+                          width: itemWidth,
+                          child: _buildDropdown(context, "Car Body Type",
+                              ["Sedan", "SUV", "Truck"], controller.selectedBodyType2,
+                              id: 'Body type')),
+                      SizedBox(
+                          width: itemWidth,
+                          child: _buildDropdown(context, "Car Transmission",
+                              ["Automatic", "Manual"], controller.selectedTransmission2,
+                              id: 'Transmission')),
+                      SizedBox(
+                          width: itemWidth,
+                          child: _buildTextField(context, "Car Seats", controller.seats2Controller)),
+                      SizedBox(
+                          width: itemWidth,
+                          child:
+                          _buildTextField(context, "Car Engine Size", controller.engine2Controller)),
+                      SizedBox(
+                          width: itemWidth,
+                          child: _buildTextField(context, "Car Color", controller.color2Controller)),
+                      SizedBox(
+                          width: itemWidth,
+                          child: _buildDropdown(context, "Car Fuel Type",
+                              ["Petrol", "Diesel"], controller.selectedFuel2,
+                              id: 'fuel')),
+                      SizedBox(
+                          width: itemWidth,
+                          child:
+                          _buildTextField(context, "Car Value", controller.value2Controller, prefix: "\$")),
+                      SizedBox(
+                          width: itemWidth,
+                          child: _buildTextField(context, "Weekly Rent (AUD)",
+                              controller.weekly2RentController, prefix: "\$ ")),
                     ],
+                  );
+                },
+              ),
+
+              SizedBox(height: AppSizes.verticalPadding(context)),
+
+              /// IMAGE UPLOAD
+              Text("Upload Car Images", style: TTextTheme.titleTwo(context)),
+              SizedBox(height: AppSizes.verticalPadding(context)),
+              _imageBox(context),
+              SizedBox(height: AppSizes.verticalPadding(context)),
+              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+
+              /// DESCRIPTION
+              SizedBox(height: AppSizes.verticalPadding(context)),
+              Text(TextString.addEditDescriptionTitle, style: TTextTheme.titleTwo(context)),
+              SizedBox(height: AppSizes.verticalPadding(context) * 0.5),
+
+              Container(
+                padding: EdgeInsets.all(AppSizes.padding(context)),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                  color: AppColors.secondaryColor,
+                ),
+                child: TextField(
+                  cursorColor: AppColors.blackColor,
+                  maxLines: 6,
+                  decoration: InputDecoration(
+                    hintText: TextString.addEditDescriptionTextFieldText,
+                    hintStyle: TTextTheme.pOne(context),
+                    border: InputBorder.none,
                   ),
                 ),
-                const SizedBox(width: 10),
-
-                /// EDIT BUTTON
-                CustomPrimaryButton(
-                  text: MediaQuery.of(context).size.width < 900 ? "" : "Edit",
-                  iconPath: IconString.editIcon,
-                  width: MediaQuery.of(context).size.width < 900 ? 40 : 110,
-                  height: 38,
-                  textColor: AppColors.primaryColor,
-                  borderColor: AppColors.primaryColor,
-                  onTap: () => print("Edit Tapped"),
-                ),
-
-                const SizedBox(width: 8),
-
-                /// DELETE BUTTON
-                CustomPrimaryButton(
-                  text: MediaQuery.of(context).size.width < 900 ? "" : "Delete",
-                  iconPath: IconString.deleteIcon,
-                  iconColor: AppColors.secondTextColor,
-                  width: MediaQuery.of(context).size.width < 900 ? 40 : 110,
-                  height: 38,
-                  textColor: AppColors.secondTextColor,
-                  borderColor: AppColors.sideBoxesColor,
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (_) => ResponsiveDeleteDialog(
-                        onCancel: () {
-                          context.pop();
-                        },
-                        onConfirm: () {
-                          context.pop();
-                        },
-                      ),
-                    );
-
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: AppSizes.verticalPadding(context)),
-            Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-            SizedBox(height: AppSizes.verticalPadding(context)),
-
-            /// GRID FORM
-            LayoutBuilder(
-              builder: (context, constraints) {
-                final double totalWidth = constraints.maxWidth;
-                final double spacing = AppSizes.padding(context);
-                double itemWidth;
-                int columns;
-
-                if (totalWidth >= 900) {
-                  columns = 3;
-                } else if (totalWidth >= 550) {
-                  columns = 3;
-                } else {
-                  columns = 2;
-                }
-
-                if (columns == 1) {
-                  itemWidth = totalWidth;
-                } else {
-                  final double totalSpacing = spacing * (columns - 1);
-                  itemWidth = (totalWidth - totalSpacing) / columns;
-                }
-
-                return Wrap(
-                  spacing: spacing,
-                  runSpacing: spacing,
-                  children: [
-                    SizedBox(
-                        width: itemWidth,
-                        child: _buildDropdown(context, "Car Make",
-                            ["Toyota", "Honda", "BMW"], controller.selectedBrand2,
-                            id: 'car Brand')),
-                    SizedBox(
-                        width: itemWidth,
-                        child: _buildDropdown(context, "Car Model",
-                            ["Corolla", "Civic", "X5"], controller.selectedModel2,
-                            id: 'car Model')),
-                    SizedBox(
-                        width: itemWidth,
-                        child: _buildDropdown(
-                            context, "Car Year", ["2020", "2021", "2022"], controller.selectedYear2,
-                            id: 'Year')),
-                    SizedBox(
-                        width: itemWidth,
-                        child: _buildTextField(context, "Car Registration Number",
-                            controller.reg2Controller)),
-                    SizedBox(
-                        width: itemWidth,
-                        child: _buildTextField(context, "VIN Number", controller.vin2Controller)),
-                    SizedBox(
-                        width: itemWidth,
-                        child: _buildDropdown(context, "Car Body Type",
-                            ["Sedan", "SUV", "Truck"], controller.selectedBodyType2,
-                            id: 'Body type')),
-                    SizedBox(
-                        width: itemWidth,
-                        child: _buildDropdown(context, "Car Transmission",
-                            ["Automatic", "Manual"], controller.selectedTransmission2,
-                            id: 'Transmission')),
-                    SizedBox(
-                        width: itemWidth,
-                        child: _buildTextField(context, "Car Seats", controller.seats2Controller)),
-                    SizedBox(
-                        width: itemWidth,
-                        child:
-                        _buildTextField(context, "Car Engine Size", controller.engine2Controller)),
-                    SizedBox(
-                        width: itemWidth,
-                        child: _buildTextField(context, "Car Color", controller.color2Controller)),
-                    SizedBox(
-                        width: itemWidth,
-                        child: _buildDropdown(context, "Car Fuel Type",
-                            ["Petrol", "Diesel"], controller.selectedFuel2,
-                            id: 'fuel')),
-                    SizedBox(
-                        width: itemWidth,
-                        child:
-                        _buildTextField(context, "Car Value", controller.value2Controller, prefix: "\$")),
-                    SizedBox(
-                        width: itemWidth,
-                        child: _buildTextField(context, "Weekly Rent (AUD)",
-                            controller.weekly2RentController, prefix: "\$ ")),
-                  ],
-                );
-              },
-            ),
-
-            SizedBox(height: AppSizes.verticalPadding(context)),
-
-            /// IMAGE UPLOAD
-            Text("Upload Car Images", style: TTextTheme.titleTwo(context)),
-            SizedBox(height: AppSizes.verticalPadding(context)),
-            _imageBox(context),
-            SizedBox(height: AppSizes.verticalPadding(context)),
-            Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-
-            /// DESCRIPTION
-            SizedBox(height: AppSizes.verticalPadding(context)),
-            Text(TextString.addEditDescriptionTitle, style: TTextTheme.titleTwo(context)),
-            SizedBox(height: AppSizes.verticalPadding(context) * 0.5),
-
-            Container(
-              padding: EdgeInsets.all(AppSizes.padding(context)),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-                color: AppColors.secondaryColor,
               ),
-              child: TextField(
-                cursorColor: AppColors.blackColor,
-                maxLines: 6,
-                decoration: InputDecoration(
-                  hintText: TextString.addEditDescriptionTextFieldText,
-                  hintStyle: TTextTheme.pOne(context),
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
 
-            SizedBox(height: AppSizes.verticalPadding(context)),
-            Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+              SizedBox(height: AppSizes.verticalPadding(context)),
+              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
-            /// DOCUMENTS SECTION
-            _documentsSection(context),
-            SizedBox(height: AppSizes.verticalPadding(context)),
+              /// DOCUMENTS SECTION
+              _documentsSection(context),
+              SizedBox(height: AppSizes.verticalPadding(context)),
 
-            /// BUTTON SECTION
-            _buttonSection(context, isMobile),
-          ],
+              /// BUTTON SECTION
+              _buttonSection(context, isMobile),
+            ],
+          ),
         ),
       ),
     );

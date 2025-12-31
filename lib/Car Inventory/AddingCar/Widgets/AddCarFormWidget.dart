@@ -22,122 +22,124 @@ class AddCarFormWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = AppSizes.isMobile(context);
 
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.all(AppSizes.padding(context)),
-      padding: EdgeInsets.all(AppSizes.padding(context)),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(
-          AppSizes.borderRadius(context),
+    return Center(
+      child: Container(
+        width: 800,
+        margin: EdgeInsets.all(AppSizes.padding(context)),
+        padding: EdgeInsets.all(AppSizes.padding(context)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(
+            AppSizes.borderRadius(context),
+          ),
         ),
-      ),
 
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /// CAR DETAILS
-            Text(TextString.addScreenTitle, style: TTextTheme.h7Style(context)),
-            SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
-            Text(TextString.addScreenDescription, style: TTextTheme.titleThree(context)),
-            SizedBox(height: AppSizes.verticalPadding(context)),
-            Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-            SizedBox(height: AppSizes.verticalPadding(context)),
-
-
-            ///GRID FORM
-            LayoutBuilder(
-              builder: (context, constraints) {
-                final double totalWidth = constraints.maxWidth;
-                final double spacing = AppSizes.padding(context);
-                double itemWidth;
-                int columns;
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// CAR DETAILS
+              Text(TextString.addScreenTitle, style: TTextTheme.h7Style(context)),
+              SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
+              Text(TextString.addScreenDescription, style: TTextTheme.titleThree(context)),
+              SizedBox(height: AppSizes.verticalPadding(context)/2),
+              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+              SizedBox(height: AppSizes.verticalPadding(context)),
 
 
-                if (totalWidth >= 900) {
-                  columns = 3;
-                }
-                else if (totalWidth >= 550) {
-                  columns = 3;
-                }
-                else {
-                  columns = 2;
-                }
+              ///GRID FORM
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final double totalWidth = constraints.maxWidth;
+                  final double spacing = AppSizes.padding(context);
+                  double itemWidth;
+                  int columns;
 
 
-                if (columns == 1) {
-                  itemWidth = totalWidth;
-                } else {
-                  final double totalSpacing = spacing * (columns - 1);
-                  itemWidth = (totalWidth - totalSpacing) / columns;
-                }
-
-                return Wrap(
-                  spacing: spacing,
-                  runSpacing: spacing,
-                  children: [
-                    SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Make", ["Toyota", "Honda", "BMW"], controller.selectedBrand, id: 'car Brand')),
-                    SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Model", ["Corolla", "Civic", "X5"], controller.selectedModel,id: 'car Model')),
-                    SizedBox(width: itemWidth, child: _buildDropdown(context, "Car  Year", ["2020", "2021", "2022"], controller.selectedYear,id: 'Year')),
-                    SizedBox(width: itemWidth, child: _buildTextField(context, "Car Registration Number", controller.regController)),
-                    SizedBox(width: itemWidth, child: _buildTextField(context, "VIN Number", controller.vinController)),
-                    SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Body Type", ["Sedan", "SUV", "Truck"], controller.selectedBodyType,id: 'Body type')),
-                    SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Transmission", ["Automatic", "Manual"], controller.selectedTransmission,id: 'Transmission')),
-                    SizedBox(width: itemWidth, child: _buildTextField(context, "Car Seats", controller.seatsController)),
-                    SizedBox(width: itemWidth, child: _buildTextField(context, "Car Engine Size", controller.engineController)),
-                    SizedBox(width: itemWidth, child: _buildTextField(context, "Car Color", controller.colorController)),
-                    SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Fuel Type", ["Petrol", "Diesel"], controller.selectedFuel,id: 'fuel')),
-                    SizedBox(width: itemWidth, child: _buildTextField(context, "Car Value", controller.valueController, prefix: "\$")),
-                    SizedBox(width: itemWidth, child: _buildTextField(context, "Weekly Rent (AUD)", controller.weeklyRentController, prefix: "\$ ")),
-                  ],
-                );
-              },
-            ),
+                  if (totalWidth >= 900) {
+                    columns = 3;
+                  }
+                  else if (totalWidth >= 550) {
+                    columns = 3;
+                  }
+                  else {
+                    columns = 2;
+                  }
 
 
-            SizedBox(height: AppSizes.verticalPadding(context)),
+                  if (columns == 1) {
+                    itemWidth = totalWidth;
+                  } else {
+                    final double totalSpacing = spacing * (columns - 1);
+                    itemWidth = (totalWidth - totalSpacing) / columns;
+                  }
 
-            /// IMAGE UPLOAD
-            Text(TextString.uploadImageTitle, style: TTextTheme.titleTwo(context)),
-            SizedBox(height: AppSizes.verticalPadding(context)),
-            _imageBox(context),
-            SizedBox(height: AppSizes.verticalPadding(context)),
-            Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-
-
-            /// DESCRIPTION
-            SizedBox(height: AppSizes.verticalPadding(context)),
-            Text(TextString.descriptionTitle, style: TTextTheme.titleTwo(context)),
-            SizedBox(height: AppSizes.verticalPadding(context) * 0.5),
-
-            Container(
-              padding: EdgeInsets.all(AppSizes.padding(context)),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-                color: AppColors.secondaryColor,
+                  return Wrap(
+                    spacing: spacing,
+                    runSpacing: spacing,
+                    children: [
+                      SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Make", ["Toyota", "Honda", "BMW"], controller.selectedBrand, id: 'car Brand')),
+                      SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Model", ["Corolla", "Civic", "X5"], controller.selectedModel,id: 'car Model')),
+                      SizedBox(width: itemWidth, child: _buildDropdown(context, "Car  Year", ["2020", "2021", "2022"], controller.selectedYear,id: 'Year')),
+                      SizedBox(width: itemWidth, child: _buildTextField(context, "Car Registration Number", controller.regController)),
+                      SizedBox(width: itemWidth, child: _buildTextField(context, "VIN Number", controller.vinController)),
+                      SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Body Type", ["Sedan", "SUV", "Truck"], controller.selectedBodyType,id: 'Body type')),
+                      SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Transmission", ["Automatic", "Manual"], controller.selectedTransmission,id: 'Transmission')),
+                      SizedBox(width: itemWidth, child: _buildTextField(context, "Car Seats", controller.seatsController)),
+                      SizedBox(width: itemWidth, child: _buildTextField(context, "Car Engine Size", controller.engineController)),
+                      SizedBox(width: itemWidth, child: _buildTextField(context, "Car Color", controller.colorController)),
+                      SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Fuel Type", ["Petrol", "Diesel"], controller.selectedFuel,id: 'fuel')),
+                      SizedBox(width: itemWidth, child: _buildTextField(context, "Car Value", controller.valueController, prefix: "\$")),
+                      SizedBox(width: itemWidth, child: _buildTextField(context, "Weekly Rent (AUD)", controller.weeklyRentController, prefix: "\$ ")),
+                    ],
+                  );
+                },
               ),
-              child: TextField(
-                cursorColor: AppColors.blackColor,
-                maxLines: 6,
-                decoration: InputDecoration(
-                  hintText: TextString.descriptionTextFieldText,
-                  hintStyle: TTextTheme.pOne(context),
-                  border: InputBorder.none,
+
+
+              SizedBox(height: AppSizes.verticalPadding(context)),
+
+              /// IMAGE UPLOAD
+              Text(TextString.uploadImageTitle, style: TTextTheme.titleTwo(context)),
+              SizedBox(height: AppSizes.verticalPadding(context)),
+              _imageBox(context),
+              SizedBox(height: AppSizes.verticalPadding(context)),
+              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+
+
+              /// DESCRIPTION
+              SizedBox(height: AppSizes.verticalPadding(context)),
+              Text(TextString.descriptionTitle, style: TTextTheme.titleTwo(context)),
+              SizedBox(height: AppSizes.verticalPadding(context) * 0.5),
+
+              Container(
+                padding: EdgeInsets.all(AppSizes.padding(context)),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                  color: AppColors.secondaryColor,
+                ),
+                child: TextField(
+                  cursorColor: AppColors.blackColor,
+                  maxLines: 6,
+                  decoration: InputDecoration(
+                    hintText: TextString.descriptionTextFieldText,
+                    hintStyle: TTextTheme.pOne(context),
+                    border: InputBorder.none,
+                  ),
                 ),
               ),
-            ),
 
-            SizedBox(height: AppSizes.verticalPadding(context)),
-            Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+              SizedBox(height: AppSizes.verticalPadding(context)),
+              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
-            /// DOCUMENTS SECTION
-            _documentsSection(context),
-            SizedBox(height: AppSizes.verticalPadding(context)),
+              /// DOCUMENTS SECTION
+              _documentsSection(context),
+              SizedBox(height: AppSizes.verticalPadding(context)),
 
-            ///BUTTON SECTION
-            _buttonSection(context, isMobile),
-          ],
+              ///BUTTON SECTION
+              _buttonSection(context, isMobile),
+            ],
+          ),
         ),
       ),
     );
@@ -530,7 +532,7 @@ class AddCarFormWidget extends StatelessWidget {
             color: AppColors.tertiaryTextColor,
             strokeWidth: 1,
             child: Container(
-              height: 200,
+              height: 250,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.white,

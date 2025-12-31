@@ -41,12 +41,12 @@ class AddingCarScreen extends StatelessWidget {
                   showProfile: true,
                 ),
 
-                SizedBox(height: AppSizes.verticalPadding(context) * 1.2),
+                SizedBox(height: AppSizes.verticalPadding(context) * 0.8),
 
-                /// FORM AREA
+                /// Main Widget
                 AddCarFormWidget(),
 
-                SizedBox(height: AppSizes.verticalPadding(context) * 2),
+                SizedBox(height: AppSizes.verticalPadding(context) * 1),
               ],
             ),
           ),

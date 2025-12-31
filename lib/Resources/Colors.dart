@@ -16,6 +16,8 @@ class AppColors {
   static const Color sideBoxesColor = Color(0xFFE0E2E5);// grey-line
   static const Color backgroundOfUsableButtons = Color(0xFFF6F9FB);
   static const Color backgroundOfVin = Color(0xFF42A5F5); // Vin-color
+  static const Color cardsHovering = Color(0xFF0570DE);
+  static const Color fieldsBackground = Color(0x12000000);
 
 
 

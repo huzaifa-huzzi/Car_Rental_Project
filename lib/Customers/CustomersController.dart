@@ -1,4 +1,23 @@
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/foundation.dart' show kIsWeb, Uint8List;
+
+class DocumentHolder {
+  final Uint8List? bytes;
+  final String? path;
+  final String name;
+  DocumentHolder({this.bytes, this.path, required this.name});
+}
+
+class ImageHolder {
+  final String? path;
+  final Uint8List? bytes;
+  final String? name;
+
+  ImageHolder({this.path, this.bytes, this.name});
+}
+
 
 class CustomerController extends GetxController {
   var selectAge = "".obs;
@@ -66,4 +85,83 @@ class CustomerController extends GetxController {
     isOpen.value = false;
     imagePath.value = '';
   }
+
+  /// Add Customer Screen
+
+  Rxn<ImageHolder> profileImage = Rxn<ImageHolder>();
+
+  final givenNameController = TextEditingController();
+  final surnameController = TextEditingController();
+  final dobController = TextEditingController();
+  final contactController = TextEditingController();
+  final emailController = TextEditingController();
+  final addressController = TextEditingController();
+
+  final noteController = TextEditingController();
+
+  final licenseNameController = TextEditingController();
+  final licenseNumberController = TextEditingController();
+  final licenseExpiryController = TextEditingController();
+  final licenseCardNumberController = TextEditingController();
+
+  RxList<Rx<DocumentHolder?>> selectedDocuments = <Rx<DocumentHolder?>>[].obs;
+  RxList<TextEditingController> documentNameControllers = <TextEditingController>[].obs;
+  final int maxDocuments = 6;
+
+  final ccNumberController = TextEditingController();
+  final ccHolderController = TextEditingController();
+  final ccExpiryController = TextEditingController();
+  final ccCvcController = TextEditingController();
+  final ccCountryController = TextEditingController();
+  var selectedCardIndex = 0.obs;
+
+  // Pick Profile Image
+  Future<void> pickProfileImage() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image, withData: kIsWeb);
+    if (result != null) {
+      final file = result.files.first;
+      profileImage.value = ImageHolder(
+        bytes: kIsWeb ? file.bytes : null,
+        path: kIsWeb ? null : file.path,
+        name: file.name,
+      );
+    }
+  }
+
+  void addDocumentSlot() {
+    if (selectedDocuments.length < maxDocuments) {
+      documentNameControllers.add(TextEditingController());
+      selectedDocuments.add(Rx<DocumentHolder?>(null));
+    }
+  }
+
+  void removeDocumentSlot(int index) {
+    if (selectedDocuments.length > 1) {
+      documentNameControllers[index].dispose();
+      documentNameControllers.removeAt(index);
+      selectedDocuments.removeAt(index);
+    } else {
+      selectedDocuments[index].value = null;
+      documentNameControllers[index].clear();
+    }
+  }
+
+  Future<void> pickDocument(int index) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'jpg', 'png', 'jpeg'],
+      withData: kIsWeb,
+    );
+    if (result != null) {
+      final file = result.files.first;
+      selectedDocuments[index].value = DocumentHolder(
+        bytes: kIsWeb ? file.bytes : null,
+        path: kIsWeb ? null : file.path,
+        name: file.name,
+      );
+    }
+  }
+
+
+
 }

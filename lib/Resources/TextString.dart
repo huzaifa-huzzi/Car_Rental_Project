@@ -12,6 +12,7 @@ class TextString {
   static const String  carInventoryTitle= 'Car Inventory';
   static const String  customersTitle= 'Customers';
   static const String  reAgreementTitle= 'Re-agreement';
+  static const String  returnCar= 'Return Car';
   static const String  paymentTitle= 'Payment';
   static const String  maintenanceTitle= 'Maintenance';
   static const String  incomeTitle= 'Income';

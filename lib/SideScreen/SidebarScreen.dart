@@ -67,6 +67,7 @@ class SidebarScreen extends StatelessWidget {
                       onTap: (val) => context.go('/customers'), scaffoldKey: _scaffoldKey),
 
                   SidebarComponents.menuItem(context, controller, iconPath: IconString.agreementIcon, title: TextString.reAgreementTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
+                  SidebarComponents.menuItem(context, controller, iconPath: IconString.returnCarIcon, title: TextString.returnCar, onTap: onTap, scaffoldKey: _scaffoldKey),
                   SidebarComponents.menuItem(context, controller, iconPath: IconString.paymentIcon, title: TextString.paymentTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
                   SidebarComponents.expenseMenuItem(context, controller, onTap: onTap, scaffoldKey: _scaffoldKey),
                   SidebarComponents.menuItem(context, controller, iconPath: IconString.maintenanceIcon, title: TextString.maintenanceTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
@@ -75,8 +76,9 @@ class SidebarScreen extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(height: 30,),
             Padding(
-              padding: EdgeInsets.only(bottom: AppSizes.verticalPadding(context) / 2),
+              padding: EdgeInsets.only(bottom: AppSizes.verticalPadding(context) * 0.7),
               child: SidebarComponents.menuItem(context, controller, iconPath: IconString.logoutIcon, title: TextString.logoutTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
             ),
           ],
