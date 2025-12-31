@@ -1,5 +1,5 @@
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/TableViewScreen/Widgets/CardListTableWidget.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/PaginationWidget.dart';
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/TableViewScreen/Widgets/CardListTableWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 
