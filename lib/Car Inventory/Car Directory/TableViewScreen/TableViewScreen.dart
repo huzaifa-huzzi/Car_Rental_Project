@@ -12,6 +12,7 @@ class TableViewScreen extends StatelessWidget {
     final tablePadding = AppSizes.padding(context);
     final baseVerticalSpace = AppSizes.verticalPadding(context);
 
+
     return Column(
       children: [
         CarListTableWidget(),

@@ -1,8 +1,8 @@
 import 'package:car_rental_project/Customers/CustomersController.dart';
 import 'package:car_rental_project/Customers/CustomersDetails/Widget/ResponsiveCardDetails.dart';
-import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/DeletePopup.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,17 +29,17 @@ class CustomerDetailWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
         children: [
-          /// 1. HEADER SECTION (Mobile: Centered, Web: Row)
+          ///  HEADER SECTION
           _buildHeader(context, isMobile),
           const SizedBox(height: 35),
 
-          /// 2. PERSONAL INFO SECTION (Responsive Wrap)
+          ///  PERSONAL INFO SECTION
           _buildBorderedContainer(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Personal Info",
+                Text(TextString.personalTitle,
                   style: TTextTheme.titleSix(context),
                 ),
                 const SizedBox(height: 25),
@@ -92,14 +92,14 @@ class CustomerDetailWidget extends StatelessWidget {
           ),
           const SizedBox(height: 35),
 
-          /// 3. CUSTOMER NOTE
+          ///  CUSTOMER NOTE
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildSectionHeader("Customer Note",context),
+              _buildSectionHeader(TextString.customerNoteTitle,context),
               const SizedBox(height: 12),
               Text(
-                "Audi A8 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys. Renowned for its powerful performance and advanced technology features, the A8 provides a refined driving experience with exceptional comfort. Audi A8 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys.",
+                TextString.customerNoteSubtitle,
                 textAlign: TextAlign.start,
                 style: TTextTheme.pOne(context),
               ),
@@ -107,14 +107,14 @@ class CustomerDetailWidget extends StatelessWidget {
           ),
           const SizedBox(height: 35),
 
-          /// 4. LICENSE DETAILS
+          ///  LICENSE DETAILS
           _buildBorderedContainer(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "License Details",
+                  TextString.licenseDetailScreen,
                   style:  TTextTheme.titleSix(context)),
                 const SizedBox(height: 25),
 
@@ -141,18 +141,18 @@ class CustomerDetailWidget extends StatelessWidget {
           const SizedBox(height: 32),
 
 
-          /// 5. CARD DETAILS
+          ///  CARD DETAILS
           ResponsiveCardDetails(),
           const SizedBox(height: 32),
 
-          /// 6. DOCUMENTS SECTION
+          ///  DOCUMENTS SECTION
           _buildBorderedContainer(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Customer Documents",
+                  TextString.customerDocumentDetails,
                   style: TTextTheme.titleSix(context)),
                 const SizedBox(height: 25),
 
@@ -174,8 +174,9 @@ class CustomerDetailWidget extends StatelessWidget {
     );
   }
 
-  /// --- UI COMPONENTS ---///
+  /// --- Extra Widgets  ---///
 
+   // BuildHeader Widget
   Widget _buildHeader(BuildContext context, bool isMobile) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final bool showDeleteText = screenWidth > 1100;
@@ -196,8 +197,8 @@ class CustomerDetailWidget extends StatelessWidget {
     Widget details = Column(
       crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
-        Text("Carlie Harvy", style: TTextTheme.h1Style(context)),
-        Text("Driver", style: TTextTheme.titleDriver(context)),
+        Text(TextString.name, style: TTextTheme.h1Style(context)),
+        Text(TextString.jobTitle, style: TTextTheme.titleDriver(context)),
       ],
     );
 
@@ -291,7 +292,7 @@ class CustomerDetailWidget extends StatelessWidget {
     );
   }
 
-
+ // document Box Widget
   Widget _documentBox(BuildContext context, String label, String status) {
     return SizedBox(
       width: 210,
@@ -349,9 +350,7 @@ class CustomerDetailWidget extends StatelessWidget {
   }
 
 
-
-  /// --- COMMON HELPERS ---
-
+  // SectionHeaderWidget
   Widget _buildSectionHeader(String title,BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
@@ -363,6 +362,7 @@ class CustomerDetailWidget extends StatelessWidget {
     );
   }
 
+   // borderContainer Widget
   Widget _buildBorderedContainer({required Widget child, EdgeInsets? padding}) {
     return Container(
       width: double.infinity,
@@ -376,6 +376,7 @@ class CustomerDetailWidget extends StatelessWidget {
     );
   }
 
+   // responsiveLicenseItem Widget
   Widget _responsiveLicenseItem(BuildContext context, String iconPath, String label, String value) {
     final double screenWidth = MediaQuery.of(context).size.width;
     bool isMobile = screenWidth < 600;
@@ -417,7 +418,7 @@ class CustomerDetailWidget extends StatelessWidget {
     );
   }
 
-
+   // responsiveInfoItem Widget
   Widget _responsiveInfoItem(BuildContext context, String iconPath, String label, String value, {double? width}) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final bool isSmallMobile = screenWidth < 600;
@@ -458,7 +459,7 @@ class CustomerDetailWidget extends StatelessWidget {
     );
   }
 
-
+  // headerAction Button Widget
   Widget _headerActionBtn(
       String iconPath,
       BuildContext context,

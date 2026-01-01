@@ -46,5 +46,38 @@ class TextString {
   static const String  carDetailsSpecifications= 'Specifications';
   static const String  carDetailsCarDocuments= 'Car Documents';
 
+    /// Customers
+    // TableViewScreen
+  static const String  titlename =  'Jack Morrison';
+  static const String  Subtitlename =  'jackmorrison@rhyta.com';
+  static const String  licenseNumber =  '1234HGYT5A';
+  static const String  licenseDate =  '12/2/2030';
+   // Edit Customer Screen
+  static const String  editTitle =   'Edit Customer Details';
+  static const String  editSubtitle =   'Edit Customer Details';
+  static const String  customerName =   'Customer Given Name';
+  static const String  customerSurname =   'Customer Surname';
+  static const String  customerDateOfBirth =   'Date of Birth';
+  static const String  customerContactNumber =   'Customer Contact Number';
+  static const String  customerEmail =   'Customer Email';
+  static const String  customerAddress =   'Customer Address';
+  static const String  customerNote =   'Customer Note';
+  static const String  customerNoteSubtitle =   'Describe the customer Note...';
+  static const String  licenseTitle =  'License Details';
+  static const String  uploadDocumentTitle =  'Upload Personal document (Gov. Id, Passport etc.  MAX6)';
+  static const String   addCardDetailsTitle =  'Add Card Details';
+  static const String   photoTitle =  'Photo';
+  static const String   documentTitleTextField =  'Personal Document';
+   // Customer Detail Screen
+  static const String   personalTitle =  'Personal Info';
+  static const String   customerNoteTitle =  'Customer Note';
+  static const String   customerNoteSubtitleDetail =  'Audi A8 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys. Renowned for its powerful performance and advanced technology features, the A8 provides a refined driving experience with exceptional comfort. Audi A8 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys.';
+  static const String   licenseDetailScreen =  'License Details';
+  static const String   customerDocumentDetails =  'Customer Documents';
+  static const String   name =  'Carlie Harvy';
+  static const String   jobTitle =  'Driver';
+  static const String   cardDetailsTitle =  'Card Details';
+  static const String   cardNumberDetail =  'Card Number';
+  static const String   cardNumberDetailScreen =  '41xxx xxxx xxxx 5609';
 
 }

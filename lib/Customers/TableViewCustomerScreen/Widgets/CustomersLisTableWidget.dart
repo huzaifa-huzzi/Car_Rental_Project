@@ -3,6 +3,7 @@ import 'package:car_rental_project/Customers/CustomersController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -165,10 +166,10 @@ class CustomerListTableWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                    "Jack Morrison",
+                   TextString.titlename,
                     style: TTextTheme.pOne(context)),
                 Text(
-                    "jackmorrison@rhyta.com",
+                    TextString.Subtitlename,
                     style: TTextTheme.pFour(context)),
               ],
             ),
@@ -200,7 +201,7 @@ class CustomerListTableWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 6),
-              Text("1234HGYT5A", style: TTextTheme.pOne(context)),
+              Text(TextString.licenseNumber, style: TTextTheme.pOne(context)),
             ],
           ),
           const SizedBox(height: 4),
@@ -218,7 +219,7 @@ class CustomerListTableWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 6),
-              Text("12/2/2030", style: TTextTheme.pOne(context)),
+              Text(TextString.licenseDate, style: TTextTheme.pOne(context)),
             ],
           ),
         ],

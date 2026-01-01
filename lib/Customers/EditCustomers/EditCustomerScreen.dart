@@ -1,10 +1,8 @@
-import 'package:car_rental_project/Customers/CustomersDetails/Widget/CustomerDetailWidget.dart';
 import 'package:car_rental_project/Customers/EditCustomers/Widget/EditCustomerWidget.dart';
 import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/DeletePopup.dart';
 import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/HeaderWebCustomersWidget.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class EditCustomerScreen extends StatelessWidget {
   const EditCustomerScreen({super.key});

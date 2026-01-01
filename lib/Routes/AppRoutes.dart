@@ -5,7 +5,7 @@ import 'package:car_rental_project/Car%20Inventory/Car%20Directory/GridViewScree
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ListViewScreen/ListViewScreen.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/TableViewScreen/TableViewScreen.dart';
 import 'package:car_rental_project/Car%20Inventory/Editing%20Car/EditingCar.dart';
-import 'package:car_rental_project/Customers/AddCustimers/AddCustomers.dart';
+import 'package:car_rental_project/Customers/AddCustomers/AddCustomers.dart';
 import 'package:car_rental_project/Customers/CustomersDetails/CustomersDetails.dart';
 import 'package:car_rental_project/Customers/EditCustomers/EditCustomerScreen.dart';
 import 'package:car_rental_project/Customers/TableViewCustomerScreen/TableViewScreen.dart';
@@ -32,13 +32,13 @@ class AppNavigation {
           );
         },
         routes: [
-          // Car Inventory Main
+          // Car Inventory Screen
           GoRoute(path: '/carInventory', builder: (context, state) => CarInventoryMainScreen()),
           GoRoute(path: '/carInventory/TableView', builder: (context, state) => const TableViewScreen()),
           GoRoute(path: '/carInventory/ListView', builder: (context, state) => const ListViewScreen()),
           GoRoute(path: '/carInventory/GridView', builder: (context, state) => const GridViewScreen()),
 
-          // --- NEW CUSTOMERS SECTION ---
+          // ---  Customers Screen ---
           GoRoute(
             path: '/customers',
             builder: (context, state) =>  TableViewCustomerScreen(),
@@ -67,6 +67,8 @@ class AppNavigation {
     ],
   );
 
+
+   // wrapSidebar Widget
   static Widget _wrapSidebar(GoRouterState state, Widget child) {
     final extras = state.extra as Map<String, dynamic>?;
     final hideMobile = extras?["hideMobileAppBar"] == true;

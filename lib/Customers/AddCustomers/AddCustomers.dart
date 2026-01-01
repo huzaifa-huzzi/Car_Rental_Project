@@ -1,5 +1,5 @@
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/HeaderWebWidget.dart';
-import 'package:car_rental_project/Customers/AddCustimers/Widget/AddCustomerWidget.dart';
+import 'package:car_rental_project/Customers/AddCustomers/Widget/AddCustomerWidget.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:flutter/material.dart';
 

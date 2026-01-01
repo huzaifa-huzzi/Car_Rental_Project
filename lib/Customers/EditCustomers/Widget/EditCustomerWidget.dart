@@ -12,7 +12,6 @@ import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/customPrimaryButton.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../Car Inventory/Car Directory/ReusableWidget/AlertDialogs.dart' show ResponsiveDeleteDialog;
 
 class EditCustomerWidget extends StatelessWidget {
@@ -57,12 +56,12 @@ class EditCustomerWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Edit Customer Details",
+                         TextString.editTitle,
                           style: TTextTheme.h7Style(context),
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          "Enter the Specifications for the Edit Customer",
+                          TextString.editSubtitle,
                           style: TTextTheme.titleThree(context),
                         ),
                       ],
@@ -123,12 +122,12 @@ class EditCustomerWidget extends StatelessWidget {
 
               /// BASIC INFO GRID FORM
               _buildResponsiveGrid(context, [
-                _buildTextField(context, "Customer Given Name", controller.givenNameController2),
-                _buildTextField(context, "Customer Surname", controller.surnameController2),
-                _buildTextField(context, "Date of Birth", controller.dobController2, hint: "DD/MM/YYYY"),
-                _buildTextField(context, "Customer Contact Number", controller.contactController2),
-                _buildTextField(context, "Customer Email", controller.emailController2),
-                _buildTextField(context, "Customer Address", controller.addressController2),
+                _buildTextField(context,TextString.customerName , controller.givenNameController2),
+                _buildTextField(context, TextString.customerSurname , controller.surnameController2),
+                _buildTextField(context, TextString.customerDateOfBirth, controller.dobController2, hint: "DD/MM/YYYY"),
+                _buildTextField(context, TextString.customerContactNumber, controller.contactController2),
+                _buildTextField(context, TextString.customerEmail, controller.emailController2),
+                _buildTextField(context, TextString.customerAddress, controller.addressController2),
               ]),
 
               SizedBox(height: spacing),
@@ -136,16 +135,16 @@ class EditCustomerWidget extends StatelessWidget {
 
               /// CUSTOMER NOTE SECTION
               SizedBox(height: spacing),
-              Text("Customer Note", style: TTextTheme.btnSix(context)),
+              Text(TextString.customerNote, style: TTextTheme.btnSix(context)),
               SizedBox(height: 8),
-              _buildLargeTextField(context, "Describe the customer Note...", controller.noteController2),
+              _buildLargeTextField(context,TextString.customerNoteSubtitle , controller.noteController2),
 
               SizedBox(height: spacing),
               Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
               /// LICENSE DETAILS SECTION
               SizedBox(height: spacing),
-              Text("License Details", style: TTextTheme.btnSix(context)),
+              Text(TextString.licenseTitle, style: TTextTheme.btnSix(context)),
               SizedBox(height: spacing),
               _buildResponsiveGrid(context, [
                 _buildTextField(context, "License Holder Name", controller.licenseNameController2),
@@ -159,7 +158,7 @@ class EditCustomerWidget extends StatelessWidget {
 
               /// DOCUMENTS UPLOAD SECTION
               SizedBox(height: spacing),
-              Text("Upload Personal document (Gov. Id, Passport etc.  MAX6)", style: TTextTheme.btnSix(context)),
+              Text(TextString.uploadDocumentTitle, style: TTextTheme.btnSix(context)),
               SizedBox(height: spacing),
               _documentsSection(context),
 
@@ -167,7 +166,7 @@ class EditCustomerWidget extends StatelessWidget {
               Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
               /// CARD DETAILS SECTION
-              Text("Add Card Details", style: TTextTheme.btnSix(context)),
+              Text(TextString.addCardDetailsTitle, style: TTextTheme.btnSix(context)),
               SizedBox(height: spacing),
 
               Center(
@@ -225,7 +224,7 @@ class EditCustomerWidget extends StatelessWidget {
                 child: Image.asset(IconString.uploadIcon, color: AppColors.primaryColor, width: 24),
               ),
               const SizedBox(height: 10),
-              Text("Photo", style: TTextTheme.documnetIsnideSmallText(context)),
+              Text(TextString.photoTitle, style: TTextTheme.documnetIsnideSmallText(context)),
               Text(TextString.uploadSubtitle, style: TTextTheme.documnetIsnideSmallText2(context)),
             ],
           ),
@@ -343,7 +342,7 @@ class EditCustomerWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Personal Document", style: TTextTheme.titleTwo(context)),
+        Text(TextString.documentTitleTextField, style: TTextTheme.titleTwo(context)),
         SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
         Container(
           padding: EdgeInsets.symmetric(horizontal: AppSizes.padding(context)),
@@ -542,7 +541,7 @@ class EditCustomerWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Center(
-                child: const Icon(Icons.add, color: AppColors.quadrantalTextColor, size: 20),
+                child:  Image.asset(IconString.addIcon, color: AppColors.quadrantalTextColor),
               )
           ),
         ],

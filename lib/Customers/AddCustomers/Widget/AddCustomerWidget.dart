@@ -473,7 +473,7 @@ class AddCustomerWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Center(
-              child: const Icon(Icons.add, color: AppColors.quadrantalTextColor, size: 20),
+              child:  Image.asset(IconString.addIcon, color: AppColors.quadrantalTextColor),
             )
           ),
         ],

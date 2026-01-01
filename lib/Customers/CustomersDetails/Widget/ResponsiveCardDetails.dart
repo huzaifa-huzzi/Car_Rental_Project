@@ -1,5 +1,6 @@
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ class ResponsiveCardDetails extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           Text("Card Details",
+           Text(TextString.cardDetailsTitle,
               style: TTextTheme.titleSix(context)),
 
           const SizedBox(height: 20),
@@ -56,14 +57,14 @@ class ResponsiveCardDetails extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Card Number", style: TTextTheme.btnFour(context)),
+              Text(TextString.cardNumberDetail, style: TTextTheme.btnFour(context)),
               const SizedBox(height: 3),
               Row(
                 children: [
                   _brand(),
                   Expanded(
                     child: Text(
-                      "41xxx xxxx xxxx 5609",
+                      TextString.cardNumberDetailScreen,
                       style: TTextTheme.titleSmallTexts(context),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -99,8 +100,8 @@ class ResponsiveCardDetails extends StatelessWidget {
             _brand(),
             Flexible(
               child: _item(
-                  "Card Number",
-                  "41xxx xxxx xxxx 5609",
+                  TextString.cardNumberDetail,
+                  TextString.cardNumberDetailScreen,
                   context: context,
                   expanded: false,
                   isMobile: true
