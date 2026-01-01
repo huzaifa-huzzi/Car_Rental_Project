@@ -74,6 +74,11 @@ class IconString {
   static const String  nidIcon = 'assets/icons/Nid.png';
   static const String  smsIcon = 'assets/icons/sms.png';
   static const String  visaIcon = 'assets/icons/VisaIcon.png';
+  static const String  cardIcon = 'assets/icons/CardIcon.png';
+  static const String  americanExpressIcon = 'assets/icons/AmericanExpress.png';
+  static const String  discoverCardIcon = 'assets/icons/Discover.png';
+  static const String  materCard2 = 'assets/icons/mastercard-2.png';
+  static const String  visaCard2 = 'assets/icons/Visa2.png';
 
 
 

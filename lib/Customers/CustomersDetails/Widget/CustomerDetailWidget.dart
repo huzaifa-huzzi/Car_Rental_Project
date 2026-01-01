@@ -212,7 +212,10 @@ class CustomerDetailWidget extends StatelessWidget {
                   context, null,
                   isDelete: false,
                   onTap: (){
-
+                    context.push(
+                      '/editCustomers',
+                      extra: {"hideMobileAppBar": true},
+                    );
                   }),
               const SizedBox(width: 10),
               _headerActionBtn(
@@ -254,7 +257,12 @@ class CustomerDetailWidget extends StatelessWidget {
             IconString.editIcon,
             context, "Edit",
             isDelete: false,
-            onTap: (){},
+            onTap: (){
+              context.push(
+                '/editCustomers',
+                extra: {"hideMobileAppBar": true},
+              );
+            },
         ),
         const SizedBox(width: 12),
         _headerActionBtn(

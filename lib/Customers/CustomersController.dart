@@ -162,6 +162,81 @@ class CustomerController extends GetxController {
     }
   }
 
+  /// Edit Customer Screen
+  Rxn<ImageHolder> profileImage2 = Rxn<ImageHolder>();
+
+  final givenNameController2 = TextEditingController();
+  final surnameController2 = TextEditingController();
+  final dobController2 = TextEditingController();
+  final contactController2 = TextEditingController();
+  final emailController2 = TextEditingController();
+  final addressController2 = TextEditingController();
+
+  final noteController2 = TextEditingController();
+
+  final licenseNameController2 = TextEditingController();
+  final licenseNumberController2 = TextEditingController();
+  final licenseExpiryController2 = TextEditingController();
+  final licenseCardNumberController2 = TextEditingController();
+
+  RxList<Rx<DocumentHolder?>> selectedDocuments2 = <Rx<DocumentHolder?>>[].obs;
+  RxList<TextEditingController> documentNameControllers2 = <TextEditingController>[].obs;
+  final int maxDocuments2 = 6;
+
+  final ccNumberController2 = TextEditingController();
+  final ccHolderController2 = TextEditingController();
+  final ccExpiryController2 = TextEditingController();
+  final ccCvcController2 = TextEditingController();
+  final ccCountryController2 = TextEditingController();
+  var selectedCardIndex2 = 0.obs;
+
+  // Pick Profile Image
+  Future<void> pickProfileImage2() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image, withData: kIsWeb);
+    if (result != null) {
+      final file = result.files.first;
+      profileImage2.value = ImageHolder(
+        bytes: kIsWeb ? file.bytes : null,
+        path: kIsWeb ? null : file.path,
+        name: file.name,
+      );
+    }
+  }
+
+  void addDocumentSlot2() {
+    if (selectedDocuments2.length < maxDocuments2) {
+      documentNameControllers2.add(TextEditingController());
+      selectedDocuments2.add(Rx<DocumentHolder?>(null));
+    }
+  }
+
+  void removeDocumentSlot2(int index) {
+    if (selectedDocuments.length > 1) {
+      documentNameControllers2[index].dispose();
+      documentNameControllers2.removeAt(index);
+      selectedDocuments2.removeAt(index);
+    } else {
+      selectedDocuments2[index].value = null;
+      documentNameControllers2[index].clear();
+    }
+  }
+
+  Future<void> pickDocument2(int index) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'jpg', 'png', 'jpeg'],
+      withData: kIsWeb,
+    );
+    if (result != null) {
+      final file = result.files.first;
+      selectedDocuments2[index].value = DocumentHolder(
+        bytes: kIsWeb ? file.bytes : null,
+        path: kIsWeb ? null : file.path,
+        name: file.name,
+      );
+    }
+  }
+
 
 
 }

@@ -11,9 +11,12 @@ import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/customPrimaryButton.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
+import 'package:go_router/go_router.dart';
 
-class AddCustomerWidget extends StatelessWidget {
-  AddCustomerWidget({super.key});
+import '../../../Car Inventory/Car Directory/ReusableWidget/AlertDialogs.dart' show ResponsiveDeleteDialog;
+
+class EditCustomerWidget extends StatelessWidget {
+  EditCustomerWidget({super.key});
 
   final CustomerController controller = Get.find<CustomerController>();
 
@@ -38,12 +41,78 @@ class AddCustomerWidget extends StatelessWidget {
             children: [
 
               /// CUSTOMER HEADER
-              Text("Add Customer", style: TTextTheme.h7Style(context)),
-              SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
-              Text("Enter the specification for the new customer", style: TTextTheme.titleThree(context)),
-              SizedBox(height: spacing/2),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: Image.asset(
+                      IconString.editIcon2,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Edit Customer Details",
+                          style: TTextTheme.h7Style(context),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "Enter the Specifications for the Edit Customer",
+                          style: TTextTheme.titleThree(context),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+
+                  /// EDIT BUTTON
+                  CustomPrimaryButton(
+                    text: MediaQuery.of(context).size.width < 900 ? "" : "Edit",
+                    iconPath: IconString.editIcon,
+                    width: MediaQuery.of(context).size.width < 900 ? 40 : 110,
+                    height: 38,
+                    textColor: AppColors.primaryColor,
+                    borderColor: AppColors.primaryColor,
+                    onTap: () => print("Edit Tapped"),
+                  ),
+
+                  const SizedBox(width: 8),
+
+                  /// DELETE BUTTON
+                  CustomPrimaryButton(
+                    text: MediaQuery.of(context).size.width < 900 ? "" : "Delete",
+                    iconPath: IconString.deleteIcon,
+                    iconColor: AppColors.secondTextColor,
+                    width: MediaQuery.of(context).size.width < 900 ? 40 : 110,
+                    height: 38,
+                    textColor: AppColors.secondTextColor,
+                    borderColor: AppColors.sideBoxesColor,
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) => ResponsiveDeleteDialog(
+                          onCancel: () {
+                            context.pop();
+                          },
+                          onConfirm: () {
+                            context.pop();
+                          },
+                        ),
+                      );
+
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: AppSizes.verticalPadding(context) / 2),
               Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-              SizedBox(height: spacing),
+              SizedBox(height: AppSizes.verticalPadding(context)),
 
               /// PROFILE IMAGE UPLOAD
               Align(
@@ -54,12 +123,12 @@ class AddCustomerWidget extends StatelessWidget {
 
               /// BASIC INFO GRID FORM
               _buildResponsiveGrid(context, [
-                _buildTextField(context, "Customer Given Name", controller.givenNameController),
-                _buildTextField(context, "Customer Surname", controller.surnameController),
-                _buildTextField(context, "Date of Birth", controller.dobController, hint: "DD/MM/YYYY"),
-                _buildTextField(context, "Customer Contact Number", controller.contactController),
-                _buildTextField(context, "Customer Email", controller.emailController),
-                _buildTextField(context, "Customer Address", controller.addressController),
+                _buildTextField(context, "Customer Given Name", controller.givenNameController2),
+                _buildTextField(context, "Customer Surname", controller.surnameController2),
+                _buildTextField(context, "Date of Birth", controller.dobController2, hint: "DD/MM/YYYY"),
+                _buildTextField(context, "Customer Contact Number", controller.contactController2),
+                _buildTextField(context, "Customer Email", controller.emailController2),
+                _buildTextField(context, "Customer Address", controller.addressController2),
               ]),
 
               SizedBox(height: spacing),
@@ -69,7 +138,7 @@ class AddCustomerWidget extends StatelessWidget {
               SizedBox(height: spacing),
               Text("Customer Note", style: TTextTheme.btnSix(context)),
               SizedBox(height: 8),
-              _buildLargeTextField(context, "Describe the customer Note...", controller.noteController),
+              _buildLargeTextField(context, "Describe the customer Note...", controller.noteController2),
 
               SizedBox(height: spacing),
               Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
@@ -79,10 +148,10 @@ class AddCustomerWidget extends StatelessWidget {
               Text("License Details", style: TTextTheme.btnSix(context)),
               SizedBox(height: spacing),
               _buildResponsiveGrid(context, [
-                _buildTextField(context, "License Holder Name", controller.licenseNameController),
-                _buildTextField(context, "Driver License Number", controller.licenseNumberController),
-                _buildTextField(context, "License Expiry Date", controller.licenseExpiryController),
-                _buildTextField(context, "Card Number", controller.licenseCardNumberController),
+                _buildTextField(context, "License Holder Name", controller.licenseNameController2),
+                _buildTextField(context, "Driver License Number", controller.licenseNumberController2),
+                _buildTextField(context, "License Expiry Date", controller.licenseExpiryController2),
+                _buildTextField(context, "Card Number", controller.licenseCardNumberController2),
               ]),
 
               SizedBox(height: spacing),
@@ -126,9 +195,9 @@ class AddCustomerWidget extends StatelessWidget {
   // Profile Photo Picker Widget
   Widget _buildProfilePhotoPicker(BuildContext context,) {
     return Obx(() {
-      final hasImg = controller.profileImage.value != null;
+      final hasImg = controller.profileImage2.value != null;
       return GestureDetector(
-        onTap: () => controller.pickProfileImage(),
+        onTap: () => controller.pickProfileImage2(),
         child: Container(
           width: 150,
           height: 150,
@@ -141,8 +210,8 @@ class AddCustomerWidget extends StatelessWidget {
               ? ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: kIsWeb
-                ? Image.memory(controller.profileImage.value!.bytes!, fit: BoxFit.cover)
-                : Image.file(File(controller.profileImage.value!.path!), fit: BoxFit.cover),
+                ? Image.memory(controller.profileImage2.value!.bytes!, fit: BoxFit.cover)
+                : Image.file(File(controller.profileImage2.value!.path!), fit: BoxFit.cover),
           )
               : Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -231,7 +300,7 @@ class AddCustomerWidget extends StatelessWidget {
     final double spacing = AppSizes.padding(context);
 
     return Obx(() {
-      final documentCount = controller.selectedDocuments.length;
+      final documentCount = controller.selectedDocuments2.length;
       List<Widget> documentWidgets = [];
 
       for (int i = 0; i < documentCount; i++) {
@@ -240,9 +309,9 @@ class AddCustomerWidget extends StatelessWidget {
             key: ValueKey("doc_slot_$i"),
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _documentNameField(context, i, controller.documentNameControllers[i]),
+              _documentNameField(context, i, controller.documentNameControllers2[i]),
               const SizedBox(height: 10),
-              _documentBox(context, i, controller.selectedDocuments[i]),
+              _documentBox(context, i, controller.selectedDocuments2[i]),
             ],
           ),
         );
@@ -320,7 +389,7 @@ class AddCustomerWidget extends StatelessWidget {
       }
 
       return GestureDetector(
-        onTap: isUploaded ? null : () => controller.pickDocument(index),
+        onTap: isUploaded ? null : () => controller.pickDocument2(index),
         child: DottedBorder(
           borderType: BorderType.RRect,
           radius: Radius.circular(AppSizes.borderRadius(context)),
@@ -380,7 +449,7 @@ class AddCustomerWidget extends StatelessWidget {
                     top: -8,
                     right: -8,
                     child: GestureDetector(
-                      onTap: () => controller.removeDocumentSlot(index),
+                      onTap: () => controller.removeDocumentSlot2(index),
                       child: CircleAvatar(
                         radius: 14,
                         backgroundColor: Colors.white,
@@ -414,7 +483,7 @@ class AddCustomerWidget extends StatelessWidget {
         ),
         SizedBox(height: spacing * 0.5),
         GestureDetector(
-          onTap: () => controller.addDocumentSlot(),
+          onTap: () => controller.addDocumentSlot2(),
           child: DottedBorder(
             borderType: BorderType.RRect,
             radius: Radius.circular(AppSizes.borderRadius(context)),
@@ -461,20 +530,20 @@ class AddCustomerWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           ...List.generate(3, (index) => GestureDetector(
-            onTap: () => controller.selectedCardIndex.value = index,
-            child: _cardTab(context, "Card ${index + 1}", controller.selectedCardIndex.value == index),
+            onTap: () => controller.selectedCardIndex2.value = index,
+            child: _cardTab(context, "Card ${index + 1}", controller.selectedCardIndex2.value == index),
           )),
           const SizedBox(width: 8),
           Container(
-            width: 36,
-            height: 60,
-            decoration: BoxDecoration(
-              border: Border.all(color: AppColors.secondTextColor),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Center(
-              child: const Icon(Icons.add, color: AppColors.quadrantalTextColor, size: 20),
-            )
+              width: 36,
+              height: 60,
+              decoration: BoxDecoration(
+                border: Border.all(color: AppColors.secondTextColor),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Center(
+                child: const Icon(Icons.add, color: AppColors.quadrantalTextColor, size: 20),
+              )
           ),
         ],
       ),
@@ -507,8 +576,8 @@ class AddCustomerWidget extends StatelessWidget {
           Image.asset(IconString.cardIcon, color: isSelected ? AppColors.availableBackgroundColor : AppColors.quadrantalTextColor),
           const SizedBox(height: 8),
           Text(
-            label,
-            style: TTextTheme.btnOne(context).copyWith(color: isSelected ? AppColors.availableBackgroundColor : AppColors.quadrantalTextColor)
+              label,
+              style: TTextTheme.btnOne(context).copyWith(color: isSelected ? AppColors.availableBackgroundColor : AppColors.quadrantalTextColor)
           ),
         ],
       ),
@@ -523,9 +592,9 @@ class AddCustomerWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildShadowTextField(context, "Card number", controller.ccNumberController, hint: "1234 1234 1234 1234", isCreditCard: true),
+            _buildShadowTextField(context, "Card number", controller.ccNumberController2, hint: "1234 1234 1234 1234", isCreditCard: true),
             const SizedBox(height: 16),
-            _buildShadowTextField(context, "Card Holder Name", controller.ccHolderController, hint: "Softsnip"),
+            _buildShadowTextField(context, "Card Holder Name", controller.ccHolderController2, hint: "Softsnip"),
             const SizedBox(height: 16),
 
             LayoutBuilder(builder: (context, constraints) {
@@ -534,14 +603,14 @@ class AddCustomerWidget extends StatelessWidget {
                 spacing: 16,
                 runSpacing: 16,
                 children: [
-                  SizedBox(width: itemWidth, child: _buildShadowTextField(context, "Expiry", controller.ccExpiryController, hint: "MM / YY", isCompact: true)),
-                  SizedBox(width: itemWidth, child: _buildShadowTextField(context, "CVC", controller.ccCvcController, hint: "CVC", isCompact: true)),
+                  SizedBox(width: itemWidth, child: _buildShadowTextField(context, "Expiry", controller.ccExpiryController2, hint: "MM / YY", isCompact: true)),
+                  SizedBox(width: itemWidth, child: _buildShadowTextField(context, "CVC", controller.ccCvcController2, hint: "CVC", isCompact: true)),
                 ],
               );
             }),
 
             const SizedBox(height: 16),
-            _buildShadowTextField(context, "Country", controller.ccCountryController, hint: "United States"),
+            _buildShadowTextField(context, "Country", controller.ccCountryController2, hint: "United States"),
           ],
         ),
       ),
