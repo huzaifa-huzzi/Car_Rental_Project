@@ -147,7 +147,6 @@ class EditCustomerWidget extends StatelessWidget {
               Text(TextString.licenseTitle, style: TTextTheme.btnSix(context)),
               SizedBox(height: spacing),
               _buildResponsiveGrid(context, [
-                _buildTextField(context, "License Holder Name", controller.licenseNameController2),
                 _buildTextField(context, "Driver License Number", controller.licenseNumberController2),
                 _buildTextField(context, "License Expiry Date", controller.licenseExpiryController2),
                 _buildTextField(context, "Card Number", controller.licenseCardNumberController2),

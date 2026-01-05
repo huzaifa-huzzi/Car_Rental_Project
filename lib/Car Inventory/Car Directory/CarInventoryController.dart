@@ -29,6 +29,7 @@ class CarInventoryController extends GetxController {
   var selectedBodyType = "".obs;
   var selectedStatus = "".obs;
   var selectedTransmission = "".obs;
+  var selectedCapacity = "".obs;
   var selectedFuel = "".obs;
 
 
@@ -80,9 +81,26 @@ class CarInventoryController extends GetxController {
   /// Table View Screen
   RxBool isFilterOpen = false.obs;
   var hoveredRowIndex = (-1).obs;
+
+  RxBool isSearchCategoryOpen = false.obs;
+  RxString selectedSearchType = "VIN Number".obs;
+
+  void toggleSearchCategory() {
+    isSearchCategoryOpen.value = !isSearchCategoryOpen.value;
+    if (isSearchCategoryOpen.value) {
+      isFilterOpen.value = false;
+    }
+  }
+
+
+
   void toggleFilter() {
     isFilterOpen.value = !isFilterOpen.value;
+    if (isFilterOpen.value) {
+      isSearchCategoryOpen.value = false;
+    }
   }
+
 
   final _random = Random();
 

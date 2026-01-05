@@ -60,6 +60,7 @@ class IconString {
   static const String  printIcon = 'assets/icons/printIcon.png';
   static const String  vinNumberIcon = 'assets/icons/VinNumberIcon.png';
   static const String  editIcon2 = 'assets/icons/Edit-Icon2.png';
+  static const String  carNameIcon = 'assets/icons/Car Name.png';
 
      /// Customers Icon
   static const String  licenseIcon = 'assets/icons/LicenseIcon.png';
@@ -79,6 +80,7 @@ class IconString {
   static const String  discoverCardIcon = 'assets/icons/Discover.png';
   static const String  materCard2 = 'assets/icons/mastercard-2.png';
   static const String  visaCard2 = 'assets/icons/Visa2.png';
+  static const String  nameIcon = 'assets/icons/Name.png';
 
 
 

@@ -68,7 +68,6 @@ class SidebarScreen extends StatelessWidget {
 
                   SidebarComponents.menuItem(context, controller, iconPath: IconString.agreementIcon, title: TextString.reAgreementTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
                   SidebarComponents.menuItem(context, controller, iconPath: IconString.returnCarIcon, title: TextString.returnCar, onTap: onTap, scaffoldKey: _scaffoldKey),
-                  SidebarComponents.menuItem(context, controller, iconPath: IconString.paymentIcon, title: TextString.paymentTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
                   SidebarComponents.expenseMenuItem(context, controller, onTap: onTap, scaffoldKey: _scaffoldKey),
                   SidebarComponents.menuItem(context, controller, iconPath: IconString.maintenanceIcon, title: TextString.maintenanceTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
                   SidebarComponents.menuItem(context, controller, iconPath: IconString.incomeIcon, title: TextString.incomeTitle,

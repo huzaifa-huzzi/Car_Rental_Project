@@ -99,7 +99,7 @@ class CustomerDetailWidget extends StatelessWidget {
               _buildSectionHeader(TextString.customerNoteTitle,context),
               const SizedBox(height: 12),
               Text(
-                TextString.customerNoteSubtitle,
+                TextString.customerNoteSubtitleDetail,
                 textAlign: TextAlign.start,
                 style: TTextTheme.pOne(context),
               ),

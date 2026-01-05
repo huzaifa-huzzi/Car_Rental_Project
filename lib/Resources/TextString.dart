@@ -1,6 +1,6 @@
 
-
 class TextString {
+
   /// Car Inventory
     // Adding Car Screen
   static const String  addScreenTitle= 'Add New Car';
@@ -11,9 +11,8 @@ class TextString {
   static const String  dashboardTitle= 'Dashboard';
   static const String  carInventoryTitle= 'Car Inventory';
   static const String  customersTitle= 'Customers';
-  static const String  reAgreementTitle= 'Re-agreement';
-  static const String  returnCar= 'Return Car';
-  static const String  paymentTitle= 'Payment';
+  static const String  reAgreementTitle= 'Pickup Car';
+  static const String  returnCar= 'Dropoff Car';
   static const String  maintenanceTitle= 'Maintenance';
   static const String  incomeTitle= 'Income';
   static const String  expenseTitle= 'Expense';
@@ -62,7 +61,7 @@ class TextString {
   static const String  customerEmail =   'Customer Email';
   static const String  customerAddress =   'Customer Address';
   static const String  customerNote =   'Customer Note';
-  static const String  customerNoteSubtitle =   'Describe the customer Note...';
+  static const String  customerNoteSubtitle = 'Describe the Customer Note....';
   static const String  licenseTitle =  'License Details';
   static const String  uploadDocumentTitle =  'Upload Personal document (Gov. Id, Passport etc.  MAX6)';
   static const String   addCardDetailsTitle =  'Add Card Details';
@@ -71,7 +70,7 @@ class TextString {
    // Customer Detail Screen
   static const String   personalTitle =  'Personal Info';
   static const String   customerNoteTitle =  'Customer Note';
-  static const String   customerNoteSubtitleDetail =  'Audi A8 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys. Renowned for its powerful performance and advanced technology features, the A8 provides a refined driving experience with exceptional comfort. Audi A8 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys.';
+  static const String   customerNoteSubtitleDetail =  'Audi A6 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys. Renowned for its powerful performance and advanced technology features, the A6 provides a refined driving experience with exceptional comfort. Audi A6 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys. Renowned for its powerful performance and advanced technology features, the A6 provides a refined driving experience with exceptional comfort.';
   static const String   licenseDetailScreen =  'License Details';
   static const String   customerDocumentDetails =  'Customer Documents';
   static const String   name =  'Carlie Harvy';
@@ -79,5 +78,23 @@ class TextString {
   static const String   cardDetailsTitle =  'Card Details';
   static const String   cardNumberDetail =  'Card Number';
   static const String   cardNumberDetailScreen =  '41xxx xxxx xxxx 5609';
+
+  // Add Customers Screen
+  static const String   addCustomerTitle = 'Add Customer';
+  static const String    addCustomerSubtitle = 'Enter the specification for the new customer';
+  static const String    addCustomerNote = 'Customer Note';
+  static const String    addCustomerNoteSubtitle = 'Describe the customer Note...';
+  static const String    addCustomerLicenseTitle = 'License Detail';
+  static const String    addCustomerUploadDocument = 'Upload Personal document (Gov. Id, Passport etc.  MAX6)';
+  static const String    addCustomerCarDetails = 'Add Card Details';
+  static const String    addCustomerPhotoText = 'Photo';
+  static const String    addCustomerPersonalDocumentText = 'Personal Documnet ';
+  static const String    addCustomerCardNumber = 'Card number';
+  static const String    addCustomerCardHolerName = 'Card Holder Name';
+  static const String    addCustomerCardExpiry = 'Expiry';
+  static const String    addCustomerCvc = 'CVC';
+  static const String    addCustomerCountry = 'Country';
+  static const String    addCustomerSaveButton = 'Save Customer';
+  static const String    addCustomerCancel = 'Cancel';
 
 }

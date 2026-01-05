@@ -237,6 +237,18 @@ class CustomerController extends GetxController {
     }
   }
 
+  /// CardList Customer Header Widget
+  RxBool isSearchCategoryOpen = false.obs;
+  RxString selectedSearchType = "Name".obs;
+
+  void toggleSearchCategory() {
+    isSearchCategoryOpen.value = !isSearchCategoryOpen.value;
+    if (isSearchCategoryOpen.value) {
+      isFilterOpen.value = false;
+    }
+  }
+
+
 
 
 }

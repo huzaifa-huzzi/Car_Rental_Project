@@ -38,9 +38,9 @@ class AddCustomerWidget extends StatelessWidget {
             children: [
 
               /// CUSTOMER HEADER
-              Text("Add Customer", style: TTextTheme.h7Style(context)),
+              Text(TextString.addCustomerTitle, style: TTextTheme.h7Style(context)),
               SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
-              Text("Enter the specification for the new customer", style: TTextTheme.titleThree(context)),
+              Text(TextString.addCustomerSubtitle, style: TTextTheme.titleThree(context)),
               SizedBox(height: spacing/2),
               Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
               SizedBox(height: spacing),
@@ -65,21 +65,20 @@ class AddCustomerWidget extends StatelessWidget {
               SizedBox(height: spacing),
               Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
-              /// CUSTOMER NOTE SECTION
+              /// CUSTOMER NOTE
               SizedBox(height: spacing),
-              Text("Customer Note", style: TTextTheme.btnSix(context)),
+              Text(TextString.addCustomerNote, style: TTextTheme.btnSix(context)),
               SizedBox(height: 8),
-              _buildLargeTextField(context, "Describe the customer Note...", controller.noteController),
+              _buildLargeTextField(context, TextString.addCustomerNoteSubtitle, controller.noteController),
 
               SizedBox(height: spacing),
               Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
-              /// LICENSE DETAILS SECTION
+              /// LICENSE DETAILS
               SizedBox(height: spacing),
-              Text("License Details", style: TTextTheme.btnSix(context)),
+              Text(TextString.addCustomerLicenseTitle, style: TTextTheme.btnSix(context)),
               SizedBox(height: spacing),
               _buildResponsiveGrid(context, [
-                _buildTextField(context, "License Holder Name", controller.licenseNameController),
                 _buildTextField(context, "Driver License Number", controller.licenseNumberController),
                 _buildTextField(context, "License Expiry Date", controller.licenseExpiryController),
                 _buildTextField(context, "Card Number", controller.licenseCardNumberController),
@@ -88,17 +87,17 @@ class AddCustomerWidget extends StatelessWidget {
               SizedBox(height: spacing),
               Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
-              /// DOCUMENTS UPLOAD SECTION
+              /// DOCUMENTS UPLOAD
               SizedBox(height: spacing),
-              Text("Upload Personal document (Gov. Id, Passport etc.  MAX6)", style: TTextTheme.btnSix(context)),
+              Text(TextString.addCustomerUploadDocument, style: TTextTheme.btnSix(context)),
               SizedBox(height: spacing),
               _documentsSection(context),
 
               SizedBox(height: spacing),
               Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
-              /// CARD DETAILS SECTION
-              Text("Add Card Details", style: TTextTheme.btnSix(context)),
+              /// CARD DETAILS
+              Text(TextString.addCustomerCarDetails, style: TTextTheme.btnSix(context)),
               SizedBox(height: spacing),
 
               Center(
@@ -112,7 +111,7 @@ class AddCustomerWidget extends StatelessWidget {
               _buildCardForm(context),
               SizedBox(height: spacing * 2),
 
-              /// BUTTON SECTION
+              /// BUTTON
               _buttonSection(context, isMobile),
             ],
           ),
@@ -156,7 +155,7 @@ class AddCustomerWidget extends StatelessWidget {
                 child: Image.asset(IconString.uploadIcon, color: AppColors.primaryColor, width: 24),
               ),
               const SizedBox(height: 10),
-              Text("Photo", style: TTextTheme.documnetIsnideSmallText(context)),
+              Text(TextString.addCustomerPhotoText, style: TTextTheme.documnetIsnideSmallText(context)),
               Text(TextString.uploadSubtitle, style: TTextTheme.documnetIsnideSmallText2(context)),
             ],
           ),
@@ -274,7 +273,7 @@ class AddCustomerWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Personal Document", style: TTextTheme.titleTwo(context)),
+        Text(TextString.addCustomerPersonalDocumentText, style: TTextTheme.titleTwo(context)),
         SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
         Container(
           padding: EdgeInsets.symmetric(horizontal: AppSizes.padding(context)),
@@ -523,9 +522,9 @@ class AddCustomerWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildShadowTextField(context, "Card number", controller.ccNumberController, hint: "1234 1234 1234 1234", isCreditCard: true),
+            _buildShadowTextField(context,TextString.addCustomerCardNumber , controller.ccNumberController, hint: "1234 1234 1234 1234", isCreditCard: true),
             const SizedBox(height: 16),
-            _buildShadowTextField(context, "Card Holder Name", controller.ccHolderController, hint: "Softsnip"),
+            _buildShadowTextField(context,TextString.addCustomerCardHolerName , controller.ccHolderController, hint: "Softsnip"),
             const SizedBox(height: 16),
 
             LayoutBuilder(builder: (context, constraints) {
@@ -534,14 +533,14 @@ class AddCustomerWidget extends StatelessWidget {
                 spacing: 16,
                 runSpacing: 16,
                 children: [
-                  SizedBox(width: itemWidth, child: _buildShadowTextField(context, "Expiry", controller.ccExpiryController, hint: "MM / YY", isCompact: true)),
-                  SizedBox(width: itemWidth, child: _buildShadowTextField(context, "CVC", controller.ccCvcController, hint: "CVC", isCompact: true)),
+                  SizedBox(width: itemWidth, child: _buildShadowTextField(context,TextString.addCustomerCardExpiry , controller.ccExpiryController, hint: "MM / YY", isCompact: true)),
+                  SizedBox(width: itemWidth, child: _buildShadowTextField(context,TextString.addCustomerCvc , controller.ccCvcController, hint: "CVC", isCompact: true)),
                 ],
               );
             }),
 
             const SizedBox(height: 16),
-            _buildShadowTextField(context, "Country", controller.ccCountryController, hint: "United States"),
+            _buildShadowTextField(context, TextString.addCustomerCountry, controller.ccCountryController, hint: "United States"),
           ],
         ),
       ),
@@ -633,7 +632,7 @@ class AddCustomerWidget extends StatelessWidget {
         width: buttonWidth,
         height: 45,
         child: CustomPrimaryButton(
-          text: 'Cancel',
+          text: TextString.addCustomerCancel,
           backgroundColor: Colors.white,
           textColor: AppColors.textColor,
           borderColor: AppColors.quadrantalTextColor,
@@ -646,7 +645,7 @@ class AddCustomerWidget extends StatelessWidget {
         width: buttonWidth,
         height: 45,
         child: AddButton(
-          text: "Save Customer",
+          text: TextString.addCustomerSaveButton,
           icon: Image.asset(
             IconString.saveVehicleIcon,
           ),
