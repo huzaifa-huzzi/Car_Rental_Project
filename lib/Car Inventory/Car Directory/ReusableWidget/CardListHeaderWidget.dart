@@ -330,13 +330,11 @@ class CardListHeaderWidget extends StatelessWidget {
   // viewToggle Widget
   Widget _viewToggleWidget(BuildContext context, CarInventoryController controller, double size) {
     return Obx(() => Container(
-      // Padding 0 kardi taake selected color poora touch kare
       padding: const EdgeInsets.all(0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
       ),
-      // Row ke bajaye hum clips use karenge taake corners clean rahen
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: Row(
@@ -402,8 +400,8 @@ class CardListHeaderWidget extends StatelessWidget {
   String _getIconPathForType(String type) {
     switch (type) {
       case "VIN Number": return IconString.vinNumberIcon;
-      case "Reg Number": return IconString.registrationIcon;
-      case "Car Model": return IconString.carInventoryIcon;
+      case "Registration": return IconString.registrationIcon;
+      case "Car Name": return IconString.carInventoryIcon;
       default: return IconString.carInventoryIcon;
     }
   }
