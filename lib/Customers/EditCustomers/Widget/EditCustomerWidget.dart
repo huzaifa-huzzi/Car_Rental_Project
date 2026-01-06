@@ -188,7 +188,7 @@ class EditCustomerWidget extends StatelessWidget {
     );
   }
 
-  /// ---------- Extra Widgets (Helpers) --------///
+  /// ---------- Extra Widgets --------///
 
   // Profile Photo Picker Widget
   Widget _buildProfilePhotoPicker(BuildContext context,) {

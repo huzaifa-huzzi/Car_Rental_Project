@@ -49,7 +49,7 @@ class TTextTheme {
   }
 
   static TextStyle btnTwo(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 10, 12, 12),fontWeight: FontWeight.w400,color: AppColors.secondTextColor);
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 12),fontWeight: FontWeight.w400,color: AppColors.secondTextColor);
   }
 
   static TextStyle btnThree(BuildContext context){
@@ -77,7 +77,7 @@ class TTextTheme {
   }
 
   static TextStyle btnCancel(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.textColor);
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 14),fontWeight: FontWeight.w500,color: AppColors.textColor);
   }
 
   static TextStyle btnConfirm(BuildContext context){
