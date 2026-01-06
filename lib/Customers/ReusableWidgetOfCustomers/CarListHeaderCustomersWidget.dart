@@ -188,11 +188,11 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _filterItem("Customer Age", _textFieldBox("34", context), context),
+            _filterItem("Age", _textFieldBox("34", context), context),
             const SizedBox(height: 16),
-            _filterItem("Customer Phone", _textFieldBox("012 09786754", context), context),
+            _filterItem("Phone Number", _textFieldBox("012 09786754", context), context),
             const SizedBox(height: 16),
-            _filterItem("Customer Address", _textFieldBox("404 super", context), context),
+            _filterItem("Address", _textFieldBox("404 super", context), context),
           ],
         )
             : Wrap(
@@ -200,9 +200,9 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
           runSpacing: 16,
           crossAxisAlignment: WrapCrossAlignment.start,
           children: [
-            _filterItem("Customer Age", _textFieldBox("34", context), context, customWidth: 100),
-            _filterItem("Customer Phone", _textFieldBox("012 0978754", context), context, customWidth: 150),
-            _filterItem("Customer Address", _textFieldBox("404 super", context), context, customWidth: 200),
+            _filterItem("Age", _textFieldBox("34", context), context, customWidth: 100),
+            _filterItem("Phone Number", _textFieldBox("012 0978754", context), context, customWidth: 150),
+            _filterItem("Address", _textFieldBox("404 super", context), context, customWidth: 200),
           ],
         ),
       ),
@@ -240,7 +240,7 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
       child: Center(
         child: TextField(
           cursorColor: AppColors.blackColor,
-          style: TTextTheme.insidetextfieldWrittenText(context),
+          style: TTextTheme.titleTwo(context),
           decoration: InputDecoration(
             hintText: label,
             hintStyle: TTextTheme.titleTwo(context),

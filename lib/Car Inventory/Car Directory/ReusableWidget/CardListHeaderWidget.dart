@@ -283,7 +283,7 @@ class CardListHeaderWidget extends StatelessWidget {
           _filterItem("Body Type", _dropdownBox(["Sedan", "SUV"], controller.selectedBodyType, context), context),
           _filterItem("Status", _dropdownBox(["Available", "Unavailable"], controller.selectedStatus, context), context),
           _filterItem("Transmission", _dropdownBox(["Auto", "Manual"], controller.selectedTransmission, context), context),
-          _filterItem("Capacity", _dropdownBox(["2", "4"], controller.selectedCapacity, context), context),
+          _filterItem("Capacity", _textFieldBox("2 person", context), context),
           _filterItem("Fuel", _dropdownBox(["Petrol", "Hybrid"], controller.selectedFuel, context), context),
           _filterItem("Engine Size", _textFieldBox("2.5[L]", context), context),
           _filterItem("Price (Under)", _textFieldBox(r"$ 1600", context), context),
@@ -306,7 +306,15 @@ class CardListHeaderWidget extends StatelessWidget {
     return Container(
       height: 38, decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: AppColors.secondaryColor),
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Center(child: TextField(style: TTextTheme.insidetextfieldWrittenText(context), decoration: InputDecoration(hintText: label, hintStyle: TTextTheme.titleTwo(context), border: InputBorder.none, isDense: true, contentPadding: EdgeInsets.zero))),
+      child: Center(child: TextField(
+        cursorColor: AppColors.blackColor,
+          style: TTextTheme.titleTwo(context),
+          decoration: InputDecoration(
+              hintText: label,
+              hintStyle: TTextTheme.titleTwo(context),
+              border: InputBorder.none, isDense: true,
+              contentPadding: EdgeInsets.zero)
+      )),
     );
   }
 

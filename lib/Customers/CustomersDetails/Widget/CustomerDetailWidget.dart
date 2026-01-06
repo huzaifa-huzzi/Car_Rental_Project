@@ -370,7 +370,7 @@ class CustomerDetailWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFEEEEEE), width: 1.2),
+        border: Border.all(color: AppColors.tertiaryTextColor, width: 1.2),
       ),
       child: child,
     );

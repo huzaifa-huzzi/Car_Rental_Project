@@ -29,7 +29,6 @@ class CarInventoryController extends GetxController {
   var selectedBodyType = "".obs;
   var selectedStatus = "".obs;
   var selectedTransmission = "".obs;
-  var selectedCapacity = "".obs;
   var selectedFuel = "".obs;
 
 

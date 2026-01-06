@@ -257,7 +257,7 @@ class EditCustomerWidget extends StatelessWidget {
         TextField(
           controller: ctrl,
           cursorColor: AppColors.blackColor,
-          style: TTextTheme.insidetextfieldWrittenText(context),
+          style: TTextTheme.titleTwo(context),
           decoration: InputDecoration(
             hintText: hint ?? "Write $label...",
             hintStyle: TTextTheme.titleFour(context),
@@ -351,7 +351,7 @@ class EditCustomerWidget extends StatelessWidget {
           ),
           child: TextField(
             cursorColor: AppColors.blackColor,
-            style: TTextTheme.insidetextfieldWrittenText(context),
+            style: TTextTheme.titleTwo(context),
             controller: ctrl,
             decoration: InputDecoration(
               hintText: TextString.documentSubtitle,
