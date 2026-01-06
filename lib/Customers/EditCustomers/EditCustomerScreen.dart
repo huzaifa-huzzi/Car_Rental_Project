@@ -26,7 +26,7 @@ class EditCustomerScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       HeaderWebCustomersWidget(
-                        mainTitle: 'Customer',
+                        mainTitle: 'Edit Customer',
                         showBack: true,
                         showSmallTitle: true,
                         smallTitle: 'Edit Customers/Edit Customer Details',
