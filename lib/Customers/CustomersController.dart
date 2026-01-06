@@ -115,6 +115,17 @@ class CustomerController extends GetxController {
   final ccCountryController = TextEditingController();
   var selectedCardIndex = 0.obs;
 
+  RxInt totalCardsAdd2 = 1.obs;
+
+  void addNewCardSlot() {
+    if (totalCardsAdd2.value < 5) {
+      totalCardsAdd2.value++;
+      selectedCardIndex.value = totalCardsAdd2.value - 1;
+    } else {
+      Get.snackbar("Limit Reached", "You can only add up to 5 cards.");
+    }
+  }
+
   // Pick Profile Image
   Future<void> pickProfileImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image, withData: kIsWeb);
@@ -182,6 +193,17 @@ class CustomerController extends GetxController {
   RxList<Rx<DocumentHolder?>> selectedDocuments2 = <Rx<DocumentHolder?>>[].obs;
   RxList<TextEditingController> documentNameControllers2 = <TextEditingController>[].obs;
   final int maxDocuments2 = 6;
+
+  RxInt totalCards = 1.obs;
+
+  void addNewCard() {
+    if (totalCards.value < 5) {
+      totalCards.value++;
+      selectedCardIndex2.value = totalCards.value - 1;
+    } else {
+      Get.snackbar("Limit Reached", "You can only add up to 5 cards.");
+    }
+  }
 
   final ccNumberController2 = TextEditingController();
   final ccHolderController2 = TextEditingController();

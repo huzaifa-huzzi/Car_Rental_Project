@@ -247,7 +247,7 @@ class EditCustomerWidget extends StatelessWidget {
     });
   }
 
-  // Standard TextField
+  //  TextField Widget
   Widget _buildTextField(BuildContext context, String label, TextEditingController ctrl, {String? hint}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -525,57 +525,76 @@ class EditCustomerWidget extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       physics: const BouncingScrollPhysics(),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ...List.generate(3, (index) => GestureDetector(
+          ...List.generate(controller.totalCards.value, (index) => GestureDetector(
             onTap: () => controller.selectedCardIndex2.value = index,
             child: _cardTab(context, "Card ${index + 1}", controller.selectedCardIndex2.value == index),
           )),
-          const SizedBox(width: 8),
-          Container(
-              width: 36,
-              height: 60,
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.secondTextColor),
-                borderRadius: BorderRadius.circular(8),
+
+          if (controller.totalCards.value < 5)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 0),
+              child: GestureDetector(
+                onTap: () => controller.addNewCard(),
+                child: Container(
+                    width: 45,
+                    height: 65,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: AppColors.secondTextColor),
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.white,
+                    ),
+                    child: Center(
+                      child: Icon(Icons.add, color: AppColors.quadrantalTextColor, size: 24),
+                    )
+                ),
               ),
-              child: Center(
-                child:  Image.asset(IconString.addIcon, color: AppColors.quadrantalTextColor),
-              )
-          ),
+            ),
         ],
       ),
     ));
   }
 
   Widget _cardTab(BuildContext context, String label, bool isSelected) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
       margin: const EdgeInsets.only(right: 12),
-      width: 120,
-      padding: const EdgeInsets.all(12),
+      width: 110,
+      height: 65,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
-          color: isSelected ? AppColors.availableBackgroundColor : AppColors.secondTextColor,
+          color: isSelected ? AppColors.cardsHovering : AppColors.secondTextColor,
           width: isSelected ? 1.5 : 1,
         ),
         borderRadius: BorderRadius.circular(8),
         boxShadow: isSelected ? [
           BoxShadow(
             color: AppColors.fieldsBackground,
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+            blurRadius: 2,
+            offset: const Offset(0, 3),
           )
         ] : [],
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(IconString.cardIcon, color: isSelected ? AppColors.availableBackgroundColor : AppColors.quadrantalTextColor),
-          const SizedBox(height: 8),
+          Image.asset(
+              IconString.cardIcon,
+              width: 20,
+              color: isSelected ? AppColors.cardsHovering : AppColors.secondTextColor
+          ),
+          const SizedBox(height: 6),
           Text(
               label,
-              style: TTextTheme.btnOne(context).copyWith(color: isSelected ? AppColors.availableBackgroundColor : AppColors.quadrantalTextColor)
+              style: TTextTheme.btnOne(context).copyWith(
+                  fontSize: 12,
+                  color: isSelected ? AppColors.cardsHovering: AppColors.secondTextColor,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal
+              )
           ),
         ],
       ),
@@ -615,7 +634,7 @@ class EditCustomerWidget extends StatelessWidget {
     );
   }
 
-  //  Helper for Shadow TextField Widget
+  // Shadow TextField Widget
   Widget _buildShadowTextField(BuildContext context, String label, TextEditingController ctrl, {String? hint, bool isCreditCard = false, bool isCompact = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -459,27 +459,32 @@ class AddCustomerWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          ...List.generate(3, (index) => GestureDetector(
+          ...List.generate(controller.totalCardsAdd2.value, (index) => GestureDetector(
             onTap: () => controller.selectedCardIndex.value = index,
             child: _cardTab(context, "Card ${index + 1}", controller.selectedCardIndex.value == index),
           )),
-          const SizedBox(width: 8),
-          Container(
-            width: 36,
-            height: 60,
-            decoration: BoxDecoration(
-              border: Border.all(color: AppColors.secondTextColor),
-              borderRadius: BorderRadius.circular(8),
+
+          if (controller.totalCardsAdd2.value < 5)
+            GestureDetector(
+              onTap: () => controller.addNewCardSlot(),
+              child: Container(
+                width: 36,
+                height: 60,
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.secondTextColor),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Center(
+                  child: Image.asset(IconString.addIcon, color: AppColors.quadrantalTextColor),
+                ),
+              ),
             ),
-            child: Center(
-              child:  Image.asset(IconString.addIcon, color: AppColors.quadrantalTextColor),
-            )
-          ),
         ],
       ),
     ));
   }
 
+  // Card Tab Widget
   Widget _cardTab(BuildContext context, String label, bool isSelected) {
     return Container(
       margin: const EdgeInsets.only(right: 12),
@@ -488,7 +493,7 @@ class AddCustomerWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
-          color: isSelected ? AppColors.availableBackgroundColor : AppColors.secondTextColor,
+          color: isSelected ? AppColors.cardsHovering : AppColors.secondTextColor,
           width: isSelected ? 1.5 : 1,
         ),
         borderRadius: BorderRadius.circular(8),
@@ -503,11 +508,16 @@ class AddCustomerWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(IconString.cardIcon, color: isSelected ? AppColors.availableBackgroundColor : AppColors.quadrantalTextColor),
+          Image.asset(
+              IconString.cardIcon,
+              color: isSelected ? AppColors.cardsHovering : AppColors.quadrantalTextColor
+          ),
           const SizedBox(height: 8),
           Text(
-            label,
-            style: TTextTheme.btnOne(context).copyWith(color: isSelected ? AppColors.availableBackgroundColor : AppColors.quadrantalTextColor)
+              label,
+              style: TTextTheme.btnOne(context).copyWith(
+                  color: isSelected ? AppColors.cardsHovering : AppColors.secondTextColor
+              )
           ),
         ],
       ),
@@ -547,7 +557,7 @@ class AddCustomerWidget extends StatelessWidget {
     );
   }
 
-  //  Helper for Shadow TextField Widget
+  //   Shadow TextField Widget
   Widget _buildShadowTextField(BuildContext context, String label, TextEditingController ctrl, {String? hint, bool isCreditCard = false, bool isCompact = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
