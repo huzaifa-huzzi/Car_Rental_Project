@@ -1,5 +1,6 @@
 import 'package:car_rental_project/Customers/CustomersController.dart';
 import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/AddButtonOfCustomers.dart';
+import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
@@ -8,14 +9,14 @@ import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-class CardListHeaderCustomerWidget extends StatelessWidget {
-  const CardListHeaderCustomerWidget({super.key});
+class CardListHeaderPickupWidget extends StatelessWidget {
+  const CardListHeaderPickupWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     final bool isMobile = AppSizes.isMobile(context);
     final bool isWeb = AppSizes.isWeb(context);
-    final controller = Get.put(CustomerController());
+    final controller = Get.put(PickupCarController());
     final double screenWidth = MediaQuery.of(context).size.width;
 
     final double horizontalPadding = screenWidth < 280 ? 4.0 : AppSizes.horizontalPadding(context);
@@ -79,9 +80,9 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
     );
   }
 
- /// ------ Extra Widgets -------- ///
+  /// ------ Extra Widgets -------- ///
   // category Selection Widget
-  Widget _buildCategorySelection(BuildContext context, CustomerController controller, double height, bool showText) {
+  Widget _buildCategorySelection(BuildContext context, PickupCarController controller, double height, bool showText) {
     return Obx(() => Container(
       height: height,
       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -118,8 +119,8 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
       ),
     ));
   }
-   // searchBar Widget
-  Widget _searchBarWithButton(BuildContext context, CustomerController controller, double height, bool showButton,) {
+  // searchBar Widget
+  Widget _searchBarWithButton(BuildContext context, PickupCarController controller, double height, bool showButton,) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final bool isLargeScreen = screenWidth > 600;
 
@@ -169,7 +170,7 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
     );
   }
   // Filter Panel Widget
-  Widget _buildResponsiveFilterPanel(BuildContext context, bool isMobile, CustomerController controller) {
+  Widget _buildResponsiveFilterPanel(BuildContext context, bool isMobile, PickupCarController controller) {
     return Align(
       alignment: isMobile ? Alignment.center : Alignment.centerLeft,
       child: Container(
@@ -251,7 +252,7 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
       ),
     );
   }
-   // headerButton Widget
+  // headerButton Widget
   Widget _headerButton({required BuildContext context, required String icon, required String text, required bool isOpen, required bool showText, VoidCallback? onTap}) {
     return GestureDetector(
       onTap: onTap,

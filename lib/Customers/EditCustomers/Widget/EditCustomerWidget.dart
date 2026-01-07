@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:car_rental_project/Customers/CustomersController.dart';
+import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/AddButtonOfCustomers.dart';
+import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/CustomerPrimaryBtn.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:flutter/material.dart';
@@ -718,7 +720,7 @@ class EditCustomerWidget extends StatelessWidget {
       SizedBox(
         width: buttonWidth,
         height: 45,
-        child: CustomPrimaryButton(
+        child: CustomerPrimaryBtn(
           text: 'Cancel',
           backgroundColor: Colors.white,
           textColor: AppColors.textColor,
@@ -731,7 +733,7 @@ class EditCustomerWidget extends StatelessWidget {
       SizedBox(
         width: buttonWidth,
         height: 45,
-        child: AddButton(
+        child: AddButtonOfCustomer(
           text: "Save Customer",
           icon: Image.asset(
             IconString.saveVehicleIcon,

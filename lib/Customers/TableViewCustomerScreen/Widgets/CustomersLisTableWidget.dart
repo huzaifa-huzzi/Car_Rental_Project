@@ -1,5 +1,6 @@
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
 import 'package:car_rental_project/Customers/CustomersController.dart';
+import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/AddButtonOfCustomers.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
@@ -96,7 +97,7 @@ class CustomerListTableWidget extends StatelessWidget {
                           SizedBox(
                             width: actionColWidth,
                             child: Center(
-                              child: AddButton(
+                              child: AddButtonOfCustomer(
                                 text: "View",
                                 width: 71,
                                 height: 34,

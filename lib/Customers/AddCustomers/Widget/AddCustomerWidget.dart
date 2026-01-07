@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:car_rental_project/Customers/CustomersController.dart';
+import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/AddButtonOfCustomers.dart';
+import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/CustomerPrimaryBtn.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +11,6 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/customPrimaryButton.dart';
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
 
 class AddCustomerWidget extends StatelessWidget {
   AddCustomerWidget({super.key});
@@ -641,7 +641,7 @@ class AddCustomerWidget extends StatelessWidget {
       SizedBox(
         width: buttonWidth,
         height: 45,
-        child: CustomPrimaryButton(
+        child: CustomerPrimaryBtn(
           text: TextString.addCustomerCancel,
           backgroundColor: Colors.white,
           textColor: AppColors.textColor,
@@ -654,7 +654,7 @@ class AddCustomerWidget extends StatelessWidget {
       SizedBox(
         width: buttonWidth,
         height: 45,
-        child: AddButton(
+        child: AddButtonOfCustomer(
           text: TextString.addCustomerSaveButton,
           icon: Image.asset(
             IconString.saveVehicleIcon,

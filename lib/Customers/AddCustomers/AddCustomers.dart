@@ -9,9 +9,6 @@ class AddCustomerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
-    final bool isMobile = AppSizes.isMobile(context);
-    final bool isTablet = AppSizes.isTablet(context);
     final bool isWeb = AppSizes.isWeb(context);
 
     return Scaffold(

@@ -1,17 +1,18 @@
 import 'package:car_rental_project/Customers/CustomersController.dart';
+import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class PaginationBarOfCustomer extends StatelessWidget {
+class PaginationBarOfPickup extends StatelessWidget {
   final bool isMobile;
   final double tablePadding;
 
-  final CustomerController controller = Get.find<CustomerController>();
+  final PickupCarController controller = Get.find<PickupCarController>();
 
 
-  PaginationBarOfCustomer({super.key, required this.isMobile, required this.tablePadding});
+  PaginationBarOfPickup({super.key, required this.isMobile, required this.tablePadding});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class PaginationBarOfCustomer extends StatelessWidget {
   ///  RESULTS PER PAGE DROPDOWN (Left side content for web only )
   Widget _resultsPerPageDropdown(BuildContext context) {
 
-    String? selectedValue = controller.pageSize2.toString();
+    String? selectedValue = controller.pageSize3.toString();
 
     return Row(
       children: [
@@ -100,7 +101,7 @@ class PaginationBarOfCustomer extends StatelessWidget {
       pageButtons.add(_pageButton(
         context,
         i.toString(),
-        isSelected: controller.currentPage2.value == i,
+        isSelected: controller.currentPage3.value == i,
         onTap: () => controller.goToPage(i),
         size: buttonSize,
       ));
@@ -143,8 +144,8 @@ class PaginationBarOfCustomer extends StatelessWidget {
 
     final baseStyle = TTextTheme.btnTwo(context)?.copyWith(color: Colors.white);
 
-    final bool isPrevDisabled = controller.currentPage2.value == 1;
-    final bool isNextDisabled = controller.currentPage2.value >= controller.totalPages;
+    final bool isPrevDisabled = controller.currentPage3.value == 1;
+    final bool isNextDisabled = controller.currentPage3.value >= controller.totalPages;
 
 
     bool isButtonDisabled = false;
