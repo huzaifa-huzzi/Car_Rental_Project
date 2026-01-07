@@ -9,6 +9,10 @@ import 'package:car_rental_project/Customers/AddCustomers/AddCustomers.dart';
 import 'package:car_rental_project/Customers/CustomersDetails/CustomersDetails.dart';
 import 'package:car_rental_project/Customers/EditCustomers/EditCustomerScreen.dart';
 import 'package:car_rental_project/Customers/TableViewCustomerScreen/TableViewScreen.dart';
+import 'package:car_rental_project/PickupCar/AddPickUp/AddPickup.dart';
+import 'package:car_rental_project/PickupCar/EditPicUp/EditPickUpScreen.dart';
+import 'package:car_rental_project/PickupCar/PickUpDetailScreen/PickUpDetailScreen.dart';
+import 'package:car_rental_project/PickupCar/TableViewPicukUpScreen/TableViewPickUpScreen.dart';
 import 'package:car_rental_project/SideScreen/SidebarScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -26,6 +30,8 @@ class AppNavigation {
                 context.go('/carInventory');
               } else if (title == "Customers") {
                 context.go('/customers');
+              }else if (title == "Pickup Car") {
+                context.go('/pickupCar');
               }
             },
             child: child,
@@ -38,10 +44,15 @@ class AppNavigation {
           GoRoute(path: '/carInventory/ListView', builder: (context, state) => const ListViewScreen()),
           GoRoute(path: '/carInventory/GridView', builder: (context, state) => const GridViewScreen()),
 
-          // ---  Customers Screen ---
+          //  Customers Screen
           GoRoute(
             path: '/customers',
             builder: (context, state) =>  TableViewCustomerScreen(),
+          ),
+          // Pickup Car Screen
+          GoRoute(
+            path: '/pickupcar',
+            builder: (context, state) =>  TableViewPickUpScreen(),
           ),
         ],
       ),
@@ -63,6 +74,19 @@ class AppNavigation {
       GoRoute(
         path: '/editCustomers',
         builder: (context, state) => _wrapSidebar(state,  EditCustomerScreen()),
+      ),
+      //  No Sidebar / Special AppBar Routes (PickupCar)
+      GoRoute(
+        path: '/pickupDetail',
+        builder: (context, state) => _wrapSidebar(state,  PickUpDetailScreen()),
+      ),
+      GoRoute(
+        path: '/addPickup',
+        builder: (context, state) => _wrapSidebar(state, const AddPickUp()),
+      ),
+      GoRoute(
+        path: '/editPickUp',
+        builder: (context, state) => _wrapSidebar(state,  EditPickScreen()),
       ),
     ],
   );

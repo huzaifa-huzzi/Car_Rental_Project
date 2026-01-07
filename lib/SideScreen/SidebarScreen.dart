@@ -56,7 +56,7 @@ class SidebarScreen extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 children: [
-                  // Dashboard
+
                   SidebarComponents.menuItem(context, controller, iconPath: IconString.dashboardIcon, title: TextString.dashboardTitle,
                       onTap: (val) => context.go('/dashboard'), scaffoldKey: _scaffoldKey),
 
@@ -66,7 +66,15 @@ class SidebarScreen extends StatelessWidget {
                   SidebarComponents.menuItem(context, controller, iconPath: IconString.customerIcon, title: TextString.customersTitle,
                       onTap: (val) => context.go('/customers'), scaffoldKey: _scaffoldKey),
 
-                  SidebarComponents.menuItem(context, controller, iconPath: IconString.agreementIcon, title: TextString.reAgreementTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
+                  SidebarComponents.menuItem(
+                      context,
+                      controller,
+                      iconPath: IconString.agreementIcon,
+                      title: "Pickup Car",
+                      onTap: (val) => context.go('/pickupcar'),
+                      scaffoldKey: _scaffoldKey
+                  ),
+
                   SidebarComponents.menuItem(context, controller, iconPath: IconString.returnCarIcon, title: TextString.returnCar, onTap: onTap, scaffoldKey: _scaffoldKey),
                   SidebarComponents.expenseMenuItem(context, controller, onTap: onTap, scaffoldKey: _scaffoldKey),
                   SidebarComponents.menuItem(context, controller, iconPath: IconString.maintenanceIcon, title: TextString.maintenanceTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
@@ -88,7 +96,11 @@ class SidebarScreen extends StatelessWidget {
     void handleAddButtonPressed() {
       if (currentRoute.contains('/customers')) {
         context.push('/addNewCustomer', extra: {"hideMobileAppBar": true});
-      } else {
+      }
+      else if (currentRoute.contains('/pickupcar')) {
+        context.push('/addPickup', extra: {"hideMobileAppBar": true});
+      }
+      else {
         context.push('/addNewCar', extra: {"hideMobileAppBar": true});
       }
     }

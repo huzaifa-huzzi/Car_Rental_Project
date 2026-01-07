@@ -1,4 +1,3 @@
-import 'package:car_rental_project/Customers/CustomersController.dart';
 import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
