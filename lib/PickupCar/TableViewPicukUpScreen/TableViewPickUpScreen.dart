@@ -1,4 +1,3 @@
-import 'package:car_rental_project/Customers/CustomersController.dart';
 import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/PickupCar/Reusable%20Widget/CarListHeaderPickupWidget.dart';
 import 'package:car_rental_project/PickupCar/Reusable%20Widget/HeaderWebPickupWidget.dart';
