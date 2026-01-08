@@ -28,18 +28,20 @@ class PickupCarController extends GetxController {
     isFilterOpen.value = !isFilterOpen.value;
   }
 
-  /// Pagination
-  // Pagination State
+  /// Pagination State
   final RxInt currentPage3 = 1.obs;
   final RxInt pageSize3 = 8.obs;
   final RxInt selectedView3 = 0.obs;
 
+  // Ye main list hai jo data hold karegi
   RxList<Map<String, dynamic>> carList3 = <Map<String, dynamic>>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    carList3.addAll(List.generate(50, (index) => {"id": index, "name": "Customer $index"}));
+    // Purana "id" aur "name" wala code hata diya hai
+    // Ab direct function call hoga jo sahi keys wala data bharega
+    generateDummyData();
   }
 
   int get totalPages {
@@ -47,10 +49,12 @@ class PickupCarController extends GetxController {
     return (carList3.length / pageSize3.value).ceil();
   }
 
+  // Table ko data dene wala getter
   List<Map<String, dynamic>> get displayedCarList {
     int start = (currentPage3.value - 1) * pageSize3.value;
-    if (start >= carList3.length) return [];
     int end = start + pageSize3.value;
+
+    if (start >= carList3.length) return [];
     return carList3.sublist(start, end > carList3.length ? carList3.length : end);
   }
 
@@ -71,7 +75,7 @@ class PickupCarController extends GetxController {
     currentPage3.value = 1;
   }
 
-  ///  Popup Widget  Logic
+  /// Popup Widget Logic
   RxBool isOpen = false.obs;
   RxString imagePath = ''.obs;
 
@@ -85,9 +89,6 @@ class PickupCarController extends GetxController {
     imagePath.value = '';
   }
 
-
-
-
   /// CardList pickup Header Widget
   var isSearchCategoryOpen = false.obs;
   var selectedSearchType = "Customer Name".obs;
@@ -100,17 +101,36 @@ class PickupCarController extends GetxController {
   var startDate = "12/12/25".obs;
   var endDate = "12/12/25".obs;
 
-
   void toggleSearchCategory() {
     isSearchCategoryOpen.value = !isSearchCategoryOpen.value;
     if (isSearchCategoryOpen.value) isFilterOpen.value = false;
   }
 
-  // Lists for Dropdowns (Sample Data)
   List<String> makes = ["Toyota", "Honda", "Suzuki", "Tesla"];
   List<String> statuses = ["Completed", "Pending", "Cancelled"];
 
+  // Is function mein keys bilkul wahi hain jo aapke TableWidget mein hain
+  void generateDummyData() {
+    carList3.clear();
 
+    List<String> customers = ["Alice Johnson", "Bob Smith", "Charlie Davis", "Diana Prince", "Ethan Hunt"];
+    List<String> statusOptions = ["Completed", "Awaiting", "Overdue", "Processing"];
 
-
+    for (int i = 0; i < 25; i++) {
+      carList3.add({
+        "customerName": customers[i % customers.length],
+        "vin": "JTNBA3HK003001234",
+        "reg": "1234567890",
+        "make": "Toyota",
+        "model": "Corolla",
+        "year": "2017",
+        "rentPerWeek": "\$50",
+        "rentalPeriod": "3 days",
+        "pickupStart": "Jan 08, 2026",
+        "pickupEnd": "Jan 15, 2026",
+        "status": statusOptions[i % statusOptions.length],
+      });
+    }
+  }
 }
+
