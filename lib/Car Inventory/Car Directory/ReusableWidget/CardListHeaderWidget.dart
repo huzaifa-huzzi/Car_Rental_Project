@@ -106,7 +106,7 @@ class CardListHeaderWidget extends StatelessWidget {
 
   /// ------- Extra Widgets --------///
 
-  // 1. Search Category Selection Widget
+  //  Search Category Selection Widget
   Widget _buildCategorySelection(BuildContext context, CarInventoryController controller, double height, bool showText) {
     return Obx(() => Container(
       height: height,
@@ -142,7 +142,7 @@ class CardListHeaderWidget extends StatelessWidget {
     ));
   }
 
-  // 2. Search Bar Widget
+  //  Search Bar Widget
   Widget _searchBarWithButton(BuildContext context, CarInventoryController controller, double height, bool showButton) {
     final bool isWeb = AppSizes.isWeb(context);
     final bool isMobile = AppSizes.isMobile(context);
@@ -236,7 +236,7 @@ class CardListHeaderWidget extends StatelessWidget {
     );
   }
 
-  // 5. Filter Dropdown Widget
+  //  Filter Dropdown Widget
   Widget _dropdownBox(List<String> items, RxString selectedRx, BuildContext context) {
     return Obx(() => PopupMenuButton<String>(
       offset: const Offset(0, 40),

@@ -79,7 +79,7 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
     );
   }
 
- /// ------ Extra Widgets -------- ///
+  /// ------ Extra Widgets -------- ///
   // category Selection Widget
   Widget _buildCategorySelection(BuildContext context, CustomerController controller, double height, bool showText) {
     return Obx(() => Container(
@@ -118,7 +118,7 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
       ),
     ));
   }
-   // searchBar Widget
+  // searchBar Widget
   Widget _searchBarWithButton(BuildContext context, CustomerController controller, double height, bool showButton,) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final bool isLargeScreen = screenWidth > 600;
@@ -251,7 +251,7 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
       ),
     );
   }
-   // headerButton Widget
+  // headerButton Widget
   Widget _headerButton({required BuildContext context, required String icon, required String text, required bool isOpen, required bool showText, VoidCallback? onTap}) {
     return GestureDetector(
       onTap: onTap,

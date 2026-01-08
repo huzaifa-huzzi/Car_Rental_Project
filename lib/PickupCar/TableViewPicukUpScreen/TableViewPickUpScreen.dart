@@ -16,8 +16,6 @@ class TableViewPickUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final horizontalPadding = AppSizes.horizontalPadding(context);
-    final isMobile = AppSizes.isMobile(context);
-    final tablePadding = AppSizes.padding(context);
     final baseVerticalSpace = AppSizes.verticalPadding(context);
 
     return Scaffold(
@@ -36,7 +34,7 @@ class TableViewPickUpScreen extends StatelessWidget {
                     showSearch: true,
                     onAddPressed: () {
                       context.push(
-                        '/addNewCustomer',
+                        '/addPickup',
                         extra: {"hideMobileAppBar": true},
                       );
                     }

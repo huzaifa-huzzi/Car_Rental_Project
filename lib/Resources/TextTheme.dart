@@ -156,6 +156,11 @@ class TTextTheme {
     );
   }
 
+  static TextStyle textFieldStatusTheme(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 10),fontWeight: FontWeight.w400,color: Colors.white,
+    );
+  }
+
   static TextStyle smallXX(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 10),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
     );

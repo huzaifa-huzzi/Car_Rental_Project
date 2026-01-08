@@ -89,15 +89,26 @@ class PickupCarController extends GetxController {
 
 
   /// CardList pickup Header Widget
-  RxBool isSearchCategoryOpen = false.obs;
-  RxString selectedSearchType = "Name".obs;
+  var isSearchCategoryOpen = false.obs;
+  var selectedSearchType = "Customer Name".obs;
+
+  // Filter Values
+  var selectedMake = "Toyota".obs;
+  var selectedModel = "Corolla".obs;
+  var selectedYear = "2017".obs;
+  var selectedStatus = "Completed".obs;
+  var startDate = "12/12/25".obs;
+  var endDate = "12/12/25".obs;
+
 
   void toggleSearchCategory() {
     isSearchCategoryOpen.value = !isSearchCategoryOpen.value;
-    if (isSearchCategoryOpen.value) {
-      isFilterOpen.value = false;
-    }
+    if (isSearchCategoryOpen.value) isFilterOpen.value = false;
   }
+
+  // Lists for Dropdowns (Sample Data)
+  List<String> makes = ["Toyota", "Honda", "Suzuki", "Tesla"];
+  List<String> statuses = ["Completed", "Pending", "Cancelled"];
 
 
 
