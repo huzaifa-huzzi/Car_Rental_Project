@@ -55,7 +55,8 @@ class PickupCarController extends GetxController {
     int end = start + pageSize3.value;
 
     if (start >= carList3.length) return [];
-    return carList3.sublist(start, end > carList3.length ? carList3.length : end);
+    return carList3.sublist(
+        start, end > carList3.length ? carList3.length : end);
   }
 
   void goToPreviousPage() {
@@ -109,12 +110,22 @@ class PickupCarController extends GetxController {
   List<String> makes = ["Toyota", "Honda", "Suzuki", "Tesla"];
   List<String> statuses = ["Completed", "Pending", "Cancelled"];
 
-  // Is function mein keys bilkul wahi hain jo aapke TableWidget mein hain
   void generateDummyData() {
     carList3.clear();
 
-    List<String> customers = ["Alice Johnson", "Bob Smith", "Charlie Davis", "Diana Prince", "Ethan Hunt"];
-    List<String> statusOptions = ["Completed", "Awaiting", "Overdue", "Processing"];
+    List<String> customers = [
+      "Alice Johnson",
+      "Bob Smith",
+      "Charlie Davis",
+      "Diana Prince",
+      "Ethan Hunt"
+    ];
+    List<String> statusOptions = [
+      "Completed",
+      "Awaiting",
+      "Overdue",
+      "Processing"
+    ];
 
     for (int i = 0; i < 25; i++) {
       carList3.add({
@@ -132,5 +143,95 @@ class PickupCarController extends GetxController {
       });
     }
   }
+
+  /// Pick up Detail Screen
+  RxList<PlatformFile> carImages = <PlatformFile>[].obs;
+  var isPersonalUse = true.obs;
+  var isManualPayment = true.obs;
+
+  // --- Rent Time Section Controllers ---
+  final startDateController = TextEditingController();
+  final startTimeController = TextEditingController();
+  final endDateController = TextEditingController();
+  final endTimeController = TextEditingController();
+
+  // --- Signature Section Controllers ---
+  final ownerNameController = TextEditingController(text: "Softsnip");
+  final hirerNameController = TextEditingController(text: "Softsnip");
+
+  // --- Pehle se mojood controllers (Reference ke liye) ---
+  final weeklyRentController = TextEditingController();
+  final rentBondAmountController = TextEditingController();
+  final rentDueAmountController = TextEditingController();
+
+  final bondAmountController = TextEditingController();
+  final paidBondController = TextEditingController();
+  final dueBondAmountController = TextEditingController();
+
+  final odoController = TextEditingController();
+  final fuelLevelController = TextEditingController();
+  final interiorCleanlinessController = TextEditingController();
+  final exteriorCleanlinessController = TextEditingController();
+  final additionalCommentsController = TextEditingController();
+
+  final dropoffNotesController = TextEditingController();
+
+  // Observables for Dropdowns/Selection
+  var dropoffLocation = "Softsnip Head Office".obs;
+  var dropoffType = "Business".obs;
+  var dropoffSeverity = "Minor".obs;
+
+  @override
+  void onClose() {
+    // Memory leak se bachne ke liye controllers ko dispose karna zaroori hai
+    startDateController.dispose();
+    startTimeController.dispose();
+    endDateController.dispose();
+    endTimeController.dispose();
+    ownerNameController.dispose();
+    hirerNameController.dispose();
+    super.onClose();
+  }
+
+  RxList<ImageHolder> selectedImages = <ImageHolder>[].obs;
+  final int maxImages = 10; // Limit for images
+
+  Future<void> pickImage() async {
+    if (selectedImages.length >= maxImages) {
+      Get.snackbar("Limit Reached",
+          "You can only upload a maximum of $maxImages images.");
+      return;
+    }
+
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowMultiple: true, // Multiple pick allowed
+      allowedExtensions: ['png', 'jpg', 'jpeg', 'svg'],
+      withData: kIsWeb,
+    );
+
+    if (result != null) {
+      for (var file in result.files) {
+        if (selectedImages.length < maxImages) {
+          if (kIsWeb && file.bytes != null) {
+            selectedImages.add(ImageHolder(bytes: file.bytes, name: file.name));
+          } else if (file.path != null) {
+            selectedImages.add(ImageHolder(path: file.path, name: file.name));
+          }
+        }
+      }
+      if (result.files.length + selectedImages.length > maxImages) {
+        Get.snackbar("Note", "Only first 10 images were added.");
+      }
+    }
+  }
+
+  void removeImage(int index) {
+    if (index >= 0 && index < selectedImages.length) {
+      selectedImages.removeAt(index);
+    }
+  }
+
+
 }
 
