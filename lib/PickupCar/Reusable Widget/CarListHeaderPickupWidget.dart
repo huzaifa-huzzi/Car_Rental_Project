@@ -240,6 +240,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
     );
   }
 
+  // Icon Paths
   String _getIconPathForType(String type) {
     switch (type) {
       case "Customer Name": return IconString.nameIcon;
@@ -254,6 +255,8 @@ class CardListHeaderPickupWidget extends StatelessWidget {
   Widget _buildResponsiveFilterPanel(BuildContext context, bool isMobile, PickupCarController controller) {
     double screenWidth = MediaQuery.of(context).size.width;
     bool isMobileUI = screenWidth < 600;
+
+    final List<String> statuses = ["Completed", "Awaiting", "Processing", "Overdue"];
 
     return Align(
       alignment: isMobileUI ? Alignment.center : Alignment.centerLeft,
@@ -278,7 +281,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
             const SizedBox(height: 16),
             _filterItem("Year", _textFieldBox(controller.selectedYear.value, context), context),
             const SizedBox(height: 16),
-            _filterItem("Status", _statusDropdownBox(controller.statuses, controller.selectedStatus, context), context),
+            _filterItem("Status", _statusDropdownBox(statuses, controller.selectedStatus, context), context),
             const SizedBox(height: 16),
             _filterItem("Start Date", _textFieldBox(controller.startDate.value, context), context),
             const SizedBox(height: 16),
@@ -294,7 +297,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
             _filterItem("Make", _dropdownBox(controller.makes, controller.selectedMake, context), context, customWidth: 120),
             _filterItem("Model", _textFieldBox(controller.selectedModel.value, context), context, customWidth: 140),
             _filterItem("Year", _textFieldBox(controller.selectedYear.value, context), context, customWidth: 90),
-            _filterItem("Status", _statusDropdownBox(controller.statuses, controller.selectedStatus, context), context, customWidth: 160),
+            _filterItem("Status", _statusDropdownBox(statuses, controller.selectedStatus, context), context, customWidth: 160),
             _filterItem("Start Date", _textFieldBox(controller.startDate.value, context), context, customWidth: 125),
             _filterItem("End Date", _textFieldBox(controller.endDate.value, context), context, customWidth: 125),
           ],
@@ -370,26 +373,47 @@ class CardListHeaderPickupWidget extends StatelessWidget {
     ));
   }
 
-//  Status Dropdown Widget
+// Status Dropdown Widget
   Widget _statusDropdownBox(List<String> items, RxString selectedRx, BuildContext context) {
     return Obx(() => PopupMenuButton<String>(
-      offset: const Offset(0, 40),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      offset: const Offset(0, 45),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       color: AppColors.secondaryColor,
+      elevation: 4,
       onSelected: (v) => selectedRx.value = v,
       itemBuilder: (BuildContext context) {
         List<PopupMenuEntry<String>> menuItems = [];
+
         for (int i = 0; i < items.length; i++) {
           menuItems.add(
             PopupMenuItem<String>(
               value: items[i],
-              height: 35,
-              child: Text(items[i], style: TTextTheme.dropdowninsideText(context)),
+              height: 45,
+              child: Container(
+                width: 120,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                decoration: BoxDecoration(
+                  color: _getStatusBgColor(items[i]),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: AppColors.sideBoxesColor,
+                    width: 1,
+                  ),
+                ),
+                child: Text(
+                  items[i],
+                  textAlign: TextAlign.center,
+                  style: TTextTheme.textFieldStatusTheme(context)?.copyWith(
+                    color: _getStatusTextColor(items[i]),
+                  ),
+                ),
+              ),
             ),
           );
+
           if (i < items.length - 1) {
             menuItems.add(
-              const PopupMenuDivider(height: 1),
+              const PopupMenuDivider(height: 0.3, color: AppColors.quadrantalTextColor),
             );
           }
         }
@@ -407,12 +431,18 @@ class CardListHeaderPickupWidget extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: AppColors.textColor,
+                color: _getStatusBgColor(selectedRx.value),
                 borderRadius: BorderRadius.circular(6),
+                border: Border.all(
+                  color: AppColors.sideBoxesColor,
+                  width: 1,
+                ),
               ),
               child: Text(
                 selectedRx.value,
-                style: TTextTheme.textFieldStatusTheme(context),
+                style: TTextTheme.textFieldStatusTheme(context)?.copyWith(
+                  color: _getStatusTextColor(selectedRx.value),
+                ),
               ),
             ),
             const Spacer(),
@@ -422,6 +452,28 @@ class CardListHeaderPickupWidget extends StatelessWidget {
       ),
     ));
   }
+
+  // Helper methods for colors for filter dropdowns
+  Color _getStatusBgColor(String status) {
+    switch (status) {
+      case "Completed": return AppColors.textColor;
+      case "Processing":
+      case "Overdue": return AppColors.iconsBackgroundColor;
+      case "Awaiting": return AppColors.secondaryColor;
+      default: return Colors.grey.shade100;
+    }
+  }
+
+  Color _getStatusTextColor(String status) {
+    switch (status) {
+      case "Completed": return Colors.white;
+      case "Processing":
+      case "Overdue": return AppColors.primaryColor;
+      case "Awaiting": return AppColors.textColor;
+      default: return Colors.black;
+    }
+  }
+
   // TextField Widget
   Widget _textFieldBox(String label, BuildContext context) {
     return Container(

@@ -33,14 +33,11 @@ class PickupCarController extends GetxController {
   final RxInt pageSize3 = 8.obs;
   final RxInt selectedView3 = 0.obs;
 
-  // Ye main list hai jo data hold karegi
   RxList<Map<String, dynamic>> carList3 = <Map<String, dynamic>>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    // Purana "id" aur "name" wala code hata diya hai
-    // Ab direct function call hoga jo sahi keys wala data bharega
     generateDummyData();
   }
 
@@ -49,7 +46,6 @@ class PickupCarController extends GetxController {
     return (carList3.length / pageSize3.value).ceil();
   }
 
-  // Table ko data dene wala getter
   List<Map<String, dynamic>> get displayedCarList {
     int start = (currentPage3.value - 1) * pageSize3.value;
     int end = start + pageSize3.value;
@@ -120,12 +116,8 @@ class PickupCarController extends GetxController {
       "Diana Prince",
       "Ethan Hunt"
     ];
-    List<String> statusOptions = [
-      "Completed",
-      "Awaiting",
-      "Overdue",
-      "Processing"
-    ];
+    List<String> statuses = ["Completed", "Awaiting", "Processing", "Overdue"];
+
 
     for (int i = 0; i < 25; i++) {
       carList3.add({
@@ -139,7 +131,7 @@ class PickupCarController extends GetxController {
         "rentalPeriod": "3 days",
         "pickupStart": "Jan 08, 2026",
         "pickupEnd": "Jan 15, 2026",
-        "status": statusOptions[i % statusOptions.length],
+        "status": statuses[i % statuses.length],
       });
     }
   }

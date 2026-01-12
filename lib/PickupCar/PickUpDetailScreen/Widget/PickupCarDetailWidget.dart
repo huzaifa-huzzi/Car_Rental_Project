@@ -69,8 +69,7 @@ class PickupDetailWidget extends StatelessWidget {
                 icon: IconString.paymentIcon,
                 child: _buildInfoGrid(context, [
                   {"label": "Weekly Rent", "controller": controller.weeklyRentController, "hint": "Enter Weekly Rent"},
-                  {"label": "Bond Amount", "controller": controller.rentBondAmountController, "hint": "Enter Bond Amount"},
-                  {"label": "Due Amount", "controller": controller.rentDueAmountController, "hint": "Enter Due Amount"},
+                  {"label": "Daily Rent", "controller": controller.rentDueAmountController, "hint": "Enter Due Amount"},
                 ], isMobile)),
             const SizedBox(height: 25),
             /// --- 6. BOND PAYMENT SECTION ---
