@@ -413,7 +413,9 @@ class CardListHeaderPickupWidget extends StatelessWidget {
 
           if (i < items.length - 1) {
             menuItems.add(
-              const PopupMenuDivider(height: 0.3, color: AppColors.quadrantalTextColor),
+               PopupMenuDivider(   height: 0.3,
+                thickness: 0.3,
+                color: AppColors.quadrantalTextColor,),
             );
           }
         }
