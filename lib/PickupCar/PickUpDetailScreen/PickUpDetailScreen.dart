@@ -1,6 +1,3 @@
-import 'package:car_rental_project/Customers/CustomersDetails/Widget/CustomerDetailWidget.dart';
-import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/DeletePopup.dart';
-import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/HeaderWebCustomersWidget.dart';
 import 'package:car_rental_project/PickupCar/PickUpDetailScreen/Widget/PickupCarDetailWidget.dart';
 import 'package:car_rental_project/PickupCar/Reusable%20Widget/HeaderWebPickupWidget.dart';
 import 'package:car_rental_project/PickupCar/Reusable%20Widget/PicupDeletePopup.dart';

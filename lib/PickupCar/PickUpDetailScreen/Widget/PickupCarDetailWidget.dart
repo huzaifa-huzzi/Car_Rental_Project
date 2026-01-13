@@ -1,10 +1,10 @@
 import 'dart:io';
+import 'package:car_rental_project/PickupCar/Reusable%20Widget/AddButtonOfPickup.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/AlertDialogs.dart';
 import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/PickupCar/Reusable%20Widget/AddPickupButton.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
@@ -156,8 +156,6 @@ class PickupDetailWidget extends StatelessWidget {
 
   /// --- UI COMPONENTS ---
 
-  // Custom Grid for Rent/Bond Details (Matches image_ff62c2.png)
-  // Extended Info Grid with Selection Icons (Matches Car Report Screenshot)
   Widget _buildInfoGrid(BuildContext context, List<Map<String, dynamic>> items, bool isMobile) {
     // Screen width calculation to divide by 4 for Desktop
     final double availableWidth = MediaQuery.of(context).size.width;
@@ -206,7 +204,6 @@ class PickupDetailWidget extends StatelessWidget {
     );
   }
 
-  // Large Comment/Notes Field
   Widget _buildCommentField(BuildContext context, String label, TextEditingController controller, String hint) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,7 +224,6 @@ class PickupDetailWidget extends StatelessWidget {
     );
   }
 
-  // Damage Inspection Card (Matches ffc7e2.png)
   Widget _buildDamageInspectionCard(BuildContext context, bool isMobile) {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -320,123 +316,60 @@ class PickupDetailWidget extends StatelessWidget {
     );
   }
 
-  Widget _imageBox(BuildContext context) {
-    return GestureDetector(
-      onTap: () => controller.pickImage(),
-      child: Obx(() {
-        return DottedBorder(
-          borderType: BorderType.RRect,
-          radius: const Radius.circular(12),
-          dashPattern: const [8, 6],
-          color: Colors.grey.shade400,
-          strokeWidth: 1,
-          child: Container(
-            width: double.infinity,
-            constraints: const BoxConstraints(minHeight: 180),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: controller.selectedImages.isEmpty
-                ? Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF3F4F6),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Image.asset(IconString.uploadIcon, width: 24, height: 24),
-                ),
-                const SizedBox(height: 10),
-                const Text("Upload Car Pictures",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                const Text("PNG, JPG, SVG ",
-                    style: TextStyle(color: Colors.grey, fontSize: 11)),
-              ],
-            )
-                : Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: [
-                ...controller.selectedImages.asMap().entries.map((entry) {
-                  int index = entry.key;
-                  final imageHolder = entry.value;
-
-                  return Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.red.shade100, width: 1),
-                          image: DecorationImage(
-                            image: kIsWeb
-                                ? MemoryImage(imageHolder.bytes!)
-                                : FileImage(File(imageHolder.path!)) as ImageProvider,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: -5,
-                        right: -5,
-                        child: GestureDetector(
-                          onTap: () {
-                            controller.removeImage(index);
-                          },
-                          child: const CircleAvatar(
-                            radius: 10,
-                            backgroundColor: Colors.red,
-                            child: Icon(Icons.close, size: 12, color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                }).toList(),
-              ],
-            ),
-          ),
-        );
-      }),
-    );
-  }
 
   Widget _buildPageHeader(BuildContext context, bool isMobile) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start, // Align top for better look on small screens
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Pickup Car Details",
-                style: TTextTheme.titleOne(context)?.copyWith(fontWeight: FontWeight.bold, fontSize: isMobile ? 20 : 24)),
-            Text("The specification for the pre rental details",
-                style: TTextTheme.smallX(context)?.copyWith(color: Colors.grey[600])),
-          ],
+        /// TITLE SECTION
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Pickup Car Details",
+                style: TTextTheme.titleOne(context)?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: isMobile ? 18 : 24, // Thora font size kam kiya mobile ke liye
+                ),
+                overflow: TextOverflow.ellipsis, // Dots (...) if width < 200px
+                maxLines: 1,
+              ),
+              Text(
+                "The specification for the pre rental details",
+                style: TTextTheme.smallX(context)?.copyWith(
+                  color: Colors.grey[600],
+                  fontSize: isMobile ? 10 : 12,
+                ),
+                overflow: TextOverflow.ellipsis, // Safety for sub-text
+                maxLines: 1,
+              ),
+            ],
+          ),
         ),
+
+        const SizedBox(width: 8), // Gap between text and buttons
+
+        /// BUTTONS SECTION
         Row(
+          mainAxisSize: MainAxisSize.min, // Buttons sirf utni hi jagah lein jitni zaroori hai
           children: [
             AddPickUpButton(
               text: isMobile ? "" : "Edit",
               iconPath: IconString.editIcon,
               iconColor: AppColors.secondTextColor,
-              width: isMobile ? 40 : 110,
+              width: isMobile ? 38 : 110, // Width adjust for 200px screen
               height: 38,
               textColor: AppColors.secondTextColor,
               borderColor: AppColors.sideBoxesColor,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 6), // Tight spacing for mobile
             AddPickUpButton(
               text: isMobile ? "" : "Delete",
               iconPath: IconString.deleteIcon,
               iconColor: AppColors.secondTextColor,
-              width: isMobile ? 40 : 110,
+              width: isMobile ? 38 : 110,
               height: 38,
               textColor: AppColors.secondTextColor,
               borderColor: AppColors.sideBoxesColor,
@@ -449,20 +382,42 @@ class PickupDetailWidget extends StatelessWidget {
   }
 
   Widget _buildRentTimeSection(BuildContext context, bool isMobile) {
+    // --- MOBILE VIEW (One by One layout) ---
+    if (isMobile) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // 1. Agreement Start Time Section
+          const Text("Agreement Start Time",
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+          const SizedBox(height: 8),
+          _editableTimeField(controller.startDateController, "02/12/2025"), // Start Date
+          const SizedBox(height: 8), // Chota gap field ke darmiyan
+          _editableTimeField(controller.startTimeController, "12:12 PM"),   // Start Time
+
+          const SizedBox(height: 24), // Bada gap Start aur End time ke darmiyan
+
+          // 2. Agreement End Time Section
+          const Text("Agreement End Time",
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+          const SizedBox(height: 8),
+          _editableTimeField(controller.endDateController, "02/12/2025"),   // End Date
+          const SizedBox(height: 8), // Chota gap field ke darmiyan
+          _editableTimeField(controller.endTimeController, "12:12 PM"),     // End Time
+        ],
+      );
+    }
+
+    // --- WEB / TABLET VIEW (Same as before with Arrow) ---
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // 1. Agreement Start Time (Flexible taake overlap na ho)
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  const Text("Agreement Start Time",
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
-                ],
-              ),
+              const Text("Agreement Start Time",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
               const SizedBox(height: 8),
               Row(
                 children: [
@@ -474,30 +429,30 @@ class PickupDetailWidget extends StatelessWidget {
             ],
           ),
         ),
-
         Container(
-          width: isMobile ? 60 : 180,
-          padding: const EdgeInsets.symmetric(horizontal: 15),
+          width: 180,
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           alignment: Alignment.center,
           child: Column(
             children: [
-              const SizedBox(height: 20), // Label ke sath align karne ke liye
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Left Pink Line
-                  Expanded(child: Container(height: 2, color: const Color(0xFFFFD1D1))),
+                  Expanded(child: Container(height: 1.5, color: const Color(0xFFFFD1D1))),
                   const SizedBox(width: 5),
-                  // Clock Icon
-                  const Icon(Icons.access_time, color: Colors.red, size: 24),
+                  const Icon(Icons.access_time, color: Colors.red, size: 22),
                   const SizedBox(width: 5),
-                  // Right Pink Line with Arrow
                   Expanded(
                     child: Stack(
                       alignment: Alignment.centerRight,
+                      clipBehavior: Clip.none,
                       children: [
-                        Container(height: 2, color: const Color(0xFFFFD1D1)),
-                        const Icon(Icons.arrow_forward_ios, color: Color(0xFFFFD1D1), size: 14),
+                        Container(height: 1.5, color: const Color(0xFFFFD1D1)),
+                        const Positioned(
+                          right: -5,
+                          child: Icon(Icons.chevron_right, color: Color(0xFFFFD1D1), size: 20),
+                        ),
                       ],
                     ),
                   ),
@@ -506,8 +461,6 @@ class PickupDetailWidget extends StatelessWidget {
             ],
           ),
         ),
-
-        // 3. Agreement End Time
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -633,6 +586,77 @@ class PickupDetailWidget extends StatelessWidget {
     );
   }
 
+  Widget _imageBox(BuildContext context) {
+    bool isMobileView = MediaQuery.of(context).size.width < 600 && !kIsWeb;
+
+    return GestureDetector(
+      onTap: () => controller.pickImage(),
+      child: Obx(() {
+        return Container(
+          width: double.infinity,
+          constraints: const BoxConstraints(minHeight: 180),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: AppColors.tertiaryTextColor,
+              width: 1.5,
+            ),
+          ),
+          child: controller.selectedImages.isEmpty
+              ? Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF3F4F6),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Image.asset(IconString.uploadIcon, width: 24, height: 24),
+              ),
+              const SizedBox(height: 10),
+              const Text("Upload Car Pictures",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+              const Text("PNG, JPG, SVG ",
+                  style: TextStyle(color: Colors.grey, fontSize: 11)),
+            ],
+          )
+              : LayoutBuilder(builder: (context, constraints) {
+            // Sirf mobile ke liye width calculate hogi, baki jagah 100 fixed rahegi
+            final double itemWidth = isMobileView
+                ? (constraints.maxWidth - 12) / 2
+                : 100;
+
+            return Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              children: [
+                ...controller.selectedImages.map((imageHolder) {
+                  return Container(
+                    height: 100,
+                    width: itemWidth, // Mobile pe dynamic, Web pe 100
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.grey.shade200, width: 1),
+                      image: DecorationImage(
+                        image: kIsWeb
+                            ? MemoryImage(imageHolder.bytes!)
+                            : FileImage(File(imageHolder.path!)) as ImageProvider,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ],
+            );
+          }),
+        );
+      }),
+    );
+  }
+
   Widget _buildSection(BuildContext context, {
     required String title,
     required String icon,
@@ -672,16 +696,288 @@ class PickupDetailWidget extends StatelessWidget {
 
   Widget _buildDetailedCustomerCard(BuildContext context, bool isMobile) {
     return Container(
-      padding: const EdgeInsets.all(15),
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 25),
       decoration: BoxDecoration(
         color: const Color(0xFFFEF2F2),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFFEE2E2)),
       ),
       child: isMobile
-          ? Column(children: _buildCustomerContent(context, true))
-          : Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: _buildCustomerContent(context, false)),
+          ? Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /// TOP ROW: Profile & View Button
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded( // Yeh text ko wrap karega taake button ke liye jagah bache
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.asset(
+                        ImageString.customerUser,
+                        width: 40,
+                        height: 40,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded( // Name aur Driver text ke liye
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            "Carlie Harvy",
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            "Driver",
+                            style: TextStyle(fontSize: 10, color: Colors.grey),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 5),
+              AddButtonOfPickup(
+                text: "View",
+                width: 60, // Width thori kam ki hai 200px ke liye
+                onTap: () {},
+              ),
+            ],
+          ),
+          const SizedBox(height: 15),
+
+          /// BOTTOM SECTION: Scrollable Info
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                _infoBlock(Icons.phone_android_outlined, "Contact", "+12 3456 7890"),
+                const SizedBox(width: 15),
+                _infoBlock(Icons.badge_outlined, "License", "1245985642"),
+                const SizedBox(width: 15),
+                _infoBlock(Icons.credit_card, "Card", "1243567434"),
+                const SizedBox(width: 15),
+                _infoBlock(Icons.badge_outlined, "NID", "123 456 789"),
+              ],
+            ),
+          ),
+        ],
+      )
+          : LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minWidth: constraints.maxWidth),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: _buildCustomerRowContent(context, false),
+              ),
+            ),
+          );
+        },
+      ),
     );
+  }
+
+  List<Widget> _buildCustomerRowContent(BuildContext context, bool isMobile) {
+    return [
+      /// PROFILE
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.asset(ImageString.customerUser, width: 50, height: 50, fit: BoxFit.cover),
+          ),
+          const SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text("Carlie Harvy", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+              Text("Driver", style: TextStyle(fontSize: 11, color: Colors.grey)),
+            ],
+          ),
+        ],
+      ),
+
+      // Spacing adjustment
+      isMobile ? const SizedBox(height: 20) : const SizedBox(width: 30),
+
+      /// INFO BLOCKS
+      _infoBlock(Icons.email_outlined, "Email", "Contact@SoftSnip.com.au"),
+      isMobile ? const SizedBox(height: 12) : const SizedBox(width: 25),
+
+      _infoBlock(Icons.phone_android_outlined, "Contact Number", "+12 3456 7890"),
+      isMobile ? const SizedBox(height: 12) : const SizedBox(width: 25),
+
+      _infoBlock(Icons.location_on_outlined, "Address", "Toronto, California, 1234"),
+      isMobile ? const SizedBox(height: 12) : const SizedBox(width: 25),
+
+      _infoBlock(Icons.badge_outlined, "NID Number", "123 456 789"),
+
+      if (isMobile) const SizedBox(height: 20),
+      if (!isMobile) const SizedBox(width: 30),
+
+      /// VIEW BUTTON
+      AddButtonOfPickup(text: "View", onTap: () {}),
+    ];
+  }
+
+
+  Widget _buildDetailedCarCard(BuildContext context, bool isMobile) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: isMobile ? 18 : 15),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF3F3),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: isMobile
+          ? Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    Image.asset(ImageString.astonPic, width: 75),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text("Aston 2025", style: TextStyle(fontSize: 10, color: Colors.grey), overflow: TextOverflow.ellipsis),
+                          Text("Martin", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              AddButtonOfPickup(text: "View", width: 65, onTap: () {}),
+            ],
+          ),
+          const SizedBox(height: 12),
+
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                _infoRowTag(label: "Registration", value: "1234567890"),
+                const SizedBox(width: 10),
+
+                _infoRowTag(
+                    label: "VIN",
+                    value: "JTNBA3HK003001234",
+                    labelColor: const Color(0xFF2196F3)
+                ),
+
+                const SizedBox(width: 45),
+                _buildSpecColumn("Transmission", "Auto", Icons.settings_input_component),
+
+                const SizedBox(width: 45),
+                _buildSpecColumn("Capacity", "2 seats", Icons.chair_alt_outlined),
+
+                const SizedBox(width: 25),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("Price", style: TextStyle(fontSize: 9, color: Colors.grey)),
+                    Row(
+                      children: const [
+                        Text("\$130", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                        Text("/Wk", style: TextStyle(fontSize: 9, color: Colors.grey)),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      )
+          : LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minWidth: constraints.maxWidth),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: _buildCarContent(context, false),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  List<Widget> _buildCarContent(BuildContext context, bool isMobile) {
+    return [
+      ///  CAR IMAGE + TITLE
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(ImageString.astonPic, width: 110),
+          const SizedBox(width: 15),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("Range Rover 2024", style: TextStyle(fontSize: 12, color: Colors.grey)),
+              const Text("Velar", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              _infoRowTag(label: "Registration", value: "1234567890"),
+              const SizedBox(height: 10),
+              _infoRowTag(label: "VIN", value: "JTNBA3HK003001234", labelColor: const Color(0xFF2196F3)),
+            ],
+          ),
+        ],
+      ),
+
+      if (isMobile) const SizedBox(height: 20),
+
+      ///  TRANSMISSION & CAPACITY
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildSpecColumn("Transmission", "Automatic", Icons.settings_input_component),
+          const SizedBox(width: 95),
+          _buildSpecColumn("Capacity", "2 seats", Icons.chair_alt_outlined),
+        ],
+      ),
+
+      if (isMobile) const SizedBox(height: 20),
+
+      ///  PRICE
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text("Price", style: TextStyle(fontSize: 10, color: Colors.grey)),
+          Row(
+            children: const [
+              Text("\$130", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text("/Weekly", style: TextStyle(fontSize: 10, color: Colors.grey)),
+            ],
+          ),
+        ],
+      ),
+
+      if (isMobile) const SizedBox(height: 20),
+
+      AddButtonOfPickup(text: "View", onTap: () {}),
+    ];
   }
 
   Widget _statusBadge(String text) {
@@ -702,125 +998,112 @@ class PickupDetailWidget extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildCustomerContent(BuildContext context, bool isMobile) {
-    return [
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(2),
-            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.asset(ImageString.customerUser, width: 50, height: 50, fit: BoxFit.cover),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Carlie Harvy", style: TTextTheme.titleThree(context)?.copyWith(fontWeight: FontWeight.bold)),
-              Text("Driver", style: const TextStyle(fontSize: 10, color: Colors.grey)),
-            ],
-          ),
-        ],
-      ),
-      if (isMobile) const SizedBox(height: 15),
-      _infoBlock(context, Icons.email_outlined, "Email", "Contact@SoftSnip.com.au"),
-      _infoBlock(context, Icons.phone_android_outlined, "Contact Number", "+12 3456 7890"),
-      _infoBlock(context, Icons.location_on_outlined, "Address", "Toronto, California, 1234"),
-      _redActionBtn("View", () {}),
-    ];
-  }
 
-  Widget _buildDetailedCarCard(BuildContext context, bool isMobile) {
-    return Container(
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFEF2F2),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFFEE2E2)),
-      ),
-      child: isMobile
-          ? Column(children: _buildCarContent(context, true))
-          : Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: _buildCarContent(context, false)),
+  Widget _buildSpecColumn(String label, String value, IconData icon) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(color: const Color(0xFFE0F2FE), borderRadius: BorderRadius.circular(8)),
+          child: Icon(icon, size: 20, color: Colors.blueGrey),
+        ),
+        const SizedBox(height: 3),
+        Text(label, style: const TextStyle(fontSize: 10, color: Colors.grey)),
+        Text(value, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+      ],
     );
   }
 
-  List<Widget> _buildCarContent(BuildContext context, bool isMobile) {
-    return [
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.asset(ImageString.astonPic, width: 120),
-          const SizedBox(width: 15),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text("Range Rover 2024", style: TextStyle(fontSize: 10, color: Colors.grey)),
-              Text("Velar", style: TTextTheme.titleThree(context)?.copyWith(fontWeight: FontWeight.bold)),
-              const SizedBox(height: 5),
-              Row(children: [
-                _miniTag("Registration", "1234567890", Colors.blueGrey),
-                const SizedBox(width: 5),
-                _miniTag("VIN", "JTNBA3HK003001234", Colors.blue),
-              ]),
-            ],
+
+  Widget _infoRowTag({
+    required String label,
+    required String value,
+    Color labelColor = const Color(0xFF1E293B),
+  }) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        /// LABEL BOX
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: BoxDecoration(
+            color: labelColor,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(6),
+              bottomLeft: Radius.circular(6),
+            ),
           ),
-        ],
-      ),
-      if (isMobile) const SizedBox(height: 15),
-      _carSpecIcon(context, Icons.settings_input_component_outlined, "Transmission", "Automatic"),
-      _carSpecIcon(context, Icons.person_outline, "Capacity", "2 seats"),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text("Price", style: TextStyle(fontSize: 10, color: Colors.grey)),
-          Text("\$130/Weekly", style: TTextTheme.titleThree(context)?.copyWith(fontWeight: FontWeight.bold)),
-        ],
-      ),
-      _redActionBtn("View", () {}),
-    ];
+          child: Text(
+            label,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+
+        /// VALUE BOX
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: BoxDecoration(
+            color: const Color(0xFFE8EEF5), // Light Grayish Blue like screenshot
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(6),
+              bottomRight: Radius.circular(6),
+            ),
+          ),
+          child: Text(
+            value,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 10,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
-  Widget _infoBlock(BuildContext context, IconData icon, String label, String value) {
+
+
+  Widget _infoBlock(IconData icon, String label, String value) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
           padding: const EdgeInsets.all(6),
-          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(6)),
-          child: Icon(icon, size: 16, color: Colors.black87),
+          decoration: BoxDecoration(
+            color: const Color(0xFFE0F2FE),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(icon, size: 16, color: Colors.black),
         ),
         const SizedBox(width: 8),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(label, style: const TextStyle(fontSize: 9, color: Colors.grey)),
-            Text(value, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
-          ],
+        // Flexible zaroori hai narrow row ke liye
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(fontSize: 9, color: Colors.grey),
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                value,
+                style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
         ),
       ],
     );
   }
 
-  Widget _carSpecIcon(BuildContext context, IconData icon, String label, String value) {
-    return Column(
-      children: [
-        Icon(icon, size: 18, color: Colors.blueGrey),
-        Text(label, style: const TextStyle(fontSize: 9, color: Colors.grey)),
-        Text(value, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
-      ],
-    );
-  }
-
-  Widget _miniTag(String label, String value, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-      decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(4)),
-      child: Text("$label: $value", style: TextStyle(fontSize: 8, color: color, fontWeight: FontWeight.bold)),
-    );
-  }
 
   Widget _toggleStatusTag(BuildContext context, String text, RxBool stateVariable) {
     return Obx(() => GestureDetector(
@@ -856,19 +1139,6 @@ class PickupDetailWidget extends StatelessWidget {
         ),
       ),
     ));
-  }
-
-  Widget _redActionBtn(String label, VoidCallback onTap) {
-    return ElevatedButton(
-      onPressed: onTap,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFFFF3B3B),
-        elevation: 0,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      ),
-      child: Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
-    );
   }
 
   void _showDeleteDialog(BuildContext context) {
