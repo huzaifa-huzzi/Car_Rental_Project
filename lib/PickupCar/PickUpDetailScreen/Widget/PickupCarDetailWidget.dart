@@ -105,8 +105,8 @@ class PickupDetailWidget extends StatelessWidget {
                     _buildInfoGrid(context, [
                       {"label": "ODO", "controller": controller.odoController, "hint": "12457678", "hasIcon": false},
                       {"label": "Fuel Level", "controller": controller.fuelLevelController, "hint": "Full (100%)", "hasIcon": true},
-                      {"label": "Interior Cleanliness", "controller": controller.interiorCleanlinessController, "hint": "Excellent", "hasIcon": true},
-                      {"label": "Exterior Cleanliness", "controller": controller.exteriorCleanlinessController, "hint": "Excellent", "hasIcon": true},
+                      {"label": " Pickup Interior Cleanliness", "controller": controller.interiorCleanlinessController, "hint": "Excellent", "hasIcon": true},
+                      {"label": "Pickup Exterior Cleanliness", "controller": controller.exteriorCleanlinessController, "hint": "Excellent", "hasIcon": true},
                     ], isMobile),
                     const SizedBox(height: 15),
                     _buildCommentField(context, "Additional Comments", controller.additionalCommentsController, "Describe the vehicle's condition..."),
@@ -135,16 +135,16 @@ class PickupDetailWidget extends StatelessWidget {
                 )),
             const SizedBox(height: 25),
             _buildSection(context,
-                title: "Rent Time", // Is title ke sath badge automatically ayega agar hum niche wala function update karein
+                title: "Rent Time",
                 icon: IconString.vinNumberIcon,
-                showBadge: true, // Naya parameter badge dikhane ke liye
+                showBadge: true,
                 child: _buildRentTimeSection(context, isMobile)),
             const SizedBox(height: 25),
 
             /// --- 11. SIGNATURE SECTION ---
             _buildSection(context,
                 title: "Signature",
-                icon: IconString.customerIcon, // Use a signature/check icon
+                icon: IconString.customerIcon,
                 child: _buildSignatureSection(context, isMobile)),
 
             const SizedBox(height: 50),
@@ -225,28 +225,72 @@ class PickupDetailWidget extends StatelessWidget {
   }
 
   Widget _buildDamageInspectionCard(BuildContext context, bool isMobile) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade200),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildDropdownField("Dropoff Location", controller.dropoffLocation),
-          const SizedBox(height: 15),
-          Row(
-            children: [
-              Expanded(child: _buildDropdownField("Dropoff Type", controller.dropoffType)),
-              const SizedBox(width: 20),
-              Expanded(child: _buildSeverityPicker()),
-            ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double screenWidth = constraints.maxWidth;
+
+        // 1. Screen Detection Logic
+        bool isWeb = screenWidth > 1024; // Desktop/Web
+        bool isTablet = screenWidth >= 450 && screenWidth <= 1024; // Tablet
+        bool shouldStack = screenWidth < 450; // Mobile
+
+        return Align(
+          alignment: Alignment.centerLeft, // Hamesha left se start hoga
+          child: Container(
+            // Width logic: Web pe half, baaki jagah full
+            width: isWeb ? (screenWidth * 0.5) : double.infinity,
+
+            // Pixels issue na aaye isliye padding aur constraints set kiye hain
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Colors.grey.shade200),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Dropoff Location
+                _buildDropdownField("Dropoff Location", controller.dropoffLocation),
+                const SizedBox(height: 20),
+
+                /// Dropoff Type aur Severity Picker Section
+                Flex(
+                  direction: shouldStack ? Axis.vertical : Axis.horizontal,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: shouldStack ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+                  children: [
+                    // Dropoff Type: Isay fixed width di hai taake web/tab pe phaylay nahi
+                    SizedBox(
+                      width: shouldStack ? double.infinity : 200,
+                      child: _buildDropdownField("Dropoff Type", controller.dropoffType),
+                    ),
+
+                    // Gap adjustment
+                    shouldStack ? const SizedBox(height: 15) : const SizedBox(width: 30),
+
+                    // Severity Picker
+                    if (!shouldStack)
+                      Flexible(child: _buildSeverityPicker()) // Row mein flexible taake line mein rahe
+                    else
+                      _buildSeverityPicker(), // Mobile pe default behavior
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                // Dropoff Notes
+                _buildCommentField(
+                    context,
+                    "Dropoff Notes",
+                    controller.dropoffNotesController,
+                    "Describe the vehicle's condition..."
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 15),
-          _buildCommentField(context, "Dropoff Notes", controller.dropoffNotesController, "Describe the vehicle's condition..."),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -320,7 +364,7 @@ class PickupDetailWidget extends StatelessWidget {
   Widget _buildPageHeader(BuildContext context, bool isMobile) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start, // Align top for better look on small screens
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// TITLE SECTION
         Expanded(
@@ -331,9 +375,9 @@ class PickupDetailWidget extends StatelessWidget {
                 "Pickup Car Details",
                 style: TTextTheme.titleOne(context)?.copyWith(
                   fontWeight: FontWeight.bold,
-                  fontSize: isMobile ? 18 : 24, // Thora font size kam kiya mobile ke liye
+                  fontSize: isMobile ? 18 : 24,
                 ),
-                overflow: TextOverflow.ellipsis, // Dots (...) if width < 200px
+                overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
               Text(
@@ -342,29 +386,29 @@ class PickupDetailWidget extends StatelessWidget {
                   color: Colors.grey[600],
                   fontSize: isMobile ? 10 : 12,
                 ),
-                overflow: TextOverflow.ellipsis, // Safety for sub-text
+                overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
             ],
           ),
         ),
 
-        const SizedBox(width: 8), // Gap between text and buttons
+        const SizedBox(width: 8),
 
         /// BUTTONS SECTION
         Row(
-          mainAxisSize: MainAxisSize.min, // Buttons sirf utni hi jagah lein jitni zaroori hai
+          mainAxisSize: MainAxisSize.min,
           children: [
             AddPickUpButton(
               text: isMobile ? "" : "Edit",
               iconPath: IconString.editIcon,
               iconColor: AppColors.secondTextColor,
-              width: isMobile ? 38 : 110, // Width adjust for 200px screen
+              width: isMobile ? 38 : 110,
               height: 38,
               textColor: AppColors.secondTextColor,
               borderColor: AppColors.sideBoxesColor,
             ),
-            const SizedBox(width: 6), // Tight spacing for mobile
+            const SizedBox(width: 6),
             AddPickUpButton(
               text: isMobile ? "" : "Delete",
               iconPath: IconString.deleteIcon,
@@ -504,85 +548,125 @@ class PickupDetailWidget extends StatelessWidget {
 
 
   Widget _buildSignatureSection(BuildContext context, bool isMobile) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Ek left aur ek right ke liye
-      children: [
-        // 1. Left Box
-        Expanded(
-          child: _signatureCard("Signed by Owner", controller.ownerNameController),
-        ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Agar width 600 se kam hai toh boxes stack honge
+        bool stackVertical = constraints.maxWidth < 600;
 
-        // Darmiyan ka gap (isMobile ke hisab se adjust hoga)
-        SizedBox(width: isMobile ? 20 : 60),
+        // Width calculation: (Total Width - Total Gaps) / 2
+        // Darmiyan ka gap 40px rakhne ke liye humne calculation adjust ki hai
+        double cardWidth = stackVertical
+            ? constraints.maxWidth
+            : (constraints.maxWidth - 40) / 2;
 
-        // 2. Right Box
-        Expanded(
-          child: _signatureCard("Signed by Hirer", controller.hirerNameController),
-        ),
-      ],
+        return Wrap(
+          spacing: 40, // Horizontal gap barhaya gaya hai
+          runSpacing: 20, // Vertical gap
+          children: [
+            SizedBox(
+              width: cardWidth,
+              child: _signatureCard("Signed by Owner", controller.ownerNameController),
+            ),
+            SizedBox(
+              width: cardWidth,
+              child: _signatureCard("Signed by Hirer", controller.hirerNameController),
+            ),
+          ],
+        );
+      },
     );
   }
 
   Widget _signatureCard(String title, TextEditingController nameController) {
-    return Container(
-      // Padding aur height image_00bf0b.png ke mutabiq
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.grey.shade200),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 25),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+    return LayoutBuilder(
+      builder: (context, innerConstraints) {
+        // 300px se kam par vertical kar dena chahiye taake dividers na milein
+        bool forceVertical = innerConstraints.maxWidth < 300;
+
+        return Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.grey.shade200),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Full Name Input Section
-              Expanded(
-                flex: 3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextFormField(
-                      controller: nameController,
-                      style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                      decoration: const InputDecoration(
-                        isDense: true,
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.zero,
-                      ),
+              Text(title, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 20),
+
+              // Flex direction change hogi width ke mutabiq
+              Flex(
+                direction: forceVertical ? Axis.vertical : Axis.horizontal,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: forceVertical ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+                children: [
+                  /// 1. Full Name Section
+                  Flexible(
+                    flex: forceVertical ? 0 : 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 100), // Max width control
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                controller: nameController,
+                                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                decoration: const InputDecoration(
+                                  isDense: true,
+                                  border: InputBorder.none,
+                                  contentPadding: EdgeInsets.zero,
+                                ),
+                              ),
+                              const Divider(thickness: 1, color: Colors.grey),
+                            ],
+                          ),
+                        ),
+                        const Text("Full Name", style: TextStyle(fontSize: 9, color: Colors.grey)),
+                      ],
                     ),
-                    const Divider(thickness: 1, color: Colors.grey),
-                    const Text("Full Name", style: TextStyle(fontSize: 10, color: Colors.grey)),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 30),
-              // Signature Section (Script Text)
-              Expanded(
-                flex: 2,
-                child: Column(
-                  children: [
-                    Text(
-                      nameController.text,
-                      style: const TextStyle(
-                          fontSize: 22,
-                          fontFamily: 'Cursive', // Script look ke liye
-                          color: Colors.black87
-                      ),
+                  ),
+
+                  if (forceVertical) const SizedBox(height: 15) else const SizedBox(width: 10),
+
+                  /// 2. Signature Section
+                  Flexible(
+                    flex: forceVertical ? 0 : 1,
+                    child: Column(
+                      crossAxisAlignment: forceVertical ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+                      children: [
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 100), // Balance maintain
+                          child: Column(
+                            crossAxisAlignment: forceVertical ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                nameController.text.isEmpty ? "Sign" : nameController.text,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: 'Cursive',
+                                  color: Colors.black87,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis, // Text overflow safety
+                              ),
+                              const Divider(thickness: 1, color: Colors.grey),
+                            ],
+                          ),
+                        ),
+                        const Text("Signature", style: TextStyle(fontSize: 9, color: Colors.grey)),
+                      ],
                     ),
-                    const Divider(thickness: 1, color: Colors.grey),
-                    const Text("Signature", style: TextStyle(fontSize: 10, color: Colors.grey)),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -661,7 +745,7 @@ class PickupDetailWidget extends StatelessWidget {
     required String title,
     required String icon,
     required Widget child,
-    bool showBadge = false, // Default false rakha hai
+    bool showBadge = false,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -670,21 +754,19 @@ class PickupDetailWidget extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           decoration: BoxDecoration(
-            color: const Color(0xFFE0F2FE).withOpacity(0.6),
+            color: AppColors.secondaryColor,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
             children: [
               Image.asset(icon, width: 20, height: 20),
               const SizedBox(width: 10),
-              Text(title,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black)),
 
-              // --- YAHAN BADGE LAGAYA HAI (Heading ke sath) ---
-              if (showBadge) ...[
-                const SizedBox(width: 10),
-                _statusBadge("Completed"),
-              ],
+              Expanded(
+                child: Text(
+                  title,
+                  style: TTextTheme.h6Style(context)),
+              ),
             ],
           ),
         ),
@@ -697,7 +779,7 @@ class PickupDetailWidget extends StatelessWidget {
   Widget _buildDetailedCustomerCard(BuildContext context, bool isMobile) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 25),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 28),
       decoration: BoxDecoration(
         color: const Color(0xFFFEF2F2),
         borderRadius: BorderRadius.circular(12),
@@ -710,31 +792,34 @@ class PickupDetailWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded( // Yeh text ko wrap karega taake button ke liye jagah bache
+              Expanded(
                 child: Row(
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.asset(
                         ImageString.customerUser,
-                        width: 40,
-                        height: 40,
+                        width: 35,
+                        height: 45,
                         fit: BoxFit.cover,
                       ),
                     ),
                     const SizedBox(width: 8),
-                    Expanded( // Name aur Driver text ke liye
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: const [
                           Text(
                             "Carlie Harvy",
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           Text(
                             "Driver",
                             style: TextStyle(fontSize: 10, color: Colors.grey),
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ],
@@ -743,11 +828,14 @@ class PickupDetailWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: 5),
-              AddButtonOfPickup(
-                text: "View",
-                width: 60, // Width thori kam ki hai 200px ke liye
-                onTap: () {},
+              const SizedBox(width: 10),
+              // Button ki width fixed rakhi taake text break na ho
+              SizedBox(
+                width: 70,
+                child: AddButtonOfPickup(
+                  text: "View",
+                  onTap: () {},
+                ),
               ),
             ],
           ),
@@ -756,6 +844,7 @@ class PickupDetailWidget extends StatelessWidget {
           /// BOTTOM SECTION: Scrollable Info
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
             child: Row(
               children: [
                 _infoBlock(Icons.phone_android_outlined, "Contact", "+12 3456 7890"),
@@ -978,24 +1067,6 @@ class PickupDetailWidget extends StatelessWidget {
 
       AddButtonOfPickup(text: "View", onTap: () {}),
     ];
-  }
-
-  Widget _statusBadge(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E293B), // Dark Navy Blue color from the screenshot
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-            color: Colors.white,
-            fontSize: 10,
-            fontWeight: FontWeight.w400
-        ),
-      ),
-    );
   }
 
 
