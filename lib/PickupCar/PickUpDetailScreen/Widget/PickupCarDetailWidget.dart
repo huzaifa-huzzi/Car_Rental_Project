@@ -780,7 +780,7 @@ class PickupDetailWidget extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
       decoration: BoxDecoration(
-        color: AppColors.iconsBackgroundColor,
+        color: AppColors.backgroundOfPickupsWidget,
         borderRadius: BorderRadius.circular(12),
       ),
       child: isMobile
@@ -906,7 +906,7 @@ class PickupDetailWidget extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: isMobile ? 18 : 15),
       decoration: BoxDecoration(
-        color: AppColors.iconsBackgroundColor,
+        color: AppColors.backgroundOfPickupsWidget,
         borderRadius: BorderRadius.circular(12),
       ),
       child: isMobile
@@ -1216,7 +1216,7 @@ class PickupDetailWidget extends StatelessWidget {
       child: Container(
         padding:  EdgeInsets.symmetric(horizontal: 15, vertical: 12),
         decoration: BoxDecoration(
-          color: AppColors.iconsBackgroundColor,
+          color: AppColors.backgroundOfPickupsWidget,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(

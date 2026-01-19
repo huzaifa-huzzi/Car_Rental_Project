@@ -23,6 +23,7 @@ class AppColors {
   static const Color threeBackground = Color(0xFFD000FF);
   static const Color fourBackground = Color(0xFF1E94F4);
   static const Color fiveBackground = Color(0xFF015551);
+  static const Color backgroundOfPickupsWidget = Color(0xFFFFF1F3);
 
 
 

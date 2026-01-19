@@ -25,35 +25,18 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
     ImageString.corollaPicone,
     ImageString.corollaPicFour,
     ImageString.corollaPicThree,
-    ImageString.corollaPicTwo,
   ];
 
   final List<Map<String, dynamic>> specifications = const [
-    {
-      'title': 'Vin Number',
-      'value': 'JTNBA3HK003001234',
-      'icon': IconString.vinNumberIcon
-    },
-    {
-      'title': 'Registration',
-      'value': '1234567890',
-      'icon': IconString.registrationIcon
-    },
-    {
-      'title': 'Transmission',
-      'value': 'Automatic',
-      'icon': IconString.transmissionIcon
-    },
-    {'title': 'Capacity', 'value': '4 Seats', 'icon': IconString.seatIcon},
+    {'title': 'Vin Number', 'value': 'JTNBA3HK003001234', 'icon': IconString.vinNumberIcon},
+    {'title': 'Registration', 'value': '1234567890', 'icon': IconString.registrationIcon},
+    {'title': 'Transmission', 'value': 'Automatic', 'icon': IconString.transmissionIcon},
+    {'title': 'Capacity', 'value': '4 Seats', 'icon': IconString.capacityIcon},
+    {'title': 'Model Year', 'value': '2017', 'icon': IconString.modelYearIcon},
     {'title': 'Engine Size', 'value': '2.5(L)', 'icon': IconString.engineSizeIcon},
     {'title': 'Car Values', 'value': '35000\$Aud', 'icon': IconString.carValueIcon},
     {'title': 'Mileage', 'value': '43000(Km)', 'icon': IconString.milageIcon},
-    {
-      'title': 'Fuel',
-      'value': 'Petrol',
-      'icon': IconString.gasPumpIcon
-    },
-
+    {'title': 'Fuel', 'value': 'Petrol', 'icon': IconString.gasPumpIcon},
   ];
 
   @override
@@ -236,7 +219,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
   Widget _buildImageThumbnailList(BuildContext context,
       {bool isMobile = false}) {
     final double borderRadius = AppSizes.borderRadius(context);
-    final double thumbnailSize = 100;
+    final double thumbnailSize = 123;
 
     if (isMobile) {
       return Container();
@@ -385,7 +368,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
       );
     }
 
-    // WEB LAYOUT (Unchanged)
+    // WEB LAYOUT
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -742,12 +725,19 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
               const SizedBox(width: 4),
               if (uploaded)
                 GestureDetector(
-                  onTap: () => Get.find<CarInventoryController>()
-                      .open(ImageString.registrationForm),
-                  child: Image.asset(
-                    IconString.uploadedIcon,
-                    height: 14,
-                    width: 14,
+                  onTap: () => Get.find<CarInventoryController>().open(ImageString.registrationForm),
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Image.asset(
+                      IconString.uploadedIcon,
+                      height: 14,
+                      width: 14,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
             ],
@@ -794,12 +784,19 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
                     const SizedBox(width: 7),
                     if (uploaded)
                       GestureDetector(
-                        onTap: () => Get.find<CarInventoryController>()
-                            .open(ImageString.registrationForm),
-                        child: Image.asset(
-                          IconString.uploadedIcon,
-                          height: 16,
-                          width: 16,
+                        onTap: () => Get.find<CarInventoryController>().open(ImageString.registrationForm),
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryColor,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Image.asset(
+                            IconString.uploadedIcon,
+                            height: 14,
+                            width: 14,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                   ],
