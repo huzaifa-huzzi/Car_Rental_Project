@@ -267,7 +267,7 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
             Image.asset(icon, width: 16, color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor),
             if (showText) ...[
               const SizedBox(width: 6),
-              Text(text, style: TTextTheme.btnTwo(context)?.copyWith(color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor)),
+              Text(text, style: TTextTheme.btnTwo(context).copyWith(color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor)),
             ],
             const SizedBox(width: 4),
             Icon(isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, size: 18, color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor),

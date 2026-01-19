@@ -191,7 +191,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
             Image.asset(icon, width: 16, color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor),
             if (showText) ...[
               const SizedBox(width: 6),
-              Text(text, style: TTextTheme.btnTwo(context)?.copyWith(color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor)),
+              Text(text, style: TTextTheme.btnTwo(context).copyWith(color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor)),
             ],
             Icon(isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, size: 18,color: isOpen?AppColors.primaryColor : AppColors.secondTextColor,),
           ],
@@ -403,7 +403,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
                 child: Text(
                   items[i],
                   textAlign: TextAlign.center,
-                  style: TTextTheme.textFieldStatusTheme(context)?.copyWith(
+                  style: TTextTheme.textFieldStatusTheme(context).copyWith(
                     color: _getStatusTextColor(items[i]),
                   ),
                 ),
@@ -442,7 +442,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
               ),
               child: Text(
                 selectedRx.value,
-                style: TTextTheme.textFieldStatusTheme(context)?.copyWith(
+                style: TTextTheme.textFieldStatusTheme(context).copyWith(
                   color: _getStatusTextColor(selectedRx.value),
                 ),
               ),

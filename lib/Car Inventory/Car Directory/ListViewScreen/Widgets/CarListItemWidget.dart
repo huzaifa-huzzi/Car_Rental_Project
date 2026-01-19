@@ -266,7 +266,7 @@ class _CarListCardState extends State<CarListCard> {
   // 5. Price Block Widget
   Widget _priceBlock(BuildContext context) {
     String amount = widget.price.split(RegExp(r'\/'))[0].trim();
-    String period = widget.price.contains("/") ? "/" + widget.price.split("/")[1].trim() : "";
+    String period = widget.price.contains("/") ? "/${widget.price.split("/")[1].trim()}" : "";
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -311,7 +311,7 @@ class _CarListCardState extends State<CarListCard> {
       ),
       child: Text(
         widget.status,
-        style: TTextTheme.smallX(context)?.copyWith(color: txt,),
+        style: TTextTheme.smallX(context).copyWith(color: txt,),
       ),
     );
   }

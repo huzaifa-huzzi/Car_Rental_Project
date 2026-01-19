@@ -237,7 +237,7 @@ class CarGridItem extends StatelessWidget {
       decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(8)),
       child: Text(
         status,
-        style: TTextTheme.smallX(context)?.copyWith(color: txt),
+        style: TTextTheme.smallX(context).copyWith(color: txt),
       ),
     );
   }

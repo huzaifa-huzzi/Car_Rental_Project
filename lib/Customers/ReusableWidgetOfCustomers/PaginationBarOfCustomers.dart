@@ -141,7 +141,7 @@ class PaginationBarOfCustomer extends StatelessWidget {
   }) {
 
 
-    final baseStyle = TTextTheme.btnTwo(context)?.copyWith(color: Colors.white);
+    final baseStyle = TTextTheme.btnTwo(context).copyWith(color: Colors.white);
 
     final bool isPrevDisabled = controller.currentPage2.value == 1;
     final bool isNextDisabled = controller.currentPage2.value >= controller.totalPages;
@@ -196,7 +196,7 @@ class PaginationBarOfCustomer extends StatelessWidget {
                 ),
               Text(
                 text,
-                style: baseStyle?.copyWith(
+                style: baseStyle.copyWith(
                   color: isPrev
                       ? AppColors.tertiaryTextColor
                       : (isButtonDisabled ? disabledColor : enabledColor),
@@ -232,7 +232,7 @@ class PaginationBarOfCustomer extends StatelessWidget {
         child: Center(
           child: Text(
               text,
-              style: baseStyle?.copyWith(
+              style: baseStyle.copyWith(
                   color: isSelected ? Colors.white : AppColors.secondTextColor,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal
               )

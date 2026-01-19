@@ -297,7 +297,7 @@ class AddCustomerWidget extends StatelessWidget {
   }
 
   Widget _documentBox(BuildContext context, int index, Rx<DocumentHolder?> selectedDoc) {
-    bool _isImageFile(String fileName) {
+    bool isImageFile(String fileName) {
       final imageExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
       final lowerCaseName = fileName.toLowerCase();
       return imageExtensions.any((ext) => lowerCaseName.endsWith(ext));
@@ -306,14 +306,14 @@ class AddCustomerWidget extends StatelessWidget {
     return Obx(() {
       final docValue = selectedDoc.value;
       final bool isUploaded = docValue != null;
-      final bool isImage = isUploaded && _isImageFile(docValue!.name);
+      final bool isImage = isUploaded && isImageFile(docValue.name);
       final String hintText = "Document ${index + 1}";
 
       ImageProvider? imageProvider;
       if (isImage) {
-        if (kIsWeb && docValue!.bytes != null) {
+        if (kIsWeb && docValue.bytes != null) {
           imageProvider = MemoryImage(docValue.bytes!);
-        } else if (!kIsWeb && docValue!.path != null) {
+        } else if (!kIsWeb && docValue.path != null) {
           imageProvider = FileImage(File(docValue.path!));
         }
       }
@@ -365,7 +365,7 @@ class AddCustomerWidget extends StatelessWidget {
                       Icon(Icons.insert_drive_file, size: 40, color: AppColors.primaryColor),
                       const SizedBox(height: 8),
                       Text(
-                        docValue!.name,
+                        docValue.name,
                         textAlign: TextAlign.center,
                         style: const TextStyle(fontSize: 12),
                         maxLines: 1,

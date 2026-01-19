@@ -182,7 +182,7 @@ class CardListTablePickup extends StatelessWidget {
           ),
           child: Text(
             text,
-            style: TTextTheme.titleseven(context)?.copyWith(
+            style: TTextTheme.titleseven(context).copyWith(
               color: textColor,
             ),
           ),

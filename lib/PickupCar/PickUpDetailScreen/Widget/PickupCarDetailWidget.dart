@@ -730,7 +730,7 @@ class PickupDetailWidget extends StatelessWidget {
                       ),
                     ),
                   );
-                }).toList(),
+                }),
               ],
             );
           }),
