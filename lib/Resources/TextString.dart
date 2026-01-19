@@ -28,7 +28,7 @@ class TextString {
    //  Car Details Screen
   static const String  carDescriptionTitle= 'Audi A6 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys. Renowned for its powerful performance and advanced technology features, the A6 provides a refined driving experience with exceptional comfort. Audi A6 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys. Renowned for its powerful performance and advanced technology features, the A6 provides a refined driving experience with exceptional comfort.';
   // Editing Car Screen
-  static const String  addEditCarScreenTitle= 'Edit Car Details';
+  static const String  addEditCarScreenTitle= 'Edit Car';
   static const String  addEditCarDescription= 'Enter the specification for the Edit fleet Car';
   static const String  addEditDescriptionTitle= 'Description';
   static const String addEditDescriptionTextFieldText = 'Describe the vehicles condition, unique features, or rental policies.';
@@ -52,7 +52,7 @@ class TextString {
   static const String  licenseNumber =  '1234HGYT5A';
   static const String  licenseDate =  '12/2/2030';
    // Edit Customer Screen
-  static const String  editTitle =   'Edit Customer Details';
+  static const String  editTitle =   'Edit Customer';
   static const String  editSubtitle =   'Edit Customer Details';
   static const String  customerName =   'Customer Given Name';
   static const String  customerSurname =   'Customer Surname';

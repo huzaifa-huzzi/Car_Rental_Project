@@ -28,7 +28,7 @@ class AddCustomerScreen extends StatelessWidget {
                   mainTitle: 'Add Customer',
                   showBack: true,
                   showSmallTitle: true,
-                  smallTitle: 'Customers /Customer Details',
+                  smallTitle: 'Customers /Add Customer',
                   showSearch: isWeb,
                   showSettings: isWeb,
                   showAddButton: false,

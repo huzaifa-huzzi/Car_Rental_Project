@@ -29,7 +29,7 @@ class EditCustomerScreen extends StatelessWidget {
                         mainTitle: 'Edit Customer',
                         showBack: true,
                         showSmallTitle: true,
-                        smallTitle: 'Edit Customers/Edit Customer Details',
+                        smallTitle: 'Edit Customers/Edit Customer ',
                         showSearch: isWeb,
                         showSettings: isWeb,
                         showAddButton: false,

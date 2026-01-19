@@ -29,10 +29,10 @@ class EditCarScreen extends StatelessWidget {
 
                 /// HEADER
                 HeaderWebWidget(
-                  mainTitle: 'Edit Car Details',
+                  mainTitle: 'Edit Car',
                   showBack: true,
                   showSmallTitle: true,
-                  smallTitle: 'Car/Edit Car Details',
+                  smallTitle: 'Car/Edit Car',
 
                   /// Responsive Icons
                   showSearch: isWeb,

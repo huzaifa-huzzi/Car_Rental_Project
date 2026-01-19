@@ -795,13 +795,22 @@ class PickupDetailWidget extends StatelessWidget {
               Expanded(
                 child: Row(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.asset(
-                        ImageString.customerUser,
-                        width: 35,
-                        height: 45,
-                        fit: BoxFit.cover,
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: AppColors.primaryColor, // Aapka primary color border
+                          width: 0.5, // Border ki thickness
+                        ),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(6.5), // Border ke andar fit hone ke liye thora kam radius
+                        child: Image.asset(
+                          ImageString.customerUser,
+                          width: 35,
+                          height: 45,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -829,7 +838,6 @@ class PickupDetailWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10),
-              // Button ki width fixed rakhi taake text break na ho
               SizedBox(
                 width: 70,
                 child: AddButtonOfPickup(
@@ -882,9 +890,24 @@ class PickupDetailWidget extends StatelessWidget {
       Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.asset(ImageString.customerUser, width: 50, height: 50, fit: BoxFit.cover),
+          Container(
+            padding: const EdgeInsets.all(1.5), // Border color ko wazeh dikhane ke liye
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10), // Outer radius thora bada rakha hai
+              border: Border.all(
+                color: AppColors.primaryColor, // Aapka primary border color
+                width: 0.5,
+              ),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8), // Image ka radius border ke andar fit karne ke liye
+              child: Image.asset(
+                ImageString.customerUser,
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
           const SizedBox(width: 12),
           Column(
@@ -916,7 +939,7 @@ class PickupDetailWidget extends StatelessWidget {
       if (!isMobile) const SizedBox(width: 30),
 
       /// VIEW BUTTON
-      AddButtonOfPickup(text: "View", onTap: () {}),
+      AddButtonOfPickup(text: "View", width: 100,onTap: () {}),
     ];
   }
 
@@ -1041,7 +1064,7 @@ class PickupDetailWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildSpecColumn("Transmission", "Automatic", Icons.settings_input_component),
-          const SizedBox(width: 95),
+          const SizedBox(width: 30),
           _buildSpecColumn("Capacity", "2 seats", Icons.chair_alt_outlined),
         ],
       ),
@@ -1065,7 +1088,7 @@ class PickupDetailWidget extends StatelessWidget {
 
       if (isMobile) const SizedBox(height: 20),
 
-      AddButtonOfPickup(text: "View", onTap: () {}),
+      AddButtonOfPickup(text: "View",width: 100 ,onTap: () {}),
     ];
   }
 
