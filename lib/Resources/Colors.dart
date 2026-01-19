@@ -18,6 +18,11 @@ class AppColors {
   static const Color backgroundOfVin = Color(0xFF42A5F5); // Vin-color
   static const Color cardsHovering = Color(0xFF0570DE);
   static const Color fieldsBackground = Color(0x12000000);
+  static const Color oneBackground = Color(0xFFFF001A);
+  static const Color twoBackground = Color(0xFFB52326);
+  static const Color threeBackground = Color(0xFFD000FF);
+  static const Color fourBackground = Color(0xFF1E94F4);
+  static const Color fiveBackground = Color(0xFF015551);
 
 
 

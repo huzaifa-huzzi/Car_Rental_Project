@@ -18,5 +18,7 @@ class ImageString{
   /// Customers Pics
   static const String  customerUser= 'assets/Images/Customers/CustomerUser.png';
 
+  /// Pickup Car Pics
+  static const String  carDamageInspectionImage= 'assets/Images/PickupCar/Car Inspection Image.png';
 
 }

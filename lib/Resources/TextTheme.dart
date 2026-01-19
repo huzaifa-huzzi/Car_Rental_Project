@@ -27,6 +27,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 22, 22, 32),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
 
+  static TextStyle h2Style(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 18),fontWeight: FontWeight.w600,color: AppColors.textColor);
+  }
+
   static TextStyle h3Style(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 26),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
@@ -80,6 +84,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 14),fontWeight: FontWeight.w500,color: AppColors.textColor);
   }
 
+  static TextStyle btnNumbering(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 14),fontWeight: FontWeight.w500,color: Colors.white);
+  }
+
   static TextStyle btnConfirm(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w500,color: Colors.white);
   }
@@ -99,8 +107,18 @@ class TTextTheme {
     );
   }
 
+  static TextStyle titleFullName(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 12),fontWeight: FontWeight.w500,color: AppColors.blackColor,
+    );
+  }
+
   static TextStyle titleDriver(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 16),fontWeight: FontWeight.w400,color: AppColors.secondTextColor,
+    );
+  }
+
+  static TextStyle titleRadios(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 16),fontWeight: FontWeight.w400,color: AppColors.blackColor,
     );
   }
 

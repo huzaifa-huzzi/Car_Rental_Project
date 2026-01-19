@@ -1,3 +1,4 @@
+import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,14 @@ class DocumentHolder {
   final String? path;
   final String name;
   DocumentHolder({this.bytes, this.path, required this.name});
+}
+class DamagePoint {
+  final double dx; // 0.0 to 1.0 (Percentage of width)
+  final double dy; // 0.0 to 1.0 (Percentage of height)
+  final int typeId;
+  final Color color;
+
+  DamagePoint({required this.dx, required this.dy, required this.typeId, required this.color});
 }
 
 class ImageHolder {
@@ -140,18 +149,12 @@ class PickupCarController extends GetxController {
   RxList<PlatformFile> carImages = <PlatformFile>[].obs;
   var isPersonalUse = true.obs;
   var isManualPayment = true.obs;
-
-  // --- Rent Time Section Controllers ---
   final startDateController = TextEditingController();
   final startTimeController = TextEditingController();
   final endDateController = TextEditingController();
   final endTimeController = TextEditingController();
-
-  // --- Signature Section Controllers ---
   final ownerNameController = TextEditingController(text: "Softsnip");
   final hirerNameController = TextEditingController(text: "Softsnip");
-
-  // --- Pehle se mojood controllers (Reference ke liye) ---
   final weeklyRentController = TextEditingController();
   final rentBondAmountController = TextEditingController();
   final rentDueAmountController = TextEditingController();
@@ -166,16 +169,21 @@ class PickupCarController extends GetxController {
   final exteriorCleanlinessController = TextEditingController();
   final additionalCommentsController = TextEditingController();
 
-  final dropoffNotesController = TextEditingController();
 
-  // Observables for Dropdowns/Selection
-  var dropoffLocation = "Softsnip Head Office".obs;
-  var dropoffType = "Business".obs;
-  var dropoffSeverity = "Minor".obs;
+  var selectedDamageType = 1.obs;
+  var damagePoints = <DamagePoint>[].obs;
+
+
+  final List<Map<String, dynamic>> damageTypes = [
+    {'id': 1, 'label': 'Scratch', 'color': AppColors.oneBackground},
+    {'id': 2, 'label': 'Dent', 'color': AppColors.twoBackground},
+    {'id': 3, 'label': 'Chip', 'color': AppColors.threeBackground},
+    {'id': 4, 'label': 'Scuff', 'color': AppColors.fourBackground},
+    {'id': 5, 'label': 'Other', 'color': AppColors.fiveBackground},
+  ];
 
   @override
   void onClose() {
-    // Memory leak se bachne ke liye controllers ko dispose karna zaroori hai
     startDateController.dispose();
     startTimeController.dispose();
     endDateController.dispose();
@@ -186,7 +194,7 @@ class PickupCarController extends GetxController {
   }
 
   RxList<ImageHolder> selectedImages = <ImageHolder>[].obs;
-  final int maxImages = 10; // Limit for images
+  final int maxImages = 10;
 
   Future<void> pickImage() async {
     if (selectedImages.length >= maxImages) {
@@ -197,7 +205,7 @@ class PickupCarController extends GetxController {
 
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowMultiple: true, // Multiple pick allowed
+      allowMultiple: true,
       allowedExtensions: ['png', 'jpg', 'jpeg', 'svg'],
       withData: kIsWeb,
     );

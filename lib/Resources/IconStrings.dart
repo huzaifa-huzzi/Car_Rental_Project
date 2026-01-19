@@ -72,7 +72,7 @@ class IconString {
   static const String  licesnseNo = 'assets/icons/LicesnseNo.png';
   static const String  location = 'assets/icons/location.png';
   static const String  masterCardIcon = 'assets/icons/MasterCardIcon.png';
-  static const String  nidIcon = 'assets/icons/Nid.png';
+  static const String  nidIcon = 'assets/icons/Nid number.png';
   static const String  smsIcon = 'assets/icons/sms.png';
   static const String  visaIcon = 'assets/icons/VisaIcon.png';
   static const String  cardIcon = 'assets/icons/CardIcon.png';
@@ -81,7 +81,19 @@ class IconString {
   static const String  materCard2 = 'assets/icons/mastercard-2.png';
   static const String  visaCard2 = 'assets/icons/Visa2.png';
   static const String  nameIcon = 'assets/icons/Name.png';
-
+     /// Pickup Icon
+  static const String  bondPaymentIcon = 'assets/icons/BondPayment Icon.png';
+  static const String  carPictureIconPickup = 'assets/icons/CarPicture Icon.png';
+  static const String  carReportIcon = 'assets/icons/CarReport Icon.png';
+  static const String  customerNameIcon = 'assets/icons/Customer Name.png';
+  static const String  damageInspection = 'assets/icons/DamageInspection Icon.png';
+  static const String  paymentMethodIcon = 'assets/icons/payment Method Icon.png';
+  static const String  pickupCarIcon = 'assets/icons/pickup Car.png';
+  static const String  pickupNote = 'assets/icons/PickupNote Icon.png';
+  static const String  rentMoneyIcon = 'assets/icons/Rent Money Icon.png';
+  static const String  rentPurposeIcon = 'assets/icons/Rent Purpose Icon.png';
+  static const String  rentTimeIcon = 'assets/icons/RentTime Icon.png';
+  static const String  signatureIcon = 'assets/icons/SignatureIcon.png';
 
 
 
