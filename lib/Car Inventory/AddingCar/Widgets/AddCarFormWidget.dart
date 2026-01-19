@@ -48,53 +48,34 @@ class AddCarFormWidget extends StatelessWidget {
 
 
               ///GRID FORM
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final double totalWidth = constraints.maxWidth;
-                  final double spacing = AppSizes.padding(context);
-                  double itemWidth;
-                  int columns;
+              _buildSectionTitle(context, "Car Identification"),
+              const SizedBox(height: 15),
+              _buildResponsiveGrid(context, [
+                _buildDropdown(context, "Car Make", ["Toyota", "Honda"], controller.selectedBrand, id: 'make'),
+                _buildDropdown(context, "Car Model", ["Corolla", "Civic"], controller.selectedModel, id: 'model'),
+                _buildDropdown(context, "Car Year", ["2023", "2024"], controller.selectedYear, id: 'year'),
+                _buildTextField(context, "Car Registration Number", controller.regController, hint: "Write Registration Number..."),
+                _buildTextField(context, "VIN Number", controller.vinController, hint: "Write VIN Number...."),
+              ]),
 
+              const SizedBox(height: 25),
+              const Divider(thickness: 0.5),
+              const SizedBox(height: 25),
 
-                  if (totalWidth >= 900) {
-                    columns = 3;
-                  }
-                  else if (totalWidth >= 550) {
-                    columns = 3;
-                  }
-                  else {
-                    columns = 2;
-                  }
-
-
-                  if (columns == 1) {
-                    itemWidth = totalWidth;
-                  } else {
-                    final double totalSpacing = spacing * (columns - 1);
-                    itemWidth = (totalWidth - totalSpacing) / columns;
-                  }
-
-                  return Wrap(
-                    spacing: spacing,
-                    runSpacing: spacing,
-                    children: [
-                      SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Make", ["Toyota", "Honda", "BMW"], controller.selectedBrand, id: 'car Brand')),
-                      SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Model", ["Corolla", "Civic", "X5"], controller.selectedModel,id: 'car Model')),
-                      SizedBox(width: itemWidth, child: _buildDropdown(context, "Car  Year", ["2020", "2021", "2022"], controller.selectedYear,id: 'Year')),
-                      SizedBox(width: itemWidth, child: _buildTextField(context, "Car Registration Number", controller.regController)),
-                      SizedBox(width: itemWidth, child: _buildTextField(context, "VIN Number", controller.vinController)),
-                      SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Body Type", ["Sedan", "SUV", "Truck"], controller.selectedBodyType,id: 'Body type')),
-                      SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Transmission", ["Automatic", "Manual"], controller.selectedTransmission,id: 'Transmission')),
-                      SizedBox(width: itemWidth, child: _buildTextField(context, "Car Seats", controller.seatsController)),
-                      SizedBox(width: itemWidth, child: _buildTextField(context, "Car Engine Size", controller.engineController)),
-                      SizedBox(width: itemWidth, child: _buildTextField(context, "Car Color", controller.colorController)),
-                      SizedBox(width: itemWidth, child: _buildDropdown(context, "Car Fuel Type", ["Petrol", "Diesel"], controller.selectedFuel,id: 'fuel')),
-                      SizedBox(width: itemWidth, child: _buildTextField(context, "Car Value", controller.valueController, prefix: "\$")),
-                      SizedBox(width: itemWidth, child: _buildTextField(context, "Weekly Rent (AUD)", controller.weeklyRentController, prefix: "\$ ")),
-                    ],
-                  );
-                },
-              ),
+              /// SECTION 2: CAR SPECIFICATION
+              _buildSectionTitle(context, "Car Specification"),
+              const SizedBox(height: 15),
+              _buildResponsiveGrid(context, [
+                _buildDropdown(context, "Car Body Type", ["Sedan", "SUV"], controller.selectedBodyType, id: 'body'),
+                _buildDropdown(context, "Car Transmission", ["Automatic", "Manual"], controller.selectedTransmission, id: 'trans'),
+                _buildTextField(context, "Car Seats", controller.seatsController, hint: "Write Car Seats..."),
+                _buildTextField(context, "Car Engine Size", controller.engineController, hint: "Write Engine Size..."),
+                _buildTextField(context, "Car Color", controller.colorController, hint: "Write Color name OR Code..."),
+                _buildDropdown(context, "Car Fuel Type", ["Petrol", "Diesel"], controller.selectedFuel, id: 'fuel'),
+                _buildTextField(context, "Car Value", controller.valueController, prefix: "\$ ", hint: "Car Value...."),
+                _buildTextField(context, "Weekly Rent (AUD)", controller.weeklyRentController, prefix: "\$ "),
+                _buildStatusDropdown(context, "Status", ["Available", "Maintenance", "Unavailable"], controller.selectedStatus, id: 'status'),
+              ]),
 
 
               SizedBox(height: AppSizes.verticalPadding(context)),
@@ -249,11 +230,32 @@ class AddCarFormWidget extends StatelessWidget {
     });
   }
 
+  //  Section Title Widget
+  Widget _buildSectionTitle(BuildContext context, String title) {
+    return Text(
+      title,
+      style: TTextTheme.btnSix(context),
+    );
+  }
 
-//  TextField Widgets
+  // Responsive Grid Helper Widget
+  Widget _buildResponsiveGrid(BuildContext context, List<Widget> children) {
+    return LayoutBuilder(builder: (context, constraints) {
+      double spacing = AppSizes.padding(context);
+      int columns = constraints.maxWidth > 600 ? 3 : 2;
+      double itemWidth = (constraints.maxWidth - (spacing * (columns - 1))) / columns;
+
+      return Wrap(
+        spacing: spacing,
+        runSpacing: 18,
+        children: children.map((child) => SizedBox(width: itemWidth, child: child)).toList(),
+      );
+    });
+  }
+
+  // TextField Widget
   Widget _buildTextField(BuildContext context, String label, TextEditingController controller,
-      {String? prefix}) {
-
+      {String? prefix, String? hint}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -267,7 +269,7 @@ class AddCarFormWidget extends StatelessWidget {
           decoration: InputDecoration(
             filled: true,
             fillColor: AppColors.secondaryColor,
-            hintText: "Enter $label",
+            hintText: hint ?? "Enter $label",
             hintStyle: TTextTheme.titleFour(context),
             prefixText: prefix,
             border: OutlineInputBorder(
@@ -279,6 +281,143 @@ class AddCarFormWidget extends StatelessWidget {
       ],
     );
   }
+
+  //  Status Dropdown
+  Widget _buildStatusDropdown(BuildContext context, String label, List<String> items, RxString selected, {required String id}) {
+    return Obx(() {
+      bool isOpen = controller.openedDropdown.value == id;
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: TTextTheme.titleTwo(context)),
+          const SizedBox(height: 6),
+
+          LayoutBuilder(builder: (context, constraints) {
+            return PopupMenuButton<String>(
+              constraints: BoxConstraints(
+                minWidth: constraints.maxWidth,
+                maxWidth: constraints.maxWidth,
+              ),
+              offset: const Offset(0, 45),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              color: AppColors.secondaryColor,
+              elevation: 4,
+              tooltip: '',
+              onOpened: () => controller.openedDropdown.value = id,
+              onCanceled: () => controller.openedDropdown.value = "",
+              onSelected: (value) {
+                selected.value = value;
+                controller.openedDropdown.value = "";
+              },
+              child: Container(
+                height: 48,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: AppColors.secondaryColor,
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: _getStatusChip(selected.value),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Image.asset(
+                      isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon,
+                      height: 18,
+                    ),
+                  ],
+                ),
+              ),
+              itemBuilder: (context) {
+                return items.asMap().entries.map((entry) {
+                  int index = entry.key;
+                  String value = entry.value;
+                  bool isLast = index == items.length - 1;
+
+                  return PopupMenuItem<String>(
+                    value: value,
+                    padding: EdgeInsets.zero,
+                    height: 48,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: _getStatusChip(value),
+                          ),
+                        ),
+                        if (!isLast)
+                          Divider(
+                            height: 1.2,
+                            thickness: 0.7,
+                            color: AppColors.quadrantalTextColor,
+                            indent: 0,
+                            endIndent: 0,
+                          ),
+                      ],
+                    ),
+                  );
+                }).toList();
+              },
+            );
+          }),
+        ],
+      );
+    });
+  }
+
+//  Status Chip Helper Widget
+  Widget _getStatusChip(String status) {
+    Color backgroundColor;
+    Color textColor = Colors.white;
+
+    String displayStatus = status.isEmpty ? "Available" : status;
+
+    if (displayStatus == "Available") {
+      backgroundColor = AppColors.availableBackgroundColor;
+      textColor = Colors.white;
+    } else if (displayStatus == "Maintenance") {
+      backgroundColor = AppColors.maintenanceBackgroundColor;
+      textColor = AppColors.textColor;
+    } else if (displayStatus == "Unavailable") {
+      backgroundColor = AppColors.sideBoxesColor;
+      textColor = AppColors.secondTextColor;
+    } else {
+      backgroundColor = Colors.transparent;
+      textColor = AppColors.blackColor;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      // Constraints lagaye hain taake chip be-wajah puri width na le
+      constraints: const BoxConstraints(maxWidth: 150),
+      child: Text(
+        displayStatus,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            color: textColor,
+            fontSize: 11,
+            fontWeight: FontWeight.bold
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis, // Ye pixel overflow error ko khatam karega
+      ),
+    );
+  }
+
+
 
 
   //  IMAGE UPLOAD BOX Widget
