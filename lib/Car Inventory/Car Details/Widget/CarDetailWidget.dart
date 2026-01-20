@@ -51,23 +51,20 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
 
 
 // Main Card Wrapper
-  Widget _buildCardWrapper(
-      {required Widget child, required BuildContext context}) {
+  Widget _buildCardWrapper({required Widget child, required BuildContext context}) {
     final double spacing = AppSizes.padding(context);
     final double borderRadius = AppSizes.borderRadius(context);
 
     return Container(
-      padding: EdgeInsets.fromLTRB(spacing * 1.5, spacing * 1.5, spacing * 1.5, 0),
+      padding: EdgeInsets.fromLTRB(spacing * 1.5, spacing * 1.5, spacing * 1.5, spacing * 1),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(borderRadius),
-        boxShadow: [
-
-        ],
       ),
       child: child,
     );
   }
+
 
   ///----- Extra Widgets ------ ///
 
@@ -326,7 +323,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
               color: AppColors.availableBackgroundColor,
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(7),
             ),
             child: Text(TextString.carDetailStatus,
               style:TTextTheme.titleeight(context),
@@ -425,7 +422,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
             borderRadius: BorderRadius.circular(6),
           ),
           child: Text(TextString.carDetailStatus,
-              style: TTextTheme.titleFour(context).copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
+              style: TTextTheme.titleeight(context)),
         ),
         SizedBox(height: spacing),
         Row(

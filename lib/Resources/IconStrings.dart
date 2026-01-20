@@ -10,6 +10,7 @@ class IconString {
   static const String  upsideDropdownIcon = 'assets/icons/upsidedropdownICon.png';
   static const String  addIcon = 'assets/icons/AddIcon.png';
   static const String  uploadIcon = 'assets/icons/uploadIcon.png';
+  static const String  cameraIcon = 'assets/icons/cameraIcon.png';
 
     /// SideBar Icons
   static const String  dashboardIcon = 'assets/icons/dashboardIcon.png';

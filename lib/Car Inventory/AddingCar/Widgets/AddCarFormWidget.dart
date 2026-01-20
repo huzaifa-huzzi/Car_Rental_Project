@@ -322,7 +322,7 @@ class AddCarFormWidget extends StatelessWidget {
                     Expanded(
                       child: Align(
                         alignment: Alignment.centerLeft,
-                        child: _getStatusChip(selected.value),
+                        child: _getStatusChip(selected.value,context),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -351,7 +351,7 @@ class AddCarFormWidget extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           child: Align(
                             alignment: Alignment.centerLeft,
-                            child: _getStatusChip(value),
+                            child: _getStatusChip(value,context),
                           ),
                         ),
                         if (!isLast)
@@ -375,7 +375,7 @@ class AddCarFormWidget extends StatelessWidget {
   }
 
 //  Status Chip Helper Widget
-  Widget _getStatusChip(String status) {
+  Widget _getStatusChip(String status,BuildContext context) {
     Color backgroundColor;
     Color textColor = Colors.white;
 
@@ -401,18 +401,16 @@ class AddCarFormWidget extends StatelessWidget {
         color: backgroundColor,
         borderRadius: BorderRadius.circular(6),
       ),
-      // Constraints lagaye hain taake chip be-wajah puri width na le
       constraints: const BoxConstraints(maxWidth: 150),
-      child: Text(
-        displayStatus,
-        textAlign: TextAlign.center,
-        style: TextStyle(
+      child:  Flexible(
+        child: Text(
+          displayStatus,
+          style: TTextTheme.titleseven(context).copyWith(
             color: textColor,
-            fontSize: 11,
-            fontWeight: FontWeight.bold
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis, // Ye pixel overflow error ko khatam karega
       ),
     );
   }
@@ -443,13 +441,28 @@ class AddCarFormWidget extends StatelessWidget {
                 ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppColors.iconsBackgroundColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child:  Image.asset(IconString.uploadIcon, color: AppColors.primaryColor),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppColors.iconsBackgroundColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child:  Image.asset(IconString.cameraIcon, color: AppColors.primaryColor,width: 18,),
+                    ),
+                     SizedBox(width: 5,),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppColors.iconsBackgroundColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child:  Image.asset(IconString.uploadIcon, color: AppColors.primaryColor),
+                    ),
+
+                  ],
                 ),
                 const SizedBox(height: 10),
                 Text(TextString.uploadTitle, style: TTextTheme.btnOne(context)),
@@ -482,7 +495,7 @@ class AddCarFormWidget extends StatelessWidget {
                       width: 120,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: AppColors.primaryColor, width: 2),
+                        border: Border.all(color: AppColors.primaryColor, width: 0.7),
                         image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                       ),
                     ),

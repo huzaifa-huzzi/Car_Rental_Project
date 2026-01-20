@@ -691,13 +691,28 @@ class PickupDetailWidget extends StatelessWidget {
               ? Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppColors.iconsBackgroundColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Image.asset(IconString.uploadIcon, width: 24, height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppColors.iconsBackgroundColor,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child:  Image.asset(IconString.cameraIcon, color: AppColors.primaryColor,width:18,),
+                  ),
+                  SizedBox(width: 5,),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppColors.iconsBackgroundColor,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child:  Image.asset(IconString.uploadIcon, color: AppColors.primaryColor),
+                  ),
+
+                ],
               ),
               const SizedBox(height: 10),
                Text("Upload Car Pictures",
