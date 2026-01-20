@@ -346,28 +346,6 @@ class PickupDetailWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildDropdownField(String label, RxString value) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(color: const Color(0xFFEDF7FD), borderRadius: BorderRadius.circular(6)),
-          child: Obx(() => DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: value.value,
-              isExpanded: true,
-              items: [value.value].map((String val) => DropdownMenuItem(value: val, child: Text(val, style: const TextStyle(fontSize: 13)))).toList(),
-              onChanged: (_) {},
-            ),
-          )),
-        ),
-      ],
-    );
-  }
-
 
   // Start Header
   Widget _buildPageHeader(BuildContext context, bool isMobile) {
@@ -673,8 +651,10 @@ class PickupDetailWidget extends StatelessWidget {
     bool isMobileView = MediaQuery.of(context).size.width < 600 && !kIsWeb;
 
     return GestureDetector(
-      onTap: () => controller.pickImage(),
+      // 1. Function name match kiya (pickImage2)
+      onTap: () => controller.pickImage2(),
       child: Obx(() {
+        // 2. List name match kiya (pickupCarImages)
         return Container(
           width: double.infinity,
           constraints: const BoxConstraints(minHeight: 180),
@@ -687,7 +667,8 @@ class PickupDetailWidget extends StatelessWidget {
               width: 1.5,
             ),
           ),
-          child: controller.selectedImages.isEmpty
+          // 3. Condition check for pickupCarImages
+          child: controller.pickupCarImages.isEmpty
               ? Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -700,50 +681,64 @@ class PickupDetailWidget extends StatelessWidget {
                       color: AppColors.iconsBackgroundColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child:  Image.asset(IconString.cameraIcon, color: AppColors.primaryColor,width:18,),
+                    child: Image.asset(IconString.cameraIcon, color: AppColors.primaryColor, width: 18),
                   ),
-                  SizedBox(width: 5,),
+                  const SizedBox(width: 5),
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: AppColors.iconsBackgroundColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child:  Image.asset(IconString.uploadIcon, color: AppColors.primaryColor),
+                    child: Image.asset(IconString.uploadIcon, color: AppColors.primaryColor),
                   ),
-
                 ],
               ),
               const SizedBox(height: 10),
-               Text("Upload Car Pictures",
-                  style: TTextTheme.btnOne(context)),
-               Text("PNG, JPG, SVG ",
-                  style: TTextTheme.documnetIsnideSmallText2(context)),
+              Text("Upload Car Pictures", style: TTextTheme.btnOne(context)),
+              Text("PNG, JPG, SVG ", style: TTextTheme.documnetIsnideSmallText2(context)),
             ],
           )
               : LayoutBuilder(builder: (context, constraints) {
-            final double itemWidth = isMobileView
-                ? (constraints.maxWidth - 12) / 2
-                : 100;
+            final double itemWidth = isMobileView ? (constraints.maxWidth - 12) / 2 : 100;
 
             return Wrap(
               spacing: 12,
               runSpacing: 12,
               children: [
-                ...controller.selectedImages.map((imageHolder) {
-                  return Container(
-                    height: 100,
-                    width: itemWidth,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: AppColors.tertiaryTextColor, width: 1),
-                      image: DecorationImage(
-                        image: kIsWeb
-                            ? MemoryImage(imageHolder.bytes!)
-                            : FileImage(File(imageHolder.path!)) as ImageProvider,
-                        fit: BoxFit.cover,
+                // 4. Mapping correct list
+                ...controller.pickupCarImages.map((imageHolder) {
+                  int index = controller.pickupCarImages.indexOf(imageHolder);
+                  return Stack(
+                    children: [
+                      Container(
+                        height: 100,
+                        width: itemWidth,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: AppColors.tertiaryTextColor, width: 1),
+                          image: DecorationImage(
+                            image: kIsWeb
+                                ? MemoryImage(imageHolder.bytes!)
+                                : FileImage(File(imageHolder.path!)) as ImageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
-                    ),
+                      // Optional: Remove button taaki user image hata sake
+                      Positioned(
+                        top: 5,
+                        right: 5,
+                        child: GestureDetector(
+                          onTap: () => controller.removeImage2(index),
+                          child: const CircleAvatar(
+                            radius: 10,
+                            backgroundColor: Colors.red,
+                            child: Icon(Icons.close, size: 12, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
                   );
                 }),
               ],

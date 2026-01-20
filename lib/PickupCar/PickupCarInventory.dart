@@ -182,17 +182,6 @@ class PickupCarController extends GetxController {
     {'id': 5, 'label': 'Other', 'color': AppColors.fiveBackground},
   ];
 
-  @override
-  void onClose() {
-    startDateController.dispose();
-    startTimeController.dispose();
-    endDateController.dispose();
-    endTimeController.dispose();
-    ownerNameController.dispose();
-    hirerNameController.dispose();
-    super.onClose();
-  }
-
   RxList<ImageHolder> selectedImages = <ImageHolder>[].obs;
   final int maxImages = 10;
 
@@ -232,6 +221,145 @@ class PickupCarController extends GetxController {
     }
   }
 
+  /// Add Pickup Car
+  var isCustomerDropdownOpen = false.obs;
+  var isCarDropdownOpen = false.obs;
+  var isDamageInspectionOpen = false.obs;
+
+  var isCustomerDropdownOpen2 = false.obs;
+
+  // Rent Purpose
+  var rentPurpose = "Personal Use".obs; // Default value
+
+  // Weekly Rent Controllers
+  final weeklyRentController2 = TextEditingController();
+  final dailyRentController2 = TextEditingController();
+
+  // Bond Payment Controllers
+  final bondAmountController2 = TextEditingController();
+  final paidBondController2 = TextEditingController();
+  final leftBondController2 = TextEditingController();
+
+  // Selected Data (Null matlab abhi select nahi hua)
+  var selectedCustomer = Rxn<dynamic>();
+  var selectedCar = Rxn<dynamic>();
+
+  // Search Controllers
+  final customerSearchController = TextEditingController();
+  final carSearchController = TextEditingController();
+
+  void toggleCustomerDropdown() => isCustomerDropdownOpen.value = !isCustomerDropdownOpen.value;
+  void toggleCarDropdown() => isCarDropdownOpen.value = !isCarDropdownOpen.value;
+
+  var selectedDamageType2 = 1.obs;
+  var damagePoints2 = <DamagePoint>[].obs;
+
+
+  final List<Map<String, dynamic>> damageTypes2 = [
+    {'id': 1, 'label': 'Scratch', 'color': AppColors.oneBackground},
+    {'id': 2, 'label': 'Dent', 'color': AppColors.twoBackground},
+    {'id': 3, 'label': 'Chip', 'color': AppColors.threeBackground},
+    {'id': 4, 'label': 'Scuff', 'color': AppColors.fourBackground},
+    {'id': 5, 'label': 'Other', 'color': AppColors.fiveBackground},
+  ];
+
+  // Controller Variables for Step 2/3
+  RxList<ImageHolder> pickupCarImages = <ImageHolder>[].obs;
+  final int maxPickupImages = 10;
+
+// Agreement Time Controllers
+  final startDateController2 = TextEditingController();
+  final startTimeController2 = TextEditingController();
+  final endDateController2 = TextEditingController();
+  final endTimeController2 = TextEditingController();
+
+  Future<void> pickImage2() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowMultiple: true,
+      allowedExtensions: ['png', 'jpg', 'jpeg', 'svg'],
+      withData: true, // Web aur Mobile dono ke liye bytes le aayega
+    );
+
+    if (result != null) {
+      for (var file in result.files) {
+        if (pickupCarImages.length < maxPickupImages) {
+          if (kIsWeb) {
+            if (file.bytes != null) {
+              pickupCarImages.add(ImageHolder(bytes: file.bytes, name: file.name));
+            }
+          } else {
+            if (file.path != null) {
+              pickupCarImages.add(ImageHolder(path: file.path, name: file.name, bytes: file.bytes));
+            }
+          }
+        }
+      }
+      // YE LINE ZAROORI HAI: Ye GetX ko batati hai ke list update ho gayi hai
+      pickupCarImages.refresh();
+    }
+  }
+
+  void removeImage2(int index) {
+    if (index >= 0 && index < pickupCarImages.length) {
+      pickupCarImages.removeAt(index);
+    }
+  }
+
+  void selectCustomer(dynamic customer) {
+    selectedCustomer.value = customer;
+    isCustomerDropdownOpen.value = false;
+  }
+
+  void selectCar(dynamic car) {
+    selectedCar.value = car;
+    isCarDropdownOpen.value = false;
+  }
+
+
+  @override
+  void onClose() {
+    // 1. Pickup Detail Screen Controllers
+    startDateController.dispose();
+    startTimeController.dispose();
+    endDateController.dispose();
+    endTimeController.dispose();
+    ownerNameController.dispose();
+    hirerNameController.dispose();
+
+    startDateController2.dispose();
+    startTimeController2.dispose();
+    endDateController2.dispose();
+    endTimeController2.dispose();
+
+    // 2. Rent & Bond Controllers (Set 1)
+    weeklyRentController.dispose();
+    rentBondAmountController.dispose();
+    rentDueAmountController.dispose();
+    bondAmountController.dispose();
+    paidBondController.dispose();
+    dueBondAmountController.dispose();
+
+    // 3. Inspection & Comments Controllers
+    odoController.dispose();
+    fuelLevelController.dispose();
+    interiorCleanlinessController.dispose();
+    exteriorCleanlinessController.dispose();
+    additionalCommentsController.dispose();
+
+    // 4. Add Pickup Car Controllers (Set 2 / Suffix 2)
+    weeklyRentController2.dispose();
+    dailyRentController2.dispose();
+    bondAmountController2.dispose();
+    paidBondController2.dispose();
+    leftBondController2.dispose();
+
+    // 5. Search Controllers
+    customerSearchController.dispose();
+    carSearchController.dispose();
+
+    super.onClose();
+  }
 
 }
 

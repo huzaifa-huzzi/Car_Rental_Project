@@ -36,12 +36,6 @@ class TableViewPickUpScreen extends StatelessWidget {
                     showNotification: true,
                     showSettings: true,
                     showSearch: true,
-                    onAddPressed: () {
-                      context.push(
-                        '/addPickup',
-                        extra: {"hideMobileAppBar": true},
-                      );
-                    }
                 ),
               const SizedBox(height: 3),
               CardListHeaderPickupWidget(),

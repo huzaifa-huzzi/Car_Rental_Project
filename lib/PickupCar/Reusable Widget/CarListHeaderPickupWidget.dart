@@ -61,7 +61,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
                   text: "Add Pickup car",
                   width: 140,
                   height: 40,
-                  onTap: () => context.push('/addNewPickup', extra: {"hideMobileAppBar": true}),
+                  onTap: () => context.push('/addpickup', extra: {"hideMobileAppBar": true}),
                 ),
               ],
             ],

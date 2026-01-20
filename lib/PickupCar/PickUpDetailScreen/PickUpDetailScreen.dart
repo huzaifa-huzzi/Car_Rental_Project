@@ -38,7 +38,7 @@ class PickUpDetailScreen extends StatelessWidget {
                         showProfile: true,
                         onAddPressed: () {
                           context.push(
-                            '/addPickup',
+                          '/addpickup',
                             extra: {"hideMobileAppBar": true},
                           );
                         },

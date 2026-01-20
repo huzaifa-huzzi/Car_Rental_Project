@@ -81,8 +81,8 @@ class AppNavigation {
         builder: (context, state) => _wrapSidebar(state,  PickUpDetailScreen()),
       ),
       GoRoute(
-        path: '/addPickup',
-        builder: (context, state) => _wrapSidebar(state, const AddPickUp()),
+        path: '/addpickup', // Sub chotay huroof mein rakhein
+        builder: (context, state) => _wrapSidebar(state, const AddPickup()),
       ),
       GoRoute(
         path: '/editPickUp',
