@@ -229,7 +229,7 @@ class PickupCarController extends GetxController {
   var isCustomerDropdownOpen2 = false.obs;
 
   // Rent Purpose
-  var rentPurpose = "Personal Use".obs; // Default value
+  var selectedRentPurpose = "Personal Use".obs;
 
   // Weekly Rent Controllers
   final weeklyRentController2 = TextEditingController();

@@ -112,7 +112,7 @@ class PickupDetailWidget extends StatelessWidget {
                 icon: IconString.damageInspection,
                 child: _buildDamageInspectionCard(context, isMobile)),
             const SizedBox(height: 25),
-           /// Pickup Note Section
+            /// Pickup Note Section
             _buildSection(
               context,
               title: "Pickup Note",
@@ -132,7 +132,7 @@ class PickupDetailWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     Text("Car Image (Max 10)",
+                    Text("Car Image (Max 10)",
                         style: TTextTheme.dropdowninsideText(context)),
                     const SizedBox(height: 10),
                     _imageBox(context),
@@ -183,6 +183,7 @@ class PickupDetailWidget extends StatelessWidget {
                   style: TTextTheme.dropdowninsideText(context)),
               const SizedBox(height: 8),
               Container(
+                padding: EdgeInsets.all(3),
                 decoration: BoxDecoration(
                   color: AppColors.secondaryColor,
                   borderRadius: BorderRadius.circular(6),
@@ -247,7 +248,6 @@ class PickupDetailWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ///  Damage Type Legend
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
@@ -286,7 +286,6 @@ class PickupDetailWidget extends StatelessWidget {
 
         const SizedBox(height: 20),
 
-        ///  Interactive Car Diagram
         Align(
           alignment: Alignment.centerLeft,
           child: LayoutBuilder(
@@ -412,7 +411,7 @@ class PickupDetailWidget extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           Text("Agreement Start Time",
+          Text("Agreement Start Time",
               style: TTextTheme.dropdowninsideText(context)),
           const SizedBox(height: 8),
           _editableTimeField(controller.startDateController, "02/12/2025",context),
@@ -421,7 +420,7 @@ class PickupDetailWidget extends StatelessWidget {
 
           const SizedBox(height: 24),
 
-           Text("Agreement End Time",
+          Text("Agreement End Time",
               style: TTextTheme.dropdowninsideText(context)),
           const SizedBox(height: 8),
           _editableTimeField(controller.endDateController, "02/12/2025",context),
@@ -439,7 +438,7 @@ class PickupDetailWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Text("Agreement Start Time",
+              Text("Agreement Start Time",
                   style: TTextTheme.dropdowninsideText(context)),
               const SizedBox(height: 8),
               Row(
@@ -488,7 +487,7 @@ class PickupDetailWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Text("Agreement End Time",
+              Text("Agreement End Time",
                   style: TTextTheme.dropdowninsideText(context)),
               const SizedBox(height: 8),
               Row(
@@ -572,7 +571,7 @@ class PickupDetailWidget extends StatelessWidget {
             children: [
               Text(title, style: TTextTheme.titleRadios(context)),
               const SizedBox(height: 20),
-              
+
               Flex(
                 direction: forceVertical ? Axis.vertical : Axis.horizontal,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -601,7 +600,7 @@ class PickupDetailWidget extends StatelessWidget {
                             ],
                           ),
                         ),
-                         Text("Full Name", style: TTextTheme.titleFullName(context)),
+                        Text("Full Name", style: TTextTheme.titleFullName(context)),
                       ],
                     ),
                   ),
@@ -633,7 +632,7 @@ class PickupDetailWidget extends StatelessWidget {
                             ],
                           ),
                         ),
-                         Text("Signature", style: TTextTheme.titleFullName(context)),
+                        Text("Signature", style: TTextTheme.titleFullName(context)),
                       ],
                     ),
                   ),
@@ -651,10 +650,8 @@ class PickupDetailWidget extends StatelessWidget {
     bool isMobileView = MediaQuery.of(context).size.width < 600 && !kIsWeb;
 
     return GestureDetector(
-      // 1. Function name match kiya (pickImage2)
       onTap: () => controller.pickImage2(),
       child: Obx(() {
-        // 2. List name match kiya (pickupCarImages)
         return Container(
           width: double.infinity,
           constraints: const BoxConstraints(minHeight: 180),
@@ -667,7 +664,6 @@ class PickupDetailWidget extends StatelessWidget {
               width: 1.5,
             ),
           ),
-          // 3. Condition check for pickupCarImages
           child: controller.pickupCarImages.isEmpty
               ? Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -706,7 +702,6 @@ class PickupDetailWidget extends StatelessWidget {
               spacing: 12,
               runSpacing: 12,
               children: [
-                // 4. Mapping correct list
                 ...controller.pickupCarImages.map((imageHolder) {
                   int index = controller.pickupCarImages.indexOf(imageHolder);
                   return Stack(
@@ -725,7 +720,6 @@ class PickupDetailWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // Optional: Remove button taaki user image hata sake
                       Positioned(
                         top: 5,
                         right: 5,
@@ -772,8 +766,8 @@ class PickupDetailWidget extends StatelessWidget {
 
               Expanded(
                 child: Text(
-                  title,
-                  style: TTextTheme.h6Style(context)),
+                    title,
+                    style: TTextTheme.h6Style(context)),
               ),
             ],
           ),
@@ -784,7 +778,7 @@ class PickupDetailWidget extends StatelessWidget {
     );
   }
 
-   // For Web
+  // For Web
   Widget _buildDetailedCustomerCard(BuildContext context, bool isMobile) {
     return Container(
       width: double.infinity,
@@ -822,7 +816,7 @@ class PickupDetailWidget extends StatelessWidget {
               SizedBox(width: 70, child: AddButtonOfPickup(text: "View", onTap: () {})),
             ],
           ),
-           SizedBox(height: 15),
+          SizedBox(height: 15),
           /// Scrollable Info for Mobile
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -913,89 +907,89 @@ class PickupDetailWidget extends StatelessWidget {
   // detail Card for web
   Widget _buildDetailedCarCard(BuildContext context, bool isMobile) {
     return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: isMobile ? 18 : 15),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundOfPickupsWidget,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: isMobile
-          ? Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    Center(child: Image.asset(ImageString.astonPic, width: 100)),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Aston 2025", style: TTextTheme.titleSix(context), overflow: TextOverflow.ellipsis),
-                          Text("Martin", style: TTextTheme.h3Style(context), overflow: TextOverflow.ellipsis),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              AddButtonOfPickup(text: "View", width: 65, onTap: () {}),
-            ],
-          ),
-          const SizedBox(height: 12),
-
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            child: Row(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: isMobile ? 18 : 15),
+        decoration: BoxDecoration(
+          color: AppColors.backgroundOfPickupsWidget,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: isMobile
+            ? Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _infoRowTag(label: "Registration", value: "1234567890", context: context),
-                const SizedBox(width: 10),
-                _infoRowTag(
-                  label: "VIN",
-                  value: "JTNBA3HK003001234",
-                  labelColor: AppColors.backgroundOfVin,
-                  context: context,
+                Expanded(
+                  child: Row(
+                    children: [
+                      Center(child: Image.asset(ImageString.astonPic, width: 100)),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Aston 2025", style: TTextTheme.titleSix(context), overflow: TextOverflow.ellipsis),
+                            Text("Martin", style: TTextTheme.h3Style(context), overflow: TextOverflow.ellipsis),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(width: 30),
-                _buildSpecColumn(context, label: "Transmission", value: "Auto", imagePath: IconString.transmissionIcon),
-                const SizedBox(width: 30),
-                _buildSpecColumn(context, label: "Capacity", value: "2 seats", imagePath: IconString.capacityIcon),
-                const SizedBox(width: 25),
-                _buildPriceColumn(context),
+                AddButtonOfPickup(text: "View", width: 65, onTap: () {}),
               ],
             ),
-          ),
-        ],
-      )
-          :  LayoutBuilder(
-        builder: (context, constraints) {
-      double maxWidth = constraints.maxWidth;
+            const SizedBox(height: 12),
 
-      bool enableScroll = maxWidth < 650;
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              child: Row(
+                children: [
+                  _infoRowTag(label: "Registration", value: "1234567890", context: context),
+                  const SizedBox(width: 10),
+                  _infoRowTag(
+                    label: "VIN",
+                    value: "JTNBA3HK003001234",
+                    labelColor: AppColors.backgroundOfVin,
+                    context: context,
+                  ),
+                  const SizedBox(width: 30),
+                  _buildSpecColumn(context, label: "Transmission", value: "Auto", imagePath: IconString.transmissionIcon),
+                  const SizedBox(width: 30),
+                  _buildSpecColumn(context, label: "Capacity", value: "2 seats", imagePath: IconString.capacityIcon),
+                  const SizedBox(width: 25),
+                  _buildPriceColumn(context),
+                ],
+              ),
+            ),
+          ],
+        )
+            :  LayoutBuilder(
+          builder: (context, constraints) {
+            double maxWidth = constraints.maxWidth;
 
-      Widget content = Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: _buildCarContent(context, enableScroll),
-      );
+            bool enableScroll = maxWidth < 650;
+
+            Widget content = Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: _buildCarContent(context, enableScroll),
+            );
 
 
-      return enableScroll
-          ? SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minWidth: 900),
-          child: content,
-        ),
-      )
-          : content;
-    },
-    )
+            return enableScroll
+                ? SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minWidth: 900),
+                child: content,
+              ),
+            )
+                : content;
+          },
+        )
 
     );
   }
@@ -1237,7 +1231,7 @@ class PickupDetailWidget extends StatelessWidget {
               size: 16,
               color: AppColors.blackColor,
             ),
-             SizedBox(width: 10),
+            SizedBox(width: 10),
             Text(
               text,
               style: TTextTheme.titleRadios(context),
