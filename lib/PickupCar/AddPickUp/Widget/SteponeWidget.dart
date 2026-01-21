@@ -1080,59 +1080,42 @@ class StepOneSelectionWidget extends StatelessWidget {
   }
 
   Widget _buildToggleWidget() {
-    return Obx(() {
-      bool isOpen = controller.isDamageInspectionOpen.value;
-
-      return GestureDetector(
-        onTap: () => controller.isDamageInspectionOpen.value = !isOpen,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 250),
-          width: 85,
-          height: 34,
-          padding: const EdgeInsets.symmetric(horizontal: 4),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: isOpen ? const Color(0xFFFF2D55) : const Color(0xFF4299E1),
-          ),
-          child: Stack(
-            children: [
-              AnimatedAlign(
-                duration: const Duration(milliseconds: 250),
-                curve: Curves.easeInOut,
-                alignment: isOpen ? Alignment.centerRight : Alignment.centerLeft,
-                child: Container(
-                  width: 26,
-                  height: 26,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(6),
-                    boxShadow: [
-                      BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4)
-                    ],
-                  ),
-                ),
-              ),
-
-              //  (Yes / No)
-              Center(
-                child: AnimatedAlign(
-                  duration: const Duration(milliseconds: 250),
-                  alignment: isOpen ? const Alignment(-0.5, 0) : const Alignment(0.5, 0),
-                  child: Text(
-                    isOpen ? "Yes" : "No",
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+    return Obx(() => GestureDetector(
+      onTap: () => controller.isDamageInspectionOpen.value = !controller.isDamageInspectionOpen.value,
+      child: Container(
+        width: 70,
+        height: 32,
+        padding: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: controller.isDamageInspectionOpen.value ? const Color(0xFFFF2D55) : Colors.grey.shade300,
         ),
-      );
-    });
+        child: Stack(
+          children: [
+            AnimatedAlign(
+              duration: const Duration(milliseconds: 200),
+              alignment: controller.isDamageInspectionOpen.value ? Alignment.centerRight : Alignment.centerLeft,
+              child: Container(
+                width: 24,
+                height: 24,
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4)),
+              ),
+            ),
+            Align(
+              alignment: controller.isDamageInspectionOpen.value ? const Alignment(-0.6, 0) : const Alignment(0.6, 0),
+              child: Text(
+                controller.isDamageInspectionOpen.value ? "Yes" : "No",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: controller.isDamageInspectionOpen.value ? Colors.white : Colors.black54,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ));
   }
 
   Widget _imageBox(BuildContext context) {
