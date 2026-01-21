@@ -17,7 +17,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double buttonHeight = 40.0;
 
-    final bool showRedSearchButton = screenWidth > 850;
+    final bool showRedSearchButton = screenWidth > 600;
     final bool showCategoryText = screenWidth > 750;
     final bool showFilterText = screenWidth > 600;
 
@@ -137,40 +137,50 @@ class CardListHeaderPickupWidget extends StatelessWidget {
   //  Search Bar Widget
   Widget _searchBarWithButton(BuildContext context, PickupCarController controller, double height, bool showButton) {
     final double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       height: height,
-      padding: const EdgeInsets.only(left: 12),
+      padding: const EdgeInsets.only(left: 12, right: 4),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
       ),
       child: Row(
         children: [
-          const Icon(Icons.search, size: 18, color: AppColors.secondTextColor),
-          const SizedBox(width: 8),
+          if (showButton) ...[
+            const Icon(Icons.search, size: 18, color: AppColors.secondTextColor),
+            const SizedBox(width: 8),
+          ],
+
           Expanded(
             child: TextField(
+              textAlignVertical: TextAlignVertical.center,
+              style: TTextTheme.smallX(context),
               decoration: InputDecoration(
-                hintText: screenWidth > 900 ? "Search Pickup by Customer Name" : "Search...",
+                hintText: screenWidth > 750 ? "Search Pickup by Customer Name" : "Search...",
                 hintStyle: TTextTheme.smallX(context),
                 border: InputBorder.none,
-                isCollapsed: true,
+                contentPadding: EdgeInsets.only(bottom: 18),
               ),
             ),
           ),
-          if (showButton)
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                alignment: Alignment.center,
-                child: Text("Search", style: TTextTheme.btnSearch(context)),
+
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+              height: 32,
+              padding: EdgeInsets.symmetric(horizontal: showButton ? 16 : 0),
+              width: showButton ? null : 32,
+              decoration: BoxDecoration(
+                color: AppColors.primaryColor,
+                borderRadius: BorderRadius.circular(8),
               ),
+              alignment: Alignment.center,
+              child: showButton
+                  ? Text("Search", style: TTextTheme.btnSearch(context))
+                  : const Icon(Icons.search, color: Colors.white, size: 18),
             ),
+          ),
         ],
       ),
     );
@@ -265,7 +275,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
           horizontal: AppSizes.horizontalPadding(context),
           vertical: 10,
         ),
-        width: isMobileUI ? (screenWidth - (AppSizes.horizontalPadding(context) * 2)) : null,
+        width: isMobileUI ? double.infinity : null,
         padding: EdgeInsets.all(AppSizes.padding(context)),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -273,33 +283,25 @@ class CardListHeaderPickupWidget extends StatelessWidget {
         ),
         child: isMobileUI
             ? Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
-            _filterItem("Make", _dropdownBox(controller.makes, controller.selectedMake, context), context),
-            const SizedBox(height: 16),
-            _filterItem("Model", _textFieldBox(controller.selectedModel.value, context), context),
-            const SizedBox(height: 16),
-            _filterItem("Year", _textFieldBox(controller.selectedYear.value, context), context),
-            const SizedBox(height: 16),
+            _filterItem("Customer Name", _textFieldBox(controller.customerName.value, context), context),
+            _filterItem("Car Make", _dropdownBox(controller.makes, controller.selectedMake, context), context),
+            _filterItem("Car Model", _textFieldBox(controller.selectedModel.value, context), context),
             _filterItem("Status", _statusDropdownBox(statuses, controller.selectedStatus, context), context),
-            const SizedBox(height: 16),
             _filterItem("Start Date", _textFieldBox(controller.startDate.value, context), context),
-            const SizedBox(height: 16),
             _filterItem("End Date", _textFieldBox(controller.endDate.value, context), context),
           ],
         )
             : Wrap(
-          spacing: 12,
+          spacing: 16,
           runSpacing: 16,
-          alignment: WrapAlignment.start,
-          crossAxisAlignment: WrapCrossAlignment.start,
           children: [
-            _filterItem("Make", _dropdownBox(controller.makes, controller.selectedMake, context), context, customWidth: 120),
-            _filterItem("Model", _textFieldBox(controller.selectedModel.value, context), context, customWidth: 140),
-            _filterItem("Year", _textFieldBox(controller.selectedYear.value, context), context, customWidth: 90),
-            _filterItem("Status", _statusDropdownBox(statuses, controller.selectedStatus, context), context, customWidth: 160),
-            _filterItem("Start Date", _textFieldBox(controller.startDate.value, context), context, customWidth: 125),
-            _filterItem("End Date", _textFieldBox(controller.endDate.value, context), context, customWidth: 125),
+            _filterItem("Customer Name", _textFieldBox(controller.customerName.value, context), context),
+            _filterItem("Car Make", _dropdownBox(controller.makes, controller.selectedMake, context), context),
+            _filterItem("Car Model", _textFieldBox(controller.selectedModel.value, context), context),
+            _filterItem("Status", _statusDropdownBox(statuses, controller.selectedStatus, context), context),
+            _filterItem("Start Date", _textFieldBox(controller.startDate.value, context), context),
+            _filterItem("End Date", _textFieldBox(controller.endDate.value, context), context),
           ],
         ),
       ),
@@ -311,16 +313,42 @@ class CardListHeaderPickupWidget extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     bool isMobileUI = screenWidth < 600;
 
-    return SizedBox(
-      width: isMobileUI ? double.infinity : (customWidth ?? 130),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: TTextTheme.btnFour(context), maxLines: 1, overflow: TextOverflow.ellipsis),
-          const SizedBox(height: 6),
-          child,
-        ],
+    if (isMobileUI) {
+      return SizedBox(
+        width: double.infinity,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: TTextTheme.btnFour(context)),
+            const SizedBox(height: 6),
+            child,
+          ],
+        ),
+      );
+    }
+
+    return IntrinsicWidth(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          minWidth: 100,
+          maxWidth: 250,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TTextTheme.btnFour(context),
+              maxLines: 1,
+              softWrap: false,
+              overflow: TextOverflow.visible,
+            ),
+            const SizedBox(height: 6),
+            child,
+          ],
+        ),
       ),
     );
   }

@@ -102,7 +102,7 @@ class PickupCarController extends GetxController {
   // Filter Values
   var selectedMake = "Toyota".obs;
   var selectedModel = "Corolla".obs;
-  var selectedYear = "2017".obs;
+  var customerName = "Alice".obs;
   var selectedStatus = "Completed".obs;
   var startDate = "12/12/25".obs;
   var endDate = "12/12/25".obs;

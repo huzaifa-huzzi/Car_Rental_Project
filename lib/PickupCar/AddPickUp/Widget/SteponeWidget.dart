@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/PickupCar/Reusable%20Widget/AddButtonOfPickup.dart';
 import 'package:car_rental_project/PickupCar/Reusable%20Widget/AddPickupButton.dart';

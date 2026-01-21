@@ -144,43 +144,57 @@ class CardListHeaderWidget extends StatelessWidget {
 
   //  Search Bar Widget
   Widget _searchBarWithButton(BuildContext context, CarInventoryController controller, double height, bool showButton) {
-    final bool isWeb = AppSizes.isWeb(context);
-    final bool isMobile = AppSizes.isMobile(context);
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isLargeScreen = screenWidth > 600;
 
-    String hintText = isWeb ? "Search Car By Vin Number" : (!isMobile ? "Search...." : "Search...");
+    String hintText = screenWidth > 750 ? "Search Car By Vin Number" : "Search...";
 
     return Container(
       height: height,
-      constraints: const BoxConstraints(minWidth: 100),
-      padding: const EdgeInsets.only(left: 10),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+      padding: const EdgeInsets.only(left: 12, right: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Icon(Icons.search, size: 18, color: AppColors.secondTextColor),
-          const SizedBox(width: 8),
+          if (isLargeScreen) ...[
+            const Icon(Icons.search, size: 18, color: AppColors.secondTextColor),
+            const SizedBox(width: 8),
+          ],
+
           Expanded(
             child: TextField(
+              textAlignVertical: TextAlignVertical.center,
               cursorColor: AppColors.blackColor,
               style: TTextTheme.titleTwo(context),
               decoration: InputDecoration(
                 hintText: hintText,
                 hintStyle: TTextTheme.smallX(context),
                 border: InputBorder.none,
-                isDense: true,
-                contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                contentPadding: EdgeInsets.only(bottom: 18),
               ),
             ),
           ),
-          if (showButton && !isMobile)
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(color: AppColors.primaryColor, borderRadius: BorderRadius.circular(6)),
-                alignment: Alignment.center,
-                child: Text("Search", style: TTextTheme.btnSearch(context)),
+
+          GestureDetector(
+            onTap: () {
+            },
+            child: Container(
+              height: 32,
+              padding: EdgeInsets.symmetric(horizontal: isLargeScreen ? 16 : 0),
+              width: isLargeScreen ? null : 32,
+              decoration: BoxDecoration(
+                color: AppColors.primaryColor,
+                borderRadius: BorderRadius.circular(8),
               ),
+              alignment: Alignment.center,
+              child: isLargeScreen
+                  ? Text("Search", style: TTextTheme.btnSearch(context))
+                  : const Icon(Icons.search, color: Colors.white, size: 18),
             ),
+          ),
         ],
       ),
     );
