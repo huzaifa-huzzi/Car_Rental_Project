@@ -102,7 +102,7 @@ class PickupCarController extends GetxController {
   // Filter Values
   var selectedMake = "Toyota".obs;
   var selectedModel = "Corolla".obs;
-  var customerName = "Alice".obs;
+  var selectYear = "2017".obs;
   var selectedStatus = "Completed".obs;
   var startDate = "12/12/25".obs;
   var endDate = "12/12/25".obs;
@@ -240,9 +240,6 @@ class PickupCarController extends GetxController {
   final paidBondController2 = TextEditingController();
   final leftBondController2 = TextEditingController();
 
-  // Selected Data (Null matlab abhi select nahi hua)
-  var selectedCustomer = Rxn<dynamic>();
-  var selectedCar = Rxn<dynamic>();
 
   // Search Controllers
   final customerSearchController = TextEditingController();
@@ -250,6 +247,12 @@ class PickupCarController extends GetxController {
 
   void toggleCustomerDropdown() => isCustomerDropdownOpen.value = !isCustomerDropdownOpen.value;
   void toggleCarDropdown() => isCarDropdownOpen.value = !isCarDropdownOpen.value;
+// Controller ke andar
+  final Rxn<Map<String, dynamic>> selectedCustomer = Rxn<Map<String, dynamic>>();
+  final Rxn<Map<String, dynamic>> selectedCar = Rxn<Map<String, dynamic>>();
+
+  void clearCustomer() => selectedCustomer.value = null;
+  void clearCar() => selectedCar.value = null;
 
   var selectedDamageType2 = 1.obs;
   var damagePoints2 = <DamagePoint>[].obs;

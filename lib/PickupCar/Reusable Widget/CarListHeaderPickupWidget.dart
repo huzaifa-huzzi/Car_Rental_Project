@@ -284,9 +284,9 @@ class CardListHeaderPickupWidget extends StatelessWidget {
         child: isMobileUI
             ? Column(
           children: [
-            _filterItem("Customer Name", _textFieldBox(controller.customerName.value, context), context),
-            _filterItem("Car Make", _dropdownBox(controller.makes, controller.selectedMake, context), context),
-            _filterItem("Car Model", _textFieldBox(controller.selectedModel.value, context), context),
+            _filterItem("Make", _dropdownBox(controller.makes, controller.selectedMake, context), context),
+            _filterItem("Model", _textFieldBox(controller.selectedModel.value, context), context),
+            _filterItem("Year", _textFieldBox(controller.selectYear.value, context), context),
             _filterItem("Status", _statusDropdownBox(statuses, controller.selectedStatus, context), context),
             _filterItem("Start Date", _textFieldBox(controller.startDate.value, context), context),
             _filterItem("End Date", _textFieldBox(controller.endDate.value, context), context),
@@ -296,9 +296,9 @@ class CardListHeaderPickupWidget extends StatelessWidget {
           spacing: 16,
           runSpacing: 16,
           children: [
-            _filterItem("Customer Name", _textFieldBox(controller.customerName.value, context), context),
-            _filterItem("Car Make", _dropdownBox(controller.makes, controller.selectedMake, context), context),
-            _filterItem("Car Model", _textFieldBox(controller.selectedModel.value, context), context),
+            _filterItem("Make", _dropdownBox(controller.makes, controller.selectedMake, context), context),
+            _filterItem("Model", _textFieldBox(controller.selectedModel.value, context), context),
+            _filterItem("Year", _textFieldBox(controller.selectYear.value, context), context),
             _filterItem("Status", _statusDropdownBox(statuses, controller.selectedStatus, context), context),
             _filterItem("Start Date", _textFieldBox(controller.startDate.value, context), context),
             _filterItem("End Date", _textFieldBox(controller.endDate.value, context), context),

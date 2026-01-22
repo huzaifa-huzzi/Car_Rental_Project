@@ -76,6 +76,14 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 9, 9, 12),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor);
   }
 
+  static TextStyle dropdownOfCar(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 9, 10, 12),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor);
+  }
+
+  static TextStyle dropdownOfCartitle(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 14),fontWeight: FontWeight.w500,color: AppColors.textColor);
+  }
+
   static TextStyle btnWhiteColor(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 12),fontWeight: FontWeight.w400,color: Colors.white);// (only for web)
   }
