@@ -10,6 +10,7 @@ import 'package:car_rental_project/Customers/CustomersDetails/CustomersDetails.d
 import 'package:car_rental_project/Customers/EditCustomers/EditCustomerScreen.dart';
 import 'package:car_rental_project/Customers/TableViewCustomerScreen/TableViewScreen.dart';
 import 'package:car_rental_project/PickupCar/AddPickUp/AddPickup.dart';
+import 'package:car_rental_project/PickupCar/AddPickUp/Widget/StepTwoWidgets.dart';
 import 'package:car_rental_project/PickupCar/EditPicUp/EditPickUpScreen.dart';
 import 'package:car_rental_project/PickupCar/PickUpDetailScreen/PickUpDetailScreen.dart';
 import 'package:car_rental_project/PickupCar/TableViewPicukUpScreen/TableViewPickUpScreen.dart';
@@ -84,6 +85,10 @@ class AppNavigation {
       GoRoute(
         path: '/addpickup',
         builder: (context, state) => _wrapSidebar(state, const AddPickup()),
+      ),
+      GoRoute(
+        path: '/stepTwoWidgetScreen',
+        builder: (context, state) => _wrapSidebar(state,  StepTwoSelectionWidget()),
       ),
       GoRoute(
         path: '/editPickUp',

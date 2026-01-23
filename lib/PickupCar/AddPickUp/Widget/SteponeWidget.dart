@@ -1762,7 +1762,9 @@ class StepOneSelectionWidget extends StatelessWidget {
               icon: Image.asset(
                 IconString.continueIcon,
               ),
-              onTap: () {},
+              onTap: () {
+                context.push('/stepTwoWidgetScreen', extra: {"hideMobileAppBar": true});
+              },
             ),
           ),
         ],
@@ -1791,7 +1793,9 @@ class StepOneSelectionWidget extends StatelessWidget {
               icon: Image.asset(
                 IconString.continueIcon,
               ),
-              onTap: () {},
+              onTap: () {
+                context.push('/stepTwoWidgetScreen', extra: {"hideMobileAppBar": true});
+              },
             ),
           ),
 
