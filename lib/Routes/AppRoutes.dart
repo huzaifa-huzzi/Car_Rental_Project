@@ -75,13 +75,14 @@ class AppNavigation {
         path: '/editCustomers',
         builder: (context, state) => _wrapSidebar(state,  EditCustomerScreen()),
       ),
-      //  No Sidebar / Special AppBar Routes (PickupCar)
+
+
       GoRoute(
         path: '/pickupDetail',
         builder: (context, state) => _wrapSidebar(state,  PickUpDetailScreen()),
       ),
       GoRoute(
-        path: '/addpickup', // Sub chotay huroof mein rakhein
+        path: '/addpickup',
         builder: (context, state) => _wrapSidebar(state, const AddPickup()),
       ),
       GoRoute(

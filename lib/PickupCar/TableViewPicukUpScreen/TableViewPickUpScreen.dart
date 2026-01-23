@@ -30,13 +30,20 @@ class TableViewPickUpScreen extends StatelessWidget {
           child: Column(
             children: [
               if (AppSizes.isWeb(context))
-                HeaderWebPickupWidget(
-                    mainTitle: 'Pickup Car',
-                    showProfile: true,
-                    showNotification: true,
-                    showSettings: true,
-                    showSearch: true,
-                ),
+                if (AppSizes.isWeb(context))
+                  HeaderWebPickupWidget(
+                      mainTitle: 'Customers',
+                      showProfile: true,
+                      showNotification: true,
+                      showSettings: true,
+                      showSearch: true,
+                      onAddPressed: () {
+                        context.push(
+                          '/addpickup',
+                          extra: {"hideMobileAppBar": true},
+                        );
+                      },
+                  ),
               const SizedBox(height: 3),
               CardListHeaderPickupWidget(),
               const SizedBox(height: 4),

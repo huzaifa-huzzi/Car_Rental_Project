@@ -249,92 +249,58 @@ class PickupDetailWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             border: Border.all(color: AppColors.quadrantalTextColor),
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Wrap(
-            spacing: 12,
-            runSpacing: 8,
+            spacing: 16,
+            runSpacing: 10,
             children: controller.damageTypes.map((type) {
-              return Obx(() => GestureDetector(
-                onTap: () => controller.selectedDamageType.value = type['id'],
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        color: type['color'],
-                        shape: BoxShape.circle,
-                        border: controller.selectedDamageType.value == type['id']
-                            ? Border.all(color: Colors.black, width: 0.6)
-                            : null,
-                      ),
-                      child: Text(type['id'].toString(),
-                          style: TTextTheme.btnNumbering(context)),
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: type['color'],
+                      shape: BoxShape.circle,
                     ),
-                    const SizedBox(width: 4),
-                    Text(type['label'], style: TTextTheme.titleSix(context)),
-                  ],
-                ),
-              ));
+                    child: Text(
+                      type['id'].toString(),
+                      style: TTextTheme.btnNumbering(context),
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    type['label'],
+                    style: TTextTheme.titleSix(context),
+                  ),
+                ],
+              );
             }).toList(),
           ),
         ),
 
-        const SizedBox(height: 20),
-
+        const SizedBox(height: 24),
         Align(
           alignment: Alignment.centerLeft,
           child: LayoutBuilder(
             builder: (context, constraints) {
-              double width = constraints.maxWidth > 500 ? 500 : constraints.maxWidth;
-              double height = width * 0.8;
+              double width = constraints.maxWidth > 600 ? 600 : constraints.maxWidth;
 
-              return GestureDetector(
-                onTapDown: (details) {
-                  double dx = details.localPosition.dx / width;
-                  double dy = details.localPosition.dy / height;
-
-                  var type = controller.damageTypes.firstWhere((t) => t['id'] == controller.selectedDamageType.value);
-
-                  controller.damagePoints.add(DamagePoint(
-                    dx: dx,
-                    dy: dy,
-                    typeId: type['id'],
-                    color: type['color'],
-                  ));
-                },
-                child: Container(
-                  width: width,
-                  height: height,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.transparent),
-                  ),
-                  child: Stack(
-                    children: [
-                      Image.asset(
-                        ImageString.carDamageInspectionImage,
-                        width: width,
-                        fit: BoxFit.contain,
-                      ),
-                      Obx(() => Stack(
-                        children: controller.damagePoints.map((point) {
-                          return Positioned(
-                            left: (point.dx * width) - 12,
-                            top: (point.dy * height) - 12,
-                            child: CircleAvatar(
-                              radius: 12,
-                              backgroundColor: point.color,
-                              child: Text(point.typeId.toString(),
-                                  style: TTextTheme.btnNumbering(context)),
-                            ),
-                          );
-                        }).toList(),
-                      )),
-                    ],
+              return Container(
+                width: width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    ImageString.carDamageInspectionImage,
+                    width: width,
+                    fit: BoxFit.contain,
                   ),
                 ),
               );

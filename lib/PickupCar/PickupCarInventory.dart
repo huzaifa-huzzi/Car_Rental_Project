@@ -231,23 +231,18 @@ class PickupCarController extends GetxController {
   // Rent Purpose
   var selectedRentPurpose = "Personal Use".obs;
 
-  // Weekly Rent Controllers
   final weeklyRentController2 = TextEditingController();
   final dailyRentController2 = TextEditingController();
-
-  // Bond Payment Controllers
   final bondAmountController2 = TextEditingController();
   final paidBondController2 = TextEditingController();
   final leftBondController2 = TextEditingController();
-
-
-  // Search Controllers
   final customerSearchController = TextEditingController();
   final carSearchController = TextEditingController();
 
   void toggleCustomerDropdown() => isCustomerDropdownOpen.value = !isCustomerDropdownOpen.value;
   void toggleCarDropdown() => isCarDropdownOpen.value = !isCarDropdownOpen.value;
-// Controller ke andar
+
+
   final Rxn<Map<String, dynamic>> selectedCustomer = Rxn<Map<String, dynamic>>();
   final Rxn<Map<String, dynamic>> selectedCar = Rxn<Map<String, dynamic>>();
 
@@ -266,11 +261,10 @@ class PickupCarController extends GetxController {
     {'id': 5, 'label': 'Other', 'color': AppColors.fiveBackground},
   ];
 
-  // Controller Variables for Step 2/3
+
   RxList<ImageHolder> pickupCarImages = <ImageHolder>[].obs;
   final int maxPickupImages = 10;
 
-// Agreement Time Controllers
   final startDateController2 = TextEditingController();
   final startTimeController2 = TextEditingController();
   final endDateController2 = TextEditingController();
@@ -281,7 +275,7 @@ class PickupCarController extends GetxController {
       type: FileType.custom,
       allowMultiple: true,
       allowedExtensions: ['png', 'jpg', 'jpeg', 'svg'],
-      withData: true, // Web aur Mobile dono ke liye bytes le aayega
+      withData: true,
     );
 
     if (result != null) {
@@ -298,7 +292,6 @@ class PickupCarController extends GetxController {
           }
         }
       }
-      // YE LINE ZAROORI HAI: Ye GetX ko batati hai ke list update ho gayi hai
       pickupCarImages.refresh();
     }
   }
@@ -329,13 +322,12 @@ class PickupCarController extends GetxController {
     endTimeController.dispose();
     ownerNameController.dispose();
     hirerNameController.dispose();
-
     startDateController2.dispose();
     startTimeController2.dispose();
     endDateController2.dispose();
     endTimeController2.dispose();
 
-    // 2. Rent & Bond Controllers (Set 1)
+    //  Rent & Bond Controllers
     weeklyRentController.dispose();
     rentBondAmountController.dispose();
     rentDueAmountController.dispose();
@@ -343,21 +335,21 @@ class PickupCarController extends GetxController {
     paidBondController.dispose();
     dueBondAmountController.dispose();
 
-    // 3. Inspection & Comments Controllers
+    // Inspection & Comments Controllers
     odoController.dispose();
     fuelLevelController.dispose();
     interiorCleanlinessController.dispose();
     exteriorCleanlinessController.dispose();
     additionalCommentsController.dispose();
 
-    // 4. Add Pickup Car Controllers (Set 2 / Suffix 2)
+    //  Add Pickup Car Controllers
     weeklyRentController2.dispose();
     dailyRentController2.dispose();
     bondAmountController2.dispose();
     paidBondController2.dispose();
     leftBondController2.dispose();
 
-    // 5. Search Controllers
+    //  Search Controllers
     customerSearchController.dispose();
     carSearchController.dispose();
 
