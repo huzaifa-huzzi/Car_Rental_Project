@@ -219,6 +219,11 @@ class TTextTheme {
     );
   }
 
+  static TextStyle pFive(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 10),fontWeight: FontWeight.w400,color: AppColors.textColor,
+    );
+  }
+
   static TextStyle documnetInsideText(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 10),fontWeight: FontWeight.w500,color: AppColors.quadrantalTextColor,
     );

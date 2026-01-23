@@ -95,6 +95,10 @@ class IconString {
   static const String  rentPurposeIcon = 'assets/icons/Rent Purpose Icon.png';
   static const String  rentTimeIcon = 'assets/icons/RentTime Icon.png';
   static const String  signatureIcon = 'assets/icons/SignatureIcon.png';
+  static const String  continueIcon = 'assets/icons/ContinueIcon.png';
+  static const String  deletePickup = 'assets/icons/deletePickup.png';
+  static const String  pickCarIconArrow = 'assets/icons/pickupCustomer.png';
+  static const String  cardIconPickup = 'assets/icons/CardPickupIcon.png';
 
 
 

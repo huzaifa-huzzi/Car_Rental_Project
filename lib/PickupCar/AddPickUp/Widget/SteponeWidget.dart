@@ -32,6 +32,8 @@ class StepOneSelectionWidget extends StatelessWidget {
         builder: (context, constraints) {
           double totalWidth = constraints.maxWidth;
           bool isMobile = AppSizes.isMobile(context);
+          bool isTablet = AppSizes.isTablet(context);
+          final screenWidth = MediaQuery.sizeOf(context).width ;
           double padding = 24.0;
 
           double buttonWidth = isMobile
@@ -81,7 +83,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                                     text: "Select The Customers",
                                     height: 45,
                                     width: buttonWidth,
-                                    icon: const Icon(Icons.near_me_rounded, size: 16, color: Colors.white),
+                                    icon:  Image.asset(IconString.pickCarIconArrow, color: Colors.white),
                                     onTap: () {
                                       if (controller.isCarDropdownOpen.value) {
                                         controller.isCarDropdownOpen.value = false;
@@ -125,7 +127,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                                   text: "Select The Car",
                                   height: 45,
                                   width: buttonWidth,
-                                  icon: const Icon(Icons.near_me_rounded, size: 16, color: Colors.white),
+                                  icon:  Image.asset(IconString.pickCarIconArrow),
                                   onTap: () => controller.isCarDropdownOpen.value = !controller.isCarDropdownOpen.value,
                                 ),
                               ],
@@ -363,7 +365,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                           Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
                           const SizedBox(height: 30),
 
-                          ///  CAR PICTURE 
+                          ///  CAR PICTURE
                           _buildSelectionRow(
                             context,
                             icon: IconString.carPictureIconPickup,
@@ -376,7 +378,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                           Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
                           const SizedBox(height: 30),
 
-                          ///  RENT TIME 
+                          ///  RENT TIME
                           _buildSelectionRow(
                             context,
                             icon: IconString.rentTimeIcon,
@@ -401,23 +403,66 @@ class StepOneSelectionWidget extends StatelessWidget {
               ///  Customer DROPDOWN OVERLAY
               Obx(() {
                 if (!controller.isCustomerDropdownOpen.value) return const SizedBox.shrink();
-                double topOffset = isMobile ? 210 : 160;
+
+                //  Responsive TOP Calculation
+                double topOffset;
+                if (isMobile) {
+                  topOffset = 215;
+                } else if (isTablet) {
+                  topOffset = 165;
+                } else {
+                  topOffset = 175;
+                }
+
+                //  Responsive RIGHT Calculation
+                double rightOffset;
+                if (isMobile) {
+                  rightOffset = 24;
+                } else if (isTablet) {
+                  rightOffset = screenWidth * 0.072;
+                } else {
+                  rightOffset = screenWidth * 0.056;
+                }
+
                 return Positioned(
                   top: topOffset,
-                  right: 24,
-                  child: _buildModernDropdown(context, buttonWidth),
+                  right: rightOffset,
+                  child: Material(
+                    elevation: 25,
+                    borderRadius: BorderRadius.circular(12),
+                    shadowColor: AppColors.quadrantalTextColor,
+                    child: _buildModernDropdown(context, buttonWidth),
+                  ),
                 );
               }),
 
               ///  CAR DROPDOWN OVERLAY
               Obx(() {
                 if (!controller.isCarDropdownOpen.value) return const SizedBox.shrink();
-                double topOffset = isMobile ? 430 : 315;
+
+                bool isCustomerSelected = controller.selectedCustomer.value != null;
+
+                double topOffset;
+                if (isMobile) {
+                  topOffset = isCustomerSelected ? 535 : 440;
+                } else if (isTablet) {
+                  topOffset = isCustomerSelected ? 425 : 330;
+                } else {
+                  topOffset = isCustomerSelected ? 435 : 338;
+                }
+
+                double screenWidth = MediaQuery.of(context).size.width;
+                double rightOffset = isMobile ? 24.0 : (isTablet ? screenWidth * 0.07 : screenWidth * 0.055);
 
                 return Positioned(
                   top: topOffset,
-                  right: 24,
-                  child: _buildCarModernDropdown(context, buttonWidth),
+                  right: rightOffset,
+                  child: Material(
+                    elevation: 25,
+                    borderRadius: BorderRadius.circular(15),
+                    shadowColor: AppColors.quadrantalTextColor,
+                    child: _buildCarModernDropdown(context, buttonWidth),
+                  ),
                 );
               }),
             ],
@@ -518,10 +563,10 @@ class StepOneSelectionWidget extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(width: 16), // 👈 thora sa controlled gap
+        const SizedBox(width: 16),
 
         Expanded(
-          flex: 5, // 👈 CONTENT KO REAL SPACE
+          flex: 5,
           child: SizedBox(
             width: double.infinity,
             child: content,
@@ -687,130 +732,119 @@ class StepOneSelectionWidget extends StatelessWidget {
 
       return Center(
         child: ConstrainedBox(
-          // Web par card ko width limit di taaki spacing screenshot jaisi phaili hui aaye
           constraints: BoxConstraints(maxWidth: isMobile ? double.infinity : 1200),
           child: Stack(
             clipBehavior: Clip.none,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFFF8F9), // Screenshot wala light pink bg
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFFFFE5E7)),
-                ),
-                child: isMobile
-                    ? Column( // --- MOBILE LAYOUT (Scrollable) ---
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Image.asset(car['image'], width: 120),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(car['year'] ?? "2024", style: const TextStyle(fontSize: 10, color: Colors.grey)),
-                                    Text(car['name'] ?? "Velar", style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        AddButtonOfPickup(text: "View", width: 70, onTap: () {}),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      physics: const BouncingScrollPhysics(),
-                      child: Row(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  decoration: BoxDecoration(
+                    color:AppColors.backgroundOfPickupsWidget,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: isMobile
+                      ? Column(
+                    //  MOBILE LAYOUT
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _buildInfoChip("Registration", car['reg'], const Color(0xFF1B254B),context),
-                          const SizedBox(width: 10),
-                          _buildInfoChip("VIN", car['vin'], const Color(0xFF4299E1),context),
-                          const SizedBox(width: 30),
-                          _buildCarSpecIcon(IconString.transmissionIcon, "Transmission", car['transmission'] ?? "Auto"),
-                          const SizedBox(width: 30),
-                          _buildCarSpecIcon(IconString.capacityIcon, "Capacity", car['seats'] ?? "2 seats"),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Image.asset(car['image'], width: 120),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(car['year'] ?? "2024", style: TTextTheme.titleThree(context)),
+                                      Text(car['name'] ?? "Velar", style: TTextTheme.h3Style(context)),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          AddButtonOfPickup(text: "View", width: 70, onTap: () {}),
                         ],
                       ),
-                    ),
-                  ],
-                )
-                    : // --- WEB LAYOUT ---
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // 1. LEFT: Car Image & Info
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Image.asset(car['image'], width: 140, fit: BoxFit.contain),
-                        const SizedBox(width: 25),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
+                      const SizedBox(height: 12),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
+                        child: Row(
                           children: [
-                            Text(car['year'] ?? "2024", style: const TextStyle(fontSize: 12, color: Colors.grey)),
-                            Text(car['name'] ?? "Velar",
-                                style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Color(0xFF1B254B))),
-                            const SizedBox(height: 10),
-                            _buildInfoChip("Registration", car['reg'], const Color(0xFF1B254B),context),
-                            const SizedBox(height: 8),
-                            _buildInfoChip("VIN", car['vin'], const Color(0xFF4299E1),context),
+                            _buildInfoChip("Registration", car['reg'], AppColors.textColor, context),
+                            const SizedBox(width: 10),
+                            _buildInfoChip("VIN", car['vin'], AppColors.backgroundOfVin, context),
+                            const SizedBox(width: 30),
+                            _buildCarSpecIcon(context, IconString.transmissionIcon, "Transmission", car['transmission'] ?? "Auto"),
+                            const SizedBox(width: 30),
+                            _buildCarSpecIcon(context, IconString.capacityIcon, "Capacity", car['seats'] ?? "2 seats"),
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
+                  )
+                      :
+                  // WEB LAYOUT
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset(car['image'], width: 140, fit: BoxFit.contain),
+                          const SizedBox(width: 25),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(car['year'] ?? "2024", style: TTextTheme.titleThree(context)),
+                              Text(car['name'] ?? "Velar",
+                                  style: TTextTheme.h3Style(context)),
+                              const SizedBox(height: 10),
+                              _buildInfoChip("Registration", car['reg'], AppColors.textColor, context),
+                              const SizedBox(height: 8),
+                              _buildInfoChip("VIN", car['vin'], AppColors.backgroundOfVin, context),
+                            ],
+                          ),
+                        ],
+                      ),
 
-                    Row(
-                      children: [
-                        _buildCarSpecIcon(IconString.transmissionIcon, "Transmission", car['transmission'] ?? "Automatic"),
-                        const SizedBox(width: 50),
-                        _buildCarSpecIcon(IconString.capacityIcon, "Capacity", car['seats'] ?? "2 seats"),
-                        const SizedBox(width: 60),
-                        AddButtonOfPickup(text: "View", width: 70, height: 38, onTap: () {}),
-                      ],
-                    ),
-                  ],
-                )
+                      Row(
+                        children: [
+                          _buildCarSpecIcon(context, IconString.transmissionIcon, "Transmission", car['transmission'] ?? "Automatic"),
+                          const SizedBox(width: 50),
+                          _buildCarSpecIcon(context, IconString.capacityIcon, "Capacity", car['seats'] ?? "2 seats"),
+                          const SizedBox(width: 60),
+                          AddButtonOfPickup(text: "View", width: 70, height: 38, onTap: () {}),
+                        ],
+                      ),
+                    ],
+                  )
               ),
 
-              // --- DELETE BUTTON (Bin Icon) ---
-              // --- EXACT CIRCULAR DELETE BUTTON DESIGN ---
+              //  DELETE BUTTON
               Positioned(
-                top: -12, // Thora aur bahar nikalne ke liye
+                top: -12,
                 right: -12,
                 child: GestureDetector(
                   onTap: () => controller.selectedCar.value = null,
                   child: Container(
-                    width: 32, // Fixed width aur height se hi perfect circle banta hai
-                    height: 32,
+                    width: 44,
+                    height: 44,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: const Color(0xFFFFE5E7), width: 1), // Light pink border
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.08),
-                          blurRadius: 8,
-                          spreadRadius: 1,
-                          offset: const Offset(0, 2), // Neeche ki taraf halki shadow
-                        ),
-                      ],
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.delete_outline,
-                        color: Color(0xFFFF4D4F), // Exactly wahi red jo screenshot mein hai
-                        size: 18,
+                    child: Center(
+                      child: Image.asset(
+                        IconString.deleteIcon,
+                        color: AppColors.primaryColor,
+                        filterQuality: FilterQuality.high,
                       ),
                     ),
                   ),
@@ -821,205 +855,6 @@ class StepOneSelectionWidget extends StatelessWidget {
         ),
       );
     });
-  }
-
-// Helper for Specs Icons
-  Widget _buildCarSpecIcon(String assetPath, String label, String value) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 34,   // ↓ 36
-          height: 34,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: const Color(0xFFE3F2FD),
-            borderRadius: BorderRadius.circular(7),
-          ),
-          child: Image.asset(
-            assetPath,
-            width: 17,
-            height: 17,
-          ),
-        ),
-
-        const SizedBox(height: 4), // ↓ 6
-
-        Text(
-          label,
-          style: const TextStyle(fontSize: 9, color: Colors.grey),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-
-        const SizedBox(height: 1),
-
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 12.5, // ↓ thora sa
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF1B254B),
-          ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ],
-    );
-  }
-
-
-
-  Widget _buildSelectedCustomerDisplay(BuildContext context) {
-    var customer = controller.selectedCustomer.value!;
-    double screenWidth = MediaQuery.of(context).size.width;
-    bool isMobile = screenWidth < 950; // Tablet aur Mobile ka threshold
-
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(20), // Thori zyada padding design ke liye
-          decoration: BoxDecoration(
-            color: const Color(0xFFFFF8F9),
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: const Color(0xFFFFE5E7), width: 1.5),
-          ),
-          child: isMobile
-              ? _buildMobileLayout(context, customer)
-              : _buildWebLayout(context, customer), // 2nd row design yahan hai
-        ),
-
-        // --- DELETE BUTTON (Top Right) ---
-        Positioned(
-          top: -12,
-          right: -12,
-          child: GestureDetector(
-            onTap: () => controller.selectedCustomer.value = null,
-            child: Container(
-              width: 32, height: 32,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFFFE5E7)),
-                boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8)],
-              ),
-              child: const Center(child: Icon(Icons.delete_outline, color: Color(0xFFFF4D4F), size: 18)),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildWebLayout(BuildContext context, Map customer) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        bool canFitGrid = constraints.maxWidth > 600;
-
-        if (!canFitGrid) {
-          return _buildMobileLayout(context, customer);
-        }
-
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset(ImageString.customerUser, width: 60, height: 60, fit: BoxFit.cover),
-            ),
-            const SizedBox(width: 14),
-
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  customer['name'] ?? "Jack Morrison",
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF1B254B)),
-                ),
-                const Text("Driver", style: TextStyle(fontSize: 12, color: Colors.grey)),
-              ],
-            ),
-
-            const Spacer(flex: 1),
-            Flexible(
-              flex: 8,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 400),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(child: _buildCarSpecIcon(IconString.callIcon, "Contact Number", customer['phone'] ?? "+12 3456 7890")),
-                        Expanded(child: _buildCarSpecIcon(IconString.cardIcon, "Card Number", customer['card'] ?? "1243567434")),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(child: _buildCarSpecIcon(IconString.licesnseNo, "License Number", customer['license'] ?? "1245985642")),
-                        Expanded(child: _buildCarSpecIcon(IconString.cardIcon, "NID Number", customer['Nid'] ?? "123 456 789")),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            const Spacer(flex: 1),
-
-            AddButtonOfPickup(text: "View", width: 80, height: 44, onTap: () {}),
-          ],
-        );
-      },
-    );
-  }
-
-
-
-
-  Widget _buildMobileLayout(BuildContext context, Map customer) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.asset(ImageString.customerUser, width: 55, height: 55, fit: BoxFit.cover),
-            ),
-            const SizedBox(width: 15),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(customer['name'] ?? "Carlie Harvy", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  const Text("Driver", style: TextStyle(fontSize: 12, color: Colors.grey)),
-                ],
-              ),
-            ),
-            AddButtonOfPickup(text: "View", width: 75, height: 35, onTap: () {}),
-          ],
-        ),
-        const SizedBox(height: 20),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              _buildCarSpecIcon(IconString.callIcon, "Contact", customer['phone'] ?? "+12 3456 7890"),
-              const SizedBox(width: 20),
-              _buildCarSpecIcon(IconString.licesnseNo, "License", customer['license'] ?? "1245985642"),
-              const SizedBox(width: 20),
-              _buildCarSpecIcon(IconString.cardIcon, "Card", customer['card'] ?? "1243567434"),
-              const SizedBox(width: 20),
-              _buildCarSpecIcon(IconString.cardIcon, "NID", customer['Nid'] ?? "123 456 789"),
-            ],
-          ),
-        ),
-      ],
-    );
   }
 
   Widget _buildInfoChip(String label, String value, Color color,BuildContext context) {
@@ -1053,6 +888,201 @@ class StepOneSelectionWidget extends StatelessWidget {
       ),
     );
   }
+
+
+
+
+  // Customer Display (web/mobile next two widgets)
+  Widget _buildSelectedCustomerDisplay(BuildContext context) {
+    var customer = controller.selectedCustomer.value!;
+
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: AppColors.backgroundOfPickupsWidget,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: AppSizes.isMobile(context)
+              ? _buildMobileLayout(context, customer)
+              : _buildWebLayout(context, customer),
+        ),
+
+        //  DELETE BUTTON
+        Positioned(
+          top: -12,
+          right: -12,
+          child: GestureDetector(
+            onTap: () => controller.selectedCustomer.value = null,
+            child: Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Image.asset(
+                  IconString.deleteIcon,
+                  color: AppColors.primaryColor,
+                  filterQuality: FilterQuality.high,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildWebLayout(BuildContext context, Map customer) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        bool canFitGrid = constraints.maxWidth > 600;
+
+        if (!canFitGrid) {
+          return _buildMobileLayout(context, customer);
+        }
+
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.asset(ImageString.customerUser, width: 60, height: 60, fit: BoxFit.cover),
+            ),
+            const SizedBox(width: 14),
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  customer['name'] ?? "Jack Morrison",
+                  style: TTextTheme.h2Style(context),
+                ),
+                Text("Driver", style: TTextTheme.titleDriver(context)),
+              ],
+            ),
+
+            const Spacer(flex: 1),
+            Flexible(
+              flex: 8,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 400),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(child: _buildCarSpecIcon(context, IconString.callIcon, "Contact Number", customer['phone'] ?? "+12 3456 7890")),
+                        Expanded(child: _buildCarSpecIcon(context, IconString.cardIconPickup, "Card Number", customer['card'] ?? "1243567434")),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Expanded(child: _buildCarSpecIcon(context, IconString.licesnseNo, "License Number", customer['license'] ?? "1245985642")),
+                        Expanded(child: _buildCarSpecIcon(context, IconString.nidIcon, "NID Number", customer['Nid'] ?? "123 456 789")),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            const Spacer(flex: 1),
+
+            AddButtonOfPickup(text: "View", width: 80, height: 44, onTap: () {}),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildMobileLayout(BuildContext context, Map customer) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.asset(ImageString.customerUser, width: 55, height: 55, fit: BoxFit.cover),
+            ),
+            const SizedBox(width: 15),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(customer['name'] ?? "Carlie Harvy", style: TTextTheme.h2Style(context)),
+                  Text("Driver", style: TTextTheme.titleDriver(context)),
+                ],
+              ),
+            ),
+            AddButtonOfPickup(text: "View", width: 75, height: 35, onTap: () {}),
+          ],
+        ),
+        const SizedBox(height: 20),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              _buildCarSpecIcon(context, IconString.callIcon, "Contact", customer['phone'] ?? "+12 3456 7890"),
+              const SizedBox(width: 20),
+              _buildCarSpecIcon(context, IconString.licesnseNo, "License", customer['license'] ?? "1245985642"),
+              const SizedBox(width: 20),
+              _buildCarSpecIcon(context, IconString.cardIconPickup, "Card", customer['card'] ?? "1243567434"),
+              const SizedBox(width: 20),
+              _buildCarSpecIcon(context, IconString.nidIcon, "NID", customer['Nid'] ?? "123 456 789"),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+
+  // Helper for Specs Icons
+  Widget _buildCarSpecIcon(BuildContext context, String assetPath, String label, String value) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 34,
+          height: 34,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: AppColors.secondaryColor,
+            borderRadius: BorderRadius.circular(7),
+          ),
+          child: Image.asset(
+            assetPath,
+            width: 17,
+            height: 17,
+            fit: BoxFit.scaleDown,
+            color: AppColors.textColor,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: TTextTheme.smallXX(context),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 1),
+        Text(
+          value,
+          style: TTextTheme.pFive(context),
+        ),
+      ],
+    );
+  }
+
+
 
   // Dropdown of customers
   Widget _buildModernDropdown(BuildContext context, double width) {
@@ -1127,7 +1157,7 @@ class StepOneSelectionWidget extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 16,
-            backgroundImage: AssetImage(ImageString.userImage),
+            backgroundImage: AssetImage(ImageString.customerUser),
           ),
           const SizedBox(width: 15),
            SizedBox(
@@ -1135,7 +1165,7 @@ class StepOneSelectionWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Jack Morrison", style: TTextTheme.pOne(context)),
+                Text("Jack Morrison", style: TTextTheme.pOne(context),overflow: TextOverflow.ellipsis,maxLines: 1,),
                 Text("Jack@rhyta.com", style: TTextTheme.pFour(context)),
               ],
             ),
@@ -1175,6 +1205,7 @@ class StepOneSelectionWidget extends StatelessWidget {
     );
   }
 
+  // Badges
   Widget _buildStepBadge(String text, bool isActive,BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -1185,7 +1216,6 @@ class StepOneSelectionWidget extends StatelessWidget {
       child: Text(text, style: TTextTheme.btnWhiteColor(context)),
     );
   }
-
   Widget _buildStepBadges(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 20),
@@ -1195,6 +1225,7 @@ class StepOneSelectionWidget extends StatelessWidget {
     );
   }
 
+  // Radio Buttons Widget
   Widget _buildRadioButton(BuildContext context,String text, bool isSelected, {required VoidCallback onTap}){
     return GestureDetector(
       onTap: onTap,
@@ -1217,6 +1248,7 @@ class StepOneSelectionWidget extends StatelessWidget {
     );
   }
 
+  // Input Fields Widget
   Widget _buildMiniInputField(String label, String hint, double width, TextEditingController txtController, BuildContext context) {
     return SizedBox(
       width: width,
@@ -1254,7 +1286,6 @@ class StepOneSelectionWidget extends StatelessWidget {
       ),
     );
   }
-
   Widget _buildReportDropdown(String label, List<String> items, double width, TextEditingController txtController, BuildContext context) {
     return SizedBox(
       width: width,
@@ -1319,7 +1350,6 @@ class StepOneSelectionWidget extends StatelessWidget {
       ),
     );
   }
-
   PopupMenuItem<String> _buildFilterPopupItem(String text, BuildContext context, {bool isLast = false}) {
     return PopupMenuItem<String>(
       value: text,
@@ -1346,6 +1376,7 @@ class StepOneSelectionWidget extends StatelessWidget {
     );
   }
 
+  // Damage Inspection Card Widgets
   Widget _buildDamageInspectionCard(BuildContext context, double cardWidth) {
     bool isMobile = AppSizes.isMobile(context);
 
@@ -1484,7 +1515,6 @@ class StepOneSelectionWidget extends StatelessWidget {
       ],
     );
   }
-
   Widget _buildToggleWidget(BuildContext context) {
     return Obx(() => GestureDetector(
       onTap: () => controller.isDamageInspectionOpen.value = !controller.isDamageInspectionOpen.value,
@@ -1520,6 +1550,8 @@ class StepOneSelectionWidget extends StatelessWidget {
     ));
   }
 
+
+  // Image Box Widget
   Widget _imageBox(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1636,6 +1668,7 @@ class StepOneSelectionWidget extends StatelessWidget {
     );
   }
 
+  // Rent time Widgets
   Widget _buildRentTimeSection(BuildContext context) {
     bool isMobile = AppSizes.isMobile(context);
 
@@ -1648,15 +1681,13 @@ class StepOneSelectionWidget extends StatelessWidget {
             : Expanded(child: _buildStartTimeColumn(context)),
 
         isMobile ? const SizedBox(height: 20) : const SizedBox(width: 40),
-        
+
         isMobile
             ? _buildEndTimeColumn(context)
             : Expanded(child: _buildEndTimeColumn(context)),
       ],
     );
   }
-
-// Start Rent Time  
   Widget _buildStartTimeColumn(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1669,8 +1700,6 @@ class StepOneSelectionWidget extends StatelessWidget {
       ],
     );
   }
-
-// End Rent Time
   Widget _buildEndTimeColumn(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1683,7 +1712,6 @@ class StepOneSelectionWidget extends StatelessWidget {
       ],
     );
   }
-
   Widget _editableTimeField(TextEditingController textController, String hint,BuildContext context) {
     return Container(
       decoration: BoxDecoration(
@@ -1705,6 +1733,7 @@ class StepOneSelectionWidget extends StatelessWidget {
     );
   }
 
+  // Buttons Widgets
   Widget _buttonSection(BuildContext context, bool isMobile) {
     const double webButtonWidth = 150.0;
     const double webButtonHeight = 45.0;
@@ -1731,7 +1760,7 @@ class StepOneSelectionWidget extends StatelessWidget {
             child: AddButtonOfPickup(
               text: "Continue",
               icon: Image.asset(
-                IconString.saveVehicleIcon,
+                IconString.continueIcon,
               ),
               onTap: () {},
             ),
@@ -1760,7 +1789,7 @@ class StepOneSelectionWidget extends StatelessWidget {
             child: AddButtonOfPickup(
               text: "Continue",
               icon: Image.asset(
-                IconString.saveVehicleIcon,
+                IconString.continueIcon,
               ),
               onTap: () {},
             ),
