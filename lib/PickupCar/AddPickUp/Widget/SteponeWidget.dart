@@ -287,26 +287,26 @@ class StepOneSelectionWidget extends StatelessWidget {
                                   spacing: 15,
                                   runSpacing: 20,
                                   children: [
-                                    _buildMiniInputField("Pickup ODO", "12457578", itemWidth, controller.odoController,context),
+                                    _buildMiniInputField("Pickup ODO", "12457578", itemWidth, controller.odoAddController,context),
                                     _buildReportDropdown(
                                         "Pickup Fuel Level",
                                         ["Full 100%", "High 75%", "Half 50%", "Low 25%","Empty 0%"],
                                         itemWidth,
-                                        controller.fuelLevelController,
+                                        controller.fuelLevelAddController,
                                         context
                                     ),
                                     _buildReportDropdown(
                                         "Pickup Interior Cleanliness",
                                         ["Excellent", "Good", "Average", "Dirt"],
                                         itemWidth,
-                                        controller.interiorCleanlinessController,
+                                        controller.interiorCleanlinessAddController,
                                         context
                                     ),
                                     _buildReportDropdown(
                                         "Pickup Exterior Cleanliness",
                                         ["Excellent", "Good", "Average", "Dirty"],
                                         itemWidth,
-                                        controller.exteriorCleanlinessController,
+                                        controller.exteriorCleanlinessAddController,
                                         context
                                     ),
                                   ],
@@ -347,7 +347,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                                 const SizedBox(height: 8),
                                 TextField(
                                   cursorColor: AppColors.blackColor,
-                                  controller: controller.additionalCommentsController,
+                                  controller: controller.additionalAddCommentsController,
                                   maxLines: 4,
                                   decoration: InputDecoration(
                                     hintText: "Describe the vehicle's condition, unique features...",
@@ -1567,7 +1567,7 @@ class StepOneSelectionWidget extends StatelessWidget {
         GestureDetector(
           onTap: () => controller.pickImage2(),
           child: Obx(() {
-            final imagesList = controller.pickupCarImages;
+            final imagesList = controller.AddpickupCarImages;
 
             return DottedBorder(
               borderType: BorderType.RRect,
@@ -1694,9 +1694,9 @@ class StepOneSelectionWidget extends StatelessWidget {
       children: [
         Text("Agreement Start Time", style: TTextTheme.dropdowninsideText(context)),
         const SizedBox(height: 8),
-        _editableTimeField(controller.startDateController, "DD/MM/YYYY", context),
+        _editableTimeField(controller.startDateAddController, "DD/MM/YYYY", context),
         const SizedBox(height: 8),
-        _editableTimeField(controller.startTimeController, "Time:", context),
+        _editableTimeField(controller.startTimeAddController, "Time:", context),
       ],
     );
   }
@@ -1706,9 +1706,9 @@ class StepOneSelectionWidget extends StatelessWidget {
       children: [
         Text("Agreement End Time", style: TTextTheme.dropdowninsideText(context)),
         const SizedBox(height: 8),
-        _editableTimeField(controller.endDateController, "DD/MM/YYYY", context),
+        _editableTimeField(controller.endDateAddController, "DD/MM/YYYY", context),
         const SizedBox(height: 8),
-        _editableTimeField(controller.endTimeController, "Time:", context),
+        _editableTimeField(controller.endTimeAddController, "Time:", context),
       ],
     );
   }

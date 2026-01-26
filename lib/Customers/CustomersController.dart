@@ -271,6 +271,58 @@ class CustomerController extends GetxController {
   }
 
 
+  @override
+  void onClose() {
+    // 1. Add Customer Screen Controllers
+    givenNameController.dispose();
+    surnameController.dispose();
+    dobController.dispose();
+    contactController.dispose();
+    emailController.dispose();
+    addressController.dispose();
+    noteController.dispose();
+    licenseNameController.dispose();
+    licenseNumberController.dispose();
+    licenseExpiryController.dispose();
+    licenseCardNumberController.dispose();
+    ccNumberController.dispose();
+    ccHolderController.dispose();
+    ccExpiryController.dispose();
+    ccCvcController.dispose();
+    ccCountryController.dispose();
+
+    // Dynamic Document Controllers (Add Screen)
+    for (var controller in documentNameControllers) {
+      controller.dispose();
+    }
+
+    // 2. Edit Customer Screen Controllers
+    givenNameController2.dispose();
+    surnameController2.dispose();
+    dobController2.dispose();
+    contactController2.dispose();
+    emailController2.dispose();
+    addressController2.dispose();
+    noteController2.dispose();
+    licenseNameController2.dispose();
+    licenseNumberController2.dispose();
+    licenseExpiryController2.dispose();
+    licenseCardNumberController2.dispose();
+    ccNumberController2.dispose();
+    ccHolderController2.dispose();
+    ccExpiryController2.dispose();
+    ccCvcController2.dispose();
+    ccCountryController2.dispose();
+
+    // Dynamic Document Controllers (Edit Screen)
+    for (var controller in documentNameControllers2) {
+      controller.dispose();
+    }
+
+    super.onClose();
+  }
+
+
 
 
 }

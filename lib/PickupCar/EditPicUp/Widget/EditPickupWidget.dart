@@ -1,21 +1,23 @@
 import 'dart:io';
+import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddButtonOfPickup.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddPickupButton.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/PickupDeletePopup.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
-import 'package:car_rental_project/Resources/ImageString.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class PickupDetailWidget extends StatelessWidget {
-  PickupDetailWidget({super.key});
+class EditPickupWidget extends StatelessWidget {
 
   final controller = Get.find<PickupCarController>();
+
+  EditPickupWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,99 +30,170 @@ class PickupDetailWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-            bottomLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20),
+            topLeft: Radius.circular(20),      // Left Top
+            topRight: Radius.circular(20),     // Right Top
+            bottomLeft: Radius.circular(20),   // Bottom Left
+            bottomRight: Radius.circular(20),  // Bottom Right
           ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ///  PAGE TITLE & TOP ACTIONS Section
+            /// 1. PAGE TITLE & TOP ACTIONS (Edit Mode Title)
             _buildPageHeader(context, isMobile),
             const SizedBox(height: 25),
 
-            ///  CUSTOMER NAME SECTION
+            /// 2. CUSTOMER NAME SECTION (Pre-filled)
             _buildSection(context,
                 title: "Customer Name",
                 icon: IconString.customerNameIcon,
                 child: _buildDetailedCustomerCard(context, isMobile)),
             const SizedBox(height: 25),
 
-            ///  CAR DETAILS SECTION
+            /// 3. CAR DETAILS SECTION (Pre-filled)
             _buildSection(context,
                 title: "Car",
                 icon: IconString.pickupCarIcon,
                 child: _buildDetailedCarCard(context, isMobile)),
             const SizedBox(height: 25),
 
-            /// RENT PURPOSE Section
+            /// 4. RENT PURPOSE (Toggle State)
+            /// 4. RENT PURPOSE Section
             _buildSection(context,
-                title: "Rent Purpose",
-                icon: IconString.rentPurposeIcon,
-                child: _toggleStatusTag(context, "Personal Use", controller.isPersonalUse)),
-
+              title: "Rent Purpose",
+              icon: IconString.rentPurposeIcon,
+              child: Obx(() => Row(
+                children: [
+                  _buildRadioOption(context, "Personal Use", controller.isPersonalEditUse.value, () {
+                    controller.isPersonalEditUse.value = true;
+                  }),
+                  const SizedBox(width: 40),
+                  _buildRadioOption(context, "Commercial Use", !controller.isPersonalEditUse.value, () {
+                    controller.isPersonalEditUse.value = false;
+                  }),
+                ],
+              )),
+            ),
             const SizedBox(height: 25),
 
-            ///  PAYMENT METHOD
+            /// 5. PAYMENT METHOD Section
             _buildSection(context,
-                title: "Payment Method",
-                icon: IconString.paymentMethodIcon,
-                child: _toggleStatusTag(context, "Manual Payments", controller.isManualPayment)),
+              title: "Payment Method",
+              icon: IconString.paymentMethodIcon,
+              child: Obx(() => Row(
+                children: [
+                  _buildRadioOption(
+                      context,
+                      "Manual Payments",
+                      controller.isManualEditPayment.value == true,
+                          () {
+                        controller.isManualEditPayment.value = true;
+                      }
+                  ),
+                  const SizedBox(width: 40),
+
+                  _buildRadioOption(
+                      context,
+                      "Auto Payments",
+                      controller.isManualEditPayment.value == false,
+                          () {
+                        controller.isManualEditPayment.value = false;
+                      }
+                  ),
+                ],
+              )),
+            ),
             const SizedBox(height: 25),
 
-            ///  RENT AMOUNT SECTION
+            /// 6. RENT AMOUNT SECTION
             _buildSection(context,
                 title: "Rent Amount",
                 icon: IconString.rentMoneyIcon,
                 child: _buildInfoGrid(context, [
-                  {"label": "Weekly Rent", "controller": controller.weeklyRentController, "hint": "2600 \$"},
-                  {"label": "Daily Rent", "controller": controller.rentDueAmountController, "hint": "2600 \$"},
+                  {"label": "Weekly Rent", "controller": controller.weeklyRentEditController2, "hint": "2600 \$"},
+                  {"label": "Daily Rent", "controller": controller.dailyRentEditController2, "hint": "2600 \$"},
                 ], isMobile)),
             const SizedBox(height: 25),
-            ///  Bond Payment Section
+
+            /// 7. BOND PAYMENT SECTION
             _buildSection(context,
                 title: "Bond Payment",
                 icon: IconString.bondPaymentIcon,
                 child: _buildInfoGrid(context, [
-                  {
-                    "label": "Bond Amount",
-                    "controller": controller.bondAmountController,
-                    "hint": "2600 \$"
-                  },
-                  {
-                    "label": "Paid Bond",
-                    "controller": controller.paidBondController,
-                    "hint": "600 \$"
-                  },
-                  {
-                    "label": "Left Bond",
-                    "controller": controller.dueBondAmountController,
-                    "hint": "2000 \$"
-                  },
+                  {"label": "Bond Amount", "controller": controller.bondAmountEditController2, "hint": "2600 \$"},
+                  {"label": "Paid Bond", "controller": controller.paidBondEditController2, "hint": "600 \$"},
+                  {"label": "Left Bond", "controller": controller.bondAmountEditController2, "hint": "2000 \$"},
                 ], isMobile)),
             const SizedBox(height: 25),
 
-            ///  Car Report Section
-            _buildSection(context,
+            /// 8. CAR REPORT SECTION
+            _buildSection(
+              context,
               title: "Car Report",
               icon: IconString.carReportIcon,
-              child: _buildInfoGrid(context, [
-                {"label": "Pickup ODO", "controller": controller.odoController, "hint": "12457678", "hasIcon": false},
-                {"label": "Pickup Fuel Level", "controller": controller.fuelLevelController, "hint": "Full (100%)", "hasIcon": true},
-                {"label": " Pickup Interior Cleanliness", "controller": controller.interiorCleanlinessController, "hint": "Excellent", "hasIcon": true},
-                {"label": "Pickup Exterior Cleanliness", "controller": controller.exteriorCleanlinessController, "hint": "Excellent", "hasIcon": true},
-              ], isMobile),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  double screenWidth = MediaQuery.of(context).size.width;
+
+                  double itemWidth;
+                  if (screenWidth < 600) {
+                    itemWidth = constraints.maxWidth;
+                  } else if (screenWidth < 1100) {
+                    itemWidth = (constraints.maxWidth - 20) / 2;
+                  } else {
+                    itemWidth = (constraints.maxWidth - 45) / 4;
+                  }
+
+                  return Wrap(
+                    spacing: 15,
+                    runSpacing: 20,
+                    children: [
+                      _buildMiniInputField("Pickup ODO", "12457678", itemWidth, controller.odoEditController, context),
+
+                      _buildReportDropdown(
+                          "Pickup Fuel Level",
+                          ["Full (100%)", "High (75%)", "Half (50%)", "Low (25%)", "Empty (0%)"],
+                          itemWidth,
+                          controller.fuelLevelEditController,
+                          context
+                      ),
+
+                      _buildReportDropdown(
+                          "Pickup Interior Cleanliness",
+                          ["Excellent", "Good", "Average", "Dirty"],
+                          itemWidth,
+                          controller.interiorCleanlinessEditController,
+                          context
+                      ),
+
+                      _buildReportDropdown(
+                          "Pickup Exterior Cleanliness",
+                          ["Excellent", "Good", "Average", "Dirty"],
+                          itemWidth,
+                          controller.exteriorCleanlinessEditController,
+                          context
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
             const SizedBox(height: 25),
-            ///  Damage Inspection Section
-            _buildSection(context,
-                title: "Damage Inspection",
-                icon: IconString.damageInspection,
-                child: _buildDamageInspectionCard(context, isMobile)),
+
+            /// 9. DAMAGE INSPECTION
+            _buildSection(
+              context,
+              title: "Damage Inspection",
+              icon: IconString.damageInspection,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return _buildDamageInspectionCard(context, constraints.maxWidth);
+                },
+              ),
+            ),
             const SizedBox(height: 25),
-            /// Pickup Note Section
+
+            /// 10. PICKUP NOTE
             _buildSection(
               context,
               title: "Pickup Note",
@@ -128,26 +201,27 @@ class PickupDetailWidget extends StatelessWidget {
               child: _buildCommentField(
                   context,
                   "Pickup Comments",
-                  controller.additionalCommentsController,
-                  "Describe the vehicle's condition, unique features, or rental policies..."
+                  controller.additionalCommentsEditController,
+                  "Describe the vehicle's condition..."
               ),
             ),
             const SizedBox(height: 25),
-            ///  Car Picture Section
+
+            /// 11. CAR PICTURE SECTION (Max 10)
             _buildSection(context,
                 title: "Car Picture",
                 icon: IconString.carPictureIconPickup,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Car Image (Max 10)",
-                        style: TTextTheme.dropdowninsideText(context)),
+                    Text("Car Image (Max 10)", style: TTextTheme.dropdowninsideText(context)),
                     const SizedBox(height: 10),
                     _imageBox(context),
                   ],
                 )),
             const SizedBox(height: 25),
-            /// Rent Section
+
+            /// 12. RENT TIME (Dates)
             _buildSection(context,
                 title: "Rent Time",
                 icon: IconString.rentTimeIcon,
@@ -155,12 +229,24 @@ class PickupDetailWidget extends StatelessWidget {
                 child: _buildRentTimeSection(context, isMobile)),
             const SizedBox(height: 25),
 
-            ///  SIGNATURE SECTION
+            /// 13. SIGNATURE SECTION
             _buildSection(context,
                 title: "Signature",
                 icon: IconString.signatureIcon,
                 child: _buildSignatureSection(context, isMobile)),
 
+            const SizedBox(height: 40),
+
+            /// 14. UPDATE BUTTON
+            Center(
+              child: AddButtonOfPickup(
+                text: "Update Details",
+                height: 50,
+                width: isMobile ? double.infinity : 300,
+                onTap: () {
+                },
+              ),
+            ),
             const SizedBox(height: 50),
           ],
         ),
@@ -168,8 +254,7 @@ class PickupDetailWidget extends StatelessWidget {
     );
   }
 
-  /// --- Extra Widgets ---
-
+  /// -------- Extra Widgets -------- ///
   // Grids of the TextFields
   Widget _buildInfoGrid(BuildContext context, List<Map<String, dynamic>> items, bool isMobile) {
     final double availableWidth = MediaQuery.of(context).size.width;
@@ -229,6 +314,7 @@ class PickupDetailWidget extends StatelessWidget {
     );
   }
 
+
   // pickup Note Field
   Widget _buildCommentField(BuildContext context, String label, TextEditingController controller, String hint) {
     return Column(
@@ -252,71 +338,157 @@ class PickupDetailWidget extends StatelessWidget {
   }
 
   // Damage Inspection
-  Widget _buildDamageInspectionCard(BuildContext context, bool isMobile) {
+  Widget _buildDamageInspectionCard(BuildContext context, double cardWidth) {
+    bool isMobile = AppSizes.isMobile(context);
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            border: Border.all(color: AppColors.quadrantalTextColor),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Wrap(
-            spacing: 16,
-            runSpacing: 10,
-            children: controller.damageTypes.map((type) {
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: type['color'],
-                      shape: BoxShape.circle,
+        Wrap(
+          spacing: 15,
+          runSpacing: 15,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            _buildToggleWidget(context),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: AppColors.secondaryColor),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Obx(() => Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: controller.damageEditPoint.map((type) {
+                  bool isSelected = controller.selectedDamageEditType.value == type['id'];
+                  return GestureDetector(
+                    onTap: () {
+                      if (controller.isDamageInspectionEditOpen.value) {
+                        controller.selectedDamageEditType.value = type['id'];
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: isSelected ? AppColors.secondaryColor : Colors.transparent,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircleAvatar(radius: 10, backgroundColor: type['color'],
+                              child: Text(type['id'].toString(), style: const TextStyle(fontSize: 10, color: Colors.white))),
+                          const SizedBox(width: 4),
+                          Text(type['label'], style: TTextTheme.titleSix(context)),
+                        ],
+                      ),
                     ),
-                    child: Text(
-                      type['id'].toString(),
-                      style: TTextTheme.btnNumbering(context),
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    type['label'],
-                    style: TTextTheme.titleSix(context),
-                  ),
-                ],
-              );
-            }).toList(),
-          ),
+                  );
+                }).toList(),
+              )),
+            ),
+          ],
         ),
+        const SizedBox(height: 30),
+        Obx(() {
+          double width = cardWidth > 500 ? 500 : cardWidth;
+          double height = width * 0.75;
 
-        const SizedBox(height: 24),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              double width = constraints.maxWidth > 600 ? 600 : constraints.maxWidth;
+          return IgnorePointer(
+            ignoring: !controller.isDamageInspectionEditOpen.value,
+            child: Opacity(
+              opacity: controller.isDamageInspectionEditOpen.value ? 1.0 : 0.4,
+              child: Align(
+                alignment: isMobile ? Alignment.center : Alignment.centerLeft,
+                child: GestureDetector(
 
-              return Container(
-                width: width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(
-                    ImageString.carDamageInspectionImage,
-                    width: width,
-                    fit: BoxFit.contain,
+                  onTapDown: (details) {
+                    double dx = details.localPosition.dx / width;
+                    double dy = details.localPosition.dy / height;
+
+                    int existingIndex = controller.damageEditPoints.indexWhere((p) =>
+                    (p.dx - dx).abs() < 0.05 && (p.dy - dy).abs() < 0.05
+                    );
+
+                    if (existingIndex != -1) {
+                      controller.damageEditPoints.removeAt(existingIndex);
+                    } else {
+                      var selectedType = controller.damageEditPoint.firstWhere(
+                              (t) => t['id'] == controller.selectedDamageEditType.value);
+
+                      controller.damageEditPoints.add(DamagePoint(
+                        dx: dx,
+                        dy: dy,
+                        typeId: selectedType['id'],
+                        color: selectedType['color'],
+                      ));
+                    }
+                  },
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.asset(
+                          ImageString.carDamageInspectionImage,
+                          width: width,
+                          height: height,
+                          fit: BoxFit.contain
+                      ),
+                      ...controller.damageEditPoints.map((point) => Positioned(
+                        left: (point.dx * width) - 10,
+                        top: (point.dy * height) - 10,
+                        child: CircleAvatar(
+                          radius: 10,
+                          backgroundColor: point.color,
+                          child: Text(
+                              point.typeId.toString(),
+                              style: const TextStyle(fontSize: 10, color: Colors.white)
+                          ),
+                        ),
+                      )),
+                    ],
                   ),
                 ),
-              );
-            },
-          ),
-        ),
+              ),
+            ),
+          );
+        })
       ],
     );
+  }
+  Widget _buildToggleWidget(BuildContext context) {
+    return Obx(() => GestureDetector(
+      onTap: () => controller.isDamageInspectionEditOpen.value = !controller.isDamageInspectionEditOpen.value,
+      child: Container(
+        width: 70,
+        height: 32,
+        padding: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: controller.isDamageInspectionEditOpen.value ? AppColors.primaryColor : AppColors.quadrantalTextColor,
+        ),
+        child: Stack(
+          children: [
+            AnimatedAlign(
+              duration: const Duration(milliseconds: 200),
+              alignment: controller.isDamageInspectionEditOpen.value ? Alignment.centerRight : Alignment.centerLeft,
+              child: Container(
+                width: 24,
+                height: 24,
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4)),
+              ),
+            ),
+            Align(
+              alignment: controller.isDamageInspectionEditOpen.value ? const Alignment(-0.6, 0) : const Alignment(0.6, 0),
+              child: Text(
+                controller.isDamageInspectionEditOpen.value ? "Yes" : "No",
+                style:TTextTheme.btnWhiteColor(context),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ));
   }
 
 
@@ -331,14 +503,28 @@ class PickupDetailWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Pickup Car Details",
-                style: TTextTheme.h6Style(context),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
+              Row(
+                children: [
+                  Image.asset(
+                    IconString.editIcon2,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(width: 10),
+
+                  Flexible(
+                    child: Text(
+                      "Edit Pickup Car",
+                      style: TTextTheme.h6Style(context),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
               ),
+              const SizedBox(height: 4),
+
               Text(
-                "The specification for the pre rental details",
+                "Enter the specification for the pre rental details",
                 style: TTextTheme.titleThree(context),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
@@ -356,16 +542,15 @@ class PickupDetailWidget extends StatelessWidget {
             AddPickUpButton(
               text: isMobile ? "" : "Edit",
               iconPath: IconString.editIcon,
-              iconColor: AppColors.secondTextColor,
+              iconColor: AppColors.primaryColor,
               width: isMobile ? 38 : 110,
               height: 38,
-              textColor: AppColors.secondTextColor,
-              borderColor: AppColors.sideBoxesColor,
-              onTap: (){
-                context.push('/editPickUp', extra: {"hideMobileAppBar": true});
-              },
+              textColor: AppColors.primaryColor,
+              borderColor: AppColors.primaryColor,
+              onTap: () {},
             ),
             const SizedBox(width: 6),
+
             AddPickUpButton(
               text: isMobile ? "" : "Delete",
               iconPath: IconString.deleteIcon,
@@ -379,12 +564,8 @@ class PickupDetailWidget extends StatelessWidget {
                   context: context,
                   builder: (BuildContext context) {
                     return ResponsiveDeletePickupDialog(
-                      onCancel: () {
-                        Navigator.pop(context);
-                      },
-                      onConfirm: () {
-                        Navigator.pop(context);
-                      },
+                      onCancel: () => Navigator.pop(context),
+                      onConfirm: () => Navigator.pop(context),
                     );
                   },
                 );
@@ -405,18 +586,18 @@ class PickupDetailWidget extends StatelessWidget {
           Text("Agreement Start Time",
               style: TTextTheme.dropdowninsideText(context)),
           const SizedBox(height: 8),
-          _editableTimeField(controller.startDateController, "02/12/2025",context),
+          _editableTimeField(controller.startDateEditController2, "02/12/2025",context),
           const SizedBox(height: 8),
-          _editableTimeField(controller.startTimeController, "12:12 PM",context),
+          _editableTimeField(controller.startTimeEditController2, "12:12 PM",context),
 
           const SizedBox(height: 24),
 
           Text("Agreement End Time",
               style: TTextTheme.dropdowninsideText(context)),
           const SizedBox(height: 8),
-          _editableTimeField(controller.endDateController, "02/12/2025",context),
+          _editableTimeField(controller.endDateEditController2, "02/12/2025",context),
           const SizedBox(height: 8),
-          _editableTimeField(controller.endTimeController, "12:12 PM",context),
+          _editableTimeField(controller.endTimeEditController2, "12:12 PM",context),
         ],
       );
     }
@@ -434,9 +615,9 @@ class PickupDetailWidget extends StatelessWidget {
               const SizedBox(height: 8),
               Row(
                 children: [
-                  Expanded(child: _editableTimeField(controller.startDateController, "02/12/2025",context)),
+                  Expanded(child: _editableTimeField(controller.startDateEditController2, "02/12/2025",context)),
                   const SizedBox(width: 8),
-                  Expanded(child: _editableTimeField(controller.startTimeController, "12:12 PM",context)),
+                  Expanded(child: _editableTimeField(controller.startTimeEditController2, "12:12 PM",context)),
                 ],
               ),
             ],
@@ -483,9 +664,9 @@ class PickupDetailWidget extends StatelessWidget {
               const SizedBox(height: 8),
               Row(
                 children: [
-                  Expanded(child: _editableTimeField(controller.endDateController, "02/12/2025",context)),
+                  Expanded(child: _editableTimeField(controller.endDateEditController2, "02/12/2025",context)),
                   const SizedBox(width: 8),
-                  Expanded(child: _editableTimeField(controller.endTimeController, "12:12 PM",context)),
+                  Expanded(child: _editableTimeField(controller.endTimeEditController2, "12:12 PM",context)),
                 ],
               ),
             ],
@@ -533,11 +714,11 @@ class PickupDetailWidget extends StatelessWidget {
           children: [
             SizedBox(
               width: cardWidth,
-              child: _signatureCard("Signed by Owner", controller.ownerNameController),
+              child: _signatureCard("Signed by Owner", controller.ownerNameEditController),
             ),
             SizedBox(
               width: cardWidth,
-              child: _signatureCard("Signed by Hirer", controller.hirerNameController),
+              child: _signatureCard("Signed by Hirer", controller.hirerNameEditController),
             ),
           ],
         );
@@ -545,7 +726,7 @@ class PickupDetailWidget extends StatelessWidget {
     );
   }
 
-  Widget _signatureCard(String title, TextEditingController nameController) {
+  Widget _signatureCard(String title, TextEditingController name2Controller) {
     return LayoutBuilder(
       builder: (context, innerConstraints) {
         bool forceVertical = innerConstraints.maxWidth < 300;
@@ -580,7 +761,7 @@ class PickupDetailWidget extends StatelessWidget {
                             children: [
                               TextFormField(
                                 cursorColor: AppColors.blackColor,
-                                controller: nameController,
+                                controller: name2Controller,
                                 style: TTextTheme.h2Style(context),
                                 decoration: const InputDecoration(
                                   isDense: true,
@@ -611,7 +792,7 @@ class PickupDetailWidget extends StatelessWidget {
                             crossAxisAlignment: forceVertical ? CrossAxisAlignment.start : CrossAxisAlignment.end,
                             children: [
                               Text(
-                                nameController.text.isEmpty ? "Sign" : nameController.text,
+                                name2Controller.text.isEmpty ? "Sign" : name2Controller.text,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'Cursive',
@@ -639,85 +820,107 @@ class PickupDetailWidget extends StatelessWidget {
 
   // Image Sections
   Widget _imageBox(BuildContext context) {
-    bool isMobileView = MediaQuery.of(context).size.width < 600 && !kIsWeb;
-
     return GestureDetector(
-      onTap: () => controller.uploadInspectionPhotos(),
+      onTap: () => controller.pickImage3(),
       child: Obx(() {
-        return Container(
-          width: double.infinity,
-          constraints: const BoxConstraints(minHeight: 180),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: AppColors.tertiaryTextColor,
-              width: 1.5,
+        return DottedBorder(
+          borderType: BorderType.RRect,
+          radius: Radius.circular(AppSizes.borderRadius(context)),
+          dashPattern: const [8, 6],
+          color: AppColors.tertiaryTextColor,
+          strokeWidth: 1,
+          child: Container(
+            width: double.infinity,
+            constraints: const BoxConstraints(minHeight: 180),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
             ),
-          ),
-          child: controller.vehicleInspectionImages.isEmpty
-              ? Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: AppColors.iconsBackgroundColor,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Image.asset(IconString.cameraIcon, color: AppColors.primaryColor, width: 18),
-                  ),
-                  const SizedBox(width: 5),
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: AppColors.iconsBackgroundColor,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Image.asset(IconString.uploadIcon, color: AppColors.primaryColor),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Text("Upload Car Pictures", style: TTextTheme.btnOne(context)),
-              Text("PNG, JPG, SVG ", style: TTextTheme.documnetIsnideSmallText2(context)),
-            ],
-          )
-              : LayoutBuilder(builder: (context, constraints) {
-            final double itemWidth = isMobileView ? (constraints.maxWidth - 12) / 2 : 100;
-
-            return Wrap(
-              spacing: 12,
-              runSpacing: 12,
+            child: controller.pickupCarImages3.isEmpty
+                ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ...controller.vehicleInspectionImages.map((imageHolder) {
-                  int index = controller.vehicleInspectionImages.indexOf(imageHolder);
-                  return Stack(
-                    children: [
-                      Container(
-                        height: 100,
-                        width: itemWidth,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: AppColors.tertiaryTextColor, width: 1),
-                          image: DecorationImage(
-                            image: kIsWeb
-                                ? MemoryImage(imageHolder.bytes!)
-                                : FileImage(File(imageHolder.path!)) as ImageProvider,
-                            fit: BoxFit.cover,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppColors.iconsBackgroundColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Image.asset(IconString.cameraIcon, color: AppColors.primaryColor, width: 18),
+                    ),
+                    const SizedBox(width: 5),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppColors.iconsBackgroundColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Image.asset(IconString.uploadIcon, color: AppColors.primaryColor),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Text("Upload Car Pictures", style: TTextTheme.btnOne(context)),
+                Text("PNG, JPG, SVG", style: TTextTheme.documnetIsnideSmallText2(context)),
+              ],
+            )
+                : Wrap(
+              spacing: 15,
+              runSpacing: 15,
+              children: controller.pickupCarImages3.asMap().entries.map((entry) {
+                int index = entry.key;
+                final imageHolder = entry.value;
+
+                ImageProvider imageProvider;
+                if (kIsWeb) {
+                  imageProvider = (imageHolder.bytes != null)
+                      ? MemoryImage(imageHolder.bytes!)
+                      : const AssetImage("assets/images/placeholder.png") as ImageProvider;
+                } else {
+                  imageProvider = (imageHolder.path != null)
+                      ? FileImage(File(imageHolder.path!))
+                      : const AssetImage("assets/images/placeholder.png") as ImageProvider;
+                }
+
+                return Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Container(
+                      height: 120,
+                      width: 120,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: AppColors.primaryColor, width: 0.7),
+                        image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                      ),
+                    ),
+                    Positioned(
+                      top: -8,
+                      right: -8,
+                      child: GestureDetector(
+                        onTap: () {
+                          controller.removeImage3(index);
+                        },
+                        child: CircleAvatar(
+                          radius: 13,
+                          backgroundColor: Colors.white,
+                          child: Image.asset(
+                            IconString.deleteIcon,
+                            color: AppColors.primaryColor,
+                            width: 14,
                           ),
                         ),
                       ),
-                    ],
-                  );
-                }),
-              ],
-            );
-          }),
+                    ),
+                  ],
+                );
+              }).toList(),
+            ),
+          ),
         );
       }),
     );
@@ -1098,7 +1301,6 @@ class PickupDetailWidget extends StatelessWidget {
     );
   }
 
-
   Widget _infoRowTag({
     required String label,
     required String value,
@@ -1142,8 +1344,6 @@ class PickupDetailWidget extends StatelessWidget {
       ],
     );
   }
-
-
 
   Widget _infoBlock(String imagePath, String label, String value, BuildContext context) {
     return Row(
@@ -1192,33 +1392,153 @@ class PickupDetailWidget extends StatelessWidget {
   }
 
 
-  Widget _toggleStatusTag(BuildContext context, String text, RxBool stateVariable) {
-    return Obx(() => GestureDetector(
-      onTap: () {
-        stateVariable.value = !stateVariable.value;
-      },
-      child: Container(
-        padding:  EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-        decoration: BoxDecoration(
-          color: AppColors.backgroundOfPickupsWidget,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              stateVariable.value ? Icons.radio_button_checked : Icons.radio_button_off,
-              size: 16,
-              color: AppColors.blackColor,
-            ),
-            SizedBox(width: 10),
-            Text(
-              text,
-              style: TTextTheme.titleRadios(context),
-            ),
-          ],
-        ),
+  // Radio Buttons
+  Widget _buildRadioOption(BuildContext context, String text, bool isSelected, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
+            size: 20,
+            color: AppColors.blackColor,
+          ),
+          const SizedBox(width: 10),
+          Text(
+            text,
+            style: TTextTheme.titleRadios(context),
+          ),
+        ],
       ),
-    ));
+    );
+  }
+
+  // Dropdowns
+  Widget _buildMiniInputField(String label, String hint, double width, TextEditingController txtController, BuildContext context) {
+    return SizedBox(
+      width: width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+              label,
+              style: TTextTheme.titleTwo(context),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis
+          ),
+          const SizedBox(height: 8),
+          Container(
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              color: AppColors.secondaryColor,
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: TextFormField(
+              cursorColor: AppColors.blackColor,
+              controller: txtController,
+              textAlignVertical: TextAlignVertical.center,
+              style: TTextTheme.insidetextfieldWrittenText(context),
+              decoration: InputDecoration(
+                hintText: hint,
+                hintStyle: TTextTheme.insidetextfieldWrittenText(context),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                border: InputBorder.none,
+                isDense: true,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget _buildReportDropdown(String label, List<String> items, double width, TextEditingController txtController, BuildContext context) {
+    return SizedBox(
+      width: width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TTextTheme.titleTwo(context),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 8),
+          PopupMenuButton<String>(
+            initialValue: null,
+            offset: const Offset(0, 40),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            color: AppColors.secondaryColor,
+            constraints: BoxConstraints(
+              minWidth: width,
+              maxWidth: width,
+            ),
+            onSelected: (val) {
+              txtController.text = val;
+              txtController.notifyListeners();
+            },
+            itemBuilder: (context) => items.asMap().entries.map((entry) {
+              return _buildFilterPopupItem(
+                  entry.value,
+                  context,
+                  isLast: entry.key == items.length - 1
+              );
+            }).toList(),
+            child: Container(
+              height: 38,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: AppColors.secondaryColor,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: ValueListenableBuilder(
+                      valueListenable: txtController,
+                      builder: (context, value, _) {
+                        return Text(
+                          txtController.text.isEmpty ? items.first : txtController.text,
+                          style: TTextTheme.dropdowninsideText(context),
+                          overflow: TextOverflow.ellipsis,
+                        );
+                      },
+                    ),
+                  ),
+                  Image.asset(IconString.dropdownIcon, color: Colors.black),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  PopupMenuItem<String> _buildFilterPopupItem(String text, BuildContext context, {bool isLast = false}) {
+    return PopupMenuItem<String>(
+      value: text,
+      padding: EdgeInsets.zero,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Text(
+              text,
+              style: TTextTheme.titleTwo(context),
+            ),
+          ),
+          if (!isLast)
+            Divider(
+              height: 1,
+              thickness: 0.5,
+              color: AppColors.quadrantalTextColor,
+            ),
+        ],
+      ),
+    );
   }
 }

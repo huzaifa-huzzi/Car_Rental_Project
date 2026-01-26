@@ -371,5 +371,39 @@ class CarInventoryController extends GetxController {
   }
 
 
+  @override
+  void onClose() {
+    // 1. Adding Car Screen Controllers
+    seatsController.dispose();
+    engineController.dispose();
+    colorController.dispose();
+    regController.dispose();
+    vinController.dispose();
+    valueController.dispose();
+    weeklyRentController.dispose();
+
+    //  Document Controllers (Adding Car)
+    for (var controller in documentNameControllers) {
+      controller.dispose();
+    }
+
+    //  Editing Car Screen Controllers
+    seats2Controller.dispose();
+    engine2Controller.dispose();
+    color2Controller.dispose();
+    reg2Controller.dispose();
+    vin2Controller.dispose();
+    value2Controller.dispose();
+    weekly2RentController.dispose();
+
+    //  Document Controllers (Editing Car)
+    for (var controller in documentNameControllers2) {
+      controller.dispose();
+    }
+
+    super.onClose();
+  }
+
+
 
 }

@@ -182,45 +182,47 @@ class PickupCarController extends GetxController {
     {'id': 5, 'label': 'Other', 'color': AppColors.fiveBackground},
   ];
 
-  RxList<ImageHolder> selectedImages = <ImageHolder>[].obs;
-  final int maxImages = 10;
 
-  Future<void> pickImage() async {
-    if (selectedImages.length >= maxImages) {
-      Get.snackbar("Limit Reached",
-          "You can only upload a maximum of $maxImages images.");
+
+
+  RxList<ImageHolder> vehicleInspectionImages = <ImageHolder>[].obs;
+  final int maxInspectionImages = 10;
+
+  Future<void> uploadInspectionPhotos() async {
+    if (vehicleInspectionImages.length >= maxInspectionImages) {
+      Get.snackbar("Limit Reached", "Maximum $maxInspectionImages photos allowed.");
       return;
     }
 
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowMultiple: true,
-      allowedExtensions: ['png', 'jpg', 'jpeg', 'svg'],
-      withData: kIsWeb,
-    );
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowMultiple: true,
+        allowedExtensions: ['png', 'jpg', 'jpeg'],
+        withData: true,
+      );
 
-    if (result != null) {
-      for (var file in result.files) {
-        if (selectedImages.length < maxImages) {
-          if (kIsWeb && file.bytes != null) {
-            selectedImages.add(ImageHolder(bytes: file.bytes, name: file.name));
-          } else if (file.path != null) {
-            selectedImages.add(ImageHolder(path: file.path, name: file.name));
+      if (result != null) {
+        for (var file in result.files) {
+          if (vehicleInspectionImages.length < maxInspectionImages) {
+            vehicleInspectionImages.add(ImageHolder(
+                bytes: file.bytes,
+                path: kIsWeb ? null : file.path,
+                name: file.name
+            ));
           }
         }
       }
-      if (result.files.length + selectedImages.length > maxImages) {
-        Get.snackbar("Note", "Only first 10 images were added.");
-      }
+    } catch (e) {
+      debugPrint("File Picker Error: $e");
     }
   }
 
-  void removeImage(int index) {
-    if (index >= 0 && index < selectedImages.length) {
-      selectedImages.removeAt(index);
+  void deleteInspectionPhoto(int index) {
+    if (index >= 0 && index < vehicleInspectionImages.length) {
+      vehicleInspectionImages.removeAt(index);
     }
   }
-
   /// Add Pickup Car
   var isCustomerDropdownOpen = false.obs;
   var isCarDropdownOpen = false.obs;
@@ -238,6 +240,20 @@ class PickupCarController extends GetxController {
   final leftBondController2 = TextEditingController();
   final customerSearchController = TextEditingController();
   final carSearchController = TextEditingController();
+  final additionalAddCommentsController = TextEditingController();
+
+  final odoAddController = TextEditingController();
+  final fuelLevelAddController = TextEditingController();
+  final interiorCleanlinessAddController = TextEditingController();
+  final exteriorCleanlinessAddController = TextEditingController();
+  final additionalCommentsAddController = TextEditingController();
+
+  final startDateAddController = TextEditingController();
+  final startTimeAddController = TextEditingController();
+  final endDateAddController = TextEditingController();
+  final endTimeAddController = TextEditingController();
+
+
 
   void toggleCustomerDropdown() => isCustomerDropdownOpen.value = !isCustomerDropdownOpen.value;
   void toggleCarDropdown() => isCarDropdownOpen.value = !isCarDropdownOpen.value;
@@ -262,8 +278,8 @@ class PickupCarController extends GetxController {
   ];
 
 
-  RxList<ImageHolder> pickupCarImages = <ImageHolder>[].obs;
-  final int maxPickupImages = 10;
+  RxList<ImageHolder> AddpickupCarImages = <ImageHolder>[].obs;
+  final int maxPickupAddImages = 10;
 
   final startDateController2 = TextEditingController();
   final startTimeController2 = TextEditingController();
@@ -280,25 +296,25 @@ class PickupCarController extends GetxController {
 
     if (result != null) {
       for (var file in result.files) {
-        if (pickupCarImages.length < maxPickupImages) {
+        if (AddpickupCarImages.length < maxPickupAddImages) {
           if (kIsWeb) {
             if (file.bytes != null) {
-              pickupCarImages.add(ImageHolder(bytes: file.bytes, name: file.name));
+              AddpickupCarImages.add(ImageHolder(bytes: file.bytes, name: file.name));
             }
           } else {
             if (file.path != null) {
-              pickupCarImages.add(ImageHolder(path: file.path, name: file.name, bytes: file.bytes));
+              AddpickupCarImages.add(ImageHolder(path: file.path, name: file.name, bytes: file.bytes));
             }
           }
         }
       }
-      pickupCarImages.refresh();
+      AddpickupCarImages.refresh();
     }
   }
 
   void removeImage2(int index) {
-    if (index >= 0 && index < pickupCarImages.length) {
-      pickupCarImages.removeAt(index);
+    if (index >= 0 && index < AddpickupCarImages.length) {
+      AddpickupCarImages.removeAt(index);
     }
   }
 
@@ -313,9 +329,109 @@ class PickupCarController extends GetxController {
   }
 
   /// StepTwo Widget
-  // This will take values from the stepone Widget ( means from Add Pickup Car)
+  // This will take values from the stepone Widget (  from Add Pickup Car)
 
   /// EditPickup
+  var isCustomerDropdownEditOpen = false.obs;
+  var isCarDropdownEditOpen = false.obs;
+  var isDamageInspectionEditOpen = false.obs;
+
+  var isCustomerDropdownEditOpen2 = false.obs;
+
+  // Rent Purpose
+  var isPersonalEditUse = true.obs;
+  var isManualEditPayment = true.obs;
+
+  final weeklyRentEditController2 = TextEditingController();
+  final dailyRentEditController2 = TextEditingController();
+  final bondAmountEditController2 = TextEditingController();
+  final paidBondEditController2 = TextEditingController();
+  final leftBondEditController2 = TextEditingController();
+  final customerSearchEditController = TextEditingController();
+  final carSearchEditController = TextEditingController();
+  final ownerNameEditController = TextEditingController(text: "Softsnip");
+  final hirerNameEditController = TextEditingController(text: "Softsnip");
+  final additionalCommentsEditController = TextEditingController();
+
+
+  final odoEditController = TextEditingController();
+  final fuelLevelEditController = TextEditingController();
+  final interiorCleanlinessEditController = TextEditingController();
+  final exteriorCleanlinessEditController = TextEditingController();
+
+  void toggleCustomerEditDropdown() => isCustomerDropdownEditOpen.value = !isCustomerDropdownEditOpen.value;
+  void toggleCarEditDropdown() => isCarDropdownEditOpen.value = !isCarDropdownEditOpen.value;
+
+
+  final Rxn<Map<String, dynamic>> selectedEditCustomer = Rxn<Map<String, dynamic>>();
+  final Rxn<Map<String, dynamic>> selectedEditCar = Rxn<Map<String, dynamic>>();
+
+  void clearEditCustomer() => selectedCustomer.value = null;
+  void clearEditCar() => selectedCar.value = null;
+
+  var selectedDamageEditType = 1.obs;
+  var damageEditPoints = <DamagePoint>[].obs;
+
+
+  final List<Map<String, dynamic>> damageEditPoint = [
+    {'id': 1, 'label': 'Scratch', 'color': AppColors.oneBackground},
+    {'id': 2, 'label': 'Dent', 'color': AppColors.twoBackground},
+    {'id': 3, 'label': 'Chip', 'color': AppColors.threeBackground},
+    {'id': 4, 'label': 'Scuff', 'color': AppColors.fourBackground},
+    {'id': 5, 'label': 'Other', 'color': AppColors.fiveBackground},
+  ];
+
+
+  RxList<ImageHolder> pickupCarImages3 = <ImageHolder>[].obs;
+  final int maxPickupImages2 = 10;
+
+  final startDateEditController2 = TextEditingController();
+  final startTimeEditController2 = TextEditingController();
+  final endDateEditController2 = TextEditingController();
+  final endTimeEditController2 = TextEditingController();
+
+  Future<void> pickImage3() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowMultiple: true,
+      allowedExtensions: ['png', 'jpg', 'jpeg', 'svg'],
+      withData: true,
+    );
+
+    if (result != null) {
+      for (var file in result.files) {
+        if (pickupCarImages3.length < maxPickupImages2) {
+          if (kIsWeb) {
+            if (file.bytes != null) {
+              pickupCarImages3.add(ImageHolder(bytes: file.bytes, name: file.name));
+            }
+          } else {
+            if (file.path != null) {
+              pickupCarImages3.add(ImageHolder(path: file.path, name: file.name, bytes: file.bytes));
+            }
+          }
+        }
+      }
+      pickupCarImages3.refresh();
+    }
+  }
+
+  void removeImage3(int index) {
+    if (index >= 0 && index < pickupCarImages3.length) {
+      pickupCarImages3.removeAt(index);
+    }
+  }
+
+  void selectEditCustomer(dynamic customer) {
+    selectedEditCustomer.value = customer;
+    isCustomerDropdownEditOpen.value = false;
+  }
+
+  void selectEditCar(dynamic car) {
+    selectedCar.value = car;
+    isCarDropdownEditOpen.value = false;
+  }
+
 
 
   @override
@@ -331,6 +447,15 @@ class PickupCarController extends GetxController {
     startTimeController2.dispose();
     endDateController2.dispose();
     endTimeController2.dispose();
+    startDateEditController2.dispose();
+    startTimeEditController2.dispose();
+    endDateEditController2.dispose();
+    endTimeEditController2.dispose();
+    additionalAddCommentsController.dispose();
+    startDateAddController.dispose();
+    startTimeAddController.dispose();
+    endDateAddController.dispose();
+    endTimeAddController.dispose();
 
     //  Rent & Bond Controllers
     weeklyRentController.dispose();
@@ -339,6 +464,12 @@ class PickupCarController extends GetxController {
     bondAmountController.dispose();
     paidBondController.dispose();
     dueBondAmountController.dispose();
+    weeklyRentEditController2.dispose();
+    dailyRentEditController2.dispose();
+    bondAmountEditController2.dispose();
+    paidBondEditController2.dispose();
+    leftBondEditController2.dispose();
+    customerSearchEditController.dispose();
 
     // Inspection & Comments Controllers
     odoController.dispose();
@@ -346,6 +477,19 @@ class PickupCarController extends GetxController {
     interiorCleanlinessController.dispose();
     exteriorCleanlinessController.dispose();
     additionalCommentsController.dispose();
+    odoAddController.dispose();
+    fuelLevelAddController.dispose();
+    interiorCleanlinessAddController.dispose();
+    exteriorCleanlinessAddController.dispose();
+    additionalCommentsAddController.dispose();
+    odoEditController.dispose();
+    fuelLevelEditController.dispose();
+    interiorCleanlinessEditController.dispose();
+    exteriorCleanlinessEditController.dispose();
+    odoEditController.dispose();
+    fuelLevelEditController.dispose();
+    interiorCleanlinessEditController.dispose();
+    exteriorCleanlinessEditController.dispose();
 
     //  Add Pickup Car Controllers
     weeklyRentController2.dispose();
