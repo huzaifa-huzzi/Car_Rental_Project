@@ -38,7 +38,7 @@ class CarInventoryController extends GetxController {
     selectedView.value = index;
   }
 
-  /// Reusable Widget Controller
+  /// ReusableWidgetOfPickup Controller
   // pagination  Widget
   final RxInt currentPage = 1.obs;
 

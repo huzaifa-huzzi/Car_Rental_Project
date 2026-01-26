@@ -1,9 +1,9 @@
 import 'dart:io';
-import 'package:car_rental_project/PickupCar/Reusable%20Widget/AddButtonOfPickup.dart';
+import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddButtonOfPickup.dart';
+import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddPickupButton.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/AlertDialogs.dart';
 import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
-import 'package:car_rental_project/PickupCar/Reusable%20Widget/AddPickupButton.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

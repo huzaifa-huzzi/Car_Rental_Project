@@ -1,5 +1,5 @@
 import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
-import 'package:car_rental_project/PickupCar/Reusable%20Widget/AddButtonOfPickup.dart';
+import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddButtonOfPickup.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
