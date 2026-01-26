@@ -99,6 +99,12 @@ class IconString {
   static const String  deletePickup = 'assets/icons/deletePickup.png';
   static const String  pickCarIconArrow = 'assets/icons/pickupCustomer.png';
   static const String  cardIconPickup = 'assets/icons/CardPickupIcon.png';
+  static const String  downloadPickUpIcon = 'assets/icons/downloadIcon.png';
+  static const String  faceBookIcon = 'assets/icons/faceBookIcon.png';
+  static const String  gmailIcon = 'assets/icons/GmailIcon.png';
+  static const String  messangerIcon = 'assets/icons/MessangerIcon.png';
+  static const String  teleGramIcon = 'assets/icons/TelegramIcon.png';
+  static const String  whatsappIcon = 'assets/icons/WhatsappIcon.png';
 
 
 

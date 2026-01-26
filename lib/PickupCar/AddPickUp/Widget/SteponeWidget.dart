@@ -1451,7 +1451,7 @@ class StepOneSelectionWidget extends StatelessWidget {
 
         const SizedBox(height: 30),
 
-        /// 2. Interactive Car Diagram (Scale handling)
+        /// 2. Interactive Car Diagram
         Obx(() {
           double width = cardWidth > 500 ? 500 : cardWidth;
           double height = width * 0.75;
@@ -1500,7 +1500,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                             backgroundColor: point.color,
                             child: Text(
                               point.typeId.toString(),
-                              style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold),
+                              style: TTextTheme.btnNumbering(context),
                             ),
                           ),
                         );

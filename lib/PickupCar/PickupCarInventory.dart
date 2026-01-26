@@ -312,6 +312,11 @@ class PickupCarController extends GetxController {
     isCarDropdownOpen.value = false;
   }
 
+  /// StepTwo Widget
+  // This will take values from the stepone Widget ( means from Add Pickup Car)
+
+  /// EditPickup
+
 
   @override
   void onClose() {

@@ -25,7 +25,7 @@ dependencies:
   go_router: ^17.0.0
   google_fonts: ^6.3.2
   url_strategy: ^0.3.0
-  # // ------- Car Inventory Screen ------//
+  # // ------- Car Inventory Screen ------//(Same type of packages going for other modules also)
   file_picker: ^10.3.7
   dotted_border: ^2.1.0
   #state management#

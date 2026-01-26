@@ -2,6 +2,7 @@ import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/PickupCar/Reusable%20Widget/AddButtonOfPickup.dart';
 import 'package:car_rental_project/PickupCar/Reusable%20Widget/AddPickupButton.dart';
 import 'package:car_rental_project/PickupCar/Reusable%20Widget/HeaderWebPickupWidget.dart';
+import 'package:car_rental_project/PickupCar/Reusable%20Widget/SuccessConfirmationPickupDialog.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
@@ -9,8 +10,6 @@ import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
-import '../../../Car Inventory/Car Directory/ReusableWidget/AlertDialogs.dart';
 
 
 class StepTwoSelectionWidget extends StatelessWidget {
@@ -21,7 +20,6 @@ class StepTwoSelectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isWeb = AppSizes.isWeb(context);
-    final double screenWidth = MediaQuery.of(context).size.width;
     final bool isMobile = AppSizes.isMobile(context);
     double padding = 24.0;
 
@@ -31,7 +29,8 @@ class StepTwoSelectionWidget extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            
+
+             // Header of the Screen
             HeaderWebPickupWidget(
               mainTitle: 'Add Pickup Car',
               showBack: true,
@@ -50,7 +49,6 @@ class StepTwoSelectionWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey.shade200),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +60,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          //
+                          // Header
                           Text("Add Pickup Car", style: TTextTheme.h6Style(context)),
                           const SizedBox(height: 6),
                           Text("Enter the specification for the pre rental details",
@@ -70,12 +68,12 @@ class StepTwoSelectionWidget extends StatelessWidget {
 
                           const SizedBox(height: 25),
 
-                          // content
+                          // Non-Editable Content
                           Container(
                             width: double.infinity,
                             padding: EdgeInsets.all(isMobile ? 15 : 30),
                             decoration: BoxDecoration(
-                              color: AppColors.quadrantalTextColor.withOpacity(0.08),
+                              color: AppColors.backgroundOfScreenColor,
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Column(
@@ -96,7 +94,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
                                     child: _buildDetailedCarCard(context, isMobile)),
                                 const SizedBox(height: 25),
 
-                                /// RENT PURPOSE (Non-Editable)
+                                /// RENT PURPOSE SECTION
                                 _buildSection(context,
                                     title: "Rent Purpose",
                                     icon: IconString.rentPurposeIcon,
@@ -105,7 +103,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
                                     )),
                                 const SizedBox(height: 25),
 
-                                /// PAYMENT METHOD (Non-Editable)
+                                /// PAYMENT METHOD SECTION
                                 _buildSection(context,
                                     title: "Payment Method",
                                     icon: IconString.paymentMethodIcon,
@@ -148,14 +146,14 @@ class StepTwoSelectionWidget extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 25),
 
-                                /// DAMAGE INSPECTION
+                                /// DAMAGE INSPECTION SECTION
                                 _buildSection(context,
                                     title: "Damage Inspection",
                                     icon: IconString.damageInspection,
                                     child: _buildDamageInspectionCard(context, isMobile)),
                                 const SizedBox(height: 25),
 
-                                /// PICKUP NOTE
+                                /// PICKUP NOTE SECTION
                                 _buildSection(
                                   context,
                                   title: "Pickup Note",
@@ -165,13 +163,13 @@ class StepTwoSelectionWidget extends StatelessWidget {
                                         context,
                                         "Pickup Comments",
                                         controller.additionalCommentsController,
-                                        "No additional notes provided."
+                                        "Audi A6 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys. Renowned for its powerful performance and advanced technology features, the A6 provides a refined driving experience with exceptional comfort. Audi A6 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys. Renowned for its powerful performance and advanced technology features, the A6 provides a refined driving experience with exceptional comfort."
                                     ),
                                   ),
                                 ),
                                 const SizedBox(height: 25),
 
-                                /// CAR PICTURE
+                                /// CAR PICTURE SECTION
                                 _buildSection(context,
                                     title: "Car Picture",
                                     icon: IconString.carPictureIconPickup,
@@ -185,7 +183,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
                                     )),
                                 const SizedBox(height: 25),
 
-                                /// RENT TIME
+                                /// RENT TIME SECTION
                                 _buildSection(context,
                                     title: "Rent Time",
                                     icon: IconString.rentTimeIcon,
@@ -198,14 +196,14 @@ class StepTwoSelectionWidget extends StatelessWidget {
 
                           const SizedBox(height: 30),
 
-                          // Terms & Signatures
+                          /// Terms & Signatures
                           _buildTermsAndConditions(context),
                           const SizedBox(height: 25),
                           _buildSignatureSection(context, isMobile),
 
                           const SizedBox(height: 40),
 
-                          // Final Buttons
+                          /// Buttons
                           _buttonSection(context, isMobile),
                         ],
                       ),
@@ -222,6 +220,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
   }
 
     /// ------- Extra Widgtes ------///
+
   Widget _buildInfoGrid(BuildContext context, List<Map<String, dynamic>> items, bool isMobile, {bool isEditable = true}) {
     final double availableWidth = MediaQuery.of(context).size.width;
 
@@ -281,7 +280,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       decoration: BoxDecoration(
-        color: isActive ? AppColors.primaryColor : const Color(0xFFFF9A9E),
+        color: isActive ? AppColors.primaryColor :  AppColors.backgroundOfPickupsWidget,
         borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
       ),
       child: Text(text, style: TTextTheme.btnWhiteColor(context)),
@@ -316,7 +315,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
             cursorColor: AppColors.blackColor,
             controller: controller,
             maxLines: 4,
-            decoration: InputDecoration(hintText: hint, border: InputBorder.none, hintStyle: TTextTheme.titleFour(context)),
+            decoration: InputDecoration(hintText: hint, border: InputBorder.none, hintStyle: TTextTheme.pOne(context)),
           ),
         ),
       ],
@@ -331,6 +330,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
+            color: Colors.white,
             border: Border.all(color: AppColors.quadrantalTextColor),
             borderRadius: BorderRadius.circular(8),
           ),
@@ -882,7 +882,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
           builder: (context, constraints) {
             double maxWidth = constraints.maxWidth;
 
-            bool enableScroll = maxWidth < 650;
+            bool enableScroll = maxWidth < 700;
 
             Widget content = Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1154,34 +1154,39 @@ class StepTwoSelectionWidget extends StatelessWidget {
     ));
   }
 
+  // Terms and Condition
   Widget _buildTermsAndConditions(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("Terms & Conditions", style: TTextTheme.titleRadios(context)),
-        const SizedBox(height: 10),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.secondaryColor, width: 1),
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.primaryColor, width: 0.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+              "Terms & Conditions",
+              style: TTextTheme.titleRadios(context)
           ),
-          child: Text(
+          const SizedBox(height: 10),
+          Text(
             "Audi A6 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys. "
                 "Renowned for its powerful performance and advanced technology features, the A6 provides a refined "
                 "driving experience with exceptional comfort. Audi A6 is a luxurious and sophisticated sedan, "
                 "ideal for both daily commutes and extended journeys. Renowned for its powerful performance "
                 "and advanced technology features, the A6 provides a refined driving experience with exceptional comfort.",
-            style: TTextTheme.pFour(context),
+            style: TTextTheme.pTwo(context),
             textAlign: TextAlign.justify,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
+  // Button Sections
   Widget _buttonSection(BuildContext context, bool isMobile) {
     const double webButtonWidth = 150.0;
     const double webButtonHeight = 45.0;
@@ -1207,8 +1212,15 @@ class StepTwoSelectionWidget extends StatelessWidget {
             height: webButtonHeight,
             child: AddButtonOfPickup(
               text: "Confirm",
-              onTap: () {
-              },
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return const SuccessConfirmationPickupDialog();
+                    },
+                  );
+                }
             ),
           ),
         ],
@@ -1234,8 +1246,15 @@ class StepTwoSelectionWidget extends StatelessWidget {
             height: webButtonHeight,
             child: AddButtonOfPickup(
               text: "Confirm",
-              onTap: () {
-              },
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return const SuccessConfirmationPickupDialog();
+                    },
+                  );
+                }
             ),
           ),
 
@@ -1244,14 +1263,4 @@ class StepTwoSelectionWidget extends StatelessWidget {
     }
   }
 
-  void _showDeleteDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => ResponsiveDeleteDialog(
-        onCancel: () => context.pop(),
-        onConfirm: () => context.pop(),
-      ),
-    );
-  }
 }

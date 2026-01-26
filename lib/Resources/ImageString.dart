@@ -20,5 +20,6 @@ class ImageString{
 
   /// Pickup Car Pics
   static const String  carDamageInspectionImage= 'assets/Images/PickupCar/Car Inspection Image.png';
+  static const String  successCheckPickupImage= 'assets/Images/PickupCar/SuccessCheckIcon.png';
 
 }

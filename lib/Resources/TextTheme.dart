@@ -47,6 +47,14 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 20),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
 
+  static TextStyle h8Style(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 18),fontWeight: FontWeight.w500,color: Colors.white);
+  }
+
+  static TextStyle h9Style(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 20),fontWeight: FontWeight.w500,color: Colors.white);
+  }
+
 
   static TextStyle btnOne(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 12),fontWeight: FontWeight.w500,color: AppColors.quadrantalTextColor);
@@ -140,7 +148,6 @@ class TTextTheme {
     );
   }
 
-
   static TextStyle titleFive(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 11),fontWeight: FontWeight.w400,color: AppColors.secondaryColor,
     );
@@ -221,6 +228,11 @@ class TTextTheme {
 
   static TextStyle pFive(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 10),fontWeight: FontWeight.w400,color: AppColors.textColor,
+    );
+  }
+
+  static TextStyle pSix(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 11, 12),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
     );
   }
 
