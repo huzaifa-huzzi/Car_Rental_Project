@@ -1,5 +1,6 @@
 import 'package:car_rental_project/Customers/CustomersController.dart';
 import 'package:car_rental_project/Customers/CustomersDetails/Widget/ResponsiveCardDetails.dart';
+import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/AlertDialogCustomers.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
@@ -228,7 +229,7 @@ class CustomerDetailWidget extends StatelessWidget {
                     context: context,
                     barrierDismissible: false,
                     builder: (_) =>
-                        ResponsiveDeleteDialog(
+                        ResponsiveCustomerDialog(
                           onCancel: () {
                             context.pop();
                           },
@@ -276,7 +277,7 @@ class CustomerDetailWidget extends StatelessWidget {
                 context: context,
                 barrierDismissible: false,
                 builder: (_) =>
-                    ResponsiveDeleteDialog(
+                    ResponsiveCustomerDialog(
                       onCancel: () {
                         context.pop();
                       },

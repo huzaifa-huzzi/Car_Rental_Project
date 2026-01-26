@@ -1,6 +1,5 @@
 import 'package:car_rental_project/PickupCar/PickUpDetailScreen/Widget/PickupCarDetailWidget.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/HeaderWebPickupWidget.dart';
-import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/PicupDeletePopup.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -49,10 +48,6 @@ class PickUpDetailScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-
-            Positioned.fill(
-              child: PickupDeletePopup(),
             ),
           ],
         ),

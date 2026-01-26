@@ -1,6 +1,6 @@
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/customPrimaryButton.dart';
-import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
+import 'package:car_rental_project/Customers/CustomersController.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +9,10 @@ import 'package:dotted_border/dotted_border.dart';
 import '../../../Resources/Colors.dart';
 import '../../../Resources/TextTheme.dart';
 
-class PickupDeletePopup extends StatelessWidget {
-  PickupDeletePopup({super.key});
+class CustomerDownloadPopup extends StatelessWidget {
+  CustomerDownloadPopup({super.key});
 
-  final controller = Get.find<PickupCarController>();
+  final controller = Get.find<CustomerController>();
 
   @override
   Widget build(BuildContext context) {

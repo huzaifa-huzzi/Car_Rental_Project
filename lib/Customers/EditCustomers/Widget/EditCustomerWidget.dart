@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:car_rental_project/Customers/CustomersController.dart';
 import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/AddButtonOfCustomers.dart';
+import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/AlertDialogCustomers.dart';
 import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/CustomerPrimaryBtn.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
@@ -13,7 +14,6 @@ import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/customPrimaryButton.dart';
 import 'package:go_router/go_router.dart';
-import '../../../Car Inventory/Car Directory/ReusableWidget/AlertDialogs.dart' show ResponsiveDeleteDialog;
 
 class EditCustomerWidget extends StatelessWidget {
   EditCustomerWidget({super.key});
@@ -70,7 +70,7 @@ class EditCustomerWidget extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
 
-                  /// EDIT BUTTON
+                  // EDIT BUTTON
                   CustomPrimaryButton(
                     text: MediaQuery.of(context).size.width < 900 ? "" : "Edit",
                     iconPath: IconString.editIcon,
@@ -83,7 +83,7 @@ class EditCustomerWidget extends StatelessWidget {
 
                   const SizedBox(width: 8),
 
-                  /// DELETE BUTTON
+                  // DELETE BUTTON
                   CustomPrimaryButton(
                     text: MediaQuery.of(context).size.width < 900 ? "" : "Delete",
                     iconPath: IconString.deleteIcon,
@@ -96,7 +96,7 @@ class EditCustomerWidget extends StatelessWidget {
                       showDialog(
                         context: context,
                         barrierDismissible: false,
-                        builder: (_) => ResponsiveDeleteDialog(
+                        builder: (_) => ResponsiveCustomerDialog(
                           onCancel: () {
                             context.pop();
                           },

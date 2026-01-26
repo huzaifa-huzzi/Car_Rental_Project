@@ -1,5 +1,5 @@
 import 'package:car_rental_project/Customers/CustomersDetails/Widget/CustomerDetailWidget.dart';
-import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/DeletePopup.dart';
+import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/DownloadPopup.dart';
 import 'package:car_rental_project/Customers/ReusableWidgetOfCustomers/HeaderWebCustomersWidget.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +52,7 @@ class CustomerDetails extends StatelessWidget {
             ),
 
             Positioned.fill(
-              child: CustomerDeletePopup(),
+              child: CustomerDownloadPopup(),
             ),
           ],
         ),

@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddButtonOfPickup.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddPickupButton.dart';
+import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/PickupDeletePopup.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:car_rental_project/Car%20Inventory/Car%20Directory/ReusableWidget/AlertDialogs.dart';
 import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:flutter/material.dart';
@@ -353,6 +353,9 @@ class PickupDetailWidget extends StatelessWidget {
               height: 38,
               textColor: AppColors.secondTextColor,
               borderColor: AppColors.sideBoxesColor,
+              onTap: (){
+                context.push('//editPickUp', extra: {"hideMobileAppBar": true});
+              },
             ),
             const SizedBox(width: 6),
             AddPickUpButton(
@@ -363,7 +366,21 @@ class PickupDetailWidget extends StatelessWidget {
               height: 38,
               textColor: AppColors.secondTextColor,
               borderColor: AppColors.sideBoxesColor,
-              onTap: () => _showDeleteDialog(context),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ResponsiveDeletePickupDialog(
+                      onCancel: () {
+                        Navigator.pop(context);
+                      },
+                      onConfirm: () {
+                        Navigator.pop(context);
+                      },
+                    );
+                  },
+                );
+              },
             ),
           ],
         ),
@@ -1206,16 +1223,5 @@ class PickupDetailWidget extends StatelessWidget {
         ),
       ),
     ));
-  }
-
-  void _showDeleteDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => ResponsiveDeleteDialog(
-        onCancel: () => context.pop(),
-        onConfirm: () => context.pop(),
-      ),
-    );
   }
 }
