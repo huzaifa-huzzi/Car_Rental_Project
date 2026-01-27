@@ -6,6 +6,7 @@ import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/PickupDelete
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:car_rental_project/Resources/ImageString.dart';
@@ -45,21 +46,21 @@ class EditPickupWidget extends StatelessWidget {
 
             ///  CUSTOMER NAME SECTION
             _buildSection(context,
-                title: "Customer Name",
+                title: TextString.titleViewEditCustomer,
                 icon: IconString.customerNameIcon,
                 child: _buildDetailedCustomerCard(context, isMobile)),
             const SizedBox(height: 25),
 
             ///  CAR DETAILS SECTION
             _buildSection(context,
-                title: "Car",
+                title: TextString.titleViewEditCar,
                 icon: IconString.pickupCarIcon,
                 child: _buildDetailedCarCard(context, isMobile)),
             const SizedBox(height: 25),
 
             ///  RENT PURPOSE Section
             _buildSection(context,
-              title: "Rent Purpose",
+              title: TextString.titleRentPurpose,
               icon: IconString.rentPurposeIcon,
               child: LayoutBuilder(
                 builder: (context, constraints) {
@@ -70,22 +71,22 @@ class EditPickupWidget extends StatelessWidget {
                         ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildRadioOption(context, "Personal Use", controller.isPersonalEditUse.value, () {
+                        _buildRadioOption(context,TextString.subtitleRentEditPurpose, controller.isPersonalEditUse.value, () {
                           controller.isPersonalEditUse.value = true;
                         }),
                         const SizedBox(height: 15),
-                        _buildRadioOption(context, "Commercial Use", !controller.isPersonalEditUse.value, () {
+                        _buildRadioOption(context, TextString.subtitleRentEditCommercial, !controller.isPersonalEditUse.value, () {
                           controller.isPersonalEditUse.value = false;
                         }),
                       ],
                     )
                         : Row(
                       children: [
-                        _buildRadioOption(context, "Personal Use", controller.isPersonalEditUse.value, () {
+                        _buildRadioOption(context,TextString.subtitleRentEditPurpose, controller.isPersonalEditUse.value, () {
                           controller.isPersonalEditUse.value = true;
                         }),
                         const SizedBox(width: 40),
-                        _buildRadioOption(context, "Commercial Use", !controller.isPersonalEditUse.value, () {
+                        _buildRadioOption(context,TextString.subtitleRentEditCommercial , !controller.isPersonalEditUse.value, () {
                           controller.isPersonalEditUse.value = false;
                         }),
                       ],
@@ -98,7 +99,7 @@ class EditPickupWidget extends StatelessWidget {
 
             ///  PAYMENT METHOD Section
             _buildSection(context,
-              title: "Payment Method",
+              title: TextString.titlePaymentEditMethod,
               icon: IconString.paymentMethodIcon,
               child: Obx(() => Wrap(
                 spacing: 40,
@@ -107,7 +108,7 @@ class EditPickupWidget extends StatelessWidget {
                 children: [
                   _buildRadioOption(
                       context,
-                      "Manual Payments",
+                      TextString.subtitlePaymentEditMethod,
                       controller.isManualEditPayment.value == true,
                           () {
                         controller.isManualEditPayment.value = true;
@@ -116,7 +117,7 @@ class EditPickupWidget extends StatelessWidget {
 
                   _buildRadioOption(
                       context,
-                      "Auto Payments",
+                      TextString.subtitlePaymentEditAutoMethod,
                       controller.isManualEditPayment.value == false,
                           () {
                         controller.isManualEditPayment.value = false;
@@ -129,29 +130,29 @@ class EditPickupWidget extends StatelessWidget {
 
             ///  RENT AMOUNT SECTION
             _buildSection(context,
-                title: "Rent Amount",
+                title: TextString.titleViewEditRentAmount,
                 icon: IconString.rentMoneyIcon,
                 child: _buildInfoGrid(context, [
-                  {"label": "Weekly Rent", "controller": controller.weeklyRentEditController2, "hint": "2600 \$"},
-                  {"label": "Daily Rent", "controller": controller.dailyRentEditController2, "hint": "2600 \$"},
+                  {"label": TextString.subtitleWeeklyEditRent, "controller": controller.weeklyRentEditController2, "hint": "2600 \$"},
+                  {"label": TextString.subtitleDailyEditRent, "controller": controller.dailyRentEditController2, "hint": "2600 \$"},
                 ], isMobile)),
             const SizedBox(height: 25),
 
             ///  BOND PAYMENT SECTION
             _buildSection(context,
-                title: "Bond Payment",
+                title: TextString.titleBondEditPayment,
                 icon: IconString.bondPaymentIcon,
                 child: _buildInfoGrid(context, [
-                  {"label": "Bond Amount", "controller": controller.bondAmountEditController2, "hint": "2600 \$"},
-                  {"label": "Paid Bond", "controller": controller.paidBondEditController2, "hint": "600 \$"},
-                  {"label": "Left Bond", "controller": controller.bondAmountEditController2, "hint": "2000 \$"},
+                  {"label": TextString.subtitleBondEditAmount , "controller": controller.bondAmountEditController2, "hint": "2600 \$"},
+                  {"label":  TextString.subtitlePaidEditBond , "controller": controller.paidBondEditController2, "hint": "600 \$"},
+                  {"label": TextString.subtitleLeftEditBond, "controller": controller.bondAmountEditController2, "hint": "2000 \$"},
                 ], isMobile)),
             const SizedBox(height: 25),
 
             ///  CAR REPORT SECTION
             _buildSection(
               context,
-              title: "Car Report",
+              title: TextString.titleCarReport,
               icon: IconString.carReportIcon,
               child: LayoutBuilder(
                 builder: (context, constraints) {
@@ -170,10 +171,10 @@ class EditPickupWidget extends StatelessWidget {
                     spacing: 15,
                     runSpacing: 20,
                     children: [
-                      _buildMiniInputField("Pickup ODO", "12457678", itemWidth, controller.odoEditController, context),
+                      _buildMiniInputField(TextString.subtitlePickupEditOdo, "12457678", itemWidth, controller.odoEditController, context),
 
                       _buildReportDropdown(
-                          "Pickup Fuel Level",
+                          TextString.subtitlePickFuelEditLevel,
                           ["Full (100%)", "High (75%)", "Half (50%)", "Low (25%)", "Empty (0%)"],
                           itemWidth,
                           controller.fuelLevelEditController,
@@ -181,7 +182,7 @@ class EditPickupWidget extends StatelessWidget {
                       ),
 
                       _buildReportDropdown(
-                          "Pickup Interior Cleanliness",
+                          TextString.subtitleInteriorEditCleanliness,
                           ["Excellent", "Good", "Average", "Dirty"],
                           itemWidth,
                           controller.interiorCleanlinessEditController,
@@ -189,7 +190,7 @@ class EditPickupWidget extends StatelessWidget {
                       ),
 
                       _buildReportDropdown(
-                          "Pickup Exterior Cleanliness",
+                          TextString.subtitleExteriorEditCleanliness,
                           ["Excellent", "Good", "Average", "Dirty"],
                           itemWidth,
                           controller.exteriorCleanlinessEditController,
@@ -205,7 +206,7 @@ class EditPickupWidget extends StatelessWidget {
             ///  DAMAGE INSPECTION
             _buildSection(
               context,
-              title: "Damage Inspection",
+              title: TextString.titleDamageInspection,
               icon: IconString.damageInspection,
               child: LayoutBuilder(
                 builder: (context, constraints) {
@@ -218,25 +219,25 @@ class EditPickupWidget extends StatelessWidget {
             ///  PICKUP NOTE
             _buildSection(
               context,
-              title: "Pickup Note",
+              title: TextString.titlePickupEditNote,
               icon: IconString.pickupNote,
               child: _buildCommentField(
                   context,
-                  "Pickup Comments",
+                  TextString.subtitlePickupEditComments,
                   controller.additionalCommentsEditController,
-                  "Describe the vehicle's condition..."
+                  TextString.subtitleViewEditPickup
               ),
             ),
             const SizedBox(height: 25),
 
-            ///  CAR PICTURE SECTION (Max 10)
+            ///  CAR PICTURE SECTION
             _buildSection(context,
-                title: "Car Picture",
+                title: TextString.titleCarEditPicture,
                 icon: IconString.carPictureIconPickup,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Car Image (Max 10)", style: TTextTheme.dropdowninsideText(context)),
+                    Text(TextString.subtitleCarEditPicture, style: TTextTheme.dropdowninsideText(context)),
                     const SizedBox(height: 10),
                     _imageBox(context),
                   ],
@@ -245,7 +246,7 @@ class EditPickupWidget extends StatelessWidget {
 
             ///  RENT TIME
             _buildSection(context,
-                title: "Rent Time",
+                title: TextString.titleRentTime,
                 icon: IconString.rentTimeIcon,
                 showBadge: true,
                 child: _buildRentTimeSection(context, isMobile)),
@@ -253,7 +254,7 @@ class EditPickupWidget extends StatelessWidget {
 
             ///  SIGNATURE SECTION
             _buildSection(context,
-                title: "Signature",
+                title: TextString.titleSignature,
                 icon: IconString.signatureIcon,
                 child: _buildSignatureSection(context, isMobile)),
 
@@ -529,7 +530,7 @@ class EditPickupWidget extends StatelessWidget {
 
                   Flexible(
                     child: Text(
-                      "Edit Pickup Car",
+                     TextString.titleViewEditPick,
                       style: TTextTheme.h6Style(context),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
@@ -540,7 +541,7 @@ class EditPickupWidget extends StatelessWidget {
               const SizedBox(height: 4),
 
               Text(
-                "Enter the specification for the pre rental details",
+                TextString.titleViewEditSubtitle,
                 style: TTextTheme.titleThree(context),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
@@ -730,11 +731,11 @@ class EditPickupWidget extends StatelessWidget {
           children: [
             SizedBox(
               width: cardWidth,
-              child: _signatureCard("Signed by Owner", controller.ownerNameEditController),
+              child: _signatureCard(TextString.subtitleOwnerEditSignature, controller.ownerNameEditController),
             ),
             SizedBox(
               width: cardWidth,
-              child: _signatureCard("Signed by Hirer", controller.hirerNameEditController),
+              child: _signatureCard(TextString.subtitleHirerEditSignature, controller.hirerNameEditController),
             ),
           ],
         );
@@ -789,7 +790,7 @@ class EditPickupWidget extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Text("Full Name", style: TTextTheme.titleFullName(context)),
+                        Text(TextString.subtitleEditFullName, style: TTextTheme.titleFullName(context)),
                       ],
                     ),
                   ),
@@ -821,7 +822,7 @@ class EditPickupWidget extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Text("Signature", style: TTextTheme.titleFullName(context)),
+                        Text(TextString.subtitleEditSign, style: TTextTheme.titleFullName(context)),
                       ],
                     ),
                   ),
@@ -880,8 +881,8 @@ class EditPickupWidget extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
-                Text("Upload Car Pictures", style: TTextTheme.btnOne(context)),
-                Text("PNG, JPG, SVG", style: TTextTheme.documnetIsnideSmallText2(context)),
+                Text(TextString.titleEditImage, style: TTextTheme.btnOne(context)),
+                Text(TextString.subtitleEditImage, style: TTextTheme.documnetIsnideSmallText2(context)),
               ],
             )
                 : Wrap(
@@ -1003,8 +1004,8 @@ class EditPickupWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text("Carlie Harvy", style: TTextTheme.titleOne(context), maxLines: 1, overflow: TextOverflow.ellipsis),
-                          Text("Driver", style: TTextTheme.btnTwo(context)),
+                          Text(TextString.titleCustomerEditImage, style: TTextTheme.titleOne(context), maxLines: 1, overflow: TextOverflow.ellipsis),
+                          Text(TextString.titleEditDriver, style: TTextTheme.btnTwo(context)),
                         ],
                       ),
                     ),
@@ -1022,13 +1023,13 @@ class EditPickupWidget extends StatelessWidget {
             physics:  BouncingScrollPhysics(),
             child: Row(
               children: [
-                _infoBlock(IconString.smsIcon, "Email", "Contact@SoftSnip.com.au", context),
+                _infoBlock(IconString.smsIcon, TextString.titleEditEmail, "Contact@SoftSnip.com.au", context),
                 const SizedBox(width: 15),
-                _infoBlock(IconString.callIcon, "Contact Number", "+12 3456 7890", context),
+                _infoBlock(IconString.callIcon, TextString.titleEditContact, "+12 3456 7890", context),
                 const SizedBox(width: 15),
-                _infoBlock(IconString.location, "Address", "Toronto, California, 1234", context),
+                _infoBlock(IconString.location, TextString.titleEditAddress, "Toronto, California, 1234", context),
                 const SizedBox(width: 15),
-                _infoBlock(IconString.nidIcon, "NID Number", "123 456 789", context),
+                _infoBlock(IconString.nidIcon, TextString.titleEditNid, "123 456 789", context),
                 const SizedBox(width: 15),
               ],
             ),
@@ -1064,8 +1065,8 @@ class EditPickupWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Carlie Harvy", style: TTextTheme.titleOne(context)),
-              Text("Driver", style: TTextTheme.btnTwo(context)),
+              Text(TextString.titleCustomerEditImage, style: TTextTheme.titleOne(context)),
+              Text(TextString.titleEditDriver, style: TTextTheme.btnTwo(context)),
             ],
           ),
         ],
@@ -1073,13 +1074,13 @@ class EditPickupWidget extends StatelessWidget {
 
       /// INFO BLOCKS
       const SizedBox(width: 20),
-      _infoBlock(IconString.smsIcon, "Email", "Contact@SoftSnip.com.au", context),
+      _infoBlock(IconString.smsIcon,TextString.titleEditEmail, "Contact@SoftSnip.com.au", context),
       const SizedBox(width: 20),
-      _infoBlock(IconString.callIcon, "Contact Number", "+12 3456 7890", context),
+      _infoBlock(IconString.callIcon, TextString.titleEditContact, "+12 3456 7890", context),
       const SizedBox(width: 20),
-      _infoBlock(IconString.location, "Address", "Toronto, California, 1234", context),
+      _infoBlock(IconString.location, TextString.titleEditAddress, "Toronto, California, 1234", context),
       const SizedBox(width: 20),
-      _infoBlock(IconString.nidIcon, "NID Number", "123 456 789", context),
+      _infoBlock(IconString.nidIcon, TextString.titleEditNid, "123 456 789", context),
       const SizedBox(width: 20),
 
       /// VIEW BUTTON
@@ -1128,8 +1129,8 @@ class EditPickupWidget extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Aston 2025", style: TTextTheme.titleSix(context), overflow: TextOverflow.ellipsis),
-                            Text("Martin", style: TTextTheme.h3Style(context), overflow: TextOverflow.ellipsis),
+                            Text(TextString.titleCarEditImage, style: TTextTheme.titleSix(context), overflow: TextOverflow.ellipsis),
+                            Text(TextString.titleCarEditImage2 , style: TTextTheme.h3Style(context), overflow: TextOverflow.ellipsis),
                           ],
                         ),
                       ),
@@ -1146,18 +1147,18 @@ class EditPickupWidget extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               child: Row(
                 children: [
-                  _infoRowTag(label: "Registration", value: "1234567890", context: context),
+                  _infoRowTag(label: TextString.titleEditRegistration, value: "1234567890", context: context),
                   const SizedBox(width: 10),
                   _infoRowTag(
-                    label: "VIN",
+                    label: TextString.titleEditVin,
                     value: "JTNBA3HK003001234",
                     labelColor: AppColors.backgroundOfVin,
                     context: context,
                   ),
                   const SizedBox(width: 30),
-                  _buildSpecColumn(context, label: "Transmission", value: "Auto", imagePath: IconString.transmissionIcon),
+                  _buildSpecColumn(context, label: TextString.titleEditRegistration, value: "Auto", imagePath: IconString.transmissionIcon),
                   const SizedBox(width: 30),
-                  _buildSpecColumn(context, label: "Capacity", value: "2 seats", imagePath: IconString.capacityIcon),
+                  _buildSpecColumn(context, label: TextString.titleEditCapacity, value: "2 seats", imagePath: IconString.capacityIcon),
                   const SizedBox(width: 25),
                   _buildPriceColumn(context),
                 ],
@@ -1169,7 +1170,7 @@ class EditPickupWidget extends StatelessWidget {
           builder: (context, constraints) {
             double maxWidth = constraints.maxWidth;
 
-            bool enableScroll = maxWidth < 650;
+            bool enableScroll = maxWidth < 700;
 
             Widget content = Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1216,15 +1217,15 @@ class EditPickupWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Range Rover 2024", style: TTextTheme.titleFour(context)),
-              Text("Velar", style: TTextTheme.h3Style(context)),
+              Text(TextString.titleCarEditImage , style: TTextTheme.titleFour(context)),
+              Text(TextString.titleCarEditImage2, style: TTextTheme.h3Style(context)),
 
               if (!enableScroll) ...[
                 const SizedBox(height: 12),
-                _infoRowTag(label: "Registration", value: "1234567890", context: context),
+                _infoRowTag(label: TextString.titleEditRegistration, value: "1234567890", context: context),
                 const SizedBox(height: 8),
                 _infoRowTag(
-                  label: "VIN",
+                  label: TextString.titleEditVin,
                   value: "JTNBA3HK003001234",
                   labelColor: AppColors.backgroundOfVin,
                   context: context,
@@ -1239,10 +1240,10 @@ class EditPickupWidget extends StatelessWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _infoRowTag(label: "Registration", value: "1234567890", context: context),
+            _infoRowTag(label: TextString.titleEditRegistration, value: "1234567890", context: context),
             const SizedBox(width: 10),
             _infoRowTag(
-              label: "VIN",
+              label: TextString.titleEditVin,
               value: "JTNBA3HK003001234",
               labelColor: AppColors.backgroundOfVin,
               context: context,
@@ -1250,8 +1251,8 @@ class EditPickupWidget extends StatelessWidget {
           ],
         ),
 
-      _buildSpecColumn(context, label: "Transmission", value: "Automatic", imagePath: IconString.transmissionIcon),
-      _buildSpecColumn(context, label: "Capacity", value: "2 seats", imagePath: IconString.capacityIcon),
+      _buildSpecColumn(context, label: TextString.titleEditTransmission, value: "Automatic", imagePath: IconString.transmissionIcon),
+      _buildSpecColumn(context, label:TextString.titleEditCapacity , value: "2 seats", imagePath: IconString.capacityIcon),
 
       Row(
         mainAxisSize: MainAxisSize.min,
@@ -1270,7 +1271,7 @@ class EditPickupWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text("Price", style:  TTextTheme.titleFour(context)),
+        Text(TextString.titleEditPrice, style:  TTextTheme.titleFour(context)),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [

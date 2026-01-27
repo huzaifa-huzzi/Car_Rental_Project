@@ -11,8 +11,8 @@ class DocumentHolder {
   DocumentHolder({this.bytes, this.path, required this.name});
 }
 class DamagePoint {
-  final double dx; // 0.0 to 1.0 (Percentage of width)
-  final double dy; // 0.0 to 1.0 (Percentage of height)
+  final double dx;
+  final double dy;
   final int typeId;
   final Color color;
 

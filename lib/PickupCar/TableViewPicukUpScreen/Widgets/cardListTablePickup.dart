@@ -3,6 +3,7 @@ import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddButtonOfP
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,21 +43,21 @@ class CardListTablePickup extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    _headerCell("Customer Name", context, customWidth: nameColumnWidth),
-                    _headerCell("VIN Number", context, customWidth: vinColumnWidth),
-                    _headerCell("Registration", context, customWidth: standardWidth),
-                    _headerCell("Make", context, customWidth: standardWidth),
-                    _headerCell("Model", context, customWidth: standardWidth),
-                    _headerCell("Year", context, customWidth: 80),
-                    _headerCell("Rent for Week", context, customWidth: standardWidth ),
+                    _headerCell(TextString.tableOne, context, customWidth: nameColumnWidth),
+                    _headerCell(TextString.tableTwo, context, customWidth: vinColumnWidth),
+                    _headerCell(TextString.tableThree, context, customWidth: standardWidth),
+                    _headerCell(TextString.tableFour, context, customWidth: standardWidth),
+                    _headerCell(TextString.tableFive, context, customWidth: standardWidth),
+                    _headerCell(TextString.tableSix, context, customWidth: 80),
+                    _headerCell(TextString.tableSeven, context, customWidth: standardWidth ),
                     const SizedBox(width: 30),
-                    _headerCell("Rental Period", context, customWidth: standardWidth ),
+                    _headerCell(TextString.tableEight, context, customWidth: standardWidth ),
                     const SizedBox(width: 35),
-                    _headerCell("Pickup Date", context, customWidth: dateColumnWidth),
+                    _headerCell(TextString.tableNine, context, customWidth: dateColumnWidth),
                     const SizedBox(width: 18),
-                    _headerCell("Status", context, customWidth: statusColumnWidth),
+                    _headerCell(TextString.tableTen, context, customWidth: statusColumnWidth),
                     const SizedBox(width: 12),
-                    _headerCell("Action", context, isAction: true, customWidth: actionColumnWidth),
+                    _headerCell(TextString.tableEleven, context, isAction: true, customWidth: actionColumnWidth),
                   ],
                 ),
               ),
@@ -136,11 +137,11 @@ class CardListTablePickup extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(children: [
-            Text("Start  ", style: TTextTheme.smallX(context)),
+            Text(TextString.dataCellStart, style: TTextTheme.smallX(context)),
             Text(start, style: TTextTheme.pOne(context)),
           ]),
           Row(children: [
-            Text("End    ", style: TTextTheme.titleFour(context)),
+            Text(TextString.dataCellStart, style: TTextTheme.titleFour(context)),
             Text(end, style: TTextTheme.pOne(context)),
           ]),
         ],

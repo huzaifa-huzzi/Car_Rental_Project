@@ -10,6 +10,7 @@ import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 
 class StepTwoSelectionWidget extends StatelessWidget {
@@ -882,7 +883,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
           builder: (context, constraints) {
             double maxWidth = constraints.maxWidth;
 
-            bool enableScroll = maxWidth < 700;
+            bool enableScroll = maxWidth < 750;
 
             Widget content = Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -895,7 +896,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
                 ? SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: ConstrainedBox(
-                constraints: BoxConstraints(minWidth: 900),
+                constraints: BoxConstraints(minWidth: 970),
                 child: content,
               ),
             )
@@ -914,11 +915,10 @@ class StepTwoSelectionWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: enableScroll ? 80 : 130,
+            height: enableScroll ? 70 : 130,
             alignment: Alignment.center,
             child: Image.asset(
               ImageString.astonPic,
-              width: 135,
               fit: BoxFit.contain,
             ),
           ),
@@ -1203,7 +1203,9 @@ class StepTwoSelectionWidget extends StatelessWidget {
               backgroundColor: Colors.white,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
-              onTap: () {},
+              onTap: () {
+                context.push('/addpickup', extra: {"hideMobileAppBar": true});
+              },
             ),
           ),
           SizedBox(height: spacing),
@@ -1237,7 +1239,9 @@ class StepTwoSelectionWidget extends StatelessWidget {
               backgroundColor: Colors.white,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
-              onTap: () {},
+              onTap: () {
+                context.push('/addpickup', extra: {"hideMobileAppBar": true});
+              },
             ),
           ),
           SizedBox(width: spacing),

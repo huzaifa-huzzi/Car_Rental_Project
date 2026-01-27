@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddButtonOfPickup.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddPickupButton.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/PickupDeletePopup.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
@@ -37,65 +38,65 @@ class PickupDetailWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ///  PAGE TITLE & TOP ACTIONS Section
+            ///  PAGE TITLE Section
             _buildPageHeader(context, isMobile),
             const SizedBox(height: 25),
 
             ///  CUSTOMER NAME SECTION
             _buildSection(context,
-                title: "Customer Name",
+                title:TextString.titleViewCustomer,
                 icon: IconString.customerNameIcon,
                 child: _buildDetailedCustomerCard(context, isMobile)),
             const SizedBox(height: 25),
 
             ///  CAR DETAILS SECTION
             _buildSection(context,
-                title: "Car",
+                title: TextString.titleViewCar,
                 icon: IconString.pickupCarIcon,
                 child: _buildDetailedCarCard(context, isMobile)),
             const SizedBox(height: 25),
 
             /// RENT PURPOSE Section
             _buildSection(context,
-                title: "Rent Purpose",
+                title: TextString.titleRentPurpose,
                 icon: IconString.rentPurposeIcon,
-                child: _toggleStatusTag(context, "Personal Use", controller.isPersonalUse)),
+                child: _toggleStatusTag(context,TextString.subtitleRentPurpose, controller.isPersonalUse)),
 
             const SizedBox(height: 25),
 
             ///  PAYMENT METHOD
             _buildSection(context,
-                title: "Payment Method",
+                title: TextString.titlePaymentMethod,
                 icon: IconString.paymentMethodIcon,
-                child: _toggleStatusTag(context, "Manual Payments", controller.isManualPayment)),
+                child: _toggleStatusTag(context, TextString.subtitlePaymentMethod, controller.isManualPayment)),
             const SizedBox(height: 25),
 
             ///  RENT AMOUNT SECTION
             _buildSection(context,
-                title: "Rent Amount",
+                title: TextString.titleViewRentAmount,
                 icon: IconString.rentMoneyIcon,
                 child: _buildInfoGrid(context, [
-                  {"label": "Weekly Rent", "controller": controller.weeklyRentController, "hint": "2600 \$"},
-                  {"label": "Daily Rent", "controller": controller.rentDueAmountController, "hint": "2600 \$"},
+                  {"label":TextString.subtitleWeeklyRent, "controller": controller.weeklyRentController, "hint": "2600 \$"},
+                  {"label": TextString.subtitleDailyRent, "controller": controller.rentDueAmountController, "hint": "2600 \$"},
                 ], isMobile)),
             const SizedBox(height: 25),
             ///  Bond Payment Section
             _buildSection(context,
-                title: "Bond Payment",
+                title:TextString.titleBondPayment,
                 icon: IconString.bondPaymentIcon,
                 child: _buildInfoGrid(context, [
                   {
-                    "label": "Bond Amount",
+                    "label": TextString.subtitleBondAmount,
                     "controller": controller.bondAmountController,
                     "hint": "2600 \$"
                   },
                   {
-                    "label": "Paid Bond",
+                    "label": TextString.subtitlePaidBond,
                     "controller": controller.paidBondController,
                     "hint": "600 \$"
                   },
                   {
-                    "label": "Left Bond",
+                    "label": TextString.subtitleLeftBond,
                     "controller": controller.dueBondAmountController,
                     "hint": "2000 \$"
                   },
@@ -104,43 +105,43 @@ class PickupDetailWidget extends StatelessWidget {
 
             ///  Car Report Section
             _buildSection(context,
-              title: "Car Report",
+              title: TextString.titleCarReport,
               icon: IconString.carReportIcon,
               child: _buildInfoGrid(context, [
-                {"label": "Pickup ODO", "controller": controller.odoController, "hint": "12457678", "hasIcon": false},
-                {"label": "Pickup Fuel Level", "controller": controller.fuelLevelController, "hint": "Full (100%)", "hasIcon": true},
-                {"label": " Pickup Interior Cleanliness", "controller": controller.interiorCleanlinessController, "hint": "Excellent", "hasIcon": true},
-                {"label": "Pickup Exterior Cleanliness", "controller": controller.exteriorCleanlinessController, "hint": "Excellent", "hasIcon": true},
+                {"label": TextString.subtitlePickupOdo, "controller": controller.odoController, "hint": "12457678", "hasIcon": false},
+                {"label": TextString.subtitlePickFuelLevel, "controller": controller.fuelLevelController, "hint": "Full (100%)", "hasIcon": true},
+                {"label": TextString.subtitleInteriorCleanliness, "controller": controller.interiorCleanlinessController, "hint": "Excellent", "hasIcon": true},
+                {"label": TextString.subtitleExteriorCleanliness, "controller": controller.exteriorCleanlinessController, "hint": "Excellent", "hasIcon": true},
               ], isMobile),
             ),
             const SizedBox(height: 25),
             ///  Damage Inspection Section
             _buildSection(context,
-                title: "Damage Inspection",
+                title: TextString.titleDamageInspection,
                 icon: IconString.damageInspection,
                 child: _buildDamageInspectionCard(context, isMobile)),
             const SizedBox(height: 25),
             /// Pickup Note Section
             _buildSection(
               context,
-              title: "Pickup Note",
+              title:TextString.titlePickupNote ,
               icon: IconString.pickupNote,
               child: _buildCommentField(
                   context,
-                  "Pickup Comments",
+                  TextString.subtitlePickupComments,
                   controller.additionalCommentsController,
-                  "Describe the vehicle's condition, unique features, or rental policies..."
+                  TextString.subtitleViewPickup
               ),
             ),
             const SizedBox(height: 25),
             ///  Car Picture Section
             _buildSection(context,
-                title: "Car Picture",
+                title: TextString.titleCarPicture,
                 icon: IconString.carPictureIconPickup,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Car Image (Max 10)",
+                    Text(TextString.subtitleCarPicture,
                         style: TTextTheme.dropdowninsideText(context)),
                     const SizedBox(height: 10),
                     _imageBox(context),
@@ -149,7 +150,7 @@ class PickupDetailWidget extends StatelessWidget {
             const SizedBox(height: 25),
             /// Rent Section
             _buildSection(context,
-                title: "Rent Time",
+                title: TextString.titleRentTime,
                 icon: IconString.rentTimeIcon,
                 showBadge: true,
                 child: _buildRentTimeSection(context, isMobile)),
@@ -157,7 +158,7 @@ class PickupDetailWidget extends StatelessWidget {
 
             ///  SIGNATURE SECTION
             _buildSection(context,
-                title: "Signature",
+                title: TextString.titleSignature,
                 icon: IconString.signatureIcon,
                 child: _buildSignatureSection(context, isMobile)),
 
@@ -332,13 +333,13 @@ class PickupDetailWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Pickup Car Details",
+                TextString.titleViewPick ,
                 style: TTextTheme.h6Style(context),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
               Text(
-                "The specification for the pre rental details",
+                TextString.titleViewSubtitle,
                 style: TTextTheme.titleThree(context),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
@@ -402,7 +403,7 @@ class PickupDetailWidget extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Agreement Start Time",
+          Text(TextString.subtitleAgreementTime,
               style: TTextTheme.dropdowninsideText(context)),
           const SizedBox(height: 8),
           _editableTimeField(controller.startDateController, "02/12/2025",context),
@@ -411,7 +412,7 @@ class PickupDetailWidget extends StatelessWidget {
 
           const SizedBox(height: 24),
 
-          Text("Agreement End Time",
+          Text(TextString.subtitleAgreementEndTime,
               style: TTextTheme.dropdowninsideText(context)),
           const SizedBox(height: 8),
           _editableTimeField(controller.endDateController, "02/12/2025",context),
@@ -429,7 +430,7 @@ class PickupDetailWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Agreement Start Time",
+              Text(TextString.subtitleAgreementTime,
                   style: TTextTheme.dropdowninsideText(context)),
               const SizedBox(height: 8),
               Row(
@@ -478,7 +479,7 @@ class PickupDetailWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Agreement End Time",
+              Text(TextString.subtitleAgreementEndTime,
                   style: TTextTheme.dropdowninsideText(context)),
               const SizedBox(height: 8),
               Row(
@@ -533,11 +534,11 @@ class PickupDetailWidget extends StatelessWidget {
           children: [
             SizedBox(
               width: cardWidth,
-              child: _signatureCard("Signed by Owner", controller.ownerNameController),
+              child: _signatureCard(TextString.subtitleOwnerSignature, controller.ownerNameController),
             ),
             SizedBox(
               width: cardWidth,
-              child: _signatureCard("Signed by Hirer", controller.hirerNameController),
+              child: _signatureCard(TextString.subtitleHirerSignature, controller.hirerNameController),
             ),
           ],
         );
@@ -592,7 +593,7 @@ class PickupDetailWidget extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Text("Full Name", style: TTextTheme.titleFullName(context)),
+                        Text(TextString.subtitleFullName, style: TTextTheme.titleFullName(context)),
                       ],
                     ),
                   ),
@@ -624,7 +625,7 @@ class PickupDetailWidget extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Text("Signature", style: TTextTheme.titleFullName(context)),
+                        Text(TextString.subtitleSign, style: TTextTheme.titleFullName(context)),
                       ],
                     ),
                   ),
@@ -683,8 +684,8 @@ class PickupDetailWidget extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 10),
-              Text("Upload Car Pictures", style: TTextTheme.btnOne(context)),
-              Text("PNG, JPG, SVG ", style: TTextTheme.documnetIsnideSmallText2(context)),
+              Text(TextString.titleImage, style: TTextTheme.btnOne(context)),
+              Text(TextString.subtitleImage, style: TTextTheme.documnetIsnideSmallText2(context)),
             ],
           )
               : LayoutBuilder(builder: (context, constraints) {
@@ -784,8 +785,8 @@ class PickupDetailWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text("Carlie Harvy", style: TTextTheme.titleOne(context), maxLines: 1, overflow: TextOverflow.ellipsis),
-                          Text("Driver", style: TTextTheme.btnTwo(context)),
+                          Text(TextString.titleCustomerImage, style: TTextTheme.titleOne(context), maxLines: 1, overflow: TextOverflow.ellipsis),
+                          Text(TextString.titleDriver, style: TTextTheme.btnTwo(context)),
                         ],
                       ),
                     ),
@@ -803,13 +804,13 @@ class PickupDetailWidget extends StatelessWidget {
             physics:  BouncingScrollPhysics(),
             child: Row(
               children: [
-                _infoBlock(IconString.smsIcon, "Email", "Contact@SoftSnip.com.au", context),
+                _infoBlock(IconString.smsIcon, TextString.titleEmail, "Contact@SoftSnip.com.au", context),
                 const SizedBox(width: 15),
-                _infoBlock(IconString.callIcon, "Contact Number", "+12 3456 7890", context),
+                _infoBlock(IconString.callIcon, TextString.titleContact, "+12 3456 7890", context),
                 const SizedBox(width: 15),
-                _infoBlock(IconString.location, "Address", "Toronto, California, 1234", context),
+                _infoBlock(IconString.location, TextString.titleAddress, "Toronto, California, 1234", context),
                 const SizedBox(width: 15),
-                _infoBlock(IconString.nidIcon, "NID Number", "123 456 789", context),
+                _infoBlock(IconString.nidIcon, TextString.titleNid, "123 456 789", context),
                 const SizedBox(width: 15),
               ],
             ),
@@ -845,8 +846,8 @@ class PickupDetailWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Carlie Harvy", style: TTextTheme.titleOne(context)),
-              Text("Driver", style: TTextTheme.btnTwo(context)),
+              Text(TextString.titleCustomerImage, style: TTextTheme.titleOne(context)),
+              Text(TextString.titleDriver, style: TTextTheme.btnTwo(context)),
             ],
           ),
         ],
@@ -854,13 +855,13 @@ class PickupDetailWidget extends StatelessWidget {
 
       /// INFO BLOCKS
       const SizedBox(width: 20),
-      _infoBlock(IconString.smsIcon, "Email", "Contact@SoftSnip.com.au", context),
+      _infoBlock(IconString.smsIcon, TextString.titleEmail, "Contact@SoftSnip.com.au", context),
       const SizedBox(width: 20),
-      _infoBlock(IconString.callIcon, "Contact Number", "+12 3456 7890", context),
+      _infoBlock(IconString.callIcon, TextString.titleContact, "+12 3456 7890", context),
       const SizedBox(width: 20),
-      _infoBlock(IconString.location, "Address", "Toronto, California, 1234", context),
+      _infoBlock(IconString.location, TextString.titleAddress, "Toronto, California, 1234", context),
       const SizedBox(width: 20),
-      _infoBlock(IconString.nidIcon, "NID Number", "123 456 789", context),
+      _infoBlock(IconString.nidIcon, TextString.titleNid, "123 456 789", context),
       const SizedBox(width: 20),
 
       /// VIEW BUTTON
@@ -909,8 +910,8 @@ class PickupDetailWidget extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Aston 2025", style: TTextTheme.titleSix(context), overflow: TextOverflow.ellipsis),
-                            Text("Martin", style: TTextTheme.h3Style(context), overflow: TextOverflow.ellipsis),
+                            Text(TextString.titleCarImage, style: TTextTheme.titleSix(context), overflow: TextOverflow.ellipsis),
+                            Text(TextString.titleCarImage2, style: TTextTheme.h3Style(context), overflow: TextOverflow.ellipsis),
                           ],
                         ),
                       ),
@@ -927,18 +928,18 @@ class PickupDetailWidget extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               child: Row(
                 children: [
-                  _infoRowTag(label: "Registration", value: "1234567890", context: context),
+                  _infoRowTag(label:TextString.titleRegistration, value: "1234567890", context: context),
                   const SizedBox(width: 10),
                   _infoRowTag(
-                    label: "VIN",
+                    label: TextString.titleVin,
                     value: "JTNBA3HK003001234",
                     labelColor: AppColors.backgroundOfVin,
                     context: context,
                   ),
                   const SizedBox(width: 30),
-                  _buildSpecColumn(context, label: "Transmission", value: "Auto", imagePath: IconString.transmissionIcon),
+                  _buildSpecColumn(context, label: TextString.titleTransmission, value: "Auto", imagePath: IconString.transmissionIcon),
                   const SizedBox(width: 30),
-                  _buildSpecColumn(context, label: "Capacity", value: "2 seats", imagePath: IconString.capacityIcon),
+                  _buildSpecColumn(context, label: TextString.titleCapacity, value: "2 seats", imagePath: IconString.capacityIcon),
                   const SizedBox(width: 25),
                   _buildPriceColumn(context),
                 ],
@@ -950,11 +951,10 @@ class PickupDetailWidget extends StatelessWidget {
           builder: (context, constraints) {
             double maxWidth = constraints.maxWidth;
 
-            bool enableScroll = maxWidth < 650;
+            bool enableScroll = maxWidth < 700;
 
             Widget content = Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: _buildCarContent(context, enableScroll),
             );
 
@@ -963,7 +963,7 @@ class PickupDetailWidget extends StatelessWidget {
                 ? SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: ConstrainedBox(
-                constraints: BoxConstraints(minWidth: 900),
+                constraints: BoxConstraints(minWidth: 950),
                 child: content,
               ),
             )
@@ -997,15 +997,15 @@ class PickupDetailWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Range Rover 2024", style: TTextTheme.titleFour(context)),
-              Text("Velar", style: TTextTheme.h3Style(context)),
+              Text(TextString.titleCarImage, style: TTextTheme.titleFour(context)),
+              Text(TextString.titleCarImage2, style: TTextTheme.h3Style(context)),
 
               if (!enableScroll) ...[
                 const SizedBox(height: 12),
-                _infoRowTag(label: "Registration", value: "1234567890", context: context),
+                _infoRowTag(label: TextString.titleRegistration, value: "1234567890", context: context),
                 const SizedBox(height: 8),
                 _infoRowTag(
-                  label: "VIN",
+                  label: TextString.titleVin,
                   value: "JTNBA3HK003001234",
                   labelColor: AppColors.backgroundOfVin,
                   context: context,
@@ -1020,10 +1020,10 @@ class PickupDetailWidget extends StatelessWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _infoRowTag(label: "Registration", value: "1234567890", context: context),
+            _infoRowTag(label: TextString.titleRegistration, value: "1234567890", context: context),
             const SizedBox(width: 10),
             _infoRowTag(
-              label: "VIN",
+              label: TextString.titleVin,
               value: "JTNBA3HK003001234",
               labelColor: AppColors.backgroundOfVin,
               context: context,
@@ -1031,8 +1031,8 @@ class PickupDetailWidget extends StatelessWidget {
           ],
         ),
 
-      _buildSpecColumn(context, label: "Transmission", value: "Automatic", imagePath: IconString.transmissionIcon),
-      _buildSpecColumn(context, label: "Capacity", value: "2 seats", imagePath: IconString.capacityIcon),
+      _buildSpecColumn(context, label: TextString.titleTransmission, value: "Automatic", imagePath: IconString.transmissionIcon),
+      _buildSpecColumn(context, label: TextString.titleCapacity, value: "2 seats", imagePath: IconString.capacityIcon),
 
       Row(
         mainAxisSize: MainAxisSize.min,
@@ -1051,7 +1051,7 @@ class PickupDetailWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text("Price", style:  TTextTheme.titleFour(context)),
+        Text(TextString.titlePrice, style:  TTextTheme.titleFour(context)),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [

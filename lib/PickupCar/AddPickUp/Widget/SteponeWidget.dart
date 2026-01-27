@@ -729,6 +729,7 @@ class StepOneSelectionWidget extends StatelessWidget {
     return LayoutBuilder(builder: (context, constraints) {
       double maxWidth = constraints.maxWidth;
       bool isMobile = maxWidth < 680;
+      bool isExtraSmall = maxWidth < 350;
 
       return Center(
         child: ConstrainedBox(
@@ -737,37 +738,50 @@ class StepOneSelectionWidget extends StatelessWidget {
             clipBehavior: Clip.none,
             children: [
               Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   decoration: BoxDecoration(
-                    color:AppColors.backgroundOfPickupsWidget,
+                    color: AppColors.backgroundOfPickupsWidget,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: isMobile
                       ? Column(
-                    //  MOBILE LAYOUT
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          Image.asset(
+                            car['image'],
+                            width: isExtraSmall ? 60 : 110,
+                            fit: BoxFit.cover,
+                          ),
+                          const SizedBox(width: 10),
                           Expanded(
-                            child: Row(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                Image.asset(car['image'], width: 120),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(car['year'] ?? "2024", style: TTextTheme.titleThree(context)),
-                                      Text(car['name'] ?? "Velar", style: TTextTheme.h3Style(context)),
-                                    ],
-                                  ),
+                                Text(
+                                  car['year'] ?? "2024",
+                                  style: TTextTheme.titleThree(context),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  car['name'] ?? "Velar",
+                                  style: TTextTheme.h3Style(context),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ],
                             ),
                           ),
-                          AddButtonOfPickup(text: "View", width: 70, onTap: () {}),
+                          const SizedBox(width: 5),
+                          AddButtonOfPickup(
+                              text: "View",
+                              width: isExtraSmall ? 60 : 70,
+                              height: 35,
+                              onTap: () {}
+                          ),
                         ],
                       ),
                       const SizedBox(height: 12),
@@ -779,9 +793,9 @@ class StepOneSelectionWidget extends StatelessWidget {
                             _buildInfoChip("Registration", car['reg'], AppColors.textColor, context),
                             const SizedBox(width: 10),
                             _buildInfoChip("VIN", car['vin'], AppColors.backgroundOfVin, context),
-                            const SizedBox(width: 30),
+                            const SizedBox(width: 25),
                             _buildCarSpecIcon(context, IconString.transmissionIcon, "Transmission", car['transmission'] ?? "Auto"),
-                            const SizedBox(width: 30),
+                            const SizedBox(width: 25),
                             _buildCarSpecIcon(context, IconString.capacityIcon, "Capacity", car['seats'] ?? "2 seats"),
                           ],
                         ),
@@ -789,7 +803,6 @@ class StepOneSelectionWidget extends StatelessWidget {
                     ],
                   )
                       :
-                  // WEB LAYOUT
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -827,15 +840,15 @@ class StepOneSelectionWidget extends StatelessWidget {
                   )
               ),
 
-              //  DELETE BUTTON
+              // DELETE BUTTON
               Positioned(
                 top: -12,
                 right: -12,
                 child: GestureDetector(
                   onTap: () => controller.selectedCar.value = null,
                   child: Container(
-                    width: 44,
-                    height: 44,
+                    width: 38,
+                    height: 38,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
@@ -844,7 +857,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                       child: Image.asset(
                         IconString.deleteIcon,
                         color: AppColors.primaryColor,
-                        filterQuality: FilterQuality.high,
+                        width: 20,
                       ),
                     ),
                   ),
@@ -961,7 +974,7 @@ class StepOneSelectionWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  customer['name'] ?? "Jack Morrison",
+                  customer['name'] ?? "Carlie Harvy",
                   style: TTextTheme.h2Style(context),
                 ),
                 Text("Driver", style: TTextTheme.titleDriver(context)),
@@ -1005,6 +1018,7 @@ class StepOneSelectionWidget extends StatelessWidget {
 
   Widget _buildMobileLayout(BuildContext context, Map customer) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
@@ -1012,22 +1026,44 @@ class StepOneSelectionWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               child: Image.asset(ImageString.customerUser, width: 55, height: 55, fit: BoxFit.cover),
             ),
-            const SizedBox(width: 15),
+            const SizedBox(width: 12),
+
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(customer['name'] ?? "Carlie Harvy", style: TTextTheme.h2Style(context)),
-                  Text("Driver", style: TTextTheme.titleDriver(context)),
+                  Text(
+                    customer['name'] ?? "Carlie Harvy",
+                    style: TTextTheme.h2Style(context),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    "Driver",
+                    style: TTextTheme.titleDriver(context),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
             ),
-            AddButtonOfPickup(text: "View", width: 75, height: 35, onTap: () {}),
+
+            const SizedBox(width: 8),
+
+            AddButtonOfPickup(
+                text: "View",
+                width: 65,
+                height: 32,
+                onTap: () {}
+            ),
           ],
         ),
         const SizedBox(height: 20),
+
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
           child: Row(
             children: [
               _buildCarSpecIcon(context, IconString.callIcon, "Contact", customer['phone'] ?? "+12 3456 7890"),
