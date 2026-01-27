@@ -30,57 +30,80 @@ class EditPickupWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),      // Left Top
-            topRight: Radius.circular(20),     // Right Top
-            bottomLeft: Radius.circular(20),   // Bottom Left
-            bottomRight: Radius.circular(20),  // Bottom Right
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
           ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// 1. PAGE TITLE & TOP ACTIONS (Edit Mode Title)
+            ///  PAGE TITLE
             _buildPageHeader(context, isMobile),
             const SizedBox(height: 25),
 
-            /// 2. CUSTOMER NAME SECTION (Pre-filled)
+            ///  CUSTOMER NAME SECTION
             _buildSection(context,
                 title: "Customer Name",
                 icon: IconString.customerNameIcon,
                 child: _buildDetailedCustomerCard(context, isMobile)),
             const SizedBox(height: 25),
 
-            /// 3. CAR DETAILS SECTION (Pre-filled)
+            ///  CAR DETAILS SECTION
             _buildSection(context,
                 title: "Car",
                 icon: IconString.pickupCarIcon,
                 child: _buildDetailedCarCard(context, isMobile)),
             const SizedBox(height: 25),
 
-            /// 4. RENT PURPOSE (Toggle State)
-            /// 4. RENT PURPOSE Section
+            ///  RENT PURPOSE Section
             _buildSection(context,
               title: "Rent Purpose",
               icon: IconString.rentPurposeIcon,
-              child: Obx(() => Row(
-                children: [
-                  _buildRadioOption(context, "Personal Use", controller.isPersonalEditUse.value, () {
-                    controller.isPersonalEditUse.value = true;
-                  }),
-                  const SizedBox(width: 40),
-                  _buildRadioOption(context, "Commercial Use", !controller.isPersonalEditUse.value, () {
-                    controller.isPersonalEditUse.value = false;
-                  }),
-                ],
-              )),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  bool isVerySmall = constraints.maxWidth < 400;
+
+                  return Obx(() {
+                    return isVerySmall
+                        ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildRadioOption(context, "Personal Use", controller.isPersonalEditUse.value, () {
+                          controller.isPersonalEditUse.value = true;
+                        }),
+                        const SizedBox(height: 15),
+                        _buildRadioOption(context, "Commercial Use", !controller.isPersonalEditUse.value, () {
+                          controller.isPersonalEditUse.value = false;
+                        }),
+                      ],
+                    )
+                        : Row(
+                      children: [
+                        _buildRadioOption(context, "Personal Use", controller.isPersonalEditUse.value, () {
+                          controller.isPersonalEditUse.value = true;
+                        }),
+                        const SizedBox(width: 40),
+                        _buildRadioOption(context, "Commercial Use", !controller.isPersonalEditUse.value, () {
+                          controller.isPersonalEditUse.value = false;
+                        }),
+                      ],
+                    );
+                  });
+                },
+              ),
             ),
             const SizedBox(height: 25),
 
-            /// 5. PAYMENT METHOD Section
+            ///  PAYMENT METHOD Section
             _buildSection(context,
               title: "Payment Method",
               icon: IconString.paymentMethodIcon,
-              child: Obx(() => Row(
+              child: Obx(() => Wrap(
+                spacing: 40,
+                runSpacing: 15,
+                crossAxisAlignment: WrapCrossAlignment.start,
                 children: [
                   _buildRadioOption(
                       context,
@@ -90,7 +113,6 @@ class EditPickupWidget extends StatelessWidget {
                         controller.isManualEditPayment.value = true;
                       }
                   ),
-                  const SizedBox(width: 40),
 
                   _buildRadioOption(
                       context,
@@ -105,7 +127,7 @@ class EditPickupWidget extends StatelessWidget {
             ),
             const SizedBox(height: 25),
 
-            /// 6. RENT AMOUNT SECTION
+            ///  RENT AMOUNT SECTION
             _buildSection(context,
                 title: "Rent Amount",
                 icon: IconString.rentMoneyIcon,
@@ -115,7 +137,7 @@ class EditPickupWidget extends StatelessWidget {
                 ], isMobile)),
             const SizedBox(height: 25),
 
-            /// 7. BOND PAYMENT SECTION
+            ///  BOND PAYMENT SECTION
             _buildSection(context,
                 title: "Bond Payment",
                 icon: IconString.bondPaymentIcon,
@@ -126,7 +148,7 @@ class EditPickupWidget extends StatelessWidget {
                 ], isMobile)),
             const SizedBox(height: 25),
 
-            /// 8. CAR REPORT SECTION
+            ///  CAR REPORT SECTION
             _buildSection(
               context,
               title: "Car Report",
@@ -180,7 +202,7 @@ class EditPickupWidget extends StatelessWidget {
             ),
             const SizedBox(height: 25),
 
-            /// 9. DAMAGE INSPECTION
+            ///  DAMAGE INSPECTION
             _buildSection(
               context,
               title: "Damage Inspection",
@@ -193,7 +215,7 @@ class EditPickupWidget extends StatelessWidget {
             ),
             const SizedBox(height: 25),
 
-            /// 10. PICKUP NOTE
+            ///  PICKUP NOTE
             _buildSection(
               context,
               title: "Pickup Note",
@@ -207,7 +229,7 @@ class EditPickupWidget extends StatelessWidget {
             ),
             const SizedBox(height: 25),
 
-            /// 11. CAR PICTURE SECTION (Max 10)
+            ///  CAR PICTURE SECTION (Max 10)
             _buildSection(context,
                 title: "Car Picture",
                 icon: IconString.carPictureIconPickup,
@@ -221,7 +243,7 @@ class EditPickupWidget extends StatelessWidget {
                 )),
             const SizedBox(height: 25),
 
-            /// 12. RENT TIME (Dates)
+            ///  RENT TIME
             _buildSection(context,
                 title: "Rent Time",
                 icon: IconString.rentTimeIcon,
@@ -229,7 +251,7 @@ class EditPickupWidget extends StatelessWidget {
                 child: _buildRentTimeSection(context, isMobile)),
             const SizedBox(height: 25),
 
-            /// 13. SIGNATURE SECTION
+            ///  SIGNATURE SECTION
             _buildSection(context,
                 title: "Signature",
                 icon: IconString.signatureIcon,
@@ -237,16 +259,10 @@ class EditPickupWidget extends StatelessWidget {
 
             const SizedBox(height: 40),
 
-            /// 14. UPDATE BUTTON
-            Center(
-              child: AddButtonOfPickup(
-                text: "Update Details",
-                height: 50,
-                width: isMobile ? double.infinity : 300,
-                onTap: () {
-                },
-              ),
-            ),
+            ///  Buttons
+            _buttonSection(context, isMobile),
+
+
             const SizedBox(height: 50),
           ],
         ),
@@ -378,7 +394,7 @@ class EditPickupWidget extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           CircleAvatar(radius: 10, backgroundColor: type['color'],
-                              child: Text(type['id'].toString(), style: const TextStyle(fontSize: 10, color: Colors.white))),
+                              child: Text(type['id'].toString(), style:TTextTheme.btnNumbering(context))),
                           const SizedBox(width: 4),
                           Text(type['label'], style: TTextTheme.titleSix(context)),
                         ],
@@ -442,7 +458,7 @@ class EditPickupWidget extends StatelessWidget {
                           backgroundColor: point.color,
                           child: Text(
                               point.typeId.toString(),
-                              style: const TextStyle(fontSize: 10, color: Colors.white)
+                              style: TTextTheme.btnNumbering(context),
                           ),
                         ),
                       )),
@@ -1540,5 +1556,68 @@ class EditPickupWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  // Buttons Widget
+  Widget _buttonSection(BuildContext context, bool isMobile) {
+    const double webButtonWidth = 150.0;
+    const double webButtonHeight = 45.0;
+    final double spacing = AppSizes.padding(context);
+
+    if (isMobile) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(
+            height: webButtonHeight,
+            child: AddPickUpButton(
+              text: 'Cancel',
+              backgroundColor: Colors.white,
+              textColor: AppColors.textColor,
+              borderColor: AppColors.quadrantalTextColor,
+              onTap: () {},
+            ),
+          ),
+          SizedBox(height: spacing),
+          SizedBox(
+            width: webButtonWidth,
+            height: webButtonHeight,
+            child: AddButtonOfPickup(
+              text: "Confirm",
+              onTap: () {
+              },
+            ),
+          ),
+        ],
+      );
+    } else {
+      return Row(
+        children: [
+          Spacer(),
+          SizedBox(
+            width: webButtonWidth,
+            height: webButtonHeight,
+            child: AddPickUpButton(
+              text: 'Cancel',
+              backgroundColor: Colors.white,
+              textColor: AppColors.textColor,
+              borderColor: AppColors.quadrantalTextColor,
+              onTap: () {},
+            ),
+          ),
+          SizedBox(width: spacing),
+          SizedBox(
+            width: webButtonWidth,
+            height: webButtonHeight,
+            child: AddButtonOfPickup(
+              text: "Confirm",
+              onTap: () {
+              },
+            ),
+          ),
+
+        ],
+      );
+    }
   }
 }

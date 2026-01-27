@@ -1199,7 +1199,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
           SizedBox(
             height: webButtonHeight,
             child: AddPickUpButton(
-              text: 'Cancel',
+              text: 'Back',
               backgroundColor: Colors.white,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
@@ -1233,7 +1233,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
             width: webButtonWidth,
             height: webButtonHeight,
             child: AddPickUpButton(
-              text: 'Cancel',
+              text: 'Back',
               backgroundColor: Colors.white,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
