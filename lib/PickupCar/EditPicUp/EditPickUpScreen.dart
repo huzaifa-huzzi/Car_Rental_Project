@@ -1,5 +1,4 @@
 import 'package:car_rental_project/PickupCar/EditPicUp/Widget/EditPickupWidget.dart';
-import 'package:car_rental_project/PickupCar/PickUpDetailScreen/Widget/PickupCarDetailWidget.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/HeaderWebPickupWidget.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:flutter/material.dart';

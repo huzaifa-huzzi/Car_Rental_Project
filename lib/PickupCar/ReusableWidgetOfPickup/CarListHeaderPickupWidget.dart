@@ -309,7 +309,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
   }
 
 // Filter Item Widget
-  Widget _filterItem(String title, Widget child, BuildContext context, {double? customWidth}) {
+  Widget _filterItem(String title, Widget child, BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     bool isMobileUI = screenWidth < 600;
 

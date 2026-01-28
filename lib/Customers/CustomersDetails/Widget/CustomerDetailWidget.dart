@@ -8,7 +8,6 @@ import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import '../../../Car Inventory/Car Directory/ReusableWidget/AlertDialogs.dart';
 import '../../../Resources/Colors.dart' show AppColors;
 
 class CustomerDetailWidget extends StatelessWidget {
