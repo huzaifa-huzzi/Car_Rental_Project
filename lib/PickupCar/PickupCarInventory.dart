@@ -330,6 +330,28 @@ class PickupCarController extends GetxController {
 
   /// StepTwo Widget
   // This will take values from the stepone Widget (  from Add Pickup Car)
+   // Note : Backend Developer Will set it accordign to requirments  But I have to show the Dummy Data so, Iam adding this code
+  final weeklyRentControllerStepTwo = TextEditingController();
+  final rentBondAmountControllerStepTwo  = TextEditingController();
+  final rentDueAmountControllerStepTwo  = TextEditingController();
+
+  final bondAmountControllerStepTwo  = TextEditingController();
+  final paidBondControllerStepTwo  = TextEditingController();
+  final dueBondAmountControllerStepTwo  = TextEditingController();
+
+  final odoControllerStepTwo  = TextEditingController();
+  final fuelLevelControllerStepTwo  = TextEditingController();
+  final interiorCleanlinessControllerStepTwo  = TextEditingController();
+  final exteriorCleanlinessControllerStepTwo  = TextEditingController();
+  final additionalCommentsControllerStepTwo  = TextEditingController();
+
+
+  var isPersonalUseStepTwo  = true.obs;
+  var isManualPaymentStepTwo  = true.obs;
+  final startDateControllerStepTwo  = TextEditingController();
+  final startTimeControllerStepTwo  = TextEditingController();
+  final endDateControllerStepTwo  = TextEditingController();
+  final endTimeControllerStepTwo  = TextEditingController();
 
   /// EditPickup
   var isCustomerDropdownEditOpen = false.obs;
@@ -507,3 +529,5 @@ class PickupCarController extends GetxController {
 
 }
 
+
+// Doing testing on mobile

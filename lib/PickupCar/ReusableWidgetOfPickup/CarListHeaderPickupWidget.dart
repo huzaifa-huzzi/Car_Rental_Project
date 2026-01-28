@@ -154,8 +154,9 @@ class CardListHeaderPickupWidget extends StatelessWidget {
 
           Expanded(
             child: TextField(
+              cursorColor: AppColors.blackColor,
               textAlignVertical: TextAlignVertical.center,
-              style: TTextTheme.smallX(context),
+              style: TTextTheme.titleTwo(context),
               decoration: InputDecoration(
                 hintText: screenWidth > 750 ? "Search Pickup by Customer Name" : "Search...",
                 hintStyle: TTextTheme.smallX(context),

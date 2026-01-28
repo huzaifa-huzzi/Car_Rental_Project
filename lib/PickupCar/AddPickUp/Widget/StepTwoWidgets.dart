@@ -102,7 +102,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
                                     title: TextString.titleRentPurposeStepTwo,
                                     icon: IconString.rentPurposeIcon,
                                     child: IgnorePointer(
-                                      child: _toggleStatusTag(context, TextString.subtitleRentPurposeStepTwo, controller.isPersonalUse),
+                                      child: _toggleStatusTag(context, TextString.subtitleRentPurposeStepTwo, controller.isPersonalUseStepTwo),
                                     )),
                                 const SizedBox(height: 25),
 
@@ -111,7 +111,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
                                     title:TextString.titlePaymentMethod ,
                                     icon: IconString.paymentMethodIcon,
                                     child: IgnorePointer(
-                                      child: _toggleStatusTag(context, TextString.subtitlePaymentMethod, controller.isManualPayment),
+                                      child: _toggleStatusTag(context, TextString.subtitlePaymentMethod, controller.isManualPaymentStepTwo),
                                     )),
                                 const SizedBox(height: 25),
 
@@ -120,8 +120,8 @@ class StepTwoSelectionWidget extends StatelessWidget {
                                     title: TextString.titleViewRentAmountStepTwo,
                                     icon: IconString.rentMoneyIcon,
                                     child: _buildInfoGrid(context, [
-                                      {"label": TextString.subtitleWeeklyRentStepTwo, "controller": controller.weeklyRentController, "hint": "2600 \$"},
-                                      {"label": TextString.subtitleDailyRentStepTwo, "controller": controller.rentDueAmountController, "hint": "2600 \$"},
+                                      {"label": TextString.subtitleWeeklyRentStepTwo, "controller": controller.weeklyRentControllerStepTwo, "hint": "2600 \$"},
+                                      {"label": TextString.subtitleDailyRentStepTwo, "controller": controller.rentDueAmountControllerStepTwo, "hint": "2600 \$"},
                                     ], isMobile, isEditable: false)),
                                 const SizedBox(height: 25),
 
@@ -130,9 +130,9 @@ class StepTwoSelectionWidget extends StatelessWidget {
                                     title: TextString.titleBondPaymentStepTwo,
                                     icon: IconString.bondPaymentIcon,
                                     child: _buildInfoGrid(context, [
-                                      {"label": TextString.subtitleBondAmountStepTwo, "controller": controller.bondAmountController, "hint": "2600 \$"},
-                                      {"label": TextString.subtitlePaidBondStepTwo, "controller": controller.paidBondController, "hint": "600 \$"},
-                                      {"label":  TextString.subtitleLeftBondStepTwo, "controller": controller.dueBondAmountController, "hint": "2000 \$"},
+                                      {"label": TextString.subtitleBondAmountStepTwo, "controller": controller.bondAmountControllerStepTwo, "hint": "2600 \$"},
+                                      {"label": TextString.subtitlePaidBondStepTwo, "controller": controller.paidBondControllerStepTwo, "hint": "600 \$"},
+                                      {"label":  TextString.subtitleLeftBondStepTwo, "controller": controller.dueBondAmountControllerStepTwo, "hint": "2000 \$"},
                                     ], isMobile, isEditable: false)),
                                 const SizedBox(height: 25),
 
@@ -141,10 +141,10 @@ class StepTwoSelectionWidget extends StatelessWidget {
                                   title:  TextString.titleCarReportStepTwo,
                                   icon: IconString.carReportIcon,
                                   child: _buildInfoGrid(context, [
-                                    {"label": TextString.subtitlePickupOdoStepTwo, "controller": controller.odoController, "hint": "12457678", "hasIcon": false},
-                                    {"label": TextString.subtitlePickFuelLevelStepTwo, "controller": controller.fuelLevelController, "hint": "Full (100%)", "hasIcon": true},
-                                    {"label": TextString.subtitleInteriorCleanlinessStepTwo, "controller": controller.interiorCleanlinessController, "hint": "Excellent", "hasIcon": true},
-                                    {"label": TextString.subtitleExteriorCleanlinessStepTwo, "controller": controller.exteriorCleanlinessController, "hint": "Excellent", "hasIcon": true},
+                                    {"label": TextString.subtitlePickupOdoStepTwo, "controller": controller.odoControllerStepTwo, "hint": "12457678", "hasIcon": false},
+                                    {"label": TextString.subtitlePickFuelLevelStepTwo, "controller": controller.fuelLevelControllerStepTwo, "hint": "Full (100%)", "hasIcon": true},
+                                    {"label": TextString.subtitleInteriorCleanlinessStepTwo, "controller": controller.interiorCleanlinessControllerStepTwo, "hint": "Excellent", "hasIcon": true},
+                                    {"label": TextString.subtitleExteriorCleanlinessStepTwo, "controller": controller.exteriorCleanlinessControllerStepTwo, "hint": "Excellent", "hasIcon": true},
                                   ], isMobile, isEditable: false),
                                 ),
                                 const SizedBox(height: 25),
@@ -165,7 +165,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
                                     child: _buildCommentField(
                                         context,
                                         TextString.subtitlePickupCommentsStepTwo,
-                                        controller.additionalCommentsController,
+                                        controller.additionalCommentsControllerStepTwo,
                                         TextString.subtitleViewPickupStepTwo
                                     ),
                                   ),

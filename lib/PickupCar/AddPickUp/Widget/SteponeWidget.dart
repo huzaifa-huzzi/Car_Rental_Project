@@ -351,7 +351,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                                   controller: controller.additionalAddCommentsController,
                                   maxLines: 4,
                                   decoration: InputDecoration(
-                                    hintText: TextString.titleAddNoteInputFieldOne,
+                                    hintText: 'Describe the vehicles condition, unique features, or rental policies...',
                                     hintStyle:TTextTheme.titleFour(context),
                                     filled: true,
                                     fillColor: AppColors.secondaryColor,

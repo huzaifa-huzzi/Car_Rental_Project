@@ -256,7 +256,6 @@ class TextString {
   static const String  titleAddNote =   'Pickup Note';
   static const String  subtitleAddNote=  'Fill the Report';
   static const String  subtitleAddNoteOne=  'Pickup Comments';
-  static const String  titleAddNoteInputFieldOne =   'Pickup Fuel Level';
   static const String  titleAddPicture =   'Car Picture';
   static const String  subtitleAddPicture=  'Fill the Pictures';
   static const String  titleAddRentTime =   'Rent Time';
