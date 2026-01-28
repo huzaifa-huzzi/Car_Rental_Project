@@ -493,26 +493,37 @@ class StepTwoSelectionWidget extends StatelessWidget {
     );
   }
 
-  Widget _editableTimeField(TextEditingController textController, String hint,BuildContext context) {
+  Widget _editableTimeField(
+      TextEditingController textController,
+      String hint,
+      BuildContext context,
+      ) {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.secondaryColor,
         borderRadius: BorderRadius.circular(6),
       ),
       child: TextFormField(
-        cursorColor: AppColors.blackColor,
         controller: textController,
+        readOnly: true,
+        enableInteractiveSelection: false,
+        showCursor: false,
+
+        cursorColor: AppColors.blackColor,
         style: TTextTheme.insidetextfieldWrittenText(context),
+
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: TTextTheme.insidetextfieldWrittenText(context),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           border: InputBorder.none,
           isDense: true,
         ),
       ),
     );
   }
+
 
 
   // Signature Section

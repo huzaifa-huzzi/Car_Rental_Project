@@ -848,8 +848,8 @@ class StepOneSelectionWidget extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () => controller.selectedCar.value = null,
                   child: Container(
-                    width: 38,
-                    height: 38,
+                    width: 33,
+                    height: 33,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
