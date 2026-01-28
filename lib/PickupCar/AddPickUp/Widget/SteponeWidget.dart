@@ -7,6 +7,7 @@ import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -58,9 +59,9 @@ class StepOneSelectionWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                           Text("Add Pickup Car", style:TTextTheme.h6Style(context), overflow: TextOverflow.ellipsis, maxLines: 1,),
+                           Text(TextString.titleAddHeader, style:TTextTheme.h6Style(context), overflow: TextOverflow.ellipsis, maxLines: 1,),
                           const SizedBox(height: 6),
-                          Text("Enter the specification for the pre rental details", style: TTextTheme.titleThree(context), overflow: TextOverflow.ellipsis, maxLines: 1,
+                          Text(TextString.subtitleHeader, style: TTextTheme.titleThree(context), overflow: TextOverflow.ellipsis, maxLines: 1,
                           ),
                           const SizedBox(height: 20),
                           Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
@@ -70,8 +71,8 @@ class StepOneSelectionWidget extends StatelessWidget {
                           _buildSelectionRow(
                             context,
                             icon:IconString.customerNameIcon,
-                            title: "Customer",
-                            subtitle: "Select a customer or add new customer",
+                            title:TextString.titleAddCustomer ,
+                            subtitle:TextString.subtitleAddCustomer ,
                             content: Obx(() {
                               if (controller.selectedCustomer.value != null) {
                                 return _buildSelectedCustomerDisplay(context);
@@ -116,8 +117,8 @@ class StepOneSelectionWidget extends StatelessWidget {
                           _buildSelectionRow(
                             context,
                             icon: IconString.pickupCarIcon,
-                            title: "Car",
-                            subtitle: "Select a Car",
+                            title: TextString.titleAddCar,
+                            subtitle: TextString.subtitleAddCar,
                             content: Obx(() => controller.selectedCar.value != null
                                 ? _buildSelectedCarDisplay(context)
                                 : Column(
@@ -142,23 +143,23 @@ class StepOneSelectionWidget extends StatelessWidget {
                           _buildSelectionRow(
                             context,
                             icon: IconString.rentPurposeIcon,
-                            title: "Rent Purpose",
-                            subtitle: "Select any Option",
+                            title:TextString.titleAddRent,
+                            subtitle: TextString.subtitleAddRent,
                             content: Obx(() => Wrap(
                               spacing: 20,
                               runSpacing: 12,
                               children: [
                                 _buildRadioButton(
                                   context,
-                                  "Personal Use",
-                                  controller.selectedRentPurpose.value == "Personal Use",
-                                  onTap: () => controller.selectedRentPurpose.value = "Personal Use",
+                                  TextString.subtitleAddOne,
+                                  controller.selectedRentPurpose.value == TextString.subtitleAddOne,
+                                  onTap: () => controller.selectedRentPurpose.value = TextString.subtitleAddOne,
                                 ),
                                 _buildRadioButton(
                                   context,
-                                  "Commercial Use",
-                                  controller.selectedRentPurpose.value == "Commercial Use",
-                                  onTap: () => controller.selectedRentPurpose.value = "Commercial Use",
+                                  TextString.subtitleAddTwo,
+                                  controller.selectedRentPurpose.value == TextString.subtitleAddTwo,
+                                  onTap: () => controller.selectedRentPurpose.value = TextString.subtitleAddTwo,
                                 ),
                               ],
                             )),
@@ -174,22 +175,22 @@ class StepOneSelectionWidget extends StatelessWidget {
                 _buildSelectionRow(
                 context,
                 icon: IconString.rentMoneyIcon,
-                title: "Weekly Rent",
-                subtitle: "Select any Option",
+                title: TextString.titleAddWeekly,
+                subtitle: TextString.subtitleAddWeekly,
                 content: Wrap(
                   spacing: 15,
                   runSpacing: 15,
                   children: [
                     _buildMiniInputField(
-                        "Weekly Rent",
-                        "Write Rent Amount...",
+                        TextString.titleAddWeeklyInputFieldOne,
+                       TextString.subtitleAddWeeklyInputFieldOne,
                         isMobile ? double.infinity : 200,
                         controller.weeklyRentController2,
                         context
                     ),
                     _buildMiniInputField(
-                        "Daily Rent",
-                        "Write Rent Amount...",
+                        TextString.titleAddWeeklyInputFieldTwo,
+                        TextString.subtitleAddWeeklyInputFieldTwo,
                         isMobile ? double.infinity : 200,
                         controller.dailyRentController2,
                         context
@@ -206,29 +207,29 @@ class StepOneSelectionWidget extends StatelessWidget {
               _buildSelectionRow(
                 context,
                 icon: IconString.bondPaymentIcon,
-                title: "Bond Payment",
-                subtitle: "Select any Option",
+                title: TextString.titleAddBond,
+                subtitle: TextString.subtitleAddBond,
                 content: Wrap(
                   spacing: 15,
                   runSpacing: 15,
                   children: [
                     _buildMiniInputField(
-                        "Bond Amount",
-                        "Write Rent Amount...",
+                        TextString.titleAddBondInputFieldOne,
+                       TextString.subtitleAddBondInputFieldOne,
                         isMobile ? double.infinity : 200,
                         controller.bondAmountController2,
                         context
                     ),
                     _buildMiniInputField(
-                        "Paid Bond",
-                        "Write Bond Amount...",
+                        TextString.titleAddBondInputFieldTwo,
+                        TextString.subtitleAddBondInputFieldTwo,
                         isMobile ? double.infinity : 200,
                         controller.paidBondController2,
                         context
                     ),
                     _buildMiniInputField(
-                        "Left Bond",
-                        "Write Due Bond Amount...",
+                        TextString.titleAddBondInputFieldThree,
+                        TextString.subtitleAddBondInputFieldThree,
                         isMobile ? double.infinity : 200,
                         controller.leftBondController2,
                         context
@@ -244,21 +245,21 @@ class StepOneSelectionWidget extends StatelessWidget {
                           _buildSelectionRow(
                             context,
                             icon: IconString.paymentMethodIcon,
-                            title: "Payment Method",
-                            subtitle: "Select any Option",
+                            title: TextString.titleAddPayment,
+                            subtitle: TextString.subtitleAddPayment,
                             content: Obx(() => Wrap(
                               spacing: 20,
                               runSpacing: 10,
                               children: [
                                 _buildRadioButton(
                                   context,
-                                  "Manual Payments",
+                                  TextString.subtitleAddPaymentOne,
                                   controller.isManualPayment.value,
                                   onTap: () => controller.isManualPayment.value = true,
                                 ),
                                 _buildRadioButton(
                                   context,
-                                  "Auto Payments",
+                                  TextString.subtitleAddPaymentTwo,
                                   !controller.isManualPayment.value,
                                   onTap: () => controller.isManualPayment.value = false,
                                 ),
@@ -274,8 +275,8 @@ class StepOneSelectionWidget extends StatelessWidget {
                           _buildSelectionRow(
                             context,
                             icon: IconString.carReportIcon,
-                            title: "Car Report",
-                            subtitle: "Fill the Report",
+                            title: TextString.titleAddCarReport,
+                            subtitle: TextString.subtitleAddCarReport,
                             content: LayoutBuilder(
                               builder: (context, constraints) {
                                 double screenWidth = MediaQuery.of(context).size.width;
@@ -287,23 +288,23 @@ class StepOneSelectionWidget extends StatelessWidget {
                                   spacing: 15,
                                   runSpacing: 20,
                                   children: [
-                                    _buildMiniInputField("Pickup ODO", "12457578", itemWidth, controller.odoAddController,context),
+                                    _buildMiniInputField(TextString.titleAddCarReportInputFieldOne, TextString.subtitleAddCarReportInputFieldOne, itemWidth, controller.odoAddController,context),
                                     _buildReportDropdown(
-                                        "Pickup Fuel Level",
+                                       TextString.titleAddCarReportInputFieldTwo,
                                         ["Full 100%", "High 75%", "Half 50%", "Low 25%","Empty 0%"],
                                         itemWidth,
                                         controller.fuelLevelAddController,
                                         context
                                     ),
                                     _buildReportDropdown(
-                                        "Pickup Interior Cleanliness",
+                                        TextString.titleAddCarReportInputFieldThree,
                                         ["Excellent", "Good", "Average", "Dirt"],
                                         itemWidth,
                                         controller.interiorCleanlinessAddController,
                                         context
                                     ),
                                     _buildReportDropdown(
-                                        "Pickup Exterior Cleanliness",
+                                        TextString.titleAddCarReportInputFieldFour,
                                         ["Excellent", "Good", "Average", "Dirty"],
                                         itemWidth,
                                         controller.exteriorCleanlinessAddController,
@@ -323,8 +324,8 @@ class StepOneSelectionWidget extends StatelessWidget {
                           _buildSelectionRow(
                             context,
                             icon: IconString.damageInspection,
-                            title: "Damage Inspection",
-                            subtitle: "Fill the Report",
+                            title: TextString.titleAddDamage,
+                            subtitle: TextString.subtitleAddDamage,
                             trailing: _buildToggleWidget(context),
                             content: _buildDamageInspectionCard(context, buttonWidth),
                           ),
@@ -338,19 +339,19 @@ class StepOneSelectionWidget extends StatelessWidget {
                           _buildSelectionRow(
                             context,
                             icon: IconString.pickupNote,
-                            title: "Pickup Note",
-                            subtitle: "Fill the Report",
+                            title:TextString.titleAddNote,
+                            subtitle: TextString.subtitleAddNote,
                             content: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Pickup Comments", style:TTextTheme.titleTwo(context)),
+                                Text(TextString.subtitleAddNoteOne, style:TTextTheme.titleTwo(context)),
                                 const SizedBox(height: 8),
                                 TextField(
                                   cursorColor: AppColors.blackColor,
                                   controller: controller.additionalAddCommentsController,
                                   maxLines: 4,
                                   decoration: InputDecoration(
-                                    hintText: "Describe the vehicle's condition, unique features...",
+                                    hintText: TextString.titleAddNoteInputFieldOne,
                                     hintStyle:TTextTheme.titleFour(context),
                                     filled: true,
                                     fillColor: AppColors.secondaryColor,
@@ -369,8 +370,8 @@ class StepOneSelectionWidget extends StatelessWidget {
                           _buildSelectionRow(
                             context,
                             icon: IconString.carPictureIconPickup,
-                            title: "Car Picture",
-                            subtitle: "Fill the Picture",
+                            title: TextString.titleAddPicture,
+                            subtitle: TextString.subtitleAddPicture,
                             content: _imageBox(context),
                           ),
 
@@ -382,8 +383,8 @@ class StepOneSelectionWidget extends StatelessWidget {
                           _buildSelectionRow(
                             context,
                             icon: IconString.rentTimeIcon,
-                            title: "Rent Time",
-                            subtitle: "Select any Option",
+                            title: TextString.titleAddRentTime,
+                            subtitle: TextString.subtitleAddDRentTime,
                             content: _buildRentTimeSection(context),
                           ),
                           const SizedBox(height: 50),
@@ -671,9 +672,9 @@ class StepOneSelectionWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Aston 2025", style: TTextTheme.dropdownOfCar(context)),
+                Text(TextString.titleAddCarDropdown, style: TTextTheme.dropdownOfCar(context)),
                 Text(
-                  "Martin",
+                 TextString.subtitleAddCarDropdown,
                   maxLines: 1,
                   style: TTextTheme.dropdownOfCartitle(context),
                 ),
@@ -691,11 +692,11 @@ class StepOneSelectionWidget extends StatelessWidget {
 
           const SizedBox(width: 15),
 
-          _buildInfoChip("Registration", "1234567890", AppColors.textColor,context),
+          _buildInfoChip(TextString.subtitleAddCarDropdownReg, "1234567890", AppColors.textColor,context),
 
           const SizedBox(width: 8),
 
-          _buildInfoChip("VIN", "JTNBA3HK134567890", AppColors.backgroundOfVin,context),
+          _buildInfoChip(TextString.subtitleAddCarDropdownVin, "JTNBA3HK134567890", AppColors.backgroundOfVin,context),
 
           const SizedBox(width: 25),
 
@@ -790,13 +791,13 @@ class StepOneSelectionWidget extends StatelessWidget {
                         physics: const BouncingScrollPhysics(),
                         child: Row(
                           children: [
-                            _buildInfoChip("Registration", car['reg'], AppColors.textColor, context),
+                            _buildInfoChip(TextString.subtitleAddCarDropdownReg, car['reg'], AppColors.textColor, context),
                             const SizedBox(width: 10),
-                            _buildInfoChip("VIN", car['vin'], AppColors.backgroundOfVin, context),
+                            _buildInfoChip(TextString.subtitleAddCarDropdownVin, car['vin'], AppColors.backgroundOfVin, context),
                             const SizedBox(width: 25),
-                            _buildCarSpecIcon(context, IconString.transmissionIcon, "Transmission", car['transmission'] ?? "Auto"),
+                            _buildCarSpecIcon(context, IconString.transmissionIcon, TextString.subtitleAddCarDropdownTrans, car['transmission'] ?? "Auto"),
                             const SizedBox(width: 25),
-                            _buildCarSpecIcon(context, IconString.capacityIcon, "Capacity", car['seats'] ?? "2 seats"),
+                            _buildCarSpecIcon(context, IconString.capacityIcon, TextString.subtitleAddCarDropdownCap, car['seats'] ?? "2 seats"),
                           ],
                         ),
                       ),
@@ -819,9 +820,9 @@ class StepOneSelectionWidget extends StatelessWidget {
                               Text(car['name'] ?? "Velar",
                                   style: TTextTheme.h3Style(context)),
                               const SizedBox(height: 10),
-                              _buildInfoChip("Registration", car['reg'], AppColors.textColor, context),
+                              _buildInfoChip(TextString.subtitleAddCarDropdownReg, car['reg'], AppColors.textColor, context),
                               const SizedBox(height: 8),
-                              _buildInfoChip("VIN", car['vin'], AppColors.backgroundOfVin, context),
+                              _buildInfoChip(TextString.subtitleAddCarDropdownVin, car['vin'], AppColors.backgroundOfVin, context),
                             ],
                           ),
                         ],
@@ -829,9 +830,9 @@ class StepOneSelectionWidget extends StatelessWidget {
 
                       Row(
                         children: [
-                          _buildCarSpecIcon(context, IconString.transmissionIcon, "Transmission", car['transmission'] ?? "Automatic"),
+                          _buildCarSpecIcon(context, IconString.transmissionIcon, TextString.subtitleAddCarDropdownTrans, car['transmission'] ?? "Automatic"),
                           const SizedBox(width: 50),
-                          _buildCarSpecIcon(context, IconString.capacityIcon, "Capacity", car['seats'] ?? "2 seats"),
+                          _buildCarSpecIcon(context, IconString.capacityIcon, TextString.subtitleAddCarDropdownCap, car['seats'] ?? "2 seats"),
                           const SizedBox(width: 60),
                           AddButtonOfPickup(text: "View", width: 70, height: 38, onTap: () {}),
                         ],
@@ -931,8 +932,8 @@ class StepOneSelectionWidget extends StatelessWidget {
           child: GestureDetector(
             onTap: () => controller.selectedCustomer.value = null,
             child: Container(
-              width: 44,
-              height: 44,
+              width: 40,
+              height: 40,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
@@ -977,7 +978,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                   customer['name'] ?? "Carlie Harvy",
                   style: TTextTheme.h2Style(context),
                 ),
-                Text("Driver", style: TTextTheme.titleDriver(context)),
+                Text(TextString.subtitleAddCustomerDropdownDriver, style: TTextTheme.titleDriver(context)),
               ],
             ),
 
@@ -991,15 +992,15 @@ class StepOneSelectionWidget extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Expanded(child: _buildCarSpecIcon(context, IconString.callIcon, "Contact Number", customer['phone'] ?? "+12 3456 7890")),
-                        Expanded(child: _buildCarSpecIcon(context, IconString.cardIconPickup, "Card Number", customer['card'] ?? "1243567434")),
+                        Expanded(child: _buildCarSpecIcon(context, IconString.callIcon,TextString.subtitleAddCustomerInputFieldOne, customer['phone'] ?? "+12 3456 7890")),
+                        Expanded(child: _buildCarSpecIcon(context, IconString.cardIconPickup,TextString.subtitleAddCustomerInputFieldTwo , customer['card'] ?? "1243567434")),
                       ],
                     ),
                     const SizedBox(height: 10),
                     Row(
                       children: [
-                        Expanded(child: _buildCarSpecIcon(context, IconString.licesnseNo, "License Number", customer['license'] ?? "1245985642")),
-                        Expanded(child: _buildCarSpecIcon(context, IconString.nidIcon, "NID Number", customer['Nid'] ?? "123 456 789")),
+                        Expanded(child: _buildCarSpecIcon(context, IconString.licesnseNo,TextString.subtitleAddCustomerInputFieldThree , customer['license'] ?? "1245985642")),
+                        Expanded(child: _buildCarSpecIcon(context, IconString.nidIcon, TextString.subtitleAddCustomerInputFieldFour, customer['Nid'] ?? "123 456 789")),
                       ],
                     ),
                   ],
@@ -1040,7 +1041,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    "Driver",
+                    TextString.subtitleAddCustomerDropdownDriver,
                     style: TTextTheme.titleDriver(context),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -1054,7 +1055,7 @@ class StepOneSelectionWidget extends StatelessWidget {
             AddButtonOfPickup(
                 text: "View",
                 width: 65,
-                height: 32,
+                height: 38,
                 onTap: () {}
             ),
           ],
@@ -1066,13 +1067,13 @@ class StepOneSelectionWidget extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           child: Row(
             children: [
-              _buildCarSpecIcon(context, IconString.callIcon, "Contact", customer['phone'] ?? "+12 3456 7890"),
+              _buildCarSpecIcon(context, IconString.callIcon,TextString.subtitleAddCustomerInputFieldOne , customer['phone'] ?? "+12 3456 7890"),
               const SizedBox(width: 20),
-              _buildCarSpecIcon(context, IconString.licesnseNo, "License", customer['license'] ?? "1245985642"),
+              _buildCarSpecIcon(context, IconString.licesnseNo, TextString.subtitleAddCustomerInputFieldTwo, customer['license'] ?? "1245985642"),
               const SizedBox(width: 20),
-              _buildCarSpecIcon(context, IconString.cardIconPickup, "Card", customer['card'] ?? "1243567434"),
+              _buildCarSpecIcon(context, IconString.cardIconPickup,TextString.subtitleAddCustomerInputFieldThree, customer['card'] ?? "1243567434"),
               const SizedBox(width: 20),
-              _buildCarSpecIcon(context, IconString.nidIcon, "NID", customer['Nid'] ?? "123 456 789"),
+              _buildCarSpecIcon(context, IconString.nidIcon, TextString.subtitleAddCustomerInputFieldFour, customer['Nid'] ?? "123 456 789"),
             ],
           ),
         ),
@@ -1201,20 +1202,20 @@ class StepOneSelectionWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Jack Morrison", style: TTextTheme.pOne(context),overflow: TextOverflow.ellipsis,maxLines: 1,),
-                Text("Jack@rhyta.com", style: TTextTheme.pFour(context)),
+                Text(TextString.titleAddCustomerDropdown, style: TTextTheme.pOne(context),overflow: TextOverflow.ellipsis,maxLines: 1,),
+                Text(TextString.subtitleAddCustomerDropdown, style: TTextTheme.pFour(context)),
               ],
             ),
           ),
           const SizedBox(width: 20),
-           SizedBox(width: 65, child: Text("34 years", style: TTextTheme.pOne(context))),
+           SizedBox(width: 65, child: Text(TextString.titleAddCustomerYear, style: TTextTheme.pOne(context))),
           const SizedBox(width: 20),
-           SizedBox(width: 95, child: Text("789-012-3456", style: TTextTheme.pOne(context))),
+           SizedBox(width: 95, child: Text(TextString.titleAddCustomerNumber, style: TTextTheme.pOne(context))),
           const SizedBox(width: 20),
            SizedBox(
             width: 180,
             child: Text(
-              "404 Spruce Road, NJ 07001",
+              TextString.titleAddCustomerAddress,
               style: TTextTheme.pOne(context),
               overflow: TextOverflow.ellipsis,
             ),
@@ -1595,7 +1596,7 @@ class StepOneSelectionWidget extends StatelessWidget {
          Padding(
           padding: EdgeInsets.only(bottom: 10),
           child: Text(
-            "Upload Pickup Car Images (Max 10)",
+           TextString.titleAddImage,
             style: TTextTheme.titleTwo(context),
           ),
         ),
@@ -1646,8 +1647,8 @@ class StepOneSelectionWidget extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Text("Upload Image", style: TTextTheme.btnOne(context)),
-                    Text("PNG, JPG, SVG ", style: TTextTheme.documnetIsnideSmallText2(context)),
+                    Text(TextString.subtitleAddImage, style: TTextTheme.btnOne(context)),
+                    Text(TextString.subtitleAddImage2, style: TTextTheme.documnetIsnideSmallText2(context)),
                   ],
                 )
                     : Wrap(
@@ -1728,7 +1729,7 @@ class StepOneSelectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Agreement Start Time", style: TTextTheme.dropdowninsideText(context)),
+        Text(TextString.titleAddAgreementTime, style: TTextTheme.dropdowninsideText(context)),
         const SizedBox(height: 8),
         _editableTimeField(controller.startDateAddController, "DD/MM/YYYY", context),
         const SizedBox(height: 8),
@@ -1740,7 +1741,7 @@ class StepOneSelectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Agreement End Time", style: TTextTheme.dropdowninsideText(context)),
+        Text(TextString.titleAddAgreementEndTime, style: TTextTheme.dropdowninsideText(context)),
         const SizedBox(height: 8),
         _editableTimeField(controller.endDateAddController, "DD/MM/YYYY", context),
         const SizedBox(height: 8),

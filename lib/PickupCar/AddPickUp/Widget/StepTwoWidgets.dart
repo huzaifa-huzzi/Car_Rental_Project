@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../Resources/TextString.dart' show TextString;
+
 
 class StepTwoSelectionWidget extends StatelessWidget {
   final PickupCarController controller = Get.find();
@@ -62,9 +64,9 @@ class StepTwoSelectionWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Header
-                          Text("Add Pickup Car", style: TTextTheme.h6Style(context)),
+                          Text(TextString.titleViewPickStepTwo, style: TTextTheme.h6Style(context)),
                           const SizedBox(height: 6),
-                          Text("Enter the specification for the pre rental details",
+                          Text(TextString.titleViewSubtitleStepTwo,
                               style: TTextTheme.titleThree(context)),
 
                           const SizedBox(height: 25),
@@ -83,73 +85,73 @@ class StepTwoSelectionWidget extends StatelessWidget {
 
                                 /// CUSTOMER NAME SECTION
                                 _buildSection(context,
-                                    title: "Customer Name",
+                                    title:TextString.titleViewCustomerStepTwo,
                                     icon: IconString.customerNameIcon,
                                     child: _buildDetailedCustomerCard(context, isMobile)),
                                 const SizedBox(height: 25),
 
                                 /// CAR DETAILS SECTION
                                 _buildSection(context,
-                                    title: "Car",
+                                    title:TextString.titleViewCarStepTwo,
                                     icon: IconString.pickupCarIcon,
                                     child: _buildDetailedCarCard(context, isMobile)),
                                 const SizedBox(height: 25),
 
                                 /// RENT PURPOSE SECTION
                                 _buildSection(context,
-                                    title: "Rent Purpose",
+                                    title: TextString.titleRentPurposeStepTwo,
                                     icon: IconString.rentPurposeIcon,
                                     child: IgnorePointer(
-                                      child: _toggleStatusTag(context, "Personal Use", controller.isPersonalUse),
+                                      child: _toggleStatusTag(context, TextString.subtitleRentPurposeStepTwo, controller.isPersonalUse),
                                     )),
                                 const SizedBox(height: 25),
 
                                 /// PAYMENT METHOD SECTION
                                 _buildSection(context,
-                                    title: "Payment Method",
+                                    title:TextString.titlePaymentMethod ,
                                     icon: IconString.paymentMethodIcon,
                                     child: IgnorePointer(
-                                      child: _toggleStatusTag(context, "Manual Payments", controller.isManualPayment),
+                                      child: _toggleStatusTag(context, TextString.subtitlePaymentMethod, controller.isManualPayment),
                                     )),
                                 const SizedBox(height: 25),
 
                                 /// RENT AMOUNT SECTION
                                 _buildSection(context,
-                                    title: "Rent Amount",
+                                    title: TextString.titleViewRentAmountStepTwo,
                                     icon: IconString.rentMoneyIcon,
                                     child: _buildInfoGrid(context, [
-                                      {"label": "Weekly Rent", "controller": controller.weeklyRentController, "hint": "2600 \$"},
-                                      {"label": "Daily Rent", "controller": controller.rentDueAmountController, "hint": "2600 \$"},
+                                      {"label": TextString.subtitleWeeklyRentStepTwo, "controller": controller.weeklyRentController, "hint": "2600 \$"},
+                                      {"label": TextString.subtitleDailyRentStepTwo, "controller": controller.rentDueAmountController, "hint": "2600 \$"},
                                     ], isMobile, isEditable: false)),
                                 const SizedBox(height: 25),
 
                                 /// BOND PAYMENT SECTION
                                 _buildSection(context,
-                                    title: "Bond Payment",
+                                    title: TextString.titleBondPaymentStepTwo,
                                     icon: IconString.bondPaymentIcon,
                                     child: _buildInfoGrid(context, [
-                                      {"label": "Bond Amount", "controller": controller.bondAmountController, "hint": "2600 \$"},
-                                      {"label": "Paid Bond", "controller": controller.paidBondController, "hint": "600 \$"},
-                                      {"label": "Left Bond", "controller": controller.dueBondAmountController, "hint": "2000 \$"},
+                                      {"label": TextString.subtitleBondAmountStepTwo, "controller": controller.bondAmountController, "hint": "2600 \$"},
+                                      {"label": TextString.subtitlePaidBondStepTwo, "controller": controller.paidBondController, "hint": "600 \$"},
+                                      {"label":  TextString.subtitleLeftBondStepTwo, "controller": controller.dueBondAmountController, "hint": "2000 \$"},
                                     ], isMobile, isEditable: false)),
                                 const SizedBox(height: 25),
 
                                 /// CAR REPORT SECTION
                                 _buildSection(context,
-                                  title: "Car Report",
+                                  title:  TextString.titleCarReportStepTwo,
                                   icon: IconString.carReportIcon,
                                   child: _buildInfoGrid(context, [
-                                    {"label": "Pickup ODO", "controller": controller.odoController, "hint": "12457678", "hasIcon": false},
-                                    {"label": "Pickup Fuel Level", "controller": controller.fuelLevelController, "hint": "Full (100%)", "hasIcon": true},
-                                    {"label": "Interior Cleanliness", "controller": controller.interiorCleanlinessController, "hint": "Excellent", "hasIcon": true},
-                                    {"label": "Exterior Cleanliness", "controller": controller.exteriorCleanlinessController, "hint": "Excellent", "hasIcon": true},
+                                    {"label": TextString.subtitlePickupOdoStepTwo, "controller": controller.odoController, "hint": "12457678", "hasIcon": false},
+                                    {"label": TextString.subtitlePickFuelLevelStepTwo, "controller": controller.fuelLevelController, "hint": "Full (100%)", "hasIcon": true},
+                                    {"label": TextString.subtitleInteriorCleanlinessStepTwo, "controller": controller.interiorCleanlinessController, "hint": "Excellent", "hasIcon": true},
+                                    {"label": TextString.subtitleExteriorCleanlinessStepTwo, "controller": controller.exteriorCleanlinessController, "hint": "Excellent", "hasIcon": true},
                                   ], isMobile, isEditable: false),
                                 ),
                                 const SizedBox(height: 25),
 
                                 /// DAMAGE INSPECTION SECTION
                                 _buildSection(context,
-                                    title: "Damage Inspection",
+                                    title: TextString.titleDamageInspectionStepTwo,
                                     icon: IconString.damageInspection,
                                     child: _buildDamageInspectionCard(context, isMobile)),
                                 const SizedBox(height: 25),
@@ -157,14 +159,14 @@ class StepTwoSelectionWidget extends StatelessWidget {
                                 /// PICKUP NOTE SECTION
                                 _buildSection(
                                   context,
-                                  title: "Pickup Note",
+                                  title: TextString.titlePickupNoteStepTwo,
                                   icon: IconString.pickupNote,
                                   child: IgnorePointer(
                                     child: _buildCommentField(
                                         context,
-                                        "Pickup Comments",
+                                        TextString.subtitlePickupCommentsStepTwo,
                                         controller.additionalCommentsController,
-                                        "Audi A6 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys. Renowned for its powerful performance and advanced technology features, the A6 provides a refined driving experience with exceptional comfort. Audi A6 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys. Renowned for its powerful performance and advanced technology features, the A6 provides a refined driving experience with exceptional comfort."
+                                        TextString.subtitleViewPickupStepTwo
                                     ),
                                   ),
                                 ),
@@ -172,12 +174,12 @@ class StepTwoSelectionWidget extends StatelessWidget {
 
                                 /// CAR PICTURE SECTION
                                 _buildSection(context,
-                                    title: "Car Picture",
+                                    title: TextString.titleCarPictureStepTwo,
                                     icon: IconString.carPictureIconPickup,
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text("Car Image (Max 10)", style: TTextTheme.dropdowninsideText(context)),
+                                        Text(TextString.subtitleCarPictureStepTwo, style: TTextTheme.dropdowninsideText(context)),
                                         const SizedBox(height: 10),
                                         _imageBox(context),
                                       ],
@@ -186,7 +188,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
 
                                 /// RENT TIME SECTION
                                 _buildSection(context,
-                                    title: "Rent Time",
+                                    title: TextString.titleRentTimeStepTwo,
                                     icon: IconString.rentTimeIcon,
                                     showBadge: true,
                                     child: _buildRentTimeSection(context, isMobile)),
@@ -398,7 +400,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Agreement Start Time",
+          Text(TextString.subtitleAgreementTimeStepTwo,
               style: TTextTheme.dropdowninsideText(context)),
           const SizedBox(height: 8),
           _editableTimeField(controller.startDateController, "02/12/2025",context),
@@ -407,7 +409,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
 
           const SizedBox(height: 24),
 
-          Text("Agreement End Time",
+          Text(TextString.subtitleAgreementEndTimeStepTwo,
               style: TTextTheme.dropdowninsideText(context)),
           const SizedBox(height: 8),
           _editableTimeField(controller.endDateController, "02/12/2025",context),
@@ -425,7 +427,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Agreement Start Time",
+              Text(TextString.subtitleAgreementTimeStepTwo,
                   style: TTextTheme.dropdowninsideText(context)),
               const SizedBox(height: 8),
               Row(
@@ -474,7 +476,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Agreement End Time",
+              Text(TextString.subtitleAgreementEndTimeStepTwo,
                   style: TTextTheme.dropdowninsideText(context)),
               const SizedBox(height: 8),
               Row(
@@ -529,11 +531,11 @@ class StepTwoSelectionWidget extends StatelessWidget {
           children: [
             SizedBox(
               width: cardWidth,
-              child: _signatureCard("Signed by Owner", controller.ownerNameController),
+              child: _signatureCard(TextString.subtitleOwnerSignatureStepTwo, controller.ownerNameController),
             ),
             SizedBox(
               width: cardWidth,
-              child: _signatureCard("Signed by Hirer", controller.hirerNameController),
+              child: _signatureCard(TextString.subtitleHirerSignatureStepTwo, controller.hirerNameController),
             ),
           ],
         );
@@ -579,7 +581,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Text("Full Name", style: TTextTheme.titleFullName(context)),
+                        Text(TextString.subtitleFullNameStepTwo, style: TTextTheme.titleFullName(context)),
                       ],
                     ),
                   ),
@@ -602,7 +604,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Text("Signature", style: TTextTheme.titleFullName(context)),
+                        Text(TextString.subtitleSignStepTwo, style: TTextTheme.titleFullName(context)),
                       ],
                     ),
                   ),
@@ -717,8 +719,8 @@ class StepTwoSelectionWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text("Carlie Harvy", style: TTextTheme.titleOne(context), maxLines: 1, overflow: TextOverflow.ellipsis),
-                          Text("Driver", style: TTextTheme.btnTwo(context)),
+                          Text(TextString.titleCustomerImageStepTwo, style: TTextTheme.titleOne(context), maxLines: 1, overflow: TextOverflow.ellipsis),
+                          Text(TextString.titleDriverStepTwo, style: TTextTheme.btnTwo(context)),
                         ],
                       ),
                     ),
@@ -736,13 +738,13 @@ class StepTwoSelectionWidget extends StatelessWidget {
             physics:  BouncingScrollPhysics(),
             child: Row(
               children: [
-                _infoBlock(IconString.smsIcon, "Email", "Contact@SoftSnip.com.au", context),
+                _infoBlock(IconString.smsIcon, TextString.titleEmailStepTwo, "Contact@SoftSnip.com.au", context),
                 const SizedBox(width: 12),
-                _infoBlock(IconString.callIcon, "Contact Number", "+12 3456 7890", context),
+                _infoBlock(IconString.callIcon, TextString.titleContactStepTwo, "+12 3456 7890", context),
                 const SizedBox(width: 12),
-                _infoBlock(IconString.location, "Address", "Toronto, California, 1234", context),
+                _infoBlock(IconString.location, TextString.titleAddressStepTwo, "Toronto, California, 1234", context),
                 const SizedBox(width: 12),
-                _infoBlock(IconString.nidIcon, "NID Number", "123 456 789", context),
+                _infoBlock(IconString.nidIcon, TextString.titleNidStepTwo, "123 456 789", context),
                 const SizedBox(width: 12),
               ],
             ),
@@ -778,8 +780,8 @@ class StepTwoSelectionWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Carlie Harvy", style: TTextTheme.titleOne(context)),
-              Text("Driver", style: TTextTheme.btnTwo(context)),
+              Text(TextString.titleCustomerImageStepTwo, style: TTextTheme.titleOne(context)),
+              Text(TextString.titleDriverStepTwo, style: TTextTheme.btnTwo(context)),
             ],
           ),
         ],
@@ -787,13 +789,13 @@ class StepTwoSelectionWidget extends StatelessWidget {
 
       /// INFO BLOCKS
       const SizedBox(width: 20),
-      _infoBlock(IconString.smsIcon, "Email", "Contact@SoftSnip.com.au", context),
+      _infoBlock(IconString.smsIcon, TextString.titleEmailStepTwo, "Contact@SoftSnip.com.au", context),
       const SizedBox(width: 15),
-      _infoBlock(IconString.callIcon, "Contact Number", "+12 3456 7890", context),
+      _infoBlock(IconString.callIcon,  TextString.titleContactStepTwo, "+12 3456 7890", context),
       const SizedBox(width: 15),
-      _infoBlock(IconString.location, "Address", "Toronto, California, 1234", context),
+      _infoBlock(IconString.location, TextString.titleAddressStepTwo, "Toronto, California, 1234", context),
       const SizedBox(width: 15),
-      _infoBlock(IconString.nidIcon, "NID Number", "123 456 789", context),
+      _infoBlock(IconString.nidIcon, TextString.titleNidStepTwo, "123 456 789", context),
       const SizedBox(width: 18),
 
       /// VIEW BUTTON
@@ -842,8 +844,8 @@ class StepTwoSelectionWidget extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Aston 2025", style: TTextTheme.titleSix(context), overflow: TextOverflow.ellipsis),
-                            Text("Martin", style: TTextTheme.h3Style(context), overflow: TextOverflow.ellipsis),
+                            Text(TextString.titleCarImageStepTwo, style: TTextTheme.titleSix(context), overflow: TextOverflow.ellipsis),
+                            Text(TextString.titleCarImage2StepTwo, style: TTextTheme.h3Style(context), overflow: TextOverflow.ellipsis),
                           ],
                         ),
                       ),
@@ -860,18 +862,18 @@ class StepTwoSelectionWidget extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               child: Row(
                 children: [
-                  _infoRowTag(label: "Registration", value: "1234567890", context: context),
+                  _infoRowTag(label: TextString.titleRegistrationStepTwo, value: "1234567890", context: context),
                   const SizedBox(width: 10),
                   _infoRowTag(
-                    label: "VIN",
+                    label:TextString.titleVinStepTwo,
                     value: "JTNBA3HK003001234",
                     labelColor: AppColors.backgroundOfVin,
                     context: context,
                   ),
                   const SizedBox(width: 30),
-                  _buildSpecColumn(context, label: "Transmission", value: "Auto", imagePath: IconString.transmissionIcon),
+                  _buildSpecColumn(context, label:TextString.titleTransmissionStepTwo, value: "Auto", imagePath: IconString.transmissionIcon),
                   const SizedBox(width: 30),
-                  _buildSpecColumn(context, label: "Capacity", value: "2 seats", imagePath: IconString.capacityIcon),
+                  _buildSpecColumn(context, label: TextString.titleCapacityStepTwo, value: "2 seats", imagePath: IconString.capacityIcon),
                   const SizedBox(width: 25),
                   _buildPriceColumn(context),
                 ],
@@ -929,15 +931,15 @@ class StepTwoSelectionWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Range Rover 2024", style: TTextTheme.titleFour(context)),
-              Text("Velar", style: TTextTheme.h3Style(context)),
+              Text(TextString.titleCarImageStepTwo, style: TTextTheme.titleFour(context)),
+              Text(TextString.titleCarImage2StepTwo, style: TTextTheme.h3Style(context)),
 
               if (!enableScroll) ...[
                 const SizedBox(height: 12),
-                _infoRowTag(label: "Registration", value: "1234567890", context: context),
+                _infoRowTag(label: TextString.titleRegistrationStepTwo, value: "1234567890", context: context),
                 const SizedBox(height: 8),
                 _infoRowTag(
-                  label: "VIN",
+                  label:TextString.titleVinStepTwo,
                   value: "JTNBA3HK003001234",
                   labelColor: AppColors.backgroundOfVin,
                   context: context,
@@ -952,10 +954,10 @@ class StepTwoSelectionWidget extends StatelessWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _infoRowTag(label: "Registration", value: "1234567890", context: context),
+            _infoRowTag(label: TextString.titleRegistrationStepTwo, value: "1234567890", context: context),
             const SizedBox(width: 10),
             _infoRowTag(
-              label: "VIN",
+              label: TextString.titleVinStepTwo,
               value: "JTNBA3HK003001234",
               labelColor: AppColors.backgroundOfVin,
               context: context,
@@ -963,8 +965,8 @@ class StepTwoSelectionWidget extends StatelessWidget {
           ],
         ),
 
-      _buildSpecColumn(context, label: "Transmission", value: "Automatic", imagePath: IconString.transmissionIcon),
-      _buildSpecColumn(context, label: "Capacity", value: "2 seats", imagePath: IconString.capacityIcon),
+      _buildSpecColumn(context, label: TextString.titleTransmissionStepTwo, value: "Automatic", imagePath: IconString.transmissionIcon),
+      _buildSpecColumn(context, label: TextString.titleCapacityStepTwo, value: "2 seats", imagePath: IconString.capacityIcon),
 
       Row(
         mainAxisSize: MainAxisSize.min,
@@ -983,7 +985,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text("Price", style:  TTextTheme.titleFour(context)),
+        Text(TextString.titlePriceStepTwo, style:  TTextTheme.titleFour(context)),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -1168,7 +1170,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-              "Terms & Conditions",
+              TextString.titleTermsStepTwo,
               style: TTextTheme.titleRadios(context)
           ),
           const SizedBox(height: 10),
