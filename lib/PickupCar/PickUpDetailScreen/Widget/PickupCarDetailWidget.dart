@@ -320,6 +320,7 @@ class PickupDetailWidget extends StatelessWidget {
     );
   }
 
+  /// ---------- Extra Widgtes ----------- ///
 
   // Start Header
   Widget _buildPageHeader(BuildContext context, bool isMobile) {

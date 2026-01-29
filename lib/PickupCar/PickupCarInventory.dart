@@ -528,6 +528,3 @@ class PickupCarController extends GetxController {
   }
 
 }
-
-
-// Doing testing on mobile

@@ -32,7 +32,7 @@ class TableViewPickUpScreen extends StatelessWidget {
               if (AppSizes.isWeb(context))
                 if (AppSizes.isWeb(context))
                   HeaderWebPickupWidget(
-                      mainTitle: 'Customers',
+                      mainTitle: 'Pickup Car',
                       showProfile: true,
                       showNotification: true,
                       showSettings: true,

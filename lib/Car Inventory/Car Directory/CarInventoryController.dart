@@ -254,7 +254,7 @@ class CarInventoryController extends GetxController {
     }
   }
 
-  /// Car Details Screen getx
+  /// Car Details Screen
   RxInt selectedIndex = 0.obs;
 
 
