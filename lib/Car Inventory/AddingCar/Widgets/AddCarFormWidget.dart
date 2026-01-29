@@ -282,91 +282,59 @@ class AddCarFormWidget extends StatelessWidget {
     );
   }
 
-  //  Status Dropdown
+  // Status Dropdown
   Widget _buildStatusDropdown(BuildContext context, String label, List<String> items, RxString selected, {required String id}) {
     return Obx(() {
-      bool isOpen = controller.openedDropdown.value == id;
-
+      bool isOpen = controller.openedDropdown2.value == id;
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label, style: TTextTheme.titleTwo(context)),
           const SizedBox(height: 6),
-
           LayoutBuilder(builder: (context, constraints) {
             return PopupMenuButton<String>(
-              constraints: BoxConstraints(
-                minWidth: constraints.maxWidth,
-                maxWidth: constraints.maxWidth,
-              ),
+              constraints: BoxConstraints(minWidth: constraints.maxWidth, maxWidth: constraints.maxWidth),
               offset: const Offset(0, 45),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               color: AppColors.secondaryColor,
-              elevation: 4,
-              tooltip: '',
-              onOpened: () => controller.openedDropdown.value = id,
-              onCanceled: () => controller.openedDropdown.value = "",
-              onSelected: (value) {
-                selected.value = value;
-                controller.openedDropdown.value = "";
+              onOpened: () => controller.openedDropdown2.value = id,
+              onCanceled: () => controller.openedDropdown2.value = "",
+              onSelected: (val) {
+                selected.value = val;
+                controller.openedDropdown2.value = "";
               },
               child: Container(
                 height: 48,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
                   color: AppColors.secondaryColor,
-                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
                   children: [
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: _getStatusChip(selected.value,context),
-                      ),
-                    ),
+                    Expanded(child: Align(alignment: Alignment.centerLeft, child: _getStatusChip(selected.value,context))),
                     const SizedBox(width: 8),
-                    Image.asset(
-                      isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon,
-                      height: 18,
-                    ),
+                    Image.asset(isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon, height: 18),
                   ],
                 ),
               ),
-              itemBuilder: (context) {
-                return items.asMap().entries.map((entry) {
-                  int index = entry.key;
-                  String value = entry.value;
-                  bool isLast = index == items.length - 1;
-
-                  return PopupMenuItem<String>(
-                    value: value,
-                    padding: EdgeInsets.zero,
-                    height: 48,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: _getStatusChip(value,context),
-                          ),
-                        ),
-                        if (!isLast)
-                          Divider(
-                            height: 1.2,
-                            thickness: 0.7,
-                            color: AppColors.quadrantalTextColor,
-                            indent: 0,
-                            endIndent: 0,
-                          ),
-                      ],
-                    ),
-                  );
-                }).toList();
-              },
+              itemBuilder: (context) => items.asMap().entries.map((entry) {
+                bool isLast = entry.key == items.length - 1;
+                return PopupMenuItem<String>(
+                  value: entry.value,
+                  padding: EdgeInsets.zero,
+                  child: Column(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: Align(alignment: Alignment.centerLeft, child: _getStatusChip(entry.value,context)),
+                      ),
+                      if (!isLast) Divider(height: 1, color: AppColors.quadrantalTextColor),
+                    ],
+                  ),
+                );
+              }).toList(),
             );
           }),
         ],
@@ -374,46 +342,53 @@ class AddCarFormWidget extends StatelessWidget {
     });
   }
 
-//  Status Chip Helper Widget
-  Widget _getStatusChip(String status,BuildContext context) {
-    Color backgroundColor;
-    Color textColor = Colors.white;
-
+// Status Chip Widget
+  Widget _getStatusChip(String status, BuildContext context) {
+    Color statusColor = Colors.transparent;
+    Color textColor = Colors.black;
     String displayStatus = status.isEmpty ? "Available" : status;
+    String checkStatus = displayStatus.toLowerCase();
 
-    if (displayStatus == "Available") {
-      backgroundColor = AppColors.availableBackgroundColor;
+    if (checkStatus == "available") {
+      statusColor = AppColors.availableBackgroundColor;
       textColor = Colors.white;
-    } else if (displayStatus == "Maintenance") {
-      backgroundColor = AppColors.maintenanceBackgroundColor;
+    } else if (checkStatus == "maintenance") {
+      statusColor = AppColors.maintenanceBackgroundColor;
       textColor = AppColors.textColor;
-    } else if (displayStatus == "Unavailable") {
-      backgroundColor = AppColors.sideBoxesColor;
+    } else if (checkStatus == "unavailable") {
+      statusColor = AppColors.sideBoxesColor;
       textColor = AppColors.secondTextColor;
-    } else {
-      backgroundColor = Colors.transparent;
-      textColor = AppColors.blackColor;
     }
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(6),
-      ),
-      constraints: const BoxConstraints(maxWidth: 150),
-      child:  Flexible(
-        child: Text(
-          displayStatus,
-          style: TTextTheme.titleseven(context).copyWith(
-            color: textColor,
-          ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        padding: statusColor == Colors.transparent
+            ? EdgeInsets.zero
+            : const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        decoration: BoxDecoration(
+          color: statusColor,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: Text(
+                displayStatus,
+                style: TTextTheme.titleseven(context).copyWith(
+                  color: textColor,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
+
 
 
 

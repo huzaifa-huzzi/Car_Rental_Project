@@ -532,9 +532,18 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
             child: Center(
               child: Image.asset(
                 icon,
-                height: 20,
-                width: 20,
+                height: 18,
+                width: 18,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(
+                    Icons.image_not_supported_outlined,
+                    size: 18,
+                    color: Colors.black54,
+                  );
+                },
               ),
+
             ),
           ),
 
@@ -581,8 +590,16 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
           child: Center(
             child: Image.asset(
               icon,
-              height: 19,
-              width: 19,
+              height: 20,
+              width: 20,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(
+                  Icons.image_not_supported_outlined,
+                  size: 18,
+                  color: Colors.black54,
+                );
+              },
             ),
           ),
         ),

@@ -196,13 +196,15 @@ class SidebarComponents {
         color: AppColors.primaryColor,
         shape: BoxShape.circle,
       ),
-      child: Text(
-        number.toString(),
-        textAlign: TextAlign.center,
-        style: TTextTheme.pTwo(context).copyWith(
-          color: AppColors.secondaryColor,
-          fontSize: 10,
-          height: 1.0,
+      child: Center(
+        child: Text(
+          number.toString(),
+          textAlign: TextAlign.center,
+          style: TTextTheme.pTwo(context).copyWith(
+            color: AppColors.secondaryColor,
+            fontSize: 10,
+            height: 1.0,
+          ),
         ),
       ),
     );

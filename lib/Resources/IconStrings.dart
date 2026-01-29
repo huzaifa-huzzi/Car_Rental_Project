@@ -45,7 +45,7 @@ class IconString {
   static const String  editIcon = 'assets/icons/EditIcon.png';
   static const String  saveVehicleIcon = 'assets/icons/savevehicleIcon.png';
   static const String  accelerationIcon = 'assets/icons/AccelerationIcon.png';
-  static const String  carValueIcon = 'assets/icons/carValueIcon.png';
+  static const String  carValueIcon = 'assets/icons/ValueIcon.png';
   static const String  colorIcon = 'assets/icons/ColorIcon.png';
   static const String  engineSizeIcon = 'assets/icons/EngineSizeIcon.png';
   static const String  milageIcon = 'assets/icons/MilageIcon.png';
