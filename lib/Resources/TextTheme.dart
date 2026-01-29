@@ -55,6 +55,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 20),fontWeight: FontWeight.w500,color: Colors.white);
   }
 
+  static TextStyle h10Style(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 11),fontWeight: FontWeight.w500,color: Colors.white);
+  }
+
 
   static TextStyle btnOne(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 12),fontWeight: FontWeight.w500,color: AppColors.quadrantalTextColor);

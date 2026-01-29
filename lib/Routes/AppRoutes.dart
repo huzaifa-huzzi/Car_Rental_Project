@@ -9,6 +9,9 @@ import 'package:car_rental_project/Customers/AddCustomers/AddCustomers.dart';
 import 'package:car_rental_project/Customers/CustomersDetails/CustomersDetails.dart';
 import 'package:car_rental_project/Customers/EditCustomers/EditCustomerScreen.dart';
 import 'package:car_rental_project/Customers/TableViewCustomerScreen/TableViewScreen.dart';
+import 'package:car_rental_project/DroppOffCar/AddDropOff/AddDropOffScreen.dart';
+import 'package:car_rental_project/DroppOffCar/DropOffDetails/DropOffDetails.dart';
+import 'package:car_rental_project/DroppOffCar/TableViewDropoff/TableViewDropoffScreen.dart';
 import 'package:car_rental_project/PickupCar/AddPickUp/AddPickup.dart';
 import 'package:car_rental_project/PickupCar/AddPickUp/Widget/StepTwoWidgets.dart';
 import 'package:car_rental_project/PickupCar/EditPicUp/EditPickUpScreen.dart';
@@ -33,6 +36,8 @@ class AppNavigation {
                 context.go('/customers');
               }else if (title == "Pickup Car") {
                 context.go('/pickupCar');
+              }else if (title == "Dropoff Car") {
+                context.go('/dropoffCar');
               }
             },
             child: child,
@@ -54,6 +59,10 @@ class AppNavigation {
           GoRoute(
             path: '/pickupcar',
             builder: (context, state) =>  TableViewPickUpScreen(),
+          ),
+          GoRoute(
+            path: '/dropoffCar',
+            builder: (context, state) => TableViewDropOffScreen(),
           ),
         ],
       ),
@@ -77,7 +86,7 @@ class AppNavigation {
         builder: (context, state) => _wrapSidebar(state,  EditCustomerScreen()),
       ),
 
-
+      // No Sidebar / Special AppBar Routes (Pickup Screen)
       GoRoute(
         path: '/pickupDetail',
         builder: (context, state) => _wrapSidebar(state,  PickUpDetailScreen()),
@@ -93,6 +102,16 @@ class AppNavigation {
       GoRoute(
         path: '/editPickUp',
         builder: (context, state) => _wrapSidebar(state,  EditPickScreen()),
+      ),
+
+      // No Sidebar / Special AppBar Routes (DropOff Screens)
+      GoRoute(
+        path: '/dropOffDetail',
+        builder: (context, state) => _wrapSidebar(state,  DropOffDetails()),
+      ),
+      GoRoute(
+        path: '/addDropOff',
+        builder: (context, state) => _wrapSidebar(state,  AddDropOffScreen()),
       ),
     ],
   );
