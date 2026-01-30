@@ -46,7 +46,7 @@ class SidebarScreen extends StatelessWidget {
                   children: [
                     Image.asset(IconString.symbol, width: isMobile ? 30 : 36, height: isMobile ? 32 : 38),
                     SizedBox(width: AppSizes.horizontalPadding(context) / 2),
-                    Text("Softsnip", style: TTextTheme.h6Style(context).copyWith(fontWeight: FontWeight.w600)),
+                    Text("Softsnip", style: TTextTheme.h6Style(context)),
                   ],
                 ),
               ),
@@ -57,32 +57,45 @@ class SidebarScreen extends StatelessWidget {
                 shrinkWrap: true,
                 children: [
 
-                  SidebarComponents.menuItem(context, controller, iconPath: IconString.dashboardIcon, title: TextString.dashboardTitle,
-                      onTap: (val) => context.go('/dashboard'), scaffoldKey: _scaffoldKey),
+                  // Dashboard
+                  SidebarComponents.menuItem(context, controller,
+                      iconPath: IconString.dashboardIcon,
+                      title: TextString.dashboardTitle,
+                      isSelected: currentRoute == '/dashboard',
+                      onTap: (val) => context.go('/dashboard'),
+                      scaffoldKey: _scaffoldKey),
 
-                  SidebarComponents.menuItem(context, controller, iconPath: IconString.carInventoryIcon, title: TextString.carInventoryTitle,
-                      onTap: (val) => context.go('/carInventory'), scaffoldKey: _scaffoldKey),
+                  // Car Inventory
+                  SidebarComponents.menuItem(context, controller,
+                      iconPath: IconString.carInventoryIcon,
+                      title: TextString.carInventoryTitle,
+                      isSelected: currentRoute == '/carInventory',
+                      onTap: (val) => context.go('/carInventory'),
+                      scaffoldKey: _scaffoldKey),
 
-                  SidebarComponents.menuItem(context, controller, iconPath: IconString.customerIcon, title: TextString.customersTitle,
-                      onTap: (val) => context.go('/customers'), scaffoldKey: _scaffoldKey),
+                  // Customers
+                  SidebarComponents.menuItem(context, controller,
+                      iconPath: IconString.customerIcon,
+                      title: TextString.customersTitle,
+                      isSelected: currentRoute.contains('/customers'),
+                      onTap: (val) => context.go('/customers'),
+                      scaffoldKey: _scaffoldKey),
 
-                  SidebarComponents.menuItem(
-                      context,
-                      controller,
+                  // Pickup Car
+                  SidebarComponents.menuItem(context, controller,
                       iconPath: IconString.agreementIcon,
                       title: "Pickup Car",
+                      isSelected: currentRoute.contains('/pickupcar'),
                       onTap: (val) => context.go('/pickupcar'),
-                      scaffoldKey: _scaffoldKey
-                  ),
+                      scaffoldKey: _scaffoldKey),
 
-                  SidebarComponents.menuItem(
-                      context,
-                      controller,
+                  // DropOff Car
+                  SidebarComponents.menuItem(context, controller,
                       iconPath: IconString.returnCarIcon,
                       title: TextString.returnCar,
-                      onTap: (val) => context.push('/dropoffCar'),
-                      scaffoldKey: _scaffoldKey
-                  ),
+                      isSelected: currentRoute.contains('/dropoffCar') || currentRoute.contains('/addDropOff'), // <--- Sync highlight
+                      onTap: (val) => context.go('/dropoffCar'),
+                      scaffoldKey: _scaffoldKey),
                   SidebarComponents.expenseMenuItem(context, controller, onTap: onTap, scaffoldKey: _scaffoldKey),
                   SidebarComponents.menuItem(context, controller, iconPath: IconString.maintenanceIcon, title: TextString.maintenanceTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
                   SidebarComponents.menuItem(context, controller, iconPath: IconString.incomeIcon, title: TextString.incomeTitle,

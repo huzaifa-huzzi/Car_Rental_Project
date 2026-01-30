@@ -1,6 +1,8 @@
 import 'package:car_rental_project/Resources/Colors.dart' show AppColors;
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/foundation.dart' show kIsWeb, Uint8List;
 
 class DamagePoint {
   final double dx;
@@ -10,6 +12,15 @@ class DamagePoint {
 
   DamagePoint({required this.dx, required this.dy, required this.typeId, required this.color});
 }
+
+class ImageHolder {
+  final String? path;
+  final Uint8List? bytes;
+  final String? name;
+
+  ImageHolder({this.path, this.bytes, this.name});
+}
+
 
 class DropOffController extends GetxController{
 
@@ -84,9 +95,11 @@ class DropOffController extends GetxController{
     }
   }
   /// Detail View Screen
+  var isDamageInspectionOpen = false.obs;
   final weeklyRentControllerStepTwo = TextEditingController();
   final rentBondAmountControllerStepTwo  = TextEditingController();
   final rentDueAmountControllerStepTwo  = TextEditingController();
+
 
   final bondAmountControllerStepTwo  = TextEditingController();
   final paidBondControllerStepTwo  = TextEditingController();
@@ -98,6 +111,7 @@ class DropOffController extends GetxController{
   final interiorCleanlinessControllerStepTwo  = TextEditingController();
   final exteriorCleanlinessControllerStepTwo  = TextEditingController();
   final additionalCommentsControllerStepTwo  = TextEditingController();
+  final additionalCommentsControllerDropOff  = TextEditingController();
   final odoControllerDropOff  = TextEditingController();
   final fuelLevelControllerDropOff  = TextEditingController();
   final interiorCleanlinessControllerDropOff  = TextEditingController();
@@ -113,17 +127,52 @@ class DropOffController extends GetxController{
   final ownerNameController = TextEditingController(text: "Softsnip");
   final hirerNameController = TextEditingController(text: "Softsnip");
 
-  var selectedDamageType = 1.obs;
-  var damagePoints = <DamagePoint>[].obs;
+  var selectedDamageType2 = 1.obs;
+  var damagePoints2 = <DamagePoint>[].obs;
 
 
-  final List<Map<String, dynamic>> damageTypes = [
+  final List<Map<String, dynamic>> damageTypes2 = [
     {'id': 1, 'label': 'Scratch', 'color': AppColors.oneBackground},
     {'id': 2, 'label': 'Dent', 'color': AppColors.twoBackground},
     {'id': 3, 'label': 'Chip', 'color': AppColors.threeBackground},
     {'id': 4, 'label': 'Scuff', 'color': AppColors.fourBackground},
     {'id': 5, 'label': 'Other', 'color': AppColors.fiveBackground},
   ];
+
+  RxList<ImageHolder> pickupCarImages3 = <ImageHolder>[].obs;
+  final int maxPickupImages2 = 10;
+
+  Future<void> pickImage3() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowMultiple: true,
+      allowedExtensions: ['png', 'jpg', 'jpeg', 'svg'],
+      withData: true,
+    );
+
+    if (result != null) {
+      for (var file in result.files) {
+        if (pickupCarImages3.length < maxPickupImages2) {
+          if (kIsWeb) {
+            if (file.bytes != null) {
+              pickupCarImages3.add(ImageHolder(bytes: file.bytes, name: file.name));
+            }
+          } else {
+            if (file.path != null) {
+              pickupCarImages3.add(ImageHolder(path: file.path, name: file.name, bytes: file.bytes));
+            }
+          }
+        }
+      }
+      pickupCarImages3.refresh();
+    }
+  }
+
+  void removeImage3(int index) {
+    if (index >= 0 && index < pickupCarImages3.length) {
+      pickupCarImages3.removeAt(index);
+    }
+  }
 
 
   @override

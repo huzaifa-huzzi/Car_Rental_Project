@@ -27,61 +27,54 @@ class SidebarComponents {
         required String iconPath,
         required String title,
         Widget? trailing,
+        bool? isSelected,
         required Function(String) onTap,
         required GlobalKey<ScaffoldState> scaffoldKey,
       }) {
-    return  InkWell(
-      hoverColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      focusColor: Colors.transparent,
 
+    Widget buildItemContent(bool active) {
+      return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        decoration: BoxDecoration(
+          color: active ? AppColors.secondaryColor : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          children: [
+            Image.asset(
+              iconPath,
+              width: 20,
+              height: 20,
+              color: active ? AppColors.primaryColor : AppColors.quadrantalTextColor,
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Text(
+                title,
+                overflow: TextOverflow.ellipsis,
+                style: (active ? TTextTheme.btnSix(context) : TTextTheme.btnOne(context))
+                    .copyWith(
+                  color: active ? AppColors.textColor : AppColors.quadrantalTextColor,
+                ),
+              ),
+            ),
+            if (trailing != null) trailing,
+          ],
+        ),
+      );
+    }
+
+    return InkWell(
       onTap: () {
         controller.selectMenu(title);
         onTap(title);
         closeDrawerIfMobile(context, scaffoldKey);
       },
-      child: Obx(() {
-        bool active = controller.selected.value == title;
-        return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-          decoration: BoxDecoration(
-            color: active ? AppColors.secondaryColor : Colors.transparent,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Row(
-            children: [
-              Image.asset(
-                iconPath,
-                width: 20,
-                height: 20,
-                color: active
-                    ? AppColors.primaryColor
-                    : AppColors.quadrantalTextColor,
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Text(
-                  title,
-                  overflow: TextOverflow.ellipsis,
-                  style: (active
-                      ? TTextTheme.btnSix(context)
-                      : TTextTheme.btnOne(context)
-                  ).copyWith(
-                    color: active
-                        ? AppColors.textColor
-                        : AppColors.quadrantalTextColor,
-                  ),
-                ),
-              ),
-              if (trailing != null) trailing,
-            ],
-          ),
-        );
-      }),
+      child: isSelected != null
+          ? buildItemContent(isSelected)
+          : Obx(() => buildItemContent(controller.selected.value == title)),
     );
-
   }
 
   /// Expense menu item with sub-items

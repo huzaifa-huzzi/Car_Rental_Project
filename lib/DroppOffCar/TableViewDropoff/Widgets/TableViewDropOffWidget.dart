@@ -105,8 +105,8 @@ class TableViewDropOffWidget extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(car["customerName"] ?? "", style: TTextTheme.pOne(context).copyWith(fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
-                                      Text(car["customerEmail"] ?? "", style: TTextTheme.smallX(context).copyWith(color: AppColors.secondTextColor), overflow: TextOverflow.ellipsis),
+                                      Text(car["customerName"] ?? "", style: TTextTheme.pOne(context), overflow: TextOverflow.ellipsis),
+                                      Text(car["customerEmail"] ?? "", style: TTextTheme.pFour(context), overflow: TextOverflow.ellipsis),
                                     ],
                                   ),
                                 ),
