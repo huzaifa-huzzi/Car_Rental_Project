@@ -15,20 +15,29 @@ import 'package:car_rental_project/Resources/AppSizes.dart';
 class SidebarScreen extends StatelessWidget {
   final Function(String) onTap;
   final Widget? child;
-  final SideBarController controller = Get.put(SideBarController());
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final bool hideMobileAppBar;
 
-  SidebarScreen({super.key, required this.onTap, this.child, this.hideMobileAppBar = false});
+  SidebarScreen({super.key, required this.onTap, this.child, this.hideMobileAppBar = false}){
+    Get.lazyPut<SideBarController>(() => SideBarController(), fenix: true);
+  }
+  final SideBarController controller = Get.find<SideBarController>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
+
     final bool isMobile = AppSizes.isMobile(context);
     final bool isTab = AppSizes.isTablet(context);
     final bool isWeb = AppSizes.isWeb(context);
     final double sidebarWidth = isWeb ? 240 : 150;
 
+
     final String currentRoute = GoRouterState.of(context).uri.toString();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.syncWithRoute(currentRoute);
+    });
+
 
     /// Sidebar content
     Widget sidebarContent({bool showLogo = true}) {
@@ -58,44 +67,48 @@ class SidebarScreen extends StatelessWidget {
                 children: [
 
                   // Dashboard
-                  SidebarComponents.menuItem(context, controller,
-                      iconPath: IconString.dashboardIcon,
-                      title: TextString.dashboardTitle,
-                      isSelected: currentRoute == '/dashboard',
-                      onTap: (val) => context.go('/dashboard'),
-                      scaffoldKey: _scaffoldKey),
+                  SidebarComponents.menuItem(
+                    context, controller,
+                    iconPath: IconString.dashboardIcon,
+                    title: TextString.dashboardTitle,
+                    onTap: (val) => context.go('/dashboard'),
+                    scaffoldKey: _scaffoldKey,
+                  ),
+                   // Car Inventory
+                  SidebarComponents.menuItem(
+                    context, controller,
+                    iconPath: IconString.carInventoryIcon,
+                    title: TextString.carInventoryTitle,
+                    onTap: (val) => context.go('/carInventory'),
+                    scaffoldKey: _scaffoldKey,
+                  ),
 
-                  // Car Inventory
-                  SidebarComponents.menuItem(context, controller,
-                      iconPath: IconString.carInventoryIcon,
-                      title: TextString.carInventoryTitle,
-                      isSelected: currentRoute == '/carInventory',
-                      onTap: (val) => context.go('/carInventory'),
-                      scaffoldKey: _scaffoldKey),
+                      // Customers
+                  SidebarComponents.menuItem(
+                    context, controller,
+                    iconPath: IconString.customerIcon,
+                    title: TextString.customersTitle,
+                    onTap: (val) => context.go('/customers'),
+                    scaffoldKey: _scaffoldKey,
+                  ),
 
-                  // Customers
-                  SidebarComponents.menuItem(context, controller,
-                      iconPath: IconString.customerIcon,
-                      title: TextString.customersTitle,
-                      isSelected: currentRoute.contains('/customers'),
-                      onTap: (val) => context.go('/customers'),
-                      scaffoldKey: _scaffoldKey),
+                    //  Pickup Car
+                  SidebarComponents.menuItem(
+                    context, controller,
+                    iconPath: IconString.agreementIcon,
+                    title: "Pickup Car",
+                    onTap: (val) => context.go('/pickupcar'),
+                    scaffoldKey: _scaffoldKey,
+                  ),
 
-                  // Pickup Car
-                  SidebarComponents.menuItem(context, controller,
-                      iconPath: IconString.agreementIcon,
-                      title: "Pickup Car",
-                      isSelected: currentRoute.contains('/pickupcar'),
-                      onTap: (val) => context.go('/pickupcar'),
-                      scaffoldKey: _scaffoldKey),
-
-                  // DropOff Car
-                  SidebarComponents.menuItem(context, controller,
-                      iconPath: IconString.returnCarIcon,
-                      title: TextString.returnCar,
-                      isSelected: currentRoute.contains('/dropoffCar') || currentRoute.contains('/addDropOff'), // <--- Sync highlight
-                      onTap: (val) => context.go('/dropoffCar'),
-                      scaffoldKey: _scaffoldKey),
+                   //  Dropoff Car
+                  SidebarComponents.menuItem(
+                    context, controller,
+                    iconPath: IconString.returnCarIcon,
+                    title: TextString.returnCar,
+                    onTap: (val) => context.go('/dropoffCar'),
+                    scaffoldKey: _scaffoldKey,
+                  ),
                   SidebarComponents.expenseMenuItem(context, controller, onTap: onTap, scaffoldKey: _scaffoldKey),
                   SidebarComponents.menuItem(context, controller, iconPath: IconString.maintenanceIcon, title: TextString.maintenanceTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
                   SidebarComponents.menuItem(context, controller, iconPath: IconString.incomeIcon, title: TextString.incomeTitle,

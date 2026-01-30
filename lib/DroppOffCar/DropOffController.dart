@@ -23,6 +23,8 @@ class ImageHolder {
 
 
 class DropOffController extends GetxController{
+  var isSearchCategoryOpen = false.obs;
+  var selectedSearchType = "Customer Name".obs;
 
        /// Pagination Bar
   final RxInt currentPage3 = 1.obs;

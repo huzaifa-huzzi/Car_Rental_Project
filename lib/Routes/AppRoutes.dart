@@ -68,9 +68,18 @@ class AppNavigation {
       ),
 
       // NO SIDEBAR / SPECIAL APPBAR ROUTES (CarInventory)
-      GoRoute(path: '/cardetails', builder: (context, state) => _wrapSidebar(state, CarDetailsScreen())),
-      GoRoute(path: '/addNewCar', builder: (context, state) => _wrapSidebar(state, AddingCarScreen())),
-      GoRoute(path: '/editCar', builder: (context, state) => _wrapSidebar(state, EditCarScreen())),
+      GoRoute(
+        path: '/cardetails',
+        builder: (context, state) => _wrapSidebar(state, CarDetailsScreen()),
+      ),
+      GoRoute(
+        path: '/addNewCar',
+        builder: (context, state) => _wrapSidebar(state, AddingCarScreen()),
+      ),
+      GoRoute(
+        path: '/editCar',
+        builder: (context, state) => _wrapSidebar(state, EditCarScreen()),
+      ),
 
       // No Sidebar / Special AppBar Routes (Customers)
       GoRoute(

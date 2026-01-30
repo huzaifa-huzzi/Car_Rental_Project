@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:car_rental_project/DroppOffCar/DropOffController.dart';
 import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/HeaderWebDropOffWidget.dart';
 import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/PrimaryBtnDropOff.dart';
@@ -13,6 +12,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 
 class DropOffDetails extends StatelessWidget {
@@ -40,9 +40,15 @@ class DropOffDetails extends StatelessWidget {
               smallTitle: 'DropOff / Add DropOff Car',
               showSearch: isWeb,
               showSettings: isWeb,
-              showAddButton: false,
+              showAddButton: true,
               showNotification: true,
               showProfile: true,
+              onAddPressed: (){
+                context.push(
+                  '/addDropOff',
+                  extra: {"hideMobileAppBar": true},
+                );
+              },
             ),
 
             Padding(
@@ -459,7 +465,7 @@ class DropOffDetails extends StatelessWidget {
                 width: columnWidth,
                 padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
-                  color: AppColors.backgroundOfPickupsWidget,
+                  color: AppColors.backgroundOfScreenColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(

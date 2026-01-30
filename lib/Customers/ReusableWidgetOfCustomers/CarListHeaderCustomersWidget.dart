@@ -82,46 +82,64 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
   /// ------ Extra Widgets -------- ///
   // category Selection Widget
   Widget _buildCategorySelection(BuildContext context, CustomerController controller, double height, bool showText) {
-    return Obx(() => Container(
-      height: height,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-      ),
-      child: PopupMenuButton<String>(
-        offset: const Offset(0, 45),
-        color: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        onSelected: (val) => controller.selectedSearchType.value = val,
-        itemBuilder: (context) => [
-          _buildPopupItem("Name", IconString.nameIcon, context, isFirst: true),
-          _buildPopupItem("Email",IconString.smsIcon, context),
-          _buildPopupItem("Phone Number", IconString.callIcon, context),
-          _buildPopupItem("License Detail", IconString.licesnseNo, context, isLast: true),
-        ],
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(
-              _getIconPathForType(controller.selectedSearchType.value),
-              color: AppColors.quadrantalTextColor,
-            ),
-            if (showText) ...[
-              const SizedBox(width: 8),
-              Text(controller.selectedSearchType.value, style: TTextTheme.titleThree(context)),
-            ],
-            const SizedBox(width: 8),
-            const Icon(Icons.keyboard_arrow_down, size: 18, color: AppColors.secondTextColor),
-          ],
+    return Obx(() {
+      final double screenWidth = MediaQuery.of(context).size.width;
+      double maxWidth = showText ? (screenWidth > 1100 ? 200 : 150) : 50;
+
+      return Container(
+        height: height,
+        constraints: BoxConstraints(maxWidth: maxWidth),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
         ),
-      ),
-    ));
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            dividerColor: Colors.transparent,
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.white).copyWith(
+              surface: Colors.white,
+            ),
+          ),
+          child: PopupMenuButton<String>(
+            offset: const Offset(0, 45),
+            color: Colors.white,
+            elevation: 8,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            onSelected: (val) => controller.selectedSearchType.value = val,
+            itemBuilder: (context) => [
+              _buildPopupItem("Customer Name", IconString.nameIcon, context),
+              _buildPopupItem("Email", IconString.smsIcon, context),
+              _buildPopupItem("Phone Number", IconString.callIcon, context),
+              _buildPopupItem("License Detail", IconString.licesnseNo, context, isLast: true),
+            ],
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(_getIconPathForType(controller.selectedSearchType.value), width: 18,color: AppColors.quadrantalTextColor,),
+                if (showText) ...[
+                  const SizedBox(width: 6),
+                  Flexible(
+                    child: Text(
+                      controller.selectedSearchType.value,
+                      style: TTextTheme.titleThree(context),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
+                const Icon(Icons.keyboard_arrow_down, size: 16,color: AppColors.secondTextColor,),
+              ],
+            ),
+          ),
+        ),
+      );
+    });
   }
-  // searchBar Widget
-  Widget _searchBarWithButton(BuildContext context, CustomerController controller, double height, bool showButton,) {
+
+  //  Search Bar Widget
+  Widget _searchBarWithButton(BuildContext context, CustomerController controller, double height, bool showButton) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    final bool isLargeScreen = screenWidth > 600;
 
     return Container(
       height: height,
@@ -131,22 +149,19 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (isLargeScreen) ...[
+          if (showButton) ...[
             const Icon(Icons.search, size: 18, color: AppColors.secondTextColor),
-            const SizedBox(width: 10),
+            const SizedBox(width: 8),
           ],
 
           Expanded(
             child: TextField(
-              textAlignVertical: TextAlignVertical.center,
               cursorColor: AppColors.blackColor,
+              textAlignVertical: TextAlignVertical.center,
               style: TTextTheme.titleTwo(context),
               decoration: InputDecoration(
-                hintText: screenWidth > 900
-                    ? "Search Customer by Name"
-                    : "Search...",
+                hintText: screenWidth > 750 ? "Search Pickup by Customer Name" : "Search...",
                 hintStyle: TTextTheme.smallX(context),
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(bottom: 18),
@@ -155,18 +170,17 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
           ),
 
           GestureDetector(
-            onTap: () {
-            },
+            onTap: () {},
             child: Container(
               height: 32,
-              padding: EdgeInsets.symmetric(horizontal: isLargeScreen ? 16 : 0),
-              width: isLargeScreen ? null : 32,
+              padding: EdgeInsets.symmetric(horizontal: showButton ? 16 : 0),
+              width: showButton ? null : 32,
               decoration: BoxDecoration(
                 color: AppColors.primaryColor,
                 borderRadius: BorderRadius.circular(8),
               ),
               alignment: Alignment.center,
-              child: isLargeScreen
+              child: showButton
                   ? Text("Search", style: TTextTheme.btnSearch(context))
                   : const Icon(Icons.search, color: Colors.white, size: 18),
             ),
@@ -328,6 +342,8 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
         return IconString.callIcon;
       case "License Detail":
         return IconString.licesnseNo;
+      case "Customer Name":
+        return IconString.nameIcon;
       default:
         return IconString.nameIcon;
     }
