@@ -31,6 +31,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 18),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
 
+  static TextStyle SignatureStyle(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 18),fontWeight: FontWeight.w600,color: AppColors.textColor);
+  }
+
   static TextStyle h3Style(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 26),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
@@ -264,6 +268,12 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 10),fontWeight: FontWeight.w500,color: AppColors.blackColor,
     );
   }
+
+  static TextStyle textFieldWrittenText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 14),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
+    );
+  }
+
 
 
 

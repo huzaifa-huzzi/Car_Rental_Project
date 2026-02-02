@@ -45,6 +45,15 @@ class DropOffController extends GetxController{
     bondAmountControllerStepTwo.text = "2600 \$";
     paidBondControllerStepTwo.text = "600 \$";
     dueBondAmountControllerStepTwo.text = "2000 \$";
+
+    odoControllerStepTwoAdd.text = "12457678";
+    fuelLevelControllerStepTwoAdd.text = "Full (100%)";
+    exteriorCleanlinessControllerStepTwoAdd.text = "Excellent";
+    interiorCleanlinessControllerStepTwoAdd.text = "Excellent";
+
+    bondAmountControllerStepTwoAdd.text = "2600 \$";
+    paidBondControllerStepTwoAdd.text = "600 \$";
+    dueBondAmountControllerStepTwoAdd.text = "2000 \$";
   }
 
   int get totalPages {
@@ -141,6 +150,73 @@ class DropOffController extends GetxController{
     {'id': 5, 'label': 'Other', 'color': AppColors.fiveBackground},
   ];
 
+
+  /// Add Pickup Car
+  final TextEditingController searchController = TextEditingController();
+  final RxString searchQuery = "".obs;
+  var isDamageInspectionOpen2 = false.obs;
+  final RxString selectedSearchType2 = "Customer Name".obs;
+  final RxInt resultCount = 3.obs;
+  final RxBool isLoading = false.obs;
+  final ScrollController horizontalScrollController = ScrollController();
+
+  void onSearchChanged(String val) {
+    searchQuery.value = val;
+    if (val.isNotEmpty) {
+      fetchResults();
+    }
+  }
+  Future<void> fetchResults() async {
+    isLoading.value = true;
+    await Future.delayed(const Duration(milliseconds: 500));
+    resultCount.value = 3;
+    isLoading.value = false;
+  }
+
+  var isDamageInspectionOpenAdd = false.obs;
+  final weeklyRentControllerStepTwoAdd = TextEditingController();
+  final rentBondAmountControllerStepTwoAdd  = TextEditingController();
+  final rentDueAmountControllerStepTwoAdd  = TextEditingController();
+
+
+  final bondAmountControllerStepTwoAdd  = TextEditingController();
+  final paidBondControllerStepTwoAdd  = TextEditingController();
+  final dueBondAmountControllerStepTwoAdd  = TextEditingController();
+  final dueBondReturnedControllerStepTwoAdd  = TextEditingController();
+
+  final odoControllerStepTwoAdd  = TextEditingController();
+  final fuelLevelControllerStepTwoAdd  = TextEditingController();
+  final interiorCleanlinessControllerStepTwoAdd  = TextEditingController();
+  final exteriorCleanlinessControllerStepTwoAdd  = TextEditingController();
+  final additionalCommentsControllerStepTwoAdd  = TextEditingController();
+  final additionalCommentsControllerDropOffAdd  = TextEditingController();
+  final odoControllerDropOffAdd  = TextEditingController();
+  final fuelLevelControllerDropOffAdd  = TextEditingController();
+  final interiorCleanlinessControllerDropOffAdd  = TextEditingController();
+  final exteriorCleanlinessControllerDropOffAdd  = TextEditingController();
+
+
+  var isPersonalUseStepTwoAdd  = true.obs;
+  var isManualPaymentStepTwoAdd  = true.obs;
+  final startDateControllerStepTwoAdd  = TextEditingController();
+  final startTimeControllerStepTwoAdd  = TextEditingController();
+  final endDateControllerStepTwoAdd  = TextEditingController();
+  final endTimeControllerStepTwoAdd  = TextEditingController();
+  final ownerNameControllerAdd = TextEditingController(text: "Softsnip");
+  final hirerNameControllerAdd = TextEditingController(text: "Softsnip");
+
+  var selectedDamageType3 = 1.obs;
+  var damagePoints3 = <DamagePoint>[].obs;
+
+
+  final List<Map<String, dynamic>> damageTypes3 = [
+    {'id': 1, 'label': 'Scratch', 'color': AppColors.oneBackground},
+    {'id': 2, 'label': 'Dent', 'color': AppColors.twoBackground},
+    {'id': 3, 'label': 'Chip', 'color': AppColors.threeBackground},
+    {'id': 4, 'label': 'Scuff', 'color': AppColors.fourBackground},
+    {'id': 5, 'label': 'Other', 'color': AppColors.fiveBackground},
+  ];
+
   RxList<ImageHolder> pickupCarImages3 = <ImageHolder>[].obs;
   final int maxPickupImages2 = 10;
 
@@ -177,6 +253,7 @@ class DropOffController extends GetxController{
   }
 
 
+
   @override
   void onClose() {
 
@@ -203,6 +280,34 @@ class DropOffController extends GetxController{
      startTimeControllerStepTwo.dispose();
      endDateControllerStepTwo.dispose();
      endTimeControllerStepTwo.dispose();
+
+     weeklyRentControllerStepTwoAdd.dispose();
+     rentBondAmountControllerStepTwoAdd.dispose();
+     rentDueAmountControllerStepTwoAdd.dispose();
+
+     bondAmountControllerStepTwoAdd.dispose();
+     paidBondControllerStepTwoAdd.dispose();
+     dueBondAmountControllerStepTwoAdd.dispose();
+     dueBondReturnedControllerStepTwoAdd.dispose();
+
+     odoControllerStepTwoAdd.dispose();
+     fuelLevelControllerStepTwoAdd.dispose();
+     interiorCleanlinessControllerStepTwoAdd.dispose();
+     exteriorCleanlinessControllerStepTwoAdd.dispose();
+     additionalCommentsControllerStepTwoAdd.dispose();
+     odoControllerDropOffAdd.dispose();
+     fuelLevelControllerDropOffAdd.dispose();
+     interiorCleanlinessControllerDropOffAdd.dispose();
+     exteriorCleanlinessControllerDropOffAdd.dispose();
+
+     startDateControllerStepTwoAdd.dispose();
+     startTimeControllerStepTwoAdd.dispose();
+     endDateControllerStepTwoAdd.dispose();
+     endTimeControllerStepTwoAdd.dispose();
+
+
+     searchController.dispose();
+     horizontalScrollController.dispose();
 
     super.onClose();
   }

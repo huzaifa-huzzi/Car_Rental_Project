@@ -10,6 +10,7 @@ import 'package:car_rental_project/Customers/CustomersDetails/CustomersDetails.d
 import 'package:car_rental_project/Customers/EditCustomers/EditCustomerScreen.dart';
 import 'package:car_rental_project/Customers/TableViewCustomerScreen/TableViewScreen.dart';
 import 'package:car_rental_project/DroppOffCar/AddDropOff/AddDropOffScreen.dart';
+import 'package:car_rental_project/DroppOffCar/AddDropOff/Widget/AddDropOffDetailWidget.dart';
 import 'package:car_rental_project/DroppOffCar/DropOffDetails/DropOffDetails.dart';
 import 'package:car_rental_project/DroppOffCar/TableViewDropoff/TableViewDropoffScreen.dart';
 import 'package:car_rental_project/PickupCar/AddPickUp/AddPickup.dart';
@@ -121,6 +122,10 @@ class AppNavigation {
       GoRoute(
         path: '/addDropOff',
         builder: (context, state) => _wrapSidebar(state,  AddDropOffScreen()),
+      ),
+      GoRoute(
+        path: '/addDropOffDetailTwo',
+        builder: (context, state) => _wrapSidebar(state,  AddDropOffDetailWidget()),
       ),
     ],
   );
