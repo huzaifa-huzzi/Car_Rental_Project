@@ -43,7 +43,7 @@ class CarInventoryController extends GetxController {
   final RxInt currentPage = 1.obs;
 
   // Make pageSize reactive
-  final RxInt pageSize = 8.obs;
+  final RxInt pageSize = 10.obs;
 
   RxList<Map<String, dynamic>> carList = <Map<String, dynamic>>[].obs;
 

@@ -1,4 +1,5 @@
 import 'package:car_rental_project/DroppOffCar/DropOffController.dart';
+import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/CardListDropOffWidget.dart';
 import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/HeaderWebDropOffWidget.dart';
 import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/PaginationBarOfDropOff.dart';
 import 'package:car_rental_project/DroppOffCar/TableViewDropoff/Widgets/TableViewDropOffWidget.dart';
@@ -38,12 +39,13 @@ class TableViewDropOffScreen extends StatelessWidget {
                     showSearch: true,
                     onAddPressed: () {
                       context.push(
-                        '/addpickup',
+                        '/addDropOff',
                         extra: {"hideMobileAppBar": true},
                       );
                     },
                   ),
               const SizedBox(height: 3),
+              CardListDropOffWidget(),
               const SizedBox(height: 4),
               TableViewDropOffWidget(),
               PaginationBarOfDropOff(isMobile: isMobile, tablePadding: tablePadding),

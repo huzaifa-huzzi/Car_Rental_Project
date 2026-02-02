@@ -303,7 +303,7 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
       String text,
       String icon,
       BuildContext context,
-      {bool isFirst = false, bool isLast = false}
+      {bool isLast = false}
       ) {
     return PopupMenuItem(
       value: text,

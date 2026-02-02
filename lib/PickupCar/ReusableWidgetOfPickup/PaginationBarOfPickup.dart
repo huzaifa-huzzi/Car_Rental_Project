@@ -66,7 +66,7 @@ class PaginationBarOfPickup extends StatelessWidget {
               isDense: true,
               icon: Icon(Icons.keyboard_arrow_down, color: AppColors.secondTextColor),
               style: TTextTheme.btnTwo(context),
-              items: <String>['8', '16', '32', '64']
+              items: <String>['10', '20', '30', '40']
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,

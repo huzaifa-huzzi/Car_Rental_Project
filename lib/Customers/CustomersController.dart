@@ -31,7 +31,7 @@ class CustomerController extends GetxController {
    /// Pagination
   // Pagination State
   final RxInt currentPage2 = 1.obs;
-  final RxInt pageSize2 = 8.obs;
+  final RxInt pageSize2 = 10.obs;
   final RxInt selectedView2 = 0.obs;
 
   RxList<Map<String, dynamic>> carList2 = <Map<String, dynamic>>[].obs;

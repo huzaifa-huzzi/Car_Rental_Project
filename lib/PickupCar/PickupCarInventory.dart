@@ -39,7 +39,7 @@ class PickupCarController extends GetxController {
 
   /// Pagination State
   final RxInt currentPage3 = 1.obs;
-  final RxInt pageSize3 = 8.obs;
+  final RxInt pageSize3 = 10.obs;
   final RxInt selectedView3 = 0.obs;
 
   RxList<Map<String, dynamic>> carList3 = <Map<String, dynamic>>[].obs;

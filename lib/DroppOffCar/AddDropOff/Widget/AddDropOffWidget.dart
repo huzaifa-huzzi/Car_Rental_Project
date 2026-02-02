@@ -92,7 +92,7 @@ class AddDropOffWidget extends StatelessWidget {
                             ),
 
                             GestureDetector(
-                              onTap: controller.selectedSearchType2,
+                              onTap: controller.selectedSearchType2.call,
                               child: Container(
                                 height: 40,
                                 padding: EdgeInsets.symmetric(horizontal: isMobile ? 12 : 24),
