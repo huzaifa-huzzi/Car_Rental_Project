@@ -1,7 +1,7 @@
 
 class TextString {
 
-  /// Car Inventory
+  /// Car Inventory Module
     // Adding Car Screen
   static const String  addScreenTitle= 'Add New Car';
   static const String  addScreenDescription= 'Enter the specification for the new fleet Car';
@@ -45,7 +45,7 @@ class TextString {
   static const String  carDetailsSpecifications= 'Specifications';
   static const String  carDetailsCarDocuments= 'Car Documents';
 
-    /// Customers
+    /// Customers Module
     // TableViewScreen
   static const String  titlename =  'Jack Morrison';
   static const String  Subtitlename =  'jackmorrison@rhyta.com';
@@ -97,7 +97,7 @@ class TextString {
   static const String    addCustomerSaveButton = 'Save Customer';
   static const String    addCustomerCancel = 'Cancel';
 
-   /// Pickup Car
+   /// Pickup Car Module
     // Table View Screen
   static const String  tableOne =  'Customer Name';
   static const String  tableTwo =  'VIN Number';
@@ -332,4 +332,63 @@ class TextString {
   static const String  titleCapacityStepTwo  =   'Capacity';
   static const String  titlePriceStepTwo  =   'Price';
   static const String  titleTermsStepTwo  =   'Terms & Conditions';
+
+     /// DropOff Module
+    // DropOff Details
+  static const String  titleViewPickStepTwoDropOff =  'DropOff Car Detail';
+  static const String  titleViewSubtitleStepTwoDropOff =  'Enter the specification of the Car return details';
+  static const String  titleViewCustomerStepTwoDropOff  =  'Customer Name';
+  static const String  titleViewCarStepTwoDropOff  =  'Car';
+  static const String  titleRentPurposeStepTwoDropOff  =  'Rent Purpose';
+  static const String  subtitleRentPurposeStepTwoDropOff  =   'Personal Use';
+  static const String  titlePaymentMethodStepTwoDropOff  =  'Payment Method';
+  static const String  subtitlePaymentMethodStepTwoDropOff  =  'Manual Payments';
+  static const String  titleViewRentAmountStepTwoDropOff  =  'Rent Amount';
+  static const String  subtitleWeeklyRentStepTwoDropOff  =  'Weekly Rent';
+  static const String  subtitleDailyRentStepTwoDropOff  =  'Daily Rent';
+  static const String  titleBondPaymentStepTwoDropOff  =   "Bond Payment";
+  static const String  subtitleBondAmountStepTwoDropOff  =  'Bond Amount';
+  static const String  subtitlePaidBondStepTwoDropOff  =  'Paid Bond';
+  static const String  subtitleLeftBondStepTwoDropOff  =  'Left Bond';
+  static const String  titleCarReportStepTwoDropOffInspection  =   'Inspection Report';
+  static const String  titleCarReportStepTwoDropOff  =   'Car Report';
+  static const String  subtitlePickupOdoStepTwoDropOff  =   'Pickup ODO';
+  static const String  subtitlePickFuelLevelStepTwoDropOff  =   'Pickup Fuel Level';
+  static const String  subtitleInteriorCleanlinessStepTwoDropOff  =   ' Pickup Interior Cleanliness';
+  static const String  subtitleExteriorCleanlinessStepTwoDropOff  =   'Pickup Exterior Cleanliness';
+  static const String  subtitleDropOffOdoStepTwoDropOff  =   'DropOff ODO';
+  static const String  subtitleDropOffFuelLevelStepTwoDropOff  =   'DropOff Fuel Level';
+  static const String  subtitleInteriorCleanlinessStepTwoDropOff2  =   ' DropOff Interior Cleanliness';
+  static const String  subtitleExteriorCleanlinessStepTwoDropOff2  =   'DropOff Exterior Cleanliness';
+  static const String  titleDamageInspectionStepTwoDropOff  =   'Damage Inspection';
+  static const String  titleDamageInspectionStepTwoDropOffPickup  =   'Pickup Damage';
+  static const String  titleDamageInspectionStepTwoDropOff2  =   'DropOff Damage';
+  static const String  titlePickupNoteStepTwoDropOff  =   'Pickup Note';
+  static const String  subtitlePickupCommentsStepTwoDropOff  =   'Pickup Comments';
+  static const String  titlePickupNoteStepTwoDropOFf2  =   'DropOff Note';
+  static const String  subtitleViewPickupStepTwoDropOff  =   'Describe the vehicles condition, unique features, or rental policies...';
+  static const String  titleCarPictureStepTwoDropOff  =   'Car Picture';
+  static const String  titleCarPictureStepTwoDropOffTwo  =   'Pickup Car Image';
+  static const String  subtitleCarPictureStepTwoDropOff  =   'Upload DropOff Car Images (MAX 10)';
+  static const String  titleRentTimeStepTwoDropOff  =   'Rent Time';
+  static const String  subtitleAgreementTimeStepTwoPickupDropOff  =   'Pickup Agreement Start Time';
+  static const String  subtitleAgreementEndTimeStepTwoPickupDropOff  =   'Pickup Agreement End Time';
+  static const String  subtitleAgreementEndTimeStepTwoDropOff2  =   'DropOff Agreement End Time';
+  static const String  titleSignatureStepTwoDropOff  =   'Signature';
+  static const String  subtitleOwnerSignatureStepTwoDropOff  =   'Signed by Owner';
+  static const String  subtitleHirerSignatureStepTwoDropOff  =   'Signed by Hirer';
+  static const String  subtitleFullNameStepTwoDropOff  =   'Full Name';
+  static const String  titleCustomerImageStepTwoDropOff  =   'Carlie Harvy';
+  static const String  titleEmailStepTwoDropOff  =   'Email';
+  static const String  titleContactStepTwoDropOff  =   'Contact Number';
+  static const String  titleAddressStepTwoDropOff  =   'Address';
+  static const String  titleNidStepTwoDropOff  =   'NID Number';
+  static const String  titleDriverStepTwoDropOff  =   'Driver';
+  static const String  titleCarImageStepTwoDropOff  =   'Aston 2025';
+  static const String  titleCarImage2StepTwoDropOff  =   'Martin';
+  static const String  titleRegistrationStepTwoDropOff  =    'Registration';
+  static const String  titleVinStepTwoDropOff  =   'Vin';
+  static const String  titleTransmissionStepTwoDropOff  =   'Transmission';
+  static const String  titleCapacityStepTwoDropOff  =   'Capacity';
+  static const String  titlePriceStepTwoDropOff  =   'Price';
 }

@@ -196,7 +196,7 @@ class HeaderWebDropOffWidget extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        "Add Pickup Car",
+                        "Add DropOff Car",
                         style: TTextTheme.btnWhiteColor(context),
                       ),
                     ),

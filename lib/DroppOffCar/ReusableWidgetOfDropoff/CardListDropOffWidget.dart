@@ -143,7 +143,7 @@ class CardListDropOffWidget extends StatelessWidget {
               textAlignVertical: TextAlignVertical.center,
               style: TTextTheme.titleTwo(context),
               decoration: InputDecoration(
-                hintText: screenWidth > 750 ? "Search Pickup by Customer Name" : "Search...",
+                hintText: screenWidth > 750 ? "Search DropOff by Customer" : "Search...",
                 hintStyle: TTextTheme.smallX(context),
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(bottom: 18),

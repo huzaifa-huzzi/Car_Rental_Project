@@ -50,7 +50,7 @@ class DropOffSuccessDialog extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              "We are working hard to find the best service for you.\nShortly you will find a confirmation in your email.",
+              "We have successfully received your vehicle return.",
               textAlign: TextAlign.center,
               style: TTextTheme.pSix(context),
             ),
