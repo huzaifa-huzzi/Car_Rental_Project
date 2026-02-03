@@ -3,6 +3,7 @@ import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/PrimaryBt
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,10 +35,10 @@ class AddDropOffWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //  Header
-            Text("Add Dropoff Car", style: TTextTheme.h5Style(context)),
+            Text(TextString.titleViewPickStepTwoDropOffAdd, style: TTextTheme.h5Style(context)),
             const SizedBox(height: 4),
             Text(
-              "Enter the specification for the car return details",
+              TextString.titleViewSubtitleStepTwoDropOffAdd,
               style: TTextTheme.pTwo(context),
             ),
 
@@ -174,7 +175,7 @@ class AddDropOffWidget extends StatelessWidget {
     });
   }
 
-  ///------ Extra Widgets ------------------
+  ///------ Extra Widgets ------------------///
 
   Widget _buildCategorySelection(
       BuildContext context,
@@ -300,16 +301,16 @@ class AddDropOffWidget extends StatelessWidget {
               SizedBox(
                 width: 300,
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text("Jack Morrison",
+                  Text(TextString.titleViewPickStepTwoDropOffTitle,
                       style: TTextTheme.pOne(context),),
-                   Text("JackMorrison@rhyta.com",
+                   Text(TextString.titleViewSubtitleStepTwoDropOffEmail,
                       style: TTextTheme.pFour(context)),
                 ]),
               ),
 
-              SizedBox(width: 170, child: _buildLabelValue(context, "VIN Number", "JTNBA3HK003001234")),
-              SizedBox(width: 160, child: _buildLabelValue(context, "Registration", "1234567890")),
-              SizedBox(width: 200, child: _buildLabelValue(context, "Car Name", "Toyota Corolla (2017)")),
+              SizedBox(width: 170, child: _buildLabelValue(context,TextString.titleViewPickStepTwoDropOffVin, "JTNBA3HK003001234")),
+              SizedBox(width: 160, child: _buildLabelValue(context,TextString.titleViewPickStepTwoDropOffTitleReg , "1234567890")),
+              SizedBox(width: 200, child: _buildLabelValue(context,TextString.titleViewPickStepTwoDropOffTitleCarName , "Toyota Corolla (2017)")),
 
               PrimaryBthDropOff(
                 text: "Select",

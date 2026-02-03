@@ -62,9 +62,9 @@ class AddDropOffDetailWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Add DropOff Car", style: TTextTheme.h6Style(context)),
+                          Text(TextString.titleViewPickStepTwoDropOffAdd2, style: TTextTheme.h6Style(context)),
                           const SizedBox(height: 6),
-                          Text("Enter the specification for the car return details",
+                          Text(TextString.titleViewSubtitleStepTwoDropOffAdd3,
                               style: TTextTheme.titleThree(context)),
                           const SizedBox(height: 13),
                           Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
@@ -83,13 +83,13 @@ class AddDropOffDetailWidget extends StatelessWidget {
                               children: [
                                 // Customer
                                 _buildSection(context,
-                                    title: TextString.titleViewCustomerStepTwo,
+                                    title: TextString.titleViewCustomerStepTwoDropOffAdd,
                                     icon: IconString.customerNameIcon,
                                     child: _buildDetailedCustomerCard(context, isMobile)),
                                 const SizedBox(height: 25),
                                 // Car
                                 _buildSection(context,
-                                    title: TextString.titleViewCarStepTwo,
+                                    title: TextString.titleViewCarStepTwoDropOffAdd,
                                     icon: IconString.pickupCarIcon,
                                     child: _buildDetailedCarCard(context, isMobile)),
                                 const SizedBox(height: 25),
@@ -104,10 +104,10 @@ class AddDropOffDetailWidget extends StatelessWidget {
                                       flex: isMobile ? 0 : 1,
                                       child: _buildSection(
                                         context,
-                                        title: TextString.titleRentPurposeStepTwo,
+                                        title: TextString.titleRentPurposeStepTwoDropOffAdd,
                                         icon: IconString.rentPurposeIcon,
                                         child: IgnorePointer(
-                                          child: _toggleStatusTag(context, TextString.subtitleRentPurposeStepTwo, controller.isPersonalUseStepTwoAdd),
+                                          child: _toggleStatusTag(context, TextString.subtitleRentPurposeStepTwoDropOffAdd, controller.isPersonalUseStepTwoAdd),
                                         ),
                                       ),
                                     ),
@@ -120,10 +120,10 @@ class AddDropOffDetailWidget extends StatelessWidget {
                                       flex: isMobile ? 0 : 1,
                                       child: _buildSection(
                                         context,
-                                        title: TextString.titlePaymentMethod,
+                                        title: TextString.titlePaymentMethodStepTwoDropOffAdd,
                                         icon: IconString.paymentMethodIcon,
                                         child: IgnorePointer(
-                                          child: _toggleStatusTag(context, TextString.subtitlePaymentMethod, controller.isManualPaymentStepTwoAdd),
+                                          child: _toggleStatusTag(context, TextString.subtitlePaymentMethodStepTwoDropOffAdd, controller.isManualPaymentStepTwoAdd),
                                         ),
                                       ),
                                     ),
@@ -133,11 +133,11 @@ class AddDropOffDetailWidget extends StatelessWidget {
 
                                 // Rent
                                 _buildSection(context,
-                                    title: TextString.titleViewRentAmountStepTwo,
+                                    title: TextString.titleViewRentAmountStepTwoDropOffAdd,
                                     icon: IconString.rentMoneyIcon,
                                     child: _buildInfoGrid(context, [
-                                      {"label": TextString.subtitleWeeklyRentStepTwo, "controller": controller.weeklyRentControllerStepTwoAdd, "hint": "2600 \$"},
-                                      {"label": TextString.subtitleDailyRentStepTwo, "controller": controller.rentDueAmountControllerStepTwoAdd, "hint": "2600 \$"},
+                                      {"label": TextString.subtitleWeeklyRentStepTwoDropOffAdd, "controller": controller.weeklyRentControllerStepTwoAdd, "hint": "2600 \$"},
+                                      {"label": TextString.subtitleDailyRentStepTwoDropOffAdd, "controller": controller.rentDueAmountControllerStepTwoAdd, "hint": "2600 \$"},
                                     ], isMobile, isEditable: false)),
                                 const SizedBox(height: 25),
 
@@ -149,7 +149,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                                   child: _buildBondGrid(context, [
                                     {"label": "Bond Amount", "controller": controller.bondAmountControllerStepTwoAdd, "hint": "2600 \$"},
                                     {"label": "Paid Bond", "controller": controller.paidBondControllerStepTwoAdd, "hint": "600 \$"},
-                                    {"label": TextString.subtitleLeftBondStepTwo, "controller": controller.dueBondAmountControllerStepTwoAdd, "hint": "2000 \$"},
+                                    {"label": TextString.subtitleLeftBondStepTwoDropOffAdd, "controller": controller.dueBondAmountControllerStepTwoAdd, "hint": "2000 \$"},
                                     {"label": "Bond Returned", "controller": controller.dueBondReturnedControllerStepTwoAdd, "hint": "2000 \$", "isSpecial": true}, // Highlighted field
                                   ], isMobile),
                                 ), // Non-Editable
@@ -160,12 +160,12 @@ class AddDropOffDetailWidget extends StatelessWidget {
                           const SizedBox(height: 20),
 
                           /// EDITABLE SECTION
-                          Text("Inspection Report", style: TTextTheme.h6Style(context)),
+                          Text(TextString.titleCarReportStepTwoDropOffInspectionAdd, style: TTextTheme.h6Style(context)),
                           const SizedBox(height: 20),
                           //CAR REPORT SECTION
                           _buildSection(
                             context,
-                            title: "Car Report",
+                            title: TextString.titleCarReportStepTwoDropOffAdd,
                             icon: IconString.carReportIcon,
                             child: _buildCarReportComparison(context, isMobile),
                           ),
@@ -174,7 +174,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                           // DAMAGE INSPECTION
                           _buildSection(
                             context,
-                            title: "Damage Inspection",
+                            title: TextString.titleDamageInspectionStepTwoDropOffAdd,
                             icon: IconString.damageInspection,
                             child: _buildDamageInspectionComparison(context, isMobile),
                           ),
@@ -182,7 +182,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                           /// CAR PICTURES
                           _buildSection(
                             context,
-                            title: "Car Picture",
+                            title: TextString.titleCarPictureStepTwoDropOffAdd,
                             icon: IconString.carPictureIconPickup,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,7 +198,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("Pickup Car Image", style: TTextTheme.dropdowninsideText(context)),
+                                      Text(TextString.titleCarPictureStepTwoDropOffTwoAdd, style: TTextTheme.dropdowninsideText(context)),
                                       const SizedBox(height: 12),
                                       _buildPickupImageBox(context),
                                     ],
@@ -208,7 +208,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                                 const SizedBox(height: 25),
 
                                 //  Dropoff Car Images
-                                Text("Upload Dropoff Car Images (Max 10)", style: TTextTheme.dropdowninsideText(context)),
+                                Text(TextString.subtitleCarPictureStepTwoDropOffAdd, style: TTextTheme.dropdowninsideText(context)),
                                 const SizedBox(height: 10),
                                 _imageBox(context),
                               ],
@@ -218,7 +218,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                           /// DropOff Notes
                           _buildSection(
                             context,
-                            title: "Dropoff Note",
+                            title: TextString.titlePickupNoteStepTwoDropOFf2Add,
                             icon: IconString.pickupNote,
                             child: _buildDropoffNoteComparison(context, isMobile),
                           ),
@@ -227,7 +227,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                           // RENT TIME
                           _buildSection(
                             context,
-                            title: "Return Time",
+                            title:  TextString.titleRentTimeStepTwoDropOffAdd,
                             icon: IconString.rentTimeIcon,
                             child: _buildRentTimeSection(context, isMobile),
                           ),
@@ -235,7 +235,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
 
                           // SIGNATURES
                           _buildSection(context,
-                              title: "Signatures",
+                              title:  TextString.titleSignatureStepTwoDropOffAdd,
                               icon: IconString.signatureIcon,
                               child: _buildSignatureSection(context, isMobile)),
 
@@ -360,9 +360,9 @@ class AddDropOffDetailWidget extends StatelessWidget {
             ),
             child: _buildCommentField(
               context,
-              "Pickup Notes",
+              TextString.titlePickupNoteStepTwoDropOffAdd,
               controller.additionalCommentsControllerStepTwoAdd,
-              "Describe the vehicle's condition, unique features, or rental policies...",
+              TextString.subtitleViewPickupStepTwoDropOffAdd,
               isReadOnly: true,
             ),
           ),
@@ -372,9 +372,9 @@ class AddDropOffDetailWidget extends StatelessWidget {
             width: columnWidth,
             child: _buildCommentField(
               context,
-              "Dropoff Notes",
+              TextString.titlePickupNoteStepTwoDropOFf2Add,
               controller.additionalCommentsControllerDropOffAdd,
-              "Describe the vehicle's condition, unique features, or rental policies...",
+              TextString.subtitleViewPickupStepTwoDropOff,
               isReadOnly: false,
             ),
           ),
@@ -469,7 +469,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Pickup Damage", style: TTextTheme.titleTwo(context)),
+                    Text(TextString.titleDamageInspectionStepTwoDropOffPickupAdd, style: TTextTheme.titleTwo(context)),
                     const SizedBox(height: 12),
                     _buildStaticLegendBox(context),
                     const SizedBox(height: 20),
@@ -491,7 +491,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Dropoff Damage", style: TTextTheme.titleTwo(context)),
+                    Text(TextString.titleDamageInspectionStepTwoDropOff2, style: TTextTheme.titleTwo(context)),
                     const SizedBox(height: 12),
                     _buildInteractiveLegendBox(context),
                     const SizedBox(height: 20),
@@ -683,9 +683,9 @@ class AddDropOffDetailWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildReadOnlyTimePair(context, "Pickup Agreement Start Time", "02/12/2025", "12:12 PM"),
+                _buildReadOnlyTimePair(context, TextString.subtitleAgreementTimeStepTwoPickupDropOffAdd, "02/12/2025", "12:12 PM"),
                 const SizedBox(height: 15),
-                _buildReadOnlyTimePair(context, "Pickup Agreement End Time", "02/12/2025", "12:12 PM"),
+                _buildReadOnlyTimePair(context, TextString.subtitleAgreementEndTimeStepTwoPickupDropOffAdd, "02/12/2025", "12:12 PM"),
               ],
             ),
           ),
@@ -732,7 +732,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Dropoff Agreement End Time", style: TTextTheme.dropdowninsideText(context)),
+              Text(TextString.subtitleAgreementEndTimeStepTwoDropOff2Add, style: TTextTheme.dropdowninsideText(context)),
               const SizedBox(height: 8),
               _editableTimeField(controller.endDateControllerStepTwoAdd, "DD/MM/YYYY", context, isReadOnly: false),
               const SizedBox(height: 8),
@@ -756,16 +756,16 @@ class AddDropOffDetailWidget extends StatelessWidget {
           ),
           child: Column(
             children: [
-              _buildReadOnlyTimePair(context, "Pickup Agreement Start Time", "02/12/2025", "12:12 PM"),
+              _buildReadOnlyTimePair(context, TextString.subtitleAgreementTimeStepTwoPickupDropOffAdd, "02/12/2025", "12:12 PM"),
               const SizedBox(height: 15),
-              _buildReadOnlyTimePair(context, "Pickup Agreement End Time", "02/12/2025", "12:12 PM"),
+              _buildReadOnlyTimePair(context, TextString.subtitleAgreementEndTimeStepTwoPickupDropOffAdd, "02/12/2025", "12:12 PM"),
             ],
           ),
         ),
         const SizedBox(height: 24),
 
         /// Dropoff Section
-        Text("Dropoff End Time", style: TTextTheme.dropdowninsideText(context)),
+        Text(TextString.subtitleAgreementEndTimeStepTwoDropOff2Add, style: TTextTheme.dropdowninsideText(context)),
         const SizedBox(height: 8),
         _editableTimeField(controller.endDateControllerStepTwoAdd, "DD/MM/YYYY", context, isReadOnly: false),
         const SizedBox(height: 8),
@@ -826,11 +826,11 @@ class AddDropOffDetailWidget extends StatelessWidget {
             ),
             child: Column(
               children: [
-                _buildReadOnlyField("Pickup ODO", controller.odoControllerStepTwoAdd.text, context),
+                _buildReadOnlyField(TextString.subtitlePickupOdoStepTwoDropOffAdd, controller.odoControllerStepTwoAdd.text, context),
                 const SizedBox(height: 15),
-                _buildReadOnlyField("Pickup Fuel Level", controller.fuelLevelControllerStepTwoAdd.text, context, hasIcon: true),
+                _buildReadOnlyField(TextString.subtitlePickFuelLevelStepTwoDropOffAdd, controller.fuelLevelControllerStepTwoAdd.text, context, hasIcon: true),
                 const SizedBox(height: 15),
-                _buildReadOnlyField("Pickup Exterior Cleanliness", controller.exteriorCleanlinessControllerStepTwoAdd.text, context, hasIcon: true),
+                _buildReadOnlyField(TextString.subtitleExteriorCleanlinessStepTwoDropOffAdd , controller.exteriorCleanlinessControllerStepTwoAdd.text, context, hasIcon: true),
                 const SizedBox(height: 15),
                 _buildReadOnlyField("Pickup Interior Cleanliness", controller.interiorCleanlinessControllerStepTwoAdd.text, context, hasIcon: true),
               ],
@@ -845,10 +845,10 @@ class AddDropOffDetailWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildMiniInputField("Dropoff ODO", "12457678", columnWidth, controller.odoControllerDropOffAdd, context),
+                  _buildMiniInputField(TextString.subtitleDropOffOdoStepTwoDropOffAdd, "12457678", columnWidth, controller.odoControllerDropOffAdd, context),
                   const SizedBox(height: 18),
                   _buildReportDropdown(
-                      "Dropoff Fuel Level",
+                      TextString.subtitleDropOffFuelLevelStepTwoDropOffAdd,
                       ["Full (100%)", "High (75%)", "Half (50%)", "Low (25%)", "Empty (0%)"],
                       columnWidth,
                       controller.fuelLevelControllerDropOffAdd,
@@ -856,7 +856,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 18),
                   _buildReportDropdown(
-                      "Dropoff Exterior Cleanliness",
+                      TextString.subtitleExteriorCleanlinessStepTwoDropOff2Add,
                       ["Excellent", "Good", "Average", "Dirty"],
                       columnWidth,
                       controller.exteriorCleanlinessControllerDropOffAdd,
@@ -864,7 +864,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 18),
                   _buildReportDropdown(
-                      "Dropoff Interior Cleanliness",
+                      TextString.subtitleInteriorCleanlinessStepTwoDropOff2Add ,
                       ["Excellent", "Good", "Average", "Dirty"],
                       columnWidth,
                       controller.interiorCleanlinessControllerDropOffAdd,
@@ -957,9 +957,9 @@ class AddDropOffDetailWidget extends StatelessWidget {
         children: [
           Text("Pickup", style: TTextTheme.dropdowninsideText(context)),
           const SizedBox(height: 15),
-          _buildSignatureCard(context, "Signed by Owner", "Softsnip", isReadOnly: true, bgColor: AppColors.backgroundOfScreenColor),
+          _buildSignatureCard(context,TextString.subtitleOwnerSignatureStepTwoDropOffAdd, "Softsnip", isReadOnly: true, bgColor: AppColors.backgroundOfScreenColor),
           const SizedBox(height: 15),
-          _buildSignatureCard(context, "Signed by Hirer", "Softsnip", isReadOnly: true, bgColor: AppColors.backgroundOfScreenColor),
+          _buildSignatureCard(context, TextString.subtitleHirerSignatureStepTwoDropOffAdd, "Softsnip", isReadOnly: true, bgColor: AppColors.backgroundOfScreenColor),
         ],
       ),
     );
@@ -970,9 +970,9 @@ class AddDropOffDetailWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSignatureCard(context, "Signed by Owner", "Softsnip", isReadOnly: false, bgColor: Colors.white),
+          _buildSignatureCard(context,TextString.subtitleOwnerSignatureStepTwoDropOffAdd, "Softsnip", isReadOnly: false, bgColor: Colors.white),
           const SizedBox(height: 15),
-          _buildSignatureCard(context, "Signed by Hirer", "Softsnip", isReadOnly: false, bgColor: Colors.white),
+          _buildSignatureCard(context, TextString.subtitleHirerSignatureStepTwoDropOffAdd, "Softsnip", isReadOnly: false, bgColor: Colors.white),
         ],
       ),
     );
@@ -1003,7 +1003,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                   children: [
                     Text(name, style:TTextTheme.h2Style(context) ),
                     const Divider(thickness: 1, color: AppColors.tertiaryTextColor),
-                    Text("Full Name", style: TTextTheme.titleFullName(context)),
+                    Text(TextString.subtitleFullNameStepTwoDropOffAdd, style: TTextTheme.titleFullName(context)),
                   ],
                 ),
               ),
@@ -1014,7 +1014,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                   children: [
                     Text(name, style: TTextTheme.h2Style(context)),
                     const Divider(thickness: 1, color: AppColors.tertiaryTextColor),
-                    Text("Signature", style: TTextTheme.titleFullName(context)),
+                    Text(TextString.titleSignatureStepTwoDropOffAdd, style: TTextTheme.titleFullName(context)),
                   ],
                 ),
               ),
@@ -1233,8 +1233,8 @@ class AddDropOffDetailWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(TextString.titleCustomerImageStepTwo, style: TTextTheme.titleOne(context), maxLines: 1, overflow: TextOverflow.ellipsis),
-                          Text(TextString.titleDriverStepTwo, style: TTextTheme.btnTwo(context)),
+                          Text(TextString.titleCustomerImageStepTwoDropOffAdd, style: TTextTheme.titleOne(context), maxLines: 1, overflow: TextOverflow.ellipsis),
+                          Text(TextString.titleDriverStepTwoDropOffAdd, style: TTextTheme.btnTwo(context)),
                         ],
                       ),
                     ),
@@ -1252,13 +1252,13 @@ class AddDropOffDetailWidget extends StatelessWidget {
             physics:  BouncingScrollPhysics(),
             child: Row(
               children: [
-                _infoBlock(IconString.smsIcon, TextString.titleEmailStepTwo, "Contact@SoftSnip.com.au", context),
+                _infoBlock(IconString.smsIcon, TextString.titleEmailStepTwoDropOffAdd, "Contact@SoftSnip.com.au", context),
                 const SizedBox(width: 12),
-                _infoBlock(IconString.callIcon, TextString.titleContactStepTwo, "+12 3456 7890", context),
+                _infoBlock(IconString.callIcon, TextString.titleContactStepTwoDropOffAdd, "+12 3456 7890", context),
                 const SizedBox(width: 12),
-                _infoBlock(IconString.location, TextString.titleAddressStepTwo, "Toronto, California, 1234", context),
+                _infoBlock(IconString.location, TextString.titleAddressStepTwoDropOffAdd, "Toronto, California, 1234", context),
                 const SizedBox(width: 12),
-                _infoBlock(IconString.nidIcon, TextString.titleNidStepTwo, "123 456 789", context),
+                _infoBlock(IconString.nidIcon, TextString.titleNidStepTwoDropOffAdd, "123 456 789", context),
                 const SizedBox(width: 12),
               ],
             ),
@@ -1294,8 +1294,8 @@ class AddDropOffDetailWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(TextString.titleCustomerImageStepTwo, style: TTextTheme.titleOne(context)),
-              Text(TextString.titleDriverStepTwo, style: TTextTheme.btnTwo(context)),
+              Text(TextString.titleCustomerImageStepTwoDropOffAdd, style: TTextTheme.titleOne(context)),
+              Text(TextString.titleDriverStepTwoDropOffAdd, style: TTextTheme.btnTwo(context)),
             ],
           ),
         ],
@@ -1303,13 +1303,13 @@ class AddDropOffDetailWidget extends StatelessWidget {
 
       /// INFO BLOCKS
       const SizedBox(width: 20),
-      _infoBlock(IconString.smsIcon, TextString.titleEmailStepTwo, "Contact@SoftSnip.com.au", context),
+      _infoBlock(IconString.smsIcon, TextString.titleEmailStepTwoDropOffAdd, "Contact@SoftSnip.com.au", context),
       const SizedBox(width: 15),
-      _infoBlock(IconString.callIcon,  TextString.titleContactStepTwo, "+12 3456 7890", context),
+      _infoBlock(IconString.callIcon,  TextString.titleContactStepTwoDropOffAdd, "+12 3456 7890", context),
       const SizedBox(width: 15),
-      _infoBlock(IconString.location, TextString.titleAddressStepTwo, "Toronto, California, 1234", context),
+      _infoBlock(IconString.location, TextString.titleAddressStepTwoDropOffAdd, "Toronto, California, 1234", context),
       const SizedBox(width: 15),
-      _infoBlock(IconString.nidIcon, TextString.titleNidStepTwo, "123 456 789", context),
+      _infoBlock(IconString.nidIcon, TextString.titleNidStepTwoDropOffAdd, "123 456 789", context),
       const SizedBox(width: 18),
 
       /// VIEW BUTTON
@@ -1358,8 +1358,8 @@ class AddDropOffDetailWidget extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(TextString.titleCarImageStepTwo, style: TTextTheme.titleSix(context), overflow: TextOverflow.ellipsis),
-                            Text(TextString.titleCarImage2StepTwo, style: TTextTheme.h3Style(context), overflow: TextOverflow.ellipsis),
+                            Text(TextString.titleCarImageStepTwoDropOffAdd, style: TTextTheme.titleSix(context), overflow: TextOverflow.ellipsis),
+                            Text(TextString.titleCarImage2StepTwoDropOffAdd, style: TTextTheme.h3Style(context), overflow: TextOverflow.ellipsis),
                           ],
                         ),
                       ),
@@ -1376,18 +1376,18 @@ class AddDropOffDetailWidget extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               child: Row(
                 children: [
-                  _infoRowTag(label: TextString.titleRegistrationStepTwo, value: "1234567890", context: context),
+                  _infoRowTag(label: TextString.titleRegistrationStepTwoDropOffAdd, value: "1234567890", context: context),
                   const SizedBox(width: 10),
                   _infoRowTag(
-                    label:TextString.titleVinStepTwo,
+                    label:TextString.titleVinStepTwoDropOffAdd,
                     value: "JTNBA3HK003001234",
                     labelColor: AppColors.backgroundOfVin,
                     context: context,
                   ),
                   const SizedBox(width: 30),
-                  _buildSpecColumn(context, label:TextString.titleTransmissionStepTwo, value: "Auto", imagePath: IconString.transmissionIcon),
+                  _buildSpecColumn(context, label:TextString.titleTransmissionStepTwoDropOffAdd, value: "Auto", imagePath: IconString.transmissionIcon),
                   const SizedBox(width: 30),
-                  _buildSpecColumn(context, label: TextString.titleCapacityStepTwo, value: "2 seats", imagePath: IconString.capacityIcon),
+                  _buildSpecColumn(context, label: TextString.titleCapacityStepTwoDropOffAdd, value: "2 seats", imagePath: IconString.capacityIcon),
                   const SizedBox(width: 25),
                   _buildPriceColumn(context),
                 ],
@@ -1445,15 +1445,15 @@ class AddDropOffDetailWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(TextString.titleCarImageStepTwo, style: TTextTheme.titleFour(context)),
-              Text(TextString.titleCarImage2StepTwo, style: TTextTheme.h3Style(context)),
+              Text(TextString.titleCarImageStepTwoDropOffAdd, style: TTextTheme.titleFour(context)),
+              Text(TextString.titleCarImage2StepTwoDropOffAdd, style: TTextTheme.h3Style(context)),
 
               if (!enableScroll) ...[
                 const SizedBox(height: 12),
-                _infoRowTag(label: TextString.titleRegistrationStepTwo, value: "1234567890", context: context),
+                _infoRowTag(label: TextString.titleRegistrationStepTwoDropOffAdd, value: "1234567890", context: context),
                 const SizedBox(height: 8),
                 _infoRowTag(
-                  label:TextString.titleVinStepTwo,
+                  label:TextString.titleVinStepTwoDropOffAdd,
                   value: "JTNBA3HK003001234",
                   labelColor: AppColors.backgroundOfVin,
                   context: context,
@@ -1468,10 +1468,10 @@ class AddDropOffDetailWidget extends StatelessWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _infoRowTag(label: TextString.titleRegistrationStepTwo, value: "1234567890", context: context),
+            _infoRowTag(label: TextString.titleRegistrationStepTwoDropOffAdd, value: "1234567890", context: context),
             const SizedBox(width: 10),
             _infoRowTag(
-              label: TextString.titleVinStepTwo,
+              label: TextString.titleVinStepTwoDropOffAdd,
               value: "JTNBA3HK003001234",
               labelColor: AppColors.backgroundOfVin,
               context: context,
@@ -1479,8 +1479,8 @@ class AddDropOffDetailWidget extends StatelessWidget {
           ],
         ),
 
-      _buildSpecColumn(context, label: TextString.titleTransmissionStepTwo, value: "Automatic", imagePath: IconString.transmissionIcon),
-      _buildSpecColumn(context, label: TextString.titleCapacityStepTwo, value: "2 seats", imagePath: IconString.capacityIcon),
+      _buildSpecColumn(context, label: TextString.titleTransmissionStepTwoDropOffAdd, value: "Automatic", imagePath: IconString.transmissionIcon),
+      _buildSpecColumn(context, label: TextString.titleCapacityStepTwoDropOffAdd, value: "2 seats", imagePath: IconString.capacityIcon),
 
       Row(
         mainAxisSize: MainAxisSize.min,
