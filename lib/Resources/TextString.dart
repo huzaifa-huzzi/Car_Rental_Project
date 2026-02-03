@@ -391,4 +391,13 @@ class TextString {
   static const String  titleTransmissionStepTwoDropOff  =   'Transmission';
   static const String  titleCapacityStepTwoDropOff  =   'Capacity';
   static const String  titlePriceStepTwoDropOff  =   'Price';
+   // Table View Screen
+  static const String  tableOneDropOff =  'Customer Name';
+  static const String  tableTwoDropOff =  'VIN Number';
+  static const String  tableThreeDropOff =  'Registration';
+  static const String  tableThreeRentDropOff =  'Car Rent';
+  static const String  tableNineDropOff =  'DropOff Date';
+  static const String  tableTenDropOff =  'Status';
+  static const String  tableElevenDropOff =  'Action';
+  static const String  dataCellStartDropOff =  'Start  ';
 }

@@ -4,6 +4,7 @@ import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -47,26 +48,26 @@ class TableViewDropOffWidget extends StatelessWidget {
                 child:
                 Row(
                   children: [
-                    _headerCell("Customer Name", context, customWidth: nameColWidth),
-                    _headerCell("Vin Number", context, customWidth: vinColWidth),
-                    _headerCell("Registration", context, customWidth: regColWidth),
-                    _headerCell("Car Rent", context, customWidth: carRentWidth),
+                    _headerCell(TextString.tableOneDropOff, context, customWidth: nameColWidth),
+                    _headerCell(TextString.tableTwoDropOff, context, customWidth: vinColWidth),
+                    _headerCell(TextString.tableThreeDropOff, context, customWidth: regColWidth),
+                    _headerCell(TextString.tableThreeRentDropOff, context, customWidth: carRentWidth),
 
                     SizedBox(
                       width: damageWidth,
                       child: Center(child: _headerCell("Damage", context)),
                     ),
 
-                    _headerCell("Dropoff Date", context, customWidth: dateWidth),
+                    _headerCell(TextString.tableNineDropOff, context, customWidth: dateWidth),
 
                     SizedBox(
                       width: statusWidth,
-                      child: Center(child: _headerCell("Status", context)),
+                      child: Center(child: _headerCell(TextString.tableTenDropOff, context)),
                     ),
 
                     SizedBox(
                       width: actionWidth,
-                      child: Center(child: _headerCell("Action", context, isAction: true)),
+                      child: Center(child: _headerCell(TextString.tableElevenDropOff, context, isAction: true)),
                     ),
                   ],
                 ),
