@@ -15,6 +15,7 @@ class TextString {
   static const String  returnCar= 'Dropoff Car';
   static const String  maintenanceTitle= 'Maintenance';
   static const String  incomeTitle= 'Income';
+  static const String  staffTitle= 'Staff';
   static const String  expenseTitle= 'Expense';
   static const String  logoutTitle= 'Logout';
   // Edit Car Screen Texts
@@ -395,7 +396,7 @@ class TextString {
   static const String  tableOneDropOff =  'Customer Name';
   static const String  tableTwoDropOff =  'VIN Number';
   static const String  tableThreeDropOff =  'Registration';
-  static const String  tableThreeRentDropOff =  'Car Rent';
+  static const String  tableThreeRentDropOff =  'Car Name';
   static const String  tableNineDropOff =  'DropOff Date';
   static const String  tableTenDropOff =  'Status';
   static const String  tableElevenDropOff =  'Action';

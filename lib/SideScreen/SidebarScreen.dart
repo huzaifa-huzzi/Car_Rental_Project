@@ -12,6 +12,8 @@ import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 
+
+
 class SidebarScreen extends StatelessWidget {
   final Function(String) onTap;
   final Widget? child;
@@ -109,10 +111,22 @@ class SidebarScreen extends StatelessWidget {
                     onTap: (val) => context.go('/dropoffCar'),
                     scaffoldKey: _scaffoldKey,
                   ),
-                  SidebarComponents.expenseMenuItem(context, controller, onTap: onTap, scaffoldKey: _scaffoldKey),
+                  // Staff
+                  SidebarComponents.menuItem(
+                    context,
+                    controller,
+                    iconPath: IconString.incomeIcon,
+                    title: TextString.staffTitle,
+                    trailing: SidebarComponents.redDotWithNumber(controller.incomeRedDot.value, context),
+                    onTap: (val) {
+                      context.go('/staff');
+                    },
+                    scaffoldKey: _scaffoldKey,
+                  ),
+                  /* SidebarComponents.expenseMenuItem(context, controller, onTap: onTap, scaffoldKey: _scaffoldKey),
                   SidebarComponents.menuItem(context, controller, iconPath: IconString.maintenanceIcon, title: TextString.maintenanceTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
                   SidebarComponents.menuItem(context, controller, iconPath: IconString.incomeIcon, title: TextString.incomeTitle,
-                      trailing: SidebarComponents.redDotWithNumber(controller.incomeRedDot.value, context), onTap: onTap, scaffoldKey: _scaffoldKey),
+                      trailing: SidebarComponents.redDotWithNumber(controller.incomeRedDot.value, context), onTap: onTap, scaffoldKey: _scaffoldKey),*/
                 ],
               ),
             ),

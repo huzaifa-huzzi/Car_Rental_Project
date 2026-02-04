@@ -9,42 +9,71 @@ import 'package:car_rental_project/Customers/AddCustomers/AddCustomers.dart';
 import 'package:car_rental_project/Customers/CustomersDetails/CustomersDetails.dart';
 import 'package:car_rental_project/Customers/EditCustomers/EditCustomerScreen.dart';
 import 'package:car_rental_project/Customers/TableViewCustomerScreen/TableViewScreen.dart';
+import 'package:car_rental_project/Dashboard/DashboardScreen.dart';
 import 'package:car_rental_project/DroppOffCar/AddDropOff/AddDropOffScreen.dart';
 import 'package:car_rental_project/DroppOffCar/AddDropOff/Widget/AddDropOffDetailWidget.dart';
 import 'package:car_rental_project/DroppOffCar/DropOffDetails/DropOffDetails.dart';
 import 'package:car_rental_project/DroppOffCar/TableViewDropoff/TableViewDropoffScreen.dart';
+import 'package:car_rental_project/Login/ForgotPassword/ForgotPassword.dart';
+import 'package:car_rental_project/Login/Login/Login.dart';
+import 'package:car_rental_project/Login/NewPassword/NewPassword.dart';
+import 'package:car_rental_project/Login/RecoveryShowScreen/RecoveryShowScreen.dart';
+import 'package:car_rental_project/Login/RecoveryShowScreen/RecoveryShowScreenTwo.dart';
+import 'package:car_rental_project/Login/Register/RegisterScreen.dart';
+import 'package:car_rental_project/Login/TwoStepVerificationOne/TwoStepVerificationOne.dart';
+import 'package:car_rental_project/Login/TwoStepVerificationTwo/TwoStepVerificationTwo.dart';
 import 'package:car_rental_project/PickupCar/AddPickUp/AddPickup.dart';
 import 'package:car_rental_project/PickupCar/AddPickUp/Widget/StepTwoWidgets.dart';
 import 'package:car_rental_project/PickupCar/EditPicUp/EditPickUpScreen.dart';
 import 'package:car_rental_project/PickupCar/PickUpDetailScreen/PickUpDetailScreen.dart';
 import 'package:car_rental_project/PickupCar/TableViewPicukUpScreen/TableViewPickUpScreen.dart';
 import 'package:car_rental_project/SideScreen/SidebarScreen.dart';
+import 'package:car_rental_project/Staff/StaffScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class AppNavigation {
   static final router = GoRouter(
-    initialLocation: '/carInventory',
+    initialLocation: '/login',
     routes: [
+       // Login Screens Routes
+      GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
+      GoRoute(path: '/signUp', builder: (context, state) => const RegisterScreen()),
+      GoRoute(path: '/forgotPassword', builder: (context, state) => const ForgotPassword()),
+      GoRoute(path: '/newPassword', builder: (context, state) => const NewPassword()),
+      GoRoute(path: '/twoStepVerificationOne', builder: (context, state) => const TwoStepVerificationOne()),
+      GoRoute(path: '/twoStepVerificationTwo', builder: (context, state) => const TwoStepVerificationTwo()),
+      GoRoute(path: '/authSuccess', builder: (context, state) => const RecoveryShowScreenOne()),
+      GoRoute(path: '/authSuccess2', builder: (context, state) => RecoveryShowScreenTwo()),
       /// SHELL ROUTE (Sidebar Layout)
       ShellRoute(
         builder: (context, state, child) {
           return SidebarScreen(
             onTap: (title) {
-              if (title == "Car Inventory") {
-                context.go('/carInventory');
-              } else if (title == "Customers") {
-                context.go('/customers');
-              }else if (title == "Pickup Car") {
-                context.go('/pickupCar');
-              }else if (title == "Dropoff Car") {
-                context.go('/dropoffCar');
-              }
+  if (title == "Dashboard") {
+  context.go('/dashboard');
+  } else if (title == "Car Inventory") {
+  context.go('/carInventory');
+  } else if (title == "Customers") {
+  context.go('/customers');
+  } else if (title == "Pickup Car") {
+  context.go('/pickupCar');
+  } else if (title == "Dropoff Car") {
+  context.go('/dropoffCar');
+  }else if (title == "Staff") {
+    context.go('/staff');
+  }
             },
             child: child,
           );
         },
         routes: [
+           // Dashboard Screen
+          GoRoute(
+            path: '/dashboard',
+            builder: (context, state) => const DashboardScreen(),
+          ),
+
           // Car Inventory Screen
           GoRoute(path: '/carInventory', builder: (context, state) => CarInventoryMainScreen()),
           GoRoute(path: '/carInventory/TableView', builder: (context, state) => const TableViewScreen()),
@@ -64,6 +93,11 @@ class AppNavigation {
           GoRoute(
             path: '/dropoffCar',
             builder: (context, state) => TableViewDropOffScreen(),
+          ),
+          // staff
+          GoRoute(
+            path: '/staff',
+            builder: (context, state) => const StaffScreen(),
           ),
         ],
       ),
