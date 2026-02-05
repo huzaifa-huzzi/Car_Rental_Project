@@ -91,7 +91,7 @@ class _RecoveryShowScreenOneState extends State<RecoveryShowScreenOne> {
 
                         // 4. Button
                         PrimaryBtnOfLogin(
-                          text: "Back to Authentication",
+                          text: "Back to Login",
                           onTap: () {
                             context.push('/login');
                           },

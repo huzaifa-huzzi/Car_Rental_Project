@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                          // Remember Me /Forgot Password
                         LayoutBuilder(
                           builder: (context, constraints) {
-                            if (constraints.maxWidth < 330) {
+                            if (constraints.maxWidth < 300) {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

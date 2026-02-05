@@ -1,4 +1,3 @@
-
 import 'package:car_rental_project/Authentication/LoginController.dart';
 import 'package:car_rental_project/Authentication/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
@@ -50,7 +49,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: _buildLogo(),
                       ),
                     ),
-                  if (isMobile) _buildLogo(),
+                  if (isMobile)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: _buildLogo(),
+                    ),
                   if (isMobile) const SizedBox(height: 30),
 
                   // Register Card

@@ -105,8 +105,10 @@ class _TwoStepVerificationTwoState extends State<TwoStepVerificationTwo> {
                         const SizedBox(height: 20),
 
                         //  6-Digit OTP Boxes
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          spacing: 8,
+                          runSpacing: 8,
                           children: List.generate(6, (index) => _buildOtpBox(index)),
                         ),
                         const SizedBox(height: 35),
@@ -150,15 +152,21 @@ class _TwoStepVerificationTwoState extends State<TwoStepVerificationTwo> {
   /// --------- Extra Widgets ------- ///
 
   Widget _buildOtpBox(int index) {
+    final width = MediaQuery.of(context).size.width;
+    final boxSize = width < 400 ? 42.0 : 50.0;
+
     return SizedBox(
-      width: 50,
-      height: 55,
+      width: boxSize,
+      height: boxSize + 5,
       child: TextField(
         cursorColor: AppColors.blackColor,
         controller: controller.otpControllers[index],
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
-        inputFormatters: [LengthLimitingTextInputFormatter(1), FilteringTextInputFormatter.digitsOnly],
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(1),
+          FilteringTextInputFormatter.digitsOnly,
+        ],
         onChanged: (value) {
           if (value.isNotEmpty && index < 5) {
             FocusScope.of(context).nextFocus();
@@ -171,7 +179,7 @@ class _TwoStepVerificationTwoState extends State<TwoStepVerificationTwo> {
           fillColor: Colors.white,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: AppColors.tertiaryTextColor),
+            borderSide: BorderSide(color: AppColors.tertiaryTextColor),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),

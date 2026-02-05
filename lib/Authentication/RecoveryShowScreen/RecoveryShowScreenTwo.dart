@@ -1,5 +1,6 @@
 import 'package:car_rental_project/Authentication/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +92,7 @@ class _RecoveryShowScreenTwoState extends State<RecoveryShowScreenTwo> {
 
                         //  Button
                         PrimaryBtnOfLogin(
-                          text: "Back to Authentication",
+                          text: "Back to Login",
                           onTap: () {
                             context.push('/login');
                           },
@@ -119,11 +120,7 @@ class _RecoveryShowScreenTwoState extends State<RecoveryShowScreenTwo> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(color: Color(0xFFFF3B5C), shape: BoxShape.circle),
-            child: const Icon(Icons.adjust, color: Colors.white, size: 20),
-          ),
+          Image.asset(IconString.symbol),
           const SizedBox(width: 10),
           Text("SoftSnip", style:  TTextTheme.h6Style(context)),
         ],
