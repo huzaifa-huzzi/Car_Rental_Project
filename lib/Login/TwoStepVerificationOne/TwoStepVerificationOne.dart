@@ -1,5 +1,9 @@
 import 'package:car_rental_project/Login/LoginController.dart' show LoginController;
 import 'package:car_rental_project/Login/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
+import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/ImageString.dart';
+import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -26,8 +30,8 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
           // Background Split
           Row(
             children: [
-              Expanded(child: Container(color: const Color(0xFFF8FAFB))),
-              Expanded(child: Container(color: const Color(0xFFFFF1F2))),
+              Expanded(child: Container(color: AppColors.secondaryColor)),
+              Expanded(child: Container(color: AppColors.backgroundOfPickupsWidget)),
             ],
           ),
 
@@ -66,56 +70,47 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
                     ),
                     child: Column(
                       children: [
-                        // 1. Mobile Icon (Screenshot wala red icon)
-                        Container(
-                          height: 80,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFF3B5C),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(Icons.phone_android, color: Colors.white, size: 35),
-                        ),
+
+                        Image.asset(ImageString.smartPhoneImage),
                         const SizedBox(height: 25),
 
-                        // 2. Headings
-                        const Text("Two Step Verification",
-                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        //  Headings
+                         Text("Two Step Verification",
+                            style: TTextTheme.h11Style(context)),
                         const SizedBox(height: 10),
 
                         RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
-                            style: const TextStyle(color: Colors.grey, fontSize: 13, height: 1.5),
                             children: [
-                              const TextSpan(text: "Enter the verification code we sent to \n"),
-                              const TextSpan(text: "sellostore@company.com ",
-                                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
+                              TextSpan(text: "Enter the verification code we sent to \n",style: TTextTheme.otpMainText(context)),
+                              TextSpan(text: "sellostore@company.com ",
+                                  style: TTextTheme.otpSubtitleText(context)),
                               TextSpan(
                                 text: "Resend",
-                                style: const TextStyle(color: Color(0xFFFF3B5C), fontWeight: FontWeight.bold),
+                                style: TTextTheme.titleSmallRegister(context)
                               ),
                               TextSpan(
                                 text: " ${controller.secondsRemaining}S",
-                                style: const TextStyle(color: Color(0xFFFF3B5C)),
+                                style: TTextTheme.otpResend(context),
                               ),
                             ],
                           ),
                         ),
                         const SizedBox(height: 35),
 
-                        const Text("Type your 6 digit security code",
-                            style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+                         Text("Type your 6 digit security code",
+                            style: TTextTheme.otpSubtitleText2(context)),
                         const SizedBox(height: 20),
 
-                        // 3. 6-Digit OTP Boxes
+                        //  6-Digit OTP Boxes
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: List.generate(6, (index) => _buildOtpBox(index)),
                         ),
                         const SizedBox(height: 35),
 
-                        // 4. Submit Button
+                        //  Submit Button
                         PrimaryBtnOfLogin(
                           text:"Submit",
                           onTap:(){
@@ -128,16 +123,16 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
 
                         const SizedBox(height: 30),
 
-                        // 5. Footer
+                        //  Footer
                         Wrap(
                           alignment: WrapAlignment.center,
                           children: [
-                            const Text("Didn't get the code? ", style: TextStyle(color: Colors.grey, fontSize: 12)),
-                            const Text("Resend",
-                                style: TextStyle(color: Color(0xFFFF3B5C), fontWeight: FontWeight.bold, fontSize: 12)),
-                            const Text(" or ", style: TextStyle(color: Colors.grey, fontSize: 12)),
-                            const Text("Edit",
-                                style: TextStyle(color: Color(0xFFFF3B5C), fontWeight: FontWeight.bold, fontSize: 12)),
+                             Text("Didn't get the code? ", style:TTextTheme.titleSmallRemember(context)),
+                             Text("Resend",
+                                style: TTextTheme.titleSmallRegister(context)),
+                             Text(" or ", style: TTextTheme.titleSmallRemember(context)),
+                             Text("Edit",
+                                style: TTextTheme.titleSmallRegister(context)),
                           ],
                         ),
                       ],
@@ -152,12 +147,15 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
     );
   }
 
-  // OTP Box with auto-focus logic
+  /// ---------- Extra Widgets ------ ///
+
+
   Widget _buildOtpBox(int index) {
     return SizedBox(
       width: 50,
       height: 55,
       child: TextField(
+        cursorColor: AppColors.blackColor,
         controller: controller.otpControllers2[index],
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
@@ -174,14 +172,14 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
           fillColor: Colors.white,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+            borderSide: BorderSide(color:AppColors.tertiaryTextColor),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: Color(0xFFFF3B5C), width: 1.5),
+            borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.5),
           ),
         ),
-        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        style: TTextTheme.btnEight(context),
       ),
     );
   }
@@ -190,13 +188,9 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: const BoxDecoration(color: Color(0xFFFF3B5C), shape: BoxShape.circle),
-          child: const Icon(Icons.adjust, color: Colors.white, size: 20),
-        ),
+        Image.asset(IconString.symbol),
         const SizedBox(width: 10),
-        const Text("SoftSnip", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+         Text("SoftSnip", style: TTextTheme.h6Style(context)),
       ],
     );
   }

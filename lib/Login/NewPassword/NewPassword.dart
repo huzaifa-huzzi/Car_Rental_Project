@@ -2,6 +2,7 @@ import 'package:car_rental_project/Login/LoginController.dart';
 import 'package:car_rental_project/Login/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -26,17 +27,17 @@ class _NewPasswordState extends State<NewPassword> {
     return Scaffold(
       body: Stack(
         children: [
-          // Background Split
+          // Background
           Row(
             children: [
-              Expanded(child: Container(color: const Color(0xFFF8FAFB))),
-              Expanded(child: Container(color: const Color(0xFFFFF1F2))),
+              Expanded(child: Container(color: AppColors.secondaryColor)),
+              Expanded(child: Container(color: AppColors.backgroundOfPickupsWidget)),
             ],
           ),
 
           // Main Content
           Align(
-            alignment: const Alignment(0, -0.2), // Thora upar alignment
+            alignment: const Alignment(0, -0.2),
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -74,13 +75,13 @@ class _NewPasswordState extends State<NewPassword> {
                     ),
                     child: Column(
                       children: [
-                        const Text("New Password",
-                            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                         Text("New Password",
+                            style:TTextTheme.h11Style(context)),
                         const SizedBox(height: 10),
-                        const Text(
+                         Text(
                           "Please create a new password that you don't use on any other site.",
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.grey, fontSize: 13, height: 1.5),
+                          style:TTextTheme.pSeven(context),
                         ),
                         const SizedBox(height: 30),
 
@@ -107,7 +108,7 @@ class _NewPasswordState extends State<NewPassword> {
                         )),
                         const SizedBox(height: 30),
 
-                        // Update Button
+                        //  Button
                        PrimaryBtnOfLogin(
                           text: "Confirm Password",
                           onTap:(){
@@ -125,11 +126,13 @@ class _NewPasswordState extends State<NewPassword> {
                         Wrap(
                           alignment: WrapAlignment.center,
                           children: [
-                            const Text("Just Remember? ", style: TextStyle(color: Colors.grey, fontSize: 13)),
+                             Text("Just Remember? ", style: TTextTheme.titleSmallRemember(context)),
                             GestureDetector(
-                              onTap: () => Get.back(),
-                              child: const Text("Sign Up",
-                                  style: TextStyle(color: Color(0xFFFF3B5C), fontWeight: FontWeight.bold, fontSize: 13)),
+                              onTap: (){
+                                context.push('/signUp');
+                              },
+                              child:  Text("Sign Up",
+                                  style: TTextTheme.titleSmallRegister(context)),
                             ),
                           ],
                         ),
@@ -147,14 +150,14 @@ class _NewPasswordState extends State<NewPassword> {
 
   /// --------- Extra Widgets ---------- ///
 
-  // Helper Widgets (Same as Login)
+
   Widget _buildLogo() {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Image.asset(IconString.symbol),
         const SizedBox(width: 10),
-        const Text("SoftSnip", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF2D3748))),
+         Text("SoftSnip", style: TTextTheme.h6Style(context)),
       ],
     );
   }
@@ -164,7 +167,7 @@ class _NewPasswordState extends State<NewPassword> {
       alignment: Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 8),
-        child: Text(text, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+        child: Text(text, style:TTextTheme.dropdowninsideText(context)),
       ),
     );
   }
@@ -177,20 +180,44 @@ class _NewPasswordState extends State<NewPassword> {
     VoidCallback? onSuffixTap,
     Color? fillColor,
   }) {
-    return TextField(
-      controller: textController,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        hintText: hint,
-        filled: true,
-        fillColor: fillColor ?? const Color(0xFFEDF2F7),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        suffixIcon: isPassword
-            ? IconButton(
-            icon: Icon(obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined, color: Colors.grey, size: 18),
-            onPressed: onSuffixTap)
-            : null,
+    return Material(
+      elevation: 4,
+      borderRadius: BorderRadius.circular(10),
+      shadowColor: Colors.black.withOpacity(0.2),
+      child: TextField(
+        cursorColor: AppColors.blackColor,
+        controller: textController,
+        obscureText: obscureText,
+        style: TTextTheme.loginInsideTextField(context),
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: TTextTheme.loginInsideTextField(context),
+          filled: true,
+          fillColor: fillColor ?? Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
+          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          suffixIcon: isPassword
+              ? IconButton(
+            icon: Icon(
+              obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+              color: AppColors.quadrantalTextColor,
+              size: 18,
+            ),
+            onPressed: onSuffixTap,
+          )
+              : null,
+        ),
       ),
     );
   }

@@ -106,6 +106,10 @@ class IconString {
   static const String  teleGramIcon = 'assets/icons/TelegramIcon.png';
   static const String  whatsappIcon = 'assets/icons/WhatsappIcon.png';
 
+      /// Login
+  static const String  googleIcon = 'assets/icons/GoogleIcon.png';
+  static const String  appleIcon = 'assets/icons/AppleIcon.png';
+
 
 
 }

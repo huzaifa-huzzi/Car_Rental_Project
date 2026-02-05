@@ -1,6 +1,8 @@
 import 'package:car_rental_project/Login/LoginController.dart';
 import 'package:car_rental_project/Login/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
+import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -26,8 +28,8 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           Row(
             children: [
-              Expanded(child: Container(color: const Color(0xFFF8FAFB))),
-              Expanded(child: Container(color: const Color(0xFFFFF1F2))),
+              Expanded(child: Container(color: AppColors.secondaryColor)),
+              Expanded(child: Container(color: AppColors.backgroundOfPickupsWidget)),
             ],
           ),
           Center(
@@ -62,10 +64,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: Column(
                       children: [
-                        const Text("Welcome Back", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                        Text("Welcome Back", style: TTextTheme.h11Style(context),),
                         const SizedBox(height: 10),
-                        const Text("Enter your email and password to access your account.",
-                            textAlign: TextAlign.center, style: TextStyle(color: Colors.grey, fontSize: 14)),
+                         Text("Enter your email and password to access your account.",
+                            textAlign: TextAlign.center, style:TTextTheme.pSeven(context)),
                         const SizedBox(height: 30),
 
                         _buildLabel("Email"),
@@ -124,14 +126,14 @@ class _LoginScreenState extends State<LoginScreen> {
                          ),
 
                         const SizedBox(height: 25),
-                        const Row(
+                         Row(
                           children: [
-                            Expanded(child: Divider()),
+                            Expanded(child: Divider(color: AppColors.quadrantalTextColor,)),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text("Or Login With", style: TextStyle(color: Colors.grey, fontSize: 12)),
+                              child: Text("Or Login With", style: TTextTheme.loginDividerText(context)),
                             ),
-                            Expanded(child: Divider()),
+                            Expanded(child: Divider(color: AppColors.quadrantalTextColor,)),
                           ],
                         ),
                         const SizedBox(height: 25),
@@ -140,40 +142,38 @@ class _LoginScreenState extends State<LoginScreen> {
                         isMobile
                             ? Column(
                           children: [
-                            _buildSocialButton("Google", Icons.g_mobiledata),
+                            _buildSocialButton("Google", IconString.googleIcon),
                             const SizedBox(height: 15),
-                            _buildSocialButton("Apple", Icons.apple),
+                            _buildSocialButton("Apple", IconString.appleIcon),
                           ],
                         )
                             : Row(
                           children: [
-                            Expanded(child: _buildSocialButton("Google", Icons.g_mobiledata)),
+                            Expanded(child: _buildSocialButton("Google", IconString.googleIcon)),
                             const SizedBox(width: 15),
-                            Expanded(child: _buildSocialButton("Apple", Icons.apple)),
+                            Expanded(child: _buildSocialButton("Apple", IconString.appleIcon)),
                           ],
                         ),
 
                         const SizedBox(height: 30),
 
+
+                         // Down Text
                         Wrap(
                           alignment: WrapAlignment.center,
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
-                            const Text(
+                             Text(
                               "Don't Have An Account? ",
-                              style: TextStyle(color: Colors.grey, fontSize: 13),
+                              style: TTextTheme.titleSmallRemember(context),
                             ),
                             GestureDetector(
                               onTap: () {
                                 context.push('/signUp');
                               },
-                              child: const Text(
+                              child: Text(
                                 "Register Now.",
-                                style: TextStyle(
-                                  color: Color(0xFFFF3B5C),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                ),
+                                style: TTextTheme.titleSmallRegister(context),
                               ),
                             ),
                           ],
@@ -192,14 +192,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   /// -------- Extra Widget --------- ///
 
-  // Helper Widgets
+
   Widget _buildLogo() {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Image.asset(IconString.symbol),
         const SizedBox(width: 10),
-        const Text("SoftSnip", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF2D3748))),
+        Text("SoftSnip", style: TTextTheme.h6Style(context)),
       ],
     );
   }
@@ -214,12 +214,13 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Obx(() => Checkbox(
             value: controller.rememberMe.value,
             onChanged: controller.toggleRememberMe,
-            activeColor: const Color(0xFFFF3B5C),
+            side: BorderSide(color: AppColors.quadrantalTextColor, width: 1.5),
+            activeColor: AppColors.primaryColor,
             visualDensity: VisualDensity.compact,
           )),
         ),
         const SizedBox(width: 8),
-        const Text("Remember Me", style: TextStyle(fontSize: 12, color: Colors.grey)),
+         Text("Remember Me", style: TTextTheme.titleSmallRemember(context)),
       ],
     );
   }
@@ -234,13 +235,9 @@ class _LoginScreenState extends State<LoginScreen> {
         minimumSize: const Size(0, 0),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
-      child: const Text(
+      child:  Text(
         "Forgot Your Password?",
-        style: TextStyle(
-            color: Color(0xFFFF3B5C),
-            fontSize: 12,
-            fontWeight: FontWeight.bold
-        ),
+        style: TTextTheme.forgotText(context),
       ),
     );
   }
@@ -250,43 +247,47 @@ class _LoginScreenState extends State<LoginScreen> {
       alignment: Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 8),
-        child: Text(text, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+        child: Text(text, style: TTextTheme.dropdowninsideText(context)),
       ),
     );
   }
 
   Widget _buildTextField({required String hint, TextEditingController? textController, bool isPassword = false, bool obscureText = false, VoidCallback? onSuffixTap}) {
     return TextField(
+      cursorColor: AppColors.blackColor,
       controller: textController,
       obscureText: obscureText,
+      style: TTextTheme.loginInsideTextField(context),
       decoration: InputDecoration(
         hintText: hint,
+        hintStyle: TTextTheme.loginInsideTextField(context),
         filled: true,
-        fillColor: const Color(0xFFEDF2F7),
+        fillColor: AppColors.secondaryColor,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         suffixIcon: isPassword ? IconButton(icon: Icon(obscureText
             ? Icons.visibility_off_outlined
-            : Icons.visibility_outlined, size: 20), onPressed: onSuffixTap) : null,
+            : Icons.visibility_outlined,color: AppColors.quadrantalTextColor ,size: 20), onPressed: onSuffixTap) : null,
       ),
     );
   }
 
 
-  Widget _buildSocialButton(String label, IconData icon) {
+  Widget _buildSocialButton(String label, String icon) {
     return Container(
       width: double.infinity,
       height: 45,
       decoration: BoxDecoration(
-        color: const Color(0xFFF1F5F9),
+        color: AppColors.backgroundOfScreenColor,
         borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.tertiaryTextColor)
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 24, color: Colors.black87),
+          Image.asset(icon),
           const SizedBox(width: 10),
-          Text(label, style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xFF4A5568))),
+          Text(label, style: TTextTheme.loginSocialIcons(context)),
         ],
       ),
     );

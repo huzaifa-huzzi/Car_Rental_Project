@@ -1,4 +1,7 @@
 import 'package:car_rental_project/Login/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
+import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,11 +23,11 @@ class _RecoveryShowScreenOneState extends State<RecoveryShowScreenOne> {
     return Scaffold(
       body: Stack(
         children: [
-          // Background Split
+          // Background
           Row(
             children: [
-              Expanded(child: Container(color: const Color(0xFFF8FAFB))),
-              Expanded(child: Container(color: const Color(0xFFFFF1F2))),
+              Expanded(child: Container(color: AppColors.secondaryColor)),
+              Expanded(child: Container(color: AppColors.backgroundOfPickupsWidget)),
             ],
           ),
 
@@ -56,41 +59,36 @@ class _RecoveryShowScreenOneState extends State<RecoveryShowScreenOne> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // 1. Red Circle Check Icon
+                        // Icon
                         Container(
                           padding: const EdgeInsets.all(15),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(color: const Color(0xFFFF3B5C), width: 3),
+                            border: Border.all(color: AppColors.primaryColor, width: 3),
                           ),
                           child: const Icon(
                             Icons.check_rounded,
-                            color: Color(0xFFFF3B5C),
+                            color: AppColors.primaryColor,
                             size: 50,
                           ),
                         ),
                         const SizedBox(height: 30),
 
-                        // 2. Heading
-                        const Text(
+                        //  Heading
+                         Text(
                           "Congratulation",
-                          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.black),
+                          style: TTextTheme.h11Style(context),
                         ),
                         const SizedBox(height: 10),
 
-                        // 3. Subtitle (Isko aap yahan se asani se change kar sakte hain)
-                        const Text(
+                        // Subtitle
+                         Text(
                           "Successfully Recover Your Account",
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xFF2D3748),
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                          style: TTextTheme.h6Style(context)),
                         const SizedBox(height: 40),
 
-                        // 4. Button (Using your custom primary button)
+                        // 4. Button
                         PrimaryBtnOfLogin(
                           text: "Back to Login",
                           onTap: () {
@@ -111,6 +109,7 @@ class _RecoveryShowScreenOneState extends State<RecoveryShowScreenOne> {
       ),
     );
   }
+  /// ---------- Extra Widget ---------- ///
 
   Widget _buildLogo(bool isMobile) {
     return Align(
@@ -118,13 +117,9 @@ class _RecoveryShowScreenOneState extends State<RecoveryShowScreenOne> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(color: Color(0xFFFF3B5C), shape: BoxShape.circle),
-            child: const Icon(Icons.adjust, color: Colors.white, size: 20),
-          ),
+          Image.asset(IconString.symbol),
           const SizedBox(width: 10),
-          const Text("SoftSnip", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+           Text("SoftSnip", style: TTextTheme.h6Style(context)),
         ],
       ),
     );

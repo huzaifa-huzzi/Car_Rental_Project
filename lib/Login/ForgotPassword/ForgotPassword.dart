@@ -1,5 +1,7 @@
 import 'package:car_rental_project/Login/LoginController.dart';
 import 'package:car_rental_project/Login/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
+import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -25,11 +27,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     return Scaffold(
       body: Stack(
         children: [
-          // 1. Background Split (Same as Login)
+          //  Background
           Row(
             children: [
-              Expanded(child: Container(color: const Color(0xFFF8FAFB))),
-              Expanded(child: Container(color: const Color(0xFFFFF1F2))),
+              Expanded(child: Container(color: AppColors.secondaryColor)),
+              Expanded(child: Container(color: AppColors.backgroundOfPickupsWidget)),
             ],
           ),
 
@@ -38,7 +40,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               padding: const EdgeInsets.all(12),
               child: Column(
                 children: [
-                  // 2. Logo Logic
+                  //  Logo Logic
                   if (!isMobile)
                     Align(
                       alignment: Alignment.topLeft,
@@ -50,7 +52,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   if (isMobile) _buildLogo(),
                   if (isMobile) const SizedBox(height: 30),
 
-                  // 3. Forget Password Card
+                  // Forget Password Card
                   Container(
                     constraints: const BoxConstraints(maxWidth: 450),
                     padding: EdgeInsets.symmetric(
@@ -70,15 +72,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ),
                     child: Column(
                       children: [
-                        const Text(
+                         Text(
                           "Forget Password",
-                          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                          style: TTextTheme.h11Style(context),
                         ),
                         const SizedBox(height: 10),
-                        const Text(
+                         Text(
                           "No worries! Just enter your email and we'll send you a reset password link.",
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.grey, fontSize: 14, height: 1.5),
+                          style:TTextTheme.pSeven(context),
                         ),
                         const SizedBox(height: 40),
 
@@ -102,20 +104,18 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
                         const SizedBox(height: 25),
 
-                        // 5. Footer (Wrap for responsiveness)
+                        // Footer
                         Wrap(
                           alignment: WrapAlignment.center,
                           children: [
-                            const Text("Just remember? ", style: TextStyle(color: Colors.grey, fontSize: 13)),
+                            Text("Just remember? ", style: TTextTheme.titleSmallRemember(context)),
                             GestureDetector(
-                              onTap: () => Get.back(),
-                              child: const Text(
+                              onTap: () {
+                                context.push('/signUp');
+                              },
+                              child:  Text(
                                 "Sign Up",
-                                style: TextStyle(
-                                  color: Color(0xFFFF3B5C),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                ),
+                                style: TTextTheme.titleSmallRegister(context)
                               ),
                             ),
                           ],
@@ -134,14 +134,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   /// ---------- Extra Widgets -------- ///
 
-  // Same Helper Widgets
+
   Widget _buildLogo() {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Image.asset(IconString.symbol),
         const SizedBox(width: 10),
-        const Text("SoftSnip", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF2D3748))),
+         Text("SoftSnip", style: TTextTheme.h6Style(context)),
       ],
     );
   }
@@ -151,18 +151,21 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       alignment: Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 8),
-        child: Text(text, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+        child: Text(text, style: TTextTheme.dropdowninsideText(context)),
       ),
     );
   }
 
   Widget _buildTextField({required String hint, TextEditingController? textController}) {
     return TextField(
+      cursorColor: AppColors.blackColor,
       controller: textController,
+      style: TTextTheme.loginInsideTextField(context),
       decoration: InputDecoration(
         hintText: hint,
         filled: true,
-        fillColor: const Color(0xFFEDF2F7),
+        fillColor: AppColors.secondaryColor,
+        hintStyle: TTextTheme.loginInsideTextField(context),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       ),

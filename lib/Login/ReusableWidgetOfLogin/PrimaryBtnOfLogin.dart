@@ -70,7 +70,7 @@ class PrimaryBtnOfLogin extends StatelessWidget {
               : Text(
             text,
             style:
-            TTextTheme.btnTwo(context).copyWith(color: Colors.white),
+            TTextTheme.loginButtonText(context),
           ),
         ),
       ),

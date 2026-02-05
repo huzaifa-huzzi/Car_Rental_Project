@@ -27,6 +27,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 22, 22, 32),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
 
+  static TextStyle h11Style(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 24, 28, 30),fontWeight: FontWeight.w600,color: AppColors.textColor);
+  }
+
   static TextStyle h2Style(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 18),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
@@ -82,6 +86,39 @@ class TTextTheme {
 
   static TextStyle btnSix(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 14),fontWeight: FontWeight.w500,color: AppColors.textColor);
+  }
+
+  static TextStyle btnEight(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 14),fontWeight: FontWeight.w500,color: AppColors.secondTextColor);
+  }
+
+  static TextStyle loginDividerText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 14),fontWeight: FontWeight.w500,color: AppColors.quadrantalTextColor);
+  }
+
+  static TextStyle loginSocialIcons(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 16),fontWeight: FontWeight.w500,color: AppColors.textColor);
+  }
+
+  static TextStyle loginButtonText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 16),fontWeight: FontWeight.w500,color: Colors.white);
+  }
+
+  static TextStyle forgotText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 12, 14),fontWeight: FontWeight.w500,color: AppColors.primaryColor);
+  }
+
+  static TextStyle otpResend (BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 12),fontWeight: FontWeight.w500,color: AppColors.primaryColor);
+  }
+
+  static TextStyle otpSubtitleText2 (BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 14),fontWeight: FontWeight.w500,color: AppColors.primaryColor);
+  }
+
+
+  static TextStyle otpMainText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 18),fontWeight: FontWeight.w500,color: AppColors.tertiaryTextColor);
   }
 
   static TextStyle dropdowninsideText(BuildContext context){
@@ -146,6 +183,11 @@ class TTextTheme {
     );
   }
 
+  static TextStyle otpSubtitleText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 16),fontWeight: FontWeight.w500,color: AppColors.blackColor,
+    );
+  }
+
   static TextStyle titleThree(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
     );
@@ -179,6 +221,16 @@ class TTextTheme {
 
   static TextStyle titleSmallTexts(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 14),fontWeight: FontWeight.w500,color: AppColors.textColor,
+    );
+  }
+
+  static TextStyle titleSmallRemember(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 14),fontWeight: FontWeight.w500,color: AppColors.quadrantalTextColor,
+    );
+  }
+
+  static TextStyle titleSmallRegister(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 14),fontWeight: FontWeight.w500,color: AppColors.primaryColor,
     );
   }
 
@@ -241,6 +293,16 @@ class TTextTheme {
 
   static TextStyle pSix(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 11, 11, 12),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
+    );
+  }
+
+  static TextStyle pSeven(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 16),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
+    );
+  }
+
+  static TextStyle loginInsideTextField(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 16),fontWeight: FontWeight.w400,color: AppColors.textColor,
     );
   }
 
