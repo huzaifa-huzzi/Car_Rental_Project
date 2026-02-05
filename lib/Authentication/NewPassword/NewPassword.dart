@@ -1,13 +1,11 @@
-import 'package:car_rental_project/Login/LoginController.dart';
-import 'package:car_rental_project/Login/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
+import 'package:car_rental_project/Authentication/LoginController.dart';
+import 'package:car_rental_project/Authentication/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-// import 'new_password_controller.dart';
-// import 'primary_btn_widget.dart';
 
 class NewPassword extends StatefulWidget {
   const NewPassword({super.key});

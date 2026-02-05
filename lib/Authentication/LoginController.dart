@@ -13,7 +13,7 @@ class LoginController extends GetxController {
   void togglePasswordVisibility2() => obscureRegisterPassword.value = !obscureRegisterPassword.value;
   void toggleConfirmPasswordVisibility2() => obscureConfirmRegisterPassword.value = !obscureConfirmRegisterPassword.value;
 
-   // Login Screen
+   // Authentication Screen
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   var isLoading = false.obs;

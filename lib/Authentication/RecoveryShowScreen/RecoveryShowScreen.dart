@@ -1,4 +1,4 @@
-import 'package:car_rental_project/Login/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
+import 'package:car_rental_project/Authentication/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
@@ -90,7 +90,7 @@ class _RecoveryShowScreenOneState extends State<RecoveryShowScreenOne> {
 
                         // 4. Button
                         PrimaryBtnOfLogin(
-                          text: "Back to Login",
+                          text: "Back to Authentication",
                           onTap: () {
                             context.push('/login');
                           },

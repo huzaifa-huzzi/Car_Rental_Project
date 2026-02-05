@@ -1,5 +1,5 @@
-import 'package:car_rental_project/Login/LoginController.dart';
-import 'package:car_rental_project/Login/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
+import 'package:car_rental_project/Authentication/LoginController.dart';
+import 'package:car_rental_project/Authentication/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
@@ -131,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Expanded(child: Divider(color: AppColors.quadrantalTextColor,)),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text("Or Login With", style: TTextTheme.loginDividerText(context)),
+                              child: Text("Or Authentication With", style: TTextTheme.loginDividerText(context)),
                             ),
                             Expanded(child: Divider(color: AppColors.quadrantalTextColor,)),
                           ],

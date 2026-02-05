@@ -1,3 +1,11 @@
+import 'package:car_rental_project/Authentication/ForgotPassword/ForgotPassword.dart';
+import 'package:car_rental_project/Authentication/Login/Login.dart';
+import 'package:car_rental_project/Authentication/NewPassword/NewPassword.dart';
+import 'package:car_rental_project/Authentication/RecoveryShowScreen/RecoveryShowScreen.dart';
+import 'package:car_rental_project/Authentication/RecoveryShowScreen/RecoveryShowScreenTwo.dart';
+import 'package:car_rental_project/Authentication/Register/RegisterScreen.dart';
+import 'package:car_rental_project/Authentication/TwoStepVerificationOne/TwoStepVerificationOne.dart';
+import 'package:car_rental_project/Authentication/TwoStepVerificationTwo/TwoStepVerificationTwo.dart';
 import 'package:car_rental_project/Car%20Inventory/AddingCar/AddingCar.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Details/CarDetails.dart';
 import 'package:car_rental_project/Car%20Inventory/Car%20Directory/CarInventoryMainScreen.dart';
@@ -14,14 +22,6 @@ import 'package:car_rental_project/DroppOffCar/AddDropOff/AddDropOffScreen.dart'
 import 'package:car_rental_project/DroppOffCar/AddDropOff/Widget/AddDropOffDetailWidget.dart';
 import 'package:car_rental_project/DroppOffCar/DropOffDetails/DropOffDetails.dart';
 import 'package:car_rental_project/DroppOffCar/TableViewDropoff/TableViewDropoffScreen.dart';
-import 'package:car_rental_project/Login/ForgotPassword/ForgotPassword.dart';
-import 'package:car_rental_project/Login/Login/Login.dart';
-import 'package:car_rental_project/Login/NewPassword/NewPassword.dart';
-import 'package:car_rental_project/Login/RecoveryShowScreen/RecoveryShowScreen.dart';
-import 'package:car_rental_project/Login/RecoveryShowScreen/RecoveryShowScreenTwo.dart';
-import 'package:car_rental_project/Login/Register/RegisterScreen.dart';
-import 'package:car_rental_project/Login/TwoStepVerificationOne/TwoStepVerificationOne.dart';
-import 'package:car_rental_project/Login/TwoStepVerificationTwo/TwoStepVerificationTwo.dart';
 import 'package:car_rental_project/PickupCar/AddPickUp/AddPickup.dart';
 import 'package:car_rental_project/PickupCar/AddPickUp/Widget/StepTwoWidgets.dart';
 import 'package:car_rental_project/PickupCar/EditPicUp/EditPickUpScreen.dart';

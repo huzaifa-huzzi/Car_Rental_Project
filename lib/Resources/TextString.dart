@@ -465,5 +465,6 @@ class TextString {
   static const String  titleTransmissionStepTwoDropOffAdd  =   'Transmission';
   static const String  titleCapacityStepTwoDropOffAdd  =   'Capacity';
   static const String  titlePriceStepTwoDropOffAdd  =   'Price';
+   /// Authentication
 
 }

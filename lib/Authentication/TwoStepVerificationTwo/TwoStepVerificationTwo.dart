@@ -1,5 +1,5 @@
-import 'package:car_rental_project/Login/LoginController.dart' show LoginController;
-import 'package:car_rental_project/Login/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
+import 'package:car_rental_project/Authentication/LoginController.dart';
+import 'package:car_rental_project/Authentication/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
@@ -9,14 +9,14 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-class TwoStepVerificationOne extends StatefulWidget {
-  const TwoStepVerificationOne({super.key});
+class TwoStepVerificationTwo extends StatefulWidget {
+  const TwoStepVerificationTwo({super.key});
 
   @override
-  State<TwoStepVerificationOne> createState() => _TwoStepVerificationOneState();
+  State<TwoStepVerificationTwo> createState() => _TwoStepVerificationTwoState();
 }
 
-class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
+class _TwoStepVerificationTwoState extends State<TwoStepVerificationTwo> {
   final controller = Get.put(LoginController());
 
   @override
@@ -27,7 +27,7 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
     return Scaffold(
       body: Stack(
         children: [
-          // Background Split
+          // Background
           Row(
             children: [
               Expanded(child: Container(color: AppColors.secondaryColor)),
@@ -70,7 +70,7 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
                     ),
                     child: Column(
                       children: [
-
+                        // Icon
                         Image.asset(ImageString.smartPhoneImage),
                         const SizedBox(height: 25),
 
@@ -83,16 +83,16 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
                           textAlign: TextAlign.center,
                           text: TextSpan(
                             children: [
-                              TextSpan(text: "Enter the verification code we sent to \n",style: TTextTheme.otpMainText(context)),
-                              TextSpan(text: "sellostore@company.com ",
+                               TextSpan(text: "Enter the verification code we sent to \n",style:  TTextTheme.otpMainText(context)),
+                               TextSpan(text: "sellostore@company.com ",
                                   style: TTextTheme.otpSubtitleText(context)),
                               TextSpan(
                                 text: "Resend",
-                                style: TTextTheme.titleSmallRegister(context)
+                                style: TTextTheme.titleSmallRegister(context),
                               ),
                               TextSpan(
                                 text: " ${controller.secondsRemaining}S",
-                                style: TTextTheme.otpResend(context),
+                                style : TTextTheme.otpResend(context),
                               ),
                             ],
                           ),
@@ -110,11 +110,11 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
                         ),
                         const SizedBox(height: 35),
 
-                        //  Submit Button
-                        PrimaryBtnOfLogin(
+                        // 4. Submit Button
+                       PrimaryBtnOfLogin(
                           text:"Submit",
                           onTap:(){
-                            context.push('/newPassword');
+                            context.push('/authSuccess2');
                           },
                           width: double.infinity,
                           height: 50,
@@ -127,12 +127,11 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
                         Wrap(
                           alignment: WrapAlignment.center,
                           children: [
-                             Text("Didn't get the code? ", style:TTextTheme.titleSmallRemember(context)),
-                             Text("Resend",
-                                style: TTextTheme.titleSmallRegister(context)),
+                             Text("Didn't get the code? ", style: TTextTheme.titleSmallRemember(context)),
+                             Text("Resend", style: TTextTheme.titleSmallRegister(context)),
                              Text(" or ", style: TTextTheme.titleSmallRemember(context)),
                              Text("Edit",
-                                style: TTextTheme.titleSmallRegister(context)),
+                                style:TTextTheme.titleSmallRegister(context)),
                           ],
                         ),
                       ],
@@ -147,8 +146,7 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
     );
   }
 
-  /// ---------- Extra Widgets ------ ///
-
+  /// --------- Extra Widgets ------- ///
 
   Widget _buildOtpBox(int index) {
     return SizedBox(
@@ -156,7 +154,7 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
       height: 55,
       child: TextField(
         cursorColor: AppColors.blackColor,
-        controller: controller.otpControllers2[index],
+        controller: controller.otpControllers[index],
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
         inputFormatters: [LengthLimitingTextInputFormatter(1), FilteringTextInputFormatter.digitsOnly],
@@ -172,7 +170,7 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
           fillColor: Colors.white,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color:AppColors.tertiaryTextColor),
+            borderSide: const BorderSide(color: AppColors.tertiaryTextColor),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),

@@ -54,6 +54,7 @@ flutter:
     - assets/Images/CarInventoryPics/
     - assets/Images/Customers/
     - assets/Images/PickupCar/
+    - assets/Images/Authentication/
 
 
 
