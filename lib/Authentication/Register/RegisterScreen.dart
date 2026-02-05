@@ -3,6 +3,7 @@ import 'package:car_rental_project/Authentication/LoginController.dart';
 import 'package:car_rental_project/Authentication/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -69,21 +70,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     child: Column(
                       children: [
-                        Text("Create an Account", style: TTextTheme.h11Style(context)),
+                        Text(TextString.registerLogin, style: TTextTheme.h11Style(context)),
                         const SizedBox(height: 8),
-                         Text("Join now to streamline your experience from day one.",
+                         Text(TextString.registerSubtitle,
                             textAlign: TextAlign.center, style:TTextTheme.pSeven(context)),
                         const SizedBox(height: 25),
 
-                        _buildLabel("Name"),
+                        _buildLabel(TextString.registerName),
                         _buildTextField(hint: "hasan", textController: controller.nameRegisterController),
                         const SizedBox(height: 18),
 
-                        _buildLabel("Email"),
+                        _buildLabel(TextString.registerEmail),
                         _buildTextField(hint: "sellostore@company.com", textController: controller.emailRegisterController),
                         const SizedBox(height: 18),
 
-                        _buildLabel("Password"),
+                        _buildLabel(TextString.registerPassword),
                         Obx(() => _buildTextField(
                           hint: "***********",
                           isPassword: true,
@@ -93,7 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         )),
                         const SizedBox(height: 18),
 
-                        _buildLabel("Confirm Password"),
+                        _buildLabel(TextString.registerConfirmPassword),
                         Obx(() => _buildTextField(
                           hint: "5ellostore.",
                           isPassword: true,
@@ -122,7 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             Expanded(child: Divider(color: AppColors.quadrantalTextColor,)),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text("Or Register With", style: TTextTheme.loginDividerText(context)),
+                              child: Text(TextString.registerText, style: TTextTheme.loginDividerText(context)),
                             ),
                             Expanded(child: Divider(color: AppColors.quadrantalTextColor,)),
                           ],
@@ -152,12 +153,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         Wrap(
                           alignment: WrapAlignment.center,
                           children: [
-                            Text("Already Have An Account? ", style:  TTextTheme.titleSmallRemember(context)),
+                            Text(TextString.registerFooterFirst, style:  TTextTheme.titleSmallRemember(context)),
                             GestureDetector(
                               onTap: (){
                                 context.push('/login');
                               },
-                              child: Text("Sign In.",
+                              child: Text(TextString.registerFooterTwo,
                                   style: TTextTheme.titleSmallRegister(context)),
                             ),
                           ],

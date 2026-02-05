@@ -3,6 +3,7 @@ import 'package:car_rental_project/Authentication/ReusableWidgetOfLogin/PrimaryB
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,7 +28,7 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
     return Scaffold(
       body: Stack(
         children: [
-          // Background Split
+          // Background
           Row(
             children: [
               Expanded(child: Container(color: AppColors.secondaryColor)),
@@ -75,7 +76,7 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
                         const SizedBox(height: 25),
 
                         //  Headings
-                         Text("Two Step Verification",
+                         Text(TextString.twoStepLogin,
                             style: TTextTheme.h11Style(context)),
                         const SizedBox(height: 10),
 
@@ -84,10 +85,10 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
                           text: TextSpan(
                             children: [
                               TextSpan(text: "Enter the verification code we sent to \n",style: TTextTheme.otpMainText(context)),
-                              TextSpan(text: "sellostore@company.com ",
+                              TextSpan(text: TextString.twoStepName,
                                   style: TTextTheme.otpSubtitleText(context)),
                               TextSpan(
-                                text: "Resend",
+                                text: TextString.twoStepResend,
                                 style: TTextTheme.titleSmallRegister(context)
                               ),
                               TextSpan(
@@ -99,7 +100,7 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
                         ),
                         const SizedBox(height: 35),
 
-                         Text("Type your 6 digit security code",
+                         Text(TextString.twoStepSixDigit,
                             style: TTextTheme.otpSubtitleText2(context)),
                         const SizedBox(height: 20),
 
@@ -127,11 +128,11 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
                         Wrap(
                           alignment: WrapAlignment.center,
                           children: [
-                             Text("Didn't get the code? ", style:TTextTheme.titleSmallRemember(context)),
-                             Text("Resend",
+                             Text(TextString.twoStepFooterOne, style:TTextTheme.titleSmallRemember(context)),
+                             Text(TextString.twoStepResend,
                                 style: TTextTheme.titleSmallRegister(context)),
-                             Text(" or ", style: TTextTheme.titleSmallRemember(context)),
-                             Text("Edit",
+                             Text(TextString.twoStepFooterTwo, style: TTextTheme.titleSmallRemember(context)),
+                             Text(TextString.twoStepEdit,
                                 style: TTextTheme.titleSmallRegister(context)),
                           ],
                         ),

@@ -1,6 +1,7 @@
 import 'package:car_rental_project/Authentication/LoginController.dart';
 import 'package:car_rental_project/Authentication/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -73,7 +74,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     child: Column(
                       children: [
                          Text(
-                          "Forget Password",
+                          TextString.forgotTitle,
                           style: TTextTheme.h11Style(context),
                         ),
                         const SizedBox(height: 10),
@@ -85,7 +86,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         const SizedBox(height: 40),
 
                         // Email Field
-                        _buildLabel("Email"),
+                        _buildLabel(TextString.forgotEmail),
                         _buildTextField(
                           hint: "sellostore@company.com",
                          textController: controller.emailForgotController,
@@ -108,13 +109,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         Wrap(
                           alignment: WrapAlignment.center,
                           children: [
-                            Text("Just remember? ", style: TTextTheme.titleSmallRemember(context)),
+                            Text(TextString.forgotFirstFooter, style: TTextTheme.titleSmallRemember(context)),
                             GestureDetector(
                               onTap: () {
                                 context.push('/signUp');
                               },
                               child:  Text(
-                                "Sign Up",
+                                TextString.forgotFooterTwo,
                                 style: TTextTheme.titleSmallRegister(context)
                               ),
                             ),

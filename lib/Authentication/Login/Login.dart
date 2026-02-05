@@ -2,6 +2,7 @@ import 'package:car_rental_project/Authentication/LoginController.dart';
 import 'package:car_rental_project/Authentication/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -64,20 +65,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: Column(
                       children: [
-                        Text("Welcome Back", style: TTextTheme.h11Style(context),),
+                        Text(TextString.titleLogin, style: TTextTheme.h11Style(context),),
                         const SizedBox(height: 10),
-                         Text("Enter your email and password to access your account.",
+                         Text(TextString.loginSubtitle,
                             textAlign: TextAlign.center, style:TTextTheme.pSeven(context)),
                         const SizedBox(height: 30),
 
-                        _buildLabel("Email"),
+                        _buildLabel(TextString.loginEmail),
                         _buildTextField(
                           hint: "sellostore@company.com",
                           textController: controller.emailController,
                         ),
                         const SizedBox(height: 20),
 
-                        _buildLabel("Password"),
+                        _buildLabel(TextString.loginPassword),
                         Obx(() => _buildTextField(
                           hint: "Password",
                           isPassword: true,
@@ -131,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Expanded(child: Divider(color: AppColors.quadrantalTextColor,)),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text("Or Authentication With", style: TTextTheme.loginDividerText(context)),
+                              child: Text(TextString.loginText, style: TTextTheme.loginDividerText(context)),
                             ),
                             Expanded(child: Divider(color: AppColors.quadrantalTextColor,)),
                           ],
@@ -164,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                              Text(
-                              "Don't Have An Account? ",
+                              TextString.loginFooterFirst,
                               style: TTextTheme.titleSmallRemember(context),
                             ),
                             GestureDetector(
@@ -172,7 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 context.push('/signUp');
                               },
                               child: Text(
-                                "Register Now.",
+                                TextString.loginFooterTwo,
                                 style: TTextTheme.titleSmallRegister(context),
                               ),
                             ),
@@ -220,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
           )),
         ),
         const SizedBox(width: 8),
-         Text("Remember Me", style: TTextTheme.titleSmallRemember(context)),
+         Text(TextString.loginRemember, style: TTextTheme.titleSmallRemember(context)),
       ],
     );
   }
@@ -236,7 +237,7 @@ class _LoginScreenState extends State<LoginScreen> {
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
       child:  Text(
-        "Forgot Your Password?",
+        TextString.loginForgot,
         style: TTextTheme.forgotText(context),
       ),
     );

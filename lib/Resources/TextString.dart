@@ -466,5 +466,54 @@ class TextString {
   static const String  titleCapacityStepTwoDropOffAdd  =   'Capacity';
   static const String  titlePriceStepTwoDropOffAdd  =   'Price';
    /// Authentication
+    // Login
+  static const String  titleLogin  =   'Welcome Back';
+  static const String  loginSubtitle  =   'Enter your email and password to access your account.';
+  static const String  loginEmail =   'Email';
+  static const String  loginPassword =   'Password';
+  static const String  loginText  =   'Or Login With';
+  static const String  loginFooterFirst  =    'Dont Have An Account? ';
+  static const String  loginFooterTwo  =   'Register Now.';
+  static const String  loginRemember=   'Remember Me';
+  static const String  loginForgot  =   'Forgot Your Password?';
+  // Register Screen
+  static const String  registerLogin  =   'Create An Account';
+  static const String  registerSubtitle  =   'Join now to streamline your experience from day one.';
+  static const String  registerName =   'Name';
+  static const String  registerEmail =   'Email';
+  static const String  registerPassword =   'Password';
+  static const String  registerConfirmPassword =   'Confirm Password';
+  static const String  registerText  =   'Or Register With';
+  static const String  registerFooterFirst  =    'Already Have An Account? ';
+  static const String  registerFooterTwo  =   'Sign in.';
+
+   // Forgot Password
+  static const String  forgotTitle  =   'Forget Password';
+  static const String  forgotEmail =   'Email';
+  static const String  forgotFirstFooter  =   'Just remember? ';
+  static const String  forgotFooterTwo  =   'Sign Up';
+  // New Password
+  static const String  passwordTitle  =   'New Password';
+  static const String  passwordSubtitle =   'Please create a new password that you dont use on any other site.';
+  static const String  passwordFirstLabel  =   'Password';
+  static const String  passwordSecondLabel  =   'Confirm Password';
+  static const String  passwordFirstFooter  =   'Just remember? ';
+  static const String  passwordFooterTwo  =   'Sign Up';
+  // RecoverShow Screen One
+  static const String  recoveryTitle  =   'Congratulation';
+  static const String  recoverySubtitle =   'Successfully Recover Your Account';
+  // RecoveryShow Screen Two
+  static const String  recoveryTitleTwo  =   'Congratulation';
+  static const String  recoverySubtitleTwo =   'SuccessFully Created Your Account';
+  // Two Step Verification Texts
+  static const String  twoStepLogin  =   'Two Step Verification';
+  static const String  twoStepName =   'sellostore@company.com ';
+  static const String  twoStepResend =   'Resend';
+  static const String  twoStepSixDigit =   'Type your 6 digit security code';
+  static const String  twoStepFooterOne =   'Didnt get the code? ';
+  static const String  twoStepFooterTwo  =   'Or';
+  static const String  twoStepEdit  =    'Edit';
+
+
 
 }

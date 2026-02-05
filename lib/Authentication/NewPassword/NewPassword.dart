@@ -2,6 +2,7 @@ import 'package:car_rental_project/Authentication/LoginController.dart';
 import 'package:car_rental_project/Authentication/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -73,18 +74,18 @@ class _NewPasswordState extends State<NewPassword> {
                     ),
                     child: Column(
                       children: [
-                         Text("New Password",
+                         Text(TextString.passwordTitle,
                             style:TTextTheme.h11Style(context)),
                         const SizedBox(height: 10),
                          Text(
-                          "Please create a new password that you don't use on any other site.",
+                          TextString.passwordSubtitle,
                           textAlign: TextAlign.center,
                           style:TTextTheme.pSeven(context),
                         ),
                         const SizedBox(height: 30),
 
                         // Password Field
-                        _buildLabel("Password"),
+                        _buildLabel(TextString.passwordFirstLabel),
                         Obx(() => _buildTextField(
                           hint: "***********",
                           isPassword: true,
@@ -95,7 +96,7 @@ class _NewPasswordState extends State<NewPassword> {
                         const SizedBox(height: 20),
 
                         // Confirm Password Field
-                        _buildLabel("Confirm Password"),
+                        _buildLabel(TextString.passwordSecondLabel),
                         Obx(() => _buildTextField(
                           hint: "5ellostore.",
                           isPassword: true,
@@ -124,12 +125,12 @@ class _NewPasswordState extends State<NewPassword> {
                         Wrap(
                           alignment: WrapAlignment.center,
                           children: [
-                             Text("Just Remember? ", style: TTextTheme.titleSmallRemember(context)),
+                             Text(TextString.passwordFirstFooter, style: TTextTheme.titleSmallRemember(context)),
                             GestureDetector(
                               onTap: (){
                                 context.push('/signUp');
                               },
-                              child:  Text("Sign Up",
+                              child:  Text(TextString.passwordFooterTwo,
                                   style: TTextTheme.titleSmallRegister(context)),
                             ),
                           ],

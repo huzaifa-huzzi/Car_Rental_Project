@@ -1,6 +1,7 @@
 import 'package:car_rental_project/Authentication/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -76,14 +77,14 @@ class _RecoveryShowScreenOneState extends State<RecoveryShowScreenOne> {
 
                         //  Heading
                          Text(
-                          "Congratulation",
+                          TextString.recoveryTitle,
                           style: TTextTheme.h11Style(context),
                         ),
                         const SizedBox(height: 10),
 
                         // Subtitle
                          Text(
-                          "Successfully Recover Your Account",
+                          TextString.recoverySubtitle,
                           textAlign: TextAlign.center,
                           style: TTextTheme.h6Style(context)),
                         const SizedBox(height: 40),

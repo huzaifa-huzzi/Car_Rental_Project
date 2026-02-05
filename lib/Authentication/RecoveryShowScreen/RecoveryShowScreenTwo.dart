@@ -1,5 +1,6 @@
 import 'package:car_rental_project/Authentication/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -75,14 +76,14 @@ class _RecoveryShowScreenTwoState extends State<RecoveryShowScreenTwo> {
 
                         //  Heading
                          Text(
-                          "Congratulation",
+                          TextString.recoveryTitleTwo,
                           style: TTextTheme.h11Style(context),
                         ),
                         const SizedBox(height: 10),
 
                         //  Subtitle
                          Text(
-                          "SuccessFully Created Your Account",
+                          TextString.recoverySubtitleTwo,
                           textAlign: TextAlign.center,
                           style: TTextTheme.h6Style(context)
                         ),
