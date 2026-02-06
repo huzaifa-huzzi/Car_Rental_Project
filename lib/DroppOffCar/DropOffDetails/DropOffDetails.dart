@@ -150,7 +150,7 @@ class DropOffDetails extends StatelessWidget {
                                     {"label": "Bond Amount", "controller": controller.bondAmountControllerStepTwo, "hint": "2600 \$"},
                                     {"label": "Paid Bond", "controller": controller.paidBondControllerStepTwo, "hint": "600 \$"},
                                     {"label": TextString.subtitleLeftBondStepTwoDropOff, "controller": controller.dueBondAmountControllerStepTwo, "hint": "2000 \$"},
-                                    {"label": "Bond Returned", "controller": controller.dueBondReturnedControllerStepTwo, "hint": "2000 \$", "isSpecial": true}, // Highlighted field
+                                    {"label": "Bond Returned", "controller": controller.dueBondReturnedControllerStepTwo, "hint": "2000 \$", "isSpecial": true},
                                   ], isMobile),
                                 ), // Non-Editable
                               ],
@@ -405,8 +405,9 @@ class DropOffDetails extends StatelessWidget {
                 borderRadius: BorderRadius.circular(6),
               ),
               child: TextFormField(
+                cursorColor: AppColors.blackColor,
                 controller: item['controller'],
-                readOnly: true,
+                readOnly: !isSpecial,
                 style: TTextTheme.insidetextfieldWrittenText(context),
                 decoration: InputDecoration(
                   hintText: item['hint'],

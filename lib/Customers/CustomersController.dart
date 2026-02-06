@@ -39,7 +39,7 @@ class CustomerController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    carList2.addAll(List.generate(50, (index) => {"id": index, "name": "Customer $index"}));
+    carList2.addAll(List.generate(50, (index) => {"id": index, "Customer name": "Customer $index"}));
   }
 
   int get totalPages {
@@ -261,7 +261,7 @@ class CustomerController extends GetxController {
 
   /// CardList Customer Header Widget
   RxBool isSearchCategoryOpen = false.obs;
-  RxString selectedSearchType = "Name".obs;
+  RxString selectedSearchType = "Customer Name".obs;
 
   void toggleSearchCategory() {
     isSearchCategoryOpen.value = !isSearchCategoryOpen.value;

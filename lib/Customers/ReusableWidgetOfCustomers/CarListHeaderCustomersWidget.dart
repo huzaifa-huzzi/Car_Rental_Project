@@ -161,7 +161,7 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
               textAlignVertical: TextAlignVertical.center,
               style: TTextTheme.titleTwo(context),
               decoration: InputDecoration(
-                hintText: screenWidth > 750 ? "Search Pickup by Customer Name" : "Search...",
+                hintText: screenWidth > 750 ? "Search Customer by Name" : "Search...",
                 hintStyle: TTextTheme.smallX(context),
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(bottom: 18),

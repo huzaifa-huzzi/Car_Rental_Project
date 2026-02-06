@@ -24,6 +24,7 @@ class IconString {
   static const String  logoutIcon = 'assets/icons/logout.png';
   static const String  menuIcon = 'assets/icons/menu.png';
   static const String  returnCarIcon = 'assets/icons/ReturnCarIcon.png';
+  static const String  staffIcon = 'assets/icons/StaffIcon.png';
 
   /// AppBar Icons
   static const String  searchIcon = 'assets/icons/Search.png';

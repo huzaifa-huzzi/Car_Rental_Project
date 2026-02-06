@@ -209,7 +209,7 @@ class AddDropOffWidget extends StatelessWidget {
           onSelected: (val) => controller.selectedSearchType.value = val,
           itemBuilder: (context) => [
             _buildPopupItem("Customer Name", IconString.nameIcon, context),
-            _buildPopupItem("Vin Number", IconString.vinNumberIcon, context),
+            _buildPopupItem("VIN Number", IconString.vinNumberIcon, context),
             _buildPopupItem("Registration", IconString.registrationIcon, context),
             _buildPopupItem("Car Name", IconString.carNameIcon, context, isLast: true),
           ],
@@ -274,7 +274,7 @@ class AddDropOffWidget extends StatelessWidget {
     switch (type) {
       case "Customer Name":
         return IconString.nameIcon;
-      case "Vin Number":
+      case "VIN Number":
         return IconString.vinNumberIcon;
       case "Registration":
         return IconString.registrationIcon;

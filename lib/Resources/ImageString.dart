@@ -22,6 +22,6 @@ class ImageString{
   static const String  carDamageInspectionImage= 'assets/Images/PickupCar/Car Inspection Image.png';
   static const String  successCheckPickupImage= 'assets/Images/PickupCar/SuccessCheckIcon.png';
   /// Authentication
-  static const String  smartPhoneImage= 'assets/Images/Authentication/smartphoneImage.png';
+  static const String  smartPhoneImage= 'assets/Images/Login/smartphoneImage.png';
 
 }

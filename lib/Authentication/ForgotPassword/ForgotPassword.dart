@@ -46,7 +46,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     Align(
                       alignment: Alignment.topLeft,
                       child: Padding(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: const EdgeInsets.all(40.0),
                         child: _buildLogo(),
                       ),
                     ),

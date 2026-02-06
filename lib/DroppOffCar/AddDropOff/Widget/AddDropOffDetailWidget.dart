@@ -406,8 +406,9 @@ class AddDropOffDetailWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(6),
               ),
               child: TextFormField(
+                cursorColor: AppColors.blackColor,
                 controller: item['controller'],
-                readOnly: true,
+                readOnly: !isSpecial,
                 style: TTextTheme.insidetextfieldWrittenText(context),
                 decoration: InputDecoration(
                   hintText: item['hint'],

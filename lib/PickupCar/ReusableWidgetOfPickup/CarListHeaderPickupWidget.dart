@@ -106,7 +106,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
             onSelected: (val) => controller.selectedSearchType.value = val,
             itemBuilder: (context) => [
               _buildPopupItem("Customer Name", IconString.nameIcon, context),
-              _buildPopupItem("Vin Number", IconString.vinNumberIcon, context),
+              _buildPopupItem("VIN Number", IconString.vinNumberIcon, context),
               _buildPopupItem("Registration", IconString.registrationIcon, context),
               _buildPopupItem("Car Name", IconString.carInventoryIcon, context, isLast: true),
             ],
@@ -158,7 +158,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
               textAlignVertical: TextAlignVertical.center,
               style: TTextTheme.titleTwo(context),
               decoration: InputDecoration(
-                hintText: screenWidth > 750 ? "Search Pickup by Customer Name" : "Search...",
+                hintText: screenWidth > 750 ? "Search Pickup by Customer" : "Search...",
                 hintStyle: TTextTheme.smallX(context),
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(bottom: 18),
@@ -255,7 +255,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
   String _getIconPathForType(String type) {
     switch (type) {
       case "Customer Name": return IconString.nameIcon;
-      case "Vin Number": return IconString.vinNumberIcon;
+      case "VIN Number": return IconString.vinNumberIcon;
       case "Registration": return IconString.registrationIcon;
       case "Car Name": return IconString.carInventoryIcon;
       default: return IconString.nameIcon;

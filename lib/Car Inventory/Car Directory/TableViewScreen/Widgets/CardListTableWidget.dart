@@ -16,7 +16,7 @@ class CarListTableWidget extends StatelessWidget {
 
   final double vinColumnWidth = 180.0;
   final double columnWidth = 120.0;
-  final double actionColumnWidth = 100.0;
+  final double actionColumnWidth = 130.0;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,12 @@ class CarListTableWidget extends StatelessWidget {
             children: [
               /// ---------- TABLE HEADINGS ----------
               Container(
-                padding: EdgeInsets.only(left: tablePadding, top: 9, bottom: 12),
+                padding: EdgeInsets.only(
+                    left: tablePadding,
+                    right: tablePadding,
+                    top: 9,
+                    bottom: 12
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.secondaryColor,
                   borderRadius: BorderRadius.vertical(
@@ -133,22 +138,17 @@ class CarListTableWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: isAction ? MainAxisAlignment.center : MainAxisAlignment.start,
         children: [
-          if (isAction) const Spacer(),
-          Flexible(
-            child: Text(
-              title,
-              style: TTextTheme.smallXX(context),
-              maxLines: 1,
-            ),
+          Text(
+            title,
+            style: TTextTheme.smallXX(context),
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: 6),
           Image.asset(
             IconString.sortIcon,
             color: AppColors.blackColor,
-            height: 14,
-            width: 14,
+            height: 12,
+            width: 12,
           ),
-          if (isAction) const Spacer(),
         ],
       ),
     );

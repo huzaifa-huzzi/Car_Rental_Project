@@ -333,10 +333,18 @@ class CustomerDetailWidget extends StatelessWidget {
                         final controller = Get.put(CustomerController());
                         controller.open(ImageString.registrationForm);
                       },
-                      child: Image.asset(
-                        IconString.uploadedIcon,
-                        height: 16,
-                        width: 16,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryColor,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Image.asset(
+                          IconString.uploadedIcon,
+                          height: 14,
+                          width: 14,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],

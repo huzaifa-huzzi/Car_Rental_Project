@@ -39,7 +39,16 @@ class _RecoveryShowScreenOneState extends State<RecoveryShowScreenOne> {
               child: Column(
                 children: [
                   // Logo
-                  _buildLogo(isMobile),
+                  if (!isMobile)
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(40.0),
+                        child: _buildLogo(),
+                      ),
+                    ),
+                  if (isMobile) _buildLogo(),
+                  if (isMobile) const SizedBox(height: 30),
                   const SizedBox(height: 30),
 
                   // Main Card
@@ -112,17 +121,14 @@ class _RecoveryShowScreenOneState extends State<RecoveryShowScreenOne> {
   }
   /// ---------- Extra Widget ---------- ///
 
-  Widget _buildLogo(bool isMobile) {
-    return Align(
-      alignment: isMobile ? Alignment.center : Alignment.topLeft,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.asset(IconString.symbol),
-          const SizedBox(width: 10),
-           Text("SoftSnip", style: TTextTheme.h6Style(context)),
-        ],
-      ),
+  Widget _buildLogo() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Image.asset(IconString.symbol),
+        const SizedBox(width: 10),
+        Text("SoftSnip", style: TTextTheme.h6Style(context)),
+      ],
     );
   }
 }

@@ -508,11 +508,11 @@ class TextString {
   // Two Step Verification Texts
   static const String  twoStepLogin  =   'Two Step Verification';
   static const String  twoStepName =   'sellostore@company.com ';
-  static const String  twoStepResend =   'Resend';
+  static const String  twoStepResend =   'Resend ';
   static const String  twoStepSixDigit =   'Type your 6 digit security code';
   static const String  twoStepFooterOne =   'Didnt get the code? ';
   static const String  twoStepFooterTwo  =   'Or';
-  static const String  twoStepEdit  =    'Edit';
+  static const String  twoStepEdit  =    ' Edit';
 
 
 

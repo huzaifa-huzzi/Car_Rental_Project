@@ -115,7 +115,7 @@ class SidebarScreen extends StatelessWidget {
                   SidebarComponents.menuItem(
                     context,
                     controller,
-                    iconPath: IconString.incomeIcon,
+                    iconPath: IconString.staffIcon,
                     title: TextString.staffTitle,
                     trailing: SidebarComponents.redDotWithNumber(controller.incomeRedDot.value, context),
                     onTap: (val) {
@@ -133,7 +133,9 @@ class SidebarScreen extends StatelessWidget {
             SizedBox(height: 30,),
             Padding(
               padding: EdgeInsets.only(bottom: AppSizes.verticalPadding(context) * 0.7),
-              child: SidebarComponents.menuItem(context, controller, iconPath: IconString.logoutIcon, title: TextString.logoutTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
+              child: SidebarComponents.menuItem(context, controller, iconPath: IconString.logoutIcon, title: TextString.logoutTitle, onTap: (val){
+                context.go('/login');
+              }, scaffoldKey: _scaffoldKey),
             ),
           ],
         ),

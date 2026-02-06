@@ -91,7 +91,7 @@ class CardListDropOffWidget extends StatelessWidget {
             onSelected: (val) => controller.selectedSearchType.value = val,
             itemBuilder: (context) => [
               _buildPopupItem("Customer Name", IconString.nameIcon, context),
-              _buildPopupItem("Vin Number", IconString.vinNumberIcon, context),
+              _buildPopupItem("VIN Number", IconString.vinNumberIcon, context),
               _buildPopupItem("Registration", IconString.registrationIcon, context),
               _buildPopupItem("Car Name", IconString.carInventoryIcon, context, isLast: true),
             ],
@@ -217,7 +217,7 @@ class CardListDropOffWidget extends StatelessWidget {
   String _getIconPathForType(String type) {
     switch (type) {
       case "Customer Name": return IconString.nameIcon;
-      case "Vin Number": return IconString.vinNumberIcon;
+      case "VIN Number": return IconString.vinNumberIcon;
       case "Registration": return IconString.registrationIcon;
       case "Car Name": return IconString.carInventoryIcon;
       default: return IconString.nameIcon;

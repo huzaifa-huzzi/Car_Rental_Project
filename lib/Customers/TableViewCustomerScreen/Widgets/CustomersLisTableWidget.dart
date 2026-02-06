@@ -51,9 +51,9 @@ class CustomerListTableWidget extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  _headerCell("Client", clientColWidth, context),
+                  _headerCell("Customer", clientColWidth, context),
                   _headerCell("Age", ageColWidth, context),
-                  _headerCell("Phone", phoneColWidth, context),
+                  _headerCell("Phone Number", phoneColWidth, context),
                   _headerCell("Address", addressColWidth, context),
                   _headerCell("License Details", licenseColWidth, context),
                   _headerCell("Linked Card", cardColWidth, context),
