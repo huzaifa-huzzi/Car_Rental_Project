@@ -112,7 +112,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                                       ),
                                     ),
 
-                                    // Space between them only on Web
+
                                     if (!isMobile) const SizedBox(width: 25) else const SizedBox(height: 25),
 
                                     /// PAYMENT METHOD SECTION
@@ -810,75 +810,115 @@ class AddDropOffDetailWidget extends StatelessWidget {
 
   // Car Report Section
   Widget _buildCarReportComparison(BuildContext context, bool isMobile) {
-    return LayoutBuilder(builder: (context, constraints) {
-      double columnWidth = isMobile ? constraints.maxWidth : (constraints.maxWidth - 40) / 2;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double gap = 16;
+        int columns = isMobile ? 1 : 4;
+        double itemWidth =
+            (constraints.maxWidth - (gap * (columns - 1))) / columns;
 
-      return Wrap(
-        spacing: 40,
-        runSpacing: 25,
-        children: [
-          /// LEFT SIDE:
-          Container(
-            width: columnWidth,
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: AppColors.backgroundOfScreenColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              children: [
-                _buildReadOnlyField(TextString.subtitlePickupOdoStepTwoDropOffAdd, controller.odoControllerStepTwoAdd.text, context),
-                const SizedBox(height: 15),
-                _buildReadOnlyField(TextString.subtitlePickFuelLevelStepTwoDropOffAdd, controller.fuelLevelControllerStepTwoAdd.text, context, hasIcon: true),
-                const SizedBox(height: 15),
-                _buildReadOnlyField(TextString.subtitleExteriorCleanlinessStepTwoDropOffAdd , controller.exteriorCleanlinessControllerStepTwoAdd.text, context, hasIcon: true),
-                const SizedBox(height: 15),
-                _buildReadOnlyField("Pickup Interior Cleanliness", controller.interiorCleanlinessControllerStepTwoAdd.text, context, hasIcon: true),
-              ],
-            ),
-          ),
-
-          ///  DROPOFF
-          Padding(
-            padding: EdgeInsets.only(top: isMobile ? 0 : 15),
-            child: SizedBox(
-              width: columnWidth,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        return Wrap(
+          spacing: gap,
+          runSpacing: 20,
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.backgroundOfScreenColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              // pickup
+              child: Wrap(
+                spacing: gap /4,
+                runSpacing: 2,
                 children: [
-                  _buildMiniInputField(TextString.subtitleDropOffOdoStepTwoDropOffAdd, "12457678", columnWidth, controller.odoControllerDropOffAdd, context),
-                  const SizedBox(height: 18),
-                  _buildReportDropdown(
-                      TextString.subtitleDropOffFuelLevelStepTwoDropOffAdd,
-                      ["Full (100%)", "High (75%)", "Half (50%)", "Low (25%)", "Empty (0%)"],
-                      columnWidth,
-                      controller.fuelLevelControllerDropOffAdd,
-                      context
+                  _buildReadOnlyFieldSized(
+                    TextString.subtitlePickupOdoStepTwoDropOffAdd,
+                    controller.odoControllerStepTwoAdd.text,
+                    context,
+                    width: itemWidth,
                   ),
-                  const SizedBox(height: 18),
-                  _buildReportDropdown(
-                      TextString.subtitleExteriorCleanlinessStepTwoDropOff2Add,
-                      ["Excellent", "Good", "Average", "Dirty"],
-                      columnWidth,
-                      controller.exteriorCleanlinessControllerDropOffAdd,
-                      context
+
+                  _buildReadOnlyFieldSized(
+                    TextString.subtitlePickFuelLevelStepTwoDropOffAdd,
+                    controller.fuelLevelControllerStepTwoAdd.text,
+                    context,
+                    width: itemWidth,
+                    hasIcon: true,
                   ),
-                  const SizedBox(height: 18),
-                  _buildReportDropdown(
-                      TextString.subtitleInteriorCleanlinessStepTwoDropOff2Add ,
-                      ["Excellent", "Good", "Average", "Dirty"],
-                      columnWidth,
-                      controller.interiorCleanlinessControllerDropOffAdd,
-                      context
+
+                  _buildReadOnlyFieldSized(
+                    "Pickup Interior Cleanliness",
+                    controller.interiorCleanlinessControllerStepTwoAdd.text,
+                    context,
+                    width: itemWidth,
+                    hasIcon: true,
+                  ),
+
+                  _buildReadOnlyFieldSized(
+                    TextString.subtitleExteriorCleanlinessStepTwoDropOffAdd,
+                    controller.exteriorCleanlinessControllerStepTwoAdd.text,
+                    context,
+                    width: itemWidth,
+                    hasIcon: true,
                   ),
                 ],
               ),
             ),
-          ),
-        ],
-      );
-    });
+
+           // Dropoff
+            _buildMiniInputField(
+              TextString.subtitleDropOffOdoStepTwoDropOffAdd,
+              "12457678",
+              itemWidth,
+              controller.odoControllerDropOffAdd,
+              context,
+            ),
+
+            _buildReportDropdown(
+              TextString.subtitleDropOffFuelLevelStepTwoDropOffAdd,
+              ["Full (100%)", "High (75%)", "Half (50%)", "Low (25%)", "Empty (0%)"],
+              itemWidth,
+              controller.fuelLevelControllerDropOffAdd,
+              context,
+            ),
+
+            _buildReportDropdown(
+              TextString.subtitleInteriorCleanlinessStepTwoDropOff2Add,
+              ["Excellent", "Good", "Average", "Dirty"],
+              itemWidth,
+              controller.interiorCleanlinessControllerDropOffAdd,
+              context,
+            ),
+
+            _buildReportDropdown(
+              TextString.subtitleExteriorCleanlinessStepTwoDropOff2Add,
+              ["Excellent", "Good", "Average", "Dirty"],
+              itemWidth,
+              controller.exteriorCleanlinessControllerDropOffAdd,
+              context,
+            ),
+          ],
+        );
+      },
+    );
   }
+
+  Widget _buildReadOnlyFieldSized(
+      String label,
+      String value,
+      BuildContext context, {
+        required double width,
+        bool hasIcon = false,
+      }) {
+    return SizedBox(
+      width: width,
+      child: _buildReadOnlyField(label, value, context, hasIcon: hasIcon),
+    );
+  }
+
+
   Widget _buildReadOnlyField(String label, String value, BuildContext context, {bool hasIcon = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -971,14 +1011,35 @@ class AddDropOffDetailWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSignatureCard(context,TextString.subtitleOwnerSignatureStepTwoDropOffAdd, "Softsnip", isReadOnly: false, bgColor: Colors.white),
+          _buildSignatureCard(
+            context,
+            TextString.subtitleOwnerSignatureStepTwoDropOffAdd,
+            "Softsnip",
+            isReadOnly: false,
+            bgColor: Colors.white,
+          ),
           const SizedBox(height: 15),
-          _buildSignatureCard(context, TextString.subtitleHirerSignatureStepTwoDropOffAdd, "Softsnip", isReadOnly: false, bgColor: Colors.white),
+          _buildSignatureCard(
+            context,
+            TextString.subtitleHirerSignatureStepTwoDropOffAdd,
+            "Softsnip",
+            isReadOnly: false,
+            bgColor: Colors.white,
+          ),
         ],
       ),
     );
   }
-  Widget _buildSignatureCard(BuildContext context, String title, String name, {bool isReadOnly = false, required Color bgColor}) {
+  Widget _buildSignatureCard(
+      BuildContext context,
+      String title,
+      String name, {
+        bool isReadOnly = false,
+        required Color bgColor,
+      }) {
+    final TextEditingController leftController = TextEditingController(text: name);
+    final TextEditingController rightController = TextEditingController(text: name);
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -994,6 +1055,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
         children: [
           Text(title, style: TTextTheme.titleRadios(context)),
           const SizedBox(height: 15),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -1002,20 +1064,49 @@ class AddDropOffDetailWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(name, style:TTextTheme.h2Style(context) ),
+                    isReadOnly
+                        ? Text(name, style: TTextTheme.h2Style(context))
+                        : TextField(
+                      cursorColor: AppColors.blackColor,
+                      controller: leftController,
+                      decoration: const InputDecoration(
+                        isDense: true,
+                        border: InputBorder.none,
+                      ),
+                      style: TTextTheme.h2Style(context),
+                    ),
                     const Divider(thickness: 1, color: AppColors.tertiaryTextColor),
-                    Text(TextString.subtitleFullNameStepTwoDropOffAdd, style: TTextTheme.titleFullName(context)),
+                    Text(
+                      TextString.subtitleFullNameStepTwoDropOffAdd,
+                      style: TTextTheme.titleFullName(context),
+                    ),
                   ],
                 ),
               ),
+
               const SizedBox(width: 25),
+
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(name, style: TTextTheme.h2Style(context)),
+                    isReadOnly
+                        ? Text(name, style: TTextTheme.h2Style(context))
+                        : TextField(
+                      cursorColor: AppColors.blackColor,
+                      controller: rightController,
+                      textAlign: TextAlign.end,
+                      decoration: const InputDecoration(
+                        isDense: true,
+                        border: InputBorder.none,
+                      ),
+                      style: TTextTheme.h2Style(context),
+                    ),
                     const Divider(thickness: 1, color: AppColors.tertiaryTextColor),
-                    Text(TextString.titleSignatureStepTwoDropOffAdd, style: TTextTheme.titleFullName(context)),
+                    Text(
+                      TextString.titleSignatureStepTwoDropOffAdd,
+                      style: TTextTheme.titleFullName(context),
+                    ),
                   ],
                 ),
               ),
@@ -1025,6 +1116,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
       ),
     );
   }
+
 
   // Image Sections
   Widget _buildPickupImageBox(BuildContext context) {

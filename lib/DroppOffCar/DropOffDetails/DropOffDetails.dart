@@ -7,6 +7,7 @@ import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -374,7 +375,7 @@ class DropOffDetails extends StatelessWidget {
               TextString.titlePickupNoteStepTwoDropOFf2 ,
               controller.additionalCommentsControllerDropOff,
               TextString.subtitleViewPickupStepTwoDropOff,
-              isReadOnly: false,
+              isReadOnly: true,
             ),
           ),
         ],
@@ -407,7 +408,7 @@ class DropOffDetails extends StatelessWidget {
               child: TextFormField(
                 cursorColor: AppColors.blackColor,
                 controller: item['controller'],
-                readOnly: !isSpecial,
+                readOnly: true,
                 style: TTextTheme.insidetextfieldWrittenText(context),
                 decoration: InputDecoration(
                   hintText: item['hint'],
@@ -734,9 +735,9 @@ class DropOffDetails extends StatelessWidget {
             children: [
               Text(TextString.subtitleAgreementEndTimeStepTwoDropOff2 , style: TTextTheme.dropdowninsideText(context)),
               const SizedBox(height: 8),
-              _editableTimeField(controller.endDateControllerStepTwo, "DD/MM/YYYY", context, isReadOnly: false),
+              _editableTimeField(controller.endDateControllerStepTwo, "02/12/2025", context, isReadOnly: true),
               const SizedBox(height: 8),
-              _editableTimeField(controller.endTimeControllerStepTwo, "Time:", context, isReadOnly: false),
+              _editableTimeField(controller.endTimeControllerStepTwo, "12:12 PM", context, isReadOnly: true),
             ],
           ),
         ),
@@ -767,9 +768,9 @@ class DropOffDetails extends StatelessWidget {
         /// Dropoff Section
         Text(TextString.subtitleAgreementEndTimeStepTwoDropOff2, style: TTextTheme.dropdowninsideText(context)),
         const SizedBox(height: 8),
-        _editableTimeField(controller.endDateControllerStepTwo, "DD/MM/YYYY", context, isReadOnly: false),
+        _editableTimeField(controller.endDateControllerStepTwo, "25/12/2025", context, isReadOnly: true),
         const SizedBox(height: 8),
-        _editableTimeField(controller.endTimeControllerStepTwo, "Time:", context, isReadOnly: false),
+        _editableTimeField(controller.endTimeControllerStepTwo, "12:12 PM", context, isReadOnly: true),
       ],
     );
   }
@@ -837,37 +838,47 @@ class DropOffDetails extends StatelessWidget {
             ),
           ),
 
-          ///  DROPOFF
+          /// DROPOFF SIDE
           Padding(
-            padding: EdgeInsets.only(top: isMobile ? 0 : 15),
+            padding: EdgeInsets.only(top: isMobile ? 0 : 5),
             child: SizedBox(
               width: columnWidth,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildMiniInputField(TextString.subtitleDropOffOdoStepTwoDropOff , "12457678", columnWidth, controller.odoControllerDropOff, context),
+                  // Dropoff ODO
+                  _buildMiniInputField(
+                      TextString.subtitleDropOffOdoStepTwoDropOff,
+                      "12457678",
+                      columnWidth,
+                      controller.odoControllerDropOff,
+                      context
+                  ),
                   const SizedBox(height: 18),
-                  _buildReportDropdown(
+
+
+                  _buildLockedDropdown(
                       TextString.subtitleDropOffFuelLevelStepTwoDropOff,
-                      ["Full (100%)", "High (75%)", "Half (50%)", "Low (25%)", "Empty (0%)"],
+                      controller.fuelLevelControllerDropOff.text,
                       columnWidth,
-                      controller.fuelLevelControllerDropOff,
                       context
                   ),
                   const SizedBox(height: 18),
-                  _buildReportDropdown(
+
+// Dropoff Exterior
+                  _buildLockedDropdown(
                       TextString.subtitleExteriorCleanlinessStepTwoDropOff2,
-                      ["Excellent", "Good", "Average", "Dirty"],
+                      controller.exteriorCleanlinessControllerDropOff.text,
                       columnWidth,
-                      controller.exteriorCleanlinessControllerDropOff,
                       context
                   ),
                   const SizedBox(height: 18),
-                  _buildReportDropdown(
-                      TextString.subtitleInteriorCleanlinessStepTwoDropOff2 ,
-                      ["Excellent", "Good", "Average", "Dirty"],
+
+// Dropoff Interior
+                  _buildLockedDropdown(
+                      TextString.subtitleInteriorCleanlinessStepTwoDropOff2,
+                      controller.interiorCleanlinessControllerDropOff.text,
                       columnWidth,
-                      controller.interiorCleanlinessControllerDropOff,
                       context
                   ),
                 ],
@@ -1068,40 +1079,43 @@ class DropOffDetails extends StatelessWidget {
   Widget _buildPickupImageBox2(BuildContext context) {
     bool isMobileView = MediaQuery.of(context).size.width < 600;
 
-    return Container(
-      width: double.infinity,
-      constraints: const BoxConstraints(minHeight: 180),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.tertiaryTextColor,
-          width: 1.5,
+    return DottedBorder(
+      borderType: BorderType.RRect,
+      radius: Radius.circular(12),
+      dashPattern: const [8, 6],
+      color: AppColors.tertiaryTextColor,
+      strokeWidth: 1.5,
+      child: Container(
+        width: double.infinity,
+        constraints: const BoxConstraints(minHeight: 180),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
         ),
-      ),
-      child: LayoutBuilder(builder: (context, constraints) {
-        final double itemWidth = isMobileView ? (constraints.maxWidth - 24) / 2 : 110;
+        child: LayoutBuilder(builder: (context, constraints) {
+          final double itemWidth = isMobileView ? (constraints.maxWidth - 24) / 2 : 110;
 
-        return Wrap(
-          spacing: 12,
-          runSpacing: 12,
-          children: List.generate(10, (index) {
-            return Container(
-              height: 100,
-              width: itemWidth,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AppColors.primaryColor, width: 1),
-                image: DecorationImage(
-                  image: AssetImage(ImageString.astonPic),
-                  fit: BoxFit.cover,
+          return Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: List.generate(10, (index) {
+              return Container(
+                height: 100,
+                width: itemWidth,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: AppColors.primaryColor, width: 1),
+                  image: DecorationImage(
+                    image: AssetImage(ImageString.astonPic),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-            );
-          }),
-        );
-      }),
+              );
+            }),
+          );
+        }),
+      ),
     );
   }
 
@@ -1594,7 +1608,7 @@ class DropOffDetails extends StatelessWidget {
 
 
   // Input Fields
-  Widget _buildMiniInputField(String label, String hint, double width, TextEditingController txtController, BuildContext context) {
+  Widget _buildMiniInputField(String label, String hint, double width, TextEditingController txtController, BuildContext context, {bool isReadOnly = true}) {
     return SizedBox(
       width: width,
       child: Column(
@@ -1608,7 +1622,7 @@ class DropOffDetails extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Container(
-            padding: EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               color: AppColors.secondaryColor,
               borderRadius: BorderRadius.circular(6),
@@ -1616,6 +1630,9 @@ class DropOffDetails extends StatelessWidget {
             child: TextFormField(
               cursorColor: AppColors.blackColor,
               controller: txtController,
+              readOnly: isReadOnly,
+              enabled: !isReadOnly,
+
               textAlignVertical: TextAlignVertical.center,
               style: TTextTheme.insidetextfieldWrittenText(context),
               decoration: InputDecoration(
@@ -1624,6 +1641,7 @@ class DropOffDetails extends StatelessWidget {
                 contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                 border: InputBorder.none,
                 isDense: true,
+                disabledBorder: InputBorder.none,
               ),
             ),
           ),
@@ -1631,93 +1649,31 @@ class DropOffDetails extends StatelessWidget {
       ),
     );
   }
-  Widget _buildReportDropdown(String label, List<String> items, double width, TextEditingController txtController, BuildContext context) {
-    return SizedBox(
-      width: width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: TTextTheme.titleTwo(context),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 8),
-          PopupMenuButton<String>(
-            initialValue: null,
-            offset: const Offset(0, 40),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+  Widget _buildLockedDropdown(String label, String value, double width, BuildContext context) {
+    String displayValue = value.isEmpty ? (label.contains("Fuel") ? "Full (100%)" : "Excellent") : value;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: TTextTheme.dropdowninsideText(context)),
+        const SizedBox(height: 8),
+        Container(
+          width: width,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+          decoration: BoxDecoration(
             color: AppColors.secondaryColor,
-            constraints: BoxConstraints(
-              minWidth: width,
-              maxWidth: width,
-            ),
-            onSelected: (val) {
-              txtController.text = val;
-              txtController.notifyListeners();
-            },
-            itemBuilder: (context) => items.asMap().entries.map((entry) {
-              return _buildFilterPopupItem(
-                  entry.value,
-                  context,
-                  isLast: entry.key == items.length - 1
-              );
-            }).toList(),
-            child: Container(
-              height: 38,
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                color: AppColors.secondaryColor,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: ValueListenableBuilder(
-                      valueListenable: txtController,
-                      builder: (context, value, _) {
-                        return Text(
-                          txtController.text.isEmpty ? items.first : txtController.text,
-                          style: TTextTheme.dropdowninsideText(context),
-                          overflow: TextOverflow.ellipsis,
-                        );
-                      },
-                    ),
-                  ),
-                  Image.asset(IconString.dropdownIcon, color: Colors.black),
-                ],
-              ),
-            ),
+            borderRadius: BorderRadius.circular(10),
           ),
-        ],
-      ),
-    );
-  }
-  PopupMenuItem<String> _buildFilterPopupItem(String text, BuildContext context, {bool isLast = false}) {
-    return PopupMenuItem<String>(
-      value: text,
-      padding: EdgeInsets.zero,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: Text(
-              text,
-              style: TTextTheme.titleTwo(context),
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Icon(Icons.check_circle_outline, size: 18, color: AppColors.blackColor),
+              const SizedBox(width: 8),
+              Text(displayValue, style: TTextTheme.pOne(context)),
+            ],
           ),
-          if (!isLast)
-            Divider(
-              height: 1,
-              thickness: 0.5,
-              color: AppColors.quadrantalTextColor,
-            ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
