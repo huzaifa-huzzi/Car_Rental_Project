@@ -447,12 +447,6 @@ class DropOffDetails extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ///  MOBILE TOGGLE:
-          if (isMobile)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: _buildToggleWidget(context),
-            ),
 
           Wrap(
             spacing: isMobile ? 0 : 25,
@@ -478,13 +472,6 @@ class DropOffDetails extends StatelessWidget {
                   ],
                 ),
               ),
-
-              ///  WEB TOGGLE:
-              if (!isMobile)
-                Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: _buildToggleWidget(context),
-                ),
 
               ///  DROPOFF DAMAGE
               SizedBox(
@@ -551,41 +538,31 @@ class DropOffDetails extends StatelessWidget {
   }
   Widget _buildInteractiveCarDiagram(BuildContext context, double width) {
     double height = width * 0.75;
-    return Obx(() => IgnorePointer(
-      ignoring: !controller.isDamageInspectionOpen.value,
-      child: Opacity(
-        opacity: controller.isDamageInspectionOpen.value ? 1.0 : 0.5,
-        child: Center(
-          child: GestureDetector(
-            onTapDown: (details) {
-              double dx = details.localPosition.dx / width;
-              double dy = details.localPosition.dy / height;
 
-              int idx = controller.damagePoints2.indexWhere((p) => (p.dx - dx).abs() < 0.05 && (p.dy - dy).abs() < 0.05);
-              if (idx != -1) {
-                controller.damagePoints2.removeAt(idx);
-              } else {
-                var type = controller.damageTypes2.firstWhere((t) => t['id'] == controller.selectedDamageType2.value);
-                controller.damagePoints2.add(DamagePoint(dx: dx, dy: dy, typeId: type['id'], color: type['color']));
-              }
-            },
-            child: Stack(
-              children: [
-                Image.asset(ImageString.carDamageInspectionImage, width: width, height: height, fit: BoxFit.contain),
-                ...controller.damagePoints2.map((point) => Positioned(
-                  left: (point.dx * width) - 10,
-                  top: (point.dy * height) - 10,
-                  child: CircleAvatar(
-                    radius: 10, backgroundColor: point.color,
-                    child: Text(point.typeId.toString(), style: TTextTheme.btnNumbering(context)),
-                  ),
-                )),
-              ],
-            ),
+    return Center(
+      child: Stack(
+        children: [
+          Image.asset(
+            ImageString.carDamageInspectionImage,
+            width: width,
+            height: height,
+            fit: BoxFit.contain,
           ),
-        ),
+          ...controller.damagePoints2.map((point) => Positioned(
+            left: (point.dx * width) - 10,
+            top: (point.dy * height) - 10,
+            child: CircleAvatar(
+              radius: 10,
+              backgroundColor: point.color,
+              child: Text(
+                point.typeId.toString(),
+                style: TTextTheme.btnNumbering(context),
+              ),
+            ),
+          )),
+        ],
       ),
-    ));
+    );
   }
   Widget _buildInteractiveLegendBox(BuildContext context) {
     return Container(
@@ -595,70 +572,30 @@ class DropOffDetails extends StatelessWidget {
         border: Border.all(color: AppColors.secondaryColor),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Obx(() => Wrap(
+      child: Wrap(
         spacing: 10,
         runSpacing: 8,
         children: controller.damageTypes2.map((type) {
-          bool isSelected = controller.selectedDamageType2.value == type['id'];
-          return GestureDetector(
-            onTap: () { if(controller.isDamageInspectionOpen.value) controller.selectedDamageType2.value = type['id']; },
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-              decoration: BoxDecoration(
-                color: isSelected ? AppColors.secondaryColor : Colors.transparent,
-                borderRadius: BorderRadius.circular(6),
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircleAvatar(
+                radius: 10,
+                backgroundColor: type['color'],
+                child: Text(
+                  type['id'].toString(),
+                  style: TTextTheme.btnNumbering(context),
+                ),
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircleAvatar(
-                    radius: 10, backgroundColor: type['color'],
-                    child: Text(type['id'].toString(), style: TTextTheme.btnNumbering(context)),
-                  ),
-                  const SizedBox(width: 5),
-                  Text(type['label'], style: TTextTheme.titleSix(context)),
-                ],
-              ),
-            ),
+              const SizedBox(width: 5),
+              Text(type['label'], style: TTextTheme.titleSix(context)),
+            ],
           );
         }).toList(),
-      )),
+      ),
     );
   }
-  Widget _buildToggleWidget(BuildContext context) {
-    return Obx(() => GestureDetector(
-      onTap: () => controller.isDamageInspectionOpen.value = !controller.isDamageInspectionOpen.value,
-      child: Container(
-        width: 70,
-        height: 32,
-        padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: controller.isDamageInspectionOpen.value ? AppColors.primaryColor : AppColors.quadrantalTextColor,
-        ),
-        child: Stack(
-          children: [
-            AnimatedAlign(
-              duration: const Duration(milliseconds: 200),
-              alignment: controller.isDamageInspectionOpen.value ? Alignment.centerRight : Alignment.centerLeft,
-              child: Container(
-                width: 24,
-                height: 24,
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4)),
-              ),
-            ),
-            Align(
-              alignment: controller.isDamageInspectionOpen.value ? const Alignment(-0.6, 0) : const Alignment(0.6, 0),
-              child: Text(
-                controller.isDamageInspectionOpen.value ? "Yes" : "No",
-                style:TTextTheme.btnWhiteColor(context),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ));
-  }
+
 
   // Rent time Section
   Widget _buildRentTimeSection(BuildContext context, bool isMobile) {
