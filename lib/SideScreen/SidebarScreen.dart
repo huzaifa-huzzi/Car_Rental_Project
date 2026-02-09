@@ -19,22 +19,26 @@ class SidebarScreen extends StatelessWidget {
   final Widget? child;
   final bool hideMobileAppBar;
 
-  SidebarScreen({super.key, required this.onTap, this.child, this.hideMobileAppBar = false}){
+  SidebarScreen(
+      {super.key, required this.onTap, this.child, this.hideMobileAppBar = false}) {
     Get.lazyPut<SideBarController>(() => SideBarController(), fenix: true);
   }
+
   final SideBarController controller = Get.find<SideBarController>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-
     final bool isMobile = AppSizes.isMobile(context);
     final bool isTab = AppSizes.isTablet(context);
     final bool isWeb = AppSizes.isWeb(context);
     final double sidebarWidth = isWeb ? 240 : 150;
 
 
-    final String currentRoute = GoRouterState.of(context).uri.toString();
+    final String currentRoute = GoRouterState
+        .of(context)
+        .uri
+        .toString();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.syncWithRoute(currentRoute);
@@ -55,7 +59,8 @@ class SidebarScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Image.asset(IconString.symbol, width: isMobile ? 30 : 36, height: isMobile ? 32 : 38),
+                    Image.asset(IconString.symbol, width: isMobile ? 30 : 36,
+                        height: isMobile ? 32 : 38),
                     SizedBox(width: AppSizes.horizontalPadding(context) / 2),
                     Text("Softsnip", style: TTextTheme.h6Style(context)),
                   ],
@@ -76,7 +81,7 @@ class SidebarScreen extends StatelessWidget {
                     onTap: (val) => context.go('/dashboard'),
                     scaffoldKey: _scaffoldKey,
                   ),
-                   // Car Inventory
+                  // Car Inventory
                   SidebarComponents.menuItem(
                     context, controller,
                     iconPath: IconString.carInventoryIcon,
@@ -85,7 +90,7 @@ class SidebarScreen extends StatelessWidget {
                     scaffoldKey: _scaffoldKey,
                   ),
 
-                      // Customers
+                  // Customers
                   SidebarComponents.menuItem(
                     context, controller,
                     iconPath: IconString.customerIcon,
@@ -94,7 +99,7 @@ class SidebarScreen extends StatelessWidget {
                     scaffoldKey: _scaffoldKey,
                   ),
 
-                    //  Pickup Car
+                  //  Pickup Car
                   SidebarComponents.menuItem(
                     context, controller,
                     iconPath: IconString.agreementIcon,
@@ -103,7 +108,7 @@ class SidebarScreen extends StatelessWidget {
                     scaffoldKey: _scaffoldKey,
                   ),
 
-                   //  Dropoff Car
+                  //  Dropoff Car
                   SidebarComponents.menuItem(
                     context, controller,
                     iconPath: IconString.returnCarIcon,
@@ -117,7 +122,8 @@ class SidebarScreen extends StatelessWidget {
                     controller,
                     iconPath: IconString.staffIcon,
                     title: TextString.staffTitle,
-                    trailing: SidebarComponents.redDotWithNumber(controller.incomeRedDot.value, context),
+                    trailing: SidebarComponents.redDotWithNumber(
+                        controller.incomeRedDot.value, context),
                     onTap: (val) {
                       context.go('/staff');
                     },
@@ -132,10 +138,15 @@ class SidebarScreen extends StatelessWidget {
             ),
             SizedBox(height: 30,),
             Padding(
-              padding: EdgeInsets.only(bottom: AppSizes.verticalPadding(context) * 0.7),
-              child: SidebarComponents.menuItem(context, controller, iconPath: IconString.logoutIcon, title: TextString.logoutTitle, onTap: (val){
-                context.go('/login');
-              }, scaffoldKey: _scaffoldKey),
+              padding: EdgeInsets.only(
+                  bottom: AppSizes.verticalPadding(context) * 0.7),
+              child: SidebarComponents.menuItem(
+                  context, controller, iconPath: IconString.logoutIcon,
+                  title: TextString.logoutTitle,
+                  onTap: (val) {
+                    context.go('/login');
+                  },
+                  scaffoldKey: _scaffoldKey),
             ),
           ],
         ),
@@ -148,25 +159,40 @@ class SidebarScreen extends StatelessWidget {
       }
       else if (currentRoute.contains('/pickupcar')) {
         context.push('/addpickup', extra: {"hideMobileAppBar": true});
-      }else if (currentRoute.contains('/dropoffCar')) {
+      } else if (currentRoute.contains('/dropoffCar')) {
         context.push('/addDropOff', extra: {"hideMobileAppBar": true});
       } else {
         context.push('/addNewCar', extra: {"hideMobileAppBar": true});
       }
     }
 
-    // Mobile/Tablet/Web Appbars
+    // Mobile and Tab check
     if (isMobile || isTab) {
+      final bool isDashboardRoute = currentRoute.contains('/dashboard');
+
       return Scaffold(
         backgroundColor: Colors.white,
         key: _scaffoldKey,
-        drawer: Drawer(backgroundColor: Colors.white, child: sidebarContent(showLogo: false)),
+        drawer: Drawer(backgroundColor: Colors.white,
+            child: sidebarContent(showLogo: false)),
         appBar: hideMobileAppBar ? null : AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.secondaryColor,
           title: isMobile
-              ? MobileTopBar(scaffoldKey: _scaffoldKey, profileImageUrl: ImageString.userImage, onAddPressed: handleAddButtonPressed)
-              : TabAppBar(scaffoldKey: _scaffoldKey, profileImageUrl: ImageString.userImage, onAddPressed: handleAddButtonPressed),
+              ? MobileTopBar(
+            scaffoldKey: _scaffoldKey,
+            profileImageUrl: ImageString.userImage,
+            isDashboard: isDashboardRoute,
+            onAddPressed: handleAddButtonPressed,
+            onSearchPressed: () => print("Search Clicked"),
+          )
+              : TabAppBar(
+            scaffoldKey: _scaffoldKey,
+            profileImageUrl: ImageString.userImage,
+            isDashboard: isDashboardRoute,
+            onAddPressed: handleAddButtonPressed,
+            onSearchPressed: () => print("Search Clicked"),
+          ),
         ),
         body: SafeArea(child: child ?? const SizedBox.shrink()),
       );
@@ -175,7 +201,11 @@ class SidebarScreen extends StatelessWidget {
         body: SafeArea(
           child: Row(
             children: [
-              Container(width: sidebarWidth, color: Colors.white, child: sidebarContent(showLogo: true)),
+              Container(
+                  width: sidebarWidth,
+                  color: Colors.white,
+                  child: sidebarContent(showLogo: true)
+              ),
               Expanded(child: child ?? const SizedBox.shrink()),
             ],
           ),
@@ -184,7 +214,7 @@ class SidebarScreen extends StatelessWidget {
     }
   }
 
-  static Widget wrapWithSidebarIfNeeded({
+ static Widget wrapWithSidebarIfNeeded({
     required Widget child,
     bool hideMobileAppBar = false,
   }) {
@@ -194,7 +224,6 @@ class SidebarScreen extends StatelessWidget {
       child: child,
     );
   }
-
 
 
 }

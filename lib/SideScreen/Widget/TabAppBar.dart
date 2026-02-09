@@ -9,15 +9,19 @@ import 'package:get/get.dart';
 class TabAppBar extends StatefulWidget implements PreferredSizeWidget {
   final VoidCallback? onAddPressed;
   final VoidCallback? onNotificationPressed;
+  final VoidCallback? onSearchPressed;
   final String profileImageUrl;
   final GlobalKey<ScaffoldState> scaffoldKey;
+  final bool isDashboard;
 
   const TabAppBar({
     super.key,
     this.onAddPressed,
+    this.onSearchPressed,
     this.onNotificationPressed,
     required this.profileImageUrl,
     required this.scaffoldKey,
+    this.isDashboard = false,
   });
 
   @override
@@ -170,7 +174,24 @@ class _TabAppBarState extends State<TabAppBar> with WidgetsBindingObserver {
               mainAxisSize: MainAxisSize.min,
               children: [
                 /// Add Button
-                GestureDetector(
+                widget.isDashboard
+                    ? GestureDetector(
+                  onTap: widget.onSearchPressed,
+                  child: Container(
+                    width: containerSize,
+                    height: containerSize,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Icon(
+                        Icons.search,
+                        color: AppColors.textColor,
+                        size: iconSize
+                    ),
+                  ),
+                )
+                    : GestureDetector(
                   onTap: widget.onAddPressed,
                   child: Container(
                     width: containerSize,

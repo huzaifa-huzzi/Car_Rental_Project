@@ -28,6 +28,8 @@ dependencies:
   # // ------- Car Inventory Screen ------//(Same type of packages going for other modules also)
   file_picker: ^10.3.7
   dotted_border: ^2.1.0
+  # // ------- DashBoard Screen ------//
+  fl_chart: ^0.70.0
   #state management#
   get: ^4.7.3
 
