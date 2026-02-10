@@ -432,7 +432,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                     elevation: 25,
                     borderRadius: BorderRadius.circular(12),
                     shadowColor: AppColors.quadrantalTextColor,
-                    child: _buildModernDropdown(context, buttonWidth),
+                    child: _buildModernDropdown(context, buttonWidth,PickupCarController()),
                   ),
                 );
               }),
@@ -462,7 +462,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                     elevation: 25,
                     borderRadius: BorderRadius.circular(15),
                     shadowColor: AppColors.quadrantalTextColor,
-                    child: _buildCarModernDropdown(context, buttonWidth),
+                    child: _buildCarModernDropdown(context, buttonWidth,PickupCarController()),
                   ),
                 );
               }),
@@ -579,7 +579,7 @@ class StepOneSelectionWidget extends StatelessWidget {
   }
 
    // Cars Dropdown
-  Widget _buildCarModernDropdown(BuildContext context, double width) {
+  Widget _buildCarModernDropdown(BuildContext context, double width,PickupCarController controller) {
     return GestureDetector(
       onTap: () {},
       child: Material(
@@ -617,26 +617,28 @@ class StepOneSelectionWidget extends StatelessWidget {
                 ),
               ),
 
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxHeight: 200),
-                child: Scrollbar(
-                  thumbVisibility: true,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: IntrinsicWidth(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Column(
-                            children: List.generate(6, (index) => _buildCarCardItem(context)),
-                          ),
-                        ),
-                      ),
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxHeight: 200),
+          child: Scrollbar(
+            thumbVisibility: true,
+            controller:controller.carScrollController,
+            child: SingleChildScrollView(
+              controller: controller.carScrollController,
+              scrollDirection: Axis.vertical,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: IntrinsicWidth(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Column(
+                      children: List.generate(6, (index) => _buildCarCardItem(context)),
                     ),
                   ),
                 ),
               ),
+            ),
+          ),
+        ),
               const SizedBox(height: 12),
             ],
           ),
@@ -1122,7 +1124,7 @@ class StepOneSelectionWidget extends StatelessWidget {
 
 
   // Dropdown of customers
-  Widget _buildModernDropdown(BuildContext context, double width) {
+  Widget _buildModernDropdown(BuildContext context, double width,PickupCarController controller) {
     return Material(
       elevation: 10,
       borderRadius: BorderRadius.circular(12),
@@ -1161,13 +1163,18 @@ class StepOneSelectionWidget extends StatelessWidget {
               constraints: const BoxConstraints(maxHeight: 180),
               child: Scrollbar(
                 thumbVisibility: true,
+                controller: controller.customerScrollController,
                 child: SingleChildScrollView(
+                  controller:controller.customerScrollController,
                   scrollDirection: Axis.vertical,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(4, (index) => _buildCustomerCard(context)),
+                      children: List.generate(
+                        4,
+                            (index) => _buildCustomerCard(context),
+                      ),
                     ),
                   ),
                 ),

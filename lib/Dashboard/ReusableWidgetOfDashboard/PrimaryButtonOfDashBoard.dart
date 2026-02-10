@@ -29,7 +29,7 @@ class AddButtonOfDashboard extends StatelessWidget {
       child: Container(
         height: height,
         width: width,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 4),
         decoration: BoxDecoration(
           color: AppColors.primaryColor,
           borderRadius: borderRadius ?? BorderRadius.circular(8),
@@ -48,13 +48,18 @@ class AddButtonOfDashboard extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
               ],
-              Flexible(
-                child: Text(
-                  text,
-                  style: TTextTheme.btnTwo(context)
-                      .copyWith(color: Colors.white),
-                  overflow: TextOverflow.ellipsis,
-                ),
+              FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    text,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                    maxLines: 1,
+                    softWrap: false,
+                  ),
               ),
               if (!isIconLeft) ...[
                 const SizedBox(width: 8),

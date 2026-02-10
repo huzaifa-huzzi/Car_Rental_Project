@@ -370,7 +370,7 @@ class TextString {
   static const String  subtitleViewPickupStepTwoDropOff  =   'Describe the vehicles condition, unique features, or rental policies...';
   static const String  titleCarPictureStepTwoDropOff  =   'Car Picture';
   static const String  titleCarPictureStepTwoDropOffTwo  =   'Pickup Car Image';
-  static const String  subtitleCarPictureStepTwoDropOff  =   'Upload DropOff Car Images (MAX 10)';
+  static const String  subtitleCarPictureStepTwoDropOff  =   'DropOff Car Images';
   static const String  titleRentTimeStepTwoDropOff  =   'Rent Time';
   static const String  subtitleAgreementTimeStepTwoPickupDropOff  =   'Pickup Agreement Start Time';
   static const String  subtitleAgreementEndTimeStepTwoPickupDropOff  =   'Pickup Agreement End Time';

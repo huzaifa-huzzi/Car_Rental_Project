@@ -1,4 +1,7 @@
 import 'package:car_rental_project/Dashboard/DashboardController.dart';
+import 'package:car_rental_project/Dashboard/ReusableWidgetOfDashboard/PrimaryButtonOfDashBoard.dart';
+import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
@@ -39,14 +42,24 @@ class DashboardContent extends StatelessWidget {
                   _buildRightSidePanel(), // Yeh ab hamesha niche aayega full width ke saath
                 ],
               )
-                  : Row( // Sirf Desktop/Web pe side-by-side
+                  : Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(flex: 3, child: Column(children: _buildMainSections(context))),
-                  const SizedBox(width: 20),
-                  Expanded(flex: 1, child: _buildRightSidePanel()),
+                  // Left Side (Revenue Chart etc)
+                  Expanded(
+                    flex: 4, // Isse thoda kam kar sakte hain agar right side ko jagah deni hai
+                    child: Column(children: _buildMainSections(context)),
+                  ),
+
+                  const SizedBox(width: 20), // Dono panels ke beech gap
+
+                  // Right Side Panel (Quick Actions + Body Type)
+                  Expanded(
+                    flex: 2, // 🔥 Isse 1 se barha kar 2 (ya 1.5) kar den. Isse right panel wide ho jayega.
+                    child: _buildRightSidePanel(),
+                  ),
                 ],
-              ),
+              )
             ],
           ),
         );
@@ -138,35 +151,60 @@ class DashboardContent extends StatelessWidget {
 
   List<Widget> _buildMainSections(BuildContext context) {
     bool isWide = !isMobile;
+    double targetHeight = 200; // Desktop height
+    double mobileHeight = 300; // Mobile height
+    double statusMobileHeight = 460; // Mobile height
 
     return [
       _buildRevenueSummarySection(context),
       const SizedBox(height: 20),
       isWide
           ? Row(
-        crossAxisAlignment: CrossAxisAlignment.start, // Stretch ki jagah start use karein
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Cars by Status Section
           Expanded(
-              flex: 2,
-              child: _statusSectionCard("Cars by Status")
+            flex: 2,
+            child: _statusSectionCard("Cars by Status", height: targetHeight),
           ),
           const SizedBox(width: 20),
-          // Dropoff Status Section - Height yahan define kar di hai error se bachne ke liye
           Expanded(
-              flex: 1,
-              child: SizedBox(
-                  height: 310, // Fixed height taake layout crash na ho
-                  child: _dashboardCard("Dropoff Status", _buildSimpleBarChart())
-              )
+            flex: 1,
+            child: _dashboardCard(
+              "Dropoff Status",
+              _buildSimpleBarChart(),
+              height: targetHeight,
+            ),
           ),
         ],
       )
           : Column(
         children: [
-          _statusSectionCard("Cars by Status"),
+          // 🔥 Yahan height pass karna zaroori tha crash rokne ke liye
+          _statusSectionCard("Cars by Status", height: statusMobileHeight),
           const SizedBox(height: 20),
-          _dashboardCard("Dropoff Status", _buildSimpleBarChart(), height: 320),
+          _dashboardCard(
+            "Dropoff Status",
+            _buildSimpleBarChart(),
+            height: mobileHeight,
+          ),
+        ],
+      ),
+
+      const SizedBox(height: 20),
+
+      isWide
+          ? Row(
+        children: [
+          Expanded(child: _buildPickupStatusSection()),
+          const SizedBox(width: 20),
+          Expanded(child: _buildDropoffDamageSection()),
+        ],
+      )
+          : Column(
+        children: [
+          _buildPickupStatusSection(),
+          const SizedBox(height: 20),
+          _buildDropoffDamageSection(),
         ],
       ),
     ];
@@ -177,16 +215,17 @@ class DashboardContent extends StatelessWidget {
   Widget _buildRevenueSummarySection(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
+        bool isVerySmall = constraints.maxWidth < 250;
         bool isSmall = constraints.maxWidth < 450;
 
         return Container(
-          height: 400,
-          padding: const EdgeInsets.all(20),
+          height: 440, // Scrollbar ki jagah ke liye height thodi mazeed barha di
+          padding: const EdgeInsets.all(16),
           decoration: _cardDecoration(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Responsive Header
+              // Header Section
               isSmall
                   ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,24 +242,54 @@ class DashboardContent extends StatelessWidget {
                   _buildResponsiveDropdown(),
                 ],
               ),
-              const SizedBox(height: 12),
-              // Legends
-              Row(
+              const SizedBox(height: 15),
+
+              // Legends Section (Adaptive)
+              isVerySmall
+                  ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildLegend(Colors.red, "Income"),
+                  const SizedBox(height: 8),
+                  _buildLegend(const Color(0xFF1E293B), "Expenses"),
+                ],
+              )
+                  : Row(
                 children: [
                   _buildLegend(Colors.red, "Income"),
                   const SizedBox(width: 15),
                   _buildLegend(const Color(0xFF1E293B), "Expenses"),
                 ],
               ),
-              const SizedBox(height: 30),
-              // 🔥 Web pe Full Width, Mobile pe Scrollable
+              const SizedBox(height: 25),
+
+              // 🔥 Custom Styled Scrollbar for Mobile/Small views
               Expanded(
                 child: isSmall
-                    ? SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: SizedBox(width: 500, child: _buildRevenueChart()),
+                    ? Theme(
+                  data: ThemeData(
+                    scrollbarTheme: ScrollbarThemeData(
+                      thumbColor: WidgetStateProperty.all(Colors.red.withOpacity(0.8)), // Scrollbar Red jesa dikhega
+                      thickness: WidgetStateProperty.all(4), // Patla aur sleek design
+                      radius: const Radius.circular(10),
+                      thumbVisibility: WidgetStateProperty.all(true), // Hamesha nazar aaye
+                    ),
+                  ),
+                  child: Scrollbar(
+                    // Scrollbar ko titles ke upar lane ke liye padding settings
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 15), // Scrollbar aur Bottom Titles ke beech gap
+                        child: SizedBox(
+                          width: 600, // Thodi width barha di taake scroll smooth ho
+                          child: _buildRevenueChart(),
+                        ),
+                      ),
+                    ),
+                  ),
                 )
-                    : _buildRevenueChart(), // Web/Tablet pe direct expanded
+                    : _buildRevenueChart(),
               ),
             ],
           ),
@@ -232,7 +301,8 @@ class DashboardContent extends StatelessWidget {
   Widget _buildRevenueChart() {
     return Obx(() => BarChart(
       BarChartData(
-        maxY: 700, minY: -600,
+        maxY: 700,
+        minY: -600,
         alignment: BarChartAlignment.spaceAround,
         gridData: FlGridData(
           show: true,
@@ -246,11 +316,10 @@ class DashboardContent extends StatelessWidget {
         ),
         borderData: FlBorderData(show: false),
         titlesData: FlTitlesData(
-          // ... (leftTitles aur bottomTitles pehle wale hi rahen ge)
           leftTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
-              reservedSize: 40,
+              reservedSize: 35,
               getTitlesWidget: (value, meta) {
                 if (value % 300 == 0) {
                   return Text(value.abs().toInt().toString(),
@@ -260,52 +329,35 @@ class DashboardContent extends StatelessWidget {
               },
             ),
           ),
-          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
+              reservedSize: 35,
               getTitlesWidget: (double value, TitleMeta meta) {
                 const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
                 if (value >= 0 && value < 12) {
                   return SideTitleWidget(
                     meta: meta,
                     space: 10,
-                    child: Text(months[value.toInt()], style: const TextStyle(color: Colors.grey, fontSize: 10)),
+                    child: Text(months[value.toInt()],
+                        style: const TextStyle(color: Colors.grey, fontSize: 10, fontWeight: FontWeight.w500)),
                   );
                 }
                 return const SizedBox();
               },
             ),
           ),
+          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
         ),
 
-        /* ================= TOOLTIP & TOUCH SETTINGS ================= */
         barTouchData: BarTouchData(
           enabled: true,
-          handleBuiltInTouches: true, // Built-in touch handling ko enable rakhen
           touchTooltipData: BarTouchTooltipData(
             getTooltipColor: (group) => Colors.white,
             tooltipRoundedRadius: 8,
-            tooltipPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            fitInsideHorizontally: true, // Tooltip screen se bahar nahi jaye ga
+            fitInsideHorizontally: true,
             fitInsideVertically: true,
-            getTooltipItem: (group, groupIndex, rod, rodIndex) {
-              return BarTooltipItem(
-                'Income\n',
-                const TextStyle(color: Colors.grey, fontSize: 10),
-                children: [
-                  TextSpan(
-                    text: '\$${controller.income[group.x.toInt()]}',
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14
-                    ),
-                  ),
-                ],
-              );
-            },
           ),
         ),
 
@@ -314,13 +366,13 @@ class DashboardContent extends StatelessWidget {
             x: index,
             barRods: [
               BarChartRodData(
-                toY: controller.income[index],
-                fromY: -controller.expense[index],
+                toY: (controller.income[index] as num).toDouble(),
+                fromY: -(controller.expense[index] as num).toDouble(),
                 width: 16,
                 borderRadius: BorderRadius.circular(4),
                 rodStackItems: [
-                  BarChartRodStackItem(-controller.expense[index], 0, const Color(0xFF1E293B)),
-                  BarChartRodStackItem(0, controller.income[index], Colors.red),
+                  BarChartRodStackItem(-(controller.expense[index] as num).toDouble(), 0, const Color(0xFF1E293B)),
+                  BarChartRodStackItem(0, (controller.income[index] as num).toDouble(), Colors.red),
                 ],
               ),
             ],
@@ -368,34 +420,349 @@ class DashboardContent extends StatelessWidget {
 
   /* ===================== OTHER CHARTS & PANEL ===================== */
 
-  Widget _statusSectionCard(String title) {
+
+  Widget _buildPickupStatusSection() {
     return Container(
-      width: double.infinity,
       padding: const EdgeInsets.all(16),
+      decoration: _cardDecoration(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // 🔥 Wrap ko SizedBox mein dala taake ye poori width le sake
+          SizedBox(
+            width: double.infinity,
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween, // Desktop pe door rakhega
+              crossAxisAlignment: WrapCrossAlignment.center,
+              runSpacing: 12, // Mobile pe shift hone pe gap
+              children: [
+                const Text(
+                  "Pickup Status",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Color(0xFF1E293B)
+                  ),
+                ),
+
+                // Right side group
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                        "Sort by: ",
+                        style: TextStyle(color: Colors.grey, fontSize: 10)
+                    ),
+                    const SizedBox(width: 4),
+                    Obx(() => Container(
+                      height: 28,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF1F5F9),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: controller.selectedPickupPeriod.value,
+                          isDense: true,
+                          icon: const Icon(Icons.keyboard_arrow_down, size: 14),
+                          style: const TextStyle(
+                              fontSize: 10,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold
+                          ),
+                          items: controller.pickupPeriods.map((p) => DropdownMenuItem(
+                            value: p,
+                            child: Text(p),
+                          )).toList(),
+                          onChanged: (val) => controller.updatePickupFilter(val),
+                        ),
+                      ),
+                    )),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 25),
+
+          // Bars Section
+          Obx(() {
+            var data = controller.pickupData[controller.selectedPickupPeriod.value]!;
+            return Column(
+              children: [
+                _buildPickupBar("Completed", data['completed']!, "45 Unit", const Color(0xFF1E293B)),
+                const SizedBox(height: 20),
+                _buildPickupBar("Awaiting", data['awaiting']!, "40 Unit", Colors.red),
+                const SizedBox(height: 20),
+                _buildPickupBar("Overdue", data['overdue']!, "50 Unit", const Color(0xFFFFBABD)),
+                const SizedBox(height: 20),
+                _buildPickupBar("Processing", data['processing']!, "30 Unit", const Color(0xFFCBD5E1)),
+              ],
+            );
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPickupBar(String label, double progress, String unit, Color color) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // 1. Progress Bar (Top)
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: LinearProgressIndicator(
+            value: progress,
+            minHeight: 10, // 🔥 Standard thickness
+            backgroundColor: const Color(0xFFF1F5F9),
+            color: color,
+          ),
+        ),
+        const SizedBox(height: 10), // 🔥 Bar aur Text ke darmiyan gap
+
+        // 2. Info Row (Bottom)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Text(
+                label,
+                style: TextStyle(fontSize: 10, color: color, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Text(
+              unit,
+              style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1E293B)
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDropoffDamageSection() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: _cardDecoration(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: double.infinity,
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              runSpacing: 10,
+              children: [
+                const Text(
+                  "Dropoff Damage",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF1E293B)),
+                ),
+
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text("Sort by: ", style: TextStyle(color: Colors.grey, fontSize: 10)),
+                    const SizedBox(width: 4),
+                    // 🔥 Ab ye sirf Damage section ko control karega
+                    Obx(() => Container(
+                      height: 28,
+                      padding: const EdgeInsets.symmetric(horizontal: 6),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF1F5F9),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: controller.selectedDamagePeriod.value, // 👈 Naya Variable
+                          isDense: true,
+                          icon: const Icon(Icons.keyboard_arrow_down, size: 14),
+                          style: const TextStyle(fontSize: 10, color: Colors.black87, fontWeight: FontWeight.bold),
+                          items: controller.damagePeriods.map((p) => DropdownMenuItem(
+                              value: p,
+                              child: Text(p)
+                          )).toList(),
+                          onChanged: (val) => controller.updateDamageFilter(val), // 👈 Naya Function
+                        ),
+                      ),
+                    )),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          // Damage/Safe Legend
+          Row(
+            children: [
+              _buildLegendItem("Damage", Colors.red),
+              const SizedBox(width: 15),
+              _buildLegendItem("Safe", Colors.grey.shade300),
+            ],
+          ),
+          const SizedBox(height: 20),
+          SizedBox(height: 160, child: _buildDropoffDamageChart()),
+        ],
+      ),
+    );
+  }
+
+// Chota helper legend ke liye
+  Widget _buildLegendItem(String label, Color color) {
+    return Row(
+      children: [
+        Container(width: 8, height: 8, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
+        const SizedBox(width: 6),
+        Text(label, style: const TextStyle(fontSize: 10, color: Colors.grey)),
+      ],
+    );
+  }
+
+  Widget _buildDropoffDamageChart() {
+    return Obx(() {
+      var currentData = controller.damageDataMap[controller.selectedDamagePeriod.value]!;
+      double safeY = (currentData['safe'] as num).toDouble();
+      double damageY = (currentData['damage'] as num).toDouble();
+      String safeCount = currentData['safeCount'].toString();
+      String damageCount = currentData['damageCount'].toString();
+
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // 1. Chart Section
+          Expanded(
+            flex: 1,
+            child: Column(
+              children: [
+                Expanded(
+                  child: BarChart(
+                    BarChartData(
+                      gridData: const FlGridData(show: false),
+                      borderData: FlBorderData(show: false),
+                      titlesData: const FlTitlesData(show: false),
+                      barGroups: [
+                        BarChartGroupData(x: 0, barRods: [
+                          BarChartRodData(toY: safeY, color: Colors.grey.shade200, width: 25, borderRadius: BorderRadius.circular(6))
+                        ]),
+                        BarChartGroupData(x: 1, barRods: [
+                          BarChartRodData(toY: damageY, color: Colors.red, width: 25, borderRadius: BorderRadius.circular(6))
+                        ]),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("50%", style: TextStyle(fontSize: 10, color: Colors.grey)),
+                    Text("50%", style: TextStyle(fontSize: 10, color: Colors.red, fontWeight: FontWeight.bold)),
+                  ],
+                )
+              ],
+            ),
+          ),
+
+          const SizedBox(width: 8),
+
+          // 2. Stats Section
+          Expanded(
+            flex: 1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 🔥 Dynamic Counts with Ellipsis
+                _buildDamageStat("$damageCount Cars", "50%", Colors.red),
+                const SizedBox(height: 20),
+                _buildDamageStat("$safeCount Cars", "50%", Colors.grey.shade300),
+              ],
+            ),
+          ),
+        ],
+      );
+    });
+  }
+
+  Widget _buildDamageStat(String count, String percent, Color color) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          children: [
+            Container(
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(2))
+            ),
+            const SizedBox(width: 6),
+            // 🔥 Text ko Flexible mein dala aur Ellipsis lagaya
+            Flexible(
+              child: Text(
+                count,
+                overflow: TextOverflow.ellipsis, // Lambe text ko '...' kar dega
+                maxLines: 1,
+                softWrap: false,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+              ),
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 14),
+          child: Text(
+              percent,
+              style: TextStyle(color: Colors.grey.shade500, fontSize: 10)
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _statusSectionCard(String title, {double? height}) {
+    return Container(
+      height: height, // Yahan aap 220 ya 240 pass kar sakte hain
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), // 🔥 Vertical padding 16 se 12 ki
       decoration: _cardDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-          const SizedBox(height: 20),
-          // 🔥 Agar mobile nahi hai (Web/Tablet), to hamesha Row mein dikhao
+          Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)), // 🔥 Font 15 se 14
+          const SizedBox(height: 40), // 🔥 Gap kam kiya
           !isMobile
               ? Row(
             children: [
               Expanded(child: _statusCircularItem("215", "Available", Colors.red, 0.7)),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8), // Gap kam kiya
               Expanded(child: _statusCircularItem("215", "Maintenance", Colors.grey.shade500, 0.5)),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               Expanded(child: _statusCircularItem("215", "Unavailable", Colors.black, 0.3)),
             ],
           )
-              : Column( // Mobile par ek ke niche ek
+              : Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               _statusCircularItem("215", "Available", Colors.red, 0.7),
-              const SizedBox(height: 12),
+              const SizedBox(height: 14),
               _statusCircularItem("215", "Maintenance", Colors.grey.shade500, 0.5),
-              const SizedBox(height: 12),
+              const SizedBox(height: 14),
               _statusCircularItem("215", "Unavailable", Colors.black, 0.3),
             ],
           ),
@@ -406,17 +773,12 @@ class DashboardContent extends StatelessWidget {
 
   Widget _statusCircularItem(String units, String label, Color color, double progress) {
     return Container(
-      // Padding thodi barhayi hai design ke liye
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8), // 🔥 Vertical padding 20 se 12 ki
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
+          BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 8, offset: const Offset(0, 2)),
         ],
       ),
       child: Column(
@@ -426,41 +788,22 @@ class DashboardContent extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               SizedBox(
-                width: 65, height: 65,
-                child: CircularProgressIndicator(
-                  value: 1.0, strokeWidth: 7, color: Colors.grey.shade100,
-                ),
+                width: 50, height: 50, // 🔥 Circle size 65 se 50 kiya (Height bachegi)
+                child: CircularProgressIndicator(value: 1.0, strokeWidth: 5, color: Colors.grey.shade100),
               ),
               SizedBox(
-                width: 65, height: 65,
-                child: CircularProgressIndicator(
-                  value: progress, strokeWidth: 7, color: color,
-                  strokeCap: StrokeCap.round,
-                ),
+                width: 50, height: 50,
+                child: CircularProgressIndicator(value: progress, strokeWidth: 5, color: color, strokeCap: StrokeCap.round),
               ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(units, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: color)),
-                  const Text("Units", style: TextStyle(fontSize: 9, color: Colors.grey)),
-                ],
-              ),
+              Text(units, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: color)),
             ],
           ),
-          const SizedBox(height: 15),
-          // Label Button Style
+          const SizedBox(height: 10), // Gap kam kiya
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              label,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
-            ),
+            padding: const EdgeInsets.symmetric(vertical: 6), // Button slim kiya
+            decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(6)),
+            child: Text(label, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -469,87 +812,62 @@ class DashboardContent extends StatelessWidget {
 
   Widget _buildSimpleBarChart() {
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.min, // 🔥 Content ke hisab se height le
       children: [
-        // Dropdown (Wahi purana wala logic)
         Align(
           alignment: Alignment.topRight,
           child: Obx(() => Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF1F5F9),
-              borderRadius: BorderRadius.circular(8),
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1), // Slimmer dropdown
+            decoration: BoxDecoration(color: const Color(0xFFF1F5F9), borderRadius: BorderRadius.circular(6)),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 value: controller.selectedDropoffPeriod.value,
                 isDense: true,
-                style: const TextStyle(fontSize: 11, color: Colors.black87, fontWeight: FontWeight.bold),
-                icon: const Icon(Icons.keyboard_arrow_down, size: 16),
+                style: const TextStyle(fontSize: 9, color: Colors.black87, fontWeight: FontWeight.bold),
+                icon: const Icon(Icons.keyboard_arrow_down, size: 12),
                 items: controller.dropoffPeriods.map((p) => DropdownMenuItem(value: p, child: Text(p))).toList(),
                 onChanged: (val) => controller.updateDropoffFilter(val),
               ),
             ),
           )),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 8), // Gap 10 se 8 kiya
         Expanded(
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center, // Center alignment for better look
             children: [
-              // Bar Chart Section
               Expanded(
                 flex: 1,
-                child: Obx(() {
-                  double maxVal = (controller.completedDropoffs.value > controller.incompleteDropoffs.value
-                      ? controller.completedDropoffs.value
-                      : controller.incompleteDropoffs.value).toDouble();
-
-                  return BarChart(
-                    BarChartData(
-                      alignment: BarChartAlignment.spaceEvenly,
-                      maxY: maxVal * 1.2,
-                      gridData: const FlGridData(show: false),
-                      borderData: FlBorderData(show: false),
-                      titlesData: const FlTitlesData(show: false),
-                      barGroups: [
-                        BarChartGroupData(
-                          x: 0,
-                          barRods: [
-                            BarChartRodData(
-                              toY: controller.incompleteDropoffs.value.toDouble(),
-                              color: const Color(0xFF1E293B),
-                              width: 12,
-                              borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-                            ),
-                          ],
-                        ),
-                        BarChartGroupData(
-                          x: 1,
-                          barRods: [
-                            BarChartRodData(
-                              toY: controller.completedDropoffs.value.toDouble(),
-                              color: Colors.red,
-                              width: 12,
-                              borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                }),
+                child: BarChart(
+                  BarChartData(
+                    barTouchData: BarTouchData(enabled: false),
+                    alignment: BarChartAlignment.center,
+                    groupsSpace: 8, // Bars ko close kiya
+                    gridData: const FlGridData(show: false),
+                    borderData: FlBorderData(show: false),
+                    titlesData: const FlTitlesData(show: false),
+                    barGroups: [
+                      BarChartGroupData(x: 0, barRods: [
+                        BarChartRodData(toY: 10, color: const Color(0xFF1E293B), width: 10, borderRadius: BorderRadius.circular(3))
+                      ]),
+                      BarChartGroupData(x: 1, barRods: [
+                        BarChartRodData(toY: 8, color: Colors.red, width: 10, borderRadius: BorderRadius.circular(3))
+                      ]),
+                    ],
+                  ),
+                ),
               ),
               Expanded(
                 flex: 1,
-                child: Obx(() => Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Flexible(child: _buildDropoffLegend("Completed", "${controller.completedDropoffs.value}", Colors.red)),
-                    const SizedBox(height: 12),
-                    Flexible(child: _buildDropoffLegend("Incomplete", "${controller.incompleteDropoffs.value}", const Color(0xFF1E293B))),
+                    _buildDropoffLegend("Completed", "4500", Colors.red),
+                    const SizedBox(height: 6), // Gap kam kiya
+                    _buildDropoffLegend("Incomplete", "5200", const Color(0xFF1E293B)),
                   ],
-                )),
+                ),
               ),
             ],
           ),
@@ -557,102 +875,269 @@ class DashboardContent extends StatelessWidget {
       ],
     );
   }
-
 // Helper legend widget
   Widget _buildDropoffLegend(String label, String value, Color color) {
-    return FittedBox(
-      fit: BoxFit.scaleDown,
-      alignment: Alignment.centerLeft,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.circle, size: 8, color: color),
-              const SizedBox(width: 6),
-              Text(label, style: TextStyle(color: color.withOpacity(0.8), fontSize: 11)),
-            ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 6, height: 6, // Chota dot
+              decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+            ),
+            const SizedBox(width: 6),
+            Flexible( // 🔥 Text ko wrap hone mein madad karega
+              child: Text(
+                  label,
+                  overflow: TextOverflow.ellipsis, // Agar jagah na ho to ... dikhaye
+                  style: TextStyle(color: color.withOpacity(0.7), fontSize: 10)
+              ),
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 12),
+          child: Text(
+              "$value Dropoff",
+              overflow: TextOverflow.ellipsis, // 🔥 Overflow fix
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 11, // Font thoda chota kiya alignment ke liye
+                  color: Color(0xFF0F172A)
+              )
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 14),
-            child: Text("$value Dropoff", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget _buildRightSidePanel() {
     return Column(
       children: [
-        _dashboardCard(
-          "Quick Actions",
+        SizedBox(height: 50,),
+        _buildQuickActionsCustom(),
+        const SizedBox(height: 50),
+        _buildCarsByBodyType(),
+      ],
+    );
+  }
+  Widget _buildQuickActionsCustom() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min, // Jitna content, utni height
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header Row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Quick Actions",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black87),
+                overflow: TextOverflow.ellipsis,
+              ),
+              const Icon(Icons.more_horiz, size: 20, color: Color(0xFF94A3B8)),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // Buttons Container
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFF1F5F9),
+              color: const Color(0xFFF1F5F9), // Light grey background
               borderRadius: BorderRadius.circular(12),
             ),
             child: LayoutBuilder(
               builder: (context, constraints) {
-                // Agar width zyada hai (Web/Tablet), to 2 columns dikhao
-                int crossAxisCount = constraints.maxWidth > 350 ? 2 : 1;
+                // Logic: Agar width 350 se zyada hai to 2 buttons, warna 1
+                bool isWide = constraints.maxWidth > 350;
+                double spacing = 10.0;
+                double buttonWidth = isWide
+                    ? (constraints.maxWidth - spacing) / 2
+                    : constraints.maxWidth;
 
-                return GridView.count(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: crossAxisCount,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 3.5, // Buttons ki height control karne ke liye
+                return Wrap(
+                  spacing: spacing,
+                  runSpacing: spacing,
                   children: [
-                    _actionButton("Add Car"),
-                    _actionButton("Add Customer"),
-                    _actionButton("Add Pickup"),
-                    _actionButton("Add Dropoff"),
+                    AddButtonOfDashboard(
+                      text: "Add Car",
+                      onTap: () => print("Add Car Clicked"),
+                      width: buttonWidth,
+                      height: 45, // Fix height taake pyara lage
+                    ),
+                    AddButtonOfDashboard(
+                      text: "Add Customer",
+                      onTap: () => print("Add Customer Clicked"),
+                      width: buttonWidth,
+                      height: 45,
+                    ),
+                    AddButtonOfDashboard(
+                      text: "Add Pickup",
+                      onTap: () => print("Add Pickup Clicked"),
+                      width: buttonWidth,
+                      height: 45,
+                    ),
+                    AddButtonOfDashboard(
+                      text: "Add Dropoff",
+                      onTap: () => print("Add Dropoff Clicked"),
+                      width: buttonWidth,
+                      height: 45,
+                    ),
                   ],
                 );
               },
             ),
           ),
-          height: 220, // Grid use karne se height thodi kam ho jayegi
-        ),
-        const SizedBox(height: 20),
-        _dashboardCard("Cars by Body Type", Column(children: List.generate(5, (index) => Padding(padding: const EdgeInsets.symmetric(vertical: 8), child: LinearProgressIndicator(value: 0.7, backgroundColor: Colors.grey.shade200, color: Colors.red, minHeight: 6)))), height: 260),
-      ],
+        ],
+      ),
     );
   }
-  Widget _actionButton(String title, {bool isLast = false}) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: isLast ? 0 : 10),
-      child: SizedBox(
-        width: double.infinity,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFFF3141),
-            foregroundColor: Colors.white,
-            elevation: 0,
-            // Padding thodi kam ki hai taka small screens par overflow na ho
-            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+  Widget _buildCarsByBodyType() {
+    final List<Map<String, dynamic>> bodyTypes = [
+      {"type": "Sedan", "units": 12, "value": 0.7, "image": ImageString.corollaPicFive},
+      {"type": "SUV", "units": 12, "value": 0.5, "image": ImageString.corollaPicFive},
+      {"type": "Hatchback", "units": 12, "value": 0.6, "image": ImageString.corollaPicFive},
+      {"type": "Wagon", "units": 12, "value": 0.4, "image": ImageString.corollaPicFive},
+      {"type": "Ute", "units": 12, "value": 0.8, "image": ImageString.corollaPicFive},
+    ];
+
+    return Container(
+      padding: const EdgeInsets.all(20), // Padding barha di
+      decoration: _cardDecoration(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Cars by Body Type",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Color(0xFF1E293B)),
           ),
-          onPressed: () {},
-          child: FittedBox( // 🔥 Yeh text ko button ke mutabiq chota kar dega
-            fit: BoxFit.scaleDown,
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 15, // Base font size
-              ),
-            ),
+          const SizedBox(height: 20),
+          Column(
+            children: bodyTypes.map((item) => _buildBodyTypeItem(item)).toList(),
           ),
-        ),
+        ],
       ),
     );
   }
 
+  Widget _buildBodyTypeItem(Map<String, dynamic> data) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double maxWidth = constraints.maxWidth;
+
+        // 🔥 Overflow fix logic: Jab width 270 se kam ho
+        bool isExtraSmall = maxWidth < 270;
+
+        return Obx(() {
+          bool isSelected = controller.selectedBodyType.value == data['type'];
+
+          return GestureDetector(
+            onTap: () => controller.selectedBodyType.value = data['type'],
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              margin: const EdgeInsets.only(bottom: 12),
+              padding: EdgeInsets.symmetric(
+                  horizontal: isExtraSmall ? 8 : 16,
+                  vertical: isExtraSmall ? 10 : 14
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                    color: isSelected ? const Color(0xFF1E293B) : Colors.grey.shade100,
+                    width: isSelected ? 1.5 : 1
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  // 1. Image Section: Extra small screen par size drastically kam kar diya
+                  Container(
+                    width: isExtraSmall ? 40 : 80,
+                    height: isExtraSmall ? 30 : 50,
+                    child: Image.asset(
+                      data['image'],
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+
+                  SizedBox(width: isExtraSmall ? 8 : 15),
+
+                  // 2. Info Section: Expanded taake bachi hui width mein wrap ho jaye
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Car Name aur Units ko Flexible banaya
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                  data['type'],
+                                  overflow: TextOverflow.ellipsis, // Text katega nahi, ... dikhayega
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: isExtraSmall ? 11 : 13,
+                                      color: isSelected ? Colors.black : Colors.grey.shade600,
+                                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w500
+                                  )
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                                "${data['units']} Units",
+                                style: TextStyle(
+                                    fontSize: isExtraSmall ? 10 : 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(0xFF1E293B)
+                                )
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: isExtraSmall ? 6 : 10),
+
+                        // 3. Progress Bar
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: LinearProgressIndicator(
+                            value: data['value'],
+                            minHeight: isExtraSmall ? 5 : 7,
+                            backgroundColor: const Color(0xFFF1F5F9),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                isSelected ? Colors.red : const Color(0xFF1E293B)
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+      },
+    );
+  }
   Widget _dashboardCard(String title, Widget child, {double? height}) {
     return Container(
       height: height, width: double.infinity, padding: const EdgeInsets.all(16),
@@ -670,3 +1155,5 @@ class DashboardContent extends StatelessWidget {
 
   BoxDecoration _cardDecoration() => BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(14));
 }
+
+

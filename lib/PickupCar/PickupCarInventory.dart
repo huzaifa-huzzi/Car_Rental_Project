@@ -32,6 +32,8 @@ class PickupCarController extends GetxController {
   var selectAge = "".obs;
   RxBool isFilterOpen = false.obs;
   var hoveredRowIndex = (-1).obs;
+  final ScrollController customerScrollController = ScrollController();
+  final ScrollController carScrollController = ScrollController();
 
   void toggleFilter() {
     isFilterOpen.value = !isFilterOpen.value;
@@ -523,6 +525,8 @@ class PickupCarController extends GetxController {
     //  Search Controllers
     customerSearchController.dispose();
     carSearchController.dispose();
+    customerScrollController.dispose();
+    carScrollController.dispose();
 
     super.onClose();
   }
