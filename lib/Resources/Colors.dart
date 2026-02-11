@@ -24,7 +24,33 @@ class AppColors {
   static const Color fourBackground = Color(0xFF1E94F4);
   static const Color fiveBackground = Color(0xFF015551);
   static const Color backgroundOfPickupsWidget = Color(0xFFFFF1F3);
+  static const Color rodOfProcessingColor = Color(0xFFBCC1C7);
+  static const Color availableStart = Color(0xFFFF2741);
+  static const Color availableEnd = Color(0xFFFF7D8D);
+  static const Color maintenanceStart = Color(0xFF868F9B);
+  static const Color maintenanceEnd = Color(0xFFC7C7C7);
+  static const Color unavailableStart = Color(0xFF00070F);
+  static const Color unavailableEnd = Color(0xFFC7C7C7);
 
+
+   /// Gradients
+  static const Gradient availableGradient = LinearGradient(
+    colors: [availableStart, availableEnd],
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+  );
+
+  static const Gradient maintenanceGradient = LinearGradient(
+    colors: [maintenanceStart, maintenanceEnd],
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+  );
+
+  static const Gradient unavailableGradient = LinearGradient(
+    colors: [unavailableStart, unavailableEnd],
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+  );
 
 
 }

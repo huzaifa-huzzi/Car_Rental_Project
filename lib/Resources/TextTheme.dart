@@ -67,9 +67,51 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 11),fontWeight: FontWeight.w500,color: Colors.white);
   }
 
+  static TextStyle h12Style(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 20, 20, 20),fontWeight: FontWeight.w600,color: AppColors.textColor);
+  }
+
+  static TextStyle h13Style(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 16, 18, 20),fontWeight: FontWeight.w600,color: AppColors.textColor);
+  }
+
+  static TextStyle h14Style(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 18),fontWeight: FontWeight.w600,color: AppColors.textColor);
+  }
+
+  static TextStyle h15Style(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 17, 17, 15),fontWeight: FontWeight.w600,color: AppColors.textColor);
+  }
+
+
 
   static TextStyle btnOne(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 12),fontWeight: FontWeight.w500,color: AppColors.quadrantalTextColor);
+  }
+
+
+  static TextStyle progressBarUnit (BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 11),fontWeight: FontWeight.w600,color: AppColors.primaryColor);
+  }
+
+  static TextStyle progressBarUnitText (BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 12.25),fontWeight: FontWeight.w400,color: Colors.white);
+  }
+
+  static TextStyle damageStatusBarComplete (BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 13),fontWeight: FontWeight.w400,color: AppColors.primaryColor);
+  }
+
+  static TextStyle dropOffDamageRodRed(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 14),fontWeight: FontWeight.w500,color: AppColors.primaryColor);
+  }
+
+  static TextStyle dropOffDamageRodGrey(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 14),fontWeight: FontWeight.w500,color: AppColors.sideBoxesColor);
+  }
+
+  static TextStyle dropOffDamagePercent(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 18, 18, 15),fontWeight: FontWeight.w500,color: AppColors.quadrantalTextColor);
   }
 
   static TextStyle btnTwo(BuildContext context){
@@ -323,6 +365,11 @@ class TTextTheme {
 
   static TextStyle documnetIsnideSmallText2(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 10),fontWeight: FontWeight.w500,color: AppColors.tertiaryTextColor,
+    );
+  }
+
+  static TextStyle sortText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 8.5),fontWeight: FontWeight.w400,color: AppColors.tertiaryTextColor,
     );
   }
 
