@@ -33,6 +33,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class AppNavigation {
+
   static final router = GoRouter(
     initialLocation: '/login',
     routes: [
@@ -168,7 +169,13 @@ class AppNavigation {
    // wrapSidebar Widget
   static Widget _wrapSidebar(GoRouterState state, Widget child) {
     final extras = state.extra as Map<String, dynamic>?;
-    final hideMobile = extras?["hideMobileAppBar"] == true;
+
+    bool hideMobile = extras?["hideMobileAppBar"] == true;
+    final String path = state.uri.toString().toLowerCase();
+    if (path.contains('add') || path.contains('edit') || path.contains('detail')) {
+      hideMobile = true;
+    }
+
     return SidebarScreen.wrapWithSidebarIfNeeded(
       child: child,
       hideMobileAppBar: hideMobile,

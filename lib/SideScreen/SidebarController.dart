@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 
 class SideBarController extends GetxController {
-  var selected = "Car Inventory".obs;
+  var selected = "Dashboard".obs;
   var subSelected = RxnString();
   var incomeRedDot = 5.obs;
   var isExpensesExpanded = false.obs;
@@ -30,7 +30,10 @@ class SideBarController extends GetxController {
   }
 
   void syncWithRoute(String route) {
-    if (route.startsWith('/carInventory')) {
+
+    if (route == '/dashboard' || route == '/') {
+      selected.value = "Dashboard";
+    } else if (route.startsWith('/carInventory')) {
       selected.value = "Car Inventory";
     } else if (route.startsWith('/customers')) {
       selected.value = "Customers";
@@ -38,7 +41,11 @@ class SideBarController extends GetxController {
       selected.value = "Pickup Car";
     } else if (route.startsWith('/dropoffCar')) {
       selected.value = "Dropoff Car";
+    } else if (route.startsWith('/staff')) {
+      selected.value = "Staff";
     }
+
+    // Reset states
     subSelected.value = null;
     isExpensesExpanded.value = false;
   }

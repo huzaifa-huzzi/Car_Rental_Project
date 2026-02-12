@@ -23,5 +23,12 @@ class ImageString{
   static const String  successCheckPickupImage= 'assets/Images/PickupCar/SuccessCheckIcon.png';
   /// Authentication
   static const String  smartPhoneImage= 'assets/Images/Login/smartphoneImage.png';
+   /// Dashboard
+  static const String  hatchBookCar= 'assets/Images/DashBoard/HatchBookCar.png';
+  static const String  sedanCar= 'assets/Images/DashBoard/sedanCar.png';
+  static const String  suvCar= 'assets/Images/DashBoard/SuvCar.png';
+  static const String  uteCar= 'assets/Images/DashBoard/UteCar.png';
+  static const String  vanCar= 'assets/Images/DashBoard/VanCar.png';
+  static const String  wagonCar= 'assets/Images/DashBoard/WagonCar.png';
 
 }

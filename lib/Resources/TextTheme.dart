@@ -98,8 +98,20 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 12.25),fontWeight: FontWeight.w400,color: Colors.white);
   }
 
+  static TextStyle quickDashboardText (BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 12.25),fontWeight: FontWeight.w500,color: AppColors.textColor);
+  }
+
   static TextStyle damageStatusBarComplete (BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 13),fontWeight: FontWeight.w400,color: AppColors.primaryColor);
+  }
+
+  static TextStyle carDataTypeText (BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 10.5),fontWeight: FontWeight.w400,color: AppColors.secondTextColor);
+  }
+
+  static TextStyle carDataTypeTextUnit (BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 10.5),fontWeight: FontWeight.w500,color: AppColors.textColor);
   }
 
   static TextStyle dropOffDamageRodRed(BuildContext context){

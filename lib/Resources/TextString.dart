@@ -514,6 +514,20 @@ class TextString {
   static const String  twoStepFooterTwo  =   'Or';
   static const String  twoStepEdit  =    ' Edit';
 
+     /// Dashboard
+  static const String  carStatusText  =   'Cars by Status';
+  static const String  dropOffStatusText  =   'Dropoff Status';
+  static const String  unitText  =   'Unit';
+  static const String  revenueText  =   'Revenue Summary';
+  static const String  revenueIncome  =   'Income';
+  static const String  revenueExpense  =   'Expense';
+  static const String  dashboardPickup  =   'Pickup Status';
+  static const String  dashboardDamage  =   'Dropoff Damage';
+  static const String  damageText  =   'Damage';
+  static const String  safeText  =   'Safe';
+  static const String  carBodyText  =   'Cars by Body Type';
+  static const String  quickActionText  =   'Quick Actions';
+
 
 
 }

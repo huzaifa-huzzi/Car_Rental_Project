@@ -151,9 +151,14 @@ class DropOffDetails extends StatelessWidget {
                                     {"label": "Bond Amount", "controller": controller.bondAmountControllerStepTwo, "hint": "2600 \$"},
                                     {"label": "Paid Bond", "controller": controller.paidBondControllerStepTwo, "hint": "600 \$"},
                                     {"label": TextString.subtitleLeftBondStepTwoDropOff, "controller": controller.dueBondAmountControllerStepTwo, "hint": "2000 \$"},
-                                    {"label": "Bond Returned", "controller": controller.dueBondReturnedControllerStepTwo, "hint": "2000 \$", "isSpecial": true},
+                                    {
+                                      "label": "Bond Returned",
+                                      "controller": controller.dueBondReturnedControllerStepTwo,
+                                      "hint": "2000 \$",
+                                    }
+
                                   ], isMobile),
-                                ), // Non-Editable
+                                ),
                               ],
                             ),
                           ),
@@ -392,7 +397,6 @@ class DropOffDetails extends StatelessWidget {
       runSpacing: 15,
       children: items.map((item) {
         double itemWidth = isMobile ? (availableWidth - 100) : (availableWidth / 5.5);
-        bool isSpecial = item['isSpecial'] == true;
 
         Widget fieldContent = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -422,18 +426,9 @@ class DropOffDetails extends StatelessWidget {
           ],
         );
 
-        return SizedBox(
+        return  SizedBox(
           width: itemWidth,
-          child: isSpecial
-              ? Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: AppColors.backgroundOfPickupsWidget,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: fieldContent,
-          )
-              : fieldContent,
+          child: fieldContent,
         );
       }).toList(),
     );

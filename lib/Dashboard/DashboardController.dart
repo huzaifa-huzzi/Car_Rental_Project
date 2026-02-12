@@ -1,6 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class DashboardController extends GetxController {
+
+  final ScrollController revenueScrollController = ScrollController();
 
   var selectedPeriod = 'Last 8 Month'.obs;
   final List<String> periods = ['Last 3 Month', 'Last 6 Month', 'Last 8 Month', 'Yearly'];
@@ -76,6 +79,14 @@ class DashboardController extends GetxController {
 
   void selectBodyType(String type) {
     selectedBodyType.value = type;
+  }
+
+
+ // On close function
+  @override
+  void onClose() {
+    revenueScrollController.dispose();
+    super.onClose();
   }
 }
 

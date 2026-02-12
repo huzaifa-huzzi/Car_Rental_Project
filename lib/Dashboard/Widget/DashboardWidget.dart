@@ -1,13 +1,17 @@
+import 'package:car_rental_project/Customers/CustomersController.dart';
 import 'package:car_rental_project/Dashboard/DashboardController.dart';
 import 'package:car_rental_project/Dashboard/ReusableWidgetOfDashboard/PrimaryButtonOfDashBoard.dart';
 import 'package:car_rental_project/Dashboard/Widget/GradientArc.dart';
+import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 
 class DashboardContent extends StatelessWidget {
@@ -32,7 +36,12 @@ class DashboardContent extends StatelessWidget {
         bool useVerticalLayout = width < 1000;
 
         return SingleChildScrollView(
-          padding: EdgeInsets.all(isMobile ? 12 : 20),
+          padding: EdgeInsets.fromLTRB(
+            isMobile ? 12 : 20,
+            isMobile ? 12 : 20,
+            isMobile ? 12 : 20,
+            0,
+          ),
           child: Column(
             children: [
               _buildStatsGrid(width, context),
@@ -46,10 +55,10 @@ class DashboardContent extends StatelessWidget {
                     flex: 4,
                     child: Column(children: _buildMainSections(context)),
                   ),
-                  const SizedBox(width: 20),
+                  const SizedBox(width: 10),
                   Expanded(
                     flex: 2,
-                    child: _buildRightSidePanel(),
+                    child: _buildRightSidePanel(context),
                   ),
                 ],
               )
@@ -57,7 +66,7 @@ class DashboardContent extends StatelessWidget {
                 children: [
                   ..._buildMainSections(context),
                   const SizedBox(height: 20),
-                  _buildRightSidePanel(),
+                  _buildRightSidePanel(context),
                 ],
               )
             ],
@@ -72,14 +81,11 @@ class DashboardContent extends StatelessWidget {
 
 
 
-// 2. Updated Function
+   // Main Section Of Screen
   List<Widget> _buildMainSections(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     bool isMobileView = screenWidth < 700;
 
-// 1. Pehle calculate karein ke kya layout wrap ho chuka hai (2+1 layout)
-// Aapke screenshot ke mutabiq, jab width kam hoti hai toh card wrap hota hai
-    bool isWrapped = screenWidth < 1250; // Is number ko apne wrap point ke hisab se set karein
 
 
     return [
@@ -89,19 +95,13 @@ class DashboardContent extends StatelessWidget {
       !isMobileView
           ? LayoutBuilder(
         builder: (context, constraints) {
-          // Hum WidgetsBinding use karte hain taake layout ke baad height mile
-          // Magar asan hal ke liye, hum screen width ke hisab se height fix rakhte hain
-          // Kyunke Cars by Status ki height layout (1 line vs 2 lines) pe depend karti hai.
-
-          double calculatedHeight = screenWidth < 1200 ? 400 : 255;
 
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 1. Cars by Status (The Anchor)
               Expanded(
                 flex: 2,
-                child: _statusSectionCard(context, "Cars by Status"),
+                child: _statusSectionCard(context, TextString.carStatusText),
               ),
               const SizedBox(width: 20),
 
@@ -110,34 +110,25 @@ class DashboardContent extends StatelessWidget {
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     double screenWidth = MediaQuery.of(context).size.width;
-
-                    // Hum teen alag height stages define kar rahe hain
                     double syncHeight;
 
                     if (screenWidth > 1300) {
-                      // Stage 1: Full Web (3 cards ek line mein)
+                      syncHeight = 240;
+                    } else if (screenWidth <= 1300 && screenWidth > 1100) {
                       syncHeight = 230;
                     } else if (screenWidth <= 1300 && screenWidth > 1100) {
-                      // Stage 2: Medium Screen (Still 3 cards, but slightly squeezed)
                       syncHeight = 230;
-                    } else if (screenWidth <= 1100 && screenWidth > 900) {
-                      // Stage 3: Wrapped (2+1 layout)
-                      // Yahan 'Unavailable' niche gaya, toh height barh gayi
+                    } else if (screenWidth <= 1100 && screenWidth > 1000) {
                       syncHeight = 230;
                     } else if (screenWidth <= 900 && screenWidth > 800) {
-                      // Stage 3: Wrapped (2+1 layout)
-                      // Yahan 'Unavailable' niche gaya, toh height barh gayi
                       syncHeight = 370;
                     } else {
-                      // Stage 4: Vertical (1+1+1 layout)
-                      // Yahan teeno cards vertical hain
-                      syncHeight = 410;
+                      syncHeight = 370;
                     }
 
                     return _dashboardCard(
-                      "Dropoff Status",
-                      Container(
-                        // Chart ko boundary dena lazmi hai overflow se bachne ke liye
+                      TextString.dropOffStatusText,
+                      SizedBox(
                         height: syncHeight - 80,
                         child: Center(
                           child: _buildSimpleBarChart(context),
@@ -154,26 +145,35 @@ class DashboardContent extends StatelessWidget {
       )
           : Column(
         children: [
-          _statusSectionCard(context, "Cars by Status", height: null),
+          _statusSectionCard(context, TextString.carStatusText, height: null),
           const SizedBox(height: 20),
           _dashboardCard(
-            "Dropoff Status",
+            TextString.dropOffStatusText,
             _buildSimpleBarChart(context),
             height: 370,
           ),
         ],
       ),
 
-      const SizedBox(height: 20),
-      // Pickup & Dropoff Damage sections
+      const SizedBox(height: 10),
       !isMobileView
-          ? Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(child: _buildPickupStatusSection(context)),
-          const SizedBox(width: 20),
-          Expanded(child: _buildDropoffDamageSection(context)),
-        ],
+          ? LayoutBuilder(
+        builder: (context, constraints) {
+
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                  child: _buildPickupStatusSection(context)
+              ),
+              const SizedBox(width: 20),
+
+              Expanded(
+                  child: _buildDropoffDamageSection(context)
+              ),
+            ],
+          );
+        },
       )
           : Column(
         children: [
@@ -247,7 +247,7 @@ class DashboardContent extends StatelessWidget {
                             style: TTextTheme.h6Style(context),
                         ),
                          TextSpan(
-                            text: " Unit",
+                            text: TextString.unitText,
                             style:TTextTheme.h6Style(context)
                         ),
                       ],
@@ -281,7 +281,7 @@ class DashboardContent extends StatelessWidget {
                   ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Text("Revenue Summary", style: TTextTheme.btnSix(context)),
+                   Text(TextString.revenueText, style: TTextTheme.btnSix(context)),
                   const SizedBox(height: 10),
                   _buildResponsiveDropdown(),
                 ],
@@ -289,7 +289,7 @@ class DashboardContent extends StatelessWidget {
                   : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Revenue Summary", style: TTextTheme.btnSix(context)),
+                  Text(TextString.revenueText, style: TTextTheme.btnSix(context)),
                   _buildResponsiveDropdown(),
                 ],
               ),
@@ -300,16 +300,16 @@ class DashboardContent extends StatelessWidget {
                   ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildLegend(AppColors.primaryColor, "Income",context),
+                  _buildLegend(AppColors.primaryColor, TextString.revenueIncome,context),
                   const SizedBox(height: 8),
-                  _buildLegend(AppColors.textColor, "Expenses",context),
+                  _buildLegend(AppColors.textColor, TextString.revenueExpense,context),
                 ],
               )
                   : Row(
                 children: [
-                  _buildLegend(AppColors.primaryColor, "Income",context),
+                  _buildLegend(AppColors.primaryColor, TextString.revenueIncome,context),
                   const SizedBox(width: 15),
-                  _buildLegend(AppColors.textColor, "Expenses",context),
+                  _buildLegend(AppColors.textColor,  TextString.revenueExpense,context),
                 ],
               ),
               const SizedBox(height: 25),
@@ -326,8 +326,10 @@ class DashboardContent extends StatelessWidget {
                     ),
                   ),
                   child: Scrollbar(
+                    controller: controller.revenueScrollController,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
+                      controller: controller.revenueScrollController,
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 15),
                         child: SizedBox(
@@ -493,7 +495,7 @@ class DashboardContent extends StatelessWidget {
               runSpacing: 12,
               children: [
                  Text(
-                  "Pickup Status",
+                  TextString.dashboardPickup,
                   style: TTextTheme.h12Style(context),
                 ),
                 Row(
@@ -531,7 +533,7 @@ class DashboardContent extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 25),
+          const SizedBox(height: 15),
 
           // Bars Section
           Obx(() {
@@ -539,11 +541,11 @@ class DashboardContent extends StatelessWidget {
             return Column(
               children: [
                 _buildPickupBar("Completed", data['completed']!, "45 Unit",context),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 _buildPickupBar("Awaiting", data['awaiting']!, "40 Unit",context),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 _buildPickupBar("Overdue", data['overdue']!, "50 Unit",context),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 _buildPickupBar("Processing", data['processing']!, "30 Unit",context),
               ],
             );
@@ -584,7 +586,7 @@ class DashboardContent extends StatelessWidget {
             color: barColor,
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 5),
 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -629,7 +631,7 @@ class DashboardContent extends StatelessWidget {
               runSpacing: 10,
               children: [
                  Text(
-                  "Dropoff Damage",
+                  TextString.dashboardDamage,
                   style: TTextTheme.h14Style(context)),
 
                 Row(
@@ -668,9 +670,9 @@ class DashboardContent extends StatelessWidget {
 
           Row(
             children: [
-              _buildLegendItem("Damage", AppColors.primaryColor,context),
+              _buildLegendItem(TextString.damageText, AppColors.primaryColor,context),
               const SizedBox(width: 15),
-              _buildLegendItem("Safe", AppColors.sideBoxesColor,context),
+              _buildLegendItem(TextString.safeText, AppColors.sideBoxesColor,context),
             ],
           ),
           const SizedBox(height: 20),
@@ -706,6 +708,10 @@ class DashboardContent extends StatelessWidget {
                 Expanded(
                   child: BarChart(
                     BarChartData(
+                      barTouchData: BarTouchData(
+                        enabled: false,
+                        handleBuiltInTouches: false,
+                      ),
                       gridData: const FlGridData(show: false),
                       borderData: FlBorderData(show: false),
                       titlesData: const FlTitlesData(show: false),
@@ -816,20 +822,20 @@ class DashboardContent extends StatelessWidget {
               }
               else {
                 return Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
+                  spacing: 5,
+                  runSpacing: 5,
                   alignment: WrapAlignment.start,
                   children: [
                     SizedBox(
-                      width: cardConstraints.maxWidth > 300 ? (cardConstraints.maxWidth - 20) / 2 : cardConstraints.maxWidth,
+                      width: cardConstraints.maxWidth > 350 ? (cardConstraints.maxWidth - 20) / 2 : cardConstraints.maxWidth,
                       child: _statusCircularItem(context, "215", "Available", 0.7),
                     ),
                     SizedBox(
-                      width: cardConstraints.maxWidth > 300 ? (cardConstraints.maxWidth - 20) / 2 : cardConstraints.maxWidth,
+                      width: cardConstraints.maxWidth > 350 ? (cardConstraints.maxWidth - 20) / 2 : cardConstraints.maxWidth,
                       child: _statusCircularItem(context, "215", "Maintenance", 0.5),
                     ),
                     SizedBox(
-                      width: cardConstraints.maxWidth > 300 ? (cardConstraints.maxWidth - 20) / 2 : cardConstraints.maxWidth,
+                      width: cardConstraints.maxWidth > 350 ? (cardConstraints.maxWidth - 20) / 2 : cardConstraints.maxWidth,
                       child: _statusCircularItem(context, "215", "Unavailable", 0.3),
                     ),
                   ],
@@ -923,7 +929,7 @@ class DashboardContent extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(units, style: TTextTheme.progressBarUnit(context).copyWith(color: textColor)),
-                    Text("Units", style: TTextTheme.progressBarUnit(context).copyWith(color: textColor)),
+                    Text(TextString.unitText, style: TTextTheme.progressBarUnit(context).copyWith(color: textColor)),
                   ],
                 ),
               ],
@@ -1015,7 +1021,7 @@ class DashboardContent extends StatelessWidget {
       ],
     );
   }
-  Widget _buildDropoffLegend(String label, String value, Color color,BuildContext context) {
+  Widget _buildDropoffLegend(String label, String value, Color color, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -1024,25 +1030,29 @@ class DashboardContent extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 6, height: 6,
-              decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: color, width: 1.5),
+              ),
             ),
-            const SizedBox(width: 6),
+            const SizedBox(width: 8),
             Flexible(
               child: Text(
                   label,
                   overflow: TextOverflow.ellipsis,
-                  style: TTextTheme.damageStatusBarComplete(context).copyWith(color:color )
+                  style: TTextTheme.damageStatusBarComplete(context).copyWith(color: color)
               ),
             ),
           ],
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 12),
+          padding: const EdgeInsets.only(left: 16),
           child: Text(
-              "$value Dropoff",
-              overflow: TextOverflow.ellipsis,
-              style:TTextTheme.h15Style(context).copyWith(color: color),
+            "$value Dropoff",
+            overflow: TextOverflow.ellipsis,
+            style: TTextTheme.h15Style(context).copyWith(color: color),
           ),
         ),
       ],
@@ -1050,18 +1060,17 @@ class DashboardContent extends StatelessWidget {
   }
 
    // Right Side Panels in Web
-  Widget _buildRightSidePanel() {
+  Widget _buildRightSidePanel(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 50,),
-        _buildQuickActionsCustom(),
-        const SizedBox(height: 50),
-        _buildCarsByBodyType(),
+        _buildQuickActionsCustom(context),
+        const SizedBox(height: 30),
+        _buildCarsByBodyType(context),
       ],
     );
   }
    // Quick Action Buttons
-  Widget _buildQuickActionsCustom() {
+  Widget _buildQuickActionsCustom(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
@@ -1084,12 +1093,12 @@ class DashboardContent extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "Quick Actions",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black87),
+              Text(
+                TextString.quickActionText,
+                style: TTextTheme.quickDashboardText(context),
                 overflow: TextOverflow.ellipsis,
               ),
-              const Icon(Icons.more_horiz, size: 20, color: Color(0xFF94A3B8)),
+              const Icon(Icons.more_horiz, size: 20, color: AppColors.textColor),
             ],
           ),
           const SizedBox(height: 16),
@@ -1097,7 +1106,7 @@ class DashboardContent extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFF1F5F9),
+              color: AppColors.secondaryColor,
               borderRadius: BorderRadius.circular(12),
             ),
             child: LayoutBuilder(
@@ -1114,25 +1123,35 @@ class DashboardContent extends StatelessWidget {
                   children: [
                     AddButtonOfDashboard(
                       text: "Add Car",
-                      onTap: () => print("Add Car Clicked"),
+                      onTap: () {
+                        context.push('/addNewCar');
+                      },
                       width: buttonWidth,
                       height: 45,
                     ),
                     AddButtonOfDashboard(
                       text: "Add Customer",
-                      onTap: () => print("Add Customer Clicked"),
+                      onTap: () {
+                        Get.lazyPut(() => CustomerController(), fenix: true);
+                        context.push('/addNewCustomer', extra: {"hideMobileAppBar": true});
+                      },
                       width: buttonWidth,
                       height: 45,
                     ),
                     AddButtonOfDashboard(
                       text: "Add Pickup",
-                      onTap: () => print("Add Pickup Clicked"),
+                      onTap: () {
+                        Get.lazyPut(() => PickupCarController(), fenix: true);
+                        context.push('/addpickup',extra: {"hideMobileAppBar": true});
+                      },
                       width: buttonWidth,
                       height: 45,
                     ),
                     AddButtonOfDashboard(
                       text: "Add Dropoff",
-                      onTap: () => print("Add Dropoff Clicked"),
+                      onTap: (){
+                        context.push('/addDropOff');
+                      },
                       width: buttonWidth,
                       height: 45,
                     ),
@@ -1146,13 +1165,14 @@ class DashboardContent extends StatelessWidget {
     );
   }
    // Cars Body Type Widget
-  Widget _buildCarsByBodyType() {
+  Widget _buildCarsByBodyType(BuildContext context) {
     final List<Map<String, dynamic>> bodyTypes = [
-      {"type": "Sedan", "units": 12, "value": 0.7, "image": ImageString.corollaPicFive},
-      {"type": "SUV", "units": 12, "value": 0.5, "image": ImageString.corollaPicFive},
-      {"type": "Hatchback", "units": 12, "value": 0.6, "image": ImageString.corollaPicFive},
-      {"type": "Wagon", "units": 12, "value": 0.4, "image": ImageString.corollaPicFive},
-      {"type": "Ute", "units": 12, "value": 0.8, "image": ImageString.corollaPicFive},
+      {"type": "Sedan", "units": 12, "value": 0.7, "image": ImageString.sedanCar},
+      {"type": "SUV", "units": 12, "value": 0.5, "image": ImageString.suvCar},
+      {"type": "Hatchback", "units": 12, "value": 0.6, "image": ImageString.hatchBookCar},
+      {"type": "Wagon", "units": 12, "value": 0.4, "image": ImageString.wagonCar},
+      {"type": "Ute", "units": 12, "value": 0.8, "image": ImageString.uteCar},
+      {"type": "Van", "units": 12, "value": 0.3, "image": ImageString.vanCar},
     ];
 
     return Container(
@@ -1161,10 +1181,9 @@ class DashboardContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Cars by Body Type",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Color(0xFF1E293B)),
-          ),
+           Text(
+            TextString.carBodyText,
+            style: TTextTheme.h2Style(context)),
           const SizedBox(height: 20),
           Column(
             children: bodyTypes.map((item) => _buildBodyTypeItem(item)).toList(),
@@ -1195,14 +1214,14 @@ class DashboardContent extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(
-                    color: isSelected ? const Color(0xFF1E293B) : Colors.grey.shade100,
+                    color: isSelected ? AppColors.textColor : AppColors.sideBoxesColor,
                     width: isSelected ? 1.5 : 1
                 ),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: isExtraSmall ? 40 : 80,
                     height: isExtraSmall ? 30 : 50,
                     child: Image.asset(
@@ -1225,36 +1244,28 @@ class DashboardContent extends StatelessWidget {
                                   data['type'],
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
-                                  style: TextStyle(
-                                      fontSize: isExtraSmall ? 11 : 13,
-                                      color: isSelected ? Colors.black : Colors.grey.shade600,
-                                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w500
-                                  )
+                                  style: TTextTheme.carDataTypeText(context)
                               ),
                             ),
                             const SizedBox(width: 4),
                             Text(
                                 "${data['units']} Units",
-                                style: TextStyle(
-                                    fontSize: isExtraSmall ? 10 : 12,
-                                    fontWeight: FontWeight.bold,
-                                    color: const Color(0xFF1E293B)
-                                )
+                                style: TTextTheme.carDataTypeTextUnit(context),
                             ),
                           ],
                         ),
 
                         SizedBox(height: isExtraSmall ? 6 : 10),
 
-                        // 3. Progress Bar
+                        //  Progress Bar
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: LinearProgressIndicator(
                             value: data['value'],
                             minHeight: isExtraSmall ? 5 : 7,
-                            backgroundColor: const Color(0xFFF1F5F9),
+                            backgroundColor:AppColors.secondaryColor,
                             valueColor: AlwaysStoppedAnimation<Color>(
-                                isSelected ? Colors.red : const Color(0xFF1E293B)
+                                isSelected ? AppColors.primaryColor: AppColors.textColor
                             ),
                           ),
                         ),
