@@ -51,6 +51,11 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 20),fontWeight: FontWeight.w500,color: AppColors.textColor);
   }
 
+  static TextStyle resendText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w600,color: AppColors.primaryColor);
+  }
+
+
   static TextStyle h7Style(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 20),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }

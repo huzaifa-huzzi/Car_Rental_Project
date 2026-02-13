@@ -28,7 +28,9 @@ import 'package:car_rental_project/PickupCar/EditPicUp/EditPickUpScreen.dart';
 import 'package:car_rental_project/PickupCar/PickUpDetailScreen/PickUpDetailScreen.dart';
 import 'package:car_rental_project/PickupCar/TableViewPicukUpScreen/TableViewPickUpScreen.dart';
 import 'package:car_rental_project/SideScreen/SidebarScreen.dart';
-import 'package:car_rental_project/Staff/StaffScreen.dart';
+import 'package:car_rental_project/Staff/AddStaff/AddStaffScreen.dart';
+import 'package:car_rental_project/Staff/EditStaff/EditStaffScreen.dart';
+import 'package:car_rental_project/Staff/TableViewScreen/StaffScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -98,7 +100,7 @@ class AppNavigation {
           // staff
           GoRoute(
             path: '/staff',
-            builder: (context, state) => const StaffScreen(),
+            builder: (context, state) =>  TableViewOfStaffScreen(),
           ),
         ],
       ),
@@ -162,6 +164,16 @@ class AppNavigation {
         path: '/addDropOffDetailTwo',
         builder: (context, state) => _wrapSidebar(state,  AddDropOffDetailWidget()),
       ),
+      // No Sidebar / Special AppBar Routes (Staff Screens)
+      GoRoute(
+        path: '/addStaff',
+        builder: (context, state) => _wrapSidebar(state,  AddStaffScreen()),
+      ),
+      GoRoute(
+        path: '/EditStaffScreen',
+        builder: (context, state) => _wrapSidebar(state,  EditStaffScreen()),
+      ),
+
     ],
   );
 

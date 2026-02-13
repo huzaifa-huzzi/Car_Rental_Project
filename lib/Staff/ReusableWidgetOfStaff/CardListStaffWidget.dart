@@ -1,17 +1,14 @@
-import 'package:car_rental_project/DroppOffCar/DropOffController.dart';
-import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/PrimaryBtnDropOff.dart';
-import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
-import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddButtonOfPickup.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
+import 'package:car_rental_project/Staff/ReusableWidgetOfStaff/PrimaryBtnStaff.dart';
+import 'package:car_rental_project/Staff/StaffController.dart';
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 
-class CardListDropOffWidget extends StatelessWidget {
-  const CardListDropOffWidget({super.key});
+class CardListStaffWidget extends StatelessWidget {
+  const CardListStaffWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +29,14 @@ class CardListDropOffWidget extends StatelessWidget {
           child: Row(
             children: [
               /// Category Selection
-              _buildCategorySelection(context, DropOffController(), buttonHeight, showCategoryText),
+              _buildCategorySelection(context, StaffController(), buttonHeight, showCategoryText),
 
               const SizedBox(width: 8),
 
-              ///
+              /// SearchBar
               Expanded(
                 flex: 1,
-                child: _searchBarWithButton(context, DropOffController(), buttonHeight, showRedSearchButton),
+                child: _searchBarWithButton(context, StaffController(), buttonHeight, showRedSearchButton),
               ),
 
               const SizedBox(width: 8),
@@ -47,11 +44,11 @@ class CardListDropOffWidget extends StatelessWidget {
               /// Add Button
               if (AppSizes.isWeb(context) && screenWidth > 1000) ...[
                 const Spacer(),
-                PrimaryBthDropOff(
-                  text: "Add DropOff car",
+                PrimaryBtnStaff(
+                  text: "Add Staff",
                   width: 140,
                   height: 40,
-                  onTap: () => context.push('/addDropOff', extra: {"hideMobileAppBar": true}),
+                  onTap: (){},
                 ),
               ],
             ],
@@ -63,7 +60,7 @@ class CardListDropOffWidget extends StatelessWidget {
   /// ------ Extra Widgets ---------///
 
   //  Category Selection Widget
-  Widget _buildCategorySelection(BuildContext context, DropOffController controller, double height, bool showText) {
+  Widget _buildCategorySelection(BuildContext context, StaffController controller, double height, bool showText) {
     return Obx(() {
       final double screenWidth = MediaQuery.of(context).size.width;
       double maxWidth = showText ? (screenWidth > 1100 ? 200 : 150) : 50;
@@ -88,22 +85,20 @@ class CardListDropOffWidget extends StatelessWidget {
             color: Colors.white,
             elevation: 8,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            onSelected: (val) => controller.selectedSearchType.value = val,
+            onSelected: (val) => controller.selectedSearchType2.value = val,
             itemBuilder: (context) => [
-              _buildPopupItem("Customer Name", IconString.nameIcon, context),
-              _buildPopupItem("VIN Number", IconString.vinNumberIcon, context),
-              _buildPopupItem("Registration", IconString.registrationIcon, context),
-              _buildPopupItem("Car Name", IconString.carInventoryIcon, context, isLast: true),
+              _buildPopupItem("Staff Name", IconString.nameIcon, context),
+              _buildPopupItem("Email", IconString.smsIcon, context),
             ],
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.asset(_getIconPathForType(controller.selectedSearchType.value), width: 18,color: AppColors.quadrantalTextColor,),
+                Image.asset(_getIconPathForType(controller.selectedSearchType2.value), width: 18,color: AppColors.quadrantalTextColor,),
                 if (showText) ...[
                   const SizedBox(width: 6),
                   Flexible(
                     child: Text(
-                      controller.selectedSearchType.value,
+                      controller.selectedSearchType2.value,
                       style: TTextTheme.titleThree(context),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
@@ -120,7 +115,7 @@ class CardListDropOffWidget extends StatelessWidget {
   }
 
   //  Search Bar Widget
-  Widget _searchBarWithButton(BuildContext context, DropOffController controller, double height, bool showButton) {
+  Widget _searchBarWithButton(BuildContext context, StaffController controller, double height, bool showButton) {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
@@ -143,7 +138,7 @@ class CardListDropOffWidget extends StatelessWidget {
               textAlignVertical: TextAlignVertical.center,
               style: TTextTheme.titleTwo(context),
               decoration: InputDecoration(
-                hintText: screenWidth > 750 ? "Search DropOff by Customer" : "Search...",
+                hintText: screenWidth > 750 ? "Search People by Mail" : "Search...",
                 hintStyle: TTextTheme.smallX(context),
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(bottom: 18),
@@ -217,9 +212,7 @@ class CardListDropOffWidget extends StatelessWidget {
   String _getIconPathForType(String type) {
     switch (type) {
       case "Customer Name": return IconString.nameIcon;
-      case "VIN Number": return IconString.vinNumberIcon;
-      case "Registration": return IconString.registrationIcon;
-      case "Car Name": return IconString.carInventoryIcon;
+      case "Email": return IconString.smsIcon;
       default: return IconString.nameIcon;
     }
   }
