@@ -199,8 +199,9 @@ class TableViewStaffWidget extends StatelessWidget {
     });
   }
 
-  /// -------------- Helper Widgets ----------- ///
+  /// -------------- Extra Widgets ----------- ///
 
+  // Header Cell
   Widget _headerCell(String title, BuildContext context, {bool isAction = false, double? customWidth}) {
     return SizedBox(
       width: customWidth,
@@ -215,10 +216,11 @@ class TableViewStaffWidget extends StatelessWidget {
     );
   }
 
+   // Data cell
   Widget _dataCell(String text, BuildContext context) {
     return Text(text, style: TTextTheme.pOne(context), overflow: TextOverflow.ellipsis);
   }
-
+   // Status Data cell
   Widget _statusDataCell(String status, BuildContext context) {
     Color bgColor;
     Color textColor;
@@ -257,6 +259,7 @@ class TableViewStaffWidget extends StatelessWidget {
     );
   }
 
+   // Navigation Through Buttons
   void _navigateToModule(String moduleName, BuildContext context) {
     switch (moduleName) {
       case "Car Inventory":
