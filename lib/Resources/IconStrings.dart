@@ -110,6 +110,11 @@ class IconString {
       /// Authentication
   static const String  googleIcon = 'assets/icons/GoogleIcon.png';
   static const String  appleIcon = 'assets/icons/AppleIcon.png';
+   /// Staff
+  static const String  staffNameICon = 'assets/icons/StaffName.png';
+  static const String  staffContactIcon = 'assets/icons/StaffContect.png';
+  static const String  staffDetailIcon = 'assets/icons/StaffDetail.png';
+  static const String  staffAccessIcon = 'assets/icons/StaffAccess.png';
 
 
 

@@ -1,5 +1,6 @@
 
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class StaffController extends GetxController{
@@ -61,6 +62,41 @@ class StaffController extends GetxController{
         "status": "Completed",
       });
     }
+  }
+
+  /// Add Staff Screen
+  final firstNameC = TextEditingController();
+  final lastNameC = TextEditingController();
+  final emailC = TextEditingController();
+  final phoneC = TextEditingController();
+  final positionC = TextEditingController();
+
+
+  var selectedStatus = 'Active'.obs;
+  var permissions = <String>[].obs;
+
+  final List<String> statusItems = ["Active", "Awaiting", "InActive", "Suspended"];
+
+  void togglePermission(String val) {
+    if (permissions.contains(val)) {
+      permissions.remove(val);
+    } else {
+      permissions.add(val);
+    }
+  }
+
+  void submitData() {
+    print("Sending Invitation for: ${firstNameC.text}");
+  }
+
+  @override
+  void onClose() {
+    firstNameC.dispose();
+    lastNameC.dispose();
+    emailC.dispose();
+    phoneC.dispose();
+    positionC.dispose();
+    super.onClose();
   }
 
 

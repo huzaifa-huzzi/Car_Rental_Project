@@ -527,6 +527,24 @@ class TextString {
   static const String  safeText  =   'Safe';
   static const String  carBodyText  =   'Cars by Body Type';
   static const String  quickActionText  =   'Quick Actions';
+   /// Staff
+    // Add Staff
+  static const String  addStaffHeaderTitle  =   'Add New Staff';
+  static const String  addStaffName =   'Staff Name';
+  static const String  addStaffNameSubtitle  =   'Fill a Staff Name';
+  static const String  addStaffNameFieldOne  =   'First Name';
+  static const String  addStaffNameFieldTwo  =   'Last Name';
+  static const String  addStaffContact  =   'Staff Contact';
+  static const String  addStaffContactSubtitle  =   'Fill Staff Contact';
+  static const String  addStaffContactFieldOne  =   'Email';
+  static const String  addStaffContactFieldTwo  =   'Contact Number';
+  static const String  addStaffDetail  =   'Staff Detail';
+  static const String  addStaffDetailSubtitle =   'Select Staff Detail';
+  static const String  addStaffDetailFieldOne  =   'Job Position';
+  static const String  addStaffDetailFieldStatus  =   'Status';
+  static const String  addStaffAccess =   'Staff Access';
+  static const String  addStaffAcessSubtitle =   'Staff Access';
+  static const String  addStaffAcessPermission =   'Staff Access';
 
 
 

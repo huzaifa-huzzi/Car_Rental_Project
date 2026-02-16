@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class CardListStaffWidget extends StatelessWidget {
   const CardListStaffWidget({super.key});
@@ -48,7 +49,9 @@ class CardListStaffWidget extends StatelessWidget {
                   text: "Add Staff",
                   width: 140,
                   height: 40,
-                  onTap: (){},
+                  onTap: (){
+                    context.push('/addStaff', extra: {"hideMobileAppBar": true});
+                  },
                 ),
               ],
             ],

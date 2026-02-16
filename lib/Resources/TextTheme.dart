@@ -55,6 +55,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w600,color: AppColors.primaryColor);
   }
 
+  static TextStyle staffSuccessDialogSubtitle(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 16),fontWeight: FontWeight.w400,color: AppColors.textColor);
+  }
+
 
   static TextStyle h7Style(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 20),fontWeight: FontWeight.w600,color: AppColors.textColor);
@@ -229,6 +233,16 @@ class TTextTheme {
 
   static TextStyle titleFullName(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 12),fontWeight: FontWeight.w500,color: AppColors.blackColor,
+    );
+  }
+
+  static TextStyle staffSubtitle(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 12),fontWeight: FontWeight.w400,color: AppColors.tertiaryTextColor,
+    );
+  }
+
+  static TextStyle staffUpsideField(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w500,color: AppColors.textColor,
     );
   }
 
