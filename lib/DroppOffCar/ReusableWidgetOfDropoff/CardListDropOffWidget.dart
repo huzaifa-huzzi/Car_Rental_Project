@@ -1,7 +1,5 @@
 import 'package:car_rental_project/DroppOffCar/DropOffController.dart';
 import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/PrimaryBtnDropOff.dart';
-import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
-import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddButtonOfPickup.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';

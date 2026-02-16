@@ -63,8 +63,9 @@ class TableViewStaffWidget extends StatelessWidget {
                   List<String> permissionsList = ["Car Inventory", "Customers", "Pickup Car", "Dropoff Car"];
                   List<String> displayPermissions;
                   int patternIndex = rowIndex % 3;
-                  if (patternIndex == 0) displayPermissions = permissionsList;
-                  else if (patternIndex == 1) displayPermissions = permissionsList.sublist(0, 2);
+                  if (patternIndex == 0) {
+                    displayPermissions = permissionsList;
+                  } else if (patternIndex == 1) displayPermissions = permissionsList.sublist(0, 2);
                   else displayPermissions = permissionsList.sublist(0, 1);
 
                   String currentStatus = (patternIndex == 0) ? "Active" : (patternIndex == 1) ? "Inactive" : "Suspended";
