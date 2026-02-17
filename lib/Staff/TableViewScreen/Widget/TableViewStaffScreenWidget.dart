@@ -160,7 +160,13 @@ class TableViewStaffWidget extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset(IconString.editIcon2,color: AppColors.primaryColor,),
+                                GestureDetector(
+                                  onTap: (){
+                                    context.push('/EditStaffScreen', extra: {"hideMobileAppBar": true});
+                                  },
+                                  child: Image.asset(IconString.editIcon2,color: AppColors.primaryColor,),
+                                ),
+
                                 const SizedBox(width: 15),
                                 GestureDetector(
                                   onTap: () {

@@ -181,6 +181,7 @@ class TableViewDropOffWidget extends StatelessWidget {
 
   /// ------ Extra Widgets ------- ///
 
+   // header cell
   Widget _headerCell(String title, BuildContext context, {bool isAction = false, double? customWidth}) {
     return SizedBox(
       width: customWidth,
@@ -193,14 +194,14 @@ class TableViewDropOffWidget extends StatelessWidget {
       ),
     );
   }
-
+   //data cell
   Widget _dataCell(String text, BuildContext context, {double? customWidth}) {
     return SizedBox(
       width: customWidth,
       child: Text(text, style: TTextTheme.pOne(context), overflow: TextOverflow.ellipsis),
     );
   }
-
+ // status data cell
   Widget _statusDataCell(String text, BuildContext context, {required double customWidth}) {
     return SizedBox(
       width: customWidth,

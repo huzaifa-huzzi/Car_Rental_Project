@@ -16,6 +16,7 @@ class AddStaffScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final horizontalPadding = AppSizes.horizontalPadding(context);
     final baseVerticalSpace = AppSizes.verticalPadding(context);
+    bool isWeb = AppSizes.isWeb(context);
 
     return Scaffold(
       backgroundColor: AppColors.backgroundOfScreenColor,
@@ -32,8 +33,8 @@ class AddStaffScreen extends StatelessWidget {
                     showSmallTitle: true,
                     showProfile: true,
                     showNotification: true,
-                    showSettings: true,
-                    showSearch: true,
+                    showSearch: isWeb,
+                    showSettings: isWeb,
                     showBack: true,
                   ),
                 SizedBox(

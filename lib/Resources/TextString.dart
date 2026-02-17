@@ -543,8 +543,25 @@ class TextString {
   static const String  addStaffDetailFieldOne  =   'Job Position';
   static const String  addStaffDetailFieldStatus  =   'Status';
   static const String  addStaffAccess =   'Staff Access';
-  static const String  addStaffAcessSubtitle =   'Staff Access';
-  static const String  addStaffAcessPermission =   'Staff Access';
+  static const String  addStaffAcessSubtitle =   'Select Staff Access';
+  static const String  addStaffAcessPermission =   'Access Permission';
+    // Edit Staff Screen
+  static const String  addStaffHeaderTitleEdit  =   'Edit New Staff';
+  static const String  addStaffNameEdit =   'Staff Name';
+  static const String  addStaffNameSubtitleEdit  =   'Fill a Staff Name';
+  static const String  addStaffNameFieldOneEdit  =   'First Name';
+  static const String  addStaffNameFieldTwoEdit  =   'Last Name';
+  static const String  addStaffContactEdit  =   'Staff Contact';
+  static const String  addStaffContactSubtitleEdit  =   'Fill Staff Contact';
+  static const String  addStaffContactFieldOneEdit  =   'Email';
+  static const String  addStaffContactFieldTwoEdit  =   'Contact Number';
+  static const String  addStaffDetailEdit  =   'Staff Detail';
+  static const String  addStaffDetailSubtitleEdit =   'Select Staff Detail';
+  static const String  addStaffDetailFieldOneEdit  =   'Job Position';
+  static const String  addStaffDetailFieldStatusEdit  =   'Status';
+  static const String  addStaffAccessEdit =   'Staff Access';
+  static const String  addStaffAccessSubtitleEdit =   'Select Staff Access';
+  static const String  addStaffAcessPermissionEdit =   'Access Permission';
 
 
 

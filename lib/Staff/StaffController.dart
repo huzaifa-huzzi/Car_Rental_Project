@@ -89,6 +89,31 @@ class StaffController extends GetxController{
     print("Sending Invitation for: ${firstNameC.text}");
   }
 
+  /// Edit Staff Screen
+  final firstNameCEdit = TextEditingController();
+  final lastNameCEdit = TextEditingController();
+  final emailCEdit = TextEditingController();
+  final phoneCEdit = TextEditingController();
+  final positionCEdit = TextEditingController();
+
+
+  var selectedStatusEdit = 'Active'.obs;
+  var permissionsEdit = <String>[].obs;
+
+  final List<String> statusItemsEdit = ["Active", "Awaiting", "InActive", "Suspended"];
+
+  void togglePermissionEdit(String val) {
+    if (permissionsEdit.contains(val)) {
+      permissionsEdit.remove(val);
+    } else {
+      permissionsEdit.add(val);
+    }
+  }
+
+  void submitDataEdit() {
+    print("Sending Invitation for: ${firstNameCEdit.text}");
+  }
+
   @override
   void onClose() {
     firstNameC.dispose();
@@ -96,6 +121,11 @@ class StaffController extends GetxController{
     emailC.dispose();
     phoneC.dispose();
     positionC.dispose();
+    firstNameCEdit.dispose();
+    lastNameCEdit.dispose();
+    emailCEdit.dispose();
+    phoneCEdit.dispose();
+    positionCEdit.dispose();
     super.onClose();
   }
 
