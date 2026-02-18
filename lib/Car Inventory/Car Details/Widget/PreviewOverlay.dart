@@ -1,7 +1,6 @@
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../Resources/TextTheme.dart';
 import '../../Car Directory/CarInventoryController.dart';
 
 class CarDocumentPreviewOverlay extends StatelessWidget {
