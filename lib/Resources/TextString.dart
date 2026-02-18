@@ -103,10 +103,8 @@ class TextString {
   static const String  tableOne =  'Customer Name';
   static const String  tableTwo =  'VIN Number';
   static const String  tableThree =  'Registration';
-  static const String  tableFour =  'Make';
-  static const String  tableFive =  'Model';
-  static const String  tableSix =  'Year';
-  static const String  tableSeven =  'Rent for Week';
+  static const String  tableFour =  'Car Name';
+  static const String  tableSeven =  'Rent Per Week';
   static const String  tableEight =  'Rental Period';
   static const String  tableNine =  'Pickup Date';
   static const String  tableTen =  'Status';

@@ -117,7 +117,7 @@ class TableViewStaffWidget extends StatelessWidget {
                                 padding: const EdgeInsets.only(right: 8.0),
                                 child: PrimaryBtnStaff(
                                   text: text,
-                                  onTap: () => _navigateToModule(text, context),
+                                  onTap: () {},
                                   height: 38,
                                   width: text.length * 8.5 + 21,
                                   borderRadius: BorderRadius.circular(6),
@@ -264,25 +264,5 @@ class TableViewStaffWidget extends StatelessWidget {
         ),
       ),
     );
-  }
-
-   // Navigation Through Buttons
-  void _navigateToModule(String moduleName, BuildContext context) {
-    switch (moduleName) {
-      case "Car Inventory":
-        context.push('/carInventory');
-        break;
-      case "Customers":
-        context.push('/customers');
-        break;
-      case "Pickup Car":
-        context.push('/pickupcar');
-        break;
-      case "Dropoff Car":
-        context.push('/dropoffCar');
-        break;
-      default:
-        print("No route defined for $moduleName");
-    }
   }
 }

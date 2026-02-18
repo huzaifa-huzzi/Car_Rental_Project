@@ -16,14 +16,14 @@ class TableViewDropOffWidget extends StatelessWidget {
 
   final controller = Get.find<DropOffController>();
 
-  final double nameColWidth = 220.0;
-  final double vinColWidth = 180.0;
-  final double regColWidth = 130.0;
-  final double carRentWidth = 150.0;
-  final double damageWidth = 100.0;
-  final double dateWidth = 130.0;
-  final double statusWidth = 120.0;
-  final double actionWidth = 100.0;
+  final double carRentWidth = 160.0;
+  final double regColWidth = 140.0;
+  final double vinColWidth = 190.0;
+  final double nameColWidth = 240.0;
+  final double damageWidth = 110.0;
+  final double dateWidth = 160.0;
+  final double statusWidth = 100.0;
+  final double actionWidth = 140.0;
 
   @override
   Widget build(BuildContext context) {
@@ -38,24 +38,23 @@ class TableViewDropOffWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// --- TABLE HEADINGS ---///
+              /// --- TABLE HEADINGS --- ///
               Container(
                 padding: EdgeInsets.symmetric(horizontal: tablePadding, vertical: 12),
                 decoration: BoxDecoration(
                   color: AppColors.secondaryColor,
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
                 ),
-                child:
-                Row(
+                child: Row(
                   children: [
-                    _headerCell(TextString.tableOneDropOff, context, customWidth: nameColWidth),
-                    _headerCell(TextString.tableTwoDropOff, context, customWidth: vinColWidth),
-                    _headerCell(TextString.tableThreeDropOff, context, customWidth: regColWidth),
                     _headerCell(TextString.tableThreeRentDropOff, context, customWidth: carRentWidth),
+                    _headerCell(TextString.tableThreeDropOff, context, customWidth: regColWidth),
+                    _headerCell(TextString.tableTwoDropOff, context, customWidth: vinColWidth),
+                    _headerCell(TextString.tableOneDropOff, context, customWidth: nameColWidth),
 
                     SizedBox(
                       width: damageWidth,
-                      child: Center(child: _headerCell("Damage", context)),
+                      child: _headerCell("Damage", context),
                     ),
 
                     _headerCell(TextString.tableNineDropOff, context, customWidth: dateWidth),
@@ -73,13 +72,13 @@ class TableViewDropOffWidget extends StatelessWidget {
                 ),
               ),
 
-              /// --- TABLE BODY ---///
+              /// --- TABLE BODY --- ///
               Column(
                 children: controller.carList3.asMap().entries.map((entry) {
                   int rowIndex = entry.key;
                   var car = entry.value;
-
                   bool isHovered = controller.hoveredRowIndex.value == rowIndex;
+
                   return MouseRegion(
                     onEnter: (_) => controller.hoveredRowIndex.value = rowIndex,
                     onExit: (_) => controller.hoveredRowIndex.value = -1,
@@ -91,6 +90,11 @@ class TableViewDropOffWidget extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: tablePadding, vertical: 10),
                       child: Row(
                         children: [
+                          _dataCell(car["carRent"] ?? "", context, customWidth: carRentWidth),
+                          _dataCell(car["reg"] ?? "", context, customWidth: regColWidth),
+                          _dataCell(car["vin"] ?? "", context, customWidth: vinColWidth),
+
+                          // Customer Info
                           SizedBox(
                             width: nameColWidth,
                             child: Row(
@@ -107,62 +111,63 @@ class TableViewDropOffWidget extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(car["customerName"] ?? "", style: TTextTheme.pOne(context), overflow: TextOverflow.ellipsis),
-                                      Text(car["customerEmail"] ?? "", style: TTextTheme.pFour(context), overflow: TextOverflow.ellipsis),
+                                      Text(car["customerEmail"] ?? "", style: TTextTheme.pFour(context).copyWith(fontSize: 10), overflow: TextOverflow.ellipsis),
                                     ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(width: vinColWidth, child: _dataCell(car["vin"] ?? "", context)),
-                          SizedBox(width: regColWidth, child: _dataCell(car["reg"] ?? "", context)),
-                          SizedBox(width: carRentWidth, child: _dataCell(car["carRent"] ?? "", context)),
 
                           SizedBox(
-                            width: 60,
-                            child: Center(
+                            width: damageWidth,
+                            child: Align(
+                              alignment: Alignment.centerLeft,
                               child: Container(
-                                width: 60,
-                                height: 26,
+                                width: 55,
+                                height: 24,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                  color: car["damage"] == true ? AppColors.primaryColor: AppColors.availableBackgroundColor,
+                                  color: car["damage"] == true ? AppColors.primaryColor : AppColors.availableBackgroundColor,
                                   borderRadius: BorderRadius.circular(6),
                                 ),
-                                child: Text(car["damage"] == true ? "Yes" : "No",
-                                    style:TTextTheme.h10Style(context)),
+                                child: Text(
+                                  car["damage"] == true ? "Yes" : "No",
+                                  style: TTextTheme.h10Style(context).copyWith(color: Colors.white, fontSize: 11),
+                                ),
                               ),
                             ),
                           ),
-                           SizedBox(width: 40,),
+
+                          // Date
                           SizedBox(
                             width: dateWidth,
                             child: Row(
                               children: [
-                                Text("End  ", style: TTextTheme.smallX(context).copyWith(color: Colors.grey)),
-                                Text(car["dropoffDate"] ?? "", style: TTextTheme.pOne(context)),
+                                Text("End ", style: TTextTheme.smallX(context)),
+                                Expanded(child: Text(car["dropoffDate"] ?? "", style: TTextTheme.pOne(context), overflow: TextOverflow.ellipsis)),
                               ],
                             ),
                           ),
 
+                          // Status
                           SizedBox(
                             width: statusWidth,
-                            child: Padding(
-                              padding: EdgeInsets.only(right: 30),
-                              child: _statusDataCell(car["status"] ?? "N/A", context, customWidth: 100),
+                            child: Center(
+                              child: _statusDataCell(car["status"] ?? "N/A", context, customWidth: 90),
                             ),
                           ),
 
+                          // Action
                           SizedBox(
                             width: actionWidth,
-                            child: Padding(
-                              padding: EdgeInsetsGeometry.only(right: 30),
-                              child: SizedBox(
-                                child: PrimaryBthDropOff(
-                                  text: "View",
-                                  onTap: () => context.push('/dropOffDetail', extra: {"hideMobileAppBar": true}),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
+                            child: Center(
+                              child: PrimaryBthDropOff(
+                                text: "View",
+                                onTap: () => context.push('/dropOffDetail', extra: {"hideMobileAppBar": true}),
+                                borderRadius: BorderRadius.circular(6),
+                                width: 80,
+                                height: 35,
                               ),
                             ),
                           ),
@@ -179,45 +184,44 @@ class TableViewDropOffWidget extends StatelessWidget {
     });
   }
 
-  /// ------ Extra Widgets ------- ///
-
-   // header cell
+   /// -------------- Extra Widget ------- ///
+  //  Header Cell
   Widget _headerCell(String title, BuildContext context, {bool isAction = false, double? customWidth}) {
     return SizedBox(
       width: customWidth,
       child: Row(
+        mainAxisAlignment: isAction ? MainAxisAlignment.center : MainAxisAlignment.start,
         children: [
           Text(title, style: TTextTheme.smallXX(context)),
           const SizedBox(width: 4),
-          Image.asset(IconString.sortIcon, height: 12, color: AppColors.secondTextColor),
+          Image.asset(IconString.sortIcon, height: 10, color: AppColors.secondTextColor),
         ],
       ),
     );
   }
-   //data cell
+
+  //  Data Cell
   Widget _dataCell(String text, BuildContext context, {double? customWidth}) {
     return SizedBox(
       width: customWidth,
       child: Text(text, style: TTextTheme.pOne(context), overflow: TextOverflow.ellipsis),
     );
   }
- // status data cell
+
+  //  Status Data Cell
   Widget _statusDataCell(String text, BuildContext context, {required double customWidth}) {
-    return SizedBox(
+    return Container(
       width: customWidth,
-      child: Container(
-        margin: const EdgeInsets.only(right: 15),
-        padding: const EdgeInsets.symmetric(vertical: 6),
-        decoration: BoxDecoration(
-          color: AppColors.textColor,
-          borderRadius: BorderRadius.circular(4),
-          border:Border.all(color: AppColors.tertiaryTextColor,width: 1),
-        ),
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          style: TTextTheme.titleeight(context),
-        ),
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      decoration: BoxDecoration(
+        color: AppColors.textColor,
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: AppColors.tertiaryTextColor, width: 0.5),
+      ),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TTextTheme.titleeight(context).copyWith(color: Colors.white, fontSize: 11),
       ),
     );
   }

@@ -43,12 +43,10 @@ class CardListTablePickup extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    _headerCell(TextString.tableOne, context, customWidth: nameColumnWidth),
-                    _headerCell(TextString.tableTwo, context, customWidth: vinColumnWidth),
-                    _headerCell(TextString.tableThree, context, customWidth: standardWidth),
                     _headerCell(TextString.tableFour, context, customWidth: standardWidth),
-                    _headerCell(TextString.tableFive, context, customWidth: standardWidth),
-                    _headerCell(TextString.tableSix, context, customWidth: 80),
+                    _headerCell(TextString.tableThree, context, customWidth: standardWidth),
+                    _headerCell(TextString.tableTwo, context, customWidth: vinColumnWidth),
+                    _headerCell(TextString.tableOne, context, customWidth: nameColumnWidth),
                     _headerCell(TextString.tableSeven, context, customWidth: standardWidth ),
                     const SizedBox(width: 30),
                     _headerCell(TextString.tableEight, context, customWidth: standardWidth ),
@@ -81,12 +79,10 @@ class CardListTablePickup extends StatelessWidget {
                         padding: EdgeInsets.only(left: tablePadding, top: 10, bottom: 10),
                         child: Row(
                           children: [
-                            _dataCell(car["customerName"]?.toString() ?? "Key Missing", context, customWidth: nameColumnWidth),
-                            _dataCell(car["vin"]?.toString() ?? "Key Missing", context, customWidth: vinColumnWidth),
+                            _dataCell(car["carName"]?.toString() ?? "Key Missing", context, customWidth: standardWidth),
                             _dataCell(car["reg"]?.toString() ?? "Key Missing", context, customWidth: standardWidth),
-                            _dataCell(car["make"]?.toString() ?? "Key Missing", context, customWidth: standardWidth),
-                            _dataCell(car["model"]?.toString() ?? "Key Missing", context, customWidth: standardWidth),
-                            _dataCell(car["year"]?.toString() ?? "-", context, customWidth: 80),
+                            _dataCell(car["vin"]?.toString() ?? "Key Missing", context, customWidth: vinColumnWidth),
+                            _dataCell(car["customerName"]?.toString() ?? "Key Missing", context, customWidth: nameColumnWidth),
                             const SizedBox(width: 15),
                             _dataCell(car["rentPerWeek"]?.toString() ?? "-", context, customWidth: standardWidth ),
                             const SizedBox(width: 30),

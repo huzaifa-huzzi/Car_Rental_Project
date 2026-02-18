@@ -446,27 +446,34 @@ class DashboardContent extends StatelessWidget {
     ));
   }
   Widget _buildResponsiveDropdown() {
-    return Obx(() => Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(
-        color: AppColors.sideBoxesColor,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: controller.selectedPeriod.value,
-          isDense: true,
-          icon: const Icon(Icons.keyboard_arrow_down, size: 16),
-          onChanged: (val) => controller.updateFilter(val),
-          items: controller.periods.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value, style: const TextStyle(fontSize: 11)),
-            );
-          }).toList(),
+    return Obx(() {
+      // Safety check: Agar kisi wajah se selectedPeriod list mein na ho to crash na kare
+      String currentValue = controller.periods.contains(controller.selectedPeriod.value)
+          ? controller.selectedPeriod.value
+          : controller.periods.first;
+
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          color: AppColors.sideBoxesColor,
+          borderRadius: BorderRadius.circular(8),
         ),
-      ),
-    ));
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            value: currentValue,
+            isDense: true,
+            icon: const Icon(Icons.keyboard_arrow_down, size: 16),
+            onChanged: (val) => controller.updateFilter(val),
+            items: controller.periods.map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+              );
+            }).toList(),
+          ),
+        ),
+      );
+    });
   }
   Widget _buildLegend(Color color, String label,BuildContext context) {
     return Row(
@@ -563,14 +570,14 @@ class DashboardContent extends StatelessWidget {
       bgColor = AppColors.textColor;
       textColor = Colors.white;
     } else if (status == "awaiting") {
-      bgColor = AppColors.secondaryColor;
-      textColor = AppColors.textColor;
+      bgColor = AppColors.primaryColor;
+      textColor = Colors.white;
     } else if (status == "overdue") {
       bgColor = AppColors.iconsBackgroundColor;
       textColor = AppColors.primaryColor;
     } else if (status == "processing") {
-      bgColor = AppColors.iconsBackgroundColor;
-      textColor = AppColors.primaryColor;
+      bgColor = AppColors.backgroundOfScreenColor;
+      textColor = AppColors.textColor;
     }
     Color barColor = (status == "completed") ? AppColors.textColor : (status == "awaiting") ? AppColors.primaryColor  : (status == "overdue") ? AppColors.maintenanceBackgroundColor : (status == "processing") ? AppColors.rodOfProcessingColor : bgColor;
 

@@ -27,8 +27,6 @@ class CustomerListTableWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tablePadding = AppSizes.padding(context);
-    final isMobile = AppSizes.isMobile(context);
-    final baseVerticalSpace = AppSizes.verticalPadding(context);
 
     return Container(
       margin: EdgeInsets.all(tablePadding),
@@ -52,9 +50,9 @@ class CustomerListTableWidget extends StatelessWidget {
               child: Row(
                 children: [
                   _headerCell("Customer", clientColWidth, context),
-                  _headerCell("Age", ageColWidth, context),
                   _headerCell("Phone Number", phoneColWidth, context),
                   _headerCell("Address", addressColWidth, context),
+                  _headerCell("Age", ageColWidth, context),
                   _headerCell("License Details", licenseColWidth, context),
                   _headerCell("Linked Card", cardColWidth, context),
                   _headerCell("Action", actionColWidth, context, isAction: true),
@@ -86,9 +84,9 @@ class CustomerListTableWidget extends StatelessWidget {
                       child: Row(
                         children: [
                           _clientDataCell(clientColWidth, context),
-                          _dataCell("34 years", ageColWidth, context),
                           _dataCell("789-012-3456", phoneColWidth, context),
                           _dataCell("404 Spruce Road", addressColWidth, context),
+                          _dataCell("34 years", ageColWidth, context),
                           _licenseDataCell(licenseColWidth, context),
                           _dataCell("2 Card", cardColWidth, context),
 
