@@ -189,13 +189,52 @@ class TableViewDropOffWidget extends StatelessWidget {
   Widget _headerCell(String title, BuildContext context, {bool isAction = false, double? customWidth}) {
     return SizedBox(
       width: customWidth,
-      child: Row(
-        mainAxisAlignment: isAction ? MainAxisAlignment.center : MainAxisAlignment.start,
-        children: [
-          Text(title, style: TTextTheme.smallXX(context)),
-          const SizedBox(width: 4),
-          Image.asset(IconString.sortIcon, height: 10, color: AppColors.secondTextColor),
-        ],
+      child: InkWell(
+        onTap: isAction ? null : () => controller.toggleSort(title),
+        child: Row(
+          mainAxisAlignment: isAction ? MainAxisAlignment.center : MainAxisAlignment.start,
+          children: [
+            Text(title, style: TTextTheme.smallXX(context)),
+            const SizedBox(width: 4),
+
+            if (!isAction)
+              Obx(() {
+                bool isCurrent = controller.sortColumn.value == title;
+                int order = isCurrent ? controller.sortOrder.value : 0;
+
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ClipRect(
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        heightFactor: 0.5,
+                        child: Image.asset(
+                          IconString.sortIcon,
+                          height: 14,
+                          color: order == 1 ? AppColors.primaryColor : AppColors.secondTextColor,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 1),
+
+                    ClipRect(
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        heightFactor: 0.5,
+                        child: Image.asset(
+                          IconString.sortIcon,
+                          height: 14,
+                          color: order == 2 ? AppColors.primaryColor : AppColors.secondTextColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }),
+          ],
+        ),
       ),
     );
   }

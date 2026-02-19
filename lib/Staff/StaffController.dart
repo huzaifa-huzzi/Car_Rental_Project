@@ -114,6 +114,21 @@ class StaffController extends GetxController{
     print("Sending Invitation for: ${firstNameCEdit.text}");
   }
 
+  /// Sorting
+  var sortColumn = "".obs;
+  var sortOrder = 0.obs;
+
+  void toggleSort(String columnName) {
+    if (sortColumn.value == columnName) {
+      sortOrder.value = (sortOrder.value + 1) % 3;
+      if (sortOrder.value == 0) sortColumn.value = "";
+    } else {
+      sortColumn.value = columnName;
+      sortOrder.value = 1;
+    }
+  }
+
+
   @override
   void onClose() {
     firstNameC.dispose();

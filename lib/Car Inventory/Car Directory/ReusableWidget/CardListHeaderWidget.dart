@@ -56,7 +56,7 @@ class CardListHeaderWidget extends StatelessWidget {
                           _buildCategorySelection(context, controller, buttonHeight, !isMobile),
                           SizedBox(width: isMobile ? 4 : 5),
                           SizedBox(
-                            width: isMobile ? 140 : 270,
+                            width: isMobile ? 140 : 285,
                             child: _searchBarWithButton(context, controller, buttonHeight, !isMobile),
                           ),
                           SizedBox(width: isMobile ? 4 : 5),
@@ -183,7 +183,7 @@ class CardListHeaderWidget extends StatelessWidget {
             },
             child: Container(
               height: 32,
-              padding: EdgeInsets.symmetric(horizontal: isLargeScreen ? 16 : 0),
+              padding: EdgeInsets.symmetric(horizontal: isLargeScreen ? 20 : 0),
               width: isLargeScreen ? null : 32,
               decoration: BoxDecoration(
                 color: AppColors.primaryColor,

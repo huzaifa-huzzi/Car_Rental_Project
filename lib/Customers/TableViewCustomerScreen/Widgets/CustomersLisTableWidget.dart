@@ -124,15 +124,52 @@ class CustomerListTableWidget extends StatelessWidget {
   Widget _headerCell(String title, double width, BuildContext context, {bool isAction = false}) {
     return SizedBox(
       width: width,
-      child: Row(
-        mainAxisAlignment: isAction ? MainAxisAlignment.center : MainAxisAlignment.start,
-        children: [
-          Text(
-              title,
-              style: TTextTheme.smallXX(context)),
-          const SizedBox(width: 4),
-          Image.asset(IconString.sortIcon),
-        ],
+      child: InkWell(
+        onTap: isAction ? null : () => controller.toggleSort(title),
+        child: Row(
+          mainAxisAlignment: isAction ? MainAxisAlignment.center : MainAxisAlignment.start,
+          children: [
+            Text(title, style: TTextTheme.smallXX(context)),
+            const SizedBox(width: 4),
+
+            if (!isAction)
+              Obx(() {
+                bool isCurrent = controller.sortColumn.value == title;
+                int order = isCurrent ? controller.sortOrder.value : 0;
+
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ClipRect(
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        heightFactor: 0.5,
+                        child: Image.asset(
+                          IconString.sortIcon,
+                          height: 14,
+                          color: order == 1 ? AppColors.primaryColor : AppColors.secondTextColor,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 1),
+
+                    ClipRect(
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        heightFactor: 0.5,
+                        child: Image.asset(
+                          IconString.sortIcon,
+                          height: 14,
+                          color: order == 2 ? AppColors.primaryColor : AppColors.secondTextColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }),
+          ],
+        ),
       ),
     );
   }
