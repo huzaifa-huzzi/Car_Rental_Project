@@ -44,7 +44,7 @@ class TableViewStaffWidget extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    _headerCell("Name", context, customWidth: nameColWidth),
+                    _headerCell("Staff", context, customWidth: nameColWidth),
                     _headerCell("Contact Number", context, customWidth: contactColWidth),
                     _headerCell("Access permission", context, customWidth: permissionColWidth),
                     _headerCell("Job Position", context, customWidth: positionWidth),
