@@ -15,7 +15,7 @@ class CarListTableWidget extends StatelessWidget {
   final controller = Get.put(CarInventoryController());
 
   final double vinColumnWidth = 180.0;
-  final double columnWidth = 120.0;
+  final double columnWidth = 140.0;
   final double actionColumnWidth = 130.0;
 
   @override

@@ -749,7 +749,7 @@ class EditCarWidget extends StatelessWidget {
 
     Widget heading = Text(
       TextString.uploadMax6,
-      style: TTextTheme.titleTwo(context),
+      style: TTextTheme.btnSix(context),
     );
 
     return Obx(() {

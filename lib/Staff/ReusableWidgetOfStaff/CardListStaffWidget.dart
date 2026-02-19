@@ -141,7 +141,7 @@ class CardListStaffWidget extends StatelessWidget {
               textAlignVertical: TextAlignVertical.center,
               style: TTextTheme.titleTwo(context),
               decoration: InputDecoration(
-                hintText: screenWidth > 750 ? "Search People by Mail" : "Search...",
+                hintText: screenWidth > 750 ? "Search Staff by Mail" : "Search...",
                 hintStyle: TTextTheme.smallX(context),
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(bottom: 18),

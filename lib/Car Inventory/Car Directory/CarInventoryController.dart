@@ -132,7 +132,7 @@ class CarInventoryController extends GetxController {
         "vin": "JTNBA3HK003001234",
         "reg": "1234567890",
         "brand": brands[index],
-        "carName" : "Toyota(2017)",
+        "carName" : "Toyota Corolla (2017)",
         "bodyType": "Sedan",
         "status": getStatus(i),
         "transmission": transmissions[transIndex],

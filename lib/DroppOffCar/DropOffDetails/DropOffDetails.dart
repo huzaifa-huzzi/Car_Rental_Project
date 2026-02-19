@@ -32,7 +32,7 @@ class DropOffDetails extends StatelessWidget {
 
             // Header
             HeaderWebDropOffWidget(
-              mainTitle: 'DropOff Car Detail',
+              mainTitle: 'DropOff Car Details',
               showBack: true,
               showSmallTitle: true,
               smallTitle: 'DropOff / DropOff Car Details',

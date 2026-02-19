@@ -20,7 +20,7 @@ class DashboardController extends GetxController {
   var expense = <double>[320, 380, 400, 360, 420, 440, 380, 350, 420, 410, 430, 420].obs;
 
   var selectedDropoffPeriod = 'This Year'.obs;
-  final List<String> dropoffPeriods = ['Last 7 Days','Last 8 Month','This Year'];
+  final List<String> dropoffPeriods = ['Last 7 Days','Last 30 Days','This Year'];
 
   var completedDropoffs = 1000.obs;
   var incompleteDropoffs = 1200.obs;

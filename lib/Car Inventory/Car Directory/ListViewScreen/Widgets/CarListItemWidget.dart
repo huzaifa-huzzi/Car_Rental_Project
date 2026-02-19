@@ -57,41 +57,35 @@ class _CarListCardState extends State<CarListCard> {
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          double whiteWidth;
-
-          if (AppSizes.isWeb(context)) {
-            whiteWidth = 850;
-          } else if (constraints.maxWidth > 600) {
-            whiteWidth = constraints.maxWidth - 170;
-          } else {
-            whiteWidth = constraints.maxWidth;
-          }
+          final bool isMobile = constraints.maxWidth <= 600;
 
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MouseRegion(
-                onEnter: (_) => setState(() => isHover = true),
-                onExit: (_) => setState(() => isHover = false),
-                child: Container(
-                  width: whiteWidth,
-                  padding: EdgeInsets.all(cardPadding * 0.5),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(AppSizes.borderRadius(context)),
-                      bottomLeft: Radius.circular(AppSizes.borderRadius(context)),
+              Expanded(
+                child: MouseRegion(
+                  onEnter: (_) => setState(() => isHover = true),
+                  onExit: (_) => setState(() => isHover = false),
+                  child: Container(
+                    padding: EdgeInsets.all(cardPadding * 0.5),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(AppSizes.borderRadius(context)),
+                        bottomLeft: Radius.circular(AppSizes.borderRadius(context)),
+                        topRight: isMobile ? Radius.circular(AppSizes.borderRadius(context)) : Radius.zero,
+                        bottomRight: isMobile ? Radius.circular(AppSizes.borderRadius(context)) : Radius.zero,
+                      ),
+                      border: Border.all(
+                        color: isHover ? AppColors.primaryColor : Colors.transparent,
+                        width: 0.5,
+                      ),
                     ),
-                    border: Border.all(
-                      color: isHover ? AppColors.primaryColor : Colors.transparent,
-                      width: 0.5,
-                    ),
+                    child: _innerWhiteCard(context),
                   ),
-                  child: _innerWhiteCard(context),
                 ),
               ),
-
-              if (constraints.maxWidth > 600)
+              if (!isMobile)
                 _buildEditDelete(context)
               else
                 const SizedBox.shrink(),
@@ -110,7 +104,7 @@ class _CarListCardState extends State<CarListCard> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildCarImageWithStatus(context),
-        SizedBox(width: AppSizes.padding(context) * 0.8),
+        SizedBox(width: AppSizes.padding(context)),
 
         Expanded(
           flex: 4,
@@ -122,10 +116,11 @@ class _CarListCardState extends State<CarListCard> {
           child: _buildSpecs(context),
         ),
 
+        // View Button
         Padding(
           padding: EdgeInsets.only(left: AppSizes.padding(context) * 0.5),
           child: SizedBox(
-            width: 85,
+            width: 90,
             height: 38,
             child: AddButton(
                 text: 'View',

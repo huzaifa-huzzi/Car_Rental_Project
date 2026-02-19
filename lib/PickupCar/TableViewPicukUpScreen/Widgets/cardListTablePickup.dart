@@ -18,7 +18,7 @@ class CardListTablePickup extends StatelessWidget {
   final double vinColumnWidth = 180.0;
   final double dateColumnWidth = 140.0;
   final double statusColumnWidth = 130.0;
-  final double standardWidth = 100.0;
+  final double standardWidth = 150.0;
   final double actionColumnWidth = 90.0;
 
   @override
@@ -137,7 +137,7 @@ class CardListTablePickup extends StatelessWidget {
             Text(start, style: TTextTheme.pOne(context)),
           ]),
           Row(children: [
-            Text(TextString.dataCellStart, style: TTextTheme.titleFour(context)),
+            Text(TextString.dataCellEnd, style: TTextTheme.titleFour(context)),
             Text(end, style: TTextTheme.pOne(context)),
           ]),
         ],

@@ -50,7 +50,6 @@ class CustomerDetails extends StatelessWidget {
                 ),
               ),
             ),
-
             Positioned.fill(
               child: CustomerDownloadPopup(),
             ),

@@ -447,7 +447,6 @@ class DashboardContent extends StatelessWidget {
   }
   Widget _buildResponsiveDropdown() {
     return Obx(() {
-      // Safety check: Agar kisi wajah se selectedPeriod list mein na ho to crash na kare
       String currentValue = controller.periods.contains(controller.selectedPeriod.value)
           ? controller.selectedPeriod.value
           : controller.periods.first;
