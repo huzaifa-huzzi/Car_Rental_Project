@@ -80,8 +80,6 @@ class DashboardContent extends StatelessWidget {
   /// ---------- Extra Widgets --------- ///
 
 
-
-
    // Main Section Of Screen
   List<Widget> _buildMainSections(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
