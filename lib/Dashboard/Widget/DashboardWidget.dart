@@ -1,3 +1,4 @@
+import 'package:car_rental_project/Car%20Inventory/Car%20Directory/CarInventoryController.dart';
 import 'package:car_rental_project/Customers/CustomersController.dart';
 import 'package:car_rental_project/Dashboard/DashboardController.dart';
 import 'package:car_rental_project/Dashboard/ReusableWidgetOfDashboard/PrimaryButtonOfDashBoard.dart';
@@ -1130,6 +1131,7 @@ class DashboardContent extends StatelessWidget {
                     AddButtonOfDashboard(
                       text: "Add Car",
                       onTap: () {
+                        Get.lazyPut(() => CarInventoryController(), fenix: true);
                         context.push('/addNewCar');
                       },
                       width: buttonWidth,
