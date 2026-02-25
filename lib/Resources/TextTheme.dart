@@ -39,6 +39,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 18),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
 
+  static TextStyle stepsText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 13, 14),fontWeight: FontWeight.w500,color: AppColors.textColor);
+  }
+
   static TextStyle h3Style(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 26),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
@@ -96,6 +100,35 @@ class TTextTheme {
 
   static TextStyle btnOne(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 12),fontWeight: FontWeight.w500,color: AppColors.quadrantalTextColor);
+  }
+
+  static TextStyle CalendarTitle(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 13, 14, 15),fontWeight: FontWeight.w500,color: AppColors.textColor);
+  }
+
+  static TextStyle CalendarSubtitle(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 13, 14),fontWeight: FontWeight.w400,color: AppColors.secondTextColor);
+  }
+
+  static TextStyle CalendarNum(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 13, 14),fontWeight: FontWeight.w400,color: AppColors.textColor);
+  }
+
+  static TextStyle hourlyTitle(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 20, 22, 24),fontWeight: FontWeight.w400,color: AppColors.textColor);
+  }
+
+  static TextStyle hourlySubtitle(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 12, 14),fontWeight: FontWeight.w400,color: AppColors.textColor);
+  }
+
+
+  static TextStyle calendarBtnCancel(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 12),fontWeight: FontWeight.w400,color: AppColors.primaryColor);
+  }
+
+  static TextStyle calendarBtnDone(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 12),fontWeight: FontWeight.w500,color: Colors.white);
   }
 
 

@@ -218,7 +218,7 @@ class TextString {
   static const String  titleAddHeader =   'Add Pickup Car';
   static const String  subtitleHeader =   'Enter the specification for the pre rental details';
   static const String  titleAddCustomer =   'Customer';
-  static const String  subtitleAddCustomer =   'Select a customer or add new customer';
+  static const String  subtitleAddCustomer =   'Select a customer or add customer';
   static const String  titleAddCar =   'Car';
   static const String  subtitleAddCar =   'Select a Car';
   static const String  titleAddRent =   'Rent Purpose';
