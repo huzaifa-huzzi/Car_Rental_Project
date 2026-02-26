@@ -21,6 +21,10 @@ class ImageString{
   /// Pickup Car Pics
   static const String  carDamageInspectionImage= 'assets/Images/PickupCar/Car Inspection Image.png';
   static const String  successCheckPickupImage= 'assets/Images/PickupCar/SuccessCheckIcon.png';
+  static const String  frontView = 'assets/Images/PickupCar/FrontView.png';
+  static const String  backView = 'assets/Images/PickupCar/BackView.png';
+  static const String  leftView = 'assets/Images/PickupCar/LeftView.png';
+  static const String  rightView= 'assets/Images/PickupCar/RightView.png';
   /// Authentication
   static const String  smartPhoneImage= 'assets/Images/Login/smartphoneImage.png';
    /// Dashboard

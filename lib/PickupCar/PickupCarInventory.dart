@@ -265,7 +265,6 @@ class PickupCarController extends GetxController {
       ) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    // 🔥 Responsive width: field ke hisaab se
     final double popupWidth = fieldWidth.isInfinite
         ? screenWidth.clamp(250, 320)
         : fieldWidth.clamp(250, 380);
@@ -273,7 +272,6 @@ class PickupCarController extends GetxController {
     return OverlayEntry(
       builder: (context) => Stack(
         children: [
-          // background tap close
           Positioned.fill(
             child: GestureDetector(
               onTap: removeCalendar,
@@ -281,7 +279,6 @@ class PickupCarController extends GetxController {
             ),
           ),
 
-          // 🔥 ALWAYS field ke neeche
           CompositedTransformFollower(
             link: link,
             showWhenUnlinked: false,
@@ -314,7 +311,7 @@ class PickupCarController extends GetxController {
     );
   }
 
-  /// Time Picker Controller
+  // Time Picker Controller
   var selectedHour = 11.obs;
   var selectedMinute = 30.obs;
   var isAM = true.obs;
@@ -436,45 +433,63 @@ class PickupCarController extends GetxController {
   ];
 
 
-  RxList<ImageHolder> AddpickupCarImages = <ImageHolder>[].obs;
-  final int maxPickupAddImages = 10;
+
+  // Required Images ke liye variables
+  var frontImage = Rxn<ImageHolder>();
+  var backImage = Rxn<ImageHolder>();
+  var leftImage = Rxn<ImageHolder>();
+  var rightImage = Rxn<ImageHolder>();
+
+// Additional images ke liye list
+  var additionalImages = <ImageHolder>[].obs;
+
+// --- PICK IMAGE FUNCTION ---
+  Future<void> pickImageNew(String type) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowMultiple: type == 'additional',
+      allowedExtensions: ['png', 'jpg', 'jpeg'],
+      withData: true,
+    );
+
+    if (result != null) {
+      if (type == 'additional') {
+        for (var file in result.files) {
+          if (additionalImages.length < 6) {
+            additionalImages.add(ImageHolder(bytes: file.bytes, name: file.name, path: kIsWeb ? null : file.path));
+          }
+        }
+      } else {
+        var file = result.files.first;
+        var holder = ImageHolder(bytes: file.bytes, name: file.name, path: kIsWeb ? null : file.path);
+
+        if (type == 'front') frontImage.value = holder;
+        else if (type == 'back') backImage.value = holder;
+        else if (type == 'left') leftImage.value = holder;
+        else if (type == 'right') rightImage.value = holder;
+      }
+    }
+  }
+
+// --- REMOVE IMAGE FUNCTION ---
+  void removeImageNew(String type, {int? index}) {
+    if (type == 'additional' && index != null) {
+      // List se index ke mutabiq remove karega
+      additionalImages.removeAt(index);
+    } else {
+      // Required variables ko null set karega taake placeholder wapis aa jaye
+      if (type == 'front') frontImage.value = null;
+      else if (type == 'back') backImage.value = null;
+      else if (type == 'left') leftImage.value = null;
+      else if (type == 'right') rightImage.value = null;
+    }
+  }
+
 
   final startDateController2 = TextEditingController();
   final startTimeController2 = TextEditingController();
   final endDateController2 = TextEditingController();
   final endTimeController2 = TextEditingController();
-
-  Future<void> pickImage2() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowMultiple: true,
-      allowedExtensions: ['png', 'jpg', 'jpeg', 'svg'],
-      withData: true,
-    );
-
-    if (result != null) {
-      for (var file in result.files) {
-        if (AddpickupCarImages.length < maxPickupAddImages) {
-          if (kIsWeb) {
-            if (file.bytes != null) {
-              AddpickupCarImages.add(ImageHolder(bytes: file.bytes, name: file.name));
-            }
-          } else {
-            if (file.path != null) {
-              AddpickupCarImages.add(ImageHolder(path: file.path, name: file.name, bytes: file.bytes));
-            }
-          }
-        }
-      }
-      AddpickupCarImages.refresh();
-    }
-  }
-
-  void removeImage2(int index) {
-    if (index >= 0 && index < AddpickupCarImages.length) {
-      AddpickupCarImages.removeAt(index);
-    }
-  }
 
   void selectCustomer(dynamic customer) {
     selectedCustomer.value = customer;

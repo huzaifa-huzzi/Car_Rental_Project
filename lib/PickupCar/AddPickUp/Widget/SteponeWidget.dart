@@ -311,55 +311,57 @@ class StepOneSelectionWidget extends StatelessWidget {
                                 _buildSelectionRow(
                                   context,
                                   icon: IconString.pickupNote,
-                                  title:TextString.titleAddNote,
+                                  title: TextString.titleAddNote,
                                   subtitle: TextString.subtitleAddNote,
                                   content: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(TextString.subtitleAddNoteOne, style: TTextTheme.titleTwo(context)),
                                       const SizedBox(height: 12),
-                                      Container(
-                                        padding: EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(12),
-                                          border: Border.all(color: AppColors.tertiaryTextColor,width: 0.7),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black.withOpacity(0.04),
-                                              blurRadius: 10,
-                                              offset: const Offset(0, 4),
-                                            ),
-                                          ],
-                                        ),
-                                        child: TextField(
-                                          cursorColor: AppColors.blackColor,
-                                          controller: controller.additionalAddCommentsController,
-                                          maxLines: 6,
-                                          style: TTextTheme.insidetextfieldWrittenText(context),
-                                          decoration: InputDecoration(
-                                            hintText: 'Describe the vehicles condition, unique features, or rental policies...',
-                                            hintStyle: TTextTheme.titleFour(context),
-                                              filled: false,
-                                              fillColor: Colors.transparent,
-                                            contentPadding: const EdgeInsets.all(16),
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(12),
-                                              borderSide: BorderSide.none,
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(12),
-                                              borderSide: BorderSide.none,
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(12),
-                                              borderSide: BorderSide.none,
-                                            ),
-                                          ),
+
+                                      Focus(
+                                        onFocusChange: (hasFocus) {
+                                          (context as Element).markNeedsBuild();
+                                        },
+                                        child: Builder(
+                                          builder: (context) {
+                                            final bool hasFocus = Focus.of(context).hasFocus;
+
+                                            return Container(
+                                              padding: const EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                color: AppColors.secondaryColor,
+                                                borderRadius: BorderRadius.circular(12),
+                                                boxShadow: hasFocus ? [
+                                                  BoxShadow(
+                                                    color: AppColors.fieldsBackground,
+                                                    blurRadius: 12,
+                                                    offset: const Offset(0, 4),
+                                                  ),
+                                                ] : [],
+                                              ),
+                                              child: TextField(
+                                                cursorColor: AppColors.blackColor,
+                                                controller: controller.additionalAddCommentsController,
+                                                maxLines: 6,
+                                                style: TTextTheme.insidetextfieldWrittenText(context),
+                                                decoration: InputDecoration(
+                                                  hintText: 'Describe the vehicles condition, unique features, or rental policies...',
+                                                  hintStyle: TTextTheme.titleFour(context),
+                                                  filled: false,
+                                                  fillColor: Colors.transparent,
+                                                  contentPadding: const EdgeInsets.all(16),
+                                                  border: InputBorder.none,
+                                                  enabledBorder: InputBorder.none,
+                                                  focusedBorder: InputBorder.none,
+                                                ),
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ),
                                     ],
-                                  )
+                                  ),
                                 ),
                                 const SizedBox(height: 30),
             
@@ -410,7 +412,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                   if (isMobile) {
                     topOffset = 250;
                   } else if (isTablet) {
-                    topOffset = 185;
+                    topOffset = 250;
                   } else {
                     topOffset = 195;
                   }
@@ -420,9 +422,9 @@ class StepOneSelectionWidget extends StatelessWidget {
                   if (isMobile) {
                     rightOffset = 24;
                   } else if (isTablet) {
-                    rightOffset = screenWidth * 0.044;
+                    rightOffset = screenWidth * 0.034;
                   } else {
-                    rightOffset = screenWidth * 0.032;
+                    rightOffset = screenWidth * 0.078;
                   }
             
                   return Positioned(
@@ -447,13 +449,13 @@ class StepOneSelectionWidget extends StatelessWidget {
                   if (isMobile) {
                     topOffset = isCustomerSelected ? 535 : 480;
                   } else if (isTablet) {
-                    topOffset = isCustomerSelected ? 425 : 362;
+                    topOffset = isCustomerSelected ? 425 : 490;
                   } else {
                     topOffset = isCustomerSelected ? 435 : 362;
                   }
             
                   double screenWidth = MediaQuery.of(context).size.width;
-                  double rightOffset = isMobile ? 24.0 : (isTablet ? screenWidth * 0.04 : screenWidth * 0.033);
+                  double rightOffset = isMobile ? 24.0 : (isTablet ? screenWidth * 0.04 : screenWidth * 0.079);
             
                   return Positioned(
                     top: topOffset,
@@ -1340,32 +1342,42 @@ class StepOneSelectionWidget extends StatelessWidget {
               overflow: TextOverflow.ellipsis
           ),
           const SizedBox(height: 8),
-          Container(
-            padding: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: AppColors.tertiaryTextColor),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.04),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: TextFormField(
-              cursorColor: AppColors.blackColor,
-              controller: txtController,
-              textAlignVertical: TextAlignVertical.center,
-              style: TTextTheme.insidetextfieldWrittenText(context),
-              decoration: InputDecoration(
-                hintText: hint,
-               hintStyle: TTextTheme.titleFour(context),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                border: InputBorder.none,
-                isDense: true,
-              ),
+          Focus(
+            onFocusChange: (hasFocus) {
+              (context as Element).markNeedsBuild();
+            },
+            child: Builder(
+              builder: (context) {
+                final bool hasFocus = Focus.of(context).hasFocus;
+
+                return Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: AppColors.secondaryColor,
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: hasFocus ? [
+                      BoxShadow(
+                        color: AppColors.fieldsBackground,
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ] : [],
+                  ),
+                  child: TextFormField(
+                    cursorColor: AppColors.blackColor,
+                    controller: txtController,
+                    textAlignVertical: TextAlignVertical.center,
+                    style: TTextTheme.insidetextfieldWrittenText(context),
+                    decoration: InputDecoration(
+                      hintText: hint,
+                      hintStyle: TTextTheme.insidetextfieldWrittenText(context),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      border: InputBorder.none,
+                      isDense: true,
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ],
@@ -1388,7 +1400,7 @@ class StepOneSelectionWidget extends StatelessWidget {
           PopupMenuButton<String>(
             offset: const Offset(0, 45),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            color: Colors.white,
+            color: AppColors.secondaryColor,
             constraints: BoxConstraints(minWidth: width, maxWidth: width),
             onSelected: (val) {
               txtController.text = val;
@@ -1401,16 +1413,8 @@ class StepOneSelectionWidget extends StatelessWidget {
               height: 45,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.secondaryColor,
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.tertiaryTextColor),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.04),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1421,7 +1425,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                       builder: (context, value, _) {
                         return Text(
                           txtController.text.isEmpty ? items.first : txtController.text,
-                          style: TTextTheme.titleFour(context),
+                          style: TTextTheme.insidetextfieldWrittenText(context),
                           overflow: TextOverflow.ellipsis,
                         );
                       },
@@ -1561,15 +1565,9 @@ class StepOneSelectionWidget extends StatelessWidget {
         height: 52,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.secondaryColor,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.grey.shade200, width: 1.2),
           boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.04),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
           ],
         ),
         child: Row(
@@ -1577,7 +1575,7 @@ class StepOneSelectionWidget extends StatelessWidget {
           children: [
             Text(
               controller.text.isEmpty ? hint : controller.text,
-              style: TTextTheme.titleFour(context),
+              style: TTextTheme.insidetextfieldWrittenText(context),
               overflow: TextOverflow.ellipsis,
             ),
             iconWidget,
@@ -1602,7 +1600,7 @@ class StepOneSelectionWidget extends StatelessWidget {
             height: webButtonHeight,
             child: AddPickUpButton(
               text: 'Cancel',
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.transparent,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
               onTap: () {},
@@ -1633,7 +1631,7 @@ class StepOneSelectionWidget extends StatelessWidget {
             height: webButtonHeight,
             child: AddPickUpButton(
               text: 'Cancel',
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.transparent,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
               onTap: () {},

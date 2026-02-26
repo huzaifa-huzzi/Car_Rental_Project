@@ -39,6 +39,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 18),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
 
+  static TextStyle UploadText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 15, 18, 20),fontWeight: FontWeight.w600,color: AppColors.textColor);
+  }
+
   static TextStyle stepsText(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 13, 14),fontWeight: FontWeight.w500,color: AppColors.textColor);
   }
@@ -53,6 +57,10 @@ class TTextTheme {
 
   static TextStyle h6Style(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 20),fontWeight: FontWeight.w500,color: AppColors.textColor);
+  }
+
+  static TextStyle DamageStyle(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 15, 15, 18),fontWeight: FontWeight.w500,color: AppColors.textColor);
   }
 
   static TextStyle resendText(BuildContext context){
@@ -134,6 +142,14 @@ class TTextTheme {
 
   static TextStyle progressBarUnit (BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 11),fontWeight: FontWeight.w600,color: AppColors.primaryColor);
+  }
+
+  static TextStyle requireImagesText (BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 16),fontWeight: FontWeight.w500,color: AppColors.primaryColor);
+  }
+
+  static TextStyle AdditionalText (BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 16),fontWeight: FontWeight.w500,color: AppColors.textColor);
   }
 
   static TextStyle progressBarUnitText (BuildContext context){
@@ -242,7 +258,7 @@ class TTextTheme {
   }
 
   static TextStyle btnNumbering(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 14),fontWeight: FontWeight.w500,color: Colors.white);
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 13),fontWeight: FontWeight.w500,color: Colors.white);
   }
 
   static TextStyle btnConfirm(BuildContext context){
@@ -296,6 +312,11 @@ class TTextTheme {
 
   static TextStyle titleThree(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
+    );
+  }
+
+  static TextStyle titleTwelve(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 13, 16),fontWeight: FontWeight.w400,color: AppColors.primaryColor,
     );
   }
 

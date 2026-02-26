@@ -109,6 +109,7 @@ class IconString {
   static const String  arrowUpIcon = 'assets/icons/arrowUpIcon.png';
   static const String  calendarIcon = 'assets/icons/CalendarIcon.png';
   static const String  downArrowIcon = 'assets/icons/downArrowIcon.png';
+  static const String  pickupUploadIcon = 'assets/icons/PickupUploadIcon.png';
 
       /// Authentication
   static const String  googleIcon = 'assets/icons/GoogleIcon.png';

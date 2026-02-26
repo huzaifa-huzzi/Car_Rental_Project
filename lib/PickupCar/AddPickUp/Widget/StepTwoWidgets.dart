@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddButtonOfPickup.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddPickupButton.dart';
@@ -8,6 +10,7 @@ import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -55,8 +58,6 @@ class StepTwoSelectionWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildStepBadges(context),
-
                     Padding(
                       padding: EdgeInsets.all(padding),
                       child: Column(
@@ -67,152 +68,27 @@ class StepTwoSelectionWidget extends StatelessWidget {
                           const SizedBox(height: 6),
                           Text(TextString.titleViewSubtitleStepTwo,
                               style: TTextTheme.titleThree(context)),
+                          const SizedBox(height: 7),
+                          _buildStepBadges(context),
 
-                          const SizedBox(height: 25),
-
-                          // Non-Editable Content
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.all(isMobile ? 15 : 30),
-                            decoration: BoxDecoration(
-                              color: AppColors.backgroundOfScreenColor,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-
-                                /// CUSTOMER NAME SECTION
-                                _buildSection(context,
-                                    title:TextString.titleViewCustomerStepTwo,
-                                    icon: IconString.customerNameIcon,
-                                    child: _buildDetailedCustomerCard(context, isMobile)),
-                                const SizedBox(height: 25),
-
-                                /// CAR DETAILS SECTION
-                                _buildSection(context,
-                                    title:TextString.titleViewCarStepTwo,
-                                    icon: IconString.pickupCarIcon,
-                                    child: _buildDetailedCarCard(context, isMobile)),
-                                const SizedBox(height: 25),
-
-                                /// RENT PURPOSE SECTION
-                                _buildSection(context,
-                                    title: TextString.titleRentPurposeStepTwo,
-                                    icon: IconString.rentPurposeIcon,
-                                    child: IgnorePointer(
-                                      child: _toggleStatusTag(context, TextString.subtitleRentPurposeStepTwo, controller.isPersonalUseStepTwo),
-                                    )),
-                                const SizedBox(height: 25),
-
-                                /// PAYMENT METHOD SECTION
-                                _buildSection(context,
-                                    title:TextString.titlePaymentMethod ,
-                                    icon: IconString.paymentMethodIcon,
-                                    child: IgnorePointer(
-                                      child: _toggleStatusTag(context, TextString.subtitlePaymentMethod, controller.isManualPaymentStepTwo),
-                                    )),
-                                const SizedBox(height: 25),
-
-                                /// RENT AMOUNT SECTION
-                                _buildSection(context,
-                                    title: TextString.titleViewRentAmountStepTwo,
-                                    icon: IconString.rentMoneyIcon,
-                                    child: _buildInfoGrid(context, [
-                                      {"label": TextString.subtitleWeeklyRentStepTwo, "controller": controller.weeklyRentControllerStepTwo, "hint": "2600 \$"},
-                                      {"label": TextString.subtitleDailyRentStepTwo, "controller": controller.rentDueAmountControllerStepTwo, "hint": "2600 \$"},
-                                    ], isMobile, isEditable: false)),
-                                const SizedBox(height: 25),
-
-                                /// BOND PAYMENT SECTION
-                                _buildSection(context,
-                                    title: TextString.titleBondPaymentStepTwo,
-                                    icon: IconString.bondPaymentIcon,
-                                    child: _buildInfoGrid(context, [
-                                      {"label": TextString.subtitleBondAmountStepTwo, "controller": controller.bondAmountControllerStepTwo, "hint": "2600 \$"},
-                                      {"label": TextString.subtitlePaidBondStepTwo, "controller": controller.paidBondControllerStepTwo, "hint": "600 \$"},
-                                      {"label":  TextString.subtitleLeftBondStepTwo, "controller": controller.dueBondAmountControllerStepTwo, "hint": "2000 \$"},
-                                    ], isMobile, isEditable: false)),
-                                const SizedBox(height: 25),
-
-                                /// CAR REPORT SECTION
-                                _buildSection(context,
-                                  title:  TextString.titleCarReportStepTwo,
-                                  icon: IconString.carReportIcon,
-                                  child: _buildInfoGrid(context, [
-                                    {"label": TextString.subtitlePickupOdoStepTwo, "controller": controller.odoControllerStepTwo, "hint": "12457678", "hasIcon": false},
-                                    {"label": TextString.subtitlePickFuelLevelStepTwo, "controller": controller.fuelLevelControllerStepTwo, "hint": "Full (100%)", "hasIcon": true},
-                                    {"label": TextString.subtitleInteriorCleanlinessStepTwo, "controller": controller.interiorCleanlinessControllerStepTwo, "hint": "Excellent", "hasIcon": true},
-                                    {"label": TextString.subtitleExteriorCleanlinessStepTwo, "controller": controller.exteriorCleanlinessControllerStepTwo, "hint": "Excellent", "hasIcon": true},
-                                  ], isMobile, isEditable: false),
-                                ),
-                                const SizedBox(height: 25),
-
-                                /// DAMAGE INSPECTION SECTION
-                                _buildSection(context,
-                                    title: TextString.titleDamageInspectionStepTwo,
-                                    icon: IconString.damageInspection,
-                                    child: _buildDamageInspectionCard(context, isMobile)),
-                                const SizedBox(height: 25),
-
-                                /// PICKUP NOTE SECTION
-                                _buildSection(
-                                  context,
-                                  title: TextString.titlePickupNoteStepTwo,
-                                  icon: IconString.pickupNote,
-                                  child: IgnorePointer(
-                                    child: _buildCommentField(
-                                        context,
-                                        TextString.subtitlePickupCommentsStepTwo,
-                                        controller.additionalCommentsControllerStepTwo,
-                                        TextString.subtitleViewPickupStepTwo
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 25),
-
-                                /// CAR PICTURE SECTION
-                                _buildSection(context,
-                                    title: TextString.titleCarPictureStepTwo,
-                                    icon: IconString.carPictureIconPickup,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(TextString.subtitleCarPictureStepTwo, style: TTextTheme.dropdowninsideText(context)),
-                                        const SizedBox(height: 10),
-                                        _imageBox(context),
-                                      ],
-                                    )),
-                                const SizedBox(height: 25),
-
-                                /// RENT TIME SECTION
-                                _buildSection(context,
-                                    title: TextString.titleRentTimeStepTwo,
-                                    icon: IconString.rentTimeIcon,
-                                    showBadge: true,
-                                    child: _buildRentTimeSection(context, isMobile)),
-                                const SizedBox(height: 25),
-                              ],
-                            ),
-                          ),
-
+                          const SizedBox(height: 20),
+                          _buildDamageInspectionCard(context),
                           const SizedBox(height: 30),
-
-                          /// Terms & Signatures
-                          _buildTermsAndConditions(context),
-                          const SizedBox(height: 25),
-                          _buildSignatureSection(context, isMobile),
-
-                          const SizedBox(height: 40),
-
-                          /// Buttons
-                          _buttonSection(context, isMobile),
+                          _buildUploadPictureCard(context, isMobile),
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
+            ),
+            const SizedBox(height: 10),
+            /// Buttons
+          Padding(
+            padding: EdgeInsets.only(
+              right: 20,
+              left: isMobile ? 20 : 0,),
+            child:  _buttonSection(context, isMobile),
             ),
             const SizedBox(height: 20), 
           ],
@@ -223,984 +99,586 @@ class StepTwoSelectionWidget extends StatelessWidget {
 
     /// ------- Extra Widgtes ------///
 
-  Widget _buildInfoGrid(BuildContext context, List<Map<String, dynamic>> items, bool isMobile, {bool isEditable = true}) {
-    final double availableWidth = MediaQuery.of(context).size.width;
-
-    return Wrap(
-      spacing: 20,
-      runSpacing: 15,
-      children: items.map((item) {
-        double itemWidth = isMobile ? (availableWidth - 100) : (availableWidth / 5);
-
-        return SizedBox(
-          width: itemWidth,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(item['label']!, style: TTextTheme.dropdowninsideText(context)),
-              const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.all(3),
-                decoration: BoxDecoration(
-                  color: AppColors.secondaryColor,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: TextFormField(
-                  controller: item['controller'],
-                  enabled: isEditable,
-                  readOnly: !isEditable,
-                  style: TTextTheme.insidetextfieldWrittenText(context),
-                  decoration: InputDecoration(
-                    hintText: item['hint'],
-                    prefixIcon: item['hasIcon'] == true
-                        ? Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 8),
-                      child: Icon(Icons.check_circle_outline,
-                          size: 18,
-                          color: AppColors.textColor),
-                    )
-                        : null,
-                    prefixIconConstraints: const BoxConstraints(
-                      minWidth: 40,
-                      minHeight: 0,
-                    ),
-                    hintStyle: TTextTheme.insidetextfieldWrittenText(context),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-                    border: InputBorder.none,
-                    isDense: true,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildStepBadge(String text, bool isActive, BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-      decoration: BoxDecoration(
-        color: isActive ? AppColors.primaryColor :  AppColors.backgroundOfPickupsWidget,
-        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
-      ),
-      child: Text(text, style: TTextTheme.btnWhiteColor(context)),
-    );
-  }
-
   Widget _buildStepBadges(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20),
+    return Container(
+      width: 280,
+      padding: const EdgeInsets.symmetric(vertical: 12.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildStepBadge("Step 1", false, context),
-          const SizedBox(width: 8),
-          _buildStepBadge("Step 2", true, context),
+          _buildStepItem("1", "Step 1", false, context,isCurrent: true),
+          _buildStepLine(true),
+          _buildStepItem("2", "Step 2", true, context),
+          _buildStepLine(true),
+          _buildStepItem("3", "Step 3", false, context, isCurrent: true),
         ],
       ),
     );
   }
-
-  // pickup Note Field
-  Widget _buildCommentField(BuildContext context, String label, TextEditingController controller, String hint) {
+  Widget _buildStepItem(String stepNum, String label, bool isCompleted, BuildContext context, {bool isCurrent = false}) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Text(label, style: TTextTheme.dropdowninsideText(context)),
-        const SizedBox(height: 8),
         Container(
-          height: 100,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(color: AppColors.secondaryColor, borderRadius: BorderRadius.circular(8)),
-          child: TextFormField(
-            cursorColor: AppColors.blackColor,
-            controller: controller,
-            maxLines: 4,
-            decoration: InputDecoration(hintText: hint, border: InputBorder.none, hintStyle: TTextTheme.pOne(context)),
+          width: 24,
+          height: 24,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: isCompleted ? AppColors.primaryColor : Colors.white,
+            border: Border.all(color: AppColors.primaryColor, width: 1.5),
+          ),
+          child: Center(
+            child: isCompleted
+                ? const Icon(Icons.check, size: 14, color: Colors.white)
+                : isCurrent
+                ? Container(
+              width: 8,
+              height: 8,
+              decoration: const BoxDecoration(
+                color: AppColors.primaryColor,
+                shape: BoxShape.circle,
+              ),
+            )
+                : null,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          label,
+          style: TTextTheme.stepsText(context).copyWith(
+            color: isCompleted ? AppColors.primaryColor : AppColors.textColor,
           ),
         ),
       ],
     );
   }
+  Widget _buildStepLine(bool isActive) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 11.0),
+        child: Container(
+          height: 1.5,
+          color: AppColors.primaryColor,
+        ),
+      ),
+    );
+  }
 
-  // Damage Inspection
-  Widget _buildDamageInspectionCard(BuildContext context, bool isMobile) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(12),
+   /// Damage Inspection
+  Widget _buildDamageInspectionCard(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final double cardWidth = constraints.maxWidth;
+        bool isMobile = cardWidth < 700;
+
+        double responsiveWidth = isMobile ? cardWidth * 0.95 : cardWidth * 0.85;
+        if (responsiveWidth > 950) responsiveWidth = 950;
+        double height = responsiveWidth * 0.5;
+
+        return Container(
+          padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(color: AppColors.quadrantalTextColor),
-            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: AppColors.tertiaryTextColor, width: 0.7),
+            borderRadius: BorderRadius.circular(16),
           ),
-          child: Wrap(
-            spacing: 16,
-            runSpacing: 10,
-            children: controller.damageTypes.map((type) {
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: type['color'],
-                      shape: BoxShape.circle,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (isMobile)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildDamageHeading(context),
+                    const SizedBox(height: 15),
+                    _buildControlsUnit(context, isMobile),
+                  ],
+                )
+              else
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      flex: 0,
+                      child: _buildDamageHeading(context),
                     ),
-                    child: Text(
-                      type['id'].toString(),
-                      style: TTextTheme.btnNumbering(context),
+                    Flexible(
+                      child: _buildControlsUnit(context, isMobile),
+                    ),
+                  ],
+                ),
+
+              const SizedBox(height: 40),
+
+              Obx(() {
+                return IgnorePointer(
+                  ignoring: !controller.isDamageInspectionOpen.value,
+                  child: Opacity(
+                    opacity: controller.isDamageInspectionOpen.value ? 1.0 : 0.4,
+                    child: Center(
+                      child: GestureDetector(
+                        onTapDown: (details) {
+                          double dx = details.localPosition.dx / responsiveWidth;
+                          double dy = details.localPosition.dy / height;
+
+                          int existingIndex = controller.damagePoints2.indexWhere(
+                                (p) => (p.dx - dx).abs() < 0.04 && (p.dy - dy).abs() < 0.04,
+                          );
+
+                          if (existingIndex != -1) {
+                            controller.damagePoints2.removeAt(existingIndex);
+                          } else {
+                            var type = controller.damageTypes2.firstWhere(
+                                    (t) => t['id'] == controller.selectedDamageType2.value);
+
+                            controller.damagePoints2.add(
+                              DamagePoint(
+                                dx: dx,
+                                dy: dy,
+                                typeId: type['id'],
+                                color: type['color'],
+                              ),
+                            );
+                          }
+                        },
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Image.asset(
+                              ImageString.carDamageInspectionImage,
+                              width: responsiveWidth,
+                              height: height,
+                              fit: BoxFit.contain,
+                            ),
+                            ...controller.damagePoints2.map((point) {
+                              return Positioned(
+                                left: (point.dx * responsiveWidth) - 10,
+                                top: (point.dy * height) - 10,
+                                child: CircleAvatar(
+                                  radius: 10,
+                                  backgroundColor: point.color,
+                                  child: Text(
+                                    point.typeId.toString(),
+                                    style: TTextTheme.btnNumbering(context),
+                                  ),
+                                ),
+                              );
+                            }),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 6),
-                  Text(
-                    type['label'],
-                    style: TTextTheme.titleSix(context),
+                );
+              }),
+            ],
+          ),
+        );
+      },
+    );
+  }
+  Widget _buildControlsUnit(BuildContext context, bool isMobile) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildToggleWidget(context),
+        const SizedBox(width: 15),
+        Flexible(
+          child: _buildChipsContainer(context, isMobile: isMobile),
+        ),
+      ],
+    );
+  }
+  Widget _buildChipsContainer(BuildContext context, {required bool isMobile}) {
+    return Container(
+      height: 52,
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: AppColors.tertiaryTextColor,width: 0.8),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Obx(() {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          child: Row(
+            children: controller.damageTypes2.map((type) {
+              bool isSelected = controller.selectedDamageType2.value == type['id'];
+              return GestureDetector(
+                onTap: () {
+                  if (controller.isDamageInspectionOpen.value) {
+                    controller.selectedDamageType2.value = type['id'];
+                  }
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 10),
+                  margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: isSelected ? AppColors.secondaryColor : Colors.transparent,
+                    borderRadius: BorderRadius.circular(6),
                   ),
-                ],
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 11,
+                        backgroundColor: type['color'],
+                        child:Center(
+                          child: Text(type['id'].toString(),
+                              style: TTextTheme.btnNumbering(context)) ,
+                        )
+                      ),
+                      const SizedBox(width: 8),
+                      Text(type['label'], style: TTextTheme.titleSix(context)),
+                    ],
+                  ),
+                ),
               );
             }).toList(),
           ),
-        ),
-
-        const SizedBox(height: 24),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              double width = constraints.maxWidth > 600 ? 600 : constraints.maxWidth;
-
-              return Container(
-                width: width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(
-                    ImageString.carDamageInspectionImage,
-                    width: width,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  // Rent time Section
-  Widget _buildRentTimeSection(BuildContext context, bool isMobile) {
-    if (isMobile) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(TextString.subtitleAgreementTimeStepTwo,
-              style: TTextTheme.dropdowninsideText(context)),
-          const SizedBox(height: 8),
-          _editableTimeField(controller.startDateController, "02/12/2025",context),
-          const SizedBox(height: 8),
-          _editableTimeField(controller.startTimeController, "12:12 PM",context),
-
-          const SizedBox(height: 24),
-
-          Text(TextString.subtitleAgreementEndTimeStepTwo,
-              style: TTextTheme.dropdowninsideText(context)),
-          const SizedBox(height: 8),
-          _editableTimeField(controller.endDateController, "02/12/2025",context),
-          const SizedBox(height: 8),
-          _editableTimeField(controller.endTimeController, "12:12 PM",context),
-        ],
-      );
-    }
-
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(TextString.subtitleAgreementTimeStepTwo,
-                  style: TTextTheme.dropdowninsideText(context)),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(child: _editableTimeField(controller.startDateController, "02/12/2025",context)),
-                  const SizedBox(width: 8),
-                  Expanded(child: _editableTimeField(controller.startTimeController, "12:12 PM",context)),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Container(
-          width: 180,
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(child: Container(height: 1.5, color: AppColors.iconsBackgroundColor)),
-                  const SizedBox(width: 5),
-                  const Icon(Icons.access_time, color: AppColors.primaryColor, size: 22),
-                  const SizedBox(width: 5),
-                  Expanded(
-                    child: Stack(
-                      alignment: Alignment.centerRight,
-                      clipBehavior: Clip.none,
-                      children: [
-                        Container(height: 1.5, color:AppColors.iconsBackgroundColor),
-                        const Positioned(
-                          right: -5,
-                          child: Icon(Icons.chevron_right, color: AppColors.iconsBackgroundColor, size: 20),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(TextString.subtitleAgreementEndTimeStepTwo,
-                  style: TTextTheme.dropdowninsideText(context)),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(child: _editableTimeField(controller.endDateController, "02/12/2025",context)),
-                  const SizedBox(width: 8),
-                  Expanded(child: _editableTimeField(controller.endTimeController, "12:12 PM",context)),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _editableTimeField(
-      TextEditingController textController,
-      String hint,
-      BuildContext context,
-      ) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.secondaryColor,
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: TextFormField(
-        controller: textController,
-        readOnly: true,
-        enableInteractiveSelection: false,
-        showCursor: false,
-
-        cursorColor: AppColors.blackColor,
-        style: TTextTheme.insidetextfieldWrittenText(context),
-
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: TTextTheme.insidetextfieldWrittenText(context),
-          contentPadding:
-          const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-          border: InputBorder.none,
-          isDense: true,
-        ),
-      ),
-    );
-  }
-
-
-
-  // Signature Section
-  Widget _buildSignatureSection(BuildContext context, bool isMobile) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        bool stackVertical = constraints.maxWidth < 600;
-
-        double cardWidth = stackVertical
-            ? constraints.maxWidth
-            : (constraints.maxWidth - 40) / 2;
-
-        return Wrap(
-          spacing: 40,
-          runSpacing: 20,
-          children: [
-            SizedBox(
-              width: cardWidth,
-              child: _signatureCard(TextString.subtitleOwnerSignatureStepTwo, controller.ownerNameController),
-            ),
-            SizedBox(
-              width: cardWidth,
-              child: _signatureCard(TextString.subtitleHirerSignatureStepTwo, controller.hirerNameController),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _signatureCard(String title, TextEditingController nameController) {
-    return LayoutBuilder(
-      builder: (context, innerConstraints) {
-        bool forceVertical = innerConstraints.maxWidth < 300;
-
-        return Container(
-          padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: AppColors.primaryColor, width: 0.2),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: TTextTheme.titleRadios(context)),
-              const SizedBox(height: 20),
-
-              Flex(
-                direction: forceVertical ? Axis.vertical : Axis.horizontal,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: forceVertical ? CrossAxisAlignment.start : CrossAxisAlignment.end,
-                children: [
-                  Flexible(
-                    flex: forceVertical ? 0 : 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 100, minHeight: 30),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              const SizedBox(height: 20),
-                              const Divider(thickness: 1, color: AppColors.tertiaryTextColor),
-                            ],
-                          ),
-                        ),
-                        Text(TextString.subtitleFullNameStepTwo, style: TTextTheme.titleFullName(context)),
-                      ],
-                    ),
-                  ),
-
-                  if (forceVertical) const SizedBox(height: 15) else const SizedBox(width: 10),
-
-                  Flexible(
-                    flex: forceVertical ? 0 : 1,
-                    child: Column(
-                      crossAxisAlignment: forceVertical ? CrossAxisAlignment.start : CrossAxisAlignment.end,
-                      children: [
-                        ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 100, minHeight: 30),
-                          child: Column(
-                            crossAxisAlignment: forceVertical ? CrossAxisAlignment.start : CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              const SizedBox(height: 20),
-                              const Divider(thickness: 1, color: AppColors.tertiaryTextColor),
-                            ],
-                          ),
-                        ),
-                        Text(TextString.subtitleSignStepTwo, style: TTextTheme.titleFullName(context)),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  // Image Sections
-  Widget _imageBox(BuildContext context) {
-    bool isMobileView = MediaQuery.of(context).size.width < 600;
-
-    return Container(
-      width: double.infinity,
-      constraints: const BoxConstraints(minHeight: 180),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.tertiaryTextColor,
-          width: 1.5,
-        ),
-      ),
-      child: LayoutBuilder(builder: (context, constraints) {
-        final double itemWidth = isMobileView ? (constraints.maxWidth - 24) / 2 : 110;
-
-        return Wrap(
-          spacing: 12,
-          runSpacing: 12,
-          children: List.generate(10, (index) {
-            return Container(
-              height: 100,
-              width: itemWidth,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AppColors.tertiaryTextColor, width: 1),
-                image: DecorationImage(
-                  image: AssetImage(ImageString.astonPic),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            );
-          }),
         );
       }),
     );
   }
-
-  Widget _buildSection(BuildContext context, {
-    required String title,
-    required String icon,
-    required Widget child,
-    bool showBadge = false,
-  }) {
+  Widget _buildDamageHeading(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          decoration: BoxDecoration(
-            color: AppColors.secondaryColor,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Row(
-            children: [
-              Image.asset(icon, width: 20, height: 20),
-              const SizedBox(width: 10),
-
-              Expanded(
-                child: Text(
-                    title,
-                    style: TTextTheme.h6Style(context)),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(IconString.damageInspection, height: 20, width: 20),
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                "Damage Inspection",
+                style: TTextTheme.DamageStyle(context),
+                softWrap: true,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-            ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 2),
+        Padding(
+          padding: const EdgeInsets.only(left: 28),
+          child: Text(
+            "Fill the Report",
+            style: TTextTheme.titleThree(context),
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
-        const SizedBox(height: 15),
-        child,
       ],
     );
   }
-
-  // For Web
-  Widget _buildDetailedCustomerCard(BuildContext context, bool isMobile) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundOfPickupsWidget,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: isMobile
-          ? Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    _buildProfileImage(30, 40),
-                    const SizedBox(width: 6),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(TextString.titleCustomerImageStepTwo, style: TTextTheme.titleOne(context), maxLines: 1, overflow: TextOverflow.ellipsis),
-                          Text(TextString.titleDriverStepTwo, style: TTextTheme.btnTwo(context)),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 8),
-              SizedBox(width: 60, child: AddButtonOfPickup(text: "View", onTap: () {})),
-            ],
-          ),
-          SizedBox(height: 15),
-          /// Scrollable Info for Mobile
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            physics:  BouncingScrollPhysics(),
-            child: Row(
-              children: [
-                _infoBlock(IconString.smsIcon, TextString.titleEmailStepTwo, "Contact@SoftSnip.com.au", context),
-                const SizedBox(width: 12),
-                _infoBlock(IconString.callIcon, TextString.titleContactStepTwo, "+12 3456 7890", context),
-                const SizedBox(width: 12),
-                _infoBlock(IconString.location, TextString.titleAddressStepTwo, "Toronto, California, 1234", context),
-                const SizedBox(width: 12),
-                _infoBlock(IconString.nidIcon, TextString.titleNidStepTwo, "123 456 789", context),
-                const SizedBox(width: 12),
-              ],
-            ),
-          ),
-        ],
-      )
-          : LayoutBuilder(
-        builder: (context, constraints) {
-          bool useScroll = constraints.maxWidth < 1000;
-
-          Widget content = Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: _buildCustomerRowContent(context, false),
-          );
-
-          return useScroll
-              ? SingleChildScrollView(scrollDirection: Axis.horizontal, child: content)
-              : content;
-        },
-      ),
-    );
+  Widget _buildToggleWidget(BuildContext context) {
+  return Obx(() => GestureDetector(
+  onTap: () => controller.isDamageInspectionOpen.value = !controller.isDamageInspectionOpen.value,
+  child: Container(
+  width: 60,
+  height: 32,
+  padding: const EdgeInsets.all(4),
+  decoration: BoxDecoration(
+  borderRadius: BorderRadius.circular(8),
+  color: controller.isDamageInspectionOpen.value ? AppColors.primaryColor : AppColors.quadrantalTextColor,
+  ),
+  child: Stack(
+  children: [
+  AnimatedAlign(
+  duration: const Duration(milliseconds: 200),
+  alignment: controller.isDamageInspectionOpen.value ? Alignment.centerRight : Alignment.centerLeft,
+  child: Container(
+  width: 24,
+  height: 24,
+  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4)),
+  ),
+  ),
+  Align(
+  alignment: controller.isDamageInspectionOpen.value ? const Alignment(-0.6, 0) : const Alignment(0.6, 0),
+  child: Text(
+  controller.isDamageInspectionOpen.value ? "Yes" : "No",
+  style:TTextTheme.btnWhiteColor(context),
+  ),
+  ),
+  ],
+  ),
+  ),
+  ));
   }
+  /// Add Picture Section
+  Widget _buildUploadPictureCard(BuildContext context, bool isMobile) {
+    return LayoutBuilder(builder: (context, bConstraints) {
+      double width = bConstraints.maxWidth;
 
-  // Customer Card for mobile
-  List<Widget> _buildCustomerRowContent(BuildContext context, bool isMobile) {
-    return [
-      /// PROFILE
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildProfileImage(50, 50),
-          const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(TextString.titleCustomerImageStepTwo, style: TTextTheme.titleOne(context)),
-              Text(TextString.titleDriverStepTwo, style: TTextTheme.btnTwo(context)),
-            ],
-          ),
-        ],
-      ),
-
-      /// INFO BLOCKS
-      const SizedBox(width: 20),
-      _infoBlock(IconString.smsIcon, TextString.titleEmailStepTwo, "Contact@SoftSnip.com.au", context),
-      const SizedBox(width: 15),
-      _infoBlock(IconString.callIcon,  TextString.titleContactStepTwo, "+12 3456 7890", context),
-      const SizedBox(width: 15),
-      _infoBlock(IconString.location, TextString.titleAddressStepTwo, "Toronto, California, 1234", context),
-      const SizedBox(width: 15),
-      _infoBlock(IconString.nidIcon, TextString.titleNidStepTwo, "123 456 789", context),
-      const SizedBox(width: 18),
-
-      /// VIEW BUTTON
-      AddButtonOfPickup(text: "View", width: 90, onTap: () {}),
-    ];
-  }
-
-  // profile image at the start
-  Widget _buildProfileImage(double w, double h) {
-    return Container(
-      padding: const EdgeInsets.all(1.5),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.primaryColor, width: 0.5),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Image.asset(ImageString.customerUser, width: w, height: h, fit: BoxFit.cover),
-      ),
-    );
-  }
-
-
-  // detail Card for web
-  Widget _buildDetailedCarCard(BuildContext context, bool isMobile) {
-    return Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: isMobile ? 18 : 15),
+      return Container(
+        padding: EdgeInsets.all(width < 400 ? 12 : 24),
         decoration: BoxDecoration(
-          color: AppColors.backgroundOfPickupsWidget,
-          borderRadius: BorderRadius.circular(12),
+          color: Colors.white,
+          border: Border.all(color: AppColors.tertiaryTextColor, width: 0.7),
+          borderRadius: BorderRadius.circular(16),
         ),
-        child: isMobile
-            ? Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Row(
+            SizedBox(
+              width: double.infinity,
+              child: Wrap(
+                alignment: width < 350 ? WrapAlignment.start : WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                runSpacing: 8,
+                children: [
+                  Text(
+                    "Upload picture",
+                    style: TTextTheme.h6Style(context).copyWith(
+                      fontSize: width < 300 ? 14 : 18,
+                    ),
+                  ),
+                  Obx(() {
+                    int count = 0;
+                    if (controller.frontImage.value != null) count++;
+                    if (controller.backImage.value != null) count++;
+                    if (controller.leftImage.value != null) count++;
+                    if (controller.rightImage.value != null) count++;
+                    count += controller.additionalImages.length;
+
+                    return Text(
+                      "$count/10 images uploaded",
+                      style: TTextTheme.titleThree(context).copyWith(
+                        fontSize: width < 300 ? 9 : 12,
+                      ),
+                    );
+                  }),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 4),
+            Text("Require images", style: TTextTheme.requireImagesText(context)),
+            const SizedBox(height: 20),
+            LayoutBuilder(builder: (context, innerConstraints) {
+              int crossAxisCount = innerConstraints.maxWidth < 550 ? 1 : 2;
+
+              double aspectRatio = innerConstraints.maxWidth < 350
+                  ? 1.2
+                  : (innerConstraints.maxWidth < 600 ? 1.5 : 1.9);
+
+              return GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: crossAxisCount,
+                mainAxisSpacing: 15,
+                crossAxisSpacing: 15,
+                childAspectRatio: aspectRatio,
+                children: [
+                  _buildImagePickerBox(context, "1: Front View", ImageString.frontView, 'front', innerConstraints.maxWidth),
+                  _buildImagePickerBox(context, "2: Back View", ImageString.backView, 'back', innerConstraints.maxWidth),
+                  _buildImagePickerBox(context, "3: Left view", ImageString.leftView, 'left', innerConstraints.maxWidth),
+                  _buildImagePickerBox(context, "4: Right View", ImageString.rightView, 'right', innerConstraints.maxWidth),
+                ],
+              );
+            }),
+
+            const SizedBox(height: 30),
+            Text("Additional Images (Max 6)", style: TTextTheme.AdditionalText(context)),
+            const SizedBox(height: 15),
+            _buildAdditionalUploadBox(context, isMobile),
+          ],
+        ),
+      );
+    });
+  }
+  Widget _buildImagePickerBox(BuildContext context, String label, String iconPath, String type, double boxWidth) {
+    return Obx(() {
+      ImageHolder? image;
+      if (type == 'front') image = controller.frontImage.value;
+      else if (type == 'back') image = controller.backImage.value;
+      else if (type == 'left') image = controller.leftImage.value;
+      else if (type == 'right') image = controller.rightImage.value;
+
+      bool hasImage = image != null;
+
+      return GestureDetector(
+        onTap: () => controller.pickImageNew(type),
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.secondaryColor,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 8,
+                left: 10,
+                child: Text(
+                    label,
+                    style: TTextTheme.AdditionalText(context),
+                ),
+              ),
+
+              Center(
+                child: hasImage
+                    ? ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: kIsWeb
+                      ? Image.memory(image!.bytes!, fit: BoxFit.cover, width: double.infinity, height: double.infinity)
+                      : Image.file(File(image!.path!), fit: BoxFit.cover, width: double.infinity, height: double.infinity),
+                )
+                    : Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 5),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Center(child: Image.asset(ImageString.astonPic, width: 100)),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(TextString.titleCarImageStepTwo, style: TTextTheme.titleSix(context), overflow: TextOverflow.ellipsis),
-                            Text(TextString.titleCarImage2StepTwo, style: TTextTheme.h3Style(context), overflow: TextOverflow.ellipsis),
-                          ],
+                      Flexible(
+                        child: Image.asset(
+                          iconPath,
+                          height: boxWidth < 300 ? 30 : 45,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text("Click to upload", style: TTextTheme.UploadText(context)),
+                      ),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text.rich(
+                          TextSpan(
+                            text: "JPEG, PNG ",
+                            style: TTextTheme.titleDriver(context),
+                            children: [
+                              TextSpan(
+                                text: "(Must be under 50 MB)",
+                                style: TTextTheme.titleTwelve(context),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                AddButtonOfPickup(text: "View", width: 65, onTap: () {}),
-              ],
-            ),
-            const SizedBox(height: 12),
-
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              child: Row(
-                children: [
-                  _infoRowTag(label: TextString.titleRegistrationStepTwo, value: "1234567890", context: context),
-                  const SizedBox(width: 10),
-                  _infoRowTag(
-                    label:TextString.titleVinStepTwo,
-                    value: "JTNBA3HK003001234",
-                    labelColor: AppColors.backgroundOfVin,
-                    context: context,
+              ),
+              if (hasImage)
+                Positioned(
+                  top: 5, right: 5,
+                  child: GestureDetector(
+                    onTap: () => controller.removeImageNew(type),
+                    child: const CircleAvatar(
+                      radius: 10,
+                      backgroundColor: AppColors.primaryColor,
+                      child: Icon(Icons.close, color: Colors.white, size: 12),
+                    ),
                   ),
-                  const SizedBox(width: 30),
-                  _buildSpecColumn(context, label:TextString.titleTransmissionStepTwo, value: "Auto", imagePath: IconString.transmissionIcon),
-                  const SizedBox(width: 30),
-                  _buildSpecColumn(context, label: TextString.titleCapacityStepTwo, value: "2 seats", imagePath: IconString.capacityIcon),
-                  const SizedBox(width: 25),
-                  _buildPriceColumn(context),
-                ],
-              ),
-            ),
-          ],
-        )
-            :  LayoutBuilder(
-          builder: (context, constraints) {
-            double maxWidth = constraints.maxWidth;
-
-            bool enableScroll = maxWidth < 750;
-
-            Widget content = Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: _buildCarContent(context, enableScroll),
-            );
-
-
-            return enableScroll
-                ? SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minWidth: 970),
-                child: content,
-              ),
-            )
-                : content;
-          },
-        )
-
-    );
-  }
-
-  // detail card for mobile
-  List<Widget> _buildCarContent(BuildContext context, bool enableScroll) {
-    return [
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: enableScroll ? 70 : 130,
-            alignment: Alignment.center,
-            child: Image.asset(
-              ImageString.astonPic,
-              fit: BoxFit.contain,
-            ),
-          ),
-
-          const SizedBox(width: 15),
-
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(TextString.titleCarImageStepTwo, style: TTextTheme.titleFour(context)),
-              Text(TextString.titleCarImage2StepTwo, style: TTextTheme.h3Style(context)),
-
-              if (!enableScroll) ...[
-                const SizedBox(height: 12),
-                _infoRowTag(label: TextString.titleRegistrationStepTwo, value: "1234567890", context: context),
-                const SizedBox(height: 8),
-                _infoRowTag(
-                  label:TextString.titleVinStepTwo,
-                  value: "JTNBA3HK003001234",
-                  labelColor: AppColors.backgroundOfVin,
-                  context: context,
                 ),
-              ],
             ],
           ),
-        ],
-      ),
-
-      if (enableScroll)
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _infoRowTag(label: TextString.titleRegistrationStepTwo, value: "1234567890", context: context),
-            const SizedBox(width: 10),
-            _infoRowTag(
-              label: TextString.titleVinStepTwo,
-              value: "JTNBA3HK003001234",
-              labelColor: AppColors.backgroundOfVin,
-              context: context,
-            ),
-          ],
         ),
-
-      _buildSpecColumn(context, label: TextString.titleTransmissionStepTwo, value: "Automatic", imagePath: IconString.transmissionIcon),
-      _buildSpecColumn(context, label: TextString.titleCapacityStepTwo, value: "2 seats", imagePath: IconString.capacityIcon),
-
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildPriceColumn(context),
-          const SizedBox(width: 25),
-          AddButtonOfPickup(text: "View", width: 100, onTap: () {}),
-        ],
-      ),
-    ];
+      );
+    });
   }
+  Widget _buildAdditionalUploadBox(BuildContext context, bool isMobile) {
+    return Obx(() {
+      bool hasImages = controller.additionalImages.isNotEmpty;
 
-  // price block of car
-  Widget _buildPriceColumn(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(TextString.titlePriceStepTwo, style:  TTextTheme.titleFour(context)),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text("\$130", style:TTextTheme.h5Style(context)),
-            Text("/Weekly", style: TTextTheme.titleTwo(context)),
-          ],
-        ),
-      ],
-    );
-  }
-
-
-  Widget _buildSpecColumn(BuildContext context, {
-    required String label,
-    required String value,
-    required String imagePath,
-  }) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(6),
+      return GestureDetector(
+        onTap: () {
+          if (controller.additionalImages.length < 6) {
+            controller.pickImageNew('additional');
+          }
+        },
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          width: double.infinity,
+          constraints: const BoxConstraints(minHeight: 150),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: AppColors.secondaryColor,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(12),
           ),
-          child: Image.asset(
-            imagePath,
-            width: 20,
-            height: 20,
-            fit: BoxFit.contain,
-          ),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          label,
-          style: TTextTheme.titleFour(context),
-        ),
-        Text(
-          value,
-          style: TTextTheme.titleSmallTexts(context),
-        ),
-      ],
-    );
-  }
-
-
-  Widget _infoRowTag({
-    required String label,
-    required String value,
-    Color labelColor = AppColors.textColor,
-    required BuildContext context,
-  }) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        /// LABEL BOX
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          decoration: BoxDecoration(
-            color: labelColor,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(6),
-              bottomLeft: Radius.circular(6),
-            ),
-          ),
-          child: Text(
-            label,
-            style: TTextTheme.titleeight(context),
-          ),
-        ),
-
-        /// VALUE BOX
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          decoration: BoxDecoration(
-            color: AppColors.secondaryColor,
-            borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(6),
-              bottomRight: Radius.circular(6),
-            ),
-          ),
-          child: Text(
-            value,
-            style: TTextTheme.titleseven(context),
-          ),
-        ),
-      ],
-    );
-  }
-
-
-
-  Widget _infoBlock(String imagePath, String label, String value, BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        /// IMAGE CONTAINER
-        Container(
-          padding: const EdgeInsets.all(7),
-          decoration: BoxDecoration(
-            color: AppColors.secondaryColor,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Image.asset(
-            imagePath,
-            width: 16,
-            height: 16,
-            fit: BoxFit.contain,
-          ),
-        ),
-        const SizedBox(width: 8),
-
-        /// TEXT SECTION
-        Flexible(
           child: Column(
+            mainAxisAlignment: hasImages ? MainAxisAlignment.start : MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                label,
-                style: TTextTheme.pFour(context),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
-              Text(
-                value,
-                style: TTextTheme.pOne(context),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
+              if (!hasImages)
+                Center(
+                  child: Column(
+                    children: [
+                      Image.asset(IconString.pickupUploadIcon,),
+                      const SizedBox(height: 10),
+                       Text("Click to upload", style: TTextTheme.UploadText(context)),
+                      SizedBox(height: 4,),
+                      Text.rich(
+                        TextSpan(
+                          text: "JPEG, PNG ",
+                          style: TTextTheme.titleDriver(context),
+                          children: [
+                            TextSpan(
+                              text: "(Must be under 50 MB)",
+                              style: TTextTheme.titleTwelve(context),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              else
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 12,
+                  alignment: WrapAlignment.start,
+                  children: controller.additionalImages.asMap().entries.map((entry) {
+                    int idx = entry.key;
+                    var img = entry.value;
+                    return Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Container(
+                          width: 85,
+                          height: 85,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: AppColors.tertiaryTextColor),
+                            image: DecorationImage(
+                              image: kIsWeb ? MemoryImage(img.bytes!) : FileImage(File(img.path!)) as ImageProvider,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: -6,
+                          right: -6,
+                          child: GestureDetector(
+                            onTap: () => controller.removeImageNew('additional', index: idx),
+                            child:  CircleAvatar(
+                              radius: 11,
+                              backgroundColor: AppColors.primaryColor,
+                              child: Icon(Icons.close, size: 14, color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                ),
             ],
           ),
         ),
-      ],
-    );
-  }
-
-
-  Widget _toggleStatusTag(BuildContext context, String text, RxBool stateVariable) {
-    return Obx(() => GestureDetector(
-      onTap: () {
-        stateVariable.value = !stateVariable.value;
-      },
-      child: Container(
-        padding:  EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-        decoration: BoxDecoration(
-          color: AppColors.backgroundOfPickupsWidget,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              stateVariable.value ? Icons.radio_button_checked : Icons.radio_button_off,
-              size: 16,
-              color: AppColors.blackColor,
-            ),
-            SizedBox(width: 10),
-            Text(
-              text,
-              style: TTextTheme.titleRadios(context),
-            ),
-          ],
-        ),
-      ),
-    ));
-  }
-
-  // Terms and Condition
-  Widget _buildTermsAndConditions(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.primaryColor, width: 0.5),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-              TextString.titleTermsStepTwo,
-              style: TTextTheme.titleRadios(context)
-          ),
-          const SizedBox(height: 10),
-          Text(
-            "Audi A6 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys. "
-                "Renowned for its powerful performance and advanced technology features, the A6 provides a refined "
-                "driving experience with exceptional comfort. Audi A6 is a luxurious and sophisticated sedan, "
-                "ideal for both daily commutes and extended journeys. Renowned for its powerful performance "
-                "and advanced technology features, the A6 provides a refined driving experience with exceptional comfort.",
-            style: TTextTheme.pTwo(context),
-            textAlign: TextAlign.justify,
-          ),
-        ],
-      ),
-    );
+      );
+    });
   }
 
   // Button Sections
   Widget _buttonSection(BuildContext context, bool isMobile) {
-    const double webButtonWidth = 150.0;
+    const double webButtonWidth = 130.0;
     const double webButtonHeight = 45.0;
     final double spacing = AppSizes.padding(context);
 
@@ -1211,12 +689,11 @@ class StepTwoSelectionWidget extends StatelessWidget {
           SizedBox(
             height: webButtonHeight,
             child: AddPickUpButton(
-              text: 'Back',
-              backgroundColor: Colors.white,
+              text: 'Cancel',
+              backgroundColor: Colors.transparent,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
               onTap: () {
-                context.push('/addpickup', extra: {"hideMobileAppBar": true});
               },
             ),
           ),
@@ -1247,12 +724,11 @@ class StepTwoSelectionWidget extends StatelessWidget {
             width: webButtonWidth,
             height: webButtonHeight,
             child: AddPickUpButton(
-              text: 'Back',
-              backgroundColor: Colors.white,
+              text: 'Cancel',
+              backgroundColor: Colors.transparent,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
               onTap: () {
-                context.push('/addpickup', extra: {"hideMobileAppBar": true});
               },
             ),
           ),
