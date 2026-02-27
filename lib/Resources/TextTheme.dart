@@ -59,6 +59,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 20),fontWeight: FontWeight.w500,color: AppColors.textColor);
   }
 
+  static TextStyle hPickupStyle(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 16, 18, 20),fontWeight: FontWeight.w500,color: AppColors.primaryColor);
+  }
+
   static TextStyle DamageStyle(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 15, 15, 18),fontWeight: FontWeight.w500,color: AppColors.textColor);
   }
@@ -146,6 +150,15 @@ class TTextTheme {
 
   static TextStyle requireImagesText (BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 16),fontWeight: FontWeight.w500,color: AppColors.primaryColor);
+  }
+
+
+  static TextStyle OwnerSelected (BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 16),fontWeight: FontWeight.w600,color: Colors.white);
+  }
+
+  static TextStyle hirerSelected (BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 16),fontWeight: FontWeight.w400,color: AppColors.textColor);
   }
 
   static TextStyle AdditionalText (BuildContext context){
@@ -315,6 +328,11 @@ class TTextTheme {
     );
   }
 
+  static TextStyle titleAgreement(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 14),fontWeight: FontWeight.w500,color: AppColors.textColor,
+    );
+  }
+
   static TextStyle titleTwelve(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 13, 16),fontWeight: FontWeight.w400,color: AppColors.primaryColor,
     );
@@ -335,6 +353,16 @@ class TTextTheme {
     );
   }
 
+  static TextStyle titleName(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 14),fontWeight: FontWeight.w500,color: AppColors.textColor,
+    );
+  }
+
+  static TextStyle titleinputTextField(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 13, 14),fontWeight: FontWeight.w500,color: AppColors.textColor,
+    );
+  }
+
   static TextStyle titleseven(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 11, 11, 11),fontWeight: FontWeight.w400,color: AppColors.textColor,
     );
@@ -342,6 +370,11 @@ class TTextTheme {
 
   static TextStyle titleeight(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 11),fontWeight: FontWeight.w400,color: Colors.white,
+    );
+  }
+
+  static TextStyle titleClear(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10,12 , 13),fontWeight: FontWeight.w500,color: AppColors.textColor,
     );
   }
 

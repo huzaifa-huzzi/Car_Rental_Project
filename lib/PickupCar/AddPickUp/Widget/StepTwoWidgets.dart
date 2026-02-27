@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddButtonOfPickup.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddPickupButton.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/HeaderWebPickupWidget.dart';
-import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/SuccessConfirmationPickupDialog.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
@@ -496,8 +494,9 @@ class StepTwoSelectionWidget extends StatelessWidget {
   Widget _buildImagePickerBox(BuildContext context, String label, String iconPath, String type, double boxWidth) {
     return Obx(() {
       ImageHolder? image;
-      if (type == 'front') image = controller.frontImage.value;
-      else if (type == 'back') image = controller.backImage.value;
+      if (type == 'front') {
+        image = controller.frontImage.value;
+      } else if (type == 'back') image = controller.backImage.value;
       else if (type == 'left') image = controller.leftImage.value;
       else if (type == 'right') image = controller.rightImage.value;
 
@@ -526,8 +525,8 @@ class StepTwoSelectionWidget extends StatelessWidget {
                     ? ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: kIsWeb
-                      ? Image.memory(image!.bytes!, fit: BoxFit.cover, width: double.infinity, height: double.infinity)
-                      : Image.file(File(image!.path!), fit: BoxFit.cover, width: double.infinity, height: double.infinity),
+                      ? Image.memory(image.bytes!, fit: BoxFit.cover, width: double.infinity, height: double.infinity)
+                      : Image.file(File(image.path!), fit: BoxFit.cover, width: double.infinity, height: double.infinity),
                 )
                     : Padding(
                   padding: const EdgeInsets.only(top: 20, bottom: 5),
@@ -678,7 +677,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
 
   // Button Sections
   Widget _buttonSection(BuildContext context, bool isMobile) {
-    const double webButtonWidth = 130.0;
+    const double webButtonWidth = 150.0;
     const double webButtonHeight = 45.0;
     final double spacing = AppSizes.padding(context);
 
@@ -693,8 +692,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
               backgroundColor: Colors.transparent,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
-              onTap: () {
-              },
+              onTap: () {},
             ),
           ),
           SizedBox(height: spacing),
@@ -702,16 +700,13 @@ class StepTwoSelectionWidget extends StatelessWidget {
             width: webButtonWidth,
             height: webButtonHeight,
             child: AddButtonOfPickup(
-              text: "Confirm",
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return const SuccessConfirmationPickupDialog();
-                    },
-                  );
-                }
+              text: "Continue",
+              icon: Image.asset(
+                IconString.continueIcon,
+              ),
+              onTap: () {
+                context.push('/stepThreeWidgetScreen', extra: {"hideMobileAppBar": true});
+              },
             ),
           ),
         ],
@@ -728,8 +723,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
               backgroundColor: Colors.transparent,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
-              onTap: () {
-              },
+              onTap: () {},
             ),
           ),
           SizedBox(width: spacing),
@@ -737,16 +731,13 @@ class StepTwoSelectionWidget extends StatelessWidget {
             width: webButtonWidth,
             height: webButtonHeight,
             child: AddButtonOfPickup(
-              text: "Confirm",
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return const SuccessConfirmationPickupDialog();
-                    },
-                  );
-                }
+              text: "Continue",
+              icon: Image.asset(
+                IconString.continueIcon,
+              ),
+              onTap: () {
+                context.push('/stepThreeWidgetScreen', extra: {"hideMobileAppBar": true});
+              },
             ),
           ),
 

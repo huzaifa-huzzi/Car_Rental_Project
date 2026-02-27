@@ -31,6 +31,7 @@ class AppColors {
   static const Color maintenanceEnd = Color(0xFFC7C7C7);
   static const Color unavailableStart = Color(0xFF00070F);
   static const Color unavailableEnd = Color(0xFFC7C7C7);
+  static const Color signaturePadColor = Color(0xFFF9FAFB);
 
 
    /// Gradients

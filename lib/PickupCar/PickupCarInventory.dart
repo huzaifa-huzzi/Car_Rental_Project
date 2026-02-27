@@ -1,11 +1,11 @@
 import 'package:car_rental_project/PickupCar/AddPickUp/Widget/CalendarManagingScreen.dart';
 import 'package:car_rental_project/PickupCar/AddPickUp/Widget/ResponsiveTimerWidget.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
-import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb, Uint8List;
+import 'package:signature/signature.dart';
 
 class DocumentHolder {
   final Uint8List? bytes;
@@ -53,6 +53,16 @@ class PickupCarController extends GetxController {
   void onInit() {
     super.onInit();
     generateDummyData();
+    pickupOwnerSigPadController.addListener(() {
+      if (pickupOwnerSigPadController.isNotEmpty) {
+        isPickupOwnerDrawingActive.value = true;
+      }
+    });
+    pickupHirerSigPadController.addListener(() {
+      if (pickupHirerSigPadController.isNotEmpty) {
+        isPickupHirerDrawingActive.value = true;
+      }
+    });
   }
 
   int get totalPages {
@@ -434,16 +444,15 @@ class PickupCarController extends GetxController {
 
 
 
-  // Required Images ke liye variables
+
   var frontImage = Rxn<ImageHolder>();
   var backImage = Rxn<ImageHolder>();
   var leftImage = Rxn<ImageHolder>();
   var rightImage = Rxn<ImageHolder>();
 
-// Additional images ke liye list
+
   var additionalImages = <ImageHolder>[].obs;
 
-// --- PICK IMAGE FUNCTION ---
   Future<void> pickImageNew(String type) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -463,23 +472,21 @@ class PickupCarController extends GetxController {
         var file = result.files.first;
         var holder = ImageHolder(bytes: file.bytes, name: file.name, path: kIsWeb ? null : file.path);
 
-        if (type == 'front') frontImage.value = holder;
-        else if (type == 'back') backImage.value = holder;
+        if (type == 'front') {
+          frontImage.value = holder;
+        } else if (type == 'back') backImage.value = holder;
         else if (type == 'left') leftImage.value = holder;
         else if (type == 'right') rightImage.value = holder;
       }
     }
   }
-
-// --- REMOVE IMAGE FUNCTION ---
   void removeImageNew(String type, {int? index}) {
     if (type == 'additional' && index != null) {
-      // List se index ke mutabiq remove karega
       additionalImages.removeAt(index);
     } else {
-      // Required variables ko null set karega taake placeholder wapis aa jaye
-      if (type == 'front') frontImage.value = null;
-      else if (type == 'back') backImage.value = null;
+      if (type == 'front') {
+        frontImage.value = null;
+      } else if (type == 'back') backImage.value = null;
       else if (type == 'left') leftImage.value = null;
       else if (type == 'right') rightImage.value = null;
     }
@@ -525,6 +532,7 @@ class PickupCarController extends GetxController {
   final startTimeControllerStepTwo  = TextEditingController();
   final endDateControllerStepTwo  = TextEditingController();
   final endTimeControllerStepTwo  = TextEditingController();
+
 
   /// EditPickup
   var isCustomerDropdownEditOpen = false.obs;
@@ -644,7 +652,6 @@ class PickupCarController extends GetxController {
 
 
 
-
   @override
   void onClose() {
     // 1. Pickup Detail Screen Controllers
@@ -718,4 +725,65 @@ class PickupCarController extends GetxController {
     super.onClose();
   }
 
+
+  /// Step Three Widget
+  final isTermsAgreed = false.obs;
+  var isOwnerSigned = true.obs;
+
+  // Owner Data
+  final pickupOwnerNameFieldController = TextEditingController();
+  var isPickupOwnerDrawingActive = false.obs;
+  var isPickupOwnerSignatureConfirmed = false.obs;
+  final pickupOwnerSigPadController = SignatureController(
+      penStrokeWidth: 3,
+      penColor: Colors.black,
+  );
+
+  //   Hirer Data
+  final pickupHirerNameFieldController = TextEditingController();
+  var isPickupHirerDrawingActive = false.obs;
+  var isPickupHirerSignatureConfirmed = false.obs;
+  final pickupHirerSigPadController = SignatureController(
+      penStrokeWidth: 3,
+      penColor: Colors.black
+  );
+
+  RxBool get isDrawingStarted => isOwnerSigned.value
+      ? isPickupOwnerDrawingActive
+      : isPickupHirerDrawingActive;
+
+  RxBool get isConfirmed => isOwnerSigned.value
+      ? isPickupOwnerSignatureConfirmed
+      : isPickupHirerSignatureConfirmed;
+
+  TextEditingController get activeNameController => isOwnerSigned.value
+      ? pickupOwnerNameFieldController
+      : pickupHirerNameFieldController;
+
+  SignatureController get activeSigController => isOwnerSigned.value
+      ? pickupOwnerSigPadController
+      : pickupHirerSigPadController;
+
+  void clearSignature() {
+    activeSigController.clear();
+    isDrawingStarted.value = false;
+    isConfirmed.value = false;
+  }
+
+  void confirmCurrentSignature() {
+    if (activeNameController.text.trim().isNotEmpty) {
+      isConfirmed.value = true;
+    } else {
+      Get.snackbar(
+          "Required",
+          "Please enter name before confirming",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white
+      );
+    }
+  }
+
+
 }
+
