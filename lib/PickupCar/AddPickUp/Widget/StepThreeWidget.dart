@@ -151,11 +151,11 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
                 child: Padding(
                   padding: EdgeInsets.all(padding),
                   child:Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildSignatureSection(context, controller),
-                  ],
-                ),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildSignatureSection(context, controller),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -635,7 +635,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
     ));
   }
 
-   // Signature
+  // Signature
   Widget _buildSignatureSection(BuildContext context, PickupCarController controller) {
     return Obx(() {
       final isDrawing = controller.isDrawingStarted.value;
@@ -725,64 +725,72 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
             ),
 
           const SizedBox(height: 20),
-          // Signature Pad Area
-          DottedBorder(
-            borderType: BorderType.RRect,
-            radius: const Radius.circular(12),
-            dashPattern: const [6, 3],
-            color: AppColors.primaryColor,
-            child: Container(
-              height: 180, // Fixed height
-              width: double.infinity,
-              color: Colors.white,
-              child: isConfirmed
-                  ? Center(
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    controller.activeNameController.text,
-                    style: _signatureTextStyle(),
+          // Signature Pad Area - fixed canvas scales to fit, stays centered, never disappears
+          Builder(
+            builder: (context) {
+              final boxHeight = _signatureBoxHeight(context);
+              return DottedBorder(
+                borderType: BorderType.RRect,
+                radius: const Radius.circular(12),
+                dashPattern: const [6, 3],
+                color: AppColors.primaryColor,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    height: boxHeight,
+                    width: double.infinity,
+                    color: Colors.white,
+                    alignment: Alignment.center,
+                    child: isConfirmed
+                        ? LayoutBuilder(
+                      builder: (context, constraints) {
+                        final w = constraints.maxWidth.clamp(1.0, double.infinity);
+                        final h = constraints.maxHeight.clamp(1.0, double.infinity);
+                        return SizedBox(
+                          width: w,
+                          height: h,
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            alignment: Alignment.center,
+                            child: Text(
+                              controller.activeNameController.text,
+                              style: _signatureTextStyle(),
+                              maxLines: 1,
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                        : Stack(
+                      children: [
+                        // Fixed canvas (400x150) scales to fit - drawn strokes scale with resize
+                        Positioned.fill(
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            alignment: Alignment.center,
+                            child: SizedBox(
+                              width: 400,
+                              height: 150,
+                              child: Signature(
+                                controller: controller.activeSigController,
+                                backgroundColor: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                        if (!isDrawing)
+                          Positioned.fill(
+                            child: Center(
+                              child: _buildEmptyPadPlaceholder(),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
-              )
-                  : Stack(
-                children: [
-                  MediaQuery.of(context).size.width < 600
-                      ? Scrollbar(
-                    thumbVisibility: true,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: SizedBox(
-                        height: 180,
-                        width: 800,
-                        child: Signature(
-                          controller: controller.activeSigController,
-                          backgroundColor: Colors.white,
-                        ),
-                      ),
-                    ),
-                  )
-                      : SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: SizedBox(
-                      height: 180,
-                      width: 800,
-                      child: Signature(
-                        controller: controller.activeSigController,
-                        backgroundColor: Colors.white,
-                      ),
-                    ),
-                  ),
-                  if (!isDrawing)
-                    Positioned.fill(
-                      child: Center(
-                        child: _buildEmptyPadPlaceholder(),
-                      ),
-                    ),
-                ],
-              )
-            ),
-          )
+              );
+            },
+          ),
         ],
       );
     });
@@ -804,23 +812,42 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
           Text("This is how your signature look on document", style: TTextTheme.titleThree(context)),
           const SizedBox(height: 20),
 
-          DottedBorder(
-            borderType: BorderType.RRect,
-            radius: const Radius.circular(12),
-            dashPattern: const [6, 3],
-            color: AppColors.primaryColor,
-            child: Container(
-              width: double.infinity,
-              height: 150,
-              alignment: Alignment.center,
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                    controller.activeNameController.text,
-                    style: _signatureTextStyle()
+          Builder(
+            builder: (context) {
+              final previewHeight = AppSizes.isMobile(context) ? 120.0 : 150.0;
+              return DottedBorder(
+                borderType: BorderType.RRect,
+                radius: const Radius.circular(12),
+                dashPattern: const [6, 3],
+                color: AppColors.primaryColor,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: previewHeight,
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final w = constraints.maxWidth.clamp(1.0, double.infinity);
+                        final h = constraints.maxHeight.clamp(1.0, double.infinity);
+                        return SizedBox(
+                          width: w,
+                          height: h,
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            alignment: Alignment.center,
+                            child: Text(
+                              controller.activeNameController.text,
+                              style: _signatureTextStyle(),
+                              maxLines: 1,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ],
       ),
@@ -898,7 +925,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
         children: [
           Image.asset(IconString.pickUpSignatureIcon),
           const SizedBox(height: 10),
-           Text("Draw Your Signature here",
+          Text("Draw Your Signature here",
               style: TTextTheme.h1Style(context)),
           const SizedBox(height: 5),
           Container(width: 250, height: 1.5, color: AppColors.textColor),
@@ -906,6 +933,13 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       ),
     );
   }
+  /// Responsive height for signature box (mobile / tablet / web)
+  double _signatureBoxHeight(BuildContext context) {
+    if (AppSizes.isWeb(context)) return 180;
+    if (AppSizes.isTablet(context)) return 160;
+    return 140;
+  }
+
   TextStyle _signatureTextStyle() {
     return const TextStyle(
         fontSize: 30,

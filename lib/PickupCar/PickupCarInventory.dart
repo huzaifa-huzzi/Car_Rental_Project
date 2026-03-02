@@ -196,6 +196,20 @@ class PickupCarController extends GetxController {
   ];
 
 
+  /// selected tab index
+  final RxInt selectedIndex = 0.obs;
+
+  /// tabs list
+  final List<String> tabs = [
+    "Customer and Contract",
+    "Vehicle Condition and Photos",
+    "Term & Condition and Sign",
+  ];
+
+  void changeTab(int index) {
+    selectedIndex.value = index;
+  }
+
 
 
   RxList<ImageHolder> vehicleInspectionImages = <ImageHolder>[].obs;
@@ -735,8 +749,8 @@ class PickupCarController extends GetxController {
   var isPickupOwnerDrawingActive = false.obs;
   var isPickupOwnerSignatureConfirmed = false.obs;
   final pickupOwnerSigPadController = SignatureController(
-      penStrokeWidth: 3,
-      penColor: Colors.black,
+    penStrokeWidth: 3,
+    penColor: Colors.black,
   );
 
   //   Hirer Data
@@ -783,7 +797,6 @@ class PickupCarController extends GetxController {
       );
     }
   }
-
 
 }
 

@@ -338,6 +338,16 @@ class TTextTheme {
     );
   }
 
+  static TextStyle titleUnselectedTab(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 13, 15, 16),fontWeight: FontWeight.w400,color: AppColors.textColor,
+    );
+  }
+
+  static TextStyle titleSelectedTab(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 13, 15, 16),fontWeight: FontWeight.w500,color: Colors.white,
+    );
+  }
+
   static TextStyle titleFour(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 10),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
     );
