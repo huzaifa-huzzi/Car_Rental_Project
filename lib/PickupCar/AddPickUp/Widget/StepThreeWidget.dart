@@ -63,28 +63,31 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Header
+                          // Header title
                           Text(TextString.titleViewPickStepTwo, style: TTextTheme.h6Style(context)),
                           const SizedBox(height: 6),
                           Text(TextString.titleViewSubtitleStepTwo,
                               style: TTextTheme.titleThree(context)),
                           const SizedBox(height: 7),
+                          // Step Badges
                           _buildStepBadges(context),
                           const SizedBox(height: 25),
+
+                          // Terms Content
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: _buildTermsAndConditions(context),
                           ),
-                      const SizedBox(height: 40),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: _buildAcceptanceOfTerm(context),
-                      ),
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: _buildEligibility(context),
-                      ),
+                          const SizedBox(height: 40),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: _buildAcceptanceOfTerm(context),
+                          ),
+                          const SizedBox(height: 20),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: _buildEligibility(context),
+                          ),
                           const SizedBox(height: 20),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -130,7 +133,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
                           const SizedBox(height: 20),
                           Padding(padding: const EdgeInsets.symmetric(horizontal: 20), child: _buildGoverningLaw(context)),
                           const SizedBox(height: 25),
-                          Padding(padding: const EdgeInsets.symmetric(horizontal: 10), child: _buildAgreementCheckbox(context,PickupCarController())),
+                          Padding(padding: const EdgeInsets.symmetric(horizontal: 10), child: _buildAgreementCheckbox(context, controller)),
                         ],
                       ),
                     ),
@@ -150,7 +153,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(padding),
-                  child:Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildSignatureSection(context, controller),
@@ -159,6 +162,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
                 ),
               ),
             ),
+
             // Preview Signature Section
             Obx(() => controller.isConfirmed.value
                 ? Padding(
@@ -176,12 +180,13 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
             )
                 : const SizedBox.shrink()
             ),
+
             /// Buttons
             Padding(
               padding: EdgeInsets.only(
                 right: 20,
                 left: isMobile ? 20 : 0,),
-              child:  _buttonSection(context, isMobile),
+              child: _buttonSection(context, isMobile),
             ),
             const SizedBox(height: 20),
           ],

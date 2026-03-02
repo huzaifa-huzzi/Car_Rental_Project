@@ -198,6 +198,7 @@ class PickupCarController extends GetxController {
 
   /// selected tab index
   final RxInt selectedIndex = 0.obs;
+  final isTermsAgreed2 = false.obs;
 
   /// tabs list
   final List<String> tabs = [

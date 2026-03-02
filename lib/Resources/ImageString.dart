@@ -25,6 +25,10 @@ class ImageString{
   static const String  backView = 'assets/Images/PickupCar/BackView.png';
   static const String  leftView = 'assets/Images/PickupCar/LeftView.png';
   static const String  rightView= 'assets/Images/PickupCar/RightView.png';
+  static const String  frontPickImage = 'assets/Images/PickupCar/FrontPickImage.png';
+  static const String  backPickImage = 'assets/Images/PickupCar/BackPickImage.png';
+  static const String  leftPickImage = 'assets/Images/PickupCar/LeftPickImage.png';
+  static const String  rightPickImage= 'assets/Images/PickupCar/RightPickImage.png';
   /// Authentication
   static const String  smartPhoneImage= 'assets/Images/Login/smartphoneImage.png';
    /// Dashboard

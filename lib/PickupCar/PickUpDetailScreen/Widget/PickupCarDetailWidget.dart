@@ -1,3 +1,4 @@
+import 'package:car_rental_project/PickupCar/PickUpDetailScreen/Widget/TermAndSignWidget.dart';
 import 'package:car_rental_project/PickupCar/PickUpDetailScreen/Widget/VehicleConditionWidget.dart';
 import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddButtonOfPickup.dart';
@@ -332,7 +333,7 @@ class PickupDetailWidget extends StatelessWidget {
       case 1:
         return  VehicleConditionScreen();
       case 2:
-        return const Text("Terms & Conditions Screen UI");
+        return TermsAndSignScreen();
       default:
         return const SizedBox();
     }
