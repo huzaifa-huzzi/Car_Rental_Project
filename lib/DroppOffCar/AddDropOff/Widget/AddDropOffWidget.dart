@@ -183,62 +183,87 @@ class AddDropOffWidget extends StatelessWidget {
       double height,
       bool showText,
       ) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    bool shouldShowText = screenWidth > 600 ? showText : false;
-    double maxWidth = shouldShowText ? (screenWidth > 1100 ? 200 : 150) : 60;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (controller.isSearchCategoryOpen.value) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (controller.isSearchCategoryOpen.value) {
+              Navigator.of(context).popUntil((route) => route.isFirst || route is! PopupRoute);
+              controller.isSearchCategoryOpen.value = false;
+            }
+          });
+        }
 
-    return Container(
-      height: height,
-      constraints: BoxConstraints(maxWidth: maxWidth),
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundOfPickupsWidget,
-        borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-      ),
-      child: Theme(
-        data: Theme.of(context).copyWith(
-          dividerColor: Colors.transparent,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white)
-              .copyWith(surface: Colors.white),
-        ),
-        child: PopupMenuButton<String>(
-          offset: const Offset(0, 45),
-          color: AppColors.backgroundOfPickupsWidget,
-          elevation: 8,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          onSelected: (val) => controller.selectedSearchType.value = val,
-          itemBuilder: (context) => [
-            _buildPopupItem("Customer Name", IconString.nameIcon, context),
-            _buildPopupItem("VIN Number", IconString.vinNumberIcon, context),
-            _buildPopupItem("Registration", IconString.registrationIcon, context),
-            _buildPopupItem("Car Name", IconString.carNameIcon, context, isLast: true),
-          ],
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                _getIconPathForType(controller.selectedSearchType.value),
-                width: 18,
-                color: AppColors.quadrantalTextColor,
+        final double screenWidth = MediaQuery.of(context).size.width;
+        bool shouldShowText = screenWidth > 600 ? showText : false;
+        double maxWidth = shouldShowText ? (screenWidth > 1100 ? 200 : 150) : 60;
+
+        return Obx(() {
+          return Container(
+            height: height,
+            constraints: BoxConstraints(maxWidth: maxWidth),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              color: AppColors.backgroundOfPickupsWidget,
+              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+            ),
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                dividerColor: Colors.transparent,
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.white)
+                    .copyWith(surface: Colors.white),
               ),
-              if (shouldShowText) ...[
-                const SizedBox(width: 6),
-                Flexible(
-                  child: Text(
-                    controller.selectedSearchType.value,
-                    style: TTextTheme.titleThree(context),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
+              child: PopupMenuButton<String>(
+                offset: const Offset(0, 45),
+                color: AppColors.backgroundOfPickupsWidget,
+                elevation: 8,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                onOpened: () => controller.isSearchCategoryOpen.value = true,
+                onCanceled: () => controller.isSearchCategoryOpen.value = false,
+                onSelected: (val) {
+                  controller.selectedSearchType.value = val;
+                  controller.isSearchCategoryOpen.value = false;
+                },
+                itemBuilder: (context) => [
+                  _buildPopupItem("Customer Name", IconString.nameIcon, context),
+                  _buildPopupItem("VIN Number", IconString.vinNumberIcon, context),
+                  _buildPopupItem("Registration", IconString.registrationIcon, context),
+                  _buildPopupItem("Car Name", IconString.carNameIcon, context, isLast: true),
+                ],
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      _getIconPathForType(controller.selectedSearchType.value),
+                      width: 18,
+                      color: AppColors.quadrantalTextColor,
+                    ),
+                    if (shouldShowText) ...[
+                      const SizedBox(width: 6),
+                      Flexible(
+                        child: Text(
+                          controller.selectedSearchType.value,
+                          style: TTextTheme.titleThree(context),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      ),
+                    ],
+                    Icon(
+                        controller.isSearchCategoryOpen.value
+                            ? Icons.keyboard_arrow_up
+                            : Icons.keyboard_arrow_down,
+                        size: 16,
+                        color: AppColors.secondTextColor
+                    ),
+                  ],
                 ),
-              ],
-              const Icon(Icons.keyboard_arrow_down,
-                  size: 16, color: AppColors.secondTextColor),
-            ],
-          ),
-        ),
-      ),
+              ),
+            ),
+          );
+        });
+      },
     );
   }
 
