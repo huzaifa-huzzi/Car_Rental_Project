@@ -1,109 +1,123 @@
-import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
-import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class TermsAndSignScreen extends StatelessWidget {
   const TermsAndSignScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // final isWeb = AppSizes.isWeb(context); // Tab ke andar inhe use na karein toh behtar hai
-    final bool isMobile = AppSizes.isMobile(context);
-    double padding = 24.0;
-    final controller = Get.find<PickupCarController>();
+    final bool isMobile = MediaQuery.of(context).size.width < 800;
 
-    // --- FIX: Scaffold aur SingleChildScrollView hata diye ---
     return Column(
       children: [
-        // --- FIRST WHITE CONTAINER: TERMS CONTENT ---
-        Padding(
+        Container(
+          width: double.infinity,
           padding: const EdgeInsets.all(20),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(padding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Header title
-                      Text(TextString.titleViewPickStepTwo, style: TTextTheme.h6Style(context)),
-                      const SizedBox(height: 6),
-                      Text(TextString.titleViewSubtitleStepTwo,
-                          style: TTextTheme.titleThree(context)),
-
-                      // --- Terms Sections ---
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: _buildTermsAndConditions(context),
-                      ),
-                      const SizedBox(height: 40),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: _buildAcceptanceOfTerm(context),
-                      ),
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: _buildEligibility(context),
-                      ),
-                      // ... Baki saare _buildHelperFunctions ...
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: _buildPrivacyPolicy(context),
-                      ),
-                      const SizedBox(height: 20),
-                      Padding(padding: const EdgeInsets.symmetric(horizontal: 20), child: _buildIntellectualProperty(context)),
-                      const SizedBox(height: 20),
-                      Padding(padding: const EdgeInsets.symmetric(horizontal: 20), child: _buildGoverningLaw(context)),
-                      const SizedBox(height: 25),
-                      Padding(padding: const EdgeInsets.symmetric(horizontal: 10), child: _buildAgreementCheckbox(context, controller)),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(color: AppColors.fieldsBackground, blurRadius: 10)
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: _buildTermsAndConditions(context),
+              ),
+              const SizedBox(height: 40),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: _buildAcceptanceOfTerm(context),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: _buildEligibility(context),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: _buildAccountRegistration(context),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: _buildBookingTerms(context),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: _buildPaymentTerms(context),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: _buildSecurityDeposit(context),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: _buildVehicleRestrictions(context),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: _buildInsuranceLiability(context),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: _buildCancellationsRefunds(context),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: _buildPrivacyPolicy(context),
+              ),
+              const SizedBox(height: 20),
+              Padding(padding: const EdgeInsets.symmetric(horizontal: 20), child: _buildIntellectualProperty(context)),
+              const SizedBox(height: 20),
+              Padding(padding: const EdgeInsets.symmetric(horizontal: 20), child: _buildGoverningLaw(context)),
+              const SizedBox(height: 25),
+            ],
           ),
         ),
-
-        const SizedBox(height: 10),
-
-        // --- SECOND WHITE CONTAINER: SIGNATURE SECTION ---
-        Padding(
+        const SizedBox(height: 120),
+        Container(
+          width: double.infinity,
           padding: const EdgeInsets.all(20),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(padding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.verified_user_outlined, color: Colors.blueGrey),
-                      const SizedBox(width: 10),
-                      Text("Signature", style: TTextTheme.h6Style(context)),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  // --- Signature Section ---
-                  _buildSignatureSection(context, isMobile),
-                ],
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(color: AppColors.fieldsBackground, blurRadius: 15, offset: const Offset(0, 5))
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                decoration: BoxDecoration(
+                  color: AppColors.secondaryColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.verified_user_outlined, color: Colors.blueGrey, size: 20),
+                    const SizedBox(width: 10),
+                    Text("Signature", style: TTextTheme.h6Style(context)),
+                  ],
+                ),
               ),
-            ),
+              const SizedBox(height: 25),
+              _buildSignatureSection(context, isMobile),
+            ],
           ),
         ),
       ],
@@ -469,86 +483,49 @@ class TermsAndSignScreen extends StatelessWidget {
       ),
     );
   }
-  // Agreement checkBox
-  Widget _buildAgreementCheckbox(BuildContext context,PickupCarController controller) {
-    return Obx(() => Row(
-      children: [
-        Checkbox(
-          value: controller.isTermsAgreed2.value,
-          onChanged: (value) => controller.isTermsAgreed2.value = value!,
-          activeColor: AppColors.primaryColor,
-          side: const BorderSide(color: AppColors.primaryColor, width: 1.5),
-        ),
-        Expanded(
-          child: Text(
-            "I agree to the Pickup Terms & Conditions*",
-            style: TTextTheme.titleSmallRegister(context),
-          ),
-        ),
-      ],
-    ));
-  }
 
+   // Signature Section
   Widget _buildSignatureSection(BuildContext context, bool isMobile) {
     return LayoutBuilder(builder: (context, constraints) {
-      if (isMobile) {
+      if (constraints.maxWidth < 768) {
         return Column(
           children: [
-            _buildSignatureBlock(context, "Pickup"), // Title pass kiya
-            const SizedBox(height: 25),
-            _buildSignatureBlock(context, "Dropoff", addTopPadding: true), // Dropoff ke liye extra top padding
+            _buildSignatureCard(context, "Signed by Owner", "Softsnip"),
+            const SizedBox(height: 15),
+            _buildSignatureCard(context, "Signed by Hirer", "Softsnip"),
           ],
         );
       }
-      /// Web
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(child: _buildSignatureBlock(context, "Pickup")),
-          const SizedBox(width: 30),
-          Expanded(child: _buildSignatureBlock(context, "Dropoff", addTopPadding: true)),
+          Expanded(
+            child: _buildSignatureCard(context, "Signed by Owner", "Softsnip"),
+          ),
+          const SizedBox(width: 20),
+          Expanded(
+            child: _buildSignatureCard(context, "Signed by Hirer", "Softsnip"),
+          ),
         ],
       );
     });
   }
-
-// Maine Pickup aur Dropoff ko ek hi function mein merge kar diya title aur padding parameter ke saath
-  Widget _buildSignatureBlock(BuildContext context, String title, {bool addTopPadding = false}) {
-    return Padding(
-      padding: EdgeInsets.only(top: addTopPadding ? 50.0 : 0.0), // Dropoff ke liye padding
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (!addTopPadding) // Sirf pickup ke liye title dikhayein
-            Text(title, style: TTextTheme.dropdowninsideText(context)),
-          if (!addTopPadding) const SizedBox(height: 15),
-
-          // Yahan se `Container` aur `backgroundOfScreenColor` hata diya hai
-          _buildSignatureCard(context, TextString.subtitleOwnerSignatureStepTwoDropOff, "Softsnip", isReadOnly: true, bgColor: Colors.white),
-          const SizedBox(height: 15),
-          _buildSignatureCard(context, TextString.subtitleHirerSignatureStepTwoDropOff, "Softsnip", isReadOnly: true, bgColor: Colors.white),
-        ],
-      ),
-    );
-  }
-
-
-  Widget _buildSignatureCard(BuildContext context, String title, String name, {bool isReadOnly = false, required Color bgColor}) {
+  Widget _buildSignatureCard(BuildContext context, String title, String name) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.primaryColor.withOpacity(0.5),
-          width: 0.6,
+          color: AppColors.primaryColor.withOpacity(0.1),
+          width: 1,
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title, style: TTextTheme.titleRadios(context)),
-          const SizedBox(height: 15),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -557,20 +534,20 @@ class TermsAndSignScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(name, style:TTextTheme.h2Style(context) ),
+                    Text(name, style: TTextTheme.h2Style(context)),
                     const Divider(thickness: 1, color: AppColors.tertiaryTextColor),
-                    Text(TextString.subtitleFullNameStepTwoDropOff , style: TTextTheme.titleFullName(context)),
+                    Text("Full Name", style: TTextTheme.titleFullName(context)),
                   ],
                 ),
               ),
-              const SizedBox(width: 25),
+              const SizedBox(width: 30),
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(name, style: TTextTheme.h2Style(context)),
+                    Text(name, style: TTextTheme.h2Style(context).copyWith(fontStyle: FontStyle.italic)),
                     const Divider(thickness: 1, color: AppColors.tertiaryTextColor),
-                    Text(TextString.titleSignatureStepTwoDropOff , style: TTextTheme.titleFullName(context)),
+                    Text("Signature", style: TTextTheme.titleFullName(context)),
                   ],
                 ),
               ),

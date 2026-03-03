@@ -88,7 +88,7 @@ class PickupDetailWidget extends StatelessWidget {
     child: _buildInfoGrid(context, [
     {"label":TextString.subtitleWeeklyRent, "controller": controller.weeklyRentController, "hint": "2600 \$"},
     {"label": TextString.subtitleDailyRent, "controller": controller.rentDueAmountController, "hint": "2600 \$"},
-    ], isMobile)),
+    ], isMobile,isReadOnly: true)),
     const SizedBox(height: 25),
     ///  Bond Payment Section
     _buildSection(context,
@@ -110,7 +110,7 @@ class PickupDetailWidget extends StatelessWidget {
     "controller": controller.dueBondAmountController,
     "hint": "2000 \$"
     },
-    ], isMobile)),
+    ], isMobile,isReadOnly: false)),
     const SizedBox(height: 25),
 
         ///  PAYMENT METHOD
@@ -129,7 +129,7 @@ class PickupDetailWidget extends StatelessWidget {
     {"label": TextString.subtitlePickFuelLevel, "controller": controller.fuelLevelController, "hint": "Full (100%)", "hasIcon": true},
     {"label": TextString.subtitleInteriorCleanliness, "controller": controller.interiorCleanlinessController, "hint": "Excellent", "hasIcon": true},
     {"label": TextString.subtitleExteriorCleanliness, "controller": controller.exteriorCleanlinessController, "hint": "Excellent", "hasIcon": true},
-    ], isMobile),
+    ], isMobile,isReadOnly: true),
     ),
     const SizedBox(height: 25),
     /// Pickup Note Section
@@ -158,81 +158,76 @@ class PickupDetailWidget extends StatelessWidget {
 
   /// ---------- Extra Widgtes ----------- ///
 
-  // Grids of the TextFields
-  Widget _buildInfoGrid(BuildContext context, List<Map<String, dynamic>> items, bool isMobile) {
+
+
+  Widget _buildInfoGrid(BuildContext context, List<Map<String, dynamic>> items, bool isMobile, {bool isReadOnly = true}) {
     final double availableWidth = MediaQuery.of(context).size.width;
 
     return Wrap(
       spacing: 20,
       runSpacing: 15,
       children: items.map((item) {
-        double itemWidth = isMobile
-            ? (availableWidth - 60)
-            : (availableWidth / 4.5);
+        double itemWidth = isMobile ? (availableWidth - 60) : (availableWidth / 4.5);
 
-        return Focus(
-          onFocusChange: (hasFocus) {
-            (context as Element).markNeedsBuild();
-          },
-          child: Builder(
-            builder: (BuildContext context) {
-              final isFocused = Focus.of(context).hasFocus;
+        return SizedBox(
+          width: itemWidth,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(item['label']!, style: TTextTheme.dropdowninsideText(context)),
+              const SizedBox(height: 8),
+              Focus(
+                onFocusChange: (hasFocus) {
+                  (context as Element).markNeedsBuild();
+                },
+                child: Builder(
+                  builder: (context) {
+                    final bool isFocused = Focus.of(context).hasFocus;
+                    final bool showShadow = !isReadOnly && isFocused;
 
-              return SizedBox(
-                width: itemWidth,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(item['label']!,
-                        style: TTextTheme.dropdowninsideText(context)),
-                    const SizedBox(height: 8),
-
-                    AnimatedContainer(
+                    return AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
                       padding: const EdgeInsets.all(3),
                       decoration: BoxDecoration(
                         color: AppColors.secondaryColor,
                         borderRadius: BorderRadius.circular(6),
-                        boxShadow: isFocused
-                            ? [
+                        boxShadow: showShadow ? [
                           BoxShadow(
                             color: AppColors.fieldsBackground,
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
-                        ]
-                            : [],
+                        ] : [],
                       ),
                       child: TextFormField(
                         cursorColor: AppColors.blackColor,
-                        controller: item['controller'],
+                        controller: item['controller'], 
+                        readOnly: isReadOnly,
                         textAlignVertical: TextAlignVertical.center,
                         style: TTextTheme.insidetextfieldWrittenText(context),
+                        onTapOutside: (event) {
+                          FocusScope.of(context).unfocus();
+                        },
+
                         decoration: InputDecoration(
                           hintText: item['hint'],
+                          hintStyle: TTextTheme.insidetextfieldWrittenText(context),
                           prefixIcon: item['hasIcon'] == true
-                              ? Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 8),
-                            child: Icon(Icons.check_circle_outline,
-                                size: 18,
-                                color: AppColors.textColor),
+                              ? const Padding(
+                            padding: EdgeInsets.only(left: 10, right: 8),
+                            child: Icon(Icons.check_circle_outline, size: 18, color: AppColors.textColor),
                           )
                               : null,
-                          prefixIconConstraints: const BoxConstraints(
-                            minWidth: 40,
-                            minHeight: 0,
-                          ),
-                          hintStyle: TTextTheme.insidetextfieldWrittenText(context),
                           contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                           border: InputBorder.none,
                           isDense: true,
                         ),
                       ),
-                    ),
-                  ],
+                    );
+                  },
                 ),
-              );
-            },
+              ),
+            ],
           ),
         );
       }).toList(),
@@ -267,6 +262,8 @@ class PickupDetailWidget extends StatelessWidget {
                 : [],
           ),
           child: TextFormField(
+            readOnly: true,
+            enabled: true,
             focusNode: focusNode,
             cursorColor: AppColors.blackColor,
             controller: controller,
@@ -341,35 +338,16 @@ class PickupDetailWidget extends StatelessWidget {
 
   // Start Header
   Widget _buildPageHeader(BuildContext context, bool isMobile) {
-
     return LayoutBuilder(
       builder: (context, constraints) {
-
-        bool isVerySmallScreen = constraints.maxWidth < 390;
-
-        if (isVerySmallScreen) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildTitleSection(context),
-              const SizedBox(height: 10),
-              _buildButtonSection(),
-            ],
-          );
-        } else {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(child: _buildTitleSection(context)),
-              const SizedBox(width: 8),
-              _buildButtonSection(),
-            ],
-          );
-        }
+        return Container(
+          width: double.infinity,
+          child: _buildTitleSection(context),
+        );
       },
     );
   }
+
   Widget _buildTitleSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -380,6 +358,7 @@ class PickupDetailWidget extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
         ),
+        const SizedBox(height: 4),
         Text(
           TextString.titleViewSubtitle,
           style: TTextTheme.titleThree(context),
@@ -387,12 +366,6 @@ class PickupDetailWidget extends StatelessWidget {
           maxLines: 1,
         ),
       ],
-    );
-  }
-  Widget _buildButtonSection() {
-    return AddButtonOfPickup(
-      text: "Edit Pickup Car",
-      onTap: () {},
     );
   }
 
@@ -514,6 +487,8 @@ class PickupDetailWidget extends StatelessWidget {
             : [],
       ),
       child: TextFormField(
+        readOnly: true,
+        enabled: true,
         focusNode: focusNode,
         cursorColor: AppColors.blackColor,
         controller: textController,

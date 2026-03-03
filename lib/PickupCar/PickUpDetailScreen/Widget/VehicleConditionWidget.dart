@@ -59,6 +59,7 @@ class VehicleConditionScreen extends StatelessWidget {
 
   /// ---- Extra Widgets ------ ///
 
+   // Damage Inspection
   Widget _buildDamageInspectionHeader(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -71,12 +72,18 @@ class VehicleConditionScreen extends StatelessWidget {
         children: [
           Image.asset(IconString.damageInspection, height: 18, width: 18),
           const SizedBox(width: 10),
-          Text("Damage Inspection", style: TTextTheme.DamageStyle(context)),
+          Expanded(
+            child: Text(
+              "Damage Inspection",
+              style: TTextTheme.DamageStyle(context),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          ),
         ],
       ),
     );
   }
-
   Widget _buildDamageLegend(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8),
@@ -87,7 +94,7 @@ class VehicleConditionScreen extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-          children: controller.damageTypes2.map((type) {
+          children: controller.damageTypes.map((type) {
             return Padding(
               padding: const EdgeInsets.only(right: 20),
               child: Row(
@@ -110,7 +117,6 @@ class VehicleConditionScreen extends StatelessWidget {
       ),
     );
   }
-
   Widget _buildStaticCarDiagram(BuildContext context, double screenWidth, bool isMobile) {
     double diagramWidth = isMobile ? screenWidth - 60 : 800;
     double diagramHeight = diagramWidth * 0.5;
@@ -126,7 +132,7 @@ class VehicleConditionScreen extends StatelessWidget {
               ImageString.carDamageInspectionImage,
               fit: BoxFit.contain,
             ),
-            ...controller.damagePoints2.map((point) {
+            ...controller.damagePoints.map((point) {
               return Positioned(
                 left: (point.dx * diagramWidth) - 10,
                 top: (point.dy * diagramHeight) - 10,
@@ -146,19 +152,50 @@ class VehicleConditionScreen extends StatelessWidget {
     );
   }
 
+   // Pictures Section
   Widget _buildPicturesHeader(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text("Pickup Pictures", style: TTextTheme.h6Style(context)),
-        Obx(() {
-          int count = _getTotalImageCount();
-          return Text("$count/10 images uploaded", style: TTextTheme.titleThree(context));
-        }),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        bool shouldWrap = constraints.maxWidth < 280;
+
+        return SizedBox(
+          width: double.infinity,
+          child: shouldWrap
+              ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Pickup Pictures", style: TTextTheme.h6Style(context)),
+              const SizedBox(height: 6),
+              _buildImageCountText(context),
+            ],
+          )
+              : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  "Pickup Pictures",
+                  style: TTextTheme.h6Style(context),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 10),
+              _buildImageCountText(context),
+            ],
+          ),
+        );
+      },
     );
   }
-
+  Widget _buildImageCountText(BuildContext context) {
+    return Obx(() {
+      int count = _getTotalImageCount();
+      return Text(
+        "$count/10 images uploaded",
+        style: TTextTheme.titleThree(context),
+      );
+    });
+  }
   int _getTotalImageCount() {
     int count = 0;
     if (controller.frontImage.value != null) count++;
@@ -168,7 +205,6 @@ class VehicleConditionScreen extends StatelessWidget {
     count += controller.additionalImages.length;
     return count;
   }
-
   Widget _buildStaticImageGrid(BuildContext context, double width) {
     int crossAxisCount = width < 600 ? 1 : 2;
     return GridView.count(
@@ -186,7 +222,6 @@ class VehicleConditionScreen extends StatelessWidget {
       ],
     );
   }
-
   Widget _staticImageBox(BuildContext context, String label, String imagePath) {
     return Container(
       decoration: BoxDecoration(

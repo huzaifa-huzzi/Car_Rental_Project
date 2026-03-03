@@ -115,73 +115,82 @@ class AdditionalImagesBox extends StatelessWidget {
       barrierDismissible: true,
       builder: (dialogContext) {
         return Dialog(
+          insetPadding: EdgeInsets.zero,
           backgroundColor: Colors.transparent,
-          child: Container(
-            width: MediaQuery.of(dialogContext).size.width * 0.8,
-            height: MediaQuery.of(dialogContext).size.height * 0.7,
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.9),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Stack(
-              children: [
-                PageView.builder(
-                  controller: pageController,
-                  itemCount: allImages.length,
-                  itemBuilder: (_, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Image.asset(
-                        allImages[index],
-                        fit: BoxFit.contain,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              double arrowSize = constraints.maxWidth < 400 ? 30 : 40;
+              double padding = constraints.maxWidth < 400 ? 10 : 20;
+
+              return Container(
+                width: constraints.maxWidth,
+                height: constraints.maxHeight,
+                color: Colors.black.withOpacity(0.9),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned.fill(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: arrowSize + (padding * 2)),
+                        child: PageView.builder(
+                          controller: pageController,
+                          itemCount: allImages.length,
+                          itemBuilder: (_, index) {
+                            return InteractiveViewer(
+                              minScale: 0.5,
+                              maxScale: 4.0,
+                              child: Image.asset(
+                                allImages[index],
+                                fit: BoxFit.contain,
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    );
-                  },
-                ),
-
-                Positioned(
-                  top: 10,
-                  right: 10,
-                  child: IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white, size: 30),
-                    onPressed: () => Navigator.of(dialogContext).pop(),
-                  ),
-                ),
-                Positioned(
-                  left: 10,
-                  top: 0,
-                  bottom: 0,
-                  child: Center(
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 40),
-                      onPressed: () {
-                        pageController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
-                      },
                     ),
-                  ),
-                ),
 
-                Positioned(
-                  right: 10,
-                  top: 0,
-                  bottom: 0,
-                  child: Center(
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 40),
-                      onPressed: () {
-                        pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
-                      },
+                    Positioned(
+                      top: MediaQuery.of(context).padding.top + 10,
+                      right: padding,
+                      child: IconButton(
+                        icon: Icon(Icons.close, color: Colors.white, size: arrowSize),
+                        onPressed: () => Navigator.of(dialogContext).pop(),
+                      ),
                     ),
-                  ),
+
+                    Positioned(
+                      left: padding,
+                      child: IconButton(
+                        icon: Icon(Icons.arrow_back, color: AppColors.secondaryColor, size: arrowSize),
+                        onPressed: () {
+                          if (pageController.hasClients && pageController.page! > 0) {
+                            pageController.previousPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                          }
+                        },
+                      ),
+                    ),
+
+                    Positioned(
+                      right: padding,
+                      child: IconButton(
+                        icon: Icon(Icons.arrow_forward, color: AppColors.secondaryColor, size: arrowSize),
+                        onPressed: () {
+                          if (pageController.hasClients && pageController.page! < allImages.length - 1) {
+                            pageController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
         );
       },
