@@ -38,9 +38,7 @@ class StepOneSelectionWidget extends StatelessWidget {
               ? (totalWidth - (padding * 2))
               : (totalWidth - 48) * (2.8 / 5);
 
-          return SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Stack(
+          return  Stack(
               clipBehavior: Clip.none,
               children: [
                 Column(
@@ -49,7 +47,6 @@ class StepOneSelectionWidget extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey.shade200),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -467,9 +464,8 @@ class StepOneSelectionWidget extends StatelessWidget {
                     ),
                   );
                 }),
-              ],
-            ),
-          );
+              ]
+            );
         },
       ),
     );

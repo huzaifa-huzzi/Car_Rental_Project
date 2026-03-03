@@ -340,7 +340,7 @@ class PickupDetailWidget extends StatelessWidget {
   Widget _buildPageHeader(BuildContext context, bool isMobile) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return Container(
+        return SizedBox(
           width: double.infinity,
           child: _buildTitleSection(context),
         );

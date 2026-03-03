@@ -12,37 +12,35 @@ class AddPickup extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: AppSizes.horizontalPadding(context),
-                    vertical: AppSizes.verticalPadding(context),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      HeaderWebPickupWidget(
-                        mainTitle: 'Add Pickup Car ',
-                        showBack: true,
-                        showSmallTitle: true,
-                        smallTitle: 'Pickup Car/Add Pickup Car',
-                        showSearch: isWeb,
-                        showSettings: isWeb,
-                        showAddButton: false,
-                        showNotification: true,
-                        showProfile: true,
-                      ),
-                      SizedBox(height: AppSizes.verticalPadding(context) * 1.2),
-                      StepOneSelectionWidget(),
-                    ],
-                  ),
-                ),
-              ),
+        // Main scroll yahan hona chahiye
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSizes.horizontalPadding(context),
+              vertical: AppSizes.verticalPadding(context),
             ),
-          ],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                HeaderWebPickupWidget(
+                  mainTitle: 'Add Pickup Car ',
+                  showBack: true,
+                  showSmallTitle: true,
+                  smallTitle: 'Pickup Car/Add Pickup Car',
+                  showSearch: isWeb,
+                  showSettings: isWeb,
+                  showAddButton: false,
+                  showNotification: true,
+                  showProfile: true,
+                ),
+                SizedBox(height: AppSizes.verticalPadding(context) * 1.2),
+
+                // Direct widget call karein, Expanded use na karein
+                StepOneSelectionWidget(),
+              ],
+            ),
+          ),
         ),
       ),
     );

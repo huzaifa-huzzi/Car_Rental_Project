@@ -66,8 +66,8 @@ class AddDropOffDetailWidget extends StatelessWidget {
                           const SizedBox(height: 6),
                           Text(TextString.titleViewSubtitleStepTwoDropOffAdd3,
                               style: TTextTheme.titleThree(context)),
-                          const SizedBox(height: 13),
-                          Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+                          SizedBox(height: 7,),
+                          _buildStepBadges(context),
                           const SizedBox(height: 25),
 
                           ///  NON-EDITABLE SECTION
@@ -309,6 +309,73 @@ class AddDropOffDetailWidget extends StatelessWidget {
           ),
         );
       }).toList(),
+    );
+  }
+
+  // Badges
+  Widget _buildStepBadges(BuildContext context) {
+    return Container(
+      width: 280,
+      padding: const EdgeInsets.symmetric(vertical: 12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildStepItem("1", "Step 1", true, context),
+          _buildStepLine(true),
+          _buildStepItem("2", "Step 2", false, context, isCurrent: true),
+          _buildStepLine(true),
+          _buildStepItem("3", "Step 3", false, context, isCurrent: true),
+        ],
+      ),
+    );
+  }
+  Widget _buildStepItem(String stepNum, String label, bool isCompleted, BuildContext context, {bool isCurrent = false}) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 24,
+          height: 24,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: isCompleted ? AppColors.primaryColor : Colors.white,
+            border: Border.all(color: AppColors.primaryColor, width: 1.5),
+          ),
+          child: Center(
+            child: isCompleted
+                ? const Icon(Icons.check, size: 14, color: Colors.white)
+                : isCurrent
+                ? Container(
+              width: 8,
+              height: 8,
+              decoration: const BoxDecoration(
+                color: AppColors.primaryColor,
+                shape: BoxShape.circle,
+              ),
+            )
+                : null,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          label,
+          style: TTextTheme.stepsText(context).copyWith(
+            color: isCompleted ? AppColors.primaryColor : AppColors.textColor,
+          ),
+        ),
+      ],
+    );
+  }
+  Widget _buildStepLine(bool isActive) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 11.0),
+        child: Container(
+          height: 1.5,
+          color: AppColors.primaryColor,
+        ),
+      ),
     );
   }
 
