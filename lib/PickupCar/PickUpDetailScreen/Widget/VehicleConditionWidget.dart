@@ -1,4 +1,5 @@
 import 'package:car_rental_project/PickupCar/PickUpDetailScreen/Widget/AdditionalImagesWidget.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
@@ -42,13 +43,13 @@ class VehicleConditionScreen extends StatelessWidget {
             /// PICKUP PICTURES SECTION
             _buildPicturesHeader(context),
             const SizedBox(height: 4),
-            Text("Require images", style: TTextTheme.requireImagesText(context)),
+            Text(TextString.requireImages, style: TTextTheme.requireImagesText(context)),
 
             const SizedBox(height: 20),
             _buildStaticImageGrid(context, screenWidth),
 
             const SizedBox(height: 30),
-            Text("Additional Images (Max 6)", style: TTextTheme.AdditionalText(context)),
+            Text(TextString.AdditionalImages, style: TTextTheme.AdditionalText(context)),
             const SizedBox(height: 15),
             AdditionalImagesBox()
           ],
@@ -74,7 +75,7 @@ class VehicleConditionScreen extends StatelessWidget {
           const SizedBox(width: 10),
           Expanded(
             child: Text(
-              "Damage Inspection",
+              TextString.titleAddDamage,
               style: TTextTheme.DamageStyle(context),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
@@ -164,7 +165,7 @@ class VehicleConditionScreen extends StatelessWidget {
               ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Pickup Pictures", style: TTextTheme.h6Style(context)),
+              Text(TextString.pickupPicture, style: TTextTheme.h6Style(context)),
               const SizedBox(height: 6),
               _buildImageCountText(context),
             ],
@@ -174,7 +175,7 @@ class VehicleConditionScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  "Pickup Pictures",
+                  TextString.pickupPicture,
                   style: TTextTheme.h6Style(context),
                   overflow: TextOverflow.ellipsis,
                 ),

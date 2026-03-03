@@ -353,7 +353,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
             const SizedBox(width: 8),
             Flexible(
               child: Text(
-                "Damage Inspection",
+                TextString.titleAddDamage,
                 style: TTextTheme.DamageStyle(context),
                 softWrap: true,
                 maxLines: 2,
@@ -366,7 +366,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 28),
           child: Text(
-            "Fill the Report",
+            TextString.subtitleAddDamage,
             style: TTextTheme.titleThree(context),
             softWrap: true,
             overflow: TextOverflow.ellipsis,
@@ -432,7 +432,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
                 runSpacing: 8,
                 children: [
                   Text(
-                    "Upload picture",
+                    TextString.subtitleAddImagePicture,
                     style: TTextTheme.h6Style(context).copyWith(
                       fontSize: width < 300 ? 14 : 18,
                     ),
@@ -457,7 +457,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
             ),
 
             const SizedBox(height: 4),
-            Text("Require images", style: TTextTheme.requireImagesText(context)),
+            Text(TextString.requireImages, style: TTextTheme.requireImagesText(context)),
             const SizedBox(height: 20),
             LayoutBuilder(builder: (context, innerConstraints) {
               int crossAxisCount = innerConstraints.maxWidth < 550 ? 1 : 2;
@@ -483,7 +483,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
             }),
 
             const SizedBox(height: 30),
-            Text("Additional Images (Max 6)", style: TTextTheme.AdditionalText(context)),
+            Text(TextString.AdditionalImages, style: TTextTheme.AdditionalText(context)),
             const SizedBox(height: 15),
             _buildAdditionalUploadBox(context, isMobile),
           ],
@@ -544,17 +544,17 @@ class StepTwoSelectionWidget extends StatelessWidget {
                       const SizedBox(height: 4),
                       FittedBox(
                         fit: BoxFit.scaleDown,
-                        child: Text("Click to upload", style: TTextTheme.UploadText(context)),
+                        child: Text(TextString.clickToUpload, style: TTextTheme.UploadText(context)),
                       ),
                       FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text.rich(
                           TextSpan(
-                            text: "JPEG, PNG ",
+                            text: TextString.jpgsPngs,
                             style: TTextTheme.titleDriver(context),
                             children: [
                               TextSpan(
-                                text: "(Must be under 50 MB)",
+                                text: TextString.under50,
                                 style: TTextTheme.titleTwelve(context),
                               ),
                             ],
@@ -612,15 +612,15 @@ class StepTwoSelectionWidget extends StatelessWidget {
                     children: [
                       Image.asset(IconString.pickupUploadIcon,),
                       const SizedBox(height: 10),
-                       Text("Click to upload", style: TTextTheme.UploadText(context)),
+                       Text(TextString.clickToUpload, style: TTextTheme.UploadText(context)),
                       SizedBox(height: 4,),
                       Text.rich(
                         TextSpan(
-                          text: "JPEG, PNG ",
+                          text:TextString.jpgsPngs,
                           style: TTextTheme.titleDriver(context),
                           children: [
                             TextSpan(
-                              text: "(Must be under 50 MB)",
+                              text: TextString.under50,
                               style: TTextTheme.titleTwelve(context),
                             ),
                           ],

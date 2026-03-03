@@ -274,7 +274,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
         ),
         const SizedBox(height: 15),
         Text(
-          "Welcome to our Soft Snip! These Terms and Conditions (\"Terms\") govern your access to and use of our website, platform, and services (\"Services\"). Please read them carefully. By using our Services, you agree to be bound by these Terms and our Privacy Policy (the \"Agreement\").\n\nIf you do not agree to these Terms, please do not use our Services.",
+          TextString.termsSubtitle,
           style: TTextTheme.titleAgreement(context).copyWith(height: 1.5),
           textAlign: TextAlign.justify,
         ),
@@ -297,12 +297,12 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Acceptance of Term:",
+            TextString.acceptanceOfTerms,
             style: TTextTheme.hPickupStyle(context).copyWith(color: AppColors.primaryColor),
           ),
           const SizedBox(height: 10),
           Text(
-            "By downloading, accessing, or using the [App Name] mobile application and services, you agree to comply with and be legally bound by these Terms and Conditions. If you do not agree, please do not use our services.",
+           TextString.acceptanceSubtitle,
             style: TTextTheme.titleThree(context).copyWith(height: 1.5),
           ),
         ],
@@ -325,17 +325,17 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Eligibility",
+            TextString.eligibilityTitle,
             style: TTextTheme.hPickupStyle(context),
           ),
           const SizedBox(height: 12),
-          _buildEligibilityItem(context, "1: You must be at least 18/21/25 years old (depending on your policy and jurisdiction)."),
-          _buildEligibilityItem(context, "2: You must possess a valid driver’s license."),
-          _buildEligibilityItem(context, "3: You must provide valid identification and payment details."),
-          _buildEligibilityItem(context, "4: You must not have any driving bans or legal restrictions."),
-          _buildEligibilityItem(context, "5: You must possess a valid driver’s license."),
-          _buildEligibilityItem(context, "6: You must provide valid identification and payment details."),
-          _buildEligibilityItem(context, "7: You must not have any driving bans or legal restrictions."),
+          _buildEligibilityItem(context, TextString.eligibilityTitle1),
+          _buildEligibilityItem(context, TextString.eligibilityTitle2),
+          _buildEligibilityItem(context,TextString.eligibilityTitle3 ),
+          _buildEligibilityItem(context,TextString.eligibilityTitle4 ),
+          _buildEligibilityItem(context,TextString.eligibilityTitle5),
+          _buildEligibilityItem(context, TextString.eligibilityTitle6),
+          _buildEligibilityItem(context,TextString.eligibilityTitle7 ),
         ],
       ),
     );
@@ -364,13 +364,13 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Account Registration",
+           TextString.accounting,
             style: TTextTheme.hPickupStyle(context),
           ),
           const SizedBox(height: 12),
-          _buildBulletItem(context, "1: Users must create an account with accurate and complete information."),
-          _buildBulletItem(context, "2: You are responsible for maintaining the confidentiality of your account."),
-          _buildBulletItem(context, "3: You agree to notify us immediately of unauthorized access."),
+          _buildBulletItem(context,TextString.accounting1 ),
+          _buildBulletItem(context, TextString.accounting2),
+          _buildBulletItem(context,TextString.accounting3),
         ],
       ),
     );
@@ -389,14 +389,14 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Booking and Rental Terms",
+           TextString.booking,
             style: TTextTheme.hPickupStyle(context),
           ),
           const SizedBox(height: 12),
-          _buildBulletItem(context, "1: All rentals are subject to vehicle availability."),
-          _buildBulletItem(context, "2: Booking confirmation is sent via email or in-app notification."),
-          _buildBulletItem(context, "3: Rental duration begins and ends as stated in the booking confirmation."),
-          _buildBulletItem(context, "4: Late returns may incur additional charges."),
+          _buildBulletItem(context, TextString.booking1),
+          _buildBulletItem(context, TextString.booking2),
+          _buildBulletItem(context, TextString.booking3),
+          _buildBulletItem(context,TextString.booking4),
         ],
       ),
     );
@@ -424,13 +424,13 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Payment Terms", style: TTextTheme.hPickupStyle(context)),
+          Text(TextString.payment, style: TTextTheme.hPickupStyle(context)),
           const SizedBox(height: 12),
-          Text("Rental fees, taxes, and additional charges must be paid in full before vehicle release.", style: TTextTheme.titleThree(context)),
+          Text(TextString.payment1, style: TTextTheme.titleThree(context)),
           const SizedBox(height: 8),
-          Text("Security deposit may be required.", style: TTextTheme.titleThree(context)),
+          Text(TextString.payment2, style: TTextTheme.titleThree(context)),
           const SizedBox(height: 8),
-          Text("Additional charges may apply for:", style: TTextTheme.titleThree(context)),
+          Text(TextString.payment3, style: TTextTheme.titleThree(context)),
           const SizedBox(height: 10),
           ...["Late return", "Fuel refill", "Toll fees", "Traffic violations", "Cleaning fees", "Damage repair"]
               .map((item) => Padding(
@@ -454,11 +454,11 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Security Deposit", style: TTextTheme.hPickupStyle(context)),
+          Text(TextString.security, style: TTextTheme.hPickupStyle(context)),
           const SizedBox(height: 12),
-          _buildBulletItem(context, "1: A refundable security deposit will be held during the rental period."),
-          _buildBulletItem(context, "2: Refund timeline: [e.g., 5-14 business days after vehicle return]."),
-          _buildBulletItem(context, "3: Deductions may apply for damages, fines, or contract violations."),
+          _buildBulletItem(context,TextString.security1),
+          _buildBulletItem(context,TextString.security2),
+          _buildBulletItem(context,TextString.security3 ),
         ],
       ),
     );
@@ -476,13 +476,13 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Vehicle Use Restrictions", style: TTextTheme.hPickupStyle(context)),
+          Text(TextString.vehicle, style: TTextTheme.hPickupStyle(context)),
           const SizedBox(height: 12),
-          _buildBulletItem(context, "1: Use the vehicle for illegal activities."),
-          _buildBulletItem(context, "2: Allow unauthorized drivers to operate the vehicle."),
-          _buildBulletItem(context, "3: Drive under the influence of alcohol or drugs."),
-          _buildBulletItem(context, "4: Use the vehicle for racing, towing (unless permitted), or commercial purposes."),
-          _buildBulletItem(context, "5: Drive outside permitted geographic areas."),
+          _buildBulletItem(context,TextString.vehicle1),
+          _buildBulletItem(context, TextString.vehicle2),
+          _buildBulletItem(context, TextString.vehicle3),
+          _buildBulletItem(context, TextString.vehicle4),
+          _buildBulletItem(context, TextString.vehicle5),
         ],
       ),
     );
@@ -502,13 +502,13 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Insurance and Liability",
+            TextString.insurance,
             style: TTextTheme.hPickupStyle(context),
           ),
           const SizedBox(height: 12),
-          _buildBulletItem(context, "1: Vehicles are covered by basic insurance as required by law."),
-          _buildBulletItem(context, "2: The renter is responsible for deductibles and damages not covered by insurance."),
-          _buildBulletItem(context, "3: The renter must immediately report accidents or damage."),
+          _buildBulletItem(context,TextString.insurance1 ),
+          _buildBulletItem(context, TextString.insurance2),
+          _buildBulletItem(context, TextString.insurance3),
         ],
       ),
     );
@@ -527,13 +527,13 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Cancellations and Refunds",
+            TextString.cancellation,
             style: TTextTheme.hPickupStyle(context),
           ),
           const SizedBox(height: 12),
-          _buildBulletItem(context, "1: Free cancellation up to [X hours] before pickup."),
-          _buildBulletItem(context, "2: Late cancellations may incur fees."),
-          _buildBulletItem(context, "3: No-shows may result in full booking charge."),
+          _buildBulletItem(context, TextString.cancellation1),
+          _buildBulletItem(context,TextString.cancellation2),
+          _buildBulletItem(context, TextString.cancellation3),
         ],
       ),
     );
@@ -552,12 +552,12 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Privacy Policy",
+            TextString.privacy,
             style: TTextTheme.hPickupStyle(context),
           ),
           const SizedBox(height: 12),
           Text(
-            "Your personal data is handled according to our Privacy Policy. By using the app, you consent to our data practices.",
+            TextString.privacy1,
             style: TTextTheme.titleThree(context).copyWith(height: 1.5),
           ),
         ],
@@ -578,12 +578,12 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Intellectual Property",
+            TextString.intellactual,
             style: TTextTheme.hPickupStyle(context),
           ),
           const SizedBox(height: 12),
           Text(
-            "All content, trademarks, logos, and software in the app are owned by [Company Name]. Unauthorized use is prohibited.",
+           TextString.intellactual1,
             style: TTextTheme.titleThree(context).copyWith(height: 1.5),
           ),
         ],
@@ -604,16 +604,16 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Governing Law",
+            TextString.law,
             style: TTextTheme.hPickupStyle(context),
           ),
           const SizedBox(height: 12),
           Text(
-            "These Terms are governed by the laws of [Country/State]",
+            TextString.law1,
             style: TTextTheme.titleThree(context).copyWith(height: 1.5),
           ),
           Text(
-            "Any disputes shall be resolved in the courts of [Jurisdiction].",
+            TextString.law2,
             style: TTextTheme.titleThree(context).copyWith(height: 1.5),
           ),
         ],
@@ -632,7 +632,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
         ),
         Expanded(
           child: Text(
-            "I agree to the Pickup Terms & Conditions*",
+           TextString.agreementText,
             style: TTextTheme.titleSmallRegister(context),
           ),
         ),
@@ -654,7 +654,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
           _buildTogglesSection(context, controller),
           const SizedBox(height: 20),
 
-          Text("Name*", style: TTextTheme.titleName(context)),
+          Text(TextString.Name, style: TTextTheme.titleName(context)),
           const SizedBox(height: 8),
           TextFormField(
             cursorColor: AppColors.blackColor,
@@ -673,7 +673,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.red),
+                borderSide: BorderSide(color: AppColors.primaryColor),
               ),
             ),
           ),
@@ -730,7 +730,6 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
             ),
 
           const SizedBox(height: 20),
-          // Signature Pad Area - fixed canvas scales to fit, stays centered, never disappears
           Builder(
             builder: (context) {
               final boxHeight = _signatureBoxHeight(context);
@@ -768,7 +767,6 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
                     )
                         : Stack(
                       children: [
-                        // Fixed canvas (400x150) scales to fit - drawn strokes scale with resize
                         Positioned.fill(
                           child: FittedBox(
                             fit: BoxFit.contain,
@@ -812,9 +810,9 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Preview", style: TTextTheme.h6Style(context)),
+          Text(TextString.preview, style: TTextTheme.h6Style(context)),
           const SizedBox(height: 4),
-          Text("This is how your signature look on document", style: TTextTheme.titleThree(context)),
+          Text(TextString.preview1, style: TTextTheme.titleThree(context)),
           const SizedBox(height: 20),
 
           Builder(
@@ -872,7 +870,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
           const SizedBox(width: 10),
           Expanded(
             child: Text(
-              "Signature",
+              TextString.signature,
               style: TTextTheme.h13Style(context),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
@@ -930,7 +928,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
         children: [
           Image.asset(IconString.pickUpSignatureIcon),
           const SizedBox(height: 10),
-          Text("Draw Your Signature here",
+          Text(TextString.drawSignature,
               style: TTextTheme.h1Style(context)),
           const SizedBox(height: 5),
           Container(width: 250, height: 1.5, color: AppColors.textColor),
