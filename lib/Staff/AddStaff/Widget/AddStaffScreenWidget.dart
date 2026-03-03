@@ -149,7 +149,7 @@ class AddStaffScreenWidget extends StatelessWidget {
   }
 
    // TextFields
-  Widget _buildTextField(String label, String hint, TextEditingController controller,BuildContext context) {
+  Widget _buildTextField(String label, String hint, TextEditingController controller, BuildContext context) {
     return SizedBox(
       width: 300,
       child: Column(
@@ -157,17 +157,49 @@ class AddStaffScreenWidget extends StatelessWidget {
         children: [
           Text(label, style: TTextTheme.staffUpsideField(context)),
           const SizedBox(height: 8),
-          TextField(
-            cursorColor: AppColors.blackColor,
-            controller: controller,
-            style: TTextTheme.insidetextfieldWrittenText(context),
-            decoration: InputDecoration(
-              hintText: hint,
-              filled: true,
-              fillColor: AppColors.secondaryColor,
-              hintStyle: TTextTheme.insidetextfieldWrittenText(context),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+          Focus(
+            onFocusChange: (hasFocus) {
+              (context as Element).markNeedsBuild();
+            },
+            child: Builder(
+              builder: (context) {
+                final bool isFocused = Focus.of(context).hasFocus;
+
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: isFocused
+                        ? [
+                      BoxShadow(
+                        color: AppColors.fieldsBackground,
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ]
+                        : [],
+                  ),
+                  child: TextField(
+                    cursorColor: AppColors.blackColor,
+                    controller: controller,
+                    style: TTextTheme.insidetextfieldWrittenText(context),
+                    onTapOutside: (event) {
+                      FocusScope.of(context).unfocus();
+                    },
+                    decoration: InputDecoration(
+                      hintText: hint,
+                      filled: true,
+                      fillColor: AppColors.secondaryColor,
+                      hintStyle: TTextTheme.insidetextfieldWrittenText(context),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ],

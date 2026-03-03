@@ -255,40 +255,99 @@ class EditCustomerWidget extends StatelessWidget {
       children: [
         Text(label, style: TTextTheme.titleTwo(context)),
         const SizedBox(height: 6),
-        TextField(
-          controller: ctrl,
-          cursorColor: AppColors.blackColor,
-          style: TTextTheme.titleTwo(context),
-          decoration: InputDecoration(
-            hintText: hint ?? "Write $label...",
-            hintStyle: TTextTheme.titleFour(context),
-            filled: true,
-            fillColor: AppColors.secondaryColor,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-              borderSide: BorderSide.none,
-            ),
+        Focus(
+          onFocusChange: (hasFocus) {
+            (context as Element).markNeedsBuild();
+          },
+          child: Builder(
+            builder: (context) {
+              final bool isFocused = Focus.of(context).hasFocus;
+
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                  boxShadow: isFocused
+                      ? [
+                    BoxShadow(
+                      color: AppColors.fieldsBackground,
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ]
+                      : [],
+                ),
+                child: TextField(
+                  controller: ctrl,
+                  cursorColor: AppColors.blackColor,
+                  style: TTextTheme.titleTwo(context),
+                  onTapOutside: (event) {
+                    FocusScope.of(context).unfocus();
+                  },
+                  decoration: InputDecoration(
+                    hintText: hint ?? "Write $label...",
+                    hintStyle: TTextTheme.titleFour(context),
+                    filled: true,
+                    fillColor: AppColors.secondaryColor,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ],
     );
   }
 
-  // Customer TextField Widget
+ // Large TextField
   Widget _buildLargeTextField(BuildContext context, String hint, TextEditingController ctrl) {
-    return TextField(
-      cursorColor: AppColors.blackColor,
-      controller: ctrl,
-      maxLines: 5,
-      decoration: InputDecoration(
-        hintText: hint,
-        hintStyle: TTextTheme.titleFour(context),
-        filled: true,
-        fillColor: AppColors.secondaryColor,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-          borderSide: BorderSide.none,
-        ),
+    return Focus(
+      onFocusChange: (hasFocus) {
+        (context as Element).markNeedsBuild();
+      },
+      child: Builder(
+        builder: (context) {
+          final bool isFocused = Focus.of(context).hasFocus;
+
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+              boxShadow: isFocused
+                  ? [
+                BoxShadow(
+                  color: AppColors.fieldsBackground,
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ]
+                  : [],
+            ),
+            child: TextField(
+              cursorColor: AppColors.blackColor,
+              controller: ctrl,
+              maxLines: 5,
+              onTapOutside: (event) {
+                FocusScope.of(context).unfocus();
+              },
+              decoration: InputDecoration(
+                hintText: hint,
+                hintStyle: TTextTheme.titleFour(context),
+                filled: true,
+                fillColor: AppColors.secondaryColor,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

@@ -139,26 +139,20 @@ class PaginationBarOfStaff extends StatelessWidget {
     bool isText = false,
     double size = 36,
   }) {
-
-
-    final baseStyle = TTextTheme.btnTwo(context).copyWith(color: Colors.white);
+    final baseStyle = TTextTheme.btnTwo(context);
 
     final bool isPrevDisabled = controller.currentPage3.value == 1;
     final bool isNextDisabled = controller.currentPage3.value >= controller.totalPages;
-
 
     bool isButtonDisabled = false;
     if (text == "Prev") {
       isButtonDisabled = isPrevDisabled;
     } else if (text == "Next") {
-
       isButtonDisabled = isNextDisabled;
     }
 
-
-    final Color disabledColor = AppColors.secondTextColor.withOpacity(0.5);
+    final Color disabledColor = AppColors.secondTextColor.withOpacity(0.4);
     final Color enabledColor = AppColors.secondTextColor;
-
 
     final VoidCallback? buttonAction = isButtonDisabled ? null : () {
       if (text == "Prev") {
@@ -170,20 +164,18 @@ class PaginationBarOfStaff extends StatelessWidget {
       }
     };
 
-
     if (isText) {
-      final bool isPrev = text == "Prev";
-
-      return TextButton(
-        onPressed: buttonAction,
+      return InkWell(
+        onTap: buttonAction,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         child: Container(
           height: size,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-            color: isPrev
-                ? AppColors.secondaryColor
-                : Colors.white,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(4),
+            border: Border.all(color: AppColors.sideBoxesColor),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -197,9 +189,7 @@ class PaginationBarOfStaff extends StatelessWidget {
               Text(
                 text,
                 style: baseStyle.copyWith(
-                  color: isPrev
-                      ? AppColors.tertiaryTextColor
-                      : (isButtonDisabled ? disabledColor : enabledColor),
+                  color: isButtonDisabled ? disabledColor : enabledColor,
                   fontWeight: FontWeight.normal,
                 ),
               ),
@@ -215,11 +205,8 @@ class PaginationBarOfStaff extends StatelessWidget {
       );
     }
 
-
-
     return GestureDetector(
-
-      onTap: onTap,
+      onTap: isButtonDisabled ? null : onTap,
       child: Container(
         width: size,
         height: size,

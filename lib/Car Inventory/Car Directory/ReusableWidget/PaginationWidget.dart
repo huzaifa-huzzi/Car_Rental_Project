@@ -132,31 +132,24 @@ class PaginationBar extends StatelessWidget {
 
   }
 
-
   Widget _pageButton(BuildContext context, String text, {
     required VoidCallback onTap,
     bool isSelected = false,
     bool isText = false,
     double size = 36,
   }) {
-
-
-    final baseStyle = TTextTheme.btnTwo(context).copyWith(color: Colors.white);
-
+    final baseStyle = TTextTheme.btnTwo(context);
     final bool isPrevDisabled = controller.currentPage.value == 1;
     final bool isNextDisabled = controller.currentPage.value >= controller.totalPages;
-
 
     bool isButtonDisabled = false;
     if (text == "Prev") {
       isButtonDisabled = isPrevDisabled;
     } else if (text == "Next") {
-
       isButtonDisabled = isNextDisabled;
     }
 
-
-    final Color disabledColor = AppColors.secondTextColor.withOpacity(0.5);
+    final Color disabledColor = AppColors.secondTextColor.withOpacity(0.4);
     final Color enabledColor = AppColors.secondTextColor;
 
 
@@ -170,20 +163,18 @@ class PaginationBar extends StatelessWidget {
       }
     };
 
-
     if (isText) {
-      final bool isPrev = text == "Prev";
-
-      return TextButton(
-        onPressed: buttonAction,
+      return InkWell(
+        onTap: buttonAction,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         child: Container(
           height: size,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-            color: isPrev
-                ? AppColors.secondaryColor
-                : Colors.white,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(4),
+            border: Border.all(color: AppColors.sideBoxesColor),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -197,9 +188,7 @@ class PaginationBar extends StatelessWidget {
               Text(
                 text,
                 style: baseStyle.copyWith(
-                  color: isPrev
-                      ? AppColors.tertiaryTextColor
-                      : (isButtonDisabled ? disabledColor : enabledColor),
+                  color: isButtonDisabled ? disabledColor : enabledColor,
                   fontWeight: FontWeight.normal,
                 ),
               ),
@@ -215,11 +204,9 @@ class PaginationBar extends StatelessWidget {
       );
     }
 
-
-
+    // Page Number Buttons
     return GestureDetector(
-
-      onTap: onTap,
+      onTap: isButtonDisabled ? null : onTap,
       child: Container(
         width: size,
         height: size,

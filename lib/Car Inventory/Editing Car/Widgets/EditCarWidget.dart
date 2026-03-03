@@ -295,21 +295,52 @@ class EditCarWidget extends StatelessWidget {
       children: [
         Text(label, style: TTextTheme.titleTwo(context)),
         SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
-        TextField(
-          controller: controller,
-          cursorColor: AppColors.blackColor,
-          keyboardType: prefix != null ? TextInputType.number : TextInputType.text,
-          style: TTextTheme.insidetextfieldWrittenText(context),
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppColors.secondaryColor,
-            hintText: hint ?? "Enter $label",
-            hintStyle: TTextTheme.titleFour(context),
-            prefixText: prefix,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-              borderSide: BorderSide.none,
-            ),
+        Focus(
+          onFocusChange: (hasFocus) {
+            (context as Element).markNeedsBuild();
+          },
+          child: Builder(
+            builder: (context) {
+              final bool isFocused = Focus.of(context).hasFocus;
+
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                  boxShadow: isFocused
+                      ? [
+                    BoxShadow(
+                      color: AppColors.fieldsBackground,
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ]
+                      : [],
+                ),
+                child: TextField(
+                  controller: controller,
+                  cursorColor: AppColors.blackColor,
+                  keyboardType: prefix != null ? TextInputType.number : TextInputType.text,
+                  style: TTextTheme.insidetextfieldWrittenText(context),
+                  onTapOutside: (event) {
+                    FocusScope.of(context).unfocus();
+                  },
+
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: AppColors.secondaryColor,
+                    hintText: hint ?? "Enter $label",
+                    hintStyle: TTextTheme.titleFour(context),
+                    prefixText: prefix,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ],
