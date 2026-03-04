@@ -60,7 +60,7 @@ class ResponsiveTimePicker extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: AppColors.tertiaryTextColor),
+                    border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.7)),
                   ),
                   child: Column(
                     children: [
