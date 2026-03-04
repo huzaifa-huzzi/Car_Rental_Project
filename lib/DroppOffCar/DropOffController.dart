@@ -1,3 +1,7 @@
+import 'package:car_rental_project/DroppOffCar/AddDropOff/Widget/CalendarDropOffManagingScreen.dart';
+import 'package:car_rental_project/DroppOffCar/AddDropOff/Widget/ResponsiveDropOffTimer.dart';
+import 'package:car_rental_project/PickupCar/AddPickUp/Widget/CalendarManagingScreen.dart';
+import 'package:car_rental_project/PickupCar/AddPickUp/Widget/ResponsiveTimerWidget.dart';
 import 'package:car_rental_project/Resources/Colors.dart' show AppColors;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -171,6 +175,167 @@ class DropOffController extends GetxController{
     await Future.delayed(const Duration(milliseconds: 500));
     resultCount.value = 3;
     isLoading.value = false;
+  }
+
+  final LayerLink dropOffDateLink = LayerLink();
+  final LayerLink dropOffTimeLink = LayerLink();
+  OverlayEntry? timeOverlay;
+
+
+  OverlayEntry? calendarOverlay;
+
+  void toggleCalendar(
+      BuildContext context,
+      LayerLink link,
+      TextEditingController targetController,
+      double width,
+      ) {
+    removeCalendar();
+
+    calendarOverlay =
+        _createCalendarOverlay(context, link, targetController, width);
+
+    Overlay.of(context).insert(calendarOverlay!);
+  }
+
+  void removeCalendar() {
+    calendarOverlay?.remove();
+    calendarOverlay = null;
+  }
+
+
+  OverlayEntry _createCalendarOverlay(
+      BuildContext context,
+      LayerLink link,
+      TextEditingController targetController,
+      double fieldWidth,
+      ) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    final double popupWidth = fieldWidth.isInfinite
+        ? screenWidth.clamp(250, 320)
+        : fieldWidth.clamp(250, 380);
+
+    return OverlayEntry(
+      builder: (context) => Stack(
+        children: [
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: removeCalendar,
+              child: Container(color: Colors.transparent),
+            ),
+          ),
+
+          CompositedTransformFollower(
+            link: link,
+            showWhenUnlinked: false,
+            targetAnchor: Alignment.bottomLeft,
+            followerAnchor: Alignment.topLeft,
+            offset: const Offset(0, 6),
+            child: Material(
+              elevation: 12,
+              borderRadius: BorderRadius.circular(12),
+              clipBehavior: Clip.antiAlias,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: 250,
+                  maxWidth: popupWidth,
+                ),
+                child: CustomCalendarDropOff(
+                  width: popupWidth,
+                  onCancel: removeCalendar,
+                  onDateSelected: (date) {
+                    targetController.text =
+                    "${date.day}/${date.month}/${date.year}";
+                    removeCalendar();
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+// Time Picker Overlay Maker
+  var selectedHour = 11.obs;
+  var selectedMinute = 30.obs;
+  var isAM = true.obs;
+
+  void updateHour(int hour) => selectedHour.value = hour;
+  void updateMinute(int min) => selectedMinute.value = min;
+  void togglePeriod(bool am) => isAM.value = am;
+
+
+  String get formattedTime {
+    String period = isAM.value ? "am" : "pm";
+    return "${selectedHour.value}:${selectedMinute.value.toString().padLeft(2, '0')}$period";
+  }
+
+  void reset() {
+    selectedHour.value = 11;
+    selectedMinute.value = 30;
+    isAM.value = true;
+  }
+
+
+  void toggleTimePicker(BuildContext context, LayerLink link, TextEditingController controller, double fieldWidth) {
+    if (timeOverlay != null) {
+      timeOverlay?.remove();
+      timeOverlay = null;
+    }
+
+    double overlayWidth = fieldWidth < 200 ? 200 : fieldWidth;
+
+    timeOverlay = OverlayEntry(
+      builder: (context) => Stack(
+        children: [
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: () {
+                timeOverlay?.remove();
+                timeOverlay = null;
+              },
+              child: Container(color: Colors.transparent),
+            ),
+          ),
+          CompositedTransformFollower(
+            link: link,
+            showWhenUnlinked: false,
+            targetAnchor: Alignment.bottomLeft,
+            followerAnchor: Alignment.topLeft,
+            offset: const Offset(0, 5),
+            child: Material(
+              elevation: 10,
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              child: ResponsiveTimePicker(
+                width: overlayWidth,
+                onCancel: () {
+                  timeOverlay?.remove();
+                  timeOverlay = null;
+                },
+                onTimeSelected: (val) {
+                  controller.text = val;
+                  timeOverlay?.remove();
+                  timeOverlay = null;
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    Overlay.of(context).insert(timeOverlay!);
+  }
+
+  void removePopups() {
+    calendarOverlay?.remove();
+    calendarOverlay = null;
+    timeOverlay?.remove();
+    timeOverlay = null;
   }
 
   var isDamageInspectionOpenAdd = false.obs;

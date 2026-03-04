@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:car_rental_project/DroppOffCar/DropOffController.dart';
 import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/CustomButtonDropOff.dart';
 import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/DropOffSuccessDualog.dart';
@@ -10,8 +9,6 @@ import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
-import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -69,100 +66,83 @@ class AddDropOffDetailWidget extends StatelessWidget {
                           SizedBox(height: 7,),
                           _buildStepBadges(context),
                           const SizedBox(height: 25),
+                          // Customer
+                          _buildSection(context,
+                              title: TextString.titleViewCustomerStepTwoDropOffAdd,
+                              icon: IconString.customerNameIcon,
+                              child: _buildDetailedCustomerCard(context, isMobile)),
+                          const SizedBox(height: 25),
+                          // Car
+                          _buildSection(context,
+                              title: TextString.titleViewCarStepTwoDropOffAdd,
+                              icon: IconString.pickupCarIcon,
+                              child: _buildDetailedCarCard(context, isMobile)),
+                          const SizedBox(height: 25),
 
-                          ///  NON-EDITABLE SECTION
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.all(isMobile ? 15 : 30),
-                            decoration: BoxDecoration(
-                              color: AppColors.backgroundOfScreenColor,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Customer
-                                _buildSection(context,
-                                    title: TextString.titleViewCustomerStepTwoDropOffAdd,
-                                    icon: IconString.customerNameIcon,
-                                    child: _buildDetailedCustomerCard(context, isMobile)),
-                                const SizedBox(height: 25),
-                                // Car
-                                _buildSection(context,
-                                    title: TextString.titleViewCarStepTwoDropOffAdd,
-                                    icon: IconString.pickupCarIcon,
-                                    child: _buildDetailedCarCard(context, isMobile)),
-                                const SizedBox(height: 25),
-
-                                // RENT PURPOSE & PAYMENT METHOD
-                                Flex(
-                                  direction: isMobile ? Axis.vertical : Axis.horizontal,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    /// RENT PURPOSE SECTION
-                                    Expanded(
-                                      flex: isMobile ? 0 : 1,
-                                      child: _buildSection(
-                                        context,
-                                        title: TextString.titleRentPurposeStepTwoDropOffAdd,
-                                        icon: IconString.rentPurposeIcon,
-                                        child: IgnorePointer(
-                                          child: _toggleStatusTag(context, TextString.subtitleRentPurposeStepTwoDropOffAdd, controller.isPersonalUseStepTwoAdd),
-                                        ),
-                                      ),
-                                    ),
-
-
-                                    if (!isMobile) const SizedBox(width: 25) else const SizedBox(height: 25),
-
-                                    /// PAYMENT METHOD SECTION
-                                    Expanded(
-                                      flex: isMobile ? 0 : 1,
-                                      child: _buildSection(
-                                        context,
-                                        title: TextString.titlePaymentMethodStepTwoDropOffAdd,
-                                        icon: IconString.paymentMethodIcon,
-                                        child: IgnorePointer(
-                                          child: _toggleStatusTag(context, TextString.subtitlePaymentMethodStepTwoDropOffAdd, controller.isManualPaymentStepTwoAdd),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 25),
-
-                                // Rent
-                                _buildSection(context,
-                                    title: TextString.titleViewRentAmountStepTwoDropOffAdd,
-                                    icon: IconString.rentMoneyIcon,
-                                    child: _buildInfoGrid(context, [
-                                      {"label": TextString.subtitleWeeklyRentStepTwoDropOffAdd, "controller": controller.weeklyRentControllerStepTwoAdd, "hint": "2600 \$"},
-                                      {"label": TextString.subtitleDailyRentStepTwoDropOffAdd, "controller": controller.rentDueAmountControllerStepTwoAdd, "hint": "2600 \$"},
-                                    ], isMobile, isEditable: false)),
-                                const SizedBox(height: 25),
-
-                                // Bond
-                                _buildSection(
+                          // RENT PURPOSE & PAYMENT METHOD
+                          Flex(
+                            direction: isMobile ? Axis.vertical : Axis.horizontal,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              /// RENT PURPOSE SECTION
+                              Expanded(
+                                flex: isMobile ? 0 : 1,
+                                child: _buildSection(
                                   context,
-                                  title: TextString.titleBondPaymentStepTwo,
-                                  icon: IconString.bondPaymentIcon,
-                                  child: _buildBondGrid(context, [
-                                    {"label": "Bond Amount", "controller": controller.bondAmountControllerStepTwoAdd, "hint": "2600 \$"},
-                                    {"label": "Paid Bond", "controller": controller.paidBondControllerStepTwoAdd, "hint": "600 \$"},
-                                    {"label": TextString.subtitleLeftBondStepTwoDropOffAdd, "controller": controller.dueBondAmountControllerStepTwoAdd, "hint": "2000 \$"},
-                                    {"label": "Bond Returned", "controller": controller.dueBondReturnedControllerStepTwoAdd, "hint": "2000 \$", "isSpecial": true}, // Highlighted field
-                                  ], isMobile),
-                                ), // Non-Editable
-                              ],
-                            ),
+                                  title: TextString.titleRentPurposeStepTwoDropOffAdd,
+                                  icon: IconString.rentPurposeIcon,
+                                  child: IgnorePointer(
+                                    child: _toggleStatusTag(context, TextString.subtitleRentPurposeStepTwoDropOffAdd, controller.isPersonalUseStepTwoAdd),
+                                  ),
+                                ),
+                              ),
+
+
+                              if (!isMobile) const SizedBox(width: 25) else const SizedBox(height: 25),
+
+                              /// PAYMENT METHOD SECTION
+                              Expanded(
+                                flex: isMobile ? 0 : 1,
+                                child: _buildSection(
+                                  context,
+                                  title: TextString.titlePaymentMethodStepTwoDropOffAdd,
+                                  icon: IconString.paymentMethodIcon,
+                                  child: IgnorePointer(
+                                    child: _toggleStatusTag(context, TextString.subtitlePaymentMethodStepTwoDropOffAdd, controller.isManualPaymentStepTwoAdd),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 25),
+
+                          // Rent
+                          _buildSection(context,
+                              title: TextString.titleViewRentAmountStepTwoDropOffAdd,
+                              icon: IconString.rentMoneyIcon,
+                              child: _buildInfoGrid(context, [
+                                {"label": TextString.subtitleWeeklyRentStepTwoDropOffAdd, "controller": controller.weeklyRentControllerStepTwoAdd, "hint": "2600 \$"},
+                                {"label": TextString.subtitleDailyRentStepTwoDropOffAdd, "controller": controller.rentDueAmountControllerStepTwoAdd, "hint": "2600 \$"},
+                              ], isMobile, isEditable: false)),
+                          const SizedBox(height: 25),
+
+                          // Bond
+                          _buildSection(
+                            context,
+                            title: TextString.titleBondPaymentStepTwo,
+                            icon: IconString.bondPaymentIcon,
+                            child: _buildBondGrid(context, [
+                              {"label": "Bond Amount", "controller": controller.bondAmountControllerStepTwoAdd, "hint": "2600 \$"},
+                              {"label": "Paid Bond", "controller": controller.paidBondControllerStepTwoAdd, "hint": "600 \$"},
+                              {"label": TextString.subtitleLeftBondStepTwoDropOffAdd, "controller": controller.dueBondAmountControllerStepTwoAdd, "hint": "2000 \$"},
+                              {"label": "Bond Returned", "controller": controller.dueBondReturnedControllerStepTwoAdd, "hint": "2000 \$", "isSpecial": true}, // Highlighted field
+                            ], isMobile),
                           ),
 
                           const SizedBox(height: 20),
-
-                          /// EDITABLE SECTION
                           Text(TextString.titleCarReportStepTwoDropOffInspectionAdd, style: TTextTheme.h6Style(context)),
                           const SizedBox(height: 20),
-                          //CAR REPORT SECTION
+                          ///CAR REPORT SECTION
                           _buildSection(
                             context,
                             title: TextString.titleCarReportStepTwoDropOffAdd,
@@ -170,51 +150,6 @@ class AddDropOffDetailWidget extends StatelessWidget {
                             child: _buildCarReportComparison(context, isMobile),
                           ),
                           const SizedBox(height: 25),
-
-                          // DAMAGE INSPECTION
-                          _buildSection(
-                            context,
-                            title: TextString.titleDamageInspectionStepTwoDropOffAdd,
-                            icon: IconString.damageInspection,
-                            child: _buildDamageInspectionComparison(context, isMobile),
-                          ),
-                          const SizedBox(height: 35),
-                          /// CAR PICTURES
-                          _buildSection(
-                            context,
-                            title: TextString.titleCarPictureStepTwoDropOffAdd,
-                            icon: IconString.carPictureIconPickup,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                //  Pickup Car Image
-                                Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.backgroundOfScreenColor,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(TextString.titleCarPictureStepTwoDropOffTwoAdd, style: TTextTheme.dropdowninsideText(context)),
-                                      const SizedBox(height: 12),
-                                      _buildPickupImageBox(context),
-                                    ],
-                                  ),
-                                ),
-
-                                const SizedBox(height: 25),
-
-                                //  Dropoff Car Images
-                                Text(TextString.subtitleCarPictureStepTwoDropOffAdd, style: TTextTheme.dropdowninsideText(context)),
-                                const SizedBox(height: 10),
-                                _imageBox(context),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 35),
                           /// DropOff Notes
                           _buildSection(
                             context,
@@ -231,18 +166,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                             icon: IconString.rentTimeIcon,
                             child: _buildRentTimeSection(context, isMobile),
                           ),
-                          const SizedBox(height: 35),
-
-                          // SIGNATURES
-                          _buildSection(context,
-                              title:  TextString.titleSignatureStepTwoDropOffAdd,
-                              icon: IconString.signatureIcon,
-                              child: _buildSignatureSection(context, isMobile)),
-
-                          const SizedBox(height: 40),
-                          _buttonSection(context, isMobile),
-
-
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),
@@ -250,6 +174,8 @@ class AddDropOffDetailWidget extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(height: 30),
+            _buttonSection(context, isMobile),
             const SizedBox(height: 20),
           ],
         ),
@@ -386,24 +312,45 @@ class AddDropOffDetailWidget extends StatelessWidget {
       children: [
         Text(label, style: TTextTheme.dropdowninsideText(context)),
         const SizedBox(height: 8),
-        Container(
-          height: 120,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(
-            color: AppColors.secondaryColor,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: TextFormField(
-            readOnly: isReadOnly,
-            cursorColor: AppColors.blackColor,
-            controller: controller,
-            maxLines: 5,
-            style: TTextTheme.pOne(context),
-            decoration: InputDecoration(
-              hintText: hint,
-              border: InputBorder.none,
-              hintStyle: TTextTheme.pOne(context),
-            ),
+        Focus(
+          onFocusChange: (hasFocus) {
+            if (!isReadOnly) {
+              (context as Element).markNeedsBuild();
+            }
+          },
+          child: Builder(
+            builder: (context) {
+              final bool hasFocus = Focus.of(context).hasFocus;
+
+              return Container(
+                height: 120,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: AppColors.secondaryColor,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: (!isReadOnly && hasFocus) ? [
+                    BoxShadow(
+                      color: AppColors.fieldsBackground,
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                      spreadRadius: 1,
+                    )
+                  ] : [],
+                ),
+                child: TextFormField(
+                  readOnly: isReadOnly,
+                  cursorColor: AppColors.blackColor,
+                  controller: controller,
+                  maxLines: 5,
+                  style: TTextTheme.pOne(context),
+                  decoration: InputDecoration(
+                    hintText: hint,
+                    border: InputBorder.none,
+                    hintStyle: TTextTheme.pOne(context),
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ],
@@ -418,13 +365,8 @@ class AddDropOffDetailWidget extends StatelessWidget {
         runSpacing: 20,
         children: [
           /// PICKUP NOTES
-          Container(
+          SizedBox(
             width: columnWidth,
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.backgroundOfScreenColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
             child: _buildCommentField(
               context,
               TextString.titlePickupNoteStepTwoDropOffAdd,
@@ -434,15 +376,22 @@ class AddDropOffDetailWidget extends StatelessWidget {
             ),
           ),
 
-          ///  DROPOFF NOTES
+          /// DROPOFF NOTES
           SizedBox(
             width: columnWidth,
-            child: _buildCommentField(
-              context,
-              TextString.titlePickupNoteStepTwoDropOFf2Add,
-              controller.additionalCommentsControllerDropOffAdd,
-              TextString.subtitleViewPickupStepTwoDropOff,
-              isReadOnly: false,
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.backgroundOfPickupsWidget,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: _buildCommentField(
+                context,
+                TextString.titlePickupNoteStepTwoDropOFf2Add,
+                controller.additionalCommentsControllerDropOffAdd,
+                TextString.subtitleViewPickupStepTwoDropOff,
+                isReadOnly: false,
+              ),
             ),
           ),
         ],
@@ -461,271 +410,72 @@ class AddDropOffDetailWidget extends StatelessWidget {
         double itemWidth = isMobile ? (availableWidth - 100) : (availableWidth / 5.5);
         bool isSpecial = item['isSpecial'] == true;
 
-        Widget fieldContent = Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(item['label']!, style: TTextTheme.dropdowninsideText(context)),
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.all(3),
-              decoration: BoxDecoration(
-                color: AppColors.secondaryColor,
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: TextFormField(
-                cursorColor: AppColors.blackColor,
-                controller: item['controller'],
-                readOnly: !isSpecial,
-                style: TTextTheme.insidetextfieldWrittenText(context),
-                decoration: InputDecoration(
-                  hintText: item['hint'],
-                  hintStyle: TTextTheme.insidetextfieldWrittenText(context),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-                  border: InputBorder.none,
-                  isDense: true,
-                ),
-              ),
-            ),
-          ],
-        );
+        return Focus(
+          onFocusChange: (hasFocus) {
+            if (isSpecial) {
+              (context as Element).markNeedsBuild();
+            }
+          },
+          child: Builder(
+            builder: (context) {
+              final bool hasFocus = Focus.of(context).hasFocus;
 
-        return SizedBox(
-          width: itemWidth,
-          child: isSpecial
-              ? Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: AppColors.backgroundOfPickupsWidget,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: fieldContent,
-          )
-              : fieldContent,
+              Widget fieldContent = Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(item['label']!, style: TTextTheme.dropdowninsideText(context)),
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      color: AppColors.secondaryColor,
+                      borderRadius: BorderRadius.circular(6),
+                      boxShadow: (isSpecial && hasFocus) ? [
+                        BoxShadow(
+                          color: AppColors.fieldsBackground,
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                          spreadRadius: 1,
+                        )
+                      ] : [],
+                    ),
+                    child: TextFormField(
+                      cursorColor: AppColors.blackColor,
+                      controller: item['controller'],
+                      readOnly: !isSpecial,
+                      style: TTextTheme.insidetextfieldWrittenText(context),
+                      decoration: InputDecoration(
+                        hintText: item['hint'],
+                        hintStyle: TTextTheme.insidetextfieldWrittenText(context),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                        border: InputBorder.none,
+                        isDense: true,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+
+              return SizedBox(
+                width: itemWidth,
+                child: isSpecial
+                    ? Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: AppColors.backgroundOfPickupsWidget,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: fieldContent,
+                )
+                    : fieldContent,
+              );
+            },
+          ),
         );
       }).toList(),
     );
   }
 
-  // Damage Inspection Cards
-  Widget _buildDamageInspectionComparison(BuildContext context, bool isMobile) {
-    return LayoutBuilder(builder: (context, constraints) {
-      double columnWidth = isMobile ? constraints.maxWidth : (constraints.maxWidth - 120) / 2;
-
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ///  MOBILE TOGGLE:
-          if (isMobile)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: _buildToggleWidget(context),
-            ),
-
-          Wrap(
-            spacing: isMobile ? 0 : 25,
-            runSpacing: 25,
-            crossAxisAlignment: WrapCrossAlignment.start,
-            children: [
-              ///  PICKUP DAMAGE
-              Container(
-                width: columnWidth,
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: AppColors.backgroundOfScreenColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(TextString.titleDamageInspectionStepTwoDropOffPickupAdd, style: TTextTheme.titleTwo(context)),
-                    const SizedBox(height: 12),
-                    _buildStaticLegendBox(context),
-                    const SizedBox(height: 20),
-                    _buildStaticCarDiagram(context, columnWidth - 30),
-                  ],
-                ),
-              ),
-
-              ///  WEB TOGGLE:
-              if (!isMobile)
-                Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: _buildToggleWidget(context),
-                ),
-
-              ///  DROPOFF DAMAGE
-              SizedBox(
-                width: columnWidth,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(TextString.titleDamageInspectionStepTwoDropOff2, style: TTextTheme.titleTwo(context)),
-                    const SizedBox(height: 12),
-                    _buildInteractiveLegendBox(context),
-                    const SizedBox(height: 20),
-                    _buildInteractiveCarDiagram(context, columnWidth),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      );
-    });
-  }
-  Widget _buildStaticLegendBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: AppColors.secondaryColor),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Wrap(
-        spacing: 10,
-        runSpacing: 8,
-        children: controller.damageTypes3.map((type) => Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CircleAvatar(
-              radius: 10, backgroundColor: type['color'],
-              child: Text(type['id'].toString(), style: TTextTheme.btnNumbering(context)),
-            ),
-            const SizedBox(width: 5),
-            Text(type['label'], style: TTextTheme.titleSix(context)),
-          ],
-        )).toList(),
-      ),
-    );
-  }
-  Widget _buildStaticCarDiagram(BuildContext context, double width) {
-    double height = width * 0.75;
-    return Center(
-      child: Stack(
-        children: [
-          Image.asset(ImageString.carDamageInspectionImage, width: width, height: height, fit: BoxFit.contain),
-          ...controller.damagePoints3.map((point) => Positioned(
-            left: (point.dx * width) - 10,
-            top: (point.dy * height) - 10,
-            child: CircleAvatar(
-              radius: 10, backgroundColor: point.color,
-              child: Text(point.typeId.toString(), style: TTextTheme.btnNumbering(context)),
-            ),
-          )),
-        ],
-      ),
-    );
-  }
-  Widget _buildInteractiveCarDiagram(BuildContext context, double width) {
-    double height = width * 0.75;
-    return Obx(() => IgnorePointer(
-      ignoring: !controller.isDamageInspectionOpen2.value,
-      child: Opacity(
-        opacity: controller.isDamageInspectionOpen2.value ? 1.0 : 0.5,
-        child: Center(
-          child: GestureDetector(
-            onTapDown: (details) {
-              double dx = details.localPosition.dx / width;
-              double dy = details.localPosition.dy / height;
-
-              int idx = controller.damagePoints3.indexWhere((p) => (p.dx - dx).abs() < 0.05 && (p.dy - dy).abs() < 0.05);
-              if (idx != -1) {
-                controller.damagePoints3.removeAt(idx);
-              } else {
-                var type = controller.damageTypes3.firstWhere((t) => t['id'] == controller.selectedDamageType3.value);
-                controller.damagePoints3.add(DamagePoint(dx: dx, dy: dy, typeId: type['id'], color: type['color']));
-              }
-            },
-            child: Stack(
-              children: [
-                Image.asset(ImageString.carDamageInspectionImage, width: width, height: height, fit: BoxFit.contain),
-                ...controller.damagePoints3.map((point) => Positioned(
-                  left: (point.dx * width) - 10,
-                  top: (point.dy * height) - 10,
-                  child: CircleAvatar(
-                    radius: 10, backgroundColor: point.color,
-                    child: Text(point.typeId.toString(), style: TTextTheme.btnNumbering(context)),
-                  ),
-                )),
-              ],
-            ),
-          ),
-        ),
-      ),
-    ));
-  }
-  Widget _buildInteractiveLegendBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: AppColors.secondaryColor),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Obx(() => Wrap(
-        spacing: 10,
-        runSpacing: 8,
-        children: controller.damageTypes3.map((type) {
-          bool isSelected = controller.selectedDamageType3.value == type['id'];
-          return GestureDetector(
-            onTap: () { if(controller.isDamageInspectionOpen2.value) controller.selectedDamageType3.value = type['id']; },
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-              decoration: BoxDecoration(
-                color: isSelected ? AppColors.secondaryColor : Colors.transparent,
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircleAvatar(
-                    radius: 10, backgroundColor: type['color'],
-                    child: Text(type['id'].toString(), style: TTextTheme.btnNumbering(context)),
-                  ),
-                  const SizedBox(width: 5),
-                  Text(type['label'], style: TTextTheme.titleSix(context)),
-                ],
-              ),
-            ),
-          );
-        }).toList(),
-      )),
-    );
-  }
-  Widget _buildToggleWidget(BuildContext context) {
-    return Obx(() => GestureDetector(
-      onTap: () => controller.isDamageInspectionOpen2.value = !controller.isDamageInspectionOpen2.value,
-      child: Container(
-        width: 70,
-        height: 32,
-        padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: controller.isDamageInspectionOpen2.value ? AppColors.primaryColor : AppColors.quadrantalTextColor,
-        ),
-        child: Stack(
-          children: [
-            AnimatedAlign(
-              duration: const Duration(milliseconds: 200),
-              alignment: controller.isDamageInspectionOpen2.value ? Alignment.centerRight : Alignment.centerLeft,
-              child: Container(
-                width: 24,
-                height: 24,
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4)),
-              ),
-            ),
-            Align(
-              alignment: controller.isDamageInspectionOpen2.value ? const Alignment(-0.6, 0) : const Alignment(0.6, 0),
-              child: Text(
-                controller.isDamageInspectionOpen2.value ? "Yes" : "No",
-                style:TTextTheme.btnWhiteColor(context),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ));
-  }
 
   // Rent time Section
   Widget _buildRentTimeSection(BuildContext context, bool isMobile) {
@@ -742,24 +492,17 @@ class AddDropOffDetailWidget extends StatelessWidget {
         /// PICKUP SECTION
         Expanded(
           flex: 4,
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.backgroundOfScreenColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildReadOnlyTimePair(context, TextString.subtitleAgreementTimeStepTwoPickupDropOffAdd, "02/12/2025", "12:12 PM"),
-                const SizedBox(height: 15),
-                _buildReadOnlyTimePair(context, TextString.subtitleAgreementEndTimeStepTwoPickupDropOffAdd, "02/12/2025", "12:12 PM"),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildReadOnlyTimePair(context, TextString.subtitleAgreementTimeStepTwoPickupDropOffAdd, "02/12/2025", "12:12 PM",),
+              const SizedBox(height: 15),
+              _buildReadOnlyTimePair(context, TextString.subtitleAgreementEndTimeStepTwoPickupDropOffAdd, "02/12/2025", "12:12 PM",),
+            ],
           ),
         ),
 
-        ///  ARROW INDICATOR
+        /// 2. ARROW
         Expanded(
           flex: 2,
           child: Container(
@@ -794,50 +537,111 @@ class AddDropOffDetailWidget extends StatelessWidget {
           ),
         ),
 
-        /// 3. DROPOFF SECTION
+        ///  DROPOFF SECTION
         Expanded(
           flex: 4,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(TextString.subtitleAgreementEndTimeStepTwoDropOff2Add, style: TTextTheme.dropdowninsideText(context)),
-              const SizedBox(height: 8),
-              _editableTimeField(controller.endDateControllerStepTwoAdd, "DD/MM/YYYY", context, isReadOnly: false),
-              const SizedBox(height: 8),
-              _editableTimeField(controller.endTimeControllerStepTwoAdd, "Time:", context, isReadOnly: false),
-            ],
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.backgroundOfPickupsWidget,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(TextString.subtitleAgreementEndTimeStepTwoDropOff2Add, style: TTextTheme.dropdowninsideText(context)),
+                const SizedBox(height: 12),
+                CompositedTransformTarget(
+                  link: controller.dropOffDateLink,
+                  child: _editableTimeField(
+                    controller.endDateControllerStepTwoAdd,
+                    "DD/MM/YYYY",
+                    context,
+                    isReadOnly: false,
+                    iconType: "date",
+                    onTap: () => controller.toggleCalendar(context, controller.dropOffDateLink, controller.endDateControllerStepTwoAdd, 220),
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                // TIME FIELD
+                CompositedTransformTarget(
+                  link: controller.dropOffTimeLink,
+                  child: _editableTimeField(
+                    controller.endTimeControllerStepTwoAdd,
+                    "Time:",
+                    context,
+                    iconType: "time",
+                    isReadOnly: false,
+                    onTap: () => controller.toggleTimePicker(context, controller.dropOffTimeLink, controller.endTimeControllerStepTwoAdd, 220),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
     );
   }
   Widget _buildMobileRentTime(BuildContext context) {
+    double fieldWidth = MediaQuery.of(context).size.width * 0.9;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// Pickup Section
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: AppColors.backgroundOfScreenColor,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            children: [
-              _buildReadOnlyTimePair(context, TextString.subtitleAgreementTimeStepTwoPickupDropOffAdd, "02/12/2025", "12:12 PM"),
-              const SizedBox(height: 15),
-              _buildReadOnlyTimePair(context, TextString.subtitleAgreementEndTimeStepTwoPickupDropOffAdd, "02/12/2025", "12:12 PM"),
-            ],
-          ),
+        Column(
+          children: [
+            _buildReadOnlyTimePair(context, TextString.subtitleAgreementTimeStepTwoPickupDropOffAdd, "02/12/2025", "12:12 PM"),
+            const SizedBox(height: 15),
+            _buildReadOnlyTimePair(context, TextString.subtitleAgreementEndTimeStepTwoPickupDropOffAdd, "02/12/2025", "12:12 PM"),
+          ],
         ),
+
         const SizedBox(height: 24),
 
         /// Dropoff Section
-        Text(TextString.subtitleAgreementEndTimeStepTwoDropOff2Add, style: TTextTheme.dropdowninsideText(context)),
-        const SizedBox(height: 8),
-        _editableTimeField(controller.endDateControllerStepTwoAdd, "DD/MM/YYYY", context, isReadOnly: false),
-        const SizedBox(height: 8),
-        _editableTimeField(controller.endTimeControllerStepTwoAdd, "Time:", context, isReadOnly: false),
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: AppColors.backgroundOfPickupsWidget,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(TextString.subtitleAgreementEndTimeStepTwoDropOff2Add, style: TTextTheme.dropdowninsideText(context)),
+              const SizedBox(height: 8),
+
+              CompositedTransformTarget(
+                link: controller.dropOffDateLink,
+                child: _editableTimeField(
+                  controller.endDateControllerStepTwoAdd,
+                  "DD/MM/YYYY",
+                  context,
+                  isReadOnly: true,
+                  iconType: "date",
+                  onTap: () => controller.toggleCalendar(context, controller.dropOffDateLink, controller.endDateControllerStepTwoAdd, fieldWidth),
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              CompositedTransformTarget(
+                link: controller.dropOffTimeLink,
+                child: _editableTimeField(
+                  controller.endTimeControllerStepTwoAdd,
+                  "Time:",
+                  context,
+                  iconType: "time",
+                  isReadOnly: true,
+                  onTap: () => controller.toggleTimePicker(context, controller.dropOffTimeLink, controller.endTimeControllerStepTwoAdd, fieldWidth),
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -847,33 +651,67 @@ class AddDropOffDetailWidget extends StatelessWidget {
       children: [
         Text(label, style: TTextTheme.dropdowninsideText(context)),
         const SizedBox(height: 8),
-        _editableTimeField(TextEditingController(text: date), date, context, isReadOnly: true),
+        _editableTimeField(TextEditingController(text: date), date, context,
+            isReadOnly: true,
+            iconType: "none"
+        ),
         const SizedBox(height: 8),
-        _editableTimeField(TextEditingController(text: time), time, context, isReadOnly: true),
+        _editableTimeField(TextEditingController(text: time), time, context,
+            isReadOnly: true,
+            iconType: "none"
+        ),
       ],
     );
   }
-  Widget _editableTimeField(TextEditingController textController, String hint, BuildContext context, {bool isReadOnly = true}) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.secondaryColor,
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: TextFormField(
-        cursorColor: AppColors.blackColor,
-        controller: textController,
-        readOnly: isReadOnly,
-        style: TTextTheme.insidetextfieldWrittenText(context),
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: TTextTheme.insidetextfieldWrittenText(context),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-          border: InputBorder.none,
-          isDense: true,
+  Widget _editableTimeField(
+      TextEditingController textController,
+      String hint,
+      BuildContext context, {
+        required bool isReadOnly,
+        String iconType = "none",
+        VoidCallback? onTap
+      }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.secondaryColor,
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.3)),
+        ),
+        child: AbsorbPointer(
+          absorbing: true,
+          child: TextFormField(
+            controller: textController,
+            style: TTextTheme.insidetextfieldWrittenText(context),
+            decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: TTextTheme.insidetextfieldWrittenText(context),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+              border: InputBorder.none,
+              isDense: true,
+              suffixIcon: iconType == "none" ? null : _getIcon(iconType),
+            ),
+          ),
         ),
       ),
     );
   }
+  Widget _getIcon(String type) {
+    if (type == "date") {
+      return Image.asset(IconString.calendarIcon);
+    } else {
+      return const Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.keyboard_arrow_up, size: 16, color: Colors.blueGrey),
+          SizedBox(height: 2,),
+          Icon(Icons.keyboard_arrow_down, size: 16, color: Colors.blueGrey),
+        ],
+      );
+    }
+  }
+
 
   // Car Report Section
   Widget _buildCarReportComparison(BuildContext context, bool isMobile) {
@@ -881,90 +719,89 @@ class AddDropOffDetailWidget extends StatelessWidget {
       builder: (context, constraints) {
         double gap = 16;
         int columns = isMobile ? 1 : 4;
-        double itemWidth =
-            (constraints.maxWidth - (gap * (columns - 1))) / columns;
+        double horizontalPadding = isMobile ? 0 : 32;
+        double availableWidth = constraints.maxWidth - horizontalPadding;
 
-        return Wrap(
-          spacing: gap,
-          runSpacing: 20,
+        double itemWidth = (availableWidth - (gap * (columns - 1))) / columns;
+
+        return Column(
           children: [
+            Wrap(
+              spacing: gap,
+              runSpacing: 20,
+              children: [
+                _buildReadOnlyFieldSized(
+                  TextString.subtitlePickupOdoStepTwoDropOffAdd,
+                  controller.odoControllerStepTwoAdd.text,
+                  context,
+                  width: itemWidth,
+                ),
+                _buildReadOnlyFieldSized(
+                  TextString.subtitlePickFuelLevelStepTwoDropOffAdd,
+                  controller.fuelLevelControllerStepTwoAdd.text,
+                  context,
+                  width: itemWidth,
+                  hasIcon: true,
+                ),
+                _buildReadOnlyFieldSized(
+                  "Pickup Interior Cleanliness",
+                  controller.interiorCleanlinessControllerStepTwoAdd.text,
+                  context,
+                  width: itemWidth,
+                  hasIcon: true,
+                ),
+                _buildReadOnlyFieldSized(
+                  TextString.subtitleExteriorCleanlinessStepTwoDropOffAdd,
+                  controller.exteriorCleanlinessControllerStepTwoAdd.text,
+                  context,
+                  width: itemWidth,
+                  hasIcon: true,
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 20),
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.backgroundOfScreenColor,
+                color: AppColors.backgroundOfPickupsWidget,
                 borderRadius: BorderRadius.circular(10),
               ),
-              // pickup
               child: Wrap(
-                spacing: gap /4,
-                runSpacing: 2,
+                spacing: gap,
+                runSpacing: 20,
                 children: [
-                  _buildReadOnlyFieldSized(
-                    TextString.subtitlePickupOdoStepTwoDropOffAdd,
-                    controller.odoControllerStepTwoAdd.text,
+                  _buildMiniInputField(
+                    TextString.subtitleDropOffOdoStepTwoDropOffAdd,
+                    "12457678",
+                    itemWidth,
+                    controller.odoControllerDropOffAdd,
                     context,
-                    width: itemWidth,
                   ),
-
-                  _buildReadOnlyFieldSized(
-                    TextString.subtitlePickFuelLevelStepTwoDropOffAdd,
-                    controller.fuelLevelControllerStepTwoAdd.text,
+                  _buildReportDropdown(
+                    TextString.subtitleDropOffFuelLevelStepTwoDropOffAdd,
+                    ["Full (100%)", "High (75%)", "Half (50%)", "Low (25%)", "Empty (0%)"],
+                    itemWidth,
+                    controller.fuelLevelControllerDropOffAdd,
                     context,
-                    width: itemWidth,
-                    hasIcon: true,
                   ),
-
-                  _buildReadOnlyFieldSized(
-                    "Pickup Interior Cleanliness",
-                    controller.interiorCleanlinessControllerStepTwoAdd.text,
+                  _buildReportDropdown(
+                    TextString.subtitleInteriorCleanlinessStepTwoDropOff2Add,
+                    ["Excellent", "Good", "Average", "Dirty"],
+                    itemWidth,
+                    controller.interiorCleanlinessControllerDropOffAdd,
                     context,
-                    width: itemWidth,
-                    hasIcon: true,
                   ),
-
-                  _buildReadOnlyFieldSized(
-                    TextString.subtitleExteriorCleanlinessStepTwoDropOffAdd,
-                    controller.exteriorCleanlinessControllerStepTwoAdd.text,
+                  _buildReportDropdown(
+                    TextString.subtitleExteriorCleanlinessStepTwoDropOff2Add,
+                    ["Excellent", "Good", "Average", "Dirty"],
+                    itemWidth,
+                    controller.exteriorCleanlinessControllerDropOffAdd,
                     context,
-                    width: itemWidth,
-                    hasIcon: true,
                   ),
                 ],
               ),
-            ),
-
-           // Dropoff
-            _buildMiniInputField(
-              TextString.subtitleDropOffOdoStepTwoDropOffAdd,
-              "12457678",
-              itemWidth,
-              controller.odoControllerDropOffAdd,
-              context,
-            ),
-
-            _buildReportDropdown(
-              TextString.subtitleDropOffFuelLevelStepTwoDropOffAdd,
-              ["Full (100%)", "High (75%)", "Half (50%)", "Low (25%)", "Empty (0%)"],
-              itemWidth,
-              controller.fuelLevelControllerDropOffAdd,
-              context,
-            ),
-
-            _buildReportDropdown(
-              TextString.subtitleInteriorCleanlinessStepTwoDropOff2Add,
-              ["Excellent", "Good", "Average", "Dirty"],
-              itemWidth,
-              controller.interiorCleanlinessControllerDropOffAdd,
-              context,
-            ),
-
-            _buildReportDropdown(
-              TextString.subtitleExteriorCleanlinessStepTwoDropOff2Add,
-              ["Excellent", "Good", "Average", "Dirty"],
-              itemWidth,
-              controller.exteriorCleanlinessControllerDropOffAdd,
-              context,
             ),
           ],
         );
@@ -984,8 +821,6 @@ class AddDropOffDetailWidget extends StatelessWidget {
       child: _buildReadOnlyField(label, value, context, hasIcon: hasIcon),
     );
   }
-
-
   Widget _buildReadOnlyField(String label, String value, BuildContext context, {bool hasIcon = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1017,318 +852,6 @@ class AddDropOffDetailWidget extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  // Signature Section
-  Widget _buildSignatureSection(BuildContext context, bool isMobile) {
-    return LayoutBuilder(builder: (context, constraints) {
-      if (isMobile) {
-        return Column(
-          children: [
-            _buildPickupSignatureBlock(context),
-            const SizedBox(height: 25),
-            _buildDropoffSignatureBlock(context),
-          ],
-        );
-      }
-      /// Web
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // PICKUP
-          Expanded(
-            flex: 1,
-            child: _buildPickupSignatureBlock(context),
-          ),
-
-          const SizedBox(width: 30),
-
-          // DROPOFF
-          Expanded(
-            flex: 1,
-            child: _buildDropoffSignatureBlock(context),
-          ),
-        ],
-      );
-    });
-  }
-  Widget _buildPickupSignatureBlock(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundOfScreenColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("Pickup", style: TTextTheme.dropdowninsideText(context)),
-          const SizedBox(height: 15),
-          _buildSignatureCard(context,TextString.subtitleOwnerSignatureStepTwoDropOffAdd, "Softsnip", isReadOnly: true, bgColor: AppColors.backgroundOfScreenColor),
-          const SizedBox(height: 15),
-          _buildSignatureCard(context, TextString.subtitleHirerSignatureStepTwoDropOffAdd, "Softsnip", isReadOnly: true, bgColor: AppColors.backgroundOfScreenColor),
-        ],
-      ),
-    );
-  }
-  Widget _buildDropoffSignatureBlock(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 50.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSignatureCard(
-            context,
-            TextString.subtitleOwnerSignatureStepTwoDropOffAdd,
-            "Softsnip",
-            isReadOnly: false,
-            bgColor: Colors.white,
-          ),
-          const SizedBox(height: 15),
-          _buildSignatureCard(
-            context,
-            TextString.subtitleHirerSignatureStepTwoDropOffAdd,
-            "Softsnip",
-            isReadOnly: false,
-            bgColor: Colors.white,
-          ),
-        ],
-      ),
-    );
-  }
-  Widget _buildSignatureCard(
-      BuildContext context,
-      String title,
-      String name, {
-        bool isReadOnly = false,
-        required Color bgColor,
-      }) {
-    final TextEditingController leftController = TextEditingController(text: name);
-    final TextEditingController rightController = TextEditingController(text: name);
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.primaryColor,
-          width: 0.6,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: TTextTheme.titleRadios(context)),
-          const SizedBox(height: 15),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    isReadOnly
-                        ? Text(name, style: TTextTheme.h2Style(context))
-                        : TextField(
-                      cursorColor: AppColors.blackColor,
-                      controller: leftController,
-                      decoration: const InputDecoration(
-                        isDense: true,
-                        border: InputBorder.none,
-                      ),
-                      style: TTextTheme.h2Style(context),
-                    ),
-                    const Divider(thickness: 1, color: AppColors.tertiaryTextColor),
-                    Text(
-                      TextString.subtitleFullNameStepTwoDropOffAdd,
-                      style: TTextTheme.titleFullName(context),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(width: 25),
-
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    isReadOnly
-                        ? Text(name, style: TTextTheme.h2Style(context))
-                        : TextField(
-                      cursorColor: AppColors.blackColor,
-                      controller: rightController,
-                      textAlign: TextAlign.end,
-                      decoration: const InputDecoration(
-                        isDense: true,
-                        border: InputBorder.none,
-                      ),
-                      style: TTextTheme.h2Style(context),
-                    ),
-                    const Divider(thickness: 1, color: AppColors.tertiaryTextColor),
-                    Text(
-                      TextString.titleSignatureStepTwoDropOffAdd,
-                      style: TTextTheme.titleFullName(context),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-
-  // Image Sections
-  Widget _buildPickupImageBox(BuildContext context) {
-    bool isMobileView = MediaQuery.of(context).size.width < 600;
-
-    return Container(
-      width: double.infinity,
-      constraints: const BoxConstraints(minHeight: 180),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.tertiaryTextColor,
-          width: 1.5,
-        ),
-      ),
-      child: LayoutBuilder(builder: (context, constraints) {
-        final double itemWidth = isMobileView ? (constraints.maxWidth - 24) / 2 : 110;
-
-        return Wrap(
-          spacing: 12,
-          runSpacing: 12,
-          children: List.generate(10, (index) {
-            return Container(
-              height: 100,
-              width: itemWidth,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AppColors.tertiaryTextColor, width: 1),
-                image: DecorationImage(
-                  image: AssetImage(ImageString.astonPic),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            );
-          }),
-        );
-      }),
-    );
-  }
-  Widget _imageBox(BuildContext context) {
-    return GestureDetector(
-      onTap: () => controller.pickImage3(),
-      child: Obx(() {
-        return DottedBorder(
-          borderType: BorderType.RRect,
-          radius: Radius.circular(AppSizes.borderRadius(context)),
-          dashPattern: const [8, 6],
-          color: AppColors.tertiaryTextColor,
-          strokeWidth: 1,
-          child: Container(
-            width: double.infinity,
-            constraints: const BoxConstraints(minHeight: 180),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-            ),
-            child: controller.pickupCarImages3.isEmpty
-                ? Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AppColors.iconsBackgroundColor,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Image.asset(IconString.cameraIcon, color: AppColors.primaryColor, width: 18),
-                    ),
-                    const SizedBox(width: 5),
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AppColors.iconsBackgroundColor,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Image.asset(IconString.uploadIcon, color: AppColors.primaryColor),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Text(TextString.titleEditImage, style: TTextTheme.btnOne(context)),
-                Text(TextString.subtitleEditImage, style: TTextTheme.documnetIsnideSmallText2(context)),
-              ],
-            )
-                : Wrap(
-              spacing: 15,
-              runSpacing: 15,
-              children: controller.pickupCarImages3.asMap().entries.map((entry) {
-                int index = entry.key;
-                final imageHolder = entry.value;
-
-                ImageProvider imageProvider;
-                if (kIsWeb) {
-                  imageProvider = (imageHolder.bytes != null)
-                      ? MemoryImage(imageHolder.bytes!)
-                      : const AssetImage("assets/images/placeholder.png") as ImageProvider;
-                } else {
-                  imageProvider = (imageHolder.path != null)
-                      ? FileImage(File(imageHolder.path!))
-                      : const AssetImage("assets/images/placeholder.png") as ImageProvider;
-                }
-
-                return Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      height: 120,
-                      width: 120,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: AppColors.primaryColor, width: 0.7),
-                        image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-                      ),
-                    ),
-                    Positioned(
-                      top: -8,
-                      right: -8,
-                      child: GestureDetector(
-                        onTap: () {
-                          controller.removeImage3(index);
-                        },
-                        child: CircleAvatar(
-                          radius: 13,
-                          backgroundColor: Colors.white,
-                          child: Image.asset(
-                            IconString.deleteIcon,
-                            color: AppColors.primaryColor,
-                            width: 14,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              }).toList(),
-            ),
-          ),
-        );
-      }),
     );
   }
 
@@ -1821,40 +1344,69 @@ class AddDropOffDetailWidget extends StatelessWidget {
 
 
   // Input Fields
-  Widget _buildMiniInputField(String label, String hint, double width, TextEditingController txtController, BuildContext context) {
+  Widget _buildMiniInputField(
+      String label,
+      String hint,
+      double width,
+      TextEditingController txtController,
+      BuildContext context,
+      {bool isReadOnly = false}
+      ) {
     return SizedBox(
       width: width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-              label,
-              style: TTextTheme.titleTwo(context),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis
-          ),
-          const SizedBox(height: 8),
-          Container(
-            padding: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              color: AppColors.secondaryColor,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: TextFormField(
-              cursorColor: AppColors.blackColor,
-              controller: txtController,
-              textAlignVertical: TextAlignVertical.center,
-              style: TTextTheme.insidetextfieldWrittenText(context),
-              decoration: InputDecoration(
-                hintText: hint,
-                hintStyle: TTextTheme.insidetextfieldWrittenText(context),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                border: InputBorder.none,
-                isDense: true,
-              ),
-            ),
-          ),
-        ],
+      child: Focus(
+        onFocusChange: (hasFocus) {
+          if (!isReadOnly) {
+            (context as Element).markNeedsBuild();
+          }
+        },
+        child: Builder(
+          builder: (context) {
+            final bool hasFocus = Focus.of(context).hasFocus;
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                    label,
+                    style: TTextTheme.titleTwo(context),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: AppColors.secondaryColor,
+                    borderRadius: BorderRadius.circular(6),
+                    boxShadow: (!isReadOnly && hasFocus) ? [
+                      BoxShadow(
+                        color: AppColors.fieldsBackground,
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                        spreadRadius: 1,
+                      )
+                    ] : [],
+                  ),
+                  child: TextFormField(
+                    readOnly: isReadOnly,
+                    cursorColor: AppColors.blackColor,
+                    controller: txtController,
+                    textAlignVertical: TextAlignVertical.center,
+                    style: TTextTheme.insidetextfieldWrittenText(context),
+                    decoration: InputDecoration(
+                      hintText: hint,
+                      hintStyle: TTextTheme.insidetextfieldWrittenText(context),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                      border: InputBorder.none,
+                      isDense: true,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -1950,73 +1502,76 @@ class AddDropOffDetailWidget extends StatelessWidget {
 
 
   //  Action Buttons Widgets
-
   Widget _buttonSection(BuildContext context, bool isMobile) {
     const double webButtonWidth = 150.0;
     const double webButtonHeight = 45.0;
     final double spacing = AppSizes.padding(context);
 
     if (isMobile) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(
-            height: webButtonHeight,
-            child: CustomButtonDropOff(
-              text: 'Cancel',
-              backgroundColor: Colors.white,
-              textColor: AppColors.textColor,
-              borderColor: AppColors.quadrantalTextColor,
-              onTap: () {},
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(
+              height: webButtonHeight,
+              child: CustomButtonDropOff(
+                text: 'Cancel',
+                backgroundColor: Colors.transparent,
+                textColor: AppColors.textColor,
+                borderColor: AppColors.quadrantalTextColor,
+                onTap: () => Navigator.pop(context),
+              ),
             ),
-          ),
-          SizedBox(height: spacing),
-          SizedBox(
-            width: webButtonWidth,
-            height: webButtonHeight,
-            child: PrimaryBthDropOff(
-              text: "Confirm",
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) =>  DropOffSuccessDialog(),
-                );
-              },
+            SizedBox(height: spacing),
+            SizedBox(
+              height: webButtonHeight,
+              child: PrimaryBthDropOff(
+                text: "Confirm",
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => DropOffSuccessDialog(),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
     } else {
-      return Row(
-        children: [
-          Spacer(),
-          SizedBox(
-            width: webButtonWidth,
-            height: webButtonHeight,
-            child: CustomButtonDropOff(
-              text: 'Cancel',
-              backgroundColor: Colors.white,
-              textColor: AppColors.textColor,
-              borderColor: AppColors.quadrantalTextColor,
-              onTap: () {},
+      return Padding(
+        padding: const EdgeInsets.only(right: 24.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            SizedBox(
+              width: webButtonWidth,
+              height: webButtonHeight,
+              child: CustomButtonDropOff(
+                text: 'Cancel',
+                backgroundColor: Colors.transparent,
+                textColor: AppColors.textColor,
+                borderColor: AppColors.quadrantalTextColor,
+                onTap: () => Navigator.pop(context),
+              ),
             ),
-          ),
-          SizedBox(width: spacing),
-          SizedBox(
-            width: webButtonWidth,
-            height: webButtonHeight,
-            child: PrimaryBthDropOff(
-              text: "Confirm",
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => DropOffSuccessDialog(),
-                );
-              },
+            SizedBox(width: spacing),
+            SizedBox(
+              width: webButtonWidth,
+              height: webButtonHeight,
+              child: PrimaryBthDropOff(
+                text: "Confirm",
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => DropOffSuccessDialog(),
+                  );
+                },
+              ),
             ),
-          ),
-
-        ],
+          ],
+        ),
       );
     }
   }
