@@ -624,9 +624,13 @@ class StepTwoDropOffWidget extends StatelessWidget {
                 children: [
                   Image.asset(IconString.agreementIcon, height: 20, color: AppColors.primaryColor),
                   const SizedBox(width: 8),
-                   Text(TextString.additionalPickupText,
-                      style: TTextTheme.CalendarTitle(context),
-                  ),
+                   Expanded(
+                     child: Text(TextString.additionalPickupText,
+                        style: TTextTheme.CalendarTitle(context),
+                       overflow: TextOverflow.ellipsis,
+                       maxLines: 1,
+                                       ),
+                   ),
                 ],
               ),
               const SizedBox(height: 15),
@@ -711,8 +715,12 @@ class StepTwoDropOffWidget extends StatelessWidget {
                 children: [
                    Image.asset(IconString.returnCarIcon, height: 20, color:AppColors.primaryColor),
                    SizedBox(width: 10),
-                  Text(TextString.additionalDropOffText,
-                      style: TTextTheme.CalendarTitle(context)
+                  Expanded(
+                    child: Text(TextString.additionalDropOffText,
+                        style: TTextTheme.CalendarTitle(context),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
                   ),
                 ],
               ),

@@ -110,7 +110,7 @@ class PickupDetailWidget extends StatelessWidget {
     "controller": controller.dueBondAmountController,
     "hint": "2000 \$"
     },
-    ], isMobile,isReadOnly: false)),
+    ], isMobile,isReadOnly: true)),
     const SizedBox(height: 25),
 
         ///  PAYMENT METHOD
@@ -156,7 +156,7 @@ class PickupDetailWidget extends StatelessWidget {
     );
   }
 
-  /// ---------- Extra Widgtes ----------- ///
+  /// ---------- Extra Widgets ----------- ///
 
 
 
@@ -340,32 +340,54 @@ class PickupDetailWidget extends StatelessWidget {
   Widget _buildPageHeader(BuildContext context, bool isMobile) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return SizedBox(
+        bool shouldStack = constraints.maxWidth < 390;
+
+        return Container(
           width: double.infinity,
-          child: _buildTitleSection(context),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            runSpacing: 12,
+            children: [
+              SizedBox(
+                width: shouldStack ? constraints.maxWidth : null,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      TextString.titleViewPick,
+                      style: TTextTheme.h6Style(context),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      TextString.titleViewSubtitle,
+                      style: TTextTheme.titleThree(context),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ],
+                ),
+              ),
+
+              AddButtonOfPickup(
+                text: "Update Bond",
+                width: shouldStack ? double.infinity : 130,
+                height: 35,
+                onTap: () {
+
+                },
+              ),
+            ],
+          ),
         );
       },
-    );
-  }
-
-  Widget _buildTitleSection(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          TextString.titleViewPick,
-          style: TTextTheme.h6Style(context),
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
-        ),
-        const SizedBox(height: 4),
-        Text(
-          TextString.titleViewSubtitle,
-          style: TTextTheme.titleThree(context),
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
-        ),
-      ],
     );
   }
 
