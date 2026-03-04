@@ -1,6 +1,5 @@
 import 'package:car_rental_project/DroppOffCar/DropOffController.dart';
 import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/CustomButtonDropOff.dart';
-import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/DropOffSuccessDualog.dart';
 import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/HeaderWebDropOffWidget.dart';
 import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/PrimaryBtnDropOff.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
@@ -11,6 +10,7 @@ import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 
 class AddDropOffDetailWidget extends StatelessWidget {
@@ -1527,12 +1527,12 @@ class AddDropOffDetailWidget extends StatelessWidget {
             SizedBox(
               height: webButtonHeight,
               child: PrimaryBthDropOff(
-                text: "Confirm",
+                text: "Continue",
+                icon: Image.asset(
+                  IconString.continueIcon,
+                ),
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => DropOffSuccessDialog(),
-                  );
+                  context.push('/stepTwoDropoff', extra: {"hideMobileAppBar": true});
                 },
               ),
             ),
@@ -1561,12 +1561,12 @@ class AddDropOffDetailWidget extends StatelessWidget {
               width: webButtonWidth,
               height: webButtonHeight,
               child: PrimaryBthDropOff(
-                text: "Confirm",
+                text: "Continue",
+                icon: Image.asset(
+                  IconString.continueIcon,
+                ),
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => DropOffSuccessDialog(),
-                  );
+                  context.push('/stepTwoDropoff', extra: {"hideMobileAppBar": true});
                 },
               ),
             ),

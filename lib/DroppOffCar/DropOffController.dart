@@ -1,8 +1,7 @@
 import 'package:car_rental_project/DroppOffCar/AddDropOff/Widget/CalendarDropOffManagingScreen.dart';
-import 'package:car_rental_project/DroppOffCar/AddDropOff/Widget/ResponsiveDropOffTimer.dart';
-import 'package:car_rental_project/PickupCar/AddPickUp/Widget/CalendarManagingScreen.dart';
 import 'package:car_rental_project/PickupCar/AddPickUp/Widget/ResponsiveTimerWidget.dart';
 import 'package:car_rental_project/Resources/Colors.dart' show AppColors;
+import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -382,38 +381,56 @@ class DropOffController extends GetxController{
     {'id': 5, 'label': 'Other', 'color': AppColors.fiveBackground},
   ];
 
-  RxList<ImageHolder> pickupCarImages3 = <ImageHolder>[].obs;
-  final int maxPickupImages2 = 10;
 
-  Future<void> pickImage3() async {
+  var frontImage = Rxn<ImageHolder>();
+  var backImage = Rxn<ImageHolder>();
+  var leftImage = Rxn<ImageHolder>();
+  var rightImage = Rxn<ImageHolder>();
+  final List<String> pickupAdditionalImages = [
+    ImageString.frontPickImage,
+    ImageString.backPickImage,
+    ImageString.leftPickImage,
+    ImageString.rightPickImage,
+  ];
+
+  var additionalImages = <ImageHolder>[].obs;
+
+  Future<void> pickImageNew(String type) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowMultiple: true,
-      allowedExtensions: ['png', 'jpg', 'jpeg', 'svg'],
+      allowMultiple: type == 'additional',
+      allowedExtensions: ['png', 'jpg', 'jpeg'],
       withData: true,
     );
 
     if (result != null) {
-      for (var file in result.files) {
-        if (pickupCarImages3.length < maxPickupImages2) {
-          if (kIsWeb) {
-            if (file.bytes != null) {
-              pickupCarImages3.add(ImageHolder(bytes: file.bytes, name: file.name));
-            }
-          } else {
-            if (file.path != null) {
-              pickupCarImages3.add(ImageHolder(path: file.path, name: file.name, bytes: file.bytes));
-            }
+      if (type == 'additional') {
+        for (var file in result.files) {
+          if (additionalImages.length < 6) {
+            additionalImages.add(ImageHolder(bytes: file.bytes, name: file.name, path: kIsWeb ? null : file.path));
           }
         }
+      } else {
+        var file = result.files.first;
+        var holder = ImageHolder(bytes: file.bytes, name: file.name, path: kIsWeb ? null : file.path);
+
+        if (type == 'front') {
+          frontImage.value = holder;
+        } else if (type == 'back') backImage.value = holder;
+        else if (type == 'left') leftImage.value = holder;
+        else if (type == 'right') rightImage.value = holder;
       }
-      pickupCarImages3.refresh();
     }
   }
-
-  void removeImage3(int index) {
-    if (index >= 0 && index < pickupCarImages3.length) {
-      pickupCarImages3.removeAt(index);
+  void removeImageNew(String type, {int? index}) {
+    if (type == 'additional' && index != null) {
+      additionalImages.removeAt(index);
+    } else {
+      if (type == 'front') {
+        frontImage.value = null;
+      } else if (type == 'back') backImage.value = null;
+      else if (type == 'left') leftImage.value = null;
+      else if (type == 'right') rightImage.value = null;
     }
   }
 

@@ -203,8 +203,10 @@ class _CustomCalendarDropOffState extends State<CustomCalendarDropOff> {
                             width: 68,
                             child: ElevatedButton(
                               onPressed: () {
-                                if (_selectedDay != null) widget.onDateSelected(
+                                if (_selectedDay != null) {
+                                  widget.onDateSelected(
                                     _selectedDay!);
+                                }
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primaryColor,

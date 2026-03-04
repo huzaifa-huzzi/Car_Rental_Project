@@ -298,7 +298,7 @@ class TextString {
   static const String  subtitleLeftBondStepTwo  =  'Left Bond';
   static const String  titleCarReportStepTwo  =   'Car Report';
   static const String  subtitleAddImagePicture=  'Upload Picture';
-  static const String  requireImages=  'Upload Picture';
+  static const String  requireImages=  'require Images';
   static const String  AdditionalImages=  'Additional Images (MAX 6)';
   static const String  subtitlePickupOdoStepTwo  =   'Pickup ODO';
   static const String  subtitlePickFuelLevelStepTwo  =   'Pickup Fuel Level';
@@ -399,6 +399,10 @@ class TextString {
   static const String  titleViewSubtitleStepTwoDropOff =  'Enter the specification of the Car return details';
   static const String  titleViewCustomerStepTwoDropOff  =  'Customer Name';
   static const String  titleViewCarStepTwoDropOff  =  'Car';
+  static const String  under10  = '(Must be under 10 MB)';
+  static const String  additionalPickupText  = "Additional image(Pick up)";
+  static const String  additionalDropOffText =  "Additional image(DropOff)";
+  static const String  dropOffImageDropoff =  "Drop Off Images";
   static const String  titleRentPurposeStepTwoDropOff  =  'Rent Purpose';
   static const String  subtitleRentPurposeStepTwoDropOff  =   'Personal Use';
   static const String  titlePaymentMethodStepTwoDropOff  =  'Payment Method';

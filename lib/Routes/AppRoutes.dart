@@ -20,6 +20,8 @@ import 'package:car_rental_project/Customers/TableViewCustomerScreen/TableViewSc
 import 'package:car_rental_project/Dashboard/DashboardScreen.dart';
 import 'package:car_rental_project/DroppOffCar/AddDropOff/AddDropOffScreen.dart';
 import 'package:car_rental_project/DroppOffCar/AddDropOff/Widget/StepOneDropOffWidget.dart';
+import 'package:car_rental_project/DroppOffCar/AddDropOff/Widget/StepThreeDropOffWidget.dart';
+import 'package:car_rental_project/DroppOffCar/AddDropOff/Widget/StepTwoDropOffWidget.dart';
 import 'package:car_rental_project/DroppOffCar/DropOffDetails/DropOffDetails.dart';
 import 'package:car_rental_project/DroppOffCar/TableViewDropoff/TableViewDropoffScreen.dart';
 import 'package:car_rental_project/PickupCar/AddPickUp/AddPickup.dart';
@@ -164,6 +166,14 @@ class AppNavigation {
       GoRoute(
         path: '/addDropOff',
         builder: (context, state) => _wrapSidebar(state,  AddDropOffScreen()),
+      ),
+      GoRoute(
+        path: '/stepTwoDropoff',
+        builder: (context, state) => _wrapSidebar(state,  StepTwoDropOffWidget()),
+      ),
+      GoRoute(
+        path: '/stepThreeDropOff',
+        builder: (context, state) => _wrapSidebar(state,  StepThreeDropOffWidget()),
       ),
       GoRoute(
         path: '/addDropOffDetailTwo',
