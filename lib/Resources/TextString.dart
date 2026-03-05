@@ -400,6 +400,7 @@ class TextString {
   static const String  titleViewCustomerStepTwoDropOff  =  'Customer Name';
   static const String  titleViewCarStepTwoDropOff  =  'Car';
   static const String  under10  = '(Must be under 10 MB)';
+  static const String  additionalImagesDropOff2  = 'Additional Images (optional no more than 6)';
   static const String  additionalPickupText  = "Additional image(Pick up)";
   static const String  additionalDropOffText =  "Additional image(DropOff)";
   static const String  dropOffImageDropoff =  "Drop Off Images";

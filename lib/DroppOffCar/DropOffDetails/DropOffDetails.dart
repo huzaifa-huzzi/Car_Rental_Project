@@ -1,4 +1,6 @@
 import 'package:car_rental_project/DroppOffCar/DropOffController.dart';
+import 'package:car_rental_project/DroppOffCar/DropOffDetails/Term&ConditionDropOff.dart';
+import 'package:car_rental_project/DroppOffCar/DropOffDetails/VehicleConditionDropOff.dart';
 import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/HeaderWebDropOffWidget.dart';
 import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/PrimaryBtnDropOff.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
@@ -7,6 +9,7 @@ import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
+import 'package:car_rental_project/Staff/ReusableWidgetOfStaff/PrimaryBtnStaff.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,7 +24,6 @@ class DropOffDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final isWeb = AppSizes.isWeb(context);
     final bool isMobile = AppSizes.isMobile(context);
-    double padding = 24.0;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundOfScreenColor,
@@ -30,28 +32,26 @@ class DropOffDetails extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
 
-            // Header
             HeaderWebDropOffWidget(
               mainTitle: 'DropOff Car Details',
               showBack: true,
               showSmallTitle: true,
-              smallTitle: 'DropOff / DropOff Car Details',
+              smallTitle: 'DropOff Car/DropOff Car Details',
               showSearch: isWeb,
               showSettings: isWeb,
               showAddButton: true,
               showNotification: true,
               showProfile: true,
-              onAddPressed: (){
-                context.push(
-                  '/addDropOff',
-                  extra: {"hideMobileAppBar": true},
-                );
+              onAddPressed: () {
+                context.push('/addDropOff', extra: {"hideMobileAppBar": true});
               },
             ),
 
             Padding(
               padding: const EdgeInsets.all(20),
               child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
@@ -59,210 +59,176 @@ class DropOffDetails extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // PAGE HEADER
+                    _buildPageHeader(context, isMobile),
+                    const SizedBox(height: 20),
 
-                    Padding(
-                      padding: EdgeInsets.all(padding),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(TextString.titleViewPickStepTwoDropOff, style: TTextTheme.h6Style(context)),
-                          const SizedBox(height: 6),
-                          Text(TextString.titleViewSubtitleStepTwoDropOff,
-                              style: TTextTheme.titleThree(context)),
-                          const SizedBox(height: 25),
+                    // TABS SECTION
+                    _buildTabs(context),
+                    const SizedBox(height: 25),
 
-                          ///  NON-EDITABLE SECTION
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.all(isMobile ? 15 : 30),
-                            decoration: BoxDecoration(
-                              color: AppColors.backgroundOfScreenColor,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Customer
-                                _buildSection(context,
-                                    title: TextString.titleViewCustomerStepTwoDropOff,
-                                    icon: IconString.customerNameIcon,
-                                    child: _buildDetailedCustomerCard(context, isMobile)),
-                                const SizedBox(height: 25),
-                                // Car
-                                _buildSection(context,
-                                    title: TextString.titleViewCarStepTwoDropOff,
-                                    icon: IconString.pickupCarIcon,
-                                    child: _buildDetailedCarCard(context, isMobile)),
-                                const SizedBox(height: 25),
-
-                                // RENT PURPOSE & PAYMENT METHOD
-                                Flex(
-                                  direction: isMobile ? Axis.vertical : Axis.horizontal,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    /// RENT PURPOSE SECTION
-                                    Expanded(
-                                      flex: isMobile ? 0 : 1,
-                                      child: _buildSection(
-                                        context,
-                                        title: TextString.titleRentPurposeStepTwoDropOff,
-                                        icon: IconString.rentPurposeIcon,
-                                        child: IgnorePointer(
-                                          child: _toggleStatusTag(context, TextString.subtitleRentPurposeStepTwoDropOff, controller.isPersonalUseStepTwo),
-                                        ),
-                                      ),
-                                    ),
-
-                                    // Space between them only on Web
-                                    if (!isMobile) const SizedBox(width: 25) else const SizedBox(height: 25),
-
-                                    /// PAYMENT METHOD SECTION
-                                    Expanded(
-                                      flex: isMobile ? 0 : 1,
-                                      child: _buildSection(
-                                        context,
-                                        title: TextString.titlePaymentMethodStepTwoDropOff,
-                                        icon: IconString.paymentMethodIcon,
-                                        child: IgnorePointer(
-                                          child: _toggleStatusTag(context, TextString.subtitlePaymentMethodStepTwoDropOff, controller.isManualPaymentStepTwo),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 25),
-
-                                 // Rent
-                                _buildSection(context,
-                                    title: TextString.titleViewRentAmountStepTwoDropOff,
-                                    icon: IconString.rentMoneyIcon,
-                                    child: _buildInfoGrid(context, [
-                                      {"label": TextString.subtitleWeeklyRentStepTwoDropOff, "controller": controller.weeklyRentControllerStepTwo, "hint": "2600 \$"},
-                                      {"label": TextString.subtitleDailyRentStepTwoDropOff, "controller": controller.rentDueAmountControllerStepTwo, "hint": "2600 \$"},
-                                    ], isMobile, isEditable: false)),
-                                const SizedBox(height: 25),
-
-                                // Bond
-                                _buildSection(
-                                  context,
-                                  title: TextString.titleBondPaymentStepTwoDropOff,
-                                  icon: IconString.bondPaymentIcon,
-                                  child: _buildBondGrid(context, [
-                                    {"label": "Bond Amount", "controller": controller.bondAmountControllerStepTwo, "hint": "2600 \$"},
-                                    {"label": "Paid Bond", "controller": controller.paidBondControllerStepTwo, "hint": "600 \$"},
-                                    {"label": TextString.subtitleLeftBondStepTwoDropOff, "controller": controller.dueBondAmountControllerStepTwo, "hint": "2000 \$"},
-                                    {
-                                      "label": "Bond Returned",
-                                      "controller": controller.dueBondReturnedControllerStepTwo,
-                                      "hint": "2000 \$",
-                                    }
-
-                                  ], isMobile),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          const SizedBox(height: 20),
-
-                          /// EDITABLE SECTION
-                          Text(TextString.titleCarReportStepTwoDropOffInspection, style: TTextTheme.h6Style(context)),
-                          const SizedBox(height: 20),
-                          //CAR REPORT SECTION
-                          _buildSection(
-                            context,
-                            title: TextString.titleCarReportStepTwoDropOff,
-                            icon: IconString.carReportIcon,
-                            child: _buildCarReportComparison(context, isMobile),
-                          ),
-                          const SizedBox(height: 25),
-
-                          // DAMAGE INSPECTION
-                          _buildSection(
-                            context,
-                            title: TextString.titleDamageInspectionStepTwoDropOff,
-                            icon: IconString.damageInspection,
-                            child: _buildDamageInspectionComparison(context, isMobile),
-                          ),
-                          const SizedBox(height: 35),
-                          /// CAR PICTURES
-                          _buildSection(
-                            context,
-                            title:TextString.titleCarPictureStepTwoDropOff,
-                            icon: IconString.carPictureIconPickup,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                //  Pickup Car Image
-                                Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.backgroundOfScreenColor,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(TextString.titleCarPictureStepTwoDropOffTwo, style: TTextTheme.dropdowninsideText(context)),
-                                      const SizedBox(height: 12),
-                                      _buildPickupImageBox(context),
-                                    ],
-                                  ),
-                                ),
-
-                                const SizedBox(height: 25),
-
-                                //  Dropoff Car Images
-                                Text(TextString.subtitleCarPictureStepTwoDropOff , style: TTextTheme.dropdowninsideText(context)),
-                                const SizedBox(height: 10),
-                                _buildPickupImageBox2(context),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 35),
-                          /// DropOff Notes
-                          _buildSection(
-                            context,
-                            title: TextString.titlePickupNoteStepTwoDropOFf2,
-                            icon: IconString.pickupNote,
-                            child: _buildDropoffNoteComparison(context, isMobile),
-                          ),
-                          const SizedBox(height: 35),
-
-                          // RENT TIME
-                          _buildSection(
-                            context,
-                            title: TextString.titleRentTimeStepTwoDropOff,
-                            icon: IconString.rentTimeIcon,
-                            child: _buildRentTimeSection(context, isMobile),
-                          ),
-                          const SizedBox(height: 35),
-
-                          // SIGNATURES
-                          _buildSection(context,
-                              title:  TextString.titleSignatureStepTwoDropOff ,
-                              icon: IconString.signatureIcon,
-                              child: _buildSignatureSection(context, isMobile)),
-
-                          const SizedBox(height: 40),
-
-
-                        ],
-                      ),
-                    ),
+                    // DYNAMIC TAB CONTENT
+                    Obx(() => _buildTabContent(context, isMobile,controller)),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
+    /// Customer and Contract  Screen
+  Widget _buildCustomerAndContractTab(BuildContext context, bool isMobile) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        //  Customer Section
+        _buildSection(context,
+            title: TextString.titleViewCustomerStepTwoDropOff,
+            icon: IconString.customerNameIcon,
+            child: _buildDetailedCustomerCard(context, isMobile)),
+        const SizedBox(height: 25),
+
+        //  Car Section
+        _buildSection(context,
+            title: TextString.titleViewCarStepTwoDropOff,
+            icon: IconString.pickupCarIcon,
+            child: _buildDetailedCarCard(context, isMobile)),
+        const SizedBox(height: 25),
+
+        //  Rent Purpose & Payment Method
+        Flex(
+          direction: isMobile ? Axis.vertical : Axis.horizontal,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: isMobile ? 0 : 1,
+              child: _buildSection(
+                context,
+                title: TextString.titleRentPurposeStepTwoDropOff,
+                icon: IconString.rentPurposeIcon,
+                child: IgnorePointer(
+                  child: _toggleStatusTag(context, TextString.subtitleRentPurposeStepTwoDropOff, controller.isPersonalUseStepTwo),
+                ),
+              ),
+            ),
+            if (!isMobile) const SizedBox(width: 25) else const SizedBox(height: 25),
+            Expanded(
+              flex: isMobile ? 0 : 1,
+              child: _buildSection(
+                context,
+                title: TextString.titlePaymentMethodStepTwoDropOff,
+                icon: IconString.paymentMethodIcon,
+                child: IgnorePointer(
+                  child: _toggleStatusTag(context, TextString.subtitlePaymentMethodStepTwoDropOff, controller.isManualPaymentStepTwo),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 25),
+
+        //  Rent Amount
+        _buildSection(context,
+            title: TextString.titleViewRentAmountStepTwoDropOff,
+            icon: IconString.rentMoneyIcon,
+            child: _buildInfoGrid(context, [
+              {"label": TextString.subtitleWeeklyRentStepTwoDropOff, "controller": controller.weeklyRentControllerStepTwo, "hint": "2600 \$"},
+              {"label": TextString.subtitleDailyRentStepTwoDropOff, "controller": controller.rentDueAmountControllerStepTwo, "hint": "2600 \$"},
+            ], isMobile,)),
+        const SizedBox(height: 25),
+
+        // Bond Payment
+        _buildSection(
+          context,
+          title: TextString.titleBondPaymentStepTwoDropOff,
+          icon: IconString.bondPaymentIcon,
+          child: _buildBondGrid(context, [
+            {"label": "Bond Amount", "controller": controller.bondAmountControllerStepTwo, "hint": "2600 \$"},
+            {"label": "Paid Bond", "controller": controller.paidBondControllerStepTwo, "hint": "600 \$"},
+            {"label": TextString.subtitleLeftBondStepTwoDropOff, "controller": controller.dueBondAmountControllerStepTwo, "hint": "2000 \$"},
+            {"label": "Bond Returned", "controller": controller.dueBondReturnedControllerStepTwo, "hint": "2000 \$"},
+          ], isMobile),
+        ),
+        const SizedBox(height: 25),
+        //Car Report
+        _buildSection(context,
+            title: TextString.titleCarReportStepTwoDropOff,
+            icon: IconString.carReportIcon,
+            child:  _buildCarReportComparison( context,isMobile),),
+        const SizedBox(height: 25),
+        // DropOff Notes
+        _buildSection(context,
+            title: TextString.titlePickupNoteStepTwoDropOff,
+            icon: IconString.pickupNote,
+            child:  _buildDropoffNoteComparison( context, isMobile),),
+
+        const SizedBox(height: 25),
+        // Rent Time
+        _buildSection(context,
+            title: TextString.titleRentTimeStepTwoDropOff,
+            icon: IconString.rentTimeIcon,
+            child: _buildRentTimeSection( context, isMobile))
+
+      ],
+    );
+  }
+
+
   /// -------- Extra Widgets -------- ///
-  Widget _buildInfoGrid(BuildContext context, List<Map<String, dynamic>> items, bool isMobile, {bool isEditable = true}) {
+
+  Widget _buildTabs(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Container(
+        padding: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.7)),
+        ),
+        child: Row(
+          children: List.generate(controller.tabs.length, (index) {
+            return Obx(() {
+              final isSelected = controller.selectedIndex.value == index;
+              return GestureDetector(
+                onTap: () => controller.changeTab(index),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    controller.tabs[index],
+                    style: isSelected ? TTextTheme.titleSelectedTab(context) : TTextTheme.titleUnselectedTab(context),
+                  ),
+                ),
+              );
+            });
+          }),
+        ),
+      ),
+    );
+  }
+  Widget _buildTabContent(BuildContext context, bool isMobile,DropOffController controller) {
+    switch (controller.selectedIndex.value) {
+      case 0:
+        return _buildCustomerAndContractTab(context, isMobile);
+      case 1:
+        return VehicleConditionDropOff(
+          controller: controller,
+          isMobile: isMobile,
+        );
+      case 2:
+        return TermandConditionDropOff();
+      default:
+        return const SizedBox();
+    }
+  }
+
+  // Info Grids
+  Widget _buildInfoGrid(BuildContext context, List<Map<String, dynamic>> items, bool isMobile, {bool isEditable = false}) {
     final double availableWidth = MediaQuery.of(context).size.width;
 
     return Wrap(
@@ -285,6 +251,7 @@ class DropOffDetails extends StatelessWidget {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: TextFormField(
+                  cursorColor: AppColors.blackColor,
                   controller: item['controller'],
                   enabled: isEditable,
                   readOnly: !isEditable,
@@ -349,20 +316,15 @@ class DropOffDetails extends StatelessWidget {
   }
   Widget _buildDropoffNoteComparison(BuildContext context, bool isMobile) {
     return LayoutBuilder(builder: (context, constraints) {
-      double columnWidth = isMobile ? constraints.maxWidth : (constraints.maxWidth - 30) / 2;
+      bool useColumn = constraints.maxWidth < 600;
 
-      return Wrap(
-        spacing: 30,
-        runSpacing: 20,
+      return Flex(
+        direction: useColumn ? Axis.vertical : Axis.horizontal,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// PICKUP NOTES
-          Container(
-            width: columnWidth,
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.backgroundOfScreenColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
+          // PICKUP NOTES
+          Expanded(
+            flex: useColumn ? 0 : 1,
             child: _buildCommentField(
               context,
               TextString.titlePickupNoteStepTwoDropOff,
@@ -371,16 +333,24 @@ class DropOffDetails extends StatelessWidget {
               isReadOnly: true,
             ),
           ),
+          useColumn ? const SizedBox(height: 20) : const SizedBox(width: 20),
 
-          ///  DROPOFF NOTES
-          SizedBox(
-            width: columnWidth,
-            child: _buildCommentField(
-              context,
-              TextString.titlePickupNoteStepTwoDropOFf2 ,
-              controller.additionalCommentsControllerDropOff,
-              TextString.subtitleViewPickupStepTwoDropOff,
-              isReadOnly: true,
+          // DROPOFF NOTES
+          Expanded(
+            flex: useColumn ? 0 : 1,
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.backgroundOfPickupsWidget,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: _buildCommentField(
+                context,
+                TextString.titlePickupNoteStepTwoDropOFf2,
+                controller.additionalCommentsControllerDropOff,
+                "Describe the vehicles condition...",
+                isReadOnly: true,
+              ),
             ),
           ),
         ],
@@ -434,163 +404,61 @@ class DropOffDetails extends StatelessWidget {
     );
   }
 
-  // Damage Inspection Cards
-  Widget _buildDamageInspectionComparison(BuildContext context, bool isMobile) {
-    return LayoutBuilder(builder: (context, constraints) {
-      double columnWidth = isMobile ? constraints.maxWidth : (constraints.maxWidth - 120) / 2;
 
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+   // Header
+  Widget _buildPageHeader(BuildContext context, bool isMobile) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        bool shouldStack = constraints.maxWidth < 390;
 
-          Wrap(
-            spacing: isMobile ? 0 : 25,
-            runSpacing: 25,
-            crossAxisAlignment: WrapCrossAlignment.start,
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            runSpacing: 12,
             children: [
-              ///  PICKUP DAMAGE
-              Container(
-                width: columnWidth,
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: AppColors.backgroundOfScreenColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(TextString.titleDamageInspectionStepTwoDropOffPickup, style: TTextTheme.titleTwo(context)),
-                    const SizedBox(height: 12),
-                    _buildStaticLegendBox(context),
-                    const SizedBox(height: 20),
-                    _buildStaticCarDiagram(context, columnWidth - 30),
-                  ],
-                ),
-              ),
-
-              ///  DROPOFF DAMAGE
               SizedBox(
-                width: columnWidth,
+                width: shouldStack ? constraints.maxWidth : null,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text( TextString.titleDamageInspectionStepTwoDropOff2, style: TTextTheme.titleTwo(context)),
-                    const SizedBox(height: 12),
-                    _buildInteractiveLegendBox(context),
-                    const SizedBox(height: 20),
-                    _buildInteractiveCarDiagram(context, columnWidth),
+                    Text(
+                      TextString.titleViewPickStepTwoDropOff,
+                      style: TTextTheme.h6Style(context),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      TextString.titleViewPickStepTwoDropOff,
+                      style: TTextTheme.titleThree(context),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
                   ],
                 ),
               ),
+
+              PrimaryBthDropOff(
+                text: "Update Bond",
+                width: shouldStack ? double.infinity : 130,
+                height: 39,
+                onTap: () {
+
+                },
+              ),
             ],
           ),
-        ],
-      );
-    });
-  }
-  Widget _buildStaticLegendBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: AppColors.secondaryColor),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Wrap(
-        spacing: 10,
-        runSpacing: 8,
-        children: controller.damageTypes2.map((type) => Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CircleAvatar(
-              radius: 10, backgroundColor: type['color'],
-              child: Text(type['id'].toString(), style: TTextTheme.btnNumbering(context)),
-            ),
-            const SizedBox(width: 5),
-            Text(type['label'], style: TTextTheme.titleSix(context)),
-          ],
-        )).toList(),
-      ),
+        );
+      },
     );
   }
-  Widget _buildStaticCarDiagram(BuildContext context, double width) {
-    double height = width * 0.75;
-    return Center(
-      child: Stack(
-        children: [
-          Image.asset(ImageString.carDamageInspectionImage, width: width, height: height, fit: BoxFit.contain),
-          ...controller.damagePoints2.map((point) => Positioned(
-            left: (point.dx * width) - 10,
-            top: (point.dy * height) - 10,
-            child: CircleAvatar(
-              radius: 10, backgroundColor: point.color,
-              child: Text(point.typeId.toString(), style: TTextTheme.btnNumbering(context)),
-            ),
-          )),
-        ],
-      ),
-    );
-  }
-  Widget _buildInteractiveCarDiagram(BuildContext context, double width) {
-    double height = width * 0.75;
-
-    return Center(
-      child: Stack(
-        children: [
-          Image.asset(
-            ImageString.carDamageInspectionImage,
-            width: width,
-            height: height,
-            fit: BoxFit.contain,
-          ),
-          ...controller.damagePoints2.map((point) => Positioned(
-            left: (point.dx * width) - 10,
-            top: (point.dy * height) - 10,
-            child: CircleAvatar(
-              radius: 10,
-              backgroundColor: point.color,
-              child: Text(
-                point.typeId.toString(),
-                style: TTextTheme.btnNumbering(context),
-              ),
-            ),
-          )),
-        ],
-      ),
-    );
-  }
-  Widget _buildInteractiveLegendBox(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: AppColors.secondaryColor),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Wrap(
-        spacing: 10,
-        runSpacing: 8,
-        children: controller.damageTypes2.map((type) {
-          return Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircleAvatar(
-                radius: 10,
-                backgroundColor: type['color'],
-                child: Text(
-                  type['id'].toString(),
-                  style: TTextTheme.btnNumbering(context),
-                ),
-              ),
-              const SizedBox(width: 5),
-              Text(type['label'], style: TTextTheme.titleSix(context)),
-            ],
-          );
-        }).toList(),
-      ),
-    );
-  }
-
 
   // Rent time Section
   Widget _buildRentTimeSection(BuildContext context, bool isMobile) {
@@ -607,20 +475,13 @@ class DropOffDetails extends StatelessWidget {
         /// PICKUP SECTION
         Expanded(
           flex: 4,
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.backgroundOfScreenColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildReadOnlyTimePair(context, TextString.subtitleAgreementTimeStepTwoPickupDropOff, "02/12/2025", "12:12 PM"),
-                const SizedBox(height: 15),
-                _buildReadOnlyTimePair(context,  TextString.subtitleAgreementEndTimeStepTwoPickupDropOff, "02/12/2025", "12:12 PM"),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildReadOnlyTimePair(context, TextString.subtitleAgreementTimeStepTwoPickupDropOff, "02/12/2025", "12:12 PM"),
+              const SizedBox(height: 15),
+              _buildReadOnlyTimePair(context,  TextString.subtitleAgreementEndTimeStepTwoPickupDropOff, "02/12/2025", "12:12 PM"),
+            ],
           ),
         ),
 
@@ -662,15 +523,22 @@ class DropOffDetails extends StatelessWidget {
         /// 3. DROPOFF SECTION
         Expanded(
           flex: 4,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(TextString.subtitleAgreementEndTimeStepTwoDropOff2 , style: TTextTheme.dropdowninsideText(context)),
-              const SizedBox(height: 8),
-              _editableTimeField(controller.endDateControllerStepTwo, "02/12/2025", context, isReadOnly: true),
-              const SizedBox(height: 8),
-              _editableTimeField(controller.endTimeControllerStepTwo, "12:12 PM", context, isReadOnly: true),
-            ],
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.backgroundOfPickupsWidget,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(TextString.subtitleAgreementEndTimeStepTwoDropOff2 , style: TTextTheme.dropdowninsideText(context)),
+                const SizedBox(height: 8),
+                _editableTimeField(controller.endDateControllerStepTwo, "02/12/2025", context, isReadOnly: true),
+                const SizedBox(height: 8),
+                _editableTimeField(controller.endTimeControllerStepTwo, "12:12 PM", context, isReadOnly: true),
+              ],
+            ),
           ),
         ),
       ],
@@ -681,28 +549,33 @@ class DropOffDetails extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// Pickup Section
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: AppColors.backgroundOfScreenColor,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            children: [
-              _buildReadOnlyTimePair(context, TextString.subtitleAgreementTimeStepTwoPickupDropOff, "02/12/2025", "12:12 PM"),
-              const SizedBox(height: 15),
-              _buildReadOnlyTimePair(context,  TextString.subtitleAgreementEndTimeStepTwoPickupDropOff, "02/12/2025", "12:12 PM"),
-            ],
-          ),
+        Column(
+          children: [
+            _buildReadOnlyTimePair(context, TextString.subtitleAgreementTimeStepTwoPickupDropOff, "02/12/2025", "12:12 PM"),
+            const SizedBox(height: 15),
+            _buildReadOnlyTimePair(context,  TextString.subtitleAgreementEndTimeStepTwoPickupDropOff, "02/12/2025", "12:12 PM"),
+          ],
         ),
         const SizedBox(height: 24),
 
         /// Dropoff Section
-        Text(TextString.subtitleAgreementEndTimeStepTwoDropOff2, style: TTextTheme.dropdowninsideText(context)),
-        const SizedBox(height: 8),
-        _editableTimeField(controller.endDateControllerStepTwo, "25/12/2025", context, isReadOnly: true),
-        const SizedBox(height: 8),
-        _editableTimeField(controller.endTimeControllerStepTwo, "12:12 PM", context, isReadOnly: true),
+        Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.backgroundOfPickupsWidget,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          child:Column(
+            children: [
+              Text(TextString.subtitleAgreementEndTimeStepTwoDropOff2, style: TTextTheme.dropdowninsideText(context)),
+              const SizedBox(height: 8),
+              _editableTimeField(controller.endDateControllerStepTwo, "25/12/2025", context, isReadOnly: true),
+              const SizedBox(height: 8),
+              _editableTimeField(controller.endTimeControllerStepTwo, "12:12 PM", context, isReadOnly: true),
+            ],
+          )
+        )
+
       ],
     );
   }
@@ -743,20 +616,15 @@ class DropOffDetails extends StatelessWidget {
   // Car Report Section
   Widget _buildCarReportComparison(BuildContext context, bool isMobile) {
     return LayoutBuilder(builder: (context, constraints) {
-      double columnWidth = isMobile ? constraints.maxWidth : (constraints.maxWidth - 40) / 2;
+      bool useColumn = constraints.maxWidth < 600;
 
-      return Wrap(
-        spacing: 40,
-        runSpacing: 25,
+      return Flex(
+        direction: useColumn ? Axis.vertical : Axis.horizontal,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// LEFT SIDE:
-          Container(
-            width: columnWidth,
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: AppColors.backgroundOfScreenColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
+          /// LEFT SIDE
+          Expanded(
+            flex: useColumn ? 0 : 1,
             child: Column(
               children: [
                 _buildReadOnlyField(TextString.subtitlePickupOdoStepTwoDropOff, controller.odoControllerStepTwo.text, context),
@@ -770,47 +638,46 @@ class DropOffDetails extends StatelessWidget {
             ),
           ),
 
-          /// DROPOFF SIDE
-          Padding(
-            padding: EdgeInsets.only(top: isMobile ? 0 : 5),
-            child: SizedBox(
-              width: columnWidth,
+          useColumn ? const SizedBox(height: 25) : const SizedBox(width: 40),
+
+          /// RIGHT SIDE
+          Expanded(
+            flex: useColumn ? 0 : 1,
+            child: Container(
+              padding: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: AppColors.backgroundOfPickupsWidget,
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Dropoff ODO
                   _buildMiniInputField(
                       TextString.subtitleDropOffOdoStepTwoDropOff,
                       "12457678",
-                      columnWidth,
+                      double.infinity,
                       controller.odoControllerDropOff,
                       context
                   ),
                   const SizedBox(height: 18),
-
-
                   _buildLockedDropdown(
                       TextString.subtitleDropOffFuelLevelStepTwoDropOff,
                       controller.fuelLevelControllerDropOff.text,
-                      columnWidth,
+                      double.infinity,
                       context
                   ),
                   const SizedBox(height: 18),
-
-// Dropoff Exterior
                   _buildLockedDropdown(
                       TextString.subtitleExteriorCleanlinessStepTwoDropOff2,
                       controller.exteriorCleanlinessControllerDropOff.text,
-                      columnWidth,
+                      double.infinity,
                       context
                   ),
                   const SizedBox(height: 18),
-
-// Dropoff Interior
                   _buildLockedDropdown(
                       TextString.subtitleInteriorCleanlinessStepTwoDropOff2,
                       controller.interiorCleanlinessControllerDropOff.text,
-                      columnWidth,
+                      double.infinity,
                       context
                   ),
                 ],
@@ -852,202 +719,6 @@ class DropOffDetails extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  // Signature Section
-  Widget _buildSignatureSection(BuildContext context, bool isMobile) {
-    return LayoutBuilder(builder: (context, constraints) {
-      if (isMobile) {
-        return Column(
-          children: [
-            _buildPickupSignatureBlock(context),
-            const SizedBox(height: 25),
-            _buildDropoffSignatureBlock(context),
-          ],
-        );
-      }
-      /// Web
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // PICKUP
-          Expanded(
-            flex: 1,
-            child: _buildPickupSignatureBlock(context),
-          ),
-
-          const SizedBox(width: 30),
-
-          // DROPOFF
-          Expanded(
-            flex: 1,
-            child: _buildDropoffSignatureBlock(context),
-          ),
-        ],
-      );
-    });
-  }
-  Widget _buildPickupSignatureBlock(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundOfScreenColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("Pickup", style: TTextTheme.dropdowninsideText(context)),
-          const SizedBox(height: 15),
-          _buildSignatureCard(context, TextString.subtitleOwnerSignatureStepTwoDropOff, "Softsnip", isReadOnly: true, bgColor: AppColors.backgroundOfScreenColor),
-          const SizedBox(height: 15),
-          _buildSignatureCard(context, TextString.subtitleHirerSignatureStepTwoDropOff, "Softsnip", isReadOnly: true, bgColor: AppColors.backgroundOfScreenColor),
-        ],
-      ),
-    );
-  }
-  Widget _buildDropoffSignatureBlock(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 50.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSignatureCard(context, TextString.subtitleOwnerSignatureStepTwoDropOff, "Softsnip", isReadOnly: false, bgColor: Colors.white),
-          const SizedBox(height: 15),
-          _buildSignatureCard(context, TextString.subtitleHirerSignatureStepTwoDropOff, "Softsnip", isReadOnly: false, bgColor: Colors.white),
-        ],
-      ),
-    );
-  }
-  Widget _buildSignatureCard(BuildContext context, String title, String name, {bool isReadOnly = false, required Color bgColor}) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.primaryColor,
-          width: 0.6,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: TTextTheme.titleRadios(context)),
-          const SizedBox(height: 15),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(name, style:TTextTheme.h2Style(context) ),
-                    const Divider(thickness: 1, color: AppColors.tertiaryTextColor),
-                    Text(TextString.subtitleFullNameStepTwoDropOff , style: TTextTheme.titleFullName(context)),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 25),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(name, style: TTextTheme.h2Style(context)),
-                    const Divider(thickness: 1, color: AppColors.tertiaryTextColor),
-                    Text(TextString.titleSignatureStepTwoDropOff , style: TTextTheme.titleFullName(context)),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Image Sections
-  Widget _buildPickupImageBox(BuildContext context) {
-    bool isMobileView = MediaQuery.of(context).size.width < 600;
-
-    return Container(
-      width: double.infinity,
-      constraints: const BoxConstraints(minHeight: 180),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.tertiaryTextColor,
-          width: 1.5,
-        ),
-      ),
-      child: LayoutBuilder(builder: (context, constraints) {
-        final double itemWidth = isMobileView ? (constraints.maxWidth - 24) / 2 : 110;
-
-        return Wrap(
-          spacing: 12,
-          runSpacing: 12,
-          children: List.generate(10, (index) {
-            return Container(
-              height: 100,
-              width: itemWidth,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AppColors.tertiaryTextColor, width: 1),
-                image: DecorationImage(
-                  image: AssetImage(ImageString.astonPic),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            );
-          }),
-        );
-      }),
-    );
-  }
-  Widget _buildPickupImageBox2(BuildContext context) {
-    bool isMobileView = MediaQuery.of(context).size.width < 600;
-
-    return DottedBorder(
-      borderType: BorderType.RRect,
-      radius: Radius.circular(12),
-      dashPattern: const [8, 6],
-      color: AppColors.tertiaryTextColor,
-      strokeWidth: 1.5,
-      child: Container(
-        width: double.infinity,
-        constraints: const BoxConstraints(minHeight: 180),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: LayoutBuilder(builder: (context, constraints) {
-          final double itemWidth = isMobileView ? (constraints.maxWidth - 24) / 2 : 110;
-
-          return Wrap(
-            spacing: 12,
-            runSpacing: 12,
-            children: List.generate(10, (index) {
-              return Container(
-                height: 100,
-                width: itemWidth,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: AppColors.primaryColor, width: 1),
-                  image: DecorationImage(
-                    image: AssetImage(ImageString.astonPic),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              );
-            }),
-          );
-        }),
-      ),
     );
   }
 
@@ -1216,7 +887,7 @@ class DropOffDetails extends StatelessWidget {
   Widget _buildDetailedCarCard(BuildContext context, bool isMobile) {
     return Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: isMobile ? 18 : 15),
+        padding: EdgeInsets.symmetric(horizontal: 18, vertical: isMobile ? 18 : 15),
         decoration: BoxDecoration(
           color: AppColors.backgroundOfPickupsWidget,
           borderRadius: BorderRadius.circular(12),
@@ -1231,7 +902,7 @@ class DropOffDetails extends StatelessWidget {
                 Expanded(
                   child: Row(
                     children: [
-                      Center(child: Image.asset(ImageString.astonPic, width: 100)),
+                      Center(child: Image.asset(ImageString.astonPic, width: 90)),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Column(
@@ -1291,7 +962,7 @@ class DropOffDetails extends StatelessWidget {
                 ? SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: ConstrainedBox(
-                constraints: BoxConstraints(minWidth: 970),
+                constraints: BoxConstraints(minWidth: 900),
                 child: content,
               ),
             )
@@ -1508,34 +1179,25 @@ class DropOffDetails extends StatelessWidget {
       ],
     );
   }
+
+
+   // Radio Items
   Widget _toggleStatusTag(BuildContext context, String text, RxBool stateVariable) {
-    return Obx(() => GestureDetector(
-      onTap: () {
-        stateVariable.value = !stateVariable.value;
-      },
-      child: Container(
-        padding:  EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-        decoration: BoxDecoration(
-          color: AppColors.backgroundOfPickupsWidget,
-          borderRadius: BorderRadius.circular(8),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Icon(
+          Icons.radio_button_checked,
+          size: 16,
+          color: AppColors.blackColor,
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              stateVariable.value ? Icons.radio_button_checked : Icons.radio_button_off,
-              size: 16,
-              color: AppColors.blackColor,
-            ),
-            SizedBox(width: 10),
-            Text(
-              text,
-              style: TTextTheme.titleRadios(context),
-            ),
-          ],
+        const SizedBox(width: 10),
+        Text(
+          text,
+          style: TTextTheme.titleRadios(context),
         ),
-      ),
-    ));
+      ],
+    );
   }
 
 
@@ -1611,7 +1273,7 @@ class DropOffDetails extends StatelessWidget {
 
 
 
-
 }
+
 
 

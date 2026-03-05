@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb, Uint8List;
+import 'package:signature/signature.dart';
 
 class DamagePoint {
   final double dx;
@@ -57,6 +58,25 @@ class DropOffController extends GetxController{
     bondAmountControllerStepTwoAdd.text = "2600 \$";
     paidBondControllerStepTwoAdd.text = "600 \$";
     dueBondAmountControllerStepTwoAdd.text = "2000 \$";
+
+     // DropOff Signatures
+    dropOffOwnerSigPadController.addListener(() {
+      if (dropOffOwnerSigPadController.isNotEmpty) {
+        isDropOffOwnerDrawingActive.value = true;
+      }
+    });
+
+    dropOffHirerSigPadController.addListener(() {
+      if (dropOffHirerSigPadController.isNotEmpty) {
+        isDropOffHirerDrawingActive.value = true;
+      }
+    });
+
+    damagePoints2.assignAll([
+      DamagePoint(dx: 0.2, dy: 0.3, typeId: 1, color: AppColors.oneBackground),
+      DamagePoint(dx: 0.5, dy: 0.5, typeId: 2, color: AppColors.twoBackground),
+      DamagePoint(dx: 0.8, dy: 0.7, typeId: 3, color: AppColors.threeBackground),
+    ]);
   }
 
   int get totalPages {
@@ -152,6 +172,39 @@ class DropOffController extends GetxController{
     {'id': 4, 'label': 'Scuff', 'color': AppColors.fourBackground},
     {'id': 5, 'label': 'Other', 'color': AppColors.fiveBackground},
   ];
+
+
+  /// selected tab index
+  final RxInt selectedIndex = 0.obs;
+  final isTermsAgreed2 = false.obs;
+
+  /// tabs list
+  final List<String> tabs = [
+    "Customer and Contract",
+    "Vehicle Condition and Photos",
+    "Term & Condition and Sign",
+  ];
+
+  void changeTab(int index) {
+    selectedIndex.value = index;
+  }
+
+
+  final String pickupFrontImg = ImageString.frontPickImage;
+  final String pickupBackImg = ImageString.backPickImage;
+  final String pickupLeftImg = ImageString.leftPickImage;
+  final String pickupRightImg = ImageString.rightPickImage;
+
+  // Additional images ki list
+  final List<String> pickupAdditionalImagesDropOff = [
+    ImageString.frontPickImage,
+    ImageString.backPickImage,
+    ImageString.leftPickImage,
+    ImageString.rightPickImage,
+    ImageString.frontPickImage,
+  ];
+
+
 
 
   /// Add Pickup Car
@@ -257,7 +310,6 @@ class DropOffController extends GetxController{
     );
   }
 
-// Time Picker Overlay Maker
   var selectedHour = 11.obs;
   var selectedMinute = 30.obs;
   var isAM = true.obs;
@@ -431,6 +483,63 @@ class DropOffController extends GetxController{
       } else if (type == 'back') backImage.value = null;
       else if (type == 'left') leftImage.value = null;
       else if (type == 'right') rightImage.value = null;
+    }
+  }
+
+  /// Step Three Widget
+  final isTermsAgreed = false.obs;
+  var isOwnerSigned = true.obs;
+
+  final dropOffOwnerNameFieldController = TextEditingController();
+  var isDropOffOwnerDrawingActive = false.obs;
+  var isDropOffOwnerSignatureConfirmed = false.obs;
+  final dropOffOwnerSigPadController = SignatureController(
+    penStrokeWidth: 3,
+    penColor: Colors.black,
+  );
+
+  final dropOffHirerNameFieldController = TextEditingController();
+  var isDropOffHirerDrawingActive = false.obs;
+  var isDropOffHirerSignatureConfirmed = false.obs;
+  final dropOffHirerSigPadController = SignatureController(
+      penStrokeWidth: 3,
+      penColor: Colors.black
+  );
+
+
+  RxBool get isDrawingStarted => isOwnerSigned.value
+      ? isDropOffOwnerDrawingActive
+      : isDropOffHirerDrawingActive;
+
+  RxBool get isConfirmed => isOwnerSigned.value
+      ? isDropOffOwnerSignatureConfirmed
+      : isDropOffHirerSignatureConfirmed;
+
+  TextEditingController get activeNameController => isOwnerSigned.value
+      ? dropOffOwnerNameFieldController
+      : dropOffHirerNameFieldController;
+
+  SignatureController get activeSigController => isOwnerSigned.value
+      ? dropOffOwnerSigPadController
+      : dropOffHirerSigPadController;
+
+  void clearSignature() {
+    activeSigController.clear();
+    isDrawingStarted.value = false;
+    isConfirmed.value = false;
+  }
+
+  void confirmCurrentSignature() {
+    if (activeNameController.text.trim().isNotEmpty) {
+      isConfirmed.value = true;
+    } else {
+      Get.snackbar(
+          "Required",
+          "Please enter name before confirming",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white
+      );
     }
   }
 

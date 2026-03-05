@@ -153,7 +153,7 @@ class AdditionalImagesBox extends StatelessWidget {
                       top: MediaQuery.of(context).padding.top + 10,
                       right: padding,
                       child: IconButton(
-                        icon: Icon(Icons.close, color: Colors.white, size: arrowSize),
+                        icon: Icon(Icons.close, color:AppColors.tertiaryTextColor, size: arrowSize),
                         onPressed: () => Navigator.of(dialogContext).pop(),
                       ),
                     ),
@@ -161,7 +161,7 @@ class AdditionalImagesBox extends StatelessWidget {
                     Positioned(
                       left: padding,
                       child: IconButton(
-                        icon: Icon(Icons.arrow_back, color: AppColors.secondaryColor, size: arrowSize),
+                        icon: Icon(Icons.arrow_back, color: AppColors.tertiaryTextColor, size: arrowSize),
                         onPressed: () {
                           if (pageController.hasClients && pageController.page! > 0) {
                             pageController.previousPage(
@@ -176,7 +176,7 @@ class AdditionalImagesBox extends StatelessWidget {
                     Positioned(
                       right: padding,
                       child: IconButton(
-                        icon: Icon(Icons.arrow_forward, color: AppColors.secondaryColor, size: arrowSize),
+                        icon: Icon(Icons.arrow_forward, color: AppColors.tertiaryTextColor, size: arrowSize),
                         onPressed: () {
                           if (pageController.hasClients && pageController.page! < allImages.length - 1) {
                             pageController.nextPage(

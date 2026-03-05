@@ -12,6 +12,7 @@ import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class StepTwoDropOffWidget extends StatelessWidget {
   final controller = Get.find<DropOffController>();
@@ -24,6 +25,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
         .of(context)
         .size
         .width < 700;
+    final isWeb = AppSizes.isWeb(context);
 
     return Scaffold(
       backgroundColor: AppColors.backgroundOfScreenColor,
@@ -33,10 +35,14 @@ class StepTwoDropOffWidget extends StatelessWidget {
             const SizedBox(height: 20),
             // Header
             HeaderWebDropOffWidget(
-              mainTitle: 'Drop Off Car',
+              mainTitle: 'Add DropOff Car',
               showBack: true,
-              smallTitle: 'Drop Off / Inspection',
-              showSearch: !isMobile,
+              showSmallTitle: true,
+              smallTitle: 'DropOff Car / Add DropOff Car',
+              showSearch: isWeb,
+              showSettings: isWeb,
+              showAddButton: false,
+              showNotification: true,
               showProfile: true,
             ),
 
@@ -625,7 +631,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
                   Image.asset(IconString.agreementIcon, height: 20, color: AppColors.primaryColor),
                   const SizedBox(width: 8),
                    Expanded(
-                     child: Text(TextString.additionalPickupText,
+                     child: Text(TextString.additionalImagesDropOff2,
                         style: TTextTheme.CalendarTitle(context),
                        overflow: TextOverflow.ellipsis,
                        maxLines: 1,
@@ -815,44 +821,95 @@ class StepTwoDropOffWidget extends StatelessWidget {
         return Dialog(
           insetPadding: EdgeInsets.zero,
           backgroundColor: Colors.transparent,
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            color: Colors.black.withOpacity(0.9),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                PageView.builder(
-                  controller: pageController,
-                  itemCount: allImages.length,
-                  itemBuilder: (_, index) {
-                    return InteractiveViewer(
-                      child: isFile
-                          ? (kIsWeb
-                          ? Image.memory(allImages[index].bytes!, fit: BoxFit.contain)
-                          : Image.file(File(allImages[index].path!), fit: BoxFit.contain))
-                          : Image.asset(allImages[index], fit: BoxFit.contain),
-                    );
-                  },
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              double arrowSize = constraints.maxWidth < 400 ? 30 : 40;
+              double padding = constraints.maxWidth < 400 ? 10 : 20;
+
+              return Container(
+                width: constraints.maxWidth,
+                height: constraints.maxHeight,
+                color: AppColors.blackColor.withOpacity(0.9),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned.fill(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: arrowSize + (padding * 2)),
+                        child: PageView.builder(
+                          controller: pageController,
+                          itemCount: allImages.length,
+                          itemBuilder: (_, index) {
+                            return InteractiveViewer(
+                              minScale: 0.5,
+                              maxScale: 4.0,
+                              child: isFile
+                                  ? (kIsWeb
+                                  ? Image.memory(allImages[index].bytes!, fit: BoxFit.contain)
+                                  : Image.file(File(allImages[index].path!), fit: BoxFit.contain))
+                                  : Image.asset(allImages[index], fit: BoxFit.contain),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+
+                    Positioned(
+                      top: MediaQuery.of(context).padding.top + 10,
+                      right: padding,
+                      child: IconButton(
+                        icon: Icon(Icons.close, color: AppColors.tertiaryTextColor, size: arrowSize),
+                        onPressed: () => Navigator.of(dialogContext).pop(),
+                      ),
+                    ),
+
+                    _buildNavArrow(
+                      icon: Icons.arrow_back,
+                      onTap: () {
+                        if (pageController.page! > 0) {
+                          pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                        }
+                      },
+                      isLeft: true,
+                      padding: padding,
+                      size: arrowSize,
+                    ),
+
+                    _buildNavArrow(
+                      icon: Icons.arrow_forward,
+                      onTap: () {
+                        if (pageController.page! < allImages.length - 1) {
+                          pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                        }
+                      },
+                      isLeft: false,
+                      padding: padding,
+                      size: arrowSize,
+                    ),
+                  ],
                 ),
-                Positioned(
-                  top: 40, right: 20,
-                  child: IconButton(icon: const Icon(Icons.close, color: Colors.white, size: 30), onPressed: () => Navigator.pop(dialogContext)),
-                ),
-                _buildNavArrow(Icons.arrow_back, () => pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.ease), true),
-                _buildNavArrow(Icons.arrow_forward, () => pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease), false),
-              ],
-            ),
+              );
+            },
           ),
         );
       },
     );
   }
-  Widget _buildNavArrow(IconData icon, VoidCallback onTap, bool isLeft) {
+
+  Widget _buildNavArrow({
+    required IconData icon,
+    required VoidCallback onTap,
+    required bool isLeft,
+    required double padding,
+    required double size
+  }) {
     return Positioned(
-      left: isLeft ? 10 : null,
-      right: isLeft ? null : 10,
-      child: IconButton(icon: Icon(icon, color: Colors.white, size: 40), onPressed: onTap),
+      left: isLeft ? padding : null,
+      right: isLeft ? null : padding,
+      child: IconButton(
+        icon: Icon(icon, color: AppColors.tertiaryTextColor, size: size),
+        onPressed: onTap,
+      ),
     );
   }
 
@@ -886,7 +943,9 @@ class StepTwoDropOffWidget extends StatelessWidget {
               icon: Image.asset(
                 IconString.continueIcon,
               ),
-              onTap: () {},
+              onTap: () {
+                context.push('/stepThreeDropOff', extra: {"hideMobileAppBar": true});
+              },
             ),
           ),
         ],
@@ -915,7 +974,9 @@ class StepTwoDropOffWidget extends StatelessWidget {
               icon: Image.asset(
                 IconString.continueIcon,
               ),
-              onTap: () {},
+              onTap: () {
+                context.push('/stepThreeDropOff', extra: {"hideMobileAppBar": true});
+              },
             ),
           ),
 

@@ -40,7 +40,7 @@ class _CustomCalendarDropOffState extends State<CustomCalendarDropOff> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: AppColors.fieldsBackground,
             blurRadius: 15,
             offset: const Offset(0, 8),
           )

@@ -201,7 +201,7 @@ class PickupDetailWidget extends StatelessWidget {
                       ),
                       child: TextFormField(
                         cursorColor: AppColors.blackColor,
-                        controller: item['controller'], 
+                        controller: item['controller'],
                         readOnly: isReadOnly,
                         textAlignVertical: TextAlignVertical.center,
                         style: TTextTheme.insidetextfieldWrittenText(context),
@@ -379,7 +379,7 @@ class PickupDetailWidget extends StatelessWidget {
               AddButtonOfPickup(
                 text: "Update Bond",
                 width: shouldStack ? double.infinity : 130,
-                height: 35,
+                height: 39,
                 onTap: () {
 
                 },
@@ -896,8 +896,6 @@ class PickupDetailWidget extends StatelessWidget {
       ],
     );
   }
-
-
   Widget _infoRowTag({
     required String label,
     required String value,
@@ -941,7 +939,6 @@ class PickupDetailWidget extends StatelessWidget {
       ],
     );
   }
-
   Widget _infoBlock(String imagePath, String label, String value, BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -988,34 +985,22 @@ class PickupDetailWidget extends StatelessWidget {
     );
   }
 
-
+      // Radios Items
   Widget _toggleStatusTag(BuildContext context, String text, RxBool stateVariable) {
-    return Obx(() => GestureDetector(
-      onTap: () {
-        stateVariable.value = !stateVariable.value;
-      },
-      child: Container(
-        padding:  EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-        decoration: BoxDecoration(
-          color: AppColors.backgroundOfPickupsWidget,
-          borderRadius: BorderRadius.circular(8),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.radio_button_checked,
+          size: 16,
+          color: AppColors.blackColor,
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              stateVariable.value ? Icons.radio_button_checked : Icons.radio_button_off,
-              size: 16,
-              color: AppColors.blackColor,
-            ),
-            SizedBox(width: 10),
-            Text(
-              text,
-              style: TTextTheme.titleRadios(context),
-            ),
-          ],
+        const SizedBox(width: 10),
+        Text(
+          text,
+          style: TTextTheme.titleRadios(context),
         ),
-      ),
-    ));
+      ],
+    );
   }
 }
