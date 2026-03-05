@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:car_rental_project/DroppOffCar/DropOffController.dart';
 import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/PrimaryBtnDropOff.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
@@ -50,7 +49,7 @@ class VehicleConditionDropOff extends StatelessWidget {
 
   /// --------- Extra Widget ------- ///
 
-  // RE-USABLE SECTION HEADER
+  // Reusable Section
   Widget _buildSectionHeader(BuildContext context, String title, String icon) {
     return Container(
       width: double.infinity,
@@ -71,6 +70,7 @@ class VehicleConditionDropOff extends StatelessWidget {
       ),
     );
   }
+   // Damage Inspection
   Widget _buildDamageInspectionComparison(BuildContext context, bool isMobile) {
     return LayoutBuilder(builder: (context, constraints) {
       double columnWidth = isMobile ? constraints.maxWidth : (constraints.maxWidth - 40) / 2;
@@ -281,8 +281,9 @@ class VehicleConditionDropOff extends StatelessWidget {
     final controller = Get.find<DropOffController>();
 
     String pickupImg;
-    if (type == 'front') pickupImg = controller.pickupFrontImg;
-    else if (type == 'back') pickupImg = controller.pickupBackImg;
+    if (type == 'front') {
+      pickupImg = controller.pickupFrontImg;
+    } else if (type == 'back') pickupImg = controller.pickupBackImg;
     else if (type == 'left') pickupImg = controller.pickupLeftImg;
     else pickupImg = controller.pickupRightImg;
 

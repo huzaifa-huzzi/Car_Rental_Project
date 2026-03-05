@@ -1,10 +1,8 @@
 import 'package:car_rental_project/DroppOffCar/DropOffController.dart';
 import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/DropOffSuccessDualog.dart';
-import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddButtonOfPickup.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddPickupButton.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/HeaderWebPickupWidget.dart';
-import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/SuccessConfirmationPickupDialog.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextString.dart';

@@ -178,7 +178,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    "Damage Inspection",
+                    TextString.titleDamageInspectionStepTwoDropOff,
                     style: TTextTheme.DamageStyle(context),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
@@ -201,7 +201,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Pickup Damage", style: TTextTheme.titleSix(context)),
+                    Text(TextString.titleDamageInspectionStepTwoDropOffPickup, style: TTextTheme.titleSix(context)),
                     const SizedBox(height: 10),
                     _buildLegendBox(context, isInteractive: false),
                     const SizedBox(height: 20),
@@ -219,7 +219,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Drop off Damage",
+                    Text(TextString.titleDamageInspectionStepTwoDropOff2,
                         style: TTextTheme.titleSix(context).copyWith(
                             fontSize: 14)),
                     const SizedBox(height: 10),
