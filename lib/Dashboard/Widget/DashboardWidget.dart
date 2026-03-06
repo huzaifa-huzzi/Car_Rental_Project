@@ -453,7 +453,7 @@ class DashboardContent extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
-          color: AppColors.sideBoxesColor,
+          color: AppColors.backgroundOfScreenColor,
           borderRadius: BorderRadius.circular(8),
         ),
         child: DropdownButtonHideUnderline(

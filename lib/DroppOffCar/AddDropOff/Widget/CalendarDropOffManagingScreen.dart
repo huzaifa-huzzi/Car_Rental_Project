@@ -39,7 +39,7 @@ class _CustomCalendarDropOffState extends State<CustomCalendarDropOff> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          /// HEADER (Month/Year)
+          /// HEADER
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -63,7 +63,7 @@ class _CustomCalendarDropOffState extends State<CustomCalendarDropOff> {
           ),
           const Divider(),
 
-          /// DAYS HEADER (Mon-Sun)
+          /// DAYS HEADER
           Row(
             children: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
                 .map((d) => Expanded(
@@ -118,7 +118,7 @@ class _CustomCalendarDropOffState extends State<CustomCalendarDropOff> {
 
           const SizedBox(height: 12),
 
-          /// BUTTONS Row
+          /// BUTTONS
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -134,7 +134,8 @@ class _CustomCalendarDropOffState extends State<CustomCalendarDropOff> {
     );
   }
 
-  // Helper Button to keep UI clean
+  /// --------- Extra Widget --------- ///
+  // btn
   Widget _buildBtn(String text, VoidCallback onTap, BuildContext context, bool isOutline) {
     return SizedBox(
       height: 28,
@@ -161,6 +162,5 @@ class _CustomCalendarDropOffState extends State<CustomCalendarDropOff> {
       ),
     );
   }
-
   String _getMonthName(int month) => ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][month - 1];
 }
