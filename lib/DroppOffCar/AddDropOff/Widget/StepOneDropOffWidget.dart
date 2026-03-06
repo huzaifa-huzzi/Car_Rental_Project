@@ -85,31 +85,38 @@ class AddDropOffDetailWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               /// RENT PURPOSE SECTION
-                              Expanded(
-                                flex: isMobile ? 0 : 1,
+                              isMobile
+                                  ? _buildSection(
+                                context,
+                                title: TextString.titleRentPurposeStepTwoDropOffAdd,
+                                icon: IconString.rentPurposeIcon,
+                                child: _toggleStatusTag(context, TextString.subtitleRentPurposeStepTwoDropOffAdd, controller.isPersonalUseStepTwoAdd),
+                              )
+                                  : Expanded(
                                 child: _buildSection(
                                   context,
                                   title: TextString.titleRentPurposeStepTwoDropOffAdd,
                                   icon: IconString.rentPurposeIcon,
-                                  child: IgnorePointer(
-                                    child: _toggleStatusTag(context, TextString.subtitleRentPurposeStepTwoDropOffAdd, controller.isPersonalUseStepTwoAdd),
-                                  ),
+                                  child: _toggleStatusTag(context, TextString.subtitleRentPurposeStepTwoDropOffAdd, controller.isPersonalUseStepTwoAdd),
                                 ),
                               ),
-
 
                               if (!isMobile) const SizedBox(width: 25) else const SizedBox(height: 25),
 
                               /// PAYMENT METHOD SECTION
-                              Expanded(
-                                flex: isMobile ? 0 : 1,
+                              isMobile
+                                  ? _buildSection(
+                                context,
+                                title: TextString.titlePaymentMethodStepTwoDropOffAdd,
+                                icon: IconString.paymentMethodIcon,
+                                child: _toggleStatusTag(context, TextString.subtitlePaymentMethodStepTwoDropOffAdd, controller.isManualPaymentStepTwoAdd),
+                              )
+                                  : Expanded(
                                 child: _buildSection(
                                   context,
                                   title: TextString.titlePaymentMethodStepTwoDropOffAdd,
                                   icon: IconString.paymentMethodIcon,
-                                  child: IgnorePointer(
-                                    child: _toggleStatusTag(context, TextString.subtitlePaymentMethodStepTwoDropOffAdd, controller.isManualPaymentStepTwoAdd),
-                                  ),
+                                  child: _toggleStatusTag(context, TextString.subtitlePaymentMethodStepTwoDropOffAdd, controller.isManualPaymentStepTwoAdd),
                                 ),
                               ),
                             ],
@@ -174,9 +181,9 @@ class AddDropOffDetailWidget extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             _buttonSection(context, isMobile),
-            const SizedBox(height: 50),
+            const SizedBox(height: 140),
           ],
         ),
       ),
@@ -1317,27 +1324,25 @@ class AddDropOffDetailWidget extends StatelessWidget {
       onTap: () {
         stateVariable.value = !stateVariable.value;
       },
-      child: Container(
-        padding:  EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-        decoration: BoxDecoration(
-          color: AppColors.backgroundOfPickupsWidget,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              stateVariable.value ? Icons.radio_button_checked : Icons.radio_button_off,
-              size: 16,
-              color: AppColors.blackColor,
-            ),
-            SizedBox(width: 10),
-            Text(
+      behavior: HitTestBehavior.opaque,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            stateVariable.value ? Icons.radio_button_checked : Icons.radio_button_off,
+            size: 16,
+            color: AppColors.blackColor,
+          ),
+          const SizedBox(width: 10),
+          Flexible(
+            child: Text(
               text,
               style: TTextTheme.titleRadios(context),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     ));
   }

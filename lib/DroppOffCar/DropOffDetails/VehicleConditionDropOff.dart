@@ -39,7 +39,6 @@ class VehicleConditionDropOff extends StatelessWidget {
             _buildDamageInspectionComparison(context, isMobile),
             const SizedBox(height: 20),
             _buildUploadPictureCard(context, isMobile),
-
             const SizedBox(height: 45),
           ],
         ),

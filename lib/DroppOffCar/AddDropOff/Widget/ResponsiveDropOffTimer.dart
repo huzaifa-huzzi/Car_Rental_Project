@@ -1,4 +1,4 @@
-import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
+import 'package:car_rental_project/DroppOffCar/DropOffController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,26 +9,22 @@ class ResponsiveDropOffTimer extends StatelessWidget {
   final double width;
   final Function(String) onTimeSelected;
   final VoidCallback onCancel;
-  final PickupCarController controller = Get.put(PickupCarController());
+  final DropOffController controller = Get.find<DropOffController>();
 
-  ResponsiveDropOffTimer({
-    super.key,
-    required this.width,
-    required this.onTimeSelected,
-    required this.onCancel,
-  });
+  ResponsiveDropOffTimer({super.key, required this.width, required this.onTimeSelected, required this.onCancel});
 
   @override
   Widget build(BuildContext context) {
-    double effectiveWidth = width < 250 ? 250 : width;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double effectiveWidth = width > screenWidth - 30 ? screenWidth - 30 : width;
 
     return Container(
       width: effectiveWidth,
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20)],
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [BoxShadow(color: AppColors.fieldsBackground, blurRadius: 10, spreadRadius: 2)],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -36,100 +32,109 @@ class ResponsiveDropOffTimer extends StatelessWidget {
           SizedBox(
             height: 150,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: CupertinoPicker(
-                    scrollController: FixedExtentScrollController(initialItem: 10),
-                    itemExtent: 40,
-                    onSelectedItemChanged: (index) => controller.updateHour(index + 1),
-                    children: List.generate(12, (i) => Center(child: Text("${i + 1}", style: TTextTheme.hourlyTitle(context)))),
-                  ),
+                Flexible(child: _buildPickerColumn(context, 12, (index) => controller.updateHour(index + 1), true)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Text(":", style: TTextTheme.hourlyTitle(context)),
                 ),
-                Text(":", style: TTextTheme.hourlyTitle(context)),
-                Expanded(
-                  child: CupertinoPicker(
-                    scrollController: FixedExtentScrollController(initialItem: 29),
-                    itemExtent: 40,
-                    onSelectedItemChanged: (index) => controller.updateMinute(index),
-                    children: List.generate(60, (i) => Center(child: Text(i.toString().padLeft(2, '0'), style:TTextTheme.hourlyTitle(context)))),
-                  ),
-                ),
-                Obx(() => Container(
-                  width: 65,
-                  height: 90,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: AppColors.tertiaryTextColor),
-                  ),
-                  child: Column(
-                    children: [
-                      _ampmButton("AM", true,context),
-                      _ampmButton("PM", false,context),
-                    ],
-                  ),
-                )),
+                Flexible(child: _buildPickerColumn(context, 60, (index) => controller.updateMinute(index), false)),
+                const SizedBox(width: 8),
+                _buildAMPMToggle(context),
               ],
             ),
           ),
           const SizedBox(height: 15),
-          // Buttons
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              SizedBox(
-                height: 28,
-                width: 68,
-                child: OutlinedButton(
-                  onPressed:onCancel,
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: AppColors.primaryColor),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    padding: EdgeInsets.zero,
-                  ),
-                  child: Text("Cancel", style: TTextTheme.calendarBtnCancel(context).copyWith(fontSize: 11)),
-                ),
-              ),
+              _btn(context, "Cancel", onCancel, isOutline: true),
               const SizedBox(width: 8),
-              SizedBox(
-                height: 28,
-                width: 68,
-                child: ElevatedButton(
-                  onPressed: () {
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor,
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    padding: EdgeInsets.zero,
-                  ),
-                  child: Text("Done", style: TTextTheme.calendarBtnDone(context).copyWith(fontSize: 11)),
-                ),
-              ),
+              _btn(context, "Done", () => onTimeSelected(controller.formattedTime), isOutline: false),
             ],
-          )
+          ),
         ],
       ),
     );
   }
+   /// ----------- Extra Widgets -------- ///
+  // picker
+  Widget _buildPickerColumn(BuildContext context, int count, Function(int) onChanged, bool isHour) {
+    return CupertinoPicker(
+      itemExtent: 40,
+      scrollController: FixedExtentScrollController(initialItem: isHour ? 10 : 29),
+      onSelectedItemChanged: onChanged,
+      children: List.generate(count, (i) {
+        String val = isHour ? "${i + 1}" : i.toString().padLeft(2, '0');
+        return Center(child: Text(val, style: TTextTheme.hourlyTitle(context)));
+      }),
+    );
+  }
 
-  /// ----------- Extra Widgets ---------- ///
-
-  // Am/Pm Buttons
-  Widget _ampmButton(String text, bool am,BuildContext context) {
-    bool selected = controller.isAM.value == am;
-    return Expanded(
-      child: GestureDetector(
-        onTap: () => controller.togglePeriod(am),
-        child: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: selected ? AppColors.backgroundOfPickupsWidget : Colors.transparent,
-            borderRadius: BorderRadius.circular(6),
+  // Am/Pm
+  Widget _buildAMPMToggle(BuildContext context) {
+    return Container(
+      width: 45,
+      height: 85,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.2)),
+      ),
+      child: Column(
+        children: [
+          _ampmItem("AM", true, context),
+          _ampmItem("PM", false, context),
+        ],
+      ),
+    );
+  }
+  Widget _ampmItem(String label, bool am, BuildContext context) {
+    return Obx(() {
+      bool selected = controller.isAM.value == am;
+      return Expanded(
+        child: GestureDetector(
+          onTap: () => controller.togglePeriod(am),
+          behavior: HitTestBehavior.opaque,
+          child: Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: selected ? AppColors.backgroundOfPickupsWidget : Colors.transparent,
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(label, style: TTextTheme.hourlySubtitle(context).copyWith(
+                color: selected ? AppColors.primaryColor : AppColors.textColor,
+            )),
           ),
-          child: Text(text, style: TTextTheme.hourlySubtitle(context).copyWith(color:selected ? AppColors.primaryColor : AppColors.textColor )),
         ),
+      );
+    });
+  }
+
+   // Buttons
+  Widget _btn(BuildContext context, String label, VoidCallback onTap, {required bool isOutline}) {
+    return SizedBox(
+      height: 32,
+      width: 65,
+      child: isOutline
+          ? OutlinedButton(
+          onPressed: onTap,
+          style: OutlinedButton.styleFrom(
+            side: const BorderSide(color: AppColors.primaryColor),
+            padding: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          child: Text(label, style: TTextTheme.calendarBtnCancel(context))
+      )
+          : ElevatedButton(
+          onPressed: onTap,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primaryColor,
+            padding: EdgeInsets.zero,
+            elevation: 0,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          child: Text(label, style: TTextTheme.calendarBtnDone(context))
       ),
     );
   }

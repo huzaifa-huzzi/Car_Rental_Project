@@ -1,5 +1,5 @@
 import 'package:car_rental_project/DroppOffCar/AddDropOff/Widget/CalendarDropOffManagingScreen.dart';
-import 'package:car_rental_project/PickupCar/AddPickUp/Widget/ResponsiveTimerWidget.dart';
+import 'package:car_rental_project/DroppOffCar/AddDropOff/Widget/ResponsiveDropOffTimer.dart';
 import 'package:car_rental_project/Resources/Colors.dart' show AppColors;
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:file_picker/file_picker.dart';
@@ -263,10 +263,8 @@ class DropOffController extends GetxController{
       double fieldWidth,
       ) {
     final screenWidth = MediaQuery.of(context).size.width;
-
-    final double popupWidth = fieldWidth.isInfinite
-        ? screenWidth.clamp(250, 320)
-        : fieldWidth.clamp(250, 380);
+    final double popupWidth = screenWidth < 500 ? 260 : 280;
+    bool isMobile = screenWidth < 600;
 
     return OverlayEntry(
       builder: (context) => Stack(
@@ -277,31 +275,23 @@ class DropOffController extends GetxController{
               child: Container(color: Colors.transparent),
             ),
           ),
-
           CompositedTransformFollower(
             link: link,
             showWhenUnlinked: false,
-            targetAnchor: Alignment.bottomLeft,
-            followerAnchor: Alignment.topLeft,
-            offset: const Offset(0, 6),
+            targetAnchor: isMobile ? Alignment.bottomRight : Alignment.bottomLeft,
+            followerAnchor: isMobile ? Alignment.topRight : Alignment.topLeft,
+            offset: const Offset(0, 8),
             child: Material(
-              elevation: 12,
+              elevation: 10,
               borderRadius: BorderRadius.circular(12),
-              clipBehavior: Clip.antiAlias,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minWidth: 250,
-                  maxWidth: popupWidth,
-                ),
-                child: CustomCalendarDropOff(
-                  width: popupWidth,
-                  onCancel: removeCalendar,
-                  onDateSelected: (date) {
-                    targetController.text =
-                    "${date.day}/${date.month}/${date.year}";
-                    removeCalendar();
-                  },
-                ),
+              color: Colors.white,
+              child: CustomCalendarDropOff(
+                width: popupWidth,
+                onCancel: removeCalendar,
+                onDateSelected: (date) {
+                  targetController.text = "${date.day}/${date.month}/${date.year}";
+                  removeCalendar();
+                },
               ),
             ),
           ),
@@ -309,6 +299,7 @@ class DropOffController extends GetxController{
       ),
     );
   }
+
 
   var selectedHour = 11.obs;
   var selectedMinute = 30.obs;
@@ -335,9 +326,11 @@ class DropOffController extends GetxController{
     if (timeOverlay != null) {
       timeOverlay?.remove();
       timeOverlay = null;
+      return;
     }
 
-    double overlayWidth = fieldWidth < 200 ? 200 : fieldWidth;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double overlayWidth = screenWidth < 350 ? screenWidth * 0.85 : 280;
 
     timeOverlay = OverlayEntry(
       builder: (context) => Stack(
@@ -356,12 +349,11 @@ class DropOffController extends GetxController{
             showWhenUnlinked: false,
             targetAnchor: Alignment.bottomLeft,
             followerAnchor: Alignment.topLeft,
-            offset: const Offset(0, 5),
+            offset: Offset(screenWidth < 350 ? -(overlayWidth * 0.2) : 0, 8),
             child: Material(
-              elevation: 10,
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              child: ResponsiveTimePicker(
+              elevation: 15,
+              color: Colors.transparent,
+              child: ResponsiveDropOffTimer(
                 width: overlayWidth,
                 onCancel: () {
                   timeOverlay?.remove();
