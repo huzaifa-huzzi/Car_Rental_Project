@@ -741,8 +741,9 @@ class StepOneSelectionWidget extends StatelessWidget {
               Container(
                   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   decoration: BoxDecoration(
-                    color: AppColors.backgroundOfPickupsWidget,
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.tertiaryTextColor,width: 0.7)
                   ),
                   child: isMobile
                       ? Column(
@@ -917,8 +918,9 @@ class StepOneSelectionWidget extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: AppColors.backgroundOfPickupsWidget,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(15),
+            border: Border.all(color :AppColors.tertiaryTextColor ,width: 0.7),
           ),
           child: AppSizes.isMobile(context)
               ? _buildMobileLayout(context, customer)

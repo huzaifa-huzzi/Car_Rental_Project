@@ -65,7 +65,7 @@ class DropOffDetails extends StatelessWidget {
                     _buildTabs(context),
                     const SizedBox(height: 25),
 
-                    // DYNAMIC TAB CONTENT
+                    //  TAB CONTENT
                     Obx(() => _buildTabContent(context, isMobile,controller)),
                   ],
                 ),
@@ -761,8 +761,9 @@ class DropOffDetails extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
       decoration: BoxDecoration(
-        color: AppColors.backgroundOfPickupsWidget,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.tertiaryTextColor,width: 0.7),
       ),
       child: isMobile
           ? Column(
@@ -871,7 +872,7 @@ class DropOffDetails extends StatelessWidget {
       padding: const EdgeInsets.all(1.5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.primaryColor, width: 0.5),
+        border: Border.all(color: Colors.white, width: 0.5),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
@@ -887,8 +888,9 @@ class DropOffDetails extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.symmetric(horizontal: 18, vertical: isMobile ? 18 : 15),
         decoration: BoxDecoration(
-          color: AppColors.backgroundOfPickupsWidget,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.tertiaryTextColor,width: 0.7)
         ),
         child: isMobile
             ? Column(

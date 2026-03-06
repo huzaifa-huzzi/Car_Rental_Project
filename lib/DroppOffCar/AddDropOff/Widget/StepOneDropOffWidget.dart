@@ -903,8 +903,9 @@ class AddDropOffDetailWidget extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
       decoration: BoxDecoration(
-        color: AppColors.backgroundOfPickupsWidget,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.tertiaryTextColor,width: 0.7)
       ),
       child: isMobile
           ? Column(
@@ -1013,7 +1014,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
       padding: const EdgeInsets.all(1.5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.primaryColor, width: 0.5),
+        border: Border.all(color: Colors.white, width: 0.5),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
@@ -1029,8 +1030,9 @@ class AddDropOffDetailWidget extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.symmetric(horizontal: 12, vertical: isMobile ? 18 : 15),
         decoration: BoxDecoration(
-          color: AppColors.backgroundOfPickupsWidget,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(12),
+          border:Border.all(color: AppColors.tertiaryTextColor,width: 0.7),
         ),
         child: isMobile
             ? Column(
