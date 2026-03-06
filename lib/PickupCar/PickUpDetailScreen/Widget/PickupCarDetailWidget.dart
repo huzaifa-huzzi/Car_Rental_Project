@@ -680,7 +680,7 @@ class PickupDetailWidget extends StatelessWidget {
       padding: const EdgeInsets.all(1.5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.primaryColor, width: 0.5),
+        border: Border.all(color: Colors.white, width: 0.5),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
