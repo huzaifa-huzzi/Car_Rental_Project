@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+
 class StepTwoDropOffWidget extends StatelessWidget {
   final controller = Get.find<DropOffController>();
 
@@ -787,6 +788,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
                                 child: PrimaryBthDropOff(
                                   text: "View All",
                                   width: 110,
+                                  icon: const Icon(Icons.arrow_forward, color: Colors.white, size: 16),
                                   height: 40,
                                   onTap: () => _showAllImagesPopup(context, images, isFile: true),
                                 ),

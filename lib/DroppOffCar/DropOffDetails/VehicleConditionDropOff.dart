@@ -406,6 +406,7 @@ class VehicleConditionDropOff extends StatelessWidget {
                         child: Center(
                           child: PrimaryBthDropOff(
                             text: "View All",
+                            icon: Icon(Icons.arrow_forward,color: Colors.white,),
                             width: 110,
                             height: 40,
                             onTap: () => _showAllImagesPopup(context, images, isFile: false),
