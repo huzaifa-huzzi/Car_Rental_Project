@@ -71,8 +71,9 @@ class AppNavigation {
               if (route.startsWith('/')) {
                 context.go(route);
               } else {
-                if (route == "Dashboard") context.go('/dashboard');
-                else if (route == "Car Inventory") context.go('/carInventory');
+                if (route == "Dashboard") {
+                  context.go('/dashboard');
+                } else if (route == "Car Inventory") context.go('/carInventory');
                 else if (route == "Customers") context.go('/customers');
                 else if (route == "Pickup Car") context.go('/pickupcar');
                 else if (route == "Pickup T&C") context.go('/pickupT&C');
