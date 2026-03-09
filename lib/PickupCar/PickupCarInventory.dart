@@ -260,6 +260,8 @@ class PickupCarController extends GetxController {
 
   final LayerLink startDateLink = LayerLink();
   final LayerLink endDateLink = LayerLink();
+  final LayerLink startTimeLink = LayerLink();
+  final LayerLink endTimeLink = LayerLink();
 
   OverlayEntry? calendarOverlay;
 
@@ -323,8 +325,9 @@ class PickupCarController extends GetxController {
                   width: popupWidth,
                   onCancel: removeCalendar,
                   onDateSelected: (date) {
-                    targetController.text =
-                    "${date.day}/${date.month}/${date.year}";
+                    targetController.text = "${date.day}/${date.month}/${date.year}";
+                    update();
+
                     removeCalendar();
                   },
                 ),
@@ -336,7 +339,7 @@ class PickupCarController extends GetxController {
     );
   }
 
-  // Time Picker Controller
+  // Time Picker
   var selectedHour = 11.obs;
   var selectedMinute = 30.obs;
   var isAM = true.obs;
@@ -345,13 +348,12 @@ class PickupCarController extends GetxController {
   void updateMinute(int min) => selectedMinute.value = min;
   void togglePeriod(bool am) => isAM.value = am;
 
-
   String get formattedTime {
     String period = isAM.value ? "am" : "pm";
-    return "${selectedHour.value}:${selectedMinute.value.toString().padLeft(2, '0')}$period";
+    return "${selectedHour.value}:${selectedMinute.value.toString().padLeft(2, '0')} $period";
   }
 
-  void reset() {
+  void resetTime() {
     selectedHour.value = 11;
     selectedMinute.value = 30;
     isAM.value = true;
@@ -359,10 +361,11 @@ class PickupCarController extends GetxController {
 
   OverlayEntry? timeOverlay;
 
-  void toggleTimePicker(BuildContext context, LayerLink link, TextEditingController controller, double fieldWidth) {
+  void toggleTimePicker(BuildContext context, LayerLink link, TextEditingController targetController, double fieldWidth) {
     if (timeOverlay != null) {
       timeOverlay?.remove();
       timeOverlay = null;
+      return;
     }
 
     double overlayWidth = fieldWidth < 200 ? 200 : fieldWidth;
@@ -379,6 +382,8 @@ class PickupCarController extends GetxController {
               child: Container(color: Colors.transparent),
             ),
           ),
+
+          // Time Picker Follower
           CompositedTransformFollower(
             link: link,
             showWhenUnlinked: false,
@@ -396,7 +401,14 @@ class PickupCarController extends GetxController {
                   timeOverlay = null;
                 },
                 onTimeSelected: (val) {
-                  controller.text = val;
+                  targetController.text = val;
+
+                  targetController.selection = TextSelection.fromPosition(
+                    TextPosition(offset: targetController.text.length),
+                  );
+
+                  update();
+
                   timeOverlay?.remove();
                   timeOverlay = null;
                 },
@@ -664,6 +676,23 @@ class PickupCarController extends GetxController {
       sortOrder.value = 1;
     }
   }
+
+
+   /// Sorting of the Pickup T&C
+  var pickupSortColumn = "".obs;
+  var pickupSortOrder = 0.obs;
+
+  void togglePickupSort(String columnName) {
+    if (pickupSortColumn.value == columnName) {
+      pickupSortOrder.value = (pickupSortOrder.value + 1) % 3;
+      if (pickupSortOrder.value == 0) pickupSortColumn.value = "";
+    } else {
+      pickupSortColumn.value = columnName;
+      pickupSortOrder.value = 1;
+    }
+  }
+
+
 
 
 

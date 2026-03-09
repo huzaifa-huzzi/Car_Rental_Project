@@ -12,7 +12,6 @@ class AddPickup extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        // Main scroll yahan hona chahiye
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Padding(
@@ -36,7 +35,6 @@ class AddPickup extends StatelessWidget {
                 ),
                 SizedBox(height: AppSizes.verticalPadding(context) * 1.2),
 
-                // Direct widget call karein, Expanded use na karein
                 StepOneSelectionWidget(),
               ],
             ),

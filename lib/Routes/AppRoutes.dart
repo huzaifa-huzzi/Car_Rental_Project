@@ -29,6 +29,7 @@ import 'package:car_rental_project/PickupCar/AddPickUp/Widget/StepThreeWidget.da
 import 'package:car_rental_project/PickupCar/AddPickUp/Widget/StepTwoWidgets.dart';
 import 'package:car_rental_project/PickupCar/EditPicUp/EditPickUpScreen.dart';
 import 'package:car_rental_project/PickupCar/PickUpDetailScreen/PickUpDetailScreen.dart';
+import 'package:car_rental_project/PickupCar/Subtabs/Pickup%20T&C/PickupT&C.dart';
 import 'package:car_rental_project/PickupCar/TableViewPicukUpScreen/TableViewPickUpScreen.dart';
 import 'package:car_rental_project/SideScreen/SidebarScreen.dart';
 import 'package:car_rental_project/Staff/AddStaff/AddStaffScreen.dart';
@@ -54,27 +55,36 @@ class AppNavigation {
       /// SHELL ROUTE (Sidebar Layout)
       ShellRoute(
         builder: (context, state, child) {
+          final extras = state.extra as Map<String, dynamic>?;
+          bool hideMobile = extras?["hideMobileAppBar"] == true;
+          final String path = state.uri.toString().toLowerCase();
+
+          if (path.contains('t&c') ||
+              path.contains('add') ||
+              path.contains('edit') ||
+              path.contains('detail')) {
+            hideMobile = true;
+          }
+
           return SidebarScreen(
-            onTap: (title) {
-  if (title == "Dashboard") {
-  context.go('/dashboard');
-  } else if (title == "Car Inventory") {
-  context.go('/carInventory');
-  } else if (title == "Customers") {
-  context.go('/customers');
-  } else if (title == "Pickup Car") {
-  context.go('/pickupCar');
-  } else if (title == "Dropoff Car") {
-  context.go('/dropoffCar');
-  }else if (title == "Staff") {
-    context.go('/staff');
-  }
+            onTap: (route) {
+              if (route.startsWith('/')) {
+                context.go(route);
+              } else {
+                if (route == "Dashboard") context.go('/dashboard');
+                else if (route == "Car Inventory") context.go('/carInventory');
+                else if (route == "Customers") context.go('/customers');
+                else if (route == "Pickup Car") context.go('/pickupcar');
+                else if (route == "Pickup T&C") context.go('/pickupT&C');
+                else if (route == "Dropoff Car") context.go('/dropoffCar');
+                else if (route == "Staff") context.go('/staff');
+              }
             },
+            hideMobileAppBar: hideMobile,
             child: child,
           );
         },
         routes: [
-           // Dashboard Screen
           GoRoute(
             path: '/dashboard',
             builder: (context, state) => const DashboardScreen(),
@@ -96,6 +106,8 @@ class AppNavigation {
             path: '/pickupcar',
             builder: (context, state) =>  TableViewPickUpScreen(),
           ),
+          // Pickup T&C
+          GoRoute(path: '/pickupT&C', builder: (context, state) => const PickupTandC()),
           GoRoute(
             path: '/dropoffCar',
             builder: (context, state) => TableViewDropOffScreen(),
@@ -199,7 +211,7 @@ class AppNavigation {
 
     bool hideMobile = extras?["hideMobileAppBar"] == true;
     final String path = state.uri.toString().toLowerCase();
-    if (path.contains('add') || path.contains('edit') || path.contains('detail')) {
+    if (path.contains('add') || path.contains('edit') || path.contains('detail') || path.contains('PickupTandC')) {
       hideMobile = true;
     }
 

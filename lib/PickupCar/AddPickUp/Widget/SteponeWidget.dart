@@ -379,7 +379,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     _buttonSection(context, isMobile),
-                    const SizedBox(height: 90),
+                     SizedBox(height:isMobile ? 230 :  180),
                   ],
                 ),
                  /// Linker Layer remover
@@ -1464,45 +1464,53 @@ class StepOneSelectionWidget extends StatelessWidget {
   }
 
 
-  // Rent time Widgets
+  // Rent Time Section
   Widget _buildRentTimeSection(BuildContext context) {
     bool isMobile = AppSizes.isMobile(context);
 
-    return Wrap(
-      spacing: 40,
-      runSpacing: 20,
-      children: [
-        _buildDateTimeColumn(
-          context,
-          label: "Agreement Start Time",
-          dateController: controller.startDateController,
-          timeController: controller.startTimeController,
-          link: controller.startDateLink,
-          isMobile: isMobile,
-        ),
-
-        _buildDateTimeColumn(
-          context,
-          label: "Agreement End Time",
-          dateController: controller.endDateController,
-          timeController: controller.endTimeController,
-          link: controller.endDateLink,
-          isMobile: isMobile,
-        ),
-      ],
+    return GetBuilder<PickupCarController>(
+      builder: (controller) {
+        return Wrap(
+          spacing: 40,
+          runSpacing: 20,
+          children: [
+            _buildDateTimeColumn(
+              context,
+              label: "Agreement Start Time",
+              dateController: controller.startDateController,
+              timeController: controller.startTimeController,
+              dateLink: controller.startDateLink,
+              timeLink: controller.startTimeLink,
+              isMobile: isMobile,
+            ),
+            _buildDateTimeColumn(
+              context,
+              label: "Agreement End Time",
+              dateController: controller.endDateController,
+              timeController: controller.endTimeController,
+              dateLink: controller.endDateLink,
+              timeLink: controller.endTimeLink,
+              isMobile: isMobile,
+            ),
+          ],
+        );
+      },
     );
   }
 
+//  Date & Time
   Widget _buildDateTimeColumn(BuildContext context, {
     required String label,
     required TextEditingController dateController,
     required TextEditingController timeController,
-    required LayerLink link,
+    required LayerLink dateLink,
+    required LayerLink timeLink,
     required bool isMobile,
   }) {
-    double fieldWidth = isMobile ? (MediaQuery.of(context).size.width * 0.8) : 220;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double fieldWidth = isMobile ? (screenWidth * 0.85) : 220;
+
     final carController = Get.find<PickupCarController>();
-    final timeLink = LayerLink();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1512,14 +1520,14 @@ class StepOneSelectionWidget extends StatelessWidget {
 
         // Calendar Box
         CompositedTransformTarget(
-          link: link,
+          link: dateLink,
           child: _buildCustomTimeBox(
             context,
             controller: dateController,
-            hint: "23/02/2026",
+            hint: "DD/MM/YYYY",
             iconWidget: Image.asset(IconString.calendarIcon, height: 20, width: 20),
             width: fieldWidth,
-            onTap: () => carController.toggleCalendar(context, link, dateController, fieldWidth),
+            onTap: () => carController.toggleCalendar(context, dateLink, dateController, fieldWidth),
           ),
         ),
 
@@ -1531,15 +1539,15 @@ class StepOneSelectionWidget extends StatelessWidget {
           child: _buildCustomTimeBox(
             context,
             controller: timeController,
-            hint: "8:00pm",
+            hint: "00:00 AM",
             width: fieldWidth,
             onTap: () => carController.toggleTimePicker(context, timeLink, timeController, fieldWidth),
             iconWidget: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.keyboard_arrow_up, size: 16),
-                SizedBox(height: 2,),
-                const Icon(Icons.keyboard_arrow_down, size: 16),
+              children: const [
+                Icon(Icons.keyboard_arrow_up, size: 16, color: AppColors.tertiaryTextColor),
+                SizedBox(height: 2),
+                Icon(Icons.keyboard_arrow_down, size: 16, color: AppColors.tertiaryTextColor),
               ],
             ),
           ),
@@ -1548,6 +1556,7 @@ class StepOneSelectionWidget extends StatelessWidget {
     );
   }
 
+//  Custom Box
   Widget _buildCustomTimeBox(BuildContext context, {
     required TextEditingController controller,
     required String hint,
@@ -1564,16 +1573,21 @@ class StepOneSelectionWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.secondaryColor,
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-          ],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              controller.text.isEmpty ? hint : controller.text,
-              style: TTextTheme.insidetextfieldWrittenText(context),
-              overflow: TextOverflow.ellipsis,
+            Expanded(
+              child: ValueListenableBuilder<TextEditingValue>(
+                valueListenable: controller,
+                builder: (context, value, child) {
+                  return Text(
+                    value.text.isEmpty ? hint : value.text,
+                    style: TTextTheme.insidetextfieldWrittenText(context),
+                    overflow: TextOverflow.ellipsis,
+                  );
+                },
+              ),
             ),
             iconWidget,
           ],

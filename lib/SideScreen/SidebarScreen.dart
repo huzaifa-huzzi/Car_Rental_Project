@@ -35,6 +35,8 @@ class SidebarScreen extends StatelessWidget {
     final double sidebarWidth = isWeb ? 240 : 150;
 
 
+
+
     final String currentRoute = GoRouterState
         .of(context)
         .uri
@@ -100,11 +102,16 @@ class SidebarScreen extends StatelessWidget {
                   ),
 
                   //  Pickup Car
-                  SidebarComponents.menuItem(
-                    context, controller,
+                  SidebarComponents.expandableMenuItem(
+                    context,
+                    controller,
                     iconPath: IconString.agreementIcon,
                     title: "Pickup Car",
-                    onTap: (val) => context.go('/pickupcar'),
+                    route: '/pickupcar',
+                    subItems: [
+
+                      {'title': 'Pickup T&C', 'route': '/pickupT&C','icon': IconString.tandCIcon,'extra': {'hideMobileAppBar': true},'extra': {'hideMobileAppBar': true}},
+                    ],
                     scaffoldKey: _scaffoldKey,
                   ),
 

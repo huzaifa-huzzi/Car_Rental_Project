@@ -1,23 +1,26 @@
 import 'package:get/get.dart';
 
-
 class SideBarController extends GetxController {
   var selected = "Dashboard".obs;
   var subSelected = RxnString();
   var incomeRedDot = 5.obs;
-  var isExpensesExpanded = false.obs;
+
+  var expandedMenus = <String, bool>{}.obs;
+
+  void toggleExpansion(String title) {
+    if (expandedMenus.containsKey(title)) {
+      expandedMenus[title] = !expandedMenus[title]!;
+    } else {
+      expandedMenus[title] = true;
+    }
+  }
 
   void selectMenu(String title) {
     selected.value = title;
     subSelected.value = null;
-    if (title != "Expenses") {
-      isExpensesExpanded.value = false;
-    }
-  }
-
-  void toggleExpensesSub() {
-    isExpensesExpanded.value = !isExpensesExpanded.value;
-    selected.value = "Expenses";
+    expandedMenus.forEach((key, value) {
+      if (key != title) expandedMenus[key] = false;
+    });
   }
 
   void selectSubItem(String parent, String subTitle) {
@@ -25,12 +28,7 @@ class SideBarController extends GetxController {
     subSelected.value = subTitle;
   }
 
-  void setIncomeRedDot(int value) {
-    incomeRedDot.value = value;
-  }
-
   void syncWithRoute(String route) {
-
     if (route == '/dashboard' || route == '/') {
       selected.value = "Dashboard";
     } else if (route.startsWith('/carInventory')) {
@@ -44,13 +42,9 @@ class SideBarController extends GetxController {
     } else if (route.startsWith('/staff')) {
       selected.value = "Staff";
     }
-
-    // Reset states
     subSelected.value = null;
-    isExpensesExpanded.value = false;
   }
 }
-
 
 
 

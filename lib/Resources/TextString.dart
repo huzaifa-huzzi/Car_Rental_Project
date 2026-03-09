@@ -322,7 +322,7 @@ class TextString {
   static const String  clickToUpload  =   'Upload Car Pictures';
   static const String  subtitleImageStepTwo  =   'PNG, JPG, SVG ';
   static const String  jpgsPngs  =   'JPG, PNG ';
-  static const String  under50  = '(Must be under 50 MB)';
+  static const String  under50  = '(Must be under 10 MB)';
   static const String  titleCustomerImageStepTwo  =   'Carlie Harvy';
   static const String  titleEmailStepTwo  =   'Email';
   static const String  titleContactStepTwo  =   'Contact Number';

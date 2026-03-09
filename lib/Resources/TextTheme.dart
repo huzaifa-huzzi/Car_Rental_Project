@@ -293,8 +293,35 @@ class TTextTheme {
     );
   }
 
+  static TextStyle titleExpandableItem(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 14),fontWeight: FontWeight.w400,color: AppColors.primaryColor,
+    );
+  }
+
   static TextStyle titleFullName(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 12),fontWeight: FontWeight.w500,color: AppColors.blackColor,
+    );
+  }
+
+  static TextStyle versionText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 14),fontWeight: FontWeight.w600,color: AppColors.textColor,
+    );
+  }
+  static TextStyle versionHeaderText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 13, 14, 14),fontWeight: FontWeight.w500,color: AppColors.textColor,
+    );
+  }
+  static TextStyle subVersionText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 14),fontWeight: FontWeight.w400,color: AppColors.textColor,
+    );
+  }
+
+  static TextStyle viewBtnText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 13, 14),fontWeight: FontWeight.w400,color: AppColors.primaryColor,
+    );
+  }
+  static TextStyle activeText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 13, 14),fontWeight: FontWeight.w400,color: Colors.white,
     );
   }
 

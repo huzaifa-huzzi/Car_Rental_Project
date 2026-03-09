@@ -31,29 +31,32 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
         DateTime(_focusedDay.year, _focusedDay.month, 1).weekday;
 
     int offset = firstDayWeekday - 1;
+
     int totalCellsNeeded = offset + daysInMonth;
 
     return Container(
-      width: widget.width,
+      width: widget.width < 270 ? 270 : widget.width, // slightly smaller
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.08),
-            blurRadius: 15,
+            blurRadius: 18,
             offset: const Offset(0, 8),
           )
         ],
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
+
           double availableWidth = constraints.maxWidth;
 
-          double cellSize = (availableWidth / 7).clamp(32, 42);
+          // slightly smaller cells
+          double cellSize = (availableWidth / 7).clamp(34, 46);
 
           return Padding(
-            padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
+            padding: const EdgeInsets.fromLTRB(14, 10, 14, 14),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -70,12 +73,14 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
                               _focusedDay.year, _focusedDay.month - 1);
                         });
                       },
-                      icon: const Icon(Icons.arrow_back_ios, size: 14),
+                      icon: const Icon(Icons.arrow_back_ios, size: 15),
                     ),
+
                     Text(
                       "${_getMonthName(_focusedDay.month)} (${_focusedDay.year})",
                       style: TTextTheme.titleTwo(context),
                     ),
+
                     IconButton(
                       visualDensity: VisualDensity.compact,
                       onPressed: () {
@@ -84,12 +89,14 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
                               _focusedDay.year, _focusedDay.month + 1);
                         });
                       },
-                      icon: const Icon(Icons.arrow_forward_ios, size: 14),
+                      icon: const Icon(Icons.arrow_forward_ios, size: 15),
                     ),
                   ],
                 ),
 
+                const SizedBox(height: 5),
                 const Divider(),
+                const SizedBox(height: 5),
 
                 /// DAYS HEADER
                 Row(
@@ -99,8 +106,7 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
                       child: Center(
                         child: Text(
                           d,
-                          style: TTextTheme.titleFour(context)
-                              .copyWith(color: Colors.grey),
+                          style: TTextTheme.titleFour(context),
                         ),
                       ),
                     ),
@@ -108,109 +114,118 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
                       .toList(),
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
 
                 /// GRID
                 SizedBox(
-                  height: (cellSize * 3) + 30,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: totalCellsNeeded,
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 7,
-                            mainAxisSpacing: 3,
-                            crossAxisSpacing: 3,
-                            childAspectRatio: 2.6,
-                          ),
-                          itemBuilder: (context, index) {
-                            int dayNum = index - offset + 1;
+                  height: (cellSize * 6) + 10,
+                  child: GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: totalCellsNeeded,
+                    gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 7,
+                      mainAxisSpacing: 5,
+                      crossAxisSpacing: 5,
+                      childAspectRatio: 1,
+                    ),
+                    itemBuilder: (context, index) {
 
-                            if (dayNum < 1 || dayNum > daysInMonth) {
-                              return const SizedBox();
-                            }
+                      int dayNum = index - offset + 1;
 
-                            bool isSelected =
-                                _selectedDay?.day == dayNum &&
-                                    _selectedDay?.month == _focusedDay.month &&
-                                    _selectedDay?.year == _focusedDay.year;
+                      if (dayNum < 1 || dayNum > daysInMonth) {
+                        return const SizedBox();
+                      }
 
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _selectedDay = DateTime(
-                                    _focusedDay.year,
-                                    _focusedDay.month,
-                                    dayNum,
-                                  );
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? AppColors.primaryColor
-                                      : Colors.transparent,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "$dayNum",
-                                    style: TTextTheme.titleFour(context).copyWith(
-                                      color: isSelected
-                                          ? Colors.white
-                                          : AppColors.textColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                      bool isSelected =
+                          _selectedDay?.day == dayNum &&
+                              _selectedDay?.month == _focusedDay.month &&
+                              _selectedDay?.year == _focusedDay.year;
+
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _selectedDay = DateTime(
+                              _focusedDay.year,
+                              _focusedDay.month,
+                              dayNum,
                             );
-                          },
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? AppColors.primaryColor
+                                : Colors.transparent,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "$dayNum",
+                              style: TTextTheme.titleFour(context).copyWith(
+                                color: isSelected
+                                    ? Colors.white
+                                    : AppColors.textColor,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-
-                      const SizedBox(height: 6),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          SizedBox(
-                            height: 28,
-                            width: 68,
-                            child: OutlinedButton(
-                              onPressed: widget.onCancel,
-                              style: OutlinedButton.styleFrom(
-                                side: const BorderSide(color: AppColors.primaryColor),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                padding: EdgeInsets.zero,
-                              ),
-                              child: Text("Cancel", style: TTextTheme.calendarBtnCancel(context).copyWith(fontSize: 11)),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          SizedBox(
-                            height: 28,
-                            width: 68,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (_selectedDay != null) widget.onDateSelected(_selectedDay!);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primaryColor,
-                                foregroundColor: Colors.white,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                padding: EdgeInsets.zero,
-                              ),
-                              child: Text("Done", style: TTextTheme.calendarBtnDone(context).copyWith(fontSize: 11)),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
+                      );
+                    },
                   ),
                 ),
+
+                const SizedBox(height: 8),
+
+                /// BUTTONS
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      height: 28,
+                      width: 70,
+                      child: OutlinedButton(
+                        onPressed: widget.onCancel,
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: AppColors.primaryColor),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                          padding: EdgeInsets.zero,
+                        ),
+                        child: Text(
+                          "Cancel",
+                          style: TTextTheme.calendarBtnCancel(context),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(width: 8),
+
+                    SizedBox(
+                      height: 28,
+                      width: 70,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_selectedDay != null) {
+                            widget.onDateSelected(_selectedDay!);
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primaryColor,
+                          foregroundColor: Colors.white,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                          padding: EdgeInsets.zero,
+                        ),
+                        child: Text(
+                          "Done",
+                          style: TTextTheme.calendarBtnDone(context),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           );
@@ -220,17 +235,7 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
   }
 
   String _getMonthName(int month) => [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
   ][month - 1];
 }

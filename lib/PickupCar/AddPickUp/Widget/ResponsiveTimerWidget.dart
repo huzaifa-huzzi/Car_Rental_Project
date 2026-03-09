@@ -94,17 +94,24 @@ class ResponsiveTimePicker extends StatelessWidget {
               SizedBox(
                 height: 28,
                 width: 68,
-                child: ElevatedButton(
+                child:ElevatedButton(
                   onPressed: () {
+                    String time = controller.formattedTime;
+                    onTimeSelected(time);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryColor,
                     foregroundColor: Colors.white,
                     elevation: 0,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     padding: EdgeInsets.zero,
                   ),
-                  child: Text("Done", style: TTextTheme.calendarBtnDone(context).copyWith(fontSize: 11)),
+                  child: Text(
+                    "Done",
+                    style: TTextTheme.calendarBtnDone(context).copyWith(fontSize: 11),
+                  ),
                 ),
               ),
             ],

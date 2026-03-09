@@ -620,7 +620,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
                           style: TTextTheme.titleDriver(context),
                           children: [
                             TextSpan(
-                              text: TextString.under50,
+                              text: TextString.under10,
                               style: TTextTheme.titleTwelve(context),
                             ),
                           ],

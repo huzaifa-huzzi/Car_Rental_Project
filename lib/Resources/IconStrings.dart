@@ -25,6 +25,7 @@ class IconString {
   static const String  menuIcon = 'assets/icons/menu.png';
   static const String  returnCarIcon = 'assets/icons/ReturnCarIcon.png';
   static const String  staffIcon = 'assets/icons/StaffIcon.png';
+  static const String  tandCIcon = 'assets/icons/T&C.png';
 
   /// AppBar Icons
   static const String  searchIcon = 'assets/icons/Search.png';
@@ -111,6 +112,8 @@ class IconString {
   static const String  downArrowIcon = 'assets/icons/downArrowIcon.png';
   static const String  pickupUploadIcon = 'assets/icons/PickupUploadIcon.png';
   static const String  pickUpSignatureIcon = 'assets/icons/SignatureWritingIcon.png';
+  static const String  viewIcon = 'assets/icons/ViewIcon.png';
+  static const String  enableIcon = 'assets/icons/EnableIcon.png';
 
       /// Authentication
   static const String  googleIcon = 'assets/icons/GoogleIcon.png';

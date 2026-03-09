@@ -1,8 +1,8 @@
-import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
+import 'package:go_router/go_router.dart';
 import '../SideBarController.dart' show SideBarController;
 
 class SidebarComponents {
@@ -77,106 +77,129 @@ class SidebarComponents {
     );
   }
 
-  /// Expense menu item with sub-items
-  static Widget expenseMenuItem(
+   /// Expandable Item
+  static Widget expandableMenuItem(
       BuildContext context,
       SideBarController controller, {
-        required Function(String) onTap,
+        required String iconPath,
+        required String title,
+        required String route,
+        required List<Map<String, dynamic>> subItems,
         required GlobalKey<ScaffoldState> scaffoldKey,
+        Map<String, dynamic>? extra,
       }) {
     return Obx(() {
-      bool expanded = controller.isExpensesExpanded.value;
+      bool isExpanded = controller.expandedMenus[title] ?? false;
+      bool isMainActive = controller.selected.value == title;
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InkWell(
-            hoverColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            focusColor: Colors.transparent,
             onTap: () {
-              controller.toggleExpensesSub();
-              onTap("Expenses");
+              controller.selectMenu(title);
+              context.go(route, extra: extra);
               closeDrawerIfMobile(context, scaffoldKey);
             },
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               decoration: BoxDecoration(
-                color: expanded ? AppColors.secondaryColor : null,
+                color: isMainActive ? AppColors.secondaryColor : Colors.transparent,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
                 children: [
                   Image.asset(
-                    IconString.expensesIcon,
+                    iconPath,
                     width: 20,
                     height: 20,
-                    color: expanded ? AppColors.primaryColor : AppColors.quadrantalTextColor,
+                    color: isMainActive ? AppColors.primaryColor : AppColors.quadrantalTextColor,
                   ),
                   const SizedBox(width: 14),
                   Expanded(
                     child: Text(
-                      "Expenses",
-                      style: (expanded
-                          ? TTextTheme.btnSix(context)
-                          : TTextTheme.btnOne(context)
-                      ).copyWith(
-                        color: expanded ? AppColors.textColor : AppColors.quadrantalTextColor,
+                      title,
+                      style: (isMainActive ? TTextTheme.btnSix(context) : TTextTheme.btnOne(context)).copyWith(
+                        color: isMainActive ? AppColors.textColor : AppColors.quadrantalTextColor,
                       ),
                     ),
                   ),
-                  Icon(
-                    expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                    color: AppColors.quadrantalTextColor,
-                    size: 20,
+                  GestureDetector(
+                    onTap: () => controller.toggleExpansion(title),
+                    child: Icon(
+                      isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                      color: AppColors.quadrantalTextColor,
+                      size: 22,
+                    ),
                   ),
                 ],
               ),
             ),
           ),
-          if (expanded) ...[
-            expenseSubItem(context, controller, "1", onTap: onTap, scaffoldKey: scaffoldKey),
-            expenseSubItem(context, controller, "2", onTap: onTap, scaffoldKey: scaffoldKey),
-            expenseSubItem(context, controller, "3", onTap: onTap, scaffoldKey: scaffoldKey),
-          ],
+          if (isExpanded)
+            ...subItems.map((sub) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 28),
+                child: IntrinsicHeight(
+                  child: Row(
+                    children: [
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(width: 1, color: AppColors.tertiaryTextColor.withOpacity(0.7)),
+                          Container(
+                            width: 6,
+                            height: 6,
+                            decoration: const BoxDecoration(color: AppColors.primaryColor, shape: BoxShape.circle),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            controller.selectSubItem(title, sub['title']!);
+                            context.go(sub['route']!, extra: sub['extra']);
+
+                            closeDrawerIfMobile(context, scaffoldKey);
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(right: 14, top: 4, bottom: 4),
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: AppColors.primaryColor),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              children: [
+                                if (sub['icon'] != null)
+                                  Image.asset(
+                                    sub['icon'],
+                                    width: 16,
+                                    height: 16,
+                                    color: AppColors.primaryColor,
+                                  )
+                                else
+                                  const Icon(Icons.circle, size: 8, color: AppColors.primaryColor),
+                                const SizedBox(width: 8),
+                                Text(
+                                  sub['title']!,
+                                  style: TTextTheme.titleExpandableItem(context),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }),
         ],
       );
     });
-  }
-
-  /// Expense sub-item
-  static Widget expenseSubItem(
-      BuildContext context,
-      SideBarController controller,
-      String title, {
-        required Function(String) onTap,
-        required GlobalKey<ScaffoldState> scaffoldKey,
-      }) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 54, bottom: 6),
-      child: Obx(() {
-        bool isActive = controller.subSelected.value == title;
-        return InkWell(
-          onTap: () {
-            controller.selectSubItem("Expenses", title);
-            onTap(title);
-            closeDrawerIfMobile(context, scaffoldKey);
-          },
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              title,
-              style: (isActive
-                  ? TTextTheme.btnSix(context)
-                  : TTextTheme.btnOne(context)
-              ).copyWith(
-                  color: isActive ? AppColors.primaryColor : AppColors.secondTextColor),
-            ),
-          ),
-        );
-      }),
-    );
   }
 
   /// Red dot with number

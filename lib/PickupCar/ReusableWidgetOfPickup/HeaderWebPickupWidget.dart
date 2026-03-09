@@ -103,7 +103,7 @@ class HeaderWebPickupWidget extends StatelessWidget {
                       } else if (router.canPop()) {
                         router.pop();
                       } else {
-                        router.go('/customers');
+                        router.go('/pickupcar');
                       }
                     },
                     child: Container(
