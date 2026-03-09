@@ -43,12 +43,14 @@ class PickupTandC extends StatelessWidget {
                   },
                 ),
               ),
+
               Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: AppSizes.horizontalPadding(context)
                 ),
                 child: const PickupTandCWidget(),
               ),
+
               const SizedBox(height: 40),
             ],
           ),

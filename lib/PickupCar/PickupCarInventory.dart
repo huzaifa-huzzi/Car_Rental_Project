@@ -678,7 +678,7 @@ class PickupCarController extends GetxController {
   }
 
 
-   /// Sorting of the Pickup T&C
+   ///  Pickup T&C
   var pickupSortColumn = "".obs;
   var pickupSortOrder = 0.obs;
 
@@ -692,7 +692,34 @@ class PickupCarController extends GetxController {
     }
   }
 
+  var termsList = <Map<String, String>>[
+    {'version': 'V5', 'date': '5/03/2026', 'time': '12:30pm', 'status': 'Active'},
+    {'version': 'V4', 'date': '5/03/2026', 'time': '9:30am', 'status': 'Inactive'},
+    {'version': 'V3', 'date': '4/03/2026', 'time': '5:30pm', 'status': 'Inactive'},
+    {'version': 'V2', 'date': '4/03/2026', 'time': '4:30pm', 'status': 'Inactive'},
+    {'version': 'V1', 'date': '3/03/2026', 'time': '4:30pm', 'status': 'Inactive'},
+  ].obs;
 
+  final Map<String, LayerLink> links = {};
+
+  var activeLoadingIndex = (-1).obs;
+
+  LayerLink getLayerLink(String version) {
+    return links.putIfAbsent(version, () => LayerLink());
+  }
+
+  void activateVersion(int index) {
+    activeLoadingIndex.value = index;
+
+    Future.delayed(const Duration(seconds: 3), () {
+      for (var item in termsList) {
+        item['status'] = 'Inactive';
+      }
+      termsList[index]['status'] = 'Active';
+      termsList.refresh();
+      activeLoadingIndex.value = -1;
+    });
+  }
 
 
 

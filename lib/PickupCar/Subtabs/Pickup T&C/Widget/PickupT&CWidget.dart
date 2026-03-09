@@ -13,7 +13,9 @@ class PickupTandCWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<PickupCarController>();
     final bool isMobile = AppSizes.isMobile(context);
+    final double screenWidth = MediaQuery.of(context).size.width;
 
     final List<Map<String, String>> data = [
       {'version': 'V5', 'date': '5/03/2026', 'time': '12:30pm', 'status': 'Active'},
@@ -22,9 +24,6 @@ class PickupTandCWidget extends StatelessWidget {
       {'version': 'V2', 'date': '4/03/2026', 'time': '4:30pm', 'status': 'Inactive'},
       {'version': 'V1', 'date': '3/03/2026', 'time': '4:30pm', 'status': 'Inactive'},
     ];
-
-
-    final double minTableWidth = isMobile ? 980 : 1000;
 
     return Container(
       width: double.infinity,
@@ -36,53 +35,14 @@ class PickupTandCWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          LayoutBuilder(
-            builder: (context, constraints) {
-              bool isSmallScreen = constraints.maxWidth < 420;
+          _buildTopHeader(context),
 
-              if (isSmallScreen) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Pickup term and condition",
-                            style: TTextTheme.h6Style(context), overflow: TextOverflow.ellipsis, maxLines: 1,),
-                        Text("List of all versions of term and condition",
-                            style: TTextTheme.titleThree(context), overflow: TextOverflow.ellipsis, maxLines: 1),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    AddButtonOfPickup(
-                      width: 130,
-                      text: "Add Pick up T&C",
-                      onTap: () {},
-                    ),
-                  ],
-                );
-              } else {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Pickup term and condition",
-                            style: TTextTheme.h6Style(context), overflow: TextOverflow.ellipsis, maxLines: 1),
-                        Text("List of all versions of term and condition",
-                        style: TTextTheme.titleThree(context), overflow: TextOverflow.ellipsis, maxLines: 1),
-                      ],
-                    ),
-                    AddButtonOfPickup(
-                      text: "Add Pick up T&C",
-                      onTap: () {},
-                    ),
-                  ],
-                );
-              }
-            },
+          const SizedBox(height: 25),
+          Align(
+            alignment: Alignment.centerRight,
+            child: _buildPremiumSearchBar(context),
           ),
+
           const SizedBox(height: 30),
 
           ScrollConfiguration(
@@ -91,27 +51,16 @@ class PickupTandCWidget extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
               child: SizedBox(
-                width: minTableWidth,
+                width: isMobile ? 980 : 1000,
                 child: Column(
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                      decoration: BoxDecoration(
-                        color: AppColors.secondaryColor,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        children: [
-                          _headerText("Version", 3,context,PickupCarController()),
-                          _headerText("Date", 3,context,PickupCarController()),
-                          _headerText("Time", 3,context,PickupCarController()),
-                          _headerText("Status", 3,context,PickupCarController()),
-                          _headerText("Action", 4,context,PickupCarController()),
-                        ],
-                      ),
-                    ),
+                    _buildTableHeader(context),
                     const SizedBox(height: 15),
-                    ...data.map((item) => _buildDataCard(context, item)),
+                    Obx(() => Column(
+                      children: controller.termsList.asMap().entries.map((entry) {
+                        return _buildDataCard(context, entry.value, entry.key, controller);
+                      }).toList(),
+                    )),
                   ],
                 ),
               ),
@@ -119,16 +68,114 @@ class PickupTandCWidget extends StatelessWidget {
           ),
 
           const SizedBox(height: 30),
-          PaginationBarOfPickup(
-            isMobile: isMobile,
-            tablePadding: 0,
-          ),
+          PaginationBarOfPickup(isMobile: isMobile, tablePadding: 0),
         ],
       ),
     );
   }
+  /// --------- Extra Widgets ------ ///
+  //  Search Bar Widget
+  Widget _buildPremiumSearchBar(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 600;
 
-   /// --------- Extra Widgets ------ ///
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Container(
+        height: 44,
+        width: isMobile ? (screenWidth * 0.88) : 350,
+        decoration: BoxDecoration(
+          color: AppColors.sideBoxesColor,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color:AppColors.tertiaryTextColor),
+        ),
+        child: Row(
+          children: [
+            const SizedBox(width: 12),
+            const Icon(Icons.search_rounded, size: 20, color: AppColors.secondTextColor),
+            const SizedBox(width: 8),
+
+            Expanded(
+              child: TextField(
+                cursorColor: AppColors.blackColor,
+                textAlignVertical: TextAlignVertical.center,
+                style: TTextTheme.smallX2(context),
+                decoration: InputDecoration(
+                  hintText: isMobile ? "Search..." : "Search by version number...",
+                  hintStyle: TTextTheme.smallX(context),
+                  border: InputBorder.none,
+                  isDense: true,
+                  contentPadding: EdgeInsets.all(8),
+                ),
+              ),
+            ),
+
+            GestureDetector(
+              onTap: () {
+              },
+              child: Container(
+                height: 36,
+                margin: const EdgeInsets.only(right: 4),
+                width: isMobile ? 40 : 90,
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                alignment: Alignment.center,
+                child: isMobile
+                    ? const Icon(Icons.search, color: Colors.white, size: 18)
+                    : Text("Search", style: TTextTheme.btnSearch(context)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Title header Section
+  Widget _buildTopHeader(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Pickup Terms & Conditions", style: TTextTheme.h6Style(context)),
+              const SizedBox(height: 4),
+              Text("List of all versions of term and condition", style: TTextTheme.titleThree(context)),
+            ],
+          ),
+        ),
+        AddButtonOfPickup(
+          text: "Add Pick up T&C",
+          onTap: () {},
+        ),
+      ],
+    );
+  }
+
+   // Table Header
+  Widget _buildTableHeader(BuildContext context) {
+    final controller = Get.find<PickupCarController>();
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      decoration: BoxDecoration(
+        color: AppColors.secondaryColor,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          _headerText("Version", 3, context, controller),
+          _headerText("Date", 3, context, controller),
+          _headerText("Time", 3, context, controller),
+          _headerText("Status", 3, context, controller),
+          _headerText("Action", 4, context, controller),
+        ],
+      ),
+    );
+  }
   //header Text
   Widget _headerText(String title, int flex, BuildContext context,PickupCarController controller) {
     bool isAction = title.toLowerCase() == "action";
@@ -183,44 +230,124 @@ class PickupTandCWidget extends StatelessWidget {
     );
   }
    // Data Cards
-  Widget _buildDataCard(BuildContext context, Map<String, String> item) {
+  Widget _buildDataCard(BuildContext context, Map<String, String> item, int index, PickupCarController controller) {
     bool isActive = item['status'] == 'Active';
+    final LayerLink rowLink = controller.getLayerLink(item['version']!);
+    final OverlayPortalController _portalController = OverlayPortalController();
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-      decoration: BoxDecoration(
-        color: AppColors.signaturePadColor,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.4)),
-      ),
-      child: Row(
-        children: [
-          Expanded(flex: 3, child: Text(item['version']!, style:TTextTheme.versionText(context))),
-          Expanded(flex: 3, child: Text(item['date']!, style: TTextTheme.subVersionText(context))),
-          Expanded(flex: 3, child: Text(item['time']!, style: TTextTheme.subVersionText(context))),
-          Expanded(flex: 3, child: _statusBadge(isActive,context)),
-          Expanded(
-            flex: 4,
+    return CompositedTransformTarget(
+      link: rowLink,
+      child: OverlayPortal(
+        controller: _portalController,
+        overlayChildBuilder: (context) {
+          return CompositedTransformFollower(
+            link: rowLink,
+            targetAnchor: Alignment.bottomRight,
+            followerAnchor: Alignment.topRight,
+            offset: const Offset(0, -20),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: _buildActivatedNotification(item['version']!),
+            ),
+          );
+        },
+        child: Obx(() {
+          if (controller.activeLoadingIndex.value == index) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (!_portalController.isShowing) _portalController.show();
+            });
+          } else {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (_portalController.isShowing) _portalController.hide();
+            });
+          }
+
+          return Container(
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+            decoration: BoxDecoration(
+              color: AppColors.signaturePadColor,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.4)),
+            ),
             child: Row(
               children: [
-                _viewButton(context),
-                if (!isActive) ...[
-                  const SizedBox(width: 12),
-                  AddButtonOfPickup(
-                    text: "Enable",
-                    width: 100,
-                    height: 35,
-                    onTap: () {
-
-                    },
-                    icon: Image.asset(IconString.enableIcon),
+                Expanded(flex: 3, child: Text(item['version']!, style: TTextTheme.versionText(context))),
+                Expanded(flex: 3, child: Text(item['date']!, style: TTextTheme.subVersionText(context))),
+                Expanded(flex: 3, child: Text(item['time']!, style: TTextTheme.subVersionText(context))),
+                Expanded(flex: 3, child: _statusBadge(isActive, context)),
+                Expanded(
+                  flex: 4,
+                  child: Row(
+                    children: [
+                      _viewButton(context),
+                      if (!isActive) ...[
+                        const SizedBox(width: 12),
+                        AddButtonOfPickup(
+                          text: "Enable",
+                          width: 100,
+                          height: 35,
+                          onTap: () => controller.activateVersion(index),
+                          icon: Image.asset(IconString.enableIcon),
+                        ),
+                      ]
+                    ],
                   ),
-                ]
+                ),
               ],
             ),
-          ),
-        ],
+          );
+        }),
+      ),
+    );
+  }
+   // Notification
+  Widget _buildActivatedNotification(String version) {
+    return Material(
+      elevation: 8,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        width: 320,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            )
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "$version has Activated",
+                    style: const TextStyle(
+                      color: Color(0xFFFF3B3B),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    "Selected Version has activated",
+                    style: TextStyle(color: Color(0xFF667085), fontSize: 13),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 10),
+            const Icon(Icons.close, size: 16, color: Colors.grey),
+          ],
+        ),
       ),
     );
   }
