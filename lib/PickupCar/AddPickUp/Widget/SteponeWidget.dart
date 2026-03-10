@@ -1545,9 +1545,9 @@ class StepOneSelectionWidget extends StatelessWidget {
             iconWidget: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
-                Icon(Icons.keyboard_arrow_up, size: 16, color: AppColors.tertiaryTextColor),
+                Icon(Icons.keyboard_arrow_up, size: 16, color: AppColors.textColor),
                 SizedBox(height: 2),
-                Icon(Icons.keyboard_arrow_down, size: 16, color: AppColors.tertiaryTextColor),
+                Icon(Icons.keyboard_arrow_down, size: 16, color: AppColors.textColor),
               ],
             ),
           ),

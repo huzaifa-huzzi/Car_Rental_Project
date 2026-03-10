@@ -4,6 +4,7 @@ import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/PaginationBa
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -134,9 +135,9 @@ class PickupTandCWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Pickup Terms & Conditions", style: TTextTheme.h6Style(context)),
+              Text(TextString.tandCTitle, style: TTextTheme.h6Style(context)),
               const SizedBox(height: 4),
-              Text("List of all versions of term and condition", style: TTextTheme.titleThree(context)),
+              Text(TextString.tandCSubtitle, style: TTextTheme.titleThree(context)),
             ],
           ),
         ),
@@ -328,7 +329,7 @@ class PickupTandCWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                    Text(
-                    "Selected Version has activated",
+                    TextString.tandCVersion,
                     style: TTextTheme.titleThree(context),
                   ),
                 ],

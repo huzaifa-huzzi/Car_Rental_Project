@@ -393,6 +393,19 @@ class TextString {
   static const String  signature  =  "Signature";
   static const String  drawSignature  = "Draw Your Signature here";
   static const String  pickupPicture  = "Pickup Pictures";
+        // Pickup T&C
+  static const String  tandCTitle  = "Pickup Terms & Conditions";
+  static const String  tandCSubtitle  = "List of all versions of term and condition";
+  static const String  tandCVersion  = "Selected Version has activated";
+  static const String  tandCTitle2  = "Add Pickup Terms & Conditions";
+  static const String  tandCSubtitle2  = "Every save create a new version automatically";
+  static const String  tandCVersiontitle  = "Version 4 has updated";
+  static const String  tandCVersion2  = "New Version has now active";
+  static const String  tandCTitle3  =  "Version 5";
+  static const String  tandCSubtitle3  =   "Last Updated:05 March 2026 at 12:26Pm";
+
+
+
      /// DropOff Module
     // DropOff Details
   static const String  titleViewPickStepTwoDropOff =  'DropOff Car Detail';

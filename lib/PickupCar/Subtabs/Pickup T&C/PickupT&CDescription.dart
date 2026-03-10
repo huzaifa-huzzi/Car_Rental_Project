@@ -156,7 +156,7 @@ class _PickupTandCDescriptionState extends State<PickupTandCDescription> {
                 runSpacing: 8,
                 children: [
                   Text(
-                     "Version 5",
+                    TextString.tandCTitle3,
                     style:TTextTheme.h6Style(context),
                   ),
                   Container(
@@ -174,7 +174,7 @@ class _PickupTandCDescriptionState extends State<PickupTandCDescription> {
               ),
               const SizedBox(height: 12),
               Text(
-                "Last Updated:05 March 2026 at 12:26Pm",
+                TextString.tandCSubtitle3,
                 style: TTextTheme.titleThree(context),
               ),
             ],
