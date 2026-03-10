@@ -110,17 +110,22 @@ class SidebarScreen extends StatelessWidget {
                     route: '/pickupcar',
                     subItems: [
 
-                      {'title': 'Pickup T&C', 'route': '/pickupT&C','icon': IconString.tandCIcon,'extra': {'hideMobileAppBar': true},'extra': {'hideMobileAppBar': true}},
+                      {'title': 'Pickup T&C', 'route': '/pickupT&C','icon': IconString.tandCIcon,'extra': {'hideMobileAppBar': true},},
                     ],
                     scaffoldKey: _scaffoldKey,
                   ),
 
                   //  Dropoff Car
-                  SidebarComponents.menuItem(
-                    context, controller,
+                  SidebarComponents.expandableMenuItem(
+                    context,
+                    controller,
                     iconPath: IconString.returnCarIcon,
-                    title: TextString.returnCar,
-                    onTap: (val) => context.go('/dropoffCar'),
+                    title: "Dropoff Car",
+                    route: '/dropoffCar',
+                    subItems: [
+
+                      {'title': 'DropOff T&C', 'route': '/dropOffT&C','icon': IconString.tandCIcon,'extra': {'hideMobileAppBar': true},},
+                    ],
                     scaffoldKey: _scaffoldKey,
                   ),
                   // Staff

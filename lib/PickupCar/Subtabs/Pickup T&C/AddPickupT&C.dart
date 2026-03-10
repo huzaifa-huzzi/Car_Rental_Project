@@ -166,53 +166,63 @@ class AddPickupTandC extends StatelessWidget {
 
    // DropDown
   Widget _buildSizeDropdown(PickupCarController controller, BuildContext context) {
-    return Obx(() => PopupMenuButton<String>(
-      elevation: 4,
-      offset: const Offset(0, 40),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      color: AppColors.toolBackground,
-      onSelected: (String val) => controller.changeFontSize(val),
-      itemBuilder: (BuildContext context) {
-        return ['12', '14', '16', '18', '20', '24'].map((String s) {
-          return PopupMenuItem<String>(
-            value: s,
-            height: 35,
-            padding: EdgeInsets.zero,
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text(s, style: TTextTheme.stepsText(context)),
-            ),
-          );
-        }).toList();
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        decoration: BoxDecoration(
-          color: AppColors.toolBackground,
-          borderRadius: BorderRadius.circular(6),
+    return Obx(() {
+      bool isOpen = controller.isSizeOpen.value;
+
+      return PopupMenuButton<String>(
+        elevation: 4,
+        offset: const Offset(0, 40),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        color: AppColors.toolBackground,
+        onOpened: () => controller.isSizeOpen.value = true,
+        onCanceled: () => controller.isSizeOpen.value = false,
+        onSelected: (String val) {
+          controller.changeFontSize(val);
+          controller.isSizeOpen.value = false;
+        },
+
+        itemBuilder: (BuildContext context) {
+          return ['12', '14', '16', '18', '20', '24'].map((String s) {
+            return PopupMenuItem<String>(
+              value: s,
+              height: 35,
+              padding: EdgeInsets.zero,
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Text(s, style: TTextTheme.stepsText(context)),
+              ),
+            );
+          }).toList();
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          decoration: BoxDecoration(
+            color: AppColors.toolBackground,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                controller.selectedSize.value.isEmpty ? "Size" : controller.selectedSize.value,
+                style: TTextTheme.stepsText(context),
+              ),
+              const SizedBox(width: 4),
+              Icon(
+                  isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                  size: 18,
+                  color: AppColors.tertiaryTextColor
+              ),
+            ],
+          ),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              controller.selectedSize.value.isEmpty ? "Size" : controller.selectedSize.value,
-              style: TTextTheme.stepsText(context),
-            ),
-            const SizedBox(width: 4),
-            const Icon(
-                Icons.keyboard_arrow_down,
-                size: 18,
-                color: AppColors.tertiaryTextColor
-            ),
-          ],
-        ),
-      ),
-    ));
+      );
+    });
   }
 
    // Editable Area
-  Widget _buildEditorArea(PickupCarController controller,BuildContext context) {
+  Widget _buildEditorArea(PickupCarController controller, BuildContext context) {
     return Container(
       height: 350,
       padding: const EdgeInsets.all(16),
@@ -225,24 +235,33 @@ class AddPickupTandC extends StatelessWidget {
           Obx(() {
             double currentSize = double.tryParse(controller.selectedSize.value) ?? 16.0;
 
-            return quill.QuillEditor.basic(
-              controller: controller.termsController,
-              config: quill.QuillEditorConfig(
-                autoFocus: false,
-                expands: true,
-                padding: EdgeInsets.zero,
-                showCursor: true,
-                customStyles: quill.DefaultStyles(
-                  paragraph: quill.DefaultTextBlockStyle(
-                    TextStyle(
-                      fontSize: currentSize,
-                      height: 1.4,
-                      color: AppColors.blackColor
+            return Theme(
+              data: Theme.of(context).copyWith(
+                textSelectionTheme: TextSelectionThemeData(
+                  cursorColor: AppColors.blackColor,
+                  selectionColor: AppColors.secondTextColor.withOpacity(0.3),
+                  selectionHandleColor: AppColors.blackColor,
+                ),
+              ),
+              child: quill.QuillEditor.basic(
+                controller: controller.termsController,
+                config: quill.QuillEditorConfig(
+                  autoFocus: false,
+                  expands: true,
+                  padding: EdgeInsets.zero,
+                  showCursor: true,
+                  customStyles: quill.DefaultStyles(
+                    paragraph: quill.DefaultTextBlockStyle(
+                      TextStyle(
+                        fontSize: currentSize,
+                        height: 1.4,
+                        color: AppColors.blackColor,
+                      ),
+                      const quill.HorizontalSpacing(0, 0),
+                      const quill.VerticalSpacing(0, 0),
+                      const quill.VerticalSpacing(0, 0),
+                      null,
                     ),
-                    const quill.HorizontalSpacing(0, 0),
-                    const quill.VerticalSpacing(0, 0),
-                    const quill.VerticalSpacing(0, 0),
-                    null,
                   ),
                 ),
               ),
@@ -251,8 +270,9 @@ class AddPickupTandC extends StatelessWidget {
 
           GetBuilder<PickupCarController>(
             builder: (controller) {
-              if (controller.termsController.document.isEmpty()) {
-                return  Positioned(
+              if (controller.termsController.document.isEmpty() ||
+                  controller.termsController.document.toPlainText().trim().isEmpty) {
+                return Positioned(
                   top: 4,
                   left: 4,
                   child: IgnorePointer(
@@ -266,14 +286,15 @@ class AddPickupTandC extends StatelessWidget {
               return const SizedBox();
             },
           ),
-     Positioned(
-    bottom: 0,
-    right: 0,
-    child: Text(
-    "Max(2000 words)",
-    style: TTextTheme.hirerSelected(context),
-    ),
-    ),
+
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Text(
+              "Max(2000 words)",
+              style: TTextTheme.hirerSelected(context),
+            ),
+          ),
         ],
       ),
     );

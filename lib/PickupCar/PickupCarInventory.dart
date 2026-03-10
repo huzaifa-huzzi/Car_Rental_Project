@@ -747,6 +747,8 @@ class PickupCarController extends GetxController {
     return attrs.containsKey(attr.key) && attrs[attr.key] == attr;
   }
 
+  var isSizeOpen = false.obs;
+
   final LayerLink saveButtonLink = LayerLink();
   @override
   void onClose() {
