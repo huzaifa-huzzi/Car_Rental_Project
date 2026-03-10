@@ -30,6 +30,8 @@ import 'package:car_rental_project/PickupCar/AddPickUp/Widget/StepTwoWidgets.dar
 import 'package:car_rental_project/PickupCar/EditPicUp/EditPickUpScreen.dart';
 import 'package:car_rental_project/PickupCar/PickUpDetailScreen/PickUpDetailScreen.dart';
 import 'package:car_rental_project/PickupCar/Subtabs/Pickup%20T&C/PickupT&C.dart';
+import 'package:car_rental_project/PickupCar/Subtabs/Pickup%20T&C/PickupT&CDescription.dart';
+import 'package:car_rental_project/PickupCar/Subtabs/Pickup%20T&C/AddPickupT&C.dart';
 import 'package:car_rental_project/PickupCar/TableViewPicukUpScreen/TableViewPickUpScreen.dart';
 import 'package:car_rental_project/SideScreen/SidebarScreen.dart';
 import 'package:car_rental_project/Staff/AddStaff/AddStaffScreen.dart';
@@ -109,6 +111,9 @@ class AppNavigation {
           ),
           // Pickup T&C
           GoRoute(path: '/pickupT&C', builder: (context, state) => const PickupTandC()),
+          GoRoute(path: '/pickupT&Cdescription', builder: (context, state) =>  PickupTandCDescription()),
+          GoRoute(path: '/AddpickupT&C', builder: (context, state) =>  AddPickupTandC()),
+          // DropOff
           GoRoute(
             path: '/dropoffCar',
             builder: (context, state) => TableViewDropOffScreen(),

@@ -7,6 +7,7 @@ import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class PickupTandCWidget extends StatelessWidget {
   const PickupTandCWidget({super.key});
@@ -15,15 +16,6 @@ class PickupTandCWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<PickupCarController>();
     final bool isMobile = AppSizes.isMobile(context);
-    final double screenWidth = MediaQuery.of(context).size.width;
-
-    final List<Map<String, String>> data = [
-      {'version': 'V5', 'date': '5/03/2026', 'time': '12:30pm', 'status': 'Active'},
-      {'version': 'V4', 'date': '5/03/2026', 'time': '9:30am', 'status': 'Inactive'},
-      {'version': 'V3', 'date': '4/03/2026', 'time': '5:30pm', 'status': 'Inactive'},
-      {'version': 'V2', 'date': '4/03/2026', 'time': '4:30pm', 'status': 'Inactive'},
-      {'version': 'V1', 'date': '3/03/2026', 'time': '4:30pm', 'status': 'Inactive'},
-    ];
 
     return Container(
       width: double.infinity,
@@ -85,9 +77,9 @@ class PickupTandCWidget extends StatelessWidget {
         height: 44,
         width: isMobile ? (screenWidth * 0.88) : 350,
         decoration: BoxDecoration(
-          color: AppColors.sideBoxesColor,
+          color: AppColors.signaturePadColor,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color:AppColors.tertiaryTextColor),
+          border: Border.all(color:AppColors.tertiaryTextColor.withOpacity(0.7)),
         ),
         child: Row(
           children: [
@@ -150,7 +142,9 @@ class PickupTandCWidget extends StatelessWidget {
         ),
         AddButtonOfPickup(
           text: "Add Pick up T&C",
-          onTap: () {},
+          onTap: () {
+            context.push('/AddpickupT&C', extra: {"hideMobileAppBar": true});
+          },
         ),
       ],
     );
@@ -247,7 +241,7 @@ class PickupTandCWidget extends StatelessWidget {
             offset: const Offset(0, -20),
             child: Align(
               alignment: Alignment.topRight,
-              child: _buildActivatedNotification(item['version']!),
+              child: _buildActivatedNotification(item['version']!,context),
             ),
           );
         },
@@ -302,7 +296,7 @@ class PickupTandCWidget extends StatelessWidget {
     );
   }
    // Notification
-  Widget _buildActivatedNotification(String version) {
+  Widget _buildActivatedNotification(String version,BuildContext context) {
     return Material(
       elevation: 8,
       borderRadius: BorderRadius.circular(12),
@@ -314,7 +308,7 @@ class PickupTandCWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: AppColors.fieldsBackground,
               blurRadius: 10,
               offset: const Offset(0, 4),
             )
@@ -330,22 +324,29 @@ class PickupTandCWidget extends StatelessWidget {
                 children: [
                   Text(
                     "$version has Activated",
-                    style: const TextStyle(
-                      color: Color(0xFFFF3B3B),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
+                    style: TTextTheme.titleSmallRegister(context),
                   ),
                   const SizedBox(height: 4),
-                  const Text(
+                   Text(
                     "Selected Version has activated",
-                    style: TextStyle(color: Color(0xFF667085), fontSize: 13),
+                    style: TTextTheme.titleThree(context),
                   ),
                 ],
               ),
             ),
             const SizedBox(width: 10),
-            const Icon(Icons.close, size: 16, color: Colors.grey),
+            Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: AppColors.tertiaryTextColor,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.close,
+                  size: 14,
+                  color: AppColors.textColor,
+                ),
+              ),
           ],
         ),
       ),
@@ -354,19 +355,24 @@ class PickupTandCWidget extends StatelessWidget {
 
   // View button
   Widget _viewButton(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.primaryColor),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.asset(IconString.viewIcon, color: AppColors.primaryColor),
-          const SizedBox(width: 4),
-          Text("View", style: TTextTheme.viewBtnText(context)),
-        ],
+    return InkWell(
+      onTap: (){
+        context.push('/pickupT&Cdescription', extra: {"hideMobileAppBar": true},);
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColors.primaryColor),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(IconString.viewIcon, color: AppColors.primaryColor),
+            const SizedBox(width: 4),
+            Text("View", style: TTextTheme.viewBtnText(context)),
+          ],
+        ),
       ),
     );
   }

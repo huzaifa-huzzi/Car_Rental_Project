@@ -3,6 +3,8 @@ import 'package:car_rental_project/PickupCar/AddPickUp/Widget/ResponsiveTimerWid
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb, Uint8List;
 import 'package:signature/signature.dart';
@@ -62,6 +64,9 @@ class PickupCarController extends GetxController {
       if (pickupHirerSigPadController.isNotEmpty) {
         isPickupHirerDrawingActive.value = true;
       }
+    });
+    termsController.addListener(() {
+      update();
     });
   }
 
@@ -721,10 +726,31 @@ class PickupCarController extends GetxController {
     });
   }
 
+     /// Add Pickup T&C
+  final quill.QuillController termsController = quill.QuillController.basic();
 
+  var selectedSize = ''.obs;
 
+  void toggleStyle(quill.Attribute attribute) {
+    termsController.formatSelection(attribute);
+    update();
+  }
+
+  void changeFontSize(String size) {
+    selectedSize.value = size;
+    termsController.formatSelection(quill.Attribute.fromKeyValue('size', size));
+    update();
+  }
+
+  bool isStyleActive(quill.Attribute attr) {
+    final attrs = termsController.getSelectionStyle().attributes;
+    return attrs.containsKey(attr.key) && attrs[attr.key] == attr;
+  }
+
+  final LayerLink saveButtonLink = LayerLink();
   @override
   void onClose() {
+    termsController.dispose();
     // 1. Pickup Detail Screen Controllers
     startDateController.dispose();
     startTimeController.dispose();
