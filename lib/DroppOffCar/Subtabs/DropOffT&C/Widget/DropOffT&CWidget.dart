@@ -1,6 +1,6 @@
-import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
-import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddButtonOfPickup.dart';
-import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/PaginationBarOfPickup.dart';
+import 'package:car_rental_project/DroppOffCar/DropOffController.dart';
+import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/PaginationBarOfDropOff.dart';
+import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/PrimaryBtnDropOff.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
@@ -8,14 +8,14 @@ import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show GoRouterHelper;
 
-class PickupTandCWidget extends StatelessWidget {
-  const PickupTandCWidget({super.key});
+class DropOffTandCWidget extends StatelessWidget {
+  const DropOffTandCWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<PickupCarController>();
+    final controller = Get.find<DropOffController>();
     final bool isMobile = AppSizes.isMobile(context);
 
     return Container(
@@ -61,7 +61,7 @@ class PickupTandCWidget extends StatelessWidget {
           ),
 
           const SizedBox(height: 30),
-          PaginationBarOfPickup(isMobile: isMobile, tablePadding: 0),
+          PaginationBarOfDropOff(isMobile: isMobile, tablePadding: 0),
         ],
       ),
     );
@@ -135,25 +135,25 @@ class PickupTandCWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(TextString.tandCTitle, style: TTextTheme.h6Style(context)),
+              Text(TextString.DropOfftandCTitle, style: TTextTheme.h6Style(context)),
               const SizedBox(height: 4),
               Text(TextString.tandCSubtitle, style: TTextTheme.titleThree(context)),
             ],
           ),
         ),
-        AddButtonOfPickup(
-          text: "Add Pick up T&C",
+        PrimaryBthDropOff(
+          text: "Add DropOff T&C",
           onTap: () {
-            context.push('/AddpickupT&C', extra: {"hideMobileAppBar": true});
+            context.push('/AdddropOffT&C', extra: {"hideMobileAppBar": true});
           },
         ),
       ],
     );
   }
 
-   // Table Header
+  // Table Header
   Widget _buildTableHeader(BuildContext context) {
-    final controller = Get.find<PickupCarController>();
+    final controller = Get.find<DropOffController>();
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
@@ -172,7 +172,7 @@ class PickupTandCWidget extends StatelessWidget {
     );
   }
   //header Text
-  Widget _headerText(String title, int flex, BuildContext context,PickupCarController controller) {
+  Widget _headerText(String title, int flex, BuildContext context,DropOffController controller) {
     bool isAction = title.toLowerCase() == "action";
 
     return Expanded(
@@ -187,8 +187,8 @@ class PickupTandCWidget extends StatelessWidget {
 
             if (!isAction)
               Obx(() {
-                bool isCurrent = controller.pickupSortColumn.value == title;
-                int order = isCurrent ? controller.pickupSortOrder.value : 0;
+                bool isCurrent = controller.DropOffSortColumn.value == title;
+                int order = isCurrent ? controller.DropOffSortOrder.value : 0;
 
                 return Column(
                   mainAxisSize: MainAxisSize.min,
@@ -224,8 +224,8 @@ class PickupTandCWidget extends StatelessWidget {
       ),
     );
   }
-   // Data Cards
-  Widget _buildDataCard(BuildContext context, Map<String, String> item, int index, PickupCarController controller) {
+  // Data Cards
+  Widget _buildDataCard(BuildContext context, Map<String, String> item, int index, DropOffController controller) {
     bool isActive = item['status'] == 'Active';
     final LayerLink rowLink = controller.getLayerLink(item['version']!);
     final OverlayPortalController portalController = OverlayPortalController();
@@ -278,7 +278,7 @@ class PickupTandCWidget extends StatelessWidget {
                       _viewButton(context),
                       if (!isActive) ...[
                         const SizedBox(width: 12),
-                        AddButtonOfPickup(
+                        PrimaryBthDropOff(
                           text: "Enable",
                           width: 100,
                           height: 35,
@@ -296,7 +296,7 @@ class PickupTandCWidget extends StatelessWidget {
       ),
     );
   }
-   // Notification
+  // Notification
   Widget _buildActivatedNotification(String version,BuildContext context) {
     return Material(
       elevation: 8,
@@ -328,7 +328,7 @@ class PickupTandCWidget extends StatelessWidget {
                     style: TTextTheme.titleSmallRegister(context),
                   ),
                   const SizedBox(height: 4),
-                   Text(
+                  Text(
                     TextString.tandCVersion,
                     style: TTextTheme.titleThree(context),
                   ),
@@ -337,17 +337,17 @@ class PickupTandCWidget extends StatelessWidget {
             ),
             const SizedBox(width: 10),
             Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: AppColors.tertiaryTextColor,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.close,
-                  size: 14,
-                  color: AppColors.textColor,
-                ),
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                color: AppColors.tertiaryTextColor,
+                shape: BoxShape.circle,
               ),
+              child: const Icon(
+                Icons.close,
+                size: 14,
+                color: AppColors.textColor,
+              ),
+            ),
           ],
         ),
       ),
@@ -358,7 +358,7 @@ class PickupTandCWidget extends StatelessWidget {
   Widget _viewButton(BuildContext context) {
     return InkWell(
       onTap: (){
-        context.push('/pickupT&Cdescription', extra: {"hideMobileAppBar": true},);
+        context.push('/dropOffT&Cdescription', extra: {"hideMobileAppBar": true},);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -378,7 +378,7 @@ class PickupTandCWidget extends StatelessWidget {
     );
   }
 
-   // Badges
+  // Badges
   Widget _statusBadge(bool active,BuildContext context) {
     return Align(
       alignment: Alignment.centerLeft,

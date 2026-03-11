@@ -59,9 +59,9 @@ class StepTwoDropOffWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(TextString.titleAddHeader, style:TTextTheme.h6Style(context), overflow: TextOverflow.ellipsis, maxLines: 1,),
+                      Text(TextString.titleViewPickStepTwoDropOffAdd2, style:TTextTheme.h6Style(context), overflow: TextOverflow.ellipsis, maxLines: 1,),
                       const SizedBox(height: 6),
-                      Text(TextString.subtitleHeader, style: TTextTheme.titleThree(context), overflow: TextOverflow.ellipsis, maxLines: 1,
+                      Text(TextString.titleViewSubtitleStepTwoDropOffAdd3, style: TTextTheme.titleThree(context), overflow: TextOverflow.ellipsis, maxLines: 1,
                       ),
                       const SizedBox(height: 15),
                       // Step Badges

@@ -65,9 +65,9 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Header title
-                          Text(TextString.titleViewPickStepTwo, style: TTextTheme.h6Style(context)),
+                          Text(TextString.titleViewPickStepTwoDropOffAdd2, style: TTextTheme.h6Style(context)),
                           const SizedBox(height: 6),
-                          Text(TextString.titleViewSubtitleStepTwo,
+                          Text(TextString.titleViewSubtitleStepTwoDropOffAdd3,
                               style: TTextTheme.titleThree(context)),
                           const SizedBox(height: 7),
                           // Step Badges
@@ -1029,7 +1029,7 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
     return AddButtonOfPickup(
       text: "Edit and Manage",
       onTap: () {
-        context.go('/dropOffT&C', extra: {"hideMobileAppBar": true});
+        context.go('/AdddropOffT&C', extra: {"hideMobileAppBar": true});
       },
       borderRadius: BorderRadius.circular(8),
     );

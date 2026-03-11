@@ -407,6 +407,8 @@ class TextString {
 
 
      /// DropOff Module
+  // Dropoff T & C
+  static const String  DropOfftandCTitle  = "DropOff Terms & Conditions";
     // DropOff Details
   static const String  titleViewPickStepTwoDropOff =  'DropOff Car Detail';
   static const String  titleViewSubtitleStepTwoDropOff =  'Enter the specification of the Car return details';

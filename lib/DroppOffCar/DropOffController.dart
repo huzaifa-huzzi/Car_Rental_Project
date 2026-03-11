@@ -4,6 +4,7 @@ import 'package:car_rental_project/Resources/Colors.dart' show AppColors;
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb, Uint8List;
 import 'package:signature/signature.dart';
@@ -536,7 +537,6 @@ class DropOffController extends GetxController{
   }
 
 
-  /// Sorting
   var sortColumn = "".obs;
   var sortOrder = 0.obs;
 
@@ -551,6 +551,72 @@ class DropOffController extends GetxController{
   }
 
 
+  ///  DropOff T&C
+  var DropOffSortColumn = "".obs;
+  var DropOffSortOrder = 0.obs;
+
+  void togglePickupSort(String columnName) {
+    if (DropOffSortColumn.value == columnName) {
+      DropOffSortOrder.value = (DropOffSortOrder.value + 1) % 3;
+      if (DropOffSortOrder.value == 0) DropOffSortColumn.value = "";
+    } else {
+      DropOffSortColumn.value = columnName;
+      DropOffSortOrder.value = 1;
+    }
+  }
+
+  var termsList = <Map<String, String>>[
+    {'version': 'V5', 'date': '5/03/2026', 'time': '12:30pm', 'status': 'Active'},
+    {'version': 'V4', 'date': '5/03/2026', 'time': '9:30am', 'status': 'Inactive'},
+    {'version': 'V3', 'date': '4/03/2026', 'time': '5:30pm', 'status': 'Inactive'},
+    {'version': 'V2', 'date': '4/03/2026', 'time': '4:30pm', 'status': 'Inactive'},
+    {'version': 'V1', 'date': '3/03/2026', 'time': '4:30pm', 'status': 'Inactive'},
+  ].obs;
+
+  final Map<String, LayerLink> links = {};
+
+  var activeLoadingIndex = (-1).obs;
+
+  LayerLink getLayerLink(String version) {
+    return links.putIfAbsent(version, () => LayerLink());
+  }
+
+  void activateVersion(int index) {
+    activeLoadingIndex.value = index;
+
+    Future.delayed(const Duration(seconds: 3), () {
+      for (var item in termsList) {
+        item['status'] = 'Inactive';
+      }
+      termsList[index]['status'] = 'Active';
+      termsList.refresh();
+      activeLoadingIndex.value = -1;
+    });
+  }
+
+  /// Add DropOff T&C
+  final quill.QuillController termsController = quill.QuillController.basic();
+
+  var selectedSize = ''.obs;
+
+  void toggleStyle(quill.Attribute attribute) {
+    termsController.formatSelection(attribute);
+    update();
+  }
+
+  void changeFontSize(String size) {
+    selectedSize.value = size;
+    termsController.formatSelection(quill.Attribute.fromKeyValue('size', size));
+    update();
+  }
+
+  bool isStyleActive(quill.Attribute attr) {
+    final attrs = termsController.getSelectionStyle().attributes;
+    return attrs.containsKey(attr.key) && attrs[attr.key] == attr;
+  }
+
+  var isSizeOpen = false.obs;
+  final LayerLink saveButtonLink = LayerLink();
 
   @override
   void onClose() {

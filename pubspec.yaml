@@ -1,61 +1,55 @@
 name: car_rental_project
 description: "SoftSnip Car Rental is a powerful system to manage vehicles, customers, bookings, pickups, drop-offs, and business operations in one modern dashboard."
 
-
 publish_to: 'none'
 version: 1.0.0+1
 
 environment:
   sdk: ^3.8.1
 
-
-
-
-  #---------------- Packages start ------------#
-
-
 dependencies:
   flutter:
     sdk: flutter
 
+  #  localization package
+  flutter_localizations:
+    sdk: flutter
 
-  #Icons
+  # /// ---------- Package Starts -------- ///
+
+  # Icons
   cupertino_icons: ^1.0.8
-  #Extra Screen usage helper functions
+
+  # Navigation & Fonts
   go_router: ^17.0.0
   google_fonts: ^6.3.2
   url_strategy: ^0.3.0
-  # // ------- Car Inventory Screen ------//(Same type of packages going for other modules also)
+
+  #   Car Inventory
   file_picker: ^10.3.7
   dotted_border: ^2.1.0
-  # // ------- DashBoard Screen ------//
+
+  #  Dashboard
   fl_chart: ^0.70.0
-  # // ------- Pickup Screen ------//
+
+  #  Pickup Screen / DropOFf Screen
   signature: ^6.3.0
   image: ^4.1.3
   flutter_quill: ^11.5.0
-  flutter_localization: ^0.3.3
-  #state management#
+
+  # State Management
   get: ^4.7.3
 
-
-  #------- packages end ----------#
+  # /// ---------- Package Ends -------- ///
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^5.0.0
-
-
-
-
 
 flutter:
   uses-material-design: true
 
-
-  # ---------- Local Assets --------- #
   assets:
     - assets/icons/
     - assets/Images/CarInventoryPics/
@@ -63,7 +57,6 @@ flutter:
     - assets/Images/PickupCar/
     - assets/Images/Login/
     - assets/Images/DashBoard/
-
 
 
 

@@ -56,7 +56,7 @@ class TTextTheme {
   }
 
   static TextStyle h6Style(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 20),fontWeight: FontWeight.w500,color: AppColors.textColor);
+    return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 20),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
 
   static TextStyle hPickupStyle(BuildContext context){

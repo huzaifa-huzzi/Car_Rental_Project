@@ -1,6 +1,6 @@
-import 'package:car_rental_project/PickupCar/PickupCarInventory.dart';
+import 'package:car_rental_project/DroppOffCar/DropOffController.dart';
+import 'package:car_rental_project/DroppOffCar/ReusableWidgetOfDropoff/HeaderWebDropOffWidget.dart';
 import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/AddButtonOfPickup.dart';
-import 'package:car_rental_project/PickupCar/ReusableWidgetOfPickup/HeaderWebPickupWidget.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
@@ -11,15 +11,15 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 
-class AddPickupTandC extends StatelessWidget {
-  const AddPickupTandC({super.key});
+class AddDropOffTandC extends StatelessWidget {
+  const AddDropOffTandC({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (!Get.isRegistered<PickupCarController>()) {
-      Get.put(PickupCarController());
+    if (!Get.isRegistered<DropOffController>()) {
+      Get.put(DropOffController());
     }
-    final controller = Get.find<PickupCarController>();
+    final controller = Get.find<DropOffController>();
     bool isWeb = AppSizes.isWeb(context);
 
     return Scaffold(
@@ -32,18 +32,18 @@ class AddPickupTandC extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.all(AppSizes.horizontalPadding(context)),
-                child: HeaderWebPickupWidget(
-                  mainTitle: 'Add Pickup T&C',
+                child: HeaderWebDropOffWidget(
+                  mainTitle: 'Add DropOff T&C',
                   showBack: true,
                   showSmallTitle: true,
-                  smallTitle: 'Pickup Car/Pickup T&C',
+                  smallTitle: 'DropOff Car/DropOff T&C',
                   showSearch: isWeb,
                   showSettings: isWeb,
                   showAddButton: true,
                   showNotification: true,
                   showProfile: true,
                   onAddPressed: (){
-                    context.push('/addpickup', extra: {"hideMobileAppBar": true});
+                    context.push('/addDropOff', extra: {"hideMobileAppBar": true});
                   },
                 ),
               ),
@@ -61,7 +61,7 @@ class AddPickupTandC extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(TextString.tandCTitle2, style:TTextTheme.h6Style(context)),
+                      Text(TextString.DropOfftandCTitle, style:TTextTheme.h6Style(context)),
                       const SizedBox(height: 4),
                       Text(TextString.tandCSubtitle2,
                           style: TTextTheme.titleThree(context)),
@@ -69,7 +69,7 @@ class AddPickupTandC extends StatelessWidget {
                       const SizedBox(height: 24),
 
                       // TOOLBAR
-                      GetBuilder<PickupCarController>(
+                      GetBuilder<DropOffController>(
                           builder: (controller) {
                             return Container(
                               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -135,7 +135,7 @@ class AddPickupTandC extends StatelessWidget {
 
   /// --------- Extra Widgets ------ ///
   // Texts Btn
-  Widget _buildSelectableTextBtn(String label, quill.Attribute attr, PickupCarController controller,BuildContext context) {
+  Widget _buildSelectableTextBtn(String label, quill.Attribute attr, DropOffController controller,BuildContext context) {
     bool isActive = controller.isStyleActive(attr);
     return InkWell(
       onTap: () => controller.toggleStyle(attr),
@@ -146,14 +146,14 @@ class AddPickupTandC extends StatelessWidget {
           borderRadius: BorderRadius.circular(4),
         ),
         child: Text(label,
-            style: TTextTheme.AdditionalText(context),
+          style: TTextTheme.AdditionalText(context),
         ),
       ),
     );
   }
 
-   // Icon Btn
-  Widget _buildSelectableIconBtn(IconData icon, quill.Attribute attr, PickupCarController controller) {
+  // Icon Btn
+  Widget _buildSelectableIconBtn(IconData icon, quill.Attribute attr, DropOffController controller) {
     bool isActive = controller.isStyleActive(attr);
     return InkWell(
       onTap: () => controller.toggleStyle(attr),
@@ -168,8 +168,8 @@ class AddPickupTandC extends StatelessWidget {
     );
   }
 
-   // DropDown
-  Widget _buildSizeDropdown(PickupCarController controller, BuildContext context) {
+  // DropDown
+  Widget _buildSizeDropdown(DropOffController controller, BuildContext context) {
     return Obx(() {
       bool isOpen = controller.isSizeOpen.value;
 
@@ -225,8 +225,8 @@ class AddPickupTandC extends StatelessWidget {
     });
   }
 
-   // Editable Area
-  Widget _buildEditorArea(PickupCarController controller, BuildContext context) {
+  // Editable Area
+  Widget _buildEditorArea(DropOffController controller, BuildContext context) {
     return Container(
       height: 350,
       padding: const EdgeInsets.all(16),
@@ -272,7 +272,7 @@ class AddPickupTandC extends StatelessWidget {
             );
           }),
 
-          GetBuilder<PickupCarController>(
+          GetBuilder<DropOffController>(
             builder: (controller) {
               if (controller.termsController.document.isEmpty() ||
                   controller.termsController.document.toPlainText().trim().isEmpty) {
@@ -304,8 +304,8 @@ class AddPickupTandC extends StatelessWidget {
     );
   }
 
-   // Notification
-  void _showActivatedNotification(BuildContext context, PickupCarController controller) {
+  // Notification
+  void _showActivatedNotification(BuildContext context, DropOffController controller) {
     OverlayState? overlayState = Overlay.of(context);
     late OverlayEntry overlayEntry;
 
