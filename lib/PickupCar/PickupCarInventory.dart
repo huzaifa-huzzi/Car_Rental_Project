@@ -3,7 +3,6 @@ import 'package:car_rental_project/PickupCar/AddPickUp/Widget/ResponsiveTimerWid
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb, Uint8List;

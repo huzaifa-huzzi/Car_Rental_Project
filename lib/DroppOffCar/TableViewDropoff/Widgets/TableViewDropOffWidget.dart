@@ -16,7 +16,7 @@ class TableViewDropOffWidget extends StatelessWidget {
 
   final controller = Get.find<DropOffController>();
 
-  final double carRentWidth = 160.0;
+  final double carRentWidth = 190.0;
   final double regColWidth = 140.0;
   final double vinColWidth = 190.0;
   final double nameColWidth = 240.0;
@@ -90,7 +90,7 @@ class TableViewDropOffWidget extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: tablePadding, vertical: 10),
                       child: Row(
                         children: [
-                          _dataCell(car["carRent"] ?? "", context, customWidth: carRentWidth),
+                          _carNameCell(car["carRent"] ?? "", context, customWidth: carRentWidth),
                           _dataCell(car["reg"] ?? "", context, customWidth: regColWidth),
                           _dataCell(car["vin"] ?? "", context, customWidth: vinColWidth),
 
@@ -261,6 +261,40 @@ class TableViewDropOffWidget extends StatelessWidget {
         text,
         textAlign: TextAlign.center,
         style: TTextTheme.titleeight(context).copyWith(color: Colors.white, fontSize: 11),
+      ),
+    );
+  }
+  // Icon
+  Widget _carNameCell(String text, BuildContext context, {double? customWidth}) {
+    return SizedBox(
+      width: customWidth,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: AppColors.secondaryColor,
+              shape: BoxShape.circle,
+            ),
+            child: Image.asset(
+              IconString.returnCarIcon,
+              color: AppColors.secondTextColor,
+              height: 15,
+              width: 15,
+            ),
+          ),
+          const SizedBox(width: 10),
+
+          Expanded(
+            child: Text(
+              text,
+              style: TTextTheme.pOne(context),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
       ),
     );
   }

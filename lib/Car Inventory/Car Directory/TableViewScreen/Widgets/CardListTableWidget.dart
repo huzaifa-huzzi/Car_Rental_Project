@@ -17,6 +17,7 @@ class CarListTableWidget extends StatelessWidget {
   final double vinColumnWidth = 180.0;
   final double columnWidth = 140.0;
   final double actionColumnWidth = 130.0;
+  final double carNameWidth = 190.0;
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +86,7 @@ class CarListTableWidget extends StatelessWidget {
                         padding: EdgeInsets.only(left: tablePadding, top: 12, bottom: 12),
                         child: Row(
                           children: [
-                            _dataCell(car["reg"] ?? "N/A", context),
+                            _iconDataCell(car["reg"] ?? "N/A", context),
                             _dataCell(car["vin"] ?? "N/A", context, customWidth: vinColumnWidth),
                             _dataCell(car["carName"] ?? "N/A", context),
                             _statusDataCell(car["status"] ?? "N/A", context),
@@ -260,6 +261,38 @@ class CarListTableWidget extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+  // Icon Column
+  Widget _iconDataCell(String text, BuildContext context, {double? customWidth}) {
+    return SizedBox(
+      width: customWidth ?? columnWidth,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: AppColors.secondaryColor,
+              shape: BoxShape.circle,
+            ),
+            child: Image.asset(
+              IconString.carInventoryIcon,
+              height: 16,
+              width: 16,
+              color: AppColors.secondTextColor,
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              text,
+              style: TTextTheme.pOne(context),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -10,6 +10,7 @@ import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:signature/signature.dart';
 import '../../../Resources/IconStrings.dart' show IconString;
 
@@ -71,7 +72,10 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
                           const SizedBox(height: 7),
                           // Step Badges
                           _buildStepBadges(context),
-                          const SizedBox(height: 25),
+                          const SizedBox(height: 15),
+
+                          _buildVersionHeader( context),
+                          const SizedBox(height: 15),
 
                           // Terms Content
                           Padding(
@@ -948,6 +952,86 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
         fontWeight: FontWeight.bold,
         fontStyle: FontStyle.italic,
         fontFamily: 'DancingScript'
+    );
+  }
+
+   // Version T&C
+  Widget _buildVersionHeader(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        bool isMobile = constraints.maxWidth < 300;
+
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: AppColors.signaturePadColor,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.1)),
+          ),
+          child: isMobile
+              ? Column(
+            key: const ValueKey('mobile_layout'),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeaderText(context),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: _buildEditButton(context),
+              ),
+            ],
+          )
+              : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(child: _buildHeaderText(context)),
+              const SizedBox(width: 16),
+              _buildEditButton(context),
+            ],
+          ),
+        );
+      },
+    );
+  }
+  Widget _buildHeaderText(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 10,
+          runSpacing: 8,
+          children: [
+            Text(
+              TextString.tandCTitle3,
+              style: TTextTheme.h6Style(context),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppColors.activeColor2,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text("Active", style: TTextTheme.activeText(context)),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Text(
+          TextString.tandCSubtitle3,
+          style: TTextTheme.titleThree(context),
+        ),
+      ],
+    );
+  }
+  Widget _buildEditButton(BuildContext context) {
+    return AddButtonOfPickup(
+      text: "Edit and Manage",
+      onTap: () {
+        context.go('/dropOffT&C', extra: {"hideMobileAppBar": true});
+      },
+      borderRadius: BorderRadius.circular(8),
     );
   }
 

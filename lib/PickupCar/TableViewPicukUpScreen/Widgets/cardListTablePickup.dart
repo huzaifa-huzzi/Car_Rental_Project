@@ -18,7 +18,7 @@ class CardListTablePickup extends StatelessWidget {
   final double vinColumnWidth = 180.0;
   final double dateColumnWidth = 140.0;
   final double statusColumnWidth = 130.0;
-  final double standardWidth = 150.0;
+  final double standardWidth = 190.0;
   final double actionColumnWidth = 90.0;
 
   @override
@@ -48,9 +48,7 @@ class CardListTablePickup extends StatelessWidget {
                     _headerCell(TextString.tableTwo, context, customWidth: vinColumnWidth),
                     _headerCell(TextString.tableOne, context, customWidth: nameColumnWidth),
                     _headerCell(TextString.tableSeven, context, customWidth: standardWidth ),
-                    const SizedBox(width: 30),
                     _headerCell(TextString.tableEight, context, customWidth: standardWidth ),
-                    const SizedBox(width: 35),
                     _headerCell(TextString.tableNine, context, customWidth: dateColumnWidth),
                     const SizedBox(width: 18),
                     _headerCell(TextString.tableTen, context, customWidth: statusColumnWidth),
@@ -79,15 +77,13 @@ class CardListTablePickup extends StatelessWidget {
                         padding: EdgeInsets.only(left: tablePadding, top: 10, bottom: 10),
                         child: Row(
                           children: [
-                            _dataCell(car["carName"]?.toString() ?? "Key Missing", context, customWidth: standardWidth),
+                            _carNameCell(car["carName"]?.toString() ?? "Key Missing", context, customWidth: standardWidth),
                             _dataCell(car["reg"]?.toString() ?? "Key Missing", context, customWidth: standardWidth),
                             _dataCell(car["vin"]?.toString() ?? "Key Missing", context, customWidth: vinColumnWidth),
                             _dataCell(car["customerName"]?.toString() ?? "Key Missing", context, customWidth: nameColumnWidth),
                             const SizedBox(width: 15),
                             _dataCell(car["rentPerWeek"]?.toString() ?? "-", context, customWidth: standardWidth ),
-                            const SizedBox(width: 30),
                             _dataCell(car["rentalPeriod"]?.toString() ?? "-", context, customWidth: standardWidth ),
-                            const SizedBox(width: 15),
                             _dateDataCell(
                                 car["pickupStart"]?.toString() ?? "N/A",
                                 car["pickupEnd"]?.toString() ?? "N/A",
@@ -246,6 +242,38 @@ class CardListTablePickup extends StatelessWidget {
     return SizedBox(
       width: customWidth,
       child: Text(text, style: TTextTheme.pOne(context), overflow: TextOverflow.ellipsis),
+    );
+  }
+
+   // icon Cell
+  Widget _carNameCell(String text, BuildContext context, {double? customWidth}) {
+    return SizedBox(
+      width: customWidth,
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: AppColors.secondaryColor,
+              shape: BoxShape.circle,
+            ),
+            child: Image.asset(
+              IconString.agreementIcon,
+              color: AppColors.secondTextColor,
+              height: 16,
+              width: 16,
+            ),
+          ),
+          const SizedBox(width: 4),
+          Expanded(
+            child: Text(
+                text,
+                style: TTextTheme.pOne(context),
+                overflow: TextOverflow.ellipsis
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

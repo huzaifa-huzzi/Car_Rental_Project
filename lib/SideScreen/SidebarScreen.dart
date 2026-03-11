@@ -130,15 +130,10 @@ class SidebarScreen extends StatelessWidget {
                   ),
                   // Staff
                   SidebarComponents.menuItem(
-                    context,
-                    controller,
+                    context, controller,
                     iconPath: IconString.staffIcon,
                     title: TextString.staffTitle,
-                    trailing: SidebarComponents.redDotWithNumber(
-                        controller.incomeRedDot.value, context),
-                    onTap: (val) {
-                      context.go('/staff');
-                    },
+                    onTap: (val) => context.go('/staff'),
                     scaffoldKey: _scaffoldKey,
                   ),
                   /* SidebarComponents.expenseMenuItem(context, controller, onTap: onTap, scaffoldKey: _scaffoldKey),
