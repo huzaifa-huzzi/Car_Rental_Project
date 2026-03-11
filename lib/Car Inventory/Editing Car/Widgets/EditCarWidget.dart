@@ -115,7 +115,7 @@ class EditCarWidget extends StatelessWidget {
               _buildSectionTitle(context, "Car Identification"),
               const SizedBox(height: 15),
               _buildResponsiveGrid(context, [
-                _buildDropdown(context, "Car Make", ["Toyota", "Bmw", "Asto"], controller.selectedBrand2, id: 'make2'),
+                _buildDropdown(context, "Car Make", ["Toyota", "Bmw", "Aston"], controller.selectedBrand2, id: 'make2'),
                 _buildDropdown(context, "Car Model", ["Corolla", "Civic"], controller.selectedModel2, id: 'model2'),
                 _buildDropdown(context, "Car Year", ["2023", "2024"], controller.selectedYear2, id: 'year2'),
                 _buildTextField(context, "Car Registration Number", controller.reg2Controller, hint: "123-456"),

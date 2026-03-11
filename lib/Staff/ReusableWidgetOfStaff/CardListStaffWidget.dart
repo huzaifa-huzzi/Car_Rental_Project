@@ -91,7 +91,7 @@ class CardListStaffWidget extends StatelessWidget {
             onSelected: (val) => controller.selectedSearchType2.value = val,
             itemBuilder: (context) => [
               _buildPopupItem("Staff Name", IconString.nameIcon, context),
-              _buildPopupItem("Email", IconString.smsIcon, context),
+              _buildPopupItem("Email", IconString.smsIcon, context,isLast: true),
             ],
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -181,12 +181,13 @@ class CardListStaffWidget extends StatelessWidget {
       value: text,
       padding: EdgeInsets.zero,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Row(
               children: [
-                Image.asset(icon, width: 18, height: 18,color: AppColors.quadrantalTextColor,),
+                Image.asset(icon, width: 18, height: 18, color: AppColors.quadrantalTextColor),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -199,7 +200,6 @@ class CardListStaffWidget extends StatelessWidget {
               ],
             ),
           ),
-
           if (!isLast)
             Divider(
               height: 1,
