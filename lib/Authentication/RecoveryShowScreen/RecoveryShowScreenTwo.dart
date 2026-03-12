@@ -1,10 +1,11 @@
-import 'package:car_rental_project/Authentication/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import '../ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart' show PrimaryBtnOfLogin;
 
 
 class RecoveryShowScreenTwo extends StatefulWidget {

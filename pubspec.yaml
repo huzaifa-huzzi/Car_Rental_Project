@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  #  localization package
+  #  localization
   flutter_localizations:
     sdk: flutter
 
@@ -20,7 +20,7 @@ dependencies:
   # Icons
   cupertino_icons: ^1.0.8
 
-  # Navigation & Fonts
+  # universal Packages
   go_router: ^17.0.0
   google_fonts: ^6.3.2
   url_strategy: ^0.3.0

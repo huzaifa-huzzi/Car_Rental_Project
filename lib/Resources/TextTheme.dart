@@ -16,7 +16,6 @@
 //
 // Poppins Black – 900
 
-
 import 'package:car_rental_project/Resources/AppTextSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:flutter/material.dart';
