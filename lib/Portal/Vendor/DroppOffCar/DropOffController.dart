@@ -440,6 +440,7 @@ class DropOffController extends GetxController{
   ];
 
   var additionalImages = <ImageHolder>[].obs;
+  var hoverStates = <String, bool>{}.obs;
 
   Future<void> pickImageNew(String type) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(

@@ -23,6 +23,13 @@ class _CustomCalendarDropOffState extends State<CustomCalendarDropOff> {
   DateTime? _selectedDay;
 
   @override
+  void initState() {
+    super.initState();
+    DateTime now = DateTime.now();
+    _selectedDay = DateTime(now.year, now.month, now.day);
+  }
+
+  @override
   Widget build(BuildContext context) {
     int daysInMonth = DateTime(_focusedDay.year, _focusedDay.month + 1, 0).day;
     int firstDayWeekday = DateTime(_focusedDay.year, _focusedDay.month, 1).weekday;
@@ -84,18 +91,22 @@ class _CustomCalendarDropOffState extends State<CustomCalendarDropOff> {
                 crossAxisCount: 7,
                 mainAxisSpacing: 5,
                 crossAxisSpacing: 5,
-                  childAspectRatio: 1.1,
+                childAspectRatio: 1.1,
               ),
               itemBuilder: (context, index) {
                 int dayNum = index - offset + 1;
                 if (dayNum < 1 || dayNum > daysInMonth) return const SizedBox();
-
-                bool isSelected = _selectedDay?.day == dayNum &&
-                    _selectedDay?.month == _focusedDay.month &&
-                    _selectedDay?.year == _focusedDay.year;
+                bool isSelected = _selectedDay != null &&
+                    _selectedDay!.day == dayNum &&
+                    _selectedDay!.month == _focusedDay.month &&
+                    _selectedDay!.year == _focusedDay.year;
 
                 return GestureDetector(
-                  onTap: () => setState(() => _selectedDay = DateTime(_focusedDay.year, _focusedDay.month, dayNum)),
+                  onTap: () {
+                    setState(() {
+                      _selectedDay = DateTime(_focusedDay.year, _focusedDay.month, dayNum);
+                    });
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       color: isSelected ? AppColors.primaryColor : Colors.transparent,
@@ -125,7 +136,9 @@ class _CustomCalendarDropOffState extends State<CustomCalendarDropOff> {
               _buildBtn("Cancel", widget.onCancel, context, true),
               const SizedBox(width: 8),
               _buildBtn("Done", () {
-                if (_selectedDay != null) widget.onDateSelected(_selectedDay!);
+                if (_selectedDay != null) {
+                  widget.onDateSelected(_selectedDay!);
+                }
               }, context, false),
             ],
           )
@@ -135,7 +148,6 @@ class _CustomCalendarDropOffState extends State<CustomCalendarDropOff> {
   }
 
   /// --------- Extra Widget --------- ///
-  // btn
   Widget _buildBtn(String text, VoidCallback onTap, BuildContext context, bool isOutline) {
     return SizedBox(
       height: 28,
@@ -162,5 +174,9 @@ class _CustomCalendarDropOffState extends State<CustomCalendarDropOff> {
       ),
     );
   }
-  String _getMonthName(int month) => ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][month - 1];
+
+  String _getMonthName(int month) => [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ][month - 1];
 }

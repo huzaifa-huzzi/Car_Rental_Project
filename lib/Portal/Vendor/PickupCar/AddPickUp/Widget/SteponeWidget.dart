@@ -1362,6 +1362,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                   ),
                   child: TextFormField(
                     cursorColor: AppColors.blackColor,
+                    keyboardType: TextInputType.number,
                     controller: txtController,
                     textAlignVertical: TextAlignVertical.center,
                     style: TTextTheme.insidetextfieldWrittenText(context),

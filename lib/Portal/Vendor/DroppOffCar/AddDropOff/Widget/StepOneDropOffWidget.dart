@@ -312,7 +312,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
     );
   }
 
-  // pickup Note Field
+  //  Note Fields
   Widget _buildCommentField(BuildContext context, String label, TextEditingController controller, String hint, {bool isReadOnly = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -448,6 +448,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                     ),
                     child: TextFormField(
                       cursorColor: AppColors.blackColor,
+                      keyboardType: TextInputType.number,
                       controller: item['controller'],
                       readOnly: !isSpecial,
                       style: TTextTheme.insidetextfieldWrittenText(context),

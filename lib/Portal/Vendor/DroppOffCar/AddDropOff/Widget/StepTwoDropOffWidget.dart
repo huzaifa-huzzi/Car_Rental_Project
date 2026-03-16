@@ -514,100 +514,222 @@ class StepTwoDropOffWidget extends StatelessWidget {
   Widget _buildInteractiveUploadBox(BuildContext context, String label, String iconPath, String type) {
     return Obx(() {
       ImageHolder? image;
-      if (type == 'front') {
-        image = controller.frontImage.value;
-      } else if (type == 'back') {
-        image = controller.backImage.value;
-      } else if (type == 'left') {
-        image = controller.leftImage.value;
-      } else if (type == 'right') {
-        image = controller.rightImage.value;
-      }
+      if (type == 'front') image = controller.frontImage.value;
+      else if (type == 'back') image = controller.backImage.value;
+      else if (type == 'left') image = controller.leftImage.value;
+      else if (type == 'right') image = controller.rightImage.value;
 
       bool hasImage = image != null;
+      bool isHovered = controller.hoverStates[type] ?? false;
 
-      return GestureDetector(
-        onTap: () => controller.pickImageNew(type),
-        child: Container(
-          height: 300,
-          width: double.infinity,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: AppColors.backgroundOfPickupsWidget,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.7))
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.asset(IconString.returnCarIcon, height: 18, color: AppColors.primaryColor),
-              const SizedBox(height: 3),
-              Text(label, style: TTextTheme.CalendarTitle(context)),
+      return MouseRegion(
+        onEnter: (_) => controller.hoverStates[type] = true,
+        onExit: (_) => controller.hoverStates[type] = false,
+        child: GestureDetector(
+          onTap: () {
+            if (hasImage) {
+              _showImageViewerPopup(context, type);
+            } else {
+              controller.pickImageNew(type);
+            }
+          },
+          child: Container(
+            height: 300,
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+                color: AppColors.backgroundOfPickupsWidget,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.7))
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.asset(IconString.returnCarIcon, height: 18, color: AppColors.primaryColor),
+                const SizedBox(height: 3),
+                Text(label, style: TTextTheme.CalendarTitle(context)),
 
-              Expanded(
-                child: hasImage
-                    ? Padding(
-                  padding: const EdgeInsets.only(top: 12.0),
-                  child: Stack(
+                Expanded(
+                  child: hasImage
+                      ? Padding(
+                    padding: const EdgeInsets.only(top: 12.0),
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: kIsWeb
+                                ? Image.memory(image.bytes!, fit: BoxFit.cover)
+                                : Image.file(File(image.path!), fit: BoxFit.cover),
+                          ),
+                        ),
+                        if (isHovered)
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child:  Center(
+                              child: Image.asset(IconString.zoomIcon,width: 50,height: 50,),
+                            ),
+                          ),
+                        if (!isHovered)
+                          Positioned(
+                            top: 8, right: 8,
+                            child: GestureDetector(
+                              onTap: () => controller.removeImageNew(type),
+                              child: const CircleAvatar(
+                                  radius: 12,
+                                  backgroundColor: AppColors.primaryColor,
+                                  child: Icon(Icons.close, color: AppColors.tertiaryTextColor, size: 14)
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  )
+                      : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: kIsWeb
-                            ? Image.memory(image.bytes!, fit: BoxFit.cover, width: double.infinity, height: double.infinity)
-                            : Image.file(File(image.path!), fit: BoxFit.cover, width: double.infinity, height: double.infinity),
+                      const SizedBox(width: double.infinity),
+                      Image.asset(iconPath, height: 60, fit: BoxFit.contain),
+                      const SizedBox(height: 12),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(TextString.clickToUpload, style: TTextTheme.UploadText(context)),
                       ),
-                      Positioned(
-                        top: 8, right: 8,
-                        child: GestureDetector(
-                          onTap: () => controller.removeImageNew(type),
-                          child: const CircleAvatar(
-                              radius: 12,
-                              backgroundColor: AppColors.primaryColor,
-                              child: Icon(Icons.close, color: Colors.white, size: 14)
+                      const SizedBox(height: 4),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text.rich(
+                          TextSpan(
+                            text: TextString.jpgsPngs,
+                            style: TTextTheme.titleDriver(context),
+                            children: [
+                              TextSpan(text: TextString.under10, style: TTextTheme.titleTwelve(context)),
+                            ],
                           ),
                         ),
                       ),
                     ],
                   ),
-                )
-                    : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(width: double.infinity),
-
-                    Image.asset(iconPath, height: 60, fit: BoxFit.contain),
-
-                    const SizedBox(height: 12),
-
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(TextString.clickToUpload, style: TTextTheme.UploadText(context)),
-                    ),
-                    const SizedBox(height: 4),
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text.rich(
-                        TextSpan(
-                          text: TextString.jpgsPngs,
-                          style: TTextTheme.titleDriver(context),
-                          children: [
-                            TextSpan(
-                              text: TextString.under10,
-                              style: TTextTheme.titleTwelve(context),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );
     });
+  }
+  void _showImageViewerPopup(BuildContext context, String type, {int? index}) {
+    var selectedImage = Rxn<ImageHolder>();
+
+    if (type == 'additional' && index != null) {
+      selectedImage.value = controller.additionalImages[index];
+    } else {
+      if (type == 'front') selectedImage.value = controller.frontImage.value;
+      else if (type == 'back') selectedImage.value = controller.backImage.value;
+      else if (type == 'left') selectedImage.value = controller.leftImage.value;
+      else if (type == 'right') selectedImage.value = controller.rightImage.value;
+    }
+
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.9),
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: IconButton(
+                  icon: const Icon(Icons.close, color: AppColors.tertiaryTextColor, size: 30),
+                  onPressed: () => Navigator.pop(context)
+              ),
+            ),
+            Flexible(
+              child: Obx(() => Container(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.75,
+                  maxWidth: MediaQuery.of(context).size.width * 0.98,
+                ),
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: selectedImage.value != null
+                        ? InteractiveViewer(
+                      panEnabled: true,
+                      boundaryMargin: const EdgeInsets.all(20),
+                      minScale: 0.5,
+                      maxScale: 4.0,
+                      child: kIsWeb
+                          ? Image.memory(selectedImage.value!.bytes!, fit: BoxFit.contain)
+                          : Image.file(File(selectedImage.value!.path!), fit: BoxFit.contain),
+                    )
+                        : const SizedBox(),
+                  ),
+                ),
+              )),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Thumbnails Selection
+            Container(
+              height: kIsWeb ? 80 : 65,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Obx(() => Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _thumb(controller.frontImage.value, () => selectedImage.value = controller.frontImage.value, selectedImage.value),
+                    _thumb(controller.backImage.value, () => selectedImage.value = controller.backImage.value, selectedImage.value),
+                    _thumb(controller.leftImage.value, () => selectedImage.value = controller.leftImage.value, selectedImage.value),
+                    _thumb(controller.rightImage.value, () => selectedImage.value = controller.rightImage.value, selectedImage.value),
+                    ...controller.additionalImages.map((img) =>
+                        _thumb(img, () => selectedImage.value = img, selectedImage.value)
+                    ),
+                  ],
+                )),
+              ),
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
+  }
+  Widget _thumb(ImageHolder? img, VoidCallback onTap, ImageHolder? currentSelected) {
+    if (img == null) return const SizedBox();
+    bool isSelected = img == currentSelected;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        margin: const EdgeInsets.symmetric(horizontal: 0),
+        width: kIsWeb ? 95 : 75,
+        height: kIsWeb ? 70 : 55,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+              color: isSelected ? AppColors.primaryColor : Colors.transparent,
+              width: 1.5
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(6),
+          child: kIsWeb
+              ? Image.memory(img.bytes!, fit: BoxFit.cover)
+              : Image.file(File(img.path!), fit: BoxFit.cover),
+        ),
+      ),
+    );
   }
 
     // Additional Images

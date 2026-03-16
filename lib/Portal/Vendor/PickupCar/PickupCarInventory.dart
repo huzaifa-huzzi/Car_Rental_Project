@@ -476,6 +476,8 @@ class PickupCarController extends GetxController {
 
 
 
+  var hoverStates = <String, bool>{}.obs;
+
   var frontImage = Rxn<ImageHolder>();
   var backImage = Rxn<ImageHolder>();
   var leftImage = Rxn<ImageHolder>();

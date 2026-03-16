@@ -23,6 +23,13 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
   DateTime? _selectedDay;
 
   @override
+  void initState() {
+    super.initState();
+    DateTime now = DateTime.now();
+    _selectedDay = DateTime(now.year, now.month, now.day);
+  }
+
+  @override
   Widget build(BuildContext context) {
     int daysInMonth =
         DateTime(_focusedDay.year, _focusedDay.month + 1, 0).day;
@@ -35,7 +42,7 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
     int totalCellsNeeded = offset + daysInMonth;
 
     return Container(
-      width: widget.width < 270 ? 270 : widget.width, // slightly smaller
+      width: widget.width < 270 ? 270 : widget.width,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
@@ -49,10 +56,7 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
-
           double availableWidth = constraints.maxWidth;
-
-          // slightly smaller cells
           double cellSize = (availableWidth / 7).clamp(34, 46);
 
           return Padding(
@@ -60,7 +64,6 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-
                 /// HEADER
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -75,12 +78,10 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
                       },
                       icon: const Icon(Icons.arrow_back_ios, size: 15),
                     ),
-
                     Text(
                       "${_getMonthName(_focusedDay.month)} (${_focusedDay.year})",
                       style: TTextTheme.titleTwo(context),
                     ),
-
                     IconButton(
                       visualDensity: VisualDensity.compact,
                       onPressed: () {
@@ -93,7 +94,6 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 5),
                 const Divider(),
                 const SizedBox(height: 5),
@@ -130,17 +130,15 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
                       childAspectRatio: 1,
                     ),
                     itemBuilder: (context, index) {
-
                       int dayNum = index - offset + 1;
 
                       if (dayNum < 1 || dayNum > daysInMonth) {
                         return const SizedBox();
                       }
-
-                      bool isSelected =
-                          _selectedDay?.day == dayNum &&
-                              _selectedDay?.month == _focusedDay.month &&
-                              _selectedDay?.year == _focusedDay.year;
+                      bool isSelected = _selectedDay != null &&
+                          _selectedDay!.day == dayNum &&
+                          _selectedDay!.month == _focusedDay.month &&
+                          _selectedDay!.year == _focusedDay.year;
 
                       return GestureDetector(
                         onTap: () {
@@ -198,9 +196,7 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
                         ),
                       ),
                     ),
-
                     const SizedBox(width: 8),
-
                     SizedBox(
                       height: 28,
                       width: 70,
@@ -235,7 +231,7 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
   }
 
   String _getMonthName(int month) => [
-    "January","February","March","April","May","June",
-    "July","August","September","October","November","December"
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
   ][month - 1];
 }
