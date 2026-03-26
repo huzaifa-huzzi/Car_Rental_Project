@@ -124,7 +124,8 @@ class IconString {
   static const String  staffContactIcon = 'assets/icons/StaffContect.png';
   static const String  staffDetailIcon = 'assets/icons/StaffDetail.png';
   static const String  staffAccessIcon = 'assets/icons/StaffAccess.png';
-
+  /// Payment
+  static const String  paymentIconModule = 'assets/icons/PaymentIcon.png';
 
 
 }

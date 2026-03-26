@@ -27,6 +27,7 @@ import 'package:car_rental_project/Portal/Vendor/DroppOffCar/Subtabs/DropOffT&C/
 import 'package:car_rental_project/Portal/Vendor/DroppOffCar/Subtabs/DropOffT&C/DropOffT&C.dart';
 import 'package:car_rental_project/Portal/Vendor/DroppOffCar/Subtabs/DropOffT&C/DropOffT&CDescription.dart' show DropOffTandCDescription;
 import 'package:car_rental_project/Portal/Vendor/DroppOffCar/TableViewDropoff/TableViewDropoffScreen.dart';
+import 'package:car_rental_project/Portal/Vendor/Payment/payment.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/AddPickup.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/Widget/StepThreeWidget.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/Widget/StepTwoWidgets.dart';
@@ -67,7 +68,8 @@ class AppNavigation {
           if (path.contains('t&c') ||
               path.contains('add') ||
               path.contains('edit') ||
-              path.contains('detail')) {
+              path.contains('detail') ||
+              path.contains('payment')) {
             hideMobile = true;
           }
 
@@ -84,6 +86,7 @@ class AppNavigation {
                 else if (route == "Pickup T&C") context.go('/pickupT&C');
                 else if (route == "Dropoff Car") context.go('/dropoffCar');
                 else if (route == "Staff") context.go('/staff');
+                else if (route == "Payment") context.go('/Payment');
               }
             },
             hideMobileAppBar: hideMobile,
@@ -124,6 +127,8 @@ class AppNavigation {
           GoRoute(path: '/dropOffT&C', builder: (context, state) => const DropOffTandC()),
           GoRoute(path: '/dropOffT&Cdescription', builder: (context, state) =>  DropOffTandCDescription()),
           GoRoute(path: '/AdddropOffT&C', builder: (context, state) => const AddDropOffTandC()),
+           // Payment
+          GoRoute(path: '/Payment', builder: (context, state) =>  PaymentScreen()),
           // staff
           GoRoute(
             path: '/staff',

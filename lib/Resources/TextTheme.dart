@@ -542,6 +542,14 @@ class TTextTheme {
     );
   }
 
+    // Payment
+  static TextStyle medium14(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w500,color: AppColors.secondTextColor);
+  }
+
+  static TextStyle bodyRegular12black(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w400,color: AppColors.blackColor);
+  }
 
 
 

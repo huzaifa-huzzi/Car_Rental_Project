@@ -128,6 +128,14 @@ class SidebarScreen extends StatelessWidget {
                     ],
                     scaffoldKey: _scaffoldKey,
                   ),
+                    // Payments
+                  SidebarComponents.menuItem(
+                    context, controller,
+                    iconPath: IconString.paymentIconModule,
+                    title: "Payment",
+                    onTap: (val) => context.go('/Payment'),
+                    scaffoldKey: _scaffoldKey,
+                  ),
                   // Staff
                   SidebarComponents.menuItem(
                     context, controller,
@@ -166,12 +174,17 @@ class SidebarScreen extends StatelessWidget {
       }
       else if (currentRoute.contains('/pickupcar')) {
         context.push('/addpickup', extra: {"hideMobileAppBar": true});
-      } else if (currentRoute.contains('/dropoffCar')) {
+      }
+      else if (currentRoute.contains('/dropoffCar')) {
         context.push('/addDropOff', extra: {"hideMobileAppBar": true});
-      }else if (currentRoute.contains('/staff')) {
+      }
+      else if (currentRoute.contains('/staff')) {
         context.push('/addStaff', extra: {"hideMobileAppBar": true});
       }
-        else {
+      else if (currentRoute.contains('/Payment')) {
+        context.push('/payment/detail', extra: {"hideMobileAppBar": true});
+      }
+      else {
         context.push('/addNewCar', extra: {"hideMobileAppBar": true});
       }
     }
