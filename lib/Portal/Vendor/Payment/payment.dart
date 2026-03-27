@@ -1,4 +1,5 @@
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/HeaderWebPaymentWidget.dart';
+import 'package:car_rental_project/Portal/Vendor/Payment/Widget/PaymentScreenWidget.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/paymentController.dart' show PaymentController;
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
@@ -30,6 +31,7 @@ class PaymentScreen extends StatelessWidget {
                     showSettings: true,
                   ),
                 const SizedBox(height: 10),
+                PaymentWidget(),
                 SizedBox(height: AppSizes.verticalPadding(context) * 1.25),
               ],
             ),

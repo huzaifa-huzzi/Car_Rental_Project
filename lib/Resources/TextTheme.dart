@@ -542,13 +542,145 @@ class TTextTheme {
     );
   }
 
-    // Payment
+    /// Payment / After that Module
   static TextStyle medium14(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w500,color: AppColors.secondTextColor);
   }
 
   static TextStyle bodyRegular12black(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w400,color: AppColors.blackColor);
+  }
+
+  static TextStyle h1StyleOtherModule(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 22, 24, 24),fontWeight: FontWeight.w700,color: AppColors.textColor);
+  }
+
+  static TextStyle h1StylePrimary(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 22, 24, 24),fontWeight: FontWeight.w700,color: AppColors.primaryColor);
+  }
+
+  static TextStyle h2StyleOtherModule(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 20, 20, 20),fontWeight: FontWeight.w600,color: AppColors.textColor);
+  }
+
+  static TextStyle h3StyleOtherModule(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 32, 40, 40),fontWeight: FontWeight.w600,color: AppColors.textColor);
+  }
+
+  static TextStyle h2PrimaryStyle(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 20, 20, 20),fontWeight: FontWeight.w600,color: AppColors.primaryColor);
+  }
+
+  static TextStyle h2MediumStyle(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 20, 20, 20),fontWeight: FontWeight.w500,color: AppColors.textColor);
+  }
+
+  static TextStyle logoStyle(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 22, 24, 24),fontWeight: FontWeight.w500,color: AppColors.textColor);
+  }
+  static TextStyle bodyRegular10(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 16, 17.5, 17.5),fontWeight: FontWeight.w400,color: AppColors.tertiaryTextColor);
+  }
+
+  static TextStyle bodySecondRegular10(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 10),fontWeight: FontWeight.w400,color: AppColors.tertiaryTextColor);
+  }
+
+  static TextStyle bodyRegular12(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w400,color: AppColors.tertiaryTextColor);
+  }
+
+
+  static TextStyle bodyRegular12Primary(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w400,color: AppColors.primaryColor);
+  }
+
+  static TextStyle bodyRegular14(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.secondTextColor);
+  }
+
+  static TextStyle bodyRegular14tertiary(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.tertiaryTextColor);
+  }
+
+  static TextStyle bodyRegular16(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 16),fontWeight: FontWeight.w400,color: AppColors.tertiaryTextColor);
+  }
+
+  static TextStyle bodyRegular16secondary(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 16),fontWeight: FontWeight.w400,color: AppColors.secondTextColor);
+  }
+
+  static TextStyle bodyRegular16Primary(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 16),fontWeight: FontWeight.w400,color: AppColors.primaryColor);
+  }
+
+  static TextStyle bodyRegular16black(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 16),fontWeight: FontWeight.w400,color: AppColors.blackColor);
+  }
+
+  static TextStyle bodySemiBold12(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w600,color: AppColors.textColor);
+  }
+
+  static TextStyle bodySemiBold14(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w600,color: AppColors.tertiaryTextColor);
+  }
+
+  static TextStyle bodySemiBold14White(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w600,color: Colors.white);
+  }
+
+  static TextStyle bodySemiBold14black(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w600,color: AppColors.blackColor);
+  }
+
+  static TextStyle bodySemiBold16(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 16),fontWeight: FontWeight.w600,color: AppColors.primaryColor);
+  }
+
+  static TextStyle medium12(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w500,color: AppColors.textColor);
+  }
+
+  static TextStyle medium12White(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w500,color: Colors.white);
+  }
+
+  static TextStyle medium14tableHeading(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w500,color: AppColors.tableHeading);
+  }
+
+  static TextStyle medium14White(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w500,color: Colors.white);
+  }
+
+  static TextStyle medium14black(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w500,color: AppColors.textColor);
+  }
+
+  static TextStyle medium14tertiaryColor(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w500,color: AppColors.tertiaryTextColor);
+  }
+  static TextStyle tableRegular14(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.tertiaryTextColor);
+  }
+
+
+  static TextStyle tableRegular14black(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.blackColor);
+  }
+
+  static TextStyle tableRegular14Primary(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.primaryColor);
+  }
+
+  static TextStyle tableMedium14(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w500,color: AppColors.tableHeading);
+  }
+
+  static TextStyle tableSemiBold14(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w600,color: Colors.white);
   }
 
 

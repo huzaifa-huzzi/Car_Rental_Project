@@ -642,6 +642,32 @@ class TextString {
   static const String  addStaffAccessSubtitleEdit =   'Select Staff Access';
   static const String  addStaffAcessPermissionEdit =   'Access Permission';
 
+   /// Payment
+    // PaymentScreen
+  static const String  titlePayment= "All Payments";
+  static const String  subTitlePayment= "List of all payments";
+  static const String  invoicesPayment= "Total Invoices";
+  static const String  paymentPayment= "Total payments";
+  static const String  recentPayment= "Recent payment";
+  static const String  pendingPayment= "Pending payment";
+  static const String  overdue= "Over due";
+  static const String  processing= "Processing";
+  static const String  Resubmit= "Resubmit";
+  static const String  completed= "Completed";
+  static const String  invoicesSubtitle= "3 more invoices generated";
+  static const String  paymentSubtitle= "3 more payment completed";
+  static const String  recentPaymentSubtitle= "paid last week";
+  static const String  pendingPaymentSubtitle= "5 more payment left";
+  static const String  overdueSubtitle= "4 payment date passed";
+  static const String  processingSubtitle= "5 payments are in processing phase";
+  static const String  ResubmitSubtitle= "4 payments require resubmission";
+  static const String  completedSubtitle= "5 payments has approved";
+  static const String  header1payment= "Invoice Id";
+  static const String  header2payment= "Duration";
+  static const String  header3payment= "Car Name";
+  static const String  header4payment= "Amount";
+  static const String  header5payment= "Status";
+  static const String  header6payment= "Action";
 
 
 }

@@ -103,7 +103,7 @@ class HeaderWebDropOffWidget extends StatelessWidget {
                       } else if (router.canPop()) {
                         router.pop();
                       } else {
-                        router.go('/customers');
+                        router.go('/');
                       }
                     },
                     child: Container(
