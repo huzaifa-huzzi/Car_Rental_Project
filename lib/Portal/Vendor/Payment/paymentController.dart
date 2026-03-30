@@ -1,6 +1,8 @@
 
+import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/CustomCalenderPayment.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ImageHolder {
@@ -18,6 +20,125 @@ class PaymentController extends GetxController {
   final RxInt currentPage3 = 1.obs;
   final RxInt pageSize3 = 5.obs;
   var selectedTab2 = 0.obs;
+  var openedDropdown2 = "".obs;
+  var selectedCustomerValue = "Customer Name".obs;
+
+  var isDateDropOpen = false.obs;
+  var isWeeklyDropOpen = false.obs;
+  var selectedFilter = "Weekly".obs;
+  var selectedDateRangeText = "".obs;
+  var chartData = <double>[30, 45, 25, 50, 35, 40, 20].obs;
+  var weeklyData = <double>[30, 45, 25, 50, 35, 40, 20].obs;
+  var monthlyData = <double>[40, 35, 35, 32].obs;
+  var yearlyData = <double>[35, 35, 45, 35, 35, 35, 25, 30, 32, 28, 35, 34].obs;
+  List<double> get currentChartData {
+    if (selectedFilter.value == "Weekly") return weeklyData;
+    if (selectedFilter.value == "Monthly") return monthlyData;
+    return yearlyData;
+  }
+
+  double get getMaxY {
+    if (currentChartData.isEmpty) return 55;
+    double maxVal = currentChartData.reduce((a, b) => a > b ? a : b);
+    return maxVal + 10;
+  }
+
+  void updateDateRange(DateTime startDate) {
+    if (selectedFilter.value == "Weekly") {
+      DateTime endDate = startDate.add(const Duration(days: 6));
+      String startStr = "${startDate.day} ${_getMonthAbbr(startDate.month)}, ${startDate.year}";
+      String endStr = "${endDate.day} ${_getMonthAbbr(endDate.month)}, ${endDate.year}";
+      selectedDateRangeText.value = "$startStr - $endStr";
+
+      chartData.value = List.generate(7, (index) => (index + 2) * 10.0);
+    }
+    else if (selectedFilter.value == "Monthly") {
+      selectedDateRangeText.value = "${_getMonthName(startDate.month)} ${startDate.year}";
+      chartData.value = List.generate(4, (index) => (index + 3) * 12.0);
+    }
+    else if (selectedFilter.value == "Yearly") {
+      selectedDateRangeText.value = "${startDate.year}";
+      chartData.value = List.generate(12, (index) => (index + 1) * 8.0);
+    }
+  }
+
+
+  String _getMonthName(int month) => ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][month - 1];
+  String _getMonthAbbr(int month) => ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][month - 1];
+
+
+
+  OverlayEntry? calendarOverlay;
+
+  void toggleCalendar(BuildContext context, LayerLink link, TextEditingController targetController, double width) {
+    if (calendarOverlay != null) {
+      removeCalendar();
+    } else {
+      calendarOverlay = _createCalendarOverlay(context, link, targetController, width);
+      Overlay.of(context).insert(calendarOverlay!);
+      isDateDropOpen.value = true;
+    }
+  }
+
+  void removeCalendar() {
+    calendarOverlay?.remove();
+    calendarOverlay = null;
+    isDateDropOpen.value = false;
+  }
+
+  OverlayEntry _createCalendarOverlay(
+      BuildContext context,
+      LayerLink link,
+      TextEditingController targetController,
+      double width,
+      ) {
+    final screenSize = MediaQuery.of(context).size;
+    final renderBox = context.findRenderObject() as RenderBox;
+    final position = renderBox.localToGlobal(Offset.zero);
+
+    double overlayWidth = screenSize.width < 500 ? 260 : 280;
+    double dx = 0;
+    if (position.dx + overlayWidth > screenSize.width) {
+      dx = screenSize.width - (position.dx + overlayWidth) - 10;
+    }
+
+    return OverlayEntry(
+      builder: (context) => Stack(
+        children: [
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: removeCalendar,
+              child: Container(color: Colors.transparent),
+            ),
+          ),
+
+          CompositedTransformFollower(
+            link: link,
+            showWhenUnlinked: false,
+            targetAnchor: Alignment.bottomLeft,
+            followerAnchor: Alignment.topLeft,
+            offset: Offset(dx, 8),
+
+            child: Material(
+              elevation: 10,
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white,
+              child: CustomCalendarPayment(
+                width: overlayWidth,
+                onCancel: removeCalendar,
+                onDateSelected: (date) {
+                  targetController.text =
+                  "${date.day}/${date.month}/${date.year}";
+                  updateDateRange(date);
+                  removeCalendar();
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   void onInit() {
@@ -27,6 +148,7 @@ class PaymentController extends GetxController {
       {"id": "INV-RSC-202603-0002", "customerName": "Ethan Miles","duration": "Mar 7, 2026 - Mar 14 2026", "car": "Mazda CX-5 (2017)", "amount": "245"},
       {"id": "INV-RSC-202603-0003", "customerName": "Adam Jhones","duration": "Mar 7, 2026 - Mar 14 2026", "car": "Mazda CX-5 (2017)", "amount": "245"},
     ]);
+
   }
   List<Map<String, dynamic>> get displayedCarList {
     return baseData.map((item) {

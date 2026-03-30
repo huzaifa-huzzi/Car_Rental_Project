@@ -126,12 +126,14 @@ class IconString {
   static const String  staffAccessIcon = 'assets/icons/StaffAccess.png';
   /// Payment
   static const String  paymentIconModule = 'assets/icons/PaymentIcon.png';
+  static const String  paymentIconBlack = 'assets/icons/PaymentIconBlack.png';
   static const String  actionRequiredIcon = 'assets/icons/ActionRequiredIcon.png';
   static const String  completedIcon = 'assets/icons/Completed.png';
   static const String  overdueIcon = 'assets/icons/Overdue.png';
   static const String  pendingPaymentIcon = 'assets/icons/PendingPayment.png';
   static const String  resubmitIcon = 'assets/icons/Resubmit.png';
   static const String  submittedIcon = 'assets/icons/Submitted.png';
+  static const String  weeklyDropwnIcon = 'assets/icons/weeklyDropdown.png';
 
 
 }

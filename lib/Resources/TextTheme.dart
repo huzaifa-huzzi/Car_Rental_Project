@@ -34,6 +34,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 18),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
 
+  static TextStyle h2StyleSubtitle(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 15),fontWeight: FontWeight.w600,color: AppColors.textColor);
+  }
+
   static TextStyle SignatureStyle(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 18),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
@@ -111,6 +115,10 @@ class TTextTheme {
 
   static TextStyle btnOne(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 12),fontWeight: FontWeight.w500,color: AppColors.quadrantalTextColor);
+  }
+
+  static TextStyle btncustomer(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 12),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor);
   }
 
   static TextStyle CalendarTitle(BuildContext context){
@@ -339,6 +347,11 @@ class TTextTheme {
     );
   }
 
+  static TextStyle chartTitle(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 16),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
+    );
+  }
+
   static TextStyle titleRadios(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 16),fontWeight: FontWeight.w400,color: AppColors.blackColor,
     );
@@ -371,6 +384,11 @@ class TTextTheme {
 
   static TextStyle titleSelectedTab(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 13, 15, 16),fontWeight: FontWeight.w500,color: Colors.white,
+    );
+  }
+
+  static TextStyle searchText(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 11),fontWeight: FontWeight.w500,color: Colors.white,
     );
   }
 

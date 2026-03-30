@@ -1,4 +1,6 @@
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/PaginationBarOfPayment.dart';
+import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/PrimaryBtnOfPayment.dart';
+import 'package:car_rental_project/Portal/Vendor/Payment/Widget/ChartWidget.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/paymentController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
@@ -19,17 +21,15 @@ class _PaymentWidgetState extends State<PaymentWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           _buildStatsGrid(context),
-
+          const SizedBox(height: 20),
+          ChartWidget(),
           const SizedBox(height: 30),
-
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(24),
@@ -40,21 +40,34 @@ class _PaymentWidgetState extends State<PaymentWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-                // Headings
-                Text(
-                  TextString.titlePayment,
-                  style:TTextTheme.h2Style(context),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  TextString.subTitlePayment,
-                  style: TTextTheme.bodyRegular16(context),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    bool isMobile = constraints.maxWidth < 330;
+                    if (isMobile) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          _buildHeaderText(),
+                          const SizedBox(height: 16),
+                          _buildAddPaymentButton(isMobile),
+                        ],
+                      );
+                    } else {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _buildHeaderText(),
+                          _buildAddPaymentButton(isMobile),
+                        ],
+                      );
+                    }
+                  },
                 ),
 
                 const SizedBox(height: 25),
-
                 _buildTabs(),
+                const SizedBox(height: 20),
+                _buildFiltersRow(),
 
                 const SizedBox(height: 30),
 
@@ -93,20 +106,203 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     );
   }
 
-  /// -------- Extra Widgets ------- ///
+  /// --- Extra Widgets ---
+  // Filters
+  Widget _buildFiltersRow() {
+    return LayoutBuilder(builder: (context, constraints) {
+      double width = constraints.maxWidth;
+      bool isMobile = width < 450;
+      double fieldHeight = 40;
 
-  // Cards
+      return Align(
+        alignment: isMobile ? Alignment.centerLeft : Alignment.centerRight,
+        child: Wrap(
+          spacing: 12,
+          runSpacing: 12,
+          alignment: isMobile ? WrapAlignment.start : WrapAlignment.end,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            _buildCustomerDropdown(
+                context,
+                "cust_drop",
+                controller.selectedCustomerValue,
+                isMobile,
+                fieldHeight
+            ),
+            Container(
+              width: isMobile ? double.infinity : 320,
+              height: fieldHeight,
+              decoration: BoxDecoration(
+                color: AppColors.signaturePadColor,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Icon(Icons.search, size: 18, color: AppColors.quadrantalTextColor),
+                  ),
+                  Expanded(
+                    child: TextField(
+                      cursorColor: AppColors.blackColor,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: TTextTheme.insidetextfieldWrittenText(context),
+                      decoration: InputDecoration(
+                        hintText: "Search Company by Name",
+                        hintStyle: TTextTheme.smallX(context),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.only(bottom: 4),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(1.0),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primaryColor,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(horizontal: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                      ),
+                      child:  Text("Search", style: TTextTheme.searchText(context)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: isMobile ? double.infinity : null,
+              height: fieldHeight,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: AppColors.signaturePadColor,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(IconString.filterIcon, height: 18,width: 18,),
+                  const SizedBox(width: 8),
+                  Text("Filter", style: TTextTheme.btncustomer(context)),
+                  const Icon(Icons.keyboard_arrow_down, size: 18),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+  Widget _buildCustomerDropdown(BuildContext context, String id, RxString selectedValue, bool isMobile, double height) {
+    List<String> items = ["Customer Name", "Invoice Id",];
+
+    return Obx(() {
+      bool isOpen = controller.openedDropdown2.value == id;
+
+      return PopupMenuButton<String>(
+        constraints: BoxConstraints(
+          minWidth: isMobile ? (MediaQuery.of(context).size.width - 48) : 180,
+          maxWidth: isMobile ? (MediaQuery.of(context).size.width - 48) : 180,
+        ),
+        offset: const Offset(0, 45),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        color: Colors.white,
+        elevation: 4,
+        onOpened: () => controller.openedDropdown2.value = id,
+        onCanceled: () => controller.openedDropdown2.value = "",
+        onSelected: (val) {
+          selectedValue.value = val;
+          controller.openedDropdown2.value = "";
+        },
+        child: Container(
+          height: height,
+          width: isMobile ? double.infinity : 180,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            color: AppColors.signaturePadColor,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  selectedValue.value.isEmpty ? "Select Item" : selectedValue.value,
+                  style: TTextTheme.btncustomer(context),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Icon(
+                isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                size: 20,
+                color: AppColors.blackColor,
+              ),
+            ],
+          ),
+        ),
+        itemBuilder: (context) => items.asMap().entries.map((entry) {
+          return PopupMenuItem<String>(
+            value: entry.value,
+            padding: EdgeInsets.zero,
+            height: 40,
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  child: Text(
+                    entry.value,
+                    style: TTextTheme.bodyRegular14(context),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }).toList(),
+      );
+    });
+  }
+
+  // Header Text
+  Widget _buildHeaderText() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(TextString.titlePayment, style: TTextTheme.h2Style(context)),
+        const SizedBox(height: 4),
+        Text(TextString.subTitlePayment, style: TTextTheme.bodyRegular16(context)),
+      ],
+    );
+  }
+  Widget _buildAddPaymentButton(bool isFullWidth) {
+    return PrimaryBtnOfPayment(
+      text: "Add Payment",
+      onTap: () {},
+      width: isFullWidth ? double.infinity : 160,
+      borderRadius: BorderRadius.circular(10),
+    );
+  }
+
+  //  Stats Grid
   Widget _buildStatsGrid(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       int crossAxisCount = constraints.maxWidth > 850
           ? 4
-          : (constraints.maxWidth > 480 ? 2 : 1);
+          : (constraints.maxWidth > 480 ? 3 : 1);
 
       double aspectRatio;
       if (constraints.maxWidth > 850) {
         aspectRatio = 1.8;
       } else if (constraints.maxWidth > 480) {
-        aspectRatio = 1.8;
+        aspectRatio = 1.4;
       } else {
         aspectRatio = constraints.maxWidth / 110;
       }
@@ -119,14 +315,14 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         mainAxisSpacing: 16,
         childAspectRatio: aspectRatio,
         children: [
-          _statCard("Total Revenue", "\$ 12345.99", "Paid Last Week ", IconString.paymentIconModule),
+          _statCard("Total Revenue", "\$ 12345.99", "Paid Last Week ", IconString.paymentIconBlack),
           _statCard("Action Required", "24", "24 more invoices needed to review ", IconString.actionRequiredIcon),
           _statCard("Pending Payment ", "8", "3 more payment pending", IconString.pendingPaymentIcon),
           _statCard("OverDue", "5", "1 more payment date passed", IconString.overdueIcon),
           _statCard("Resubmit Request", "8","3 more resubmit request send", IconString.resubmitIcon),
           _statCard("Submitted", "8", "1 more payment submitted ", IconString.submittedIcon),
           _statCard("Completed Payments", "246", "3 more payment marked as completed", IconString.completedIcon),
-          _statCard("Total Payments", "246", "3 more payment received", IconString.paymentIconModule),
+          _statCard("Total Payments", "246", "3 more payment received", IconString.paymentIconBlack),
         ],
       );
     });
@@ -135,7 +331,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     return Container(
       width: 200,
       height: 200,
-      padding: const EdgeInsets.only(top: 20,left: 20),
+      padding: const EdgeInsets.only(top: 20,left: 20,bottom:0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -169,24 +365,24 @@ class _PaymentWidgetState extends State<PaymentWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TTextTheme.bodyRegular12(context)
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TTextTheme.bodyRegular12(context)
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  value,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TTextTheme.h2Style(context)
+                    value,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TTextTheme.h2Style(context)
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  sub,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TTextTheme.bodySecondRegular10(context)
+                    sub,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TTextTheme.bodySecondRegular10(context)
                 ),
               ],
             ),
@@ -196,47 +392,29 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     );
   }
 
-
-  // Tabs
+  //  Tabs
   Widget _buildTabs() {
-    List<String> tabs = [
-      "Pending",
-      "Overdue",
-      "Submitted",
-      "Resubmit",
-      "Completed"
-    ];
-
+    List<String> tabs = ["Pending", "Overdue", "Submitted", "Resubmit", "Completed"];
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      physics: const BouncingScrollPhysics(),
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-            color:AppColors.signaturePadColor,
+            color: AppColors.signaturePadColor,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.sideBoxesColor.withOpacity(0.7),width: 1)
-        ),
+            border: Border.all(color: AppColors.sideBoxesColor.withOpacity(0.7))),
         child: Obx(() => Row(
-          mainAxisSize: MainAxisSize.min,
           children: tabs.map((tab) {
             bool isSelected = controller.selectedTab.value == tab;
-
             return GestureDetector(
               onTap: () => controller.changeTab(tab),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 10),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 decoration: BoxDecoration(
                   color: isSelected ? AppColors.primaryColor : Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Text(
-                  tab,
-                  style: isSelected ? TTextTheme.medium14White(context) : TTextTheme.bodyRegular14tertiary(context),
-                ),
+                child: Text(tab, style: isSelected ? TTextTheme.medium14White(context) : TTextTheme.bodyRegular14tertiary(context)),
               ),
             );
           }).toList(),
@@ -245,8 +423,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     );
   }
 
-
-  // Table Widgets
+  //  Table
   Widget _buildTableHeader(PaymentController controller) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -374,6 +551,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
   Widget _cell({required double width, required Widget child}) {
     return SizedBox(width: width, child: child);
   }
+
   Widget _buildStatusChip(String status) {
     Color backgroundColor;
     String displayStatus = status;
