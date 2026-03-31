@@ -182,7 +182,7 @@ class SidebarScreen extends StatelessWidget {
         context.push('/addStaff', extra: {"hideMobileAppBar": true});
       }
       else if (currentRoute.contains('/Payment')) {
-        context.push('/payment/detail', extra: {"hideMobileAppBar": true});
+        context.push('/AddPayment', extra: {"hideMobileAppBar": true});
       }
       else {
         context.push('/addNewCar', extra: {"hideMobileAppBar": true});

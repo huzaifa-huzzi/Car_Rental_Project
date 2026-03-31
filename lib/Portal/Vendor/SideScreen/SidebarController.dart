@@ -39,6 +39,8 @@ class SideBarController extends GetxController {
       selected.value = "Pickup Car";
     } else if (route.startsWith('/dropoffCar')) {
       selected.value = "Dropoff Car";
+    }else if (route.startsWith('/Payment')) {
+      selected.value = "Payment";
     } else if (route.startsWith('/staff')) {
       selected.value = "Staff";
     }

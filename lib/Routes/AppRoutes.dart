@@ -27,6 +27,7 @@ import 'package:car_rental_project/Portal/Vendor/DroppOffCar/Subtabs/DropOffT&C/
 import 'package:car_rental_project/Portal/Vendor/DroppOffCar/Subtabs/DropOffT&C/DropOffT&C.dart';
 import 'package:car_rental_project/Portal/Vendor/DroppOffCar/Subtabs/DropOffT&C/DropOffT&CDescription.dart' show DropOffTandCDescription;
 import 'package:car_rental_project/Portal/Vendor/DroppOffCar/TableViewDropoff/TableViewDropoffScreen.dart';
+import 'package:car_rental_project/Portal/Vendor/Payment/Add%20Payment/AddPaymentScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/payment.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/AddPickup.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/Widget/StepThreeWidget.dart';
@@ -68,9 +69,10 @@ class AppNavigation {
           if (path.contains('t&c') ||
               path.contains('add') ||
               path.contains('edit') ||
-              path.contains('detail') ||
-              path.contains('payment')) {
+              path.contains('detail')) {
             hideMobile = true;
+          } else {
+            hideMobile = false;
           }
 
           return SidebarScreen(
@@ -217,7 +219,11 @@ class AppNavigation {
         path: '/EditStaffScreen',
         builder: (context, state) => _wrapSidebar(state,  EditStaffScreen()),
       ),
-
+      // Payment Screens (No Sidebar)
+      GoRoute(
+        path: '/AddPayment',
+        builder: (context, state) => _wrapSidebar(state,  AddPayment()),
+      ),
     ],
   );
 

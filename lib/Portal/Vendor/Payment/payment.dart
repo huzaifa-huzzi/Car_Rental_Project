@@ -13,6 +13,7 @@ class PaymentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isWeb = AppSizes.isWeb(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundOfScreenColor,
       body: SafeArea(
@@ -24,15 +25,19 @@ class PaymentScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                  const HeaderWebPaymentWidget(
-                    mainTitle: 'Payment',
-                    showProfile: true,
-                    showNotification: true,
-                    showSettings: true,
+                if (isWeb)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 24.0),
+                    child: HeaderWebPaymentWidget(
+                      mainTitle: 'Payment',
+                      showProfile: true,
+                      showNotification: true,
+                      showSettings: true,
+                    ),
                   ),
                 const SizedBox(height: 10),
                 PaymentWidget(),
-                SizedBox(height: AppSizes.verticalPadding(context) * 1.25),
+                SizedBox(height: AppSizes.verticalPadding(context) * 4),
               ],
             ),
           ),

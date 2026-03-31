@@ -149,6 +149,7 @@ class PaymentController extends GetxController {
       {"id": "INV-RSC-202603-0003", "customerName": "Adam Jhones","duration": "Mar 7, 2026 - Mar 14 2026", "car": "Mazda CX-5 (2017)", "amount": "245"},
     ]);
 
+    loadOtherPayments();
   }
   List<Map<String, dynamic>> get displayedCarList {
     return baseData.map((item) {
@@ -214,5 +215,90 @@ class PaymentController extends GetxController {
   void clearSelection() {
     selectedImage.value = null;
   }
+
+  /// Add Payment
+  final invoiceIdController = TextEditingController();
+  final customerNameController = TextEditingController();
+  final phoneNumberController = TextEditingController();
+  final paymentAmountController = TextEditingController();
+  final dueDateController = TextEditingController();
+  final carNameController = TextEditingController();
+  final registrationController = TextEditingController();
+  var selectedCarType = 'Sedan'.obs;
+  var selectedTransmission = 'Automatic'.obs;
+  final fromDateController = TextEditingController();
+  final toDateController = TextEditingController();
+  final durationController = TextEditingController();
+
+  @override
+  void onClose() {
+    invoiceIdController.dispose();
+    customerNameController.dispose();
+    phoneNumberController.dispose();
+    paymentAmountController.dispose();
+    dueDateController.dispose();
+    carNameController.dispose();
+    registrationController.dispose();
+    fromDateController.dispose();
+    toDateController.dispose();
+    durationController.dispose();
+    super.onClose();
+  }
+
+
+  var isImageHovered2 = false.obs;
+  void setHover2(bool value) => isImageHovered2.value = value;
+
+  var selectedImage2 = Rxn<ImageHolder>();
+
+  Future<void> pickPaymentReceipt2() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'jpeg', 'png'],
+        withData: true,
+      );
+
+      if (result != null) {
+        selectedImage2.value = ImageHolder(
+          path: kIsWeb ? null : result.files.single.path,
+          bytes: result.files.single.bytes,
+          name: result.files.single.name,
+        );
+      }
+    } catch (e) {
+      Get.snackbar("Error", "Could not pick file: $e");
+    }
+  }
+
+  void clearSelection2() {
+    selectedImage2.value = null;
+  }
+
+  var otherPaymentsList = <Map<String, dynamic>>[].obs;
+
+
+
+  void loadOtherPayments() {
+    otherPaymentsList.assignAll([
+      {
+        "id": "INV-RSC-202603-0001",
+        "customerName": "Adam Jhones",
+        "duration": "Mar 7, 2026 - Mar 14, 2026",
+        "car": "Mazada CX-5 (2017)",
+        "amount": "545",
+        "status": "Pending"
+      },
+      {
+        "id": "INV-RSC-202603-0002",
+        "customerName": "Adam Jhones",
+        "duration": "Mar 7, 2026 - Mar 14, 2026",
+        "car": "Mazada CX-5 (2017)",
+        "amount": "7565",
+        "status": "Pending"
+      },
+    ]);
+  }
+
 
 }

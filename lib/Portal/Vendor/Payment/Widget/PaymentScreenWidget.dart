@@ -8,6 +8,7 @@ import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class PaymentWidget extends StatefulWidget {
   const PaymentWidget({super.key});
@@ -285,7 +286,9 @@ class _PaymentWidgetState extends State<PaymentWidget> {
   Widget _buildAddPaymentButton(bool isFullWidth) {
     return PrimaryBtnOfPayment(
       text: "Add Payment",
-      onTap: () {},
+      onTap: () {
+        context.push('/AddPayment', extra: {"hideMobileAppBar": true});
+      },
       width: isFullWidth ? double.infinity : 160,
       borderRadius: BorderRadius.circular(10),
     );
@@ -493,8 +496,6 @@ class _PaymentWidgetState extends State<PaymentWidget> {
   }
   Widget _buildPaymentRow(Map data) {
     String rawStatus = data["status"] ?? "Pending";
-    String status = rawStatus.toLowerCase();
-    bool isViewMode = status == 'completed' || status == 'submitted';
 
     return Container(
       width: 1180,
@@ -511,7 +512,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
           _cell(width: 150, child: Text(data["customerName"] ?? "Jhon Martin", style: TTextTheme.bodySemiBold14black(context), overflow: TextOverflow.ellipsis)),
           _cell(width: 240, child: Text(data["duration"] ?? "", style: TTextTheme.tableRegular14black(context))),
           _cell(width: 200, child: Text(data["car"] ?? "", style: TTextTheme.tableRegular14black(context), overflow: TextOverflow.ellipsis)),
-          _cell(width: 120, child: Text("\$${data["amount"]}", style: TTextTheme.bodySemiBold16(context).copyWith(color: Colors.red))),
+          _cell(width: 120, child: Text("\$${data["amount"]}", style: TTextTheme.bodySemiBold16(context))),
           _cell(width: 130, child: Center(child: _buildStatusChip(rawStatus))),
           SizedBox(
             width: 100,
@@ -530,12 +531,10 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      isViewMode
-                          ? const Icon(Icons.visibility_outlined, size: 16)
-                          : Image.asset(IconString.uploadIcon, height: 16, width: 16),
+                    const Icon(Icons.visibility_outlined, size: 16),
                       const SizedBox(width: 6),
                       Text(
-                        isViewMode ? "View" : "Upload",
+                         "View" ,
                         style: TTextTheme.tableRegular14Primary(context),
                       ),
                     ],

@@ -134,6 +134,8 @@ class IconString {
   static const String  resubmitIcon = 'assets/icons/Resubmit.png';
   static const String  submittedIcon = 'assets/icons/Submitted.png';
   static const String  weeklyDropwnIcon = 'assets/icons/weeklyDropdown.png';
+  static const String  receiptIcon = 'assets/icons/ReceiptIcon.png';
+  static const String  invoicesIcon = 'assets/icons/InvoicesIconIncreased.png';
 
 
 }
