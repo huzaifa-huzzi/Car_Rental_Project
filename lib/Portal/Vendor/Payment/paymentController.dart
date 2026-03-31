@@ -300,5 +300,17 @@ class PaymentController extends GetxController {
     ]);
   }
 
+  var sortColumn2 = "".obs;
+  var sortOrder2 = 0.obs;
+
+  void toggleSort2(String columnName) {
+    if (sortColumn2.value == columnName) {
+      sortOrder2.value = (sortOrder2.value + 1) % 3;
+      if (sortOrder2.value == 0) sortColumn2.value = "";
+    } else {
+      sortColumn2.value = columnName;
+      sortOrder2.value = 1;
+    }
+  }
 
 }

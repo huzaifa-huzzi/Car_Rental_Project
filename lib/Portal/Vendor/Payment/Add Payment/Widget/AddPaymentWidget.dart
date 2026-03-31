@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/PrimaryBtnOfPayment.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/paymentController.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
@@ -99,9 +98,9 @@ class AddPaymentWidget extends StatelessWidget {
   }
 
 
+ /// ---------- Extra Widget --------- ///
 
-
-
+     // Field
   Widget _buildField(BuildContext context, String label, String hint, TextEditingController ctr, String id) {
     final Map<String, FocusNode> _focusNodes = {};
     _focusNodes[id] ??= FocusNode();
@@ -118,7 +117,6 @@ class AddPaymentWidget extends StatelessWidget {
             return Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                // Sirf focus par shadow
                 boxShadow: hasFocus ? [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.06),
@@ -156,7 +154,7 @@ class AddPaymentWidget extends StatelessWidget {
     );
   }
 
-// 3. Date Field (No Shadow, Plain Look)
+//  Date Field
   Widget _buildDateField(BuildContext context, String label, String hint, TextEditingController ctr, LayerLink link) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,7 +195,7 @@ class AddPaymentWidget extends StatelessWidget {
     );
   }
 
-  // --- Car Detail Section ---
+  //  Car Detail Section
   Widget _buildCarDetail(BuildContext context, bool isMobile) {
     return _buildCard(
       title: "Car Detail",
@@ -205,17 +203,12 @@ class AddPaymentWidget extends StatelessWidget {
       child: Column(
         children: [
           _buildResponsiveRow(isMobile, [
-            // 'carName' id pass kar di FocusNode ke liye
             _buildField(context, "Car Name", "Enter Car Name", controller.carNameController, "carName"),
-
-            // Dropdown hamesha simple rahega jaisa design mein hai
             _buildCustomDropdown(context, "Type", ["Sedan", "SUV", "Hatchback"], controller.selectedCarType, id: "carType"),
           ]),
           const SizedBox(height: 15),
           _buildResponsiveRow(isMobile, [
-            // 'registration' id pass kar di FocusNode ke liye
             _buildField(context, "Registration", "Enter Registration No.", controller.registrationController, "registration"),
-
             _buildCustomDropdown(context, "Transmission", ["Manual", "Automatic"], controller.selectedTransmission, id: "transmission"),
           ]),
         ],
@@ -223,7 +216,7 @@ class AddPaymentWidget extends StatelessWidget {
     );
   }
 
-  // --- Rental Period Section ---
+  //  Rental Period Section
   Widget _buildRentalPeriod(BuildContext context, bool isMobile) {
     return _buildCard(
       title: "Rental Period",
@@ -235,14 +228,13 @@ class AddPaymentWidget extends StatelessWidget {
             _buildDateField(context, "To Date", "Select Date", controller.toDateController, _toLink),
           ]),
           const SizedBox(height: 15),
-          // Duration field ko 'duration' id de di shadow ke liye
           _buildField(context, "Duration", "Select Number of days", controller.durationController, "duration"),
         ],
       ),
     );
   }
 
-  // --- Reusable Responsive Row ---
+  //  Reusable Responsive Row
   Widget _buildResponsiveRow(bool isMobile, List<Widget> children) {
     if (isMobile) {
       return Column(
@@ -262,7 +254,7 @@ class AddPaymentWidget extends StatelessWidget {
     );
   }
 
-  // --- Dropdown Helper ---
+  //  Dropdown Helper
   Widget _buildCustomDropdown(BuildContext context, String label, List<String> items, RxString selected, {required String id}) {
     return Obx(() {
       bool isOpen = controller.openedDropdown2.value == id;
@@ -306,7 +298,7 @@ class AddPaymentWidget extends StatelessWidget {
     });
   }
 
-  // --- Card Helper ---
+  //  Card Helper
   Widget _buildCard({required String title, required String subtitle, required Widget child}) {
     return Container(
       width: double.infinity,
@@ -329,6 +321,7 @@ class AddPaymentWidget extends StatelessWidget {
     );
   }
 
+  // Image Fetching
   Widget _buildSelectedImagePreview(BuildContext context) {
     final image = controller.selectedImage2.value;
     if (image == null) return const SizedBox.shrink();
@@ -558,7 +551,7 @@ class AddPaymentWidget extends StatelessWidget {
     );
   }
 
-
+  // Tables
   Widget _buildOtherPaymentsTable(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -571,6 +564,7 @@ class AddPaymentWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Title Section
           RichText(
             text: TextSpan(
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
@@ -597,16 +591,18 @@ class AddPaymentWidget extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      _cell(width: 180, child: Text("Invoice Id", style: TTextTheme.medium14tableHeading(context))), // Increased
-                      _cell(width: 160, child: Text("Customer Name", style: TTextTheme.medium14tableHeading(context))),
-                      _cell(width: 230, child: Text("Duration", style: TTextTheme.medium14tableHeading(context))),
-                      _cell(width: 190, child: Text("Car Name", style: TTextTheme.medium14tableHeading(context))),
-                      _cell(width: 110, child: Text("Amount", style: TTextTheme.medium14tableHeading(context))),
-                      _cell(width: 130, child: Center(child: Text("Status", style: TTextTheme.medium14tableHeading(context)))),
-                      _cell(width: 130, child: Center(child: Text("Action", style: TTextTheme.medium14tableHeading(context)))),
+                      _cell(width: 180, child: _headerCell("Invoice Id", controller,context)),
+                      _cell(width: 160, child: _headerCell("Customer Name", controller,context)),
+                      _cell(width: 230, child: _headerCell("Duration", controller,context)),
+                      _cell(width: 190, child: _headerCell("Car Name", controller,context)),
+                      _cell(width: 110, child: _headerCell("Amount", controller,context)),
+                      _cell(width: 130, child: _headerCell("Status", controller,context, isCenter: true, canSort: false)),
+                      _cell(width: 130, child: _headerCell("Action", controller,context, isCenter: true, canSort: false)),
                     ],
                   ),
                 ),
+
+                // Data Rows
                 Obx(() => Column(
                   children: controller.otherPaymentsList.map((data) {
                     return SizedBox(
@@ -618,6 +614,65 @@ class AddPaymentWidget extends StatelessWidget {
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _headerCell(
+      String title,
+      PaymentController controller,
+      BuildContext context, {
+        bool isCenter = false,
+        bool canSort = true,
+      }) {
+    return InkWell(
+      onTap: canSort ? () => controller.toggleSort2(title) : null,
+      borderRadius: BorderRadius.circular(4),
+      child: Row(
+        mainAxisAlignment: isCenter ? MainAxisAlignment.center : MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Flexible(
+            child: Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TTextTheme.medium14tableHeading(context),
+            ),
+          ),
+
+          if (canSort) ...[
+            const SizedBox(width: 4),
+            Obx(() {
+              bool isCurrent = controller.sortColumn2.value == title;
+              int order = isCurrent ? controller.sortOrder2.value : 0;
+
+              return Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.keyboard_arrow_up_rounded,
+                      size: 14,
+                      color: order == 1 ? AppColors.primaryColor : const Color(0xFF94A3B8),
+                    ),
+                    Transform.translate(
+                      offset: const Offset(0, -9),
+                      child: Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        size: 14,
+                        color: order == 2 ? AppColors.primaryColor : const Color(0xFF94A3B8),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ],
         ],
       ),
     );
@@ -677,8 +732,6 @@ class AddPaymentWidget extends StatelessWidget {
       ),
     );
   }
-
-// Helper cell function
   Widget _cell({required double width, required Widget child}) {
     return SizedBox(width: width, child: child);
   }
