@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 
 class AddPayment extends StatelessWidget {
-  AddPayment({super.key});
+  const AddPayment({super.key});
 
 
   @override

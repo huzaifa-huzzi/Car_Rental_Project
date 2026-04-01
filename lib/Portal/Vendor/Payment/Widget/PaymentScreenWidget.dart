@@ -177,7 +177,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
               ),
             ),
             Container(
-              width: isMobile ? double.infinity : null,
+              width: isMobile ? 100 : null,
               height: fieldHeight,
               padding: const EdgeInsets.symmetric(horizontal: 12),
               decoration: BoxDecoration(

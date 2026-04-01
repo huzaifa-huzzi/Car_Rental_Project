@@ -102,8 +102,8 @@ class AddPaymentWidget extends StatelessWidget {
 
      // Field
   Widget _buildField(BuildContext context, String label, String hint, TextEditingController ctr, String id) {
-    final Map<String, FocusNode> _focusNodes = {};
-    _focusNodes[id] ??= FocusNode();
+    final Map<String, FocusNode> focusNodes = {};
+    focusNodes[id] ??= FocusNode();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,9 +111,9 @@ class AddPaymentWidget extends StatelessWidget {
         Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Color(0xFF1A1D1F))),
         const SizedBox(height: 8),
         ListenableBuilder(
-          listenable: _focusNodes[id]!,
+          listenable: focusNodes[id]!,
           builder: (context, child) {
-            bool hasFocus = _focusNodes[id]!.hasFocus;
+            bool hasFocus = focusNodes[id]!.hasFocus;
             return Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -127,7 +127,7 @@ class AddPaymentWidget extends StatelessWidget {
               ),
               child: TextField(
                 controller: ctr,
-                focusNode: _focusNodes[id],
+                focusNode: focusNodes[id],
                 style: const TextStyle(fontSize: 14),
                 decoration: InputDecoration(
                   hintText: hint,

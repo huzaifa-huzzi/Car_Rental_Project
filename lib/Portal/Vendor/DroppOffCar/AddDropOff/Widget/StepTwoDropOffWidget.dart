@@ -514,8 +514,9 @@ class StepTwoDropOffWidget extends StatelessWidget {
   Widget _buildInteractiveUploadBox(BuildContext context, String label, String iconPath, String type) {
     return Obx(() {
       ImageHolder? image;
-      if (type == 'front') image = controller.frontImage.value;
-      else if (type == 'back') image = controller.backImage.value;
+      if (type == 'front') {
+        image = controller.frontImage.value;
+      } else if (type == 'back') image = controller.backImage.value;
       else if (type == 'left') image = controller.leftImage.value;
       else if (type == 'right') image = controller.rightImage.value;
 
@@ -628,8 +629,9 @@ class StepTwoDropOffWidget extends StatelessWidget {
     if (type == 'additional' && index != null) {
       selectedImage.value = controller.additionalImages[index];
     } else {
-      if (type == 'front') selectedImage.value = controller.frontImage.value;
-      else if (type == 'back') selectedImage.value = controller.backImage.value;
+      if (type == 'front') {
+        selectedImage.value = controller.frontImage.value;
+      } else if (type == 'back') selectedImage.value = controller.backImage.value;
       else if (type == 'left') selectedImage.value = controller.leftImage.value;
       else if (type == 'right') selectedImage.value = controller.rightImage.value;
     }
@@ -680,7 +682,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
             const SizedBox(height: 20),
 
             // Thumbnails Selection
-            Container(
+            SizedBox(
               height: kIsWeb ? 80 : 65,
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
