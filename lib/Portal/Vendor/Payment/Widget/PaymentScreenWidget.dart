@@ -521,7 +521,9 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                 height: 36,
                 width: 110,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.push('/invoicesDetail', extra: data);
+                  },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryColor,
                     side: const BorderSide(color: AppColors.primaryColor),

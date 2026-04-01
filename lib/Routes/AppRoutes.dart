@@ -28,6 +28,7 @@ import 'package:car_rental_project/Portal/Vendor/DroppOffCar/Subtabs/DropOffT&C/
 import 'package:car_rental_project/Portal/Vendor/DroppOffCar/Subtabs/DropOffT&C/DropOffT&CDescription.dart' show DropOffTandCDescription;
 import 'package:car_rental_project/Portal/Vendor/DroppOffCar/TableViewDropoff/TableViewDropoffScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/Add%20Payment/AddPaymentScreen.dart';
+import 'package:car_rental_project/Portal/Vendor/Payment/InvoicesDetail/InvoicesDetail.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/payment.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/AddPickup.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/Widget/StepThreeWidget.dart';
@@ -223,6 +224,18 @@ class AppNavigation {
       GoRoute(
         path: '/AddPayment',
         builder: (context, state) => _wrapSidebar(state,  AddPayment()),
+      ),
+      GoRoute(
+        path: '/invoicesDetail',
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>?;
+
+          if (data == null) {
+            return const Scaffold(body: Center(child: Text("No Data Found")));
+          }
+
+          return _wrapSidebar(state, InvoicesDetail(invoiceData: data));
+        },
       ),
     ],
   );

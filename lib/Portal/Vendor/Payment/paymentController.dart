@@ -150,6 +150,7 @@ class PaymentController extends GetxController {
     ]);
 
     loadOtherPayments();
+    loadOtherPaymentsinvoices();
   }
   List<Map<String, dynamic>> get displayedCarList {
     return baseData.map((item) {
@@ -214,6 +215,45 @@ class PaymentController extends GetxController {
 
   void clearSelection() {
     selectedImage.value = null;
+  }
+
+
+  var otherPaymentsListinvoices = <Map<String, dynamic>>[].obs;
+
+
+
+  void loadOtherPaymentsinvoices() {
+    otherPaymentsListinvoices.assignAll([
+      {
+        "id": "INV-RSC-202603-0001",
+        "customerName": "Adam Jhones",
+        "duration": "Mar 7, 2026 - Mar 14, 2026",
+        "car": "Mazada CX-5 (2017)",
+        "amount": "545",
+        "status": "Pending"
+      },
+      {
+        "id": "INV-RSC-202603-0002",
+        "customerName": "Adam Jhones",
+        "duration": "Mar 7, 2026 - Mar 14, 2026",
+        "car": "Mazada CX-5 (2017)",
+        "amount": "7565",
+        "status": "Pending"
+      },
+    ]);
+  }
+
+  var sortColumn3 = "".obs;
+  var sortOrder3 = 0.obs;
+
+  void toggleSort3(String columnName) {
+    if (sortColumn3.value == columnName) {
+      sortOrder3.value = (sortOrder3.value + 1) % 3;
+      if (sortOrder3.value == 0) sortColumn3.value = "";
+    } else {
+      sortColumn3.value = columnName;
+      sortOrder3.value = 1;
+    }
   }
 
   /// Add Payment
@@ -312,5 +352,8 @@ class PaymentController extends GetxController {
       sortOrder2.value = 1;
     }
   }
+
+
+
 
 }

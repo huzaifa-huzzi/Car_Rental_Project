@@ -27,7 +27,7 @@ class AddPaymentWidget extends StatelessWidget {
     return Column(
       children: [
         _buildCard(
-          title: "Payment Information",
+          title: "Payment Information",context,
           subtitle: "All details about the payment",
           child: Column(
             children: [
@@ -40,7 +40,7 @@ class AddPaymentWidget extends StatelessWidget {
               _buildResponsiveRow(isMobile, [
                 _buildField(context, "Payment Amount", "Enter Amount", controller.paymentAmountController, "amount"),
                 _buildDateField(context, "Due Date", "Select Date", controller.dueDateController, _dueLink),
-                if (!isMobile) const Expanded(child: SizedBox()),
+                if (!isMobile) const SizedBox(),
               ]),
             ],
           ),
@@ -67,7 +67,7 @@ class AddPaymentWidget extends StatelessWidget {
 
         const SizedBox(height: 24),
         _buildCard(
-          title: "Upload Screenshot",
+          title: "Upload Screenshot",context,
           subtitle: "Upload screenshot here",
           child: Obx(() {
             return controller.selectedImage2.value != null
@@ -82,15 +82,14 @@ class AddPaymentWidget extends StatelessWidget {
           child: PrimaryBtnOfPayment(
             text: "Mark as Complete",
             onTap: () {
-              print("Payment marked as complete");
+              showCompletionDialog(context);
             },
             borderRadius: BorderRadius.circular(8),
-            width:  180,
+            width: 180,
           ),
         ),
 
         const SizedBox(height: 32),
-
         _buildOtherPaymentsTable(context),
         const SizedBox(height: 22),
       ],
@@ -108,7 +107,7 @@ class AddPaymentWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Color(0xFF1A1D1F))),
+        Text(label, style: TTextTheme.bodyRegular14(context)),
         const SizedBox(height: 8),
         ListenableBuilder(
           listenable: focusNodes[id]!,
@@ -119,19 +118,20 @@ class AddPaymentWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: hasFocus ? [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.06),
+                    color: AppColors.fieldsBackground.withOpacity(0.06),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
                 ] : [],
               ),
               child: TextField(
+                cursorColor: AppColors.blackColor,
                 controller: ctr,
                 focusNode: focusNodes[id],
-                style: const TextStyle(fontSize: 14),
+                style: TTextTheme.titleinputTextField(context),
                 decoration: InputDecoration(
                   hintText: hint,
-                  hintStyle: const TextStyle(color: Color(0xFF9A9FA5), fontSize: 13),
+                  hintStyle: TTextTheme.bodyRegular16(context),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   filled: true,
                   fillColor: Colors.white,
@@ -139,11 +139,11 @@ class AddPaymentWidget extends StatelessWidget {
                   focusColor: Colors.transparent,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Color(0xFFEFEFEF)),
+                    borderSide:  BorderSide(color: AppColors.toolBackground),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Color(0xFFEFEFEF)),
+                    borderSide: const BorderSide(color: AppColors.toolBackground),
                   ),
                 ),
               ),
@@ -159,21 +159,22 @@ class AddPaymentWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Color(0xFF1A1D1F))),
+        Text(label, style: TTextTheme.bodyRegular14(context)),
         const SizedBox(height: 8),
         CompositedTransformTarget(
           link: link,
           child: TextField(
+            cursorColor: AppColors.blackColor,
             controller: ctr,
             readOnly: true,
             onTap: () => controller.toggleCalendar(context, link, ctr, 280),
-            style: const TextStyle(fontSize: 14),
+            style: TTextTheme.titleinputTextField(context),
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: const TextStyle(color: Color(0xFF9A9FA5), fontSize: 13),
+              hintStyle: TTextTheme.bodyRegular16(context),
               suffixIcon: Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: Image.asset(IconString.calendarIcon, width: 18, color: const Color(0xFF9A9FA5)),
+                child: Image.asset(IconString.calendarIcon, width: 18, color:AppColors.quadrantalTextColor),
               ),
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               filled: true,
@@ -182,11 +183,11 @@ class AddPaymentWidget extends StatelessWidget {
               focusColor: Colors.transparent,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Color(0xFFEFEFEF)),
+                borderSide: const BorderSide(color: AppColors.toolBackground),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Color(0xFFEFEFEF)),
+                borderSide: const BorderSide(color: AppColors.toolBackground),
               ),
             ),
           ),
@@ -198,7 +199,7 @@ class AddPaymentWidget extends StatelessWidget {
   //  Car Detail Section
   Widget _buildCarDetail(BuildContext context, bool isMobile) {
     return _buildCard(
-      title: "Car Detail",
+      title: "Car Detail",context,
       subtitle: "Your Car detail listed here",
       child: Column(
         children: [
@@ -219,7 +220,7 @@ class AddPaymentWidget extends StatelessWidget {
   //  Rental Period Section
   Widget _buildRentalPeriod(BuildContext context, bool isMobile) {
     return _buildCard(
-      title: "Rental Period",
+      title: "Rental Period",context,
       subtitle: "Your rental period detail listed here",
       child: Column(
         children: [
@@ -238,16 +239,25 @@ class AddPaymentWidget extends StatelessWidget {
   Widget _buildResponsiveRow(bool isMobile, List<Widget> children) {
     if (isMobile) {
       return Column(
-        children: children.map((w) => Padding(padding: const EdgeInsets.only(bottom: 15), child: w)).toList(),
+        children: children.map((w) => Padding(
+          padding: const EdgeInsets.only(bottom: 15),
+          child: w,
+        )).toList(),
       );
     }
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: children.asMap().entries.map((entry) {
+        int index = entry.key;
+        Widget w = entry.value;
+
         return Expanded(
           child: Padding(
-            padding: EdgeInsets.only(right: entry.key == children.length - 1 ? 0 : 20),
-            child: entry.value,
+            padding: EdgeInsets.only(
+              right: index == children.length - 1 ? 0 : 20,
+            ),
+            child: w,
           ),
         );
       }).toList(),
@@ -261,13 +271,13 @@ class AddPaymentWidget extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Color(0xFF1A1D1F))),
+          Text(label, style: TTextTheme.bodyRegular14(context)),
           const SizedBox(height: 8),
           LayoutBuilder(builder: (context, constraints) {
             return PopupMenuButton<String>(
               constraints: BoxConstraints(minWidth: constraints.maxWidth, maxWidth: constraints.maxWidth),
               offset: const Offset(0, 52),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: const BorderSide(color: Color(0xFFEFEFEF))),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side:  BorderSide(color: AppColors.toolBackground)),
               color: Colors.white,
               onOpened: () => controller.openedDropdown2.value = id,
               onCanceled: () => controller.openedDropdown2.value = "",
@@ -281,12 +291,12 @@ class AddPaymentWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: const Color(0xFFEFEFEF)),
+                  border: Border.all(color: AppColors.toolBackground),
                 ),
                 child: Row(
                   children: [
-                    Expanded(child: Text(selected.value, style: const TextStyle(fontSize: 14, color: Color(0xFF1A1D1F)))),
-                    Image.asset(isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon, height: 16),
+                    Expanded(child: Text(selected.value, style: TTextTheme.tableRegular14black(context))),
+                    Image.asset(isOpen ? IconString.aboveDropdown : IconString.dropdownIcon, height: 16),
                   ],
                 ),
               ),
@@ -299,21 +309,20 @@ class AddPaymentWidget extends StatelessWidget {
   }
 
   //  Card Helper
-  Widget _buildCard({required String title, required String subtitle, required Widget child}) {
+  Widget _buildCard(BuildContext context,{required String title, required String subtitle, required Widget child}) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade100),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 15, offset: const Offset(0, 5))],
+        boxShadow: [BoxShadow(color: AppColors.fieldsBackground.withOpacity(0.02), blurRadius: 15, offset: const Offset(0, 5))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          Text(subtitle, style: const TextStyle(fontSize: 13, color: Colors.grey)),
+          Text(title, style: TTextTheme.h2Style(context)),
+          Text(subtitle, style: TTextTheme.bodyRegular16(context)),
           const SizedBox(height: 24),
           child,
         ],
@@ -469,11 +478,11 @@ class AddPaymentWidget extends StatelessWidget {
                 onTap: () => Navigator.of(context).pop(),
                 child: Container(
                   padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
+                  decoration:  BoxDecoration(
                     color: AppColors.sideBoxesColor,
                     shape: BoxShape.circle,
                     boxShadow: [
-                      BoxShadow(color: Colors.black26, blurRadius: 10, spreadRadius: 1)
+                      BoxShadow(color: AppColors.fieldsBackground.withOpacity(0.7), blurRadius: 10, spreadRadius: 1)
                     ],
                   ),
                   child: const Icon(
@@ -559,7 +568,6 @@ class AddPaymentWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFEFEFEF)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -567,14 +575,14 @@ class AddPaymentWidget extends StatelessWidget {
           // Title Section
           RichText(
             text: TextSpan(
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+              style: TTextTheme.h2Style(context),
               children: [
-                const TextSpan(text: "Other Payments by "),
-                TextSpan(text: "(Adam Jhones)", style: TextStyle(color: AppColors.primaryColor)),
+                 TextSpan(text: "Other Payments by "),
+                TextSpan(text: "(Adam Jhones)", style: TTextTheme.h2PrimaryStyle(context)),
               ],
             ),
           ),
-          const Text("List of all payments", style: TextStyle(color: Color(0xFF9A9FA5), fontSize: 13)),
+           Text("List of all payments", style: TTextTheme.bodyRegular16(context) ),
           const SizedBox(height: 20),
 
           SingleChildScrollView(
@@ -586,7 +594,7 @@ class AddPaymentWidget extends StatelessWidget {
                   width: 1190,
                   padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF4F7F9),
+                    color: AppColors.secondaryColor,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -602,7 +610,6 @@ class AddPaymentWidget extends StatelessWidget {
                   ),
                 ),
 
-                // Data Rows
                 Obx(() => Column(
                   children: controller.otherPaymentsList.map((data) {
                     return SizedBox(
@@ -658,14 +665,14 @@ class AddPaymentWidget extends StatelessWidget {
                     Icon(
                       Icons.keyboard_arrow_up_rounded,
                       size: 14,
-                      color: order == 1 ? AppColors.primaryColor : const Color(0xFF94A3B8),
+                      color: order == 1 ? AppColors.primaryColor : AppColors.quadrantalTextColor,
                     ),
                     Transform.translate(
                       offset: const Offset(0, -9),
                       child: Icon(
                         Icons.keyboard_arrow_down_rounded,
                         size: 14,
-                        color: order == 2 ? AppColors.primaryColor : const Color(0xFF94A3B8),
+                        color: order == 2 ? AppColors.primaryColor : AppColors.quadrantalTextColor,
                       ),
                     ),
                   ],
@@ -682,9 +689,9 @@ class AddPaymentWidget extends StatelessWidget {
       margin: const EdgeInsets.only(top: 8),
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       decoration: BoxDecoration(
-        color: const Color(0xFFF9FBFC),
+        color: AppColors.backgroundOfTableContainer,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFEFEFEF)),
+        border: Border.all(color: AppColors.sideBoxesColor.withOpacity(0.7), width: 1),
       ),
       child: Row(
         children: [
@@ -693,16 +700,16 @@ class AddPaymentWidget extends StatelessWidget {
           _cell(width: 230, child: Text(data["duration"] ?? "", style: TTextTheme.tableRegular14black(context))),
           _cell(width: 190, child: Text(data["car"] ?? "", style: TTextTheme.tableRegular14black(context), overflow: TextOverflow.ellipsis)),
           _cell(width: 110, child: Text("\$${data["amount"]}",
-              style: TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.bold, fontSize: 16))),
+              style: TTextTheme.hPickupStyle(context))),
           _cell(width: 130, child: Center(
             child: Container(
-              constraints: const BoxConstraints(minWidth: 90),
+              constraints: const BoxConstraints(minWidth: 70),
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
               decoration: BoxDecoration(
-                color: const Color(0xFFE8CB10),
+                color: AppColors.pendingColor,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: const Text("Pending", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+              child:  Text("Pending", style: TTextTheme.hPending(context)),
             ),
           )),
           _cell(width: 130, child: Center(
@@ -722,7 +729,7 @@ class AddPaymentWidget extends StatelessWidget {
                   children: [
                     const Icon(Icons.visibility_outlined, size: 14),
                     const SizedBox(width: 4),
-                    const Text("View", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+                     Text("View", style: TTextTheme.tableRegular14Primary(context)),
                   ],
                 ),
               ),
@@ -734,5 +741,195 @@ class AddPaymentWidget extends StatelessWidget {
   }
   Widget _cell({required double width, required Widget child}) {
     return SizedBox(width: width, child: child);
+  }
+
+
+   // Dialog 1
+  void showCompletionDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        double screenWidth = MediaQuery.of(context).size.width;
+        bool shouldStackButtons = screenWidth < 380;
+
+        return Dialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Container(
+            width: 450,
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppColors.emojiBackground,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Text("🤨", style: TextStyle(fontSize: 24)),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                           Text(
+                            "Mark payment as completed?",
+                            style: TTextTheme.h2Style(context)
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            "Are you sure you want to mark invoice In-2026-004 as completed? This action confirm that payment has verified and proceed",
+                            style:TTextTheme.bodyRegular16(context)
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: AppColors.sideBoxesColor,
+                          shape: BoxShape.circle,
+                        ),
+                        child:  Icon(Icons.close, size: 16, color: AppColors.blackColor),
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 32),
+                shouldStackButtons
+                    ? Column(
+                  children: [
+                    _buildButton(context, "Save", isOutlined: true, isFullWidth: true),
+                    const SizedBox(height: 12),
+                    _buildButton(context, "Cancel", isOutlined: false, isFullWidth: true),
+                  ],
+                )
+                    : Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    _buildButton(context, "Save", isOutlined: true, isFullWidth: false),
+                    const SizedBox(width: 12),
+                    _buildButton(context, "Cancel", isOutlined: false, isFullWidth: false),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+  Widget _buildButton(BuildContext context, String text, {required bool isOutlined, required bool isFullWidth}) {
+    return SizedBox(
+      width: isFullWidth ? double.infinity : 110,
+      height: 48,
+      child: isOutlined
+          ? OutlinedButton(
+        onPressed: (){
+          Navigator.pop(context);
+          showSuccessDialog(context);
+        },
+        style: OutlinedButton.styleFrom(
+          side: const BorderSide(color: AppColors.primaryColor, width: 1),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+        child: Text(text, style: TTextTheme.resendText(context)),
+      )
+          : ElevatedButton(
+        onPressed: () => Navigator.pop(context),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primaryColor,
+          elevation: 0,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+        child: Text(text, style:TTextTheme.btnWhiteColor2(context)),
+      ),
+    );
+  }
+
+   // Dialog 2
+  void showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Container(
+            width: 450,
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppColors.emojiBackground,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Text("👍", style: TextStyle(fontSize: 24)),
+                    ),
+                    const SizedBox(width: 16),
+                    // Text Content
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Payment Marked as Completed Successfully",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "Congratulation! payment has marked as completed successfully in the system.",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey.shade600,
+                              height: 1.4,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: AppColors.sideBoxesColor,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.close, size: 16, color: AppColors.blackColor),
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

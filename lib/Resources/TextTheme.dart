@@ -95,6 +95,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 11),fontWeight: FontWeight.w500,color: Colors.white);
   }
 
+  static TextStyle hPending(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w600,color: Colors.white);
+  }
+
   static TextStyle h12Style(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 20, 20, 20),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
@@ -271,6 +275,10 @@ class TTextTheme {
 
   static TextStyle btnWhiteColor(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 12),fontWeight: FontWeight.w400,color: Colors.white);// (only for web)
+  }
+
+  static TextStyle btnWhiteColor2(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 16),fontWeight: FontWeight.w500,color: Colors.white);
   }
 
   static TextStyle btnCancel(BuildContext context){

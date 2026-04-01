@@ -43,6 +43,7 @@ class AppColors {
   static const Color resubmittedColor = Color(0xFF8B5CF6);
   static const Color reuploadColor = Color(0xFFEC4899);
   static const Color backgroundOfTableContainer = Color(0xFFF5F6FA);
+  static const Color emojiBackground = Color(0xFFFFEA9F);
 
 
    /// Gradients

@@ -12,6 +12,7 @@ class IconString {
   static const String  uploadIcon = 'assets/icons/uploadIcon.png';
   static const String  cameraIcon = 'assets/icons/cameraIcon.png';
   static const String  zoomIcon = 'assets/icons/ZoomIcon.png';
+  static const String  aboveDropdown = 'assets/icons/aboveDropdown.png';
 
     /// SideBar Icons
   static const String  dashboardIcon = 'assets/icons/dashboardIcon.png';

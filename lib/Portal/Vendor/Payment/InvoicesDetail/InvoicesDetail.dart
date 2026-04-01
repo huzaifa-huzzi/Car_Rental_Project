@@ -1,12 +1,13 @@
-import 'package:car_rental_project/Portal/Vendor/Payment/Add%20Payment/Widget/AddPaymentWidget.dart';
+import 'package:car_rental_project/Portal/Vendor/Payment/InvoicesDetail/Widget/InvoicesDetailWidget.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/HeaderWebPaymentWidget.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:flutter/material.dart';
 
 
-class AddPayment extends StatelessWidget {
-  const AddPayment({super.key});
+class InvoicesDetail extends StatelessWidget {
+  final Map invoiceData;
+  const InvoicesDetail({super.key,required this.invoiceData});
 
 
   @override
@@ -25,7 +26,7 @@ class AddPayment extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 HeaderWebPaymentWidget(
-                  mainTitle: 'Add Payment',
+                  mainTitle: 'Payment',
                   showSmallTitle: true,
                   smallTitle: 'Payment / Add Payment',
                   showProfile:isWeb || isTab ? true : false,
@@ -34,7 +35,7 @@ class AddPayment extends StatelessWidget {
                   showBack: true,
                 ),
                 const SizedBox(height: 40),
-                AddPaymentWidget(),
+                InvoicesDetailWidget(data: invoiceData),
               ],
             ),
           ),
