@@ -668,6 +668,37 @@ class TextString {
   static const String  header4payment= "Amount";
   static const String  header5payment= "Status";
   static const String  header6payment= "Action";
+  static const String  header7payment= "Customer Name";
+  static const String  searchTextPayment= "Search Company by Name";
+  static const String  search= "Search";
+  static const String  filter= "Filter";
+  static const String  revenue= "Total Revenue";
+  static const String  actionRequired= "Action Required";
+  static const String  pendingpayment= "Pending Payment ";
+  static const String  overduePayment= "OverDue";
+  static const String  resubmitrequest= "Resubmit Request";
+  static const String  submitPayment= "Submitted";
+  static const String  completedPayment= "Completed Payments";
+  static const String  total= "Total Payments";
+  static const String  revenuesubtitle= "Paid Last Week ";
+  static const String  actionRequiredsubtitle= "24 more invoices needed to review ";
+  static const String  pendingpaymentsubtitle= "3 more payment pending";
+  static const String  overduePaymentsubtitle= "1 more payment date passed";
+  static const String  resubmitrequestsubtitle= "3 more resubmit request send";
+  static const String  submitPaymentsubtitle=  "1 more payment submitted ";
+  static const String  completedPaymentsubtitle= "3 more payment marked as completed";
+  static const String  totalsubtitle= "3 more payment received";
+  static const String  pickDate= "Pick Date";
+  static const String  selectedMonth= "Selected Month";
+  static const String  selectedYear= "Selected Year";
+  static const String  selecteddate= "Selected Date";
+  static const String  weeklyRevenue= "Weekly Revenue";
+  static const String  weeklyRevenuesubtitle= "Revenue per Week";
+  static const String  revenuePerDay= "Revenue per day";
+  static const String  yearlyRevenue= "Yearly Revenue";
+  static const String  monthlyrevenue= "Monthly Revenue";
+  static const String  monthlyrevenuesubtitle= "Revenue per Month";
+   // Add Payment
 
 
 }

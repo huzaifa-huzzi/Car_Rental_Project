@@ -48,6 +48,18 @@ class HeaderWebPaymentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isWeb = AppSizes.isWeb(context);
+    final isMobile = AppSizes.isMobile(context);
+
+
+    const double minHorizontalPadding = 12.0;
+    const double minInternalSpacing = 8.0;
+
+    final double actualHorizontalPadding = AppSizes.horizontalPadding(context);
+
+    final double actualInternalSpacing = AppSizes.padding(context);
+    final double finalInternalSpacing = actualInternalSpacing > minInternalSpacing
+        ? actualInternalSpacing
+        : minInternalSpacing;
 
     return Container(
       color: AppColors.backgroundOfScreenColor,
@@ -76,15 +88,32 @@ class HeaderWebPaymentWidget extends StatelessWidget {
             ),
 
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  mainTitle,
-                  style: TTextTheme.h1Style(context),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
+
+
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (showSmallTitle)
+                        Text(
+                          smallTitle ?? "",
+                          style: TTextTheme.titleUpperHeading(context),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+
+                      Text(
+                        mainTitle,
+                        style: TTextTheme.h2Style(context),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+
+                    ],
+                  ),
                 ),
               ],
             ),

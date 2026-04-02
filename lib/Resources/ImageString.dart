@@ -38,5 +38,7 @@ class ImageString{
   static const String  uteCar= 'assets/Images/DashBoard/UteCar.png';
   static const String  vanCar= 'assets/Images/DashBoard/VanCar.png';
   static const String  wagonCar= 'assets/Images/DashBoard/WagonCar.png';
+    /// Payment
+  static const String  receipt= 'assets/Images/Payment/Receipt.png';
 
 }

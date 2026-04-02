@@ -625,6 +625,14 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.secondTextColor);
   }
 
+  static TextStyle bodyRegular14Green(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.completedColor);
+  }
+
+  static TextStyle bodyRegular14Primary(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.primaryColor);
+  }
+
   static TextStyle bodyRegular14tertiary(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.tertiaryTextColor);
   }

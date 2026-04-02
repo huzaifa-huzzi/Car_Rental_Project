@@ -149,7 +149,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                       textAlignVertical: TextAlignVertical.center,
                       style: TTextTheme.insidetextfieldWrittenText(context),
                       decoration: InputDecoration(
-                        hintText: "Search Company by Name",
+                        hintText: TextString.searchTextPayment,
                         hintStyle: TTextTheme.smallX(context),
                         border: InputBorder.none,
                         isDense: true,
@@ -170,7 +170,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                           borderRadius: BorderRadius.circular(6),
                         ),
                       ),
-                      child:  Text("Search", style: TTextTheme.searchText(context)),
+                      child:  Text(TextString.search, style: TTextTheme.searchText(context)),
                     ),
                   ),
                 ],
@@ -190,7 +190,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                 children: [
                   Image.asset(IconString.filterIcon, height: 18,width: 18,),
                   const SizedBox(width: 8),
-                  Text("Filter", style: TTextTheme.btncustomer(context)),
+                  Text(TextString.filter, style: TTextTheme.btncustomer(context)),
                   const Icon(Icons.keyboard_arrow_down, size: 18),
                 ],
               ),
@@ -318,14 +318,14 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         mainAxisSpacing: 16,
         childAspectRatio: aspectRatio,
         children: [
-          _statCard("Total Revenue", "\$ 12345.99", "Paid Last Week ", IconString.paymentIconBlack),
-          _statCard("Action Required", "24", "24 more invoices needed to review ", IconString.actionRequiredIcon),
-          _statCard("Pending Payment ", "8", "3 more payment pending", IconString.pendingPaymentIcon),
-          _statCard("OverDue", "5", "1 more payment date passed", IconString.overdueIcon),
-          _statCard("Resubmit Request", "8","3 more resubmit request send", IconString.resubmitIcon),
-          _statCard("Submitted", "8", "1 more payment submitted ", IconString.submittedIcon),
-          _statCard("Completed Payments", "246", "3 more payment marked as completed", IconString.completedIcon),
-          _statCard("Total Payments", "246", "3 more payment received", IconString.paymentIconBlack),
+          _statCard(TextString.revenue, "\$ 12345.99",TextString.revenuesubtitle , IconString.paymentIconBlack),
+          _statCard(TextString.actionRequired, "24",TextString.actionRequiredsubtitle , IconString.actionRequiredIcon),
+          _statCard(TextString.pendingpayment, "8",TextString.pendingpaymentsubtitle , IconString.pendingPaymentIcon),
+          _statCard(TextString.overduePayment, "5", TextString.overduePaymentsubtitle, IconString.overdueIcon),
+          _statCard(TextString.resubmitrequest, "8",TextString.resubmitrequestsubtitle, IconString.resubmitIcon),
+          _statCard(TextString.submitPayment, "8",TextString.submitPaymentsubtitle, IconString.submittedIcon),
+          _statCard(TextString.completedPayment, "246",TextString.completedPaymentsubtitle , IconString.completedIcon),
+          _statCard(TextString.total, "246",TextString.totalsubtitle , IconString.paymentIconBlack),
         ],
       );
     });
@@ -437,7 +437,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       child: Row(
         children: [
           SizedBox(width: 200, child: _headerCell(TextString.header1payment, controller)),
-          SizedBox(width: 150, child: _headerCell("Customer Name", controller)),
+          SizedBox(width: 150, child: _headerCell(TextString.header7payment, controller)),
           SizedBox(width: 235, child: _headerCell(TextString.header2payment, controller)),
           SizedBox(width: 200, child: _headerCell(TextString.header3payment, controller)),
           SizedBox(width: 120, child: _headerCell(TextString.header4payment, controller)),

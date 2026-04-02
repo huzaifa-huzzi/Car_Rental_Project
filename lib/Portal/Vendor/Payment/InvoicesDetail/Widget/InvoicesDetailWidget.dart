@@ -1,7 +1,12 @@
+import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/CustomPaymentButton.dart';
+import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/PrimaryBtnOfPayment.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/paymentController.dart';
+import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../../../Resources/Colors.dart' show AppColors;
 
 
@@ -38,9 +43,13 @@ class InvoicesDetailWidget extends StatelessWidget {
               _buildRentalCard(context),
             ],
           ),
-
           const SizedBox(height: 20),
-
+          _buildPaymentReceiptSection(context),
+          const SizedBox(height: 15),
+          _buildResubmitReasonSection(context),
+          const SizedBox(height: 15),
+          _buildResubmitReasonCard(context),
+          const SizedBox(height: 20),
           _buildOtherPaymentsTable(context),
         ],
       ),
@@ -51,8 +60,30 @@ class InvoicesDetailWidget extends StatelessWidget {
 
   // payment info
   Widget _buildPaymentInfoCard(BuildContext context) {
-    String status = data["status"] ?? "Pending";
-    bool isMobile = MediaQuery.of(context).size.width < 400;
+    String getSafe(dynamic value, {String fallback = ""}) {
+      return value == null || value.toString().isEmpty
+          ? fallback
+          : value.toString();
+    }
+
+    String status = getSafe(data["status"], fallback: "pending").toLowerCase();
+
+    bool showSubmissionDetails = status == "submitted" ||
+        status == "resubmit" ||
+        status == "completed";
+
+    bool isResubmit = status == "resubmit";
+    bool isMobile = MediaQuery.of(context).size.width < 450;
+    String submissionType = getSafe(data["submissionType"], fallback: "OnTime");
+    String submissionDate = isResubmit
+        ? getSafe(data["resubmitAt"], fallback: getSafe(data["submissionDate"], fallback: "12 March, 2026"))
+        : getSafe(data["submissionDate"], fallback: "12 March, 2026");
+
+    String invoiceId = getSafe(data["id"], fallback: "In-2026-004");
+    String customerName = getSafe(data["customerName"], fallback: "Adam John");
+    String phone = getSafe(data["phone"], fallback: "12345678");
+    String amount = getSafe(data["amount"], fallback: "1425");
+    String dueDate = getSafe(data["dueDate"], fallback: "12 March, 2026");
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -63,48 +94,346 @@ class InvoicesDetailWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (isMobile)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Payment Information", style: TTextTheme.h2Style(context)),
-                Text("All details about the payment", style: TTextTheme.bodyRegular16(context)),
-                const SizedBox(height: 12),
-                _buildStatusChip(status, context),
-              ],
-            )
-          else
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Payment Information", style: TTextTheme.h2Style(context)),
-                      Text("All details about the payment", style: TTextTheme.bodyRegular16(context)),
-                    ],
-                  ),
-                ),
-                _buildStatusChip(status, context),
-              ],
-            ),
+          isMobile
+              ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Payment Information", style: TTextTheme.h2Style(context)),
+              Text("All details about the payment", style: TTextTheme.bodyRegular16(context)),
+              const SizedBox(height: 12),
+              _buildStatusChip(status, context),
+            ],
+          )
+              : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Payment Information", style: TTextTheme.h2Style(context)),
+                  Text("All details about the payment", style: TTextTheme.bodyRegular16(context)),
+                ],
+              ),
+              _buildStatusChip(status, context),
+            ],
+          ),
 
           const SizedBox(height: 24),
           _buildResponsiveRow(context, [
-            _buildReadOnlyField(context, "Invoice Id", data["id"] ?? "In-2026-004"),
-            _buildReadOnlyField(context, "Customer Name", data["customerName"] ?? "Adam Jhon"),
-            _buildReadOnlyField(context, "Phone Number", "12345667"),
+            _buildReadOnlyField(context, "Invoice Id", invoiceId),
+            _buildReadOnlyField(context, "Customer Name", customerName),
+            _buildReadOnlyField(context, "Phone Number", phone),
           ]),
 
           const SizedBox(height: 16),
-
           _buildResponsiveRow(context, [
-            _buildReadOnlyField(context, "Payment Amount", "\$${data["amount"] ?? "1425"}", isPrice: true),
-            _buildReadOnlyField(context, "Due Date", "12 March, 2026"),
-            const SizedBox(),
+            _buildReadOnlyField(context, "Payment Amount", "\$$amount", isPrice: true),
+            _buildReadOnlyField(context, "Due Date", dueDate),
+            if (showSubmissionDetails)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildReadOnlyField(context, "Submission Date", submissionDate),
+                  if (submissionType != "OnTime") ...[
+                    const SizedBox(height: 4),
+                    _buildSubmissionStatusText(context, type: submissionType),
+                  ],
+                ],
+              )
+            else
+              const SizedBox(),
           ]),
+        ],
+      ),
+    );
+  }
+  Widget _buildSubmissionStatusText(BuildContext context,
+      {required String type}) {
+    bool isLate = type == "Late";
+
+    return Text(
+      isLate
+          ? "Payment Submitted 2 Days After Due Date"
+          : "Payment Submitted 2 Days Before Due Date",
+      style: isLate ? TTextTheme.bodyRegular14Primary(context) : TTextTheme.bodyRegular14Green(context),
+    );
+  }
+
+
+   // Image Section
+  Widget _buildPaymentReceiptSection(BuildContext context) {
+
+    String status = (data["status"] ?? "").toString().toLowerCase();
+    bool shouldShow = status == "submitted" ||
+        status == "resubmit" ||
+        status == "completed";
+
+    if (!shouldShow) return const SizedBox.shrink();
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Screenshot", style: TTextTheme.h2Style(context)),
+          const SizedBox(height: 2),
+          Text("Screenshot here", style: TTextTheme.bodyRegular16(context)),
+
+          const SizedBox(height: 24),
+
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 40),
+            decoration: BoxDecoration(
+              color: AppColors.backgroundOfPickupsWidget,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Center(
+              child: IntrinsicWidth(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: 350,
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(12),
+                                topRight: Radius.circular(12),
+                              ),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(12),
+                                topRight: Radius.circular(12),
+                              ),
+                              child: Image.asset(
+                                ImageString.receipt,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                          Positioned.fill(
+                            child: MouseRegion(
+                              onEnter: (_) => controller.setHover2(true),
+                              onExit: (_) => controller.setHover2(false),
+                              child: InkWell(
+                                onTap: () => _showImagePopup(context),
+                                child: Obx(() => AnimatedOpacity(
+                                  duration: const Duration(milliseconds: 200),
+                                  opacity: controller.isImageHovered2.value ? 1.0 : 0.0,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.5),
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(12),
+                                        topRight: Radius.circular(12),
+                                      ),
+                                    ),
+                                    child: const Center(
+                                      child: Icon(
+                                        Icons.zoom_in_outlined,
+                                        color: Colors.white,
+                                        size: 60,
+                                      ),
+                                    ),
+                                  ),
+                                )),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: AppColors.backgroundOfScreenColor),
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(12),
+                          bottomRight: Radius.circular(12),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Image.asset(IconString.receiptIcon, height: 20),
+                          const SizedBox(width: 8),
+                          Text(
+                            "Receipt.png",
+                            style: TTextTheme.bodyRegular12black(context),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  void _showImagePopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.close, color: Colors.white, size: 30),
+              onPressed: () => Navigator.pop(context),
+            ),
+            Flexible(
+              child: InteractiveViewer(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.asset(ImageString.receipt, fit: BoxFit.contain),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+
+
+
+   // Submitted(Write reason Box)
+  Widget _buildResubmitReasonSection(BuildContext context) {
+    final String status = (data["status"] ?? "").toString().toLowerCase();
+    if (status != "submitted") return const SizedBox.shrink();
+    bool isGapMoreThanTwoDays = false;
+    try {
+      DateFormat format = DateFormat("dd MMMM, yyyy");
+      DateTime dueDate = format.parse(data["dueDate"] ?? "");
+      DateTime submissionDate = format.parse(data["submissionDate"] ?? "");
+
+      int diff = submissionDate.difference(dueDate).inDays.abs();
+      isGapMoreThanTwoDays = diff >= 2;
+    } catch (e) {
+      isGapMoreThanTwoDays = false;
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (!isGapMoreThanTwoDays) ...[
+          Text("Write Reason", style: TTextTheme.bodyRegular14(context)),
+          const SizedBox(height: 8),
+
+          Obx(() => Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: controller.isReasonFocused.value
+                  ? [BoxShadow(color: AppColors.fieldsBackground.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))]
+                  : [],
+            ),
+            child: TextField(
+              focusNode: controller.reasonFocusNode,
+              maxLines: 4,
+              cursorColor: AppColors.blackColor,
+              style: TTextTheme.textFieldWrittenText(context),
+              decoration: InputDecoration(
+                hintText: "Write here",
+                hintStyle: TTextTheme.bodyRegular16(context),
+                fillColor: Colors.white,
+                filled: true,
+                focusColor: Colors.white,
+                hoverColor: Colors.white,
+                contentPadding: const EdgeInsets.all(16),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide:  BorderSide(color: AppColors.toolBackground),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(color: AppColors.toolBackground),
+                ),
+              ),
+            ),
+          )),
+          const SizedBox(height: 20),
+          Align(
+            alignment: Alignment.centerRight,
+            child: CustomButtonPayment(
+              text: "Request Resubmit",
+              width: 180,
+              height: 45,
+              allowbackgrooundColor: false,
+              textColor: AppColors.primaryColor,
+              borderColor: AppColors.primaryColor,
+              onTap: () => showResubmitConfirmationDialog(context),
+            ),
+          ),
+        ],
+        if (isGapMoreThanTwoDays)
+          Align(
+            alignment: Alignment.centerRight,
+            child: PrimaryBtnOfPayment(
+              text: "Mark as Complete",
+              width: 180,
+              height: 45,
+              onTap: () => showCompletionDialog(context),
+            ),
+          ),
+      ],
+    );
+  }
+
+  // ResubmitReasonCard
+  Widget _buildResubmitReasonCard(BuildContext context) {
+    String status = (data["status"] ?? "").toString().toLowerCase();
+    if (status != "resubmit") return const SizedBox.shrink();
+    String reason = data["resubmitReason"] ??
+        "Please upload a clear screenshot or photo of your payment receipt. Make sure the transaction ID, amount, and date are clearly visible. Blurry or unclear receipts may require review or resubmission.";
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.only(bottom: 24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Reason for resubmit",
+            style: TTextTheme.h2PrimaryStyle(context),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            reason,
+            style:TTextTheme.bodyRegular16black(context)
+          ),
         ],
       ),
     );
@@ -135,18 +464,47 @@ class InvoicesDetailWidget extends StatelessWidget {
 
   // car Rental
   Widget _buildRentalCard(BuildContext context) {
-    return _buildCard(
-      context,
-      title: "Rental Period",
-      subtitle: "Your rental period detail listed here",
+    String status = (data["status"] ?? "").toString().toLowerCase();
+    bool isSubmitted = status == "submitted";
+
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text("Rental Period", style: TTextTheme.h2Style(context)),
+          Text("Your rental period detail listed here", style: TTextTheme.bodyRegular16(context)),
+
+          const SizedBox(height: 24),
+
           _buildResponsiveRow(context, [
-            _buildReadOnlyField(context, "From Date", "March 7, 2026"),
-            _buildReadOnlyField(context, "To Date", "March 14, 2026"),
+            _buildReadOnlyField(context, "From Date", data["fromDate"] ?? "March 7, 2026"),
+            _buildReadOnlyField(context, "To Date", data["toDate"] ?? "March 14, 2026"),
           ]),
+
           const SizedBox(height: 16),
-          _buildReadOnlyField(context, "Duration", "7 days"),
+
+          Row(
+            children: [
+              if (isSubmitted) ...[
+                Expanded(
+                  child: _buildReadOnlyField(context, "Submitted Date", data["submittedDate"] ?? "March 7, 2026"),
+                ),
+                const SizedBox(width: 16),
+              ],
+              Expanded(
+                child: _buildReadOnlyField(
+                  context,
+                  "Duration",
+                  data["duration"] ?? "7 days",
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -195,12 +553,7 @@ class InvoicesDetailWidget extends StatelessWidget {
           child: Text(
             value,
             style: isPrice
-                ? const TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.w600,
-            )
-                : TTextTheme.bodySemiBold14black(context),
-          ),
+                ? TTextTheme.bodySemiBold16(context) : TTextTheme.bodyRegular16black(context)),
         ),
       ],
     );
@@ -257,7 +610,7 @@ class InvoicesDetailWidget extends StatelessWidget {
         displayStatus = "Submitted";
         break;
       default:
-        backgroundColor = Colors.grey;
+        backgroundColor = AppColors.tertiaryTextColor;
     }
 
     return Container(
@@ -449,7 +802,6 @@ class InvoicesDetailWidget extends StatelessWidget {
               child: Text("\$${data["amount"]}",
                   style: TTextTheme.hPickupStyle(context))),
 
-          // 🔥 DYNAMIC STATUS
           _cell(
             width: 130,
             child: Center(
@@ -458,7 +810,6 @@ class InvoicesDetailWidget extends StatelessWidget {
             ),
           ),
 
-          // 🔹 ACTION BUTTON
           _cell(
             width: 130,
             child: Center(
@@ -494,4 +845,378 @@ class InvoicesDetailWidget extends StatelessWidget {
   Widget _cell({required double width, required Widget child}) {
     return SizedBox(width: width, child: child);
   }
+
+  // Simple Dialogs
+  void showCompletionDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        double screenWidth = MediaQuery.of(context).size.width;
+        bool shouldStackButtons = screenWidth < 380;
+
+        return Dialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Container(
+            width: 450,
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppColors.emojiBackground,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Text("🤨", style: TextStyle(fontSize: 24)),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                              "Mark payment as completed?",
+                              style: TTextTheme.h2Style(context)
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                              "Are you sure you want to mark invoice In-2026-004 as completed? This action confirm that payment has verified and proceed",
+                              style:TTextTheme.bodyRegular16(context)
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: AppColors.sideBoxesColor,
+                          shape: BoxShape.circle,
+                        ),
+                        child:  Icon(Icons.close, size: 16, color: AppColors.blackColor),
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 32),
+                shouldStackButtons
+                    ? Column(
+                  children: [
+                    _buildButton(context, "Save", isOutlined: true, isFullWidth: true),
+                    const SizedBox(height: 12),
+                    _buildButton(context, "Cancel", isOutlined: false, isFullWidth: true),
+                  ],
+                )
+                    : Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    _buildButton(context, "Save", isOutlined: true, isFullWidth: false),
+                    const SizedBox(width: 12),
+                    _buildButton(context, "Cancel", isOutlined: false, isFullWidth: false),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+  Widget _buildButton(BuildContext context, String text, {required bool isOutlined, required bool isFullWidth}) {
+    return SizedBox(
+      width: isFullWidth ? double.infinity : 110,
+      height: 48,
+      child: isOutlined
+          ? OutlinedButton(
+        onPressed: (){
+          Navigator.pop(context);
+          showSuccessDialog(context);
+        },
+        style: OutlinedButton.styleFrom(
+          side: const BorderSide(color: AppColors.primaryColor, width: 1),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+        child: Text(text, style: TTextTheme.resendText(context)),
+      )
+          : ElevatedButton(
+        onPressed: () => Navigator.pop(context),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primaryColor,
+          elevation: 0,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+        child: Text(text, style:TTextTheme.btnWhiteColor2(context)),
+      ),
+    );
+  }
+  void showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Container(
+            width: 450,
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppColors.emojiBackground,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Text("👍", style: TextStyle(fontSize: 24)),
+                    ),
+                    const SizedBox(width: 16),
+                    // Text Content
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Payment Marked as Completed Successfully",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "Congratulation! payment has marked as completed successfully in the system.",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey.shade600,
+                              height: 1.4,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: AppColors.sideBoxesColor,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.close, size: 16, color: AppColors.blackColor),
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+   // Resubmit Dialog
+  void showResubmitConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        double screenWidth = MediaQuery.of(context).size.width;
+        bool shouldStackButtons = screenWidth < 380;
+
+        return Dialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Container(
+            width: 450,
+            padding: const EdgeInsets.all(24),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: AppColors.emojiBackground,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Text("🤨", style: TextStyle(fontSize: 24)),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Mark payment as resubmit?",
+                              style: TTextTheme.h2Style(context),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              "Are you sure you want to mark invoice In-2026-004 as re upload? The status will be change as re upload and notification will be sent to the customer",
+                              style: TTextTheme.bodyRegular16(context),
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: AppColors.sideBoxesColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(Icons.close, size: 16, color: AppColors.blackColor),
+                        ),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                  // Buttons Section
+                  shouldStackButtons
+                      ? Column(
+                    children: [
+                      _buildResubmitButton(context, "Save", isOutlined: true, isFullWidth: true),
+                      const SizedBox(height: 12),
+                      _buildResubmitButton(context, "Cancel", isOutlined: false, isFullWidth: true),
+                    ],
+                  )
+                      : Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      _buildResubmitButton(context, "Save", isOutlined: true, isFullWidth: false),
+                      const SizedBox(width: 12),
+                      _buildResubmitButton(context, "Cancel", isOutlined: false, isFullWidth: false),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+  Widget _buildResubmitButton(BuildContext context, String text, {required bool isOutlined, required bool isFullWidth}) {
+    const Color resubmitRed = AppColors.primaryColor;
+
+    return SizedBox(
+      width: isFullWidth ? double.infinity : 110,
+      height: 48,
+      child: isOutlined
+          ? OutlinedButton(
+        onPressed: () {
+          Navigator.pop(context);
+          showResubmitSuccessDialog(context);
+        },
+        style: OutlinedButton.styleFrom(
+          side: const BorderSide(color: resubmitRed, width: 1),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+        child: Text(text, style: TTextTheme.resendText(context).copyWith(color: resubmitRed)),
+      )
+          : ElevatedButton(
+        onPressed: () => Navigator.pop(context),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: resubmitRed,
+          elevation: 0,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+        child: Text(text, style: TTextTheme.btnWhiteColor2(context)),
+      ),
+    );
+  }
+  void showResubmitSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Container(
+            width: 450,
+            padding: const EdgeInsets.all(24),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: AppColors.emojiBackground,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Text("👍", style: TextStyle(fontSize: 24)),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                "Payment Marked as resubmit Successfully",
+                                style: TTextTheme.h2Style(context)
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                                "Congratulation! payment has marked as re upload successfully in the system.",
+                                style: TTextTheme.bodyRegular16(context)
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: AppColors.sideBoxesColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(Icons.close, size: 16, color: AppColors.blackColor),
+                        ),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
 }

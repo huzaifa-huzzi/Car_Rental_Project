@@ -151,6 +151,9 @@ class PaymentController extends GetxController {
 
     loadOtherPayments();
     loadOtherPaymentsinvoices();
+    reasonFocusNode.addListener(() {
+      isReasonFocused.value = reasonFocusNode.hasFocus;
+    });
   }
   List<Map<String, dynamic>> get displayedCarList {
     return baseData.map((item) {
@@ -190,6 +193,8 @@ class PaymentController extends GetxController {
   /// Invoices Detail screen
   var isImageHovered = false.obs;
   void setHover(bool value) => isImageHovered.value = value;
+  final FocusNode reasonFocusNode = FocusNode();
+  var isReasonFocused = false.obs;
 
   var selectedImage = Rxn<ImageHolder>();
 
