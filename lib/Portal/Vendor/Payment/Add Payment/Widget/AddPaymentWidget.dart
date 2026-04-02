@@ -4,6 +4,7 @@ import 'package:car_rental_project/Portal/Vendor/Payment/paymentController.dart'
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextString.dart' show TextString;
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,19 +28,19 @@ class AddPaymentWidget extends StatelessWidget {
     return Column(
       children: [
         _buildCard(
-          title: "Payment Information",context,
-          subtitle: "All details about the payment",
+          title: TextString.titlePaymentAdd,context,
+          subtitle: TextString.titlePaymentAddSubtitle,
           child: Column(
             children: [
               _buildResponsiveRow(isMobile, [
-                _buildField(context, "Invoice Id", "Enter Invoice Number", controller.invoiceIdController, "invoice"),
-                _buildField(context, "Customer Name", "Enter Full Name", controller.customerNameController, "customer"),
-                _buildField(context, "Phone Number", "Enter Phone Number", controller.phoneNumberController, "phone"),
+                _buildField(context, TextString.field1,TextString.field1Subtitle , controller.invoiceIdController, "invoice"),
+                _buildField(context, TextString.field2, TextString.field2Subtitle , controller.customerNameController, "customer"),
+                _buildField(context,TextString.field3, TextString.field3Subtitle , controller.phoneNumberController, "phone"),
               ]),
               const SizedBox(height: 20),
               _buildResponsiveRow(isMobile, [
-                _buildField(context, "Payment Amount", "Enter Amount", controller.paymentAmountController, "amount"),
-                _buildDateField(context, "Due Date", "Select Date", controller.dueDateController, _dueLink),
+                _buildField(context, TextString.field4,TextString.field4Subtitle  , controller.paymentAmountController, "amount"),
+                _buildDateField(context, TextString.field5,TextString.field5Subtitle  , controller.dueDateController, _dueLink),
                 if (!isMobile) const SizedBox(),
               ]),
             ],
@@ -67,8 +68,8 @@ class AddPaymentWidget extends StatelessWidget {
 
         const SizedBox(height: 24),
         _buildCard(
-          title: "Upload Screenshot",context,
-          subtitle: "Upload screenshot here",
+          title: TextString.fieldUpload,context,
+          subtitle: TextString.fieldUploadSubtitle,
           child: Obx(() {
             return controller.selectedImage2.value != null
                 ? _buildSelectedImagePreview(context)
@@ -199,18 +200,18 @@ class AddPaymentWidget extends StatelessWidget {
   //  Car Detail Section
   Widget _buildCarDetail(BuildContext context, bool isMobile) {
     return _buildCard(
-      title: "Car Detail",context,
-      subtitle: "Your Car detail listed here",
+      title: TextString.carDetailTitlepayment,context,
+      subtitle: TextString.carDetailTitleSubtitle,
       child: Column(
         children: [
           _buildResponsiveRow(isMobile, [
-            _buildField(context, "Car Name", "Enter Car Name", controller.carNameController, "carName"),
-            _buildCustomDropdown(context, "Type", ["Sedan", "SUV", "Hatchback"], controller.selectedCarType, id: "carType"),
+            _buildField(context, TextString.carField1,TextString.carField1Subtitle , controller.carNameController, "carName"),
+            _buildCustomDropdown(context, TextString.carField4, ["Sedan", "SUV", "Hatchback"], controller.selectedCarType, id: "carType"),
           ]),
           const SizedBox(height: 15),
           _buildResponsiveRow(isMobile, [
-            _buildField(context, "Registration", "Enter Registration No.", controller.registrationController, "registration"),
-            _buildCustomDropdown(context, "Transmission", ["Manual", "Automatic"], controller.selectedTransmission, id: "transmission"),
+            _buildField(context, TextString.carField2, TextString.carField2Subtitle, controller.registrationController, "registration"),
+            _buildCustomDropdown(context, TextString.carField3, ["Manual", "Automatic"], controller.selectedTransmission, id: "transmission"),
           ]),
         ],
       ),
@@ -220,16 +221,16 @@ class AddPaymentWidget extends StatelessWidget {
   //  Rental Period Section
   Widget _buildRentalPeriod(BuildContext context, bool isMobile) {
     return _buildCard(
-      title: "Rental Period",context,
-      subtitle: "Your rental period detail listed here",
+      title: TextString.RentDetailTitlepayment,context,
+      subtitle: TextString.RentDetailTitleSubtitle,
       child: Column(
         children: [
           _buildResponsiveRow(isMobile, [
-            _buildDateField(context, "From Date", "Select Date", controller.fromDateController, _fromLink),
-            _buildDateField(context, "To Date", "Select Date", controller.toDateController, _toLink),
+            _buildDateField(context,TextString.rentField1 , TextString.rentField1subtitle, controller.fromDateController, _fromLink),
+            _buildDateField(context, TextString.rentField2,  TextString.rentField2subtitle, controller.toDateController, _toLink),
           ]),
           const SizedBox(height: 15),
-          _buildField(context, "Duration", "Select Number of days", controller.durationController, "duration"),
+          _buildField(context, TextString.rentField3,TextString.rentField3subtitle , controller.durationController, "duration"),
         ],
       ),
     );
@@ -540,7 +541,7 @@ class AddPaymentWidget extends StatelessWidget {
             Image.asset(IconString.invoicesIcon, color:AppColors.primaryColor,),
             const SizedBox(height: 12),
             Text(
-                "Upload Payment Receipt",
+                TextString.uploadPaymentReceipt,
                 style: TTextTheme.h1Style(context)
             ),
 
@@ -549,8 +550,8 @@ class AddPaymentWidget extends StatelessWidget {
               text:  TextSpan(
                 style: TTextTheme.bodyRegular16secondary(context),
                 children: [
-                  TextSpan(text: "JPEG,PNG "),
-                  TextSpan(text: "(Must be under 10 MB)", style: TTextTheme.bodyRegular16Primary(context)),
+                  TextSpan(text: TextString.paymentJpeg),
+                  TextSpan(text: TextString.under10, style: TTextTheme.bodyRegular16Primary(context)),
                 ],
               ),
             ),
@@ -709,7 +710,7 @@ class AddPaymentWidget extends StatelessWidget {
                 color: AppColors.pendingColor,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child:  Text("Pending", style: TTextTheme.hPending(context)),
+              child:  Text(TextString.pending, style: TTextTheme.hPending(context)),
             ),
           )),
           _cell(width: 130, child: Center(
@@ -780,12 +781,12 @@ class AddPaymentWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                            Text(
-                            "Mark payment as completed?",
+                            TextString.paymentAsCompleted,
                             style: TTextTheme.h2Style(context)
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            "Are you sure you want to mark invoice In-2026-004 as completed? This action confirm that payment has verified and proceed",
+                       TextString.paymentAsCompletedSubtitle,
                             style:TTextTheme.bodyRegular16(context)
                           ),
                         ],
@@ -885,27 +886,18 @@ class AddPaymentWidget extends StatelessWidget {
                       child: const Text("👍", style: TextStyle(fontSize: 24)),
                     ),
                     const SizedBox(width: 16),
-                    // Text Content
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Payment Marked as Completed Successfully",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black,
-                            ),
+                           Text(
+                           TextString.markedSuccessFully,
+                            style: TTextTheme.h2Style(context)
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            "Congratulation! payment has marked as completed successfully in the system.",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey.shade600,
-                              height: 1.4,
-                            ),
+                            TextString.markedSuccessFullySubtitle,
+                            style: TTextTheme.bodyRegular16(context),
                           ),
                         ],
                       ),

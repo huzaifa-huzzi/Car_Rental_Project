@@ -699,6 +699,44 @@ class TextString {
   static const String  monthlyrevenue= "Monthly Revenue";
   static const String  monthlyrevenuesubtitle= "Revenue per Month";
    // Add Payment
+  static const String  titlePaymentAdd= "Payment Information";
+  static const String  titlePaymentAddSubtitle= "All details about the payment";
+  static const String  field1= "Invoice Id";
+  static const String  field2= "Customer Name";
+  static const String  field3=  "Phone Number";
+  static const String  field4=  "Payment Amount";
+  static const String  field5=  "Due Date";
+  static const String  field1Subtitle= "Enter Invoice Number";
+  static const String  field2Subtitle= "Enter Full Name";
+  static const String  field3Subtitle=  "Enter Phone Number";
+  static const String  field4Subtitle=  "Enter Amount";
+  static const String  field5Subtitle=  "Select Date";
+  static const String  fieldUpload=  "Upload Screenshot";
+  static const String  fieldUploadSubtitle=  "Upload screenshot here";
+  static const String  carDetailTitlepayment= "Car Detail";
+  static const String  carDetailTitleSubtitle= "Your Car detail listed here";
+  static const String  carField1=  "Car Name";
+  static const String  carField2=  "Registration";
+  static const String  carField3=  "Transmission";
+  static const String  carField4=  "Type";
+  static const String  carField1Subtitle=  "Enter Car Name";
+  static const String  carField2Subtitle=  "Enter Registration No.";
+  static const String  carField3Subtitle=  "Transmission";
+  static const String  RentDetailTitlepayment= "Rental Period";
+  static const String  RentDetailTitleSubtitle= "Your rental period detail listed here";
+  static const String  rentField1=  "From Date";
+  static const String  rentField2=  "To Date";
+  static const String  rentField3=  "Duration";
+  static const String  rentField1subtitle=  "Select Date";
+  static const String  rentField2subtitle=  "Select Date";
+  static const String  rentField3subtitle=  "Select Number of days";
+  static const String  uploadPaymentReceipt= "Upload Payment Receipt";
+  static const String  paymentJpeg= "JPEG,PNG ";
+  static const String  pending= "Pending";
+  static const String  paymentAsCompleted= "Mark payment as completed?";
+  static const String  paymentAsCompletedSubtitle="Are you sure you want to mark invoice In-2026-004 as completed? This action confirm that payment has verified and proceed";
+  static const String  markedSuccessFully=  "Payment Marked as Completed Successfully";
+  static const String  markedSuccessFullySubtitle="Congratulation! payment has marked as completed successfully in the system.";
 
 
 }
