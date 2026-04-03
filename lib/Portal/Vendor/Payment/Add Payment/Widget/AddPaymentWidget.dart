@@ -265,7 +265,7 @@ class AddPaymentWidget extends StatelessWidget {
     );
   }
 
-  //  Dropdown Helper
+  //  Dropdown
   Widget _buildCustomDropdown(BuildContext context, String label, List<String> items, RxString selected, {required String id}) {
     return Obx(() {
       bool isOpen = controller.openedDropdown2.value == id;
@@ -573,17 +573,16 @@ class AddPaymentWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Title Section
           RichText(
             text: TextSpan(
               style: TTextTheme.h2Style(context),
               children: [
-                 TextSpan(text: "Other Payments by "),
-                TextSpan(text: "(Adam Jhones)", style: TTextTheme.h2PrimaryStyle(context)),
+                 TextSpan(text:  TextString.otherPayment),
+                TextSpan(text: TextString.adamJhones, style: TTextTheme.h2PrimaryStyle(context)),
               ],
             ),
           ),
-           Text("List of all payments", style: TTextTheme.bodyRegular16(context) ),
+           Text(TextString.listOfPayment, style: TTextTheme.bodyRegular16(context) ),
           const SizedBox(height: 20),
 
           SingleChildScrollView(
@@ -600,13 +599,13 @@ class AddPaymentWidget extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      _cell(width: 180, child: _headerCell("Invoice Id", controller,context)),
-                      _cell(width: 160, child: _headerCell("Customer Name", controller,context)),
-                      _cell(width: 230, child: _headerCell("Duration", controller,context)),
-                      _cell(width: 190, child: _headerCell("Car Name", controller,context)),
-                      _cell(width: 110, child: _headerCell("Amount", controller,context)),
-                      _cell(width: 130, child: _headerCell("Status", controller,context, isCenter: true, canSort: false)),
-                      _cell(width: 130, child: _headerCell("Action", controller,context, isCenter: true, canSort: false)),
+                      _cell(width: 180, child: _headerCell(TextString.header1payment, controller,context)),
+                      _cell(width: 160, child: _headerCell(TextString.header7payment, controller,context)),
+                      _cell(width: 230, child: _headerCell(TextString.header2payment, controller,context)),
+                      _cell(width: 190, child: _headerCell(TextString.header3payment, controller,context)),
+                      _cell(width: 110, child: _headerCell(TextString.header4payment, controller,context)),
+                      _cell(width: 130, child: _headerCell(TextString.header5payment, controller,context, isCenter: true, canSort: false)),
+                      _cell(width: 130, child: _headerCell(TextString.header6payment, controller,context, isCenter: true, canSort: false)),
                     ],
                   ),
                 ),

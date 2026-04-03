@@ -706,6 +706,7 @@ class TextString {
   static const String  field3=  "Phone Number";
   static const String  field4=  "Payment Amount";
   static const String  field5=  "Due Date";
+  static const String  field6=  "Submission Date";
   static const String  field1Subtitle= "Enter Invoice Number";
   static const String  field2Subtitle= "Enter Full Name";
   static const String  field3Subtitle=  "Enter Phone Number";
@@ -737,6 +738,30 @@ class TextString {
   static const String  paymentAsCompletedSubtitle="Are you sure you want to mark invoice In-2026-004 as completed? This action confirm that payment has verified and proceed";
   static const String  markedSuccessFully=  "Payment Marked as Completed Successfully";
   static const String  markedSuccessFullySubtitle="Congratulation! payment has marked as completed successfully in the system.";
+   // invoices Detail
+  static const String  titlePaymentInvoices= "Payment Information";
+  static const String  titlePaymentAddInvoices= "All details about the payment";
+  static const String  after2Days= "Payment Submitted 2 Days After Due Date";
+  static const String  before2Days= "Payment Submitted 2 Days Before Due Date";
+  static const String  fieldUploadInvoices=  "Screenshot";
+  static const String  fieldUploadSubtitleInvoices=  "Screenshot here";
+  static const String  receipt= "Receipt.png";
+  static const String  reason= "Write Reason";
+  static const String  writeHere= "Write Here";
+  static const String  reasonBox= "Please upload a clear screenshot or photo of your payment receipt. Make sure the transaction ID, amount, and date are clearly visible. Blurry or unclear receipts may require review or resubmission.";
+  static const String  reasonOfResubmit= "Reason for resubmit";
+  static const String  carDetailInvoices= "Car Detail";
+  static const String  carDetailSubtitleInvoices= "Your Car detail listed here";
+  static const String  submittedDate= "Submitted Date";
+  static const String  duration= "Duration";
+  static const String  otherPayment= "Other Payments by ";
+  static const String  adamJhones= "(Adam Jhones)";
+  static const String  listOfPayment= "List of all payments";
+  static const String  paymentAsCompletedinvoices= "Mark payment as resubmit?";
+  static const String  paymentAsCompletedSubtitleInvoices= "Are you sure you want to mark invoice In-2026-004 as re upload? The status will be change as re upload and notification will be sent to the customer";
+  static const String  markedSuccessFullyInvoices=  "Payment Marked as resubmit Successfully";
+  static const String  markedSuccessFullySubtitleInvoices="Congratulation! payment has marked as re upload successfully in the system.";
+
 
 
 }

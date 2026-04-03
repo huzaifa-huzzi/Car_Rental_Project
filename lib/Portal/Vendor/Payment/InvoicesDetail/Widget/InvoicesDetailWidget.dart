@@ -3,6 +3,7 @@ import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/PrimaryB
 import 'package:car_rental_project/Portal/Vendor/Payment/paymentController.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -98,8 +99,8 @@ class InvoicesDetailWidget extends StatelessWidget {
               ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Payment Information", style: TTextTheme.h2Style(context)),
-              Text("All details about the payment", style: TTextTheme.bodyRegular16(context)),
+              Text(TextString.titlePaymentInvoices, style: TTextTheme.h2Style(context)),
+              Text(TextString.titlePaymentAddInvoices, style: TTextTheme.bodyRegular16(context)),
               const SizedBox(height: 12),
               _buildStatusChip(status, context),
             ],
@@ -110,8 +111,8 @@ class InvoicesDetailWidget extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Payment Information", style: TTextTheme.h2Style(context)),
-                  Text("All details about the payment", style: TTextTheme.bodyRegular16(context)),
+                  Text(TextString.titlePaymentInvoices, style: TTextTheme.h2Style(context)),
+                  Text(TextString.titlePaymentAddInvoices, style: TTextTheme.bodyRegular16(context)),
                 ],
               ),
               _buildStatusChip(status, context),
@@ -120,21 +121,21 @@ class InvoicesDetailWidget extends StatelessWidget {
 
           const SizedBox(height: 24),
           _buildResponsiveRow(context, [
-            _buildReadOnlyField(context, "Invoice Id", invoiceId),
-            _buildReadOnlyField(context, "Customer Name", customerName),
-            _buildReadOnlyField(context, "Phone Number", phone),
+            _buildReadOnlyField(context, TextString.field1, invoiceId),
+            _buildReadOnlyField(context, TextString.field2, customerName),
+            _buildReadOnlyField(context, TextString.field3, phone),
           ]),
 
           const SizedBox(height: 16),
           _buildResponsiveRow(context, [
-            _buildReadOnlyField(context, "Payment Amount", "\$$amount", isPrice: true),
-            _buildReadOnlyField(context, "Due Date", dueDate),
+            _buildReadOnlyField(context, TextString.field4, "\$$amount", isPrice: true),
+            _buildReadOnlyField(context, TextString.field5, dueDate),
             if (showSubmissionDetails)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildReadOnlyField(context, "Submission Date", submissionDate),
+                  _buildReadOnlyField(context, TextString.field6, submissionDate),
                   if (submissionType != "OnTime") ...[
                     const SizedBox(height: 4),
                     _buildSubmissionStatusText(context, type: submissionType),
@@ -154,8 +155,8 @@ class InvoicesDetailWidget extends StatelessWidget {
 
     return Text(
       isLate
-          ? "Payment Submitted 2 Days After Due Date"
-          : "Payment Submitted 2 Days Before Due Date",
+          ? TextString.before2Days
+          : TextString.after2Days,
       style: isLate ? TTextTheme.bodyRegular14Primary(context) : TTextTheme.bodyRegular14Green(context),
     );
   }
@@ -177,20 +178,13 @@ class InvoicesDetailWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Screenshot", style: TTextTheme.h2Style(context)),
+          Text(TextString.fieldUploadInvoices, style: TTextTheme.h2Style(context)),
           const SizedBox(height: 2),
-          Text("Screenshot here", style: TTextTheme.bodyRegular16(context)),
+          Text(TextString.fieldUploadSubtitleInvoices, style: TTextTheme.bodyRegular16(context)),
 
           const SizedBox(height: 24),
 
@@ -279,7 +273,7 @@ class InvoicesDetailWidget extends StatelessWidget {
                           Image.asset(IconString.receiptIcon, height: 20),
                           const SizedBox(width: 8),
                           Text(
-                            "Receipt.png",
+                            TextString.receipt,
                             style: TTextTheme.bodyRegular12black(context),
                           ),
                         ],
@@ -345,7 +339,7 @@ class InvoicesDetailWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (!isGapMoreThanTwoDays) ...[
-          Text("Write Reason", style: TTextTheme.bodyRegular14(context)),
+          Text(TextString.reason, style: TTextTheme.bodyRegular14(context)),
           const SizedBox(height: 8),
 
           Obx(() => Container(
@@ -361,7 +355,7 @@ class InvoicesDetailWidget extends StatelessWidget {
               cursorColor: AppColors.blackColor,
               style: TTextTheme.textFieldWrittenText(context),
               decoration: InputDecoration(
-                hintText: "Write here",
+                hintText: TextString.writeHere,
                 hintStyle: TTextTheme.bodyRegular16(context),
                 fillColor: Colors.white,
                 filled: true,
@@ -412,7 +406,7 @@ class InvoicesDetailWidget extends StatelessWidget {
     String status = (data["status"] ?? "").toString().toLowerCase();
     if (status != "resubmit") return const SizedBox.shrink();
     String reason = data["resubmitReason"] ??
-        "Please upload a clear screenshot or photo of your payment receipt. Make sure the transaction ID, amount, and date are clearly visible. Blurry or unclear receipts may require review or resubmission.";
+        TextString.reasonBox;
 
     return Container(
       width: double.infinity,
@@ -426,7 +420,7 @@ class InvoicesDetailWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Reason for resubmit",
+            TextString.reasonOfResubmit,
             style: TTextTheme.h2PrimaryStyle(context),
           ),
           const SizedBox(height: 12),
@@ -443,19 +437,19 @@ class InvoicesDetailWidget extends StatelessWidget {
   Widget _buildCarDetailCard(BuildContext context) {
     return _buildCard(
       context,
-      title: "Car Detail",
-      subtitle: "Your Car detail listed here",
+      title: TextString.carDetailInvoices,
+      subtitle: TextString.carDetailSubtitleInvoices,
       child: Column(
         children: [
           _buildResponsiveRow(context, [
-            _buildReadOnlyField(context, "Car Name",
+            _buildReadOnlyField(context, TextString.carField1,
                 data["car"] ?? "Mazda CX-5 (2017)"),
-            _buildReadOnlyField(context, "Type", "Sedan"),
+            _buildReadOnlyField(context, TextString.carField4, "Sedan"),
           ]),
           const SizedBox(height: 16),
           _buildResponsiveRow(context, [
-            _buildReadOnlyField(context, "Registration", "Abc12345"),
-            _buildReadOnlyField(context, "Transmission", "Automatic"),
+            _buildReadOnlyField(context, TextString.carField2, "Abc12345"),
+            _buildReadOnlyField(context, TextString.carField3, "Automatic"),
           ]),
         ],
       ),
@@ -476,14 +470,14 @@ class InvoicesDetailWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Rental Period", style: TTextTheme.h2Style(context)),
-          Text("Your rental period detail listed here", style: TTextTheme.bodyRegular16(context)),
+          Text(TextString.RentDetailTitlepayment, style: TTextTheme.h2Style(context)),
+          Text(TextString.RentDetailTitleSubtitle, style: TTextTheme.bodyRegular16(context)),
 
           const SizedBox(height: 24),
 
           _buildResponsiveRow(context, [
-            _buildReadOnlyField(context, "From Date", data["fromDate"] ?? "March 7, 2026"),
-            _buildReadOnlyField(context, "To Date", data["toDate"] ?? "March 14, 2026"),
+            _buildReadOnlyField(context, TextString.rentField1, data["fromDate"] ?? "March 7, 2026"),
+            _buildReadOnlyField(context, TextString.rentField2, data["toDate"] ?? "March 14, 2026"),
           ]),
 
           const SizedBox(height: 16),
@@ -492,14 +486,14 @@ class InvoicesDetailWidget extends StatelessWidget {
             children: [
               if (isSubmitted) ...[
                 Expanded(
-                  child: _buildReadOnlyField(context, "Submitted Date", data["submittedDate"] ?? "March 7, 2026"),
+                  child: _buildReadOnlyField(context, TextString.submittedDate, data["submittedDate"] ?? "March 7, 2026"),
                 ),
                 const SizedBox(width: 16),
               ],
               Expanded(
                 child: _buildReadOnlyField(
                   context,
-                  "Duration",
+                  TextString.duration,
                   data["duration"] ?? "7 days",
                 ),
               ),
@@ -644,16 +638,16 @@ class InvoicesDetailWidget extends StatelessWidget {
             text: TextSpan(
               style: TTextTheme.h2Style(context),
               children: [
-                const TextSpan(text: "Other Payments by "),
+                const TextSpan(text: TextString.otherPayment),
                 TextSpan(
-                  text: "(Adam Jhones)",
+                  text: TextString.adamJhones,
                   style: TTextTheme.h2PrimaryStyle(context),
                 ),
               ],
             ),
           ),
 
-          Text("List of all payments",
+          Text(TextString.listOfPayment,
               style: TTextTheme.bodyRegular16(context)),
 
           const SizedBox(height: 20),
@@ -675,26 +669,26 @@ class InvoicesDetailWidget extends StatelessWidget {
                     children: [
                       _cell(
                           width: 180,
-                          child: _headerCell("Invoice Id", context)),
+                          child: _headerCell(TextString.header1payment, context)),
                       _cell(
                           width: 160,
-                          child: _headerCell("Customer Name", context)),
+                          child: _headerCell(TextString.header7payment, context)),
                       _cell(
                           width: 230,
-                          child: _headerCell("Duration", context)),
+                          child: _headerCell(TextString.header2payment, context)),
                       _cell(
                           width: 190,
-                          child: _headerCell("Car Name", context)),
+                          child: _headerCell(TextString.header3payment, context)),
                       _cell(
                           width: 110,
-                          child: _headerCell("Amount", context)),
+                          child: _headerCell(TextString.header4payment, context)),
                       _cell(
                           width: 130,
-                          child: _headerCell("Status", context,
+                          child: _headerCell(TextString.header5payment, context,
                               isCenter: true, canSort: false)),
                       _cell(
                           width: 130,
-                          child: _headerCell("Action", context,
+                          child: _headerCell(TextString.header6payment, context,
                               isCenter: true, canSort: false)),
                     ],
                   ),
@@ -882,12 +876,12 @@ class InvoicesDetailWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                              "Mark payment as completed?",
+                              TextString.paymentAsCompleted,
                               style: TTextTheme.h2Style(context)
                           ),
                           const SizedBox(height: 6),
                           Text(
-                              "Are you sure you want to mark invoice In-2026-004 as completed? This action confirm that payment has verified and proceed",
+                              TextString.paymentAsCompletedSubtitle,
                               style:TTextTheme.bodyRegular16(context)
                           ),
                         ],
@@ -985,27 +979,18 @@ class InvoicesDetailWidget extends StatelessWidget {
                       child: const Text("👍", style: TextStyle(fontSize: 24)),
                     ),
                     const SizedBox(width: 16),
-                    // Text Content
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Payment Marked as Completed Successfully",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black,
-                            ),
+                           Text(
+                            TextString.markedSuccessFully,
+                            style:TTextTheme.h2Style(context),
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            "Congratulation! payment has marked as completed successfully in the system.",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey.shade600,
-                              height: 1.4,
-                            ),
+                            TextString.markedSuccessFullySubtitle,
+                            style:TTextTheme.bodyRegular16(context)
                           ),
                         ],
                       ),
@@ -1070,12 +1055,12 @@ class InvoicesDetailWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Mark payment as resubmit?",
+                              TextString.paymentAsCompletedinvoices,
                               style: TTextTheme.h2Style(context),
                             ),
                             const SizedBox(height: 6),
                             Text(
-                              "Are you sure you want to mark invoice In-2026-004 as re upload? The status will be change as re upload and notification will be sent to the customer",
+                              TextString.paymentAsCompletedSubtitleInvoices,
                               style: TTextTheme.bodyRegular16(context),
                             ),
                           ],
@@ -1184,12 +1169,12 @@ class InvoicesDetailWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                "Payment Marked as resubmit Successfully",
+                                TextString.markedSuccessFullyInvoices,
                                 style: TTextTheme.h2Style(context)
                             ),
                             const SizedBox(height: 8),
                             Text(
-                                "Congratulation! payment has marked as re upload successfully in the system.",
+                                TextString.markedSuccessFullySubtitleInvoices,
                                 style: TTextTheme.bodyRegular16(context)
                             ),
                           ],
