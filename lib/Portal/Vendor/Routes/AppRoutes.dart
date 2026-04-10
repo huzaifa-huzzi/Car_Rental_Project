@@ -4,8 +4,6 @@ import 'package:car_rental_project/Authentication/NewPassword/NewPassword.dart';
 import 'package:car_rental_project/Authentication/RecoveryShowScreen/RecoveryShowScreen.dart';
 import 'package:car_rental_project/Authentication/RecoveryShowScreen/RecoveryShowScreenTwo.dart';
 import 'package:car_rental_project/Authentication/Register/RegisterScreen.dart';
-import 'package:car_rental_project/Authentication/TwoStepVerificationOne/TwoStepVerificationOne.dart';
-import 'package:car_rental_project/Authentication/TwoStepVerificationTwo/TwoStepVerificationTwo.dart';
 import 'package:car_rental_project/Portal/Admin/Branding/Branding.dart';
 import 'package:car_rental_project/Portal/Admin/Comapnies/Comapnies.dart';
 import 'package:car_rental_project/Portal/Admin/DashboardAdmin/DashboardAdmin.dart';
@@ -49,8 +47,6 @@ class AppNavigation {
       GoRoute(path: '/signUp', builder: (context, state) => const RegisterScreen()),
       GoRoute(path: '/forgotPassword', builder: (context, state) => const ForgotPassword()),
       GoRoute(path: '/newPassword', builder: (context, state) => const NewPassword()),
-      GoRoute(path: '/twoStepVerificationOne', builder: (context, state) => const TwoStepVerificationOne()),
-      GoRoute(path: '/twoStepVerificationTwo', builder: (context, state) => const TwoStepVerificationTwo()),
       GoRoute(path: '/authSuccess', builder: (context, state) => const RecoveryShowScreenOne()),
       GoRoute(path: '/authSuccess2', builder: (context, state) => RecoveryShowScreenTwo()),
 

@@ -107,7 +107,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                          PrimaryBtnOfLogin(
                           text:"Register",
                           onTap: (){
-                            context.push('/twoStepVerificationTwo');
+                            context.push('/authSuccess2');
                           },
                           width: double.infinity,
                           height: 50,

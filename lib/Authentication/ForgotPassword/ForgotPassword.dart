@@ -95,7 +95,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         PrimaryBtnOfLogin(
                           text: "Send Verification Mail",
                           onTap:(){
-                            context.push('/twoStepVerificationOne');
+                            context.push('/newPassword');
                           },
                           width: double.infinity,
                           height: 50,
