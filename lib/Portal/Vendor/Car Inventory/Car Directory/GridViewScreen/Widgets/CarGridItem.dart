@@ -1,3 +1,4 @@
+import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/AlertDialogs.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:flutter/material.dart';
@@ -342,36 +343,82 @@ class CarGridItem extends StatelessWidget {
 
    // Action button widget
   Widget _buildActions(BuildContext context) {
-    final padding = AppSizes.padding(context) * (AppSizes.isMobile(context) ? 0.4 : 0.75);
+    final padding = AppSizes.padding(context) *
+        (AppSizes.isMobile(context) ? 0.4 : 0.75);
 
     return Padding(
       padding: EdgeInsets.all(padding),
-      child: LayoutBuilder(
-          builder: (context, bConstraints) {
-            double btnHeight = bConstraints.maxWidth < 150 ? 29 : 35;
-            return Row(
-              children: [
-                Expanded(
-                  child: AddButton(
-                    text: 'View',
-                    onTap: onView ?? () => context.push('/cardetails', extra: {"hideMobileAppBar": true}),
-                    height: btnHeight,
-                  ),
+      child: LayoutBuilder(builder: (context, bConstraints) {
+        double btnHeight = bConstraints.maxWidth < 150 ? 29 : 35;
+
+        return Row(
+          children: [
+            Expanded(
+              child: AddButton(
+                text: 'View',
+                onTap: onView ??
+                        () => context.push('/cardetails',
+                        extra: {"hideMobileAppBar": true}),
+                height: btnHeight,
+              ),
+            ),
+            const SizedBox(width: 6),
+            PopupMenuButton<String>(
+              offset: const Offset(0, 40),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              color: Colors.white,
+
+              onSelected: (value) {
+                if (value == "edit") {
+                  context.push('/editCar');
+                } else if (value == "delete") {
+                  showDialog(
+                    context: context,
+                    builder: (context) => ResponsiveDeleteDialog(
+                      onConfirm: () {
+                        Navigator.pop(context);
+                      },
+                      onCancel: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  );
+                }
+              },
+
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: "edit",
+                  child: Text("Edit",
+                      style: TTextTheme.bodyRegular14(context)),
                 ),
-                const SizedBox(width: 6),
-                Container(
-                  height: btnHeight,
-                  width: btnHeight,
-                  decoration: BoxDecoration(
-                    color: AppColors.backgroundOfScreenColor,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Icon(Icons.more_horiz, color: AppColors.blackColor, size: btnHeight * 0.5),
+                const PopupMenuDivider(),
+                PopupMenuItem(
+                  value: "delete",
+                  child: Text("Delete",
+                      style: TTextTheme.bodyRegular14(context)),
                 ),
               ],
-            );
-          }
-      ),
+
+              child: Container(
+                height: btnHeight,
+                width: btnHeight,
+                decoration: BoxDecoration(
+                  color: AppColors.backgroundOfScreenColor,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Icon(
+                  Icons.more_horiz,
+                  color: AppColors.blackColor,
+                  size: btnHeight * 0.5,
+                ),
+              ),
+            ),
+          ],
+        );
+      }),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/CustomCalendarCar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -163,6 +164,7 @@ class CarInventoryController extends GetxController {
   final valueController = TextEditingController();
   final weeklyRentController = TextEditingController();
   var openedDropdown = "".obs;
+  var isDateDropOpen = false.obs;
 
   RxList<Rx<DocumentHolder?>> selectedDocuments = <Rx<DocumentHolder?>>[].obs;
   RxList<TextEditingController> documentNameControllers = <TextEditingController>[].obs;
@@ -182,6 +184,106 @@ class CarInventoryController extends GetxController {
     } else {
       Get.snackbar("Limit Reached", "You can only add a maximum of $maxDocuments documents.");
     }
+  }
+
+
+  final LayerLink carYearLink = LayerLink();
+  final TextEditingController selectedYearCarController = TextEditingController();
+  var selectedCarYear = "".obs;
+  final GlobalKey carYearKey = GlobalKey();
+
+  OverlayEntry? calendarOverlay;
+
+  void toggleCalendar(BuildContext context, LayerLink link, TextEditingController targetController) {
+    if (calendarOverlay != null) {
+      removeCalendar();
+    } else {
+      calendarOverlay = _createCalendarOverlay(context, link, targetController);
+      Overlay.of(context).insert(calendarOverlay!);
+      isDateDropOpen.value = true;
+    }
+  }
+
+  void removeCalendar() {
+    calendarOverlay?.remove();
+    calendarOverlay = null;
+    isDateDropOpen.value = false;
+  }
+
+
+  OverlayEntry _createCalendarOverlay(
+      BuildContext context,
+      LayerLink link,
+      TextEditingController targetController,
+      ) {
+    final screenSize = MediaQuery.of(context).size;
+    final renderBox = context.findRenderObject() as RenderBox;
+    final position = renderBox.localToGlobal(Offset.zero);
+
+    double overlayWidth;
+    if (screenSize.width < 400) {
+      overlayWidth = screenSize.width * 0.9;
+    } else if (screenSize.width < 600) {
+      overlayWidth = 260;
+    } else if (screenSize.width < 1000) {
+      overlayWidth = 280;
+    } else {
+      overlayWidth = 300;
+    }
+    double dx = 0;
+    if (position.dx + overlayWidth > screenSize.width) {
+      dx = screenSize.width - (position.dx + overlayWidth) - 10;
+    }
+    if (position.dx + dx < 10) {
+      dx = -position.dx + 10;
+    }
+    double dy = 6;
+    double estimatedHeight = 320;
+
+    if (position.dy + estimatedHeight > screenSize.height) {
+      dy = -estimatedHeight - 10;
+    }
+
+    return OverlayEntry(
+      builder: (context) => Stack(
+        children: [
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: removeCalendar,
+              child: Container(color: Colors.transparent),
+            ),
+          ),
+          CompositedTransformFollower(
+            link: link,
+            showWhenUnlinked: false,
+            targetAnchor: Alignment.bottomLeft,
+            followerAnchor: dy < 0
+                ? Alignment.bottomLeft
+                : Alignment.topLeft,
+
+            offset: Offset(dx, dy),
+
+            child: Material(
+              elevation: 10,
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white,
+              child: SizedBox(
+                width: overlayWidth,
+                child: CustomCalendarCar(
+                  width: overlayWidth,
+                  onCancel: removeCalendar,
+                  onDateSelected: (date) {
+                    selectedCarYear.value = "${date.year}";
+                    targetController.text = "${date.year}";
+                    removeCalendar();
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   void removeDocumentSlot(int index) {

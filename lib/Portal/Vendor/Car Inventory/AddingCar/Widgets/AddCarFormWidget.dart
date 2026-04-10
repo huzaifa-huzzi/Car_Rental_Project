@@ -18,13 +18,14 @@ class AddCarFormWidget extends StatelessWidget {
 
   final CarInventoryController controller = Get.find<CarInventoryController>();
 
+
   @override
   Widget build(BuildContext context) {
     final isMobile = AppSizes.isMobile(context);
 
     return Center(
       child: Container(
-        width: 800,
+        width:1000,
         margin: EdgeInsets.all(AppSizes.padding(context)),
         padding: EdgeInsets.all(AppSizes.padding(context)),
         decoration: BoxDecoration(
@@ -53,7 +54,18 @@ class AddCarFormWidget extends StatelessWidget {
               _buildResponsiveGrid(context, [
                 _buildDropdown(context, "Car Make", ["Toyota", "Honda"], controller.selectedBrand, id: 'make'),
                 _buildDropdown(context, "Car Model", ["Corolla", "Civic"], controller.selectedModel, id: 'model'),
-                _buildDropdown(context, "Car Year", ["2023", "2024"], controller.selectedYear, id: 'year'),
+                CompositedTransformTarget(
+                  link: controller.carYearLink,
+                  key: controller.carYearKey,
+                  child: _buildCalendarField(
+                    context,
+                    "Car Year",
+                    controller.selectedYearCarController,
+                    onTap: () {
+                      controller.toggleCalendar(context, controller.carYearLink, controller.selectedYearCarController);
+                    },
+                  ),
+                ),
                 _buildTextField(context, "Car Registration Number", controller.regController, hint: "Write Registration Number..."),
                 _buildTextField(context, "VIN Number", controller.vinController, hint: "Write VIN Number...."),
               ]),
@@ -421,6 +433,42 @@ class AddCarFormWidget extends StatelessWidget {
   }
 
 
+   // Calendar Field
+  Widget _buildCalendarField(BuildContext context, String label, TextEditingController textController, {required VoidCallback onTap}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: TTextTheme.titleThree(context)),
+        const SizedBox(height: 8),
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+            decoration: BoxDecoration(
+              color: AppColors.secondaryColor,
+              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Obx(() => Text(
+                  controller.selectedCarYear.value.isEmpty
+                      ? "Select Year"
+                      : controller.selectedCarYear.value,
+                  style: TTextTheme.pOne(context)
+                )),
+                const Icon(
+                  Icons.calendar_month_outlined,
+                  color: AppColors.quadrantalTextColor,
+                  size: 20,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
 
 
