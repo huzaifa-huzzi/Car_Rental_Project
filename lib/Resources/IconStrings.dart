@@ -1,11 +1,12 @@
 
 
 class IconString {
-    /// Logo
+    /// Vendor
+    // Logo
   static const String  logo = 'assets/icons/Logo.png';
   static const String  symbol = 'assets/icons/symbol.png';
 
-  /// Universal Icons ( used in whole project)
+  // Universal Icons ( used in whole project)
   static const String  dropdownIcon = 'assets/icons/dropdownIcon.png';
   static const String  upsideDropdownIcon = 'assets/icons/upsidedropdownICon.png';
   static const String  addIcon = 'assets/icons/AddIcon.png';
@@ -14,7 +15,7 @@ class IconString {
   static const String  zoomIcon = 'assets/icons/ZoomIcon.png';
   static const String  aboveDropdown = 'assets/icons/aboveDropdown.png';
 
-    /// SideBar Icons
+    // SideBar Icons
   static const String  dashboardIcon = 'assets/icons/dashboardIcon.png';
   static const String  carInventoryIcon = 'assets/icons/CarInventory.png';
   static const String  customerIcon = 'assets/icons/Customer.png';
@@ -29,12 +30,12 @@ class IconString {
   static const String  staffIcon = 'assets/icons/StaffIcon.png';
   static const String  tandCIcon = 'assets/icons/T&C.png';
 
-  /// AppBar Icons
+  // AppBar Icons
   static const String  searchIcon = 'assets/icons/Search.png';
   static const String  settingIcon = 'assets/icons/Settings.png';
   static const String  notificationIcon = 'assets/icons/NotificationIcon.png';
 
-  /// Car Inventory Icon
+  // Car Inventory Icon
   static const String  filterIcon = 'assets/icons/filterIcon.png';
   static const String  previewOne = 'assets/icons/Preview-1.png';
   static const String  previewTwo = 'assets/icons/Preview-2.png';
@@ -67,7 +68,7 @@ class IconString {
   static const String  editIcon2 = 'assets/icons/Edit-Icon2.png';
   static const String  carNameIcon = 'assets/icons/Car Name.png';
 
-     /// Customers Icon
+     // Customers Icon
   static const String  licenseIcon = 'assets/icons/LicenseIcon.png';
   static const String  birthIcon = 'assets/icons/birth.png';
   static const String  callIcon = 'assets/icons/call.png';
@@ -117,15 +118,15 @@ class IconString {
   static const String  viewIcon = 'assets/icons/ViewIcon.png';
   static const String  enableIcon = 'assets/icons/EnableIcon.png';
 
-      /// Authentication
+      // Authentication
   static const String  googleIcon = 'assets/icons/GoogleIcon.png';
   static const String  appleIcon = 'assets/icons/AppleIcon.png';
-   /// Staff
+   // Staff
   static const String  staffNameICon = 'assets/icons/StaffName.png';
   static const String  staffContactIcon = 'assets/icons/StaffContect.png';
   static const String  staffDetailIcon = 'assets/icons/StaffDetail.png';
   static const String  staffAccessIcon = 'assets/icons/StaffAccess.png';
-  /// Payment
+  // Payment
   static const String  paymentIconModule = 'assets/icons/PaymentIcon.png';
   static const String  paymentIconBlack = 'assets/icons/PaymentIconBlack.png';
   static const String  actionRequiredIcon = 'assets/icons/ActionRequiredIcon.png';
@@ -138,5 +139,15 @@ class IconString {
   static const String  receiptIcon = 'assets/icons/ReceiptIcon.png';
   static const String  invoicesIcon = 'assets/icons/InvoicesIconIncreased.png';
 
+
+     /// Admin
+    // Sidebar
+  static const String  dashboardAdmin = 'assets/icons/DashboardAdmin.png';
+  static const String  brandingIconAdmin = 'assets/icons/BrandingAdmin.png';
+  static const String  companiesIconAdmin = 'assets/icons/CompaniesAdmin.png';
+  static const String  helpCenterIconAdmin = 'assets/icons/HelpCenter.png';
+  static const String  reportsIconAdmin = 'assets/icons/ReportsAdmin.png';
+  static const String  subscriptionIconAdmin = 'assets/icons/SubscriptionAdmin.png';
+  static const String  userRoleAdmin = 'assets/icons/UserRoleAdmin.png';
 
 }

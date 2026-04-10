@@ -286,7 +286,7 @@ class AddCarFormWidget extends StatelessWidget {
                 child: TextField(
                   controller: controller,
                   cursorColor: AppColors.blackColor,
-                  keyboardType: prefix != null ? TextInputType.number : TextInputType.text,
+                  keyboardType:  TextInputType.number ,
                   style: TTextTheme.insidetextfieldWrittenText(context),
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();

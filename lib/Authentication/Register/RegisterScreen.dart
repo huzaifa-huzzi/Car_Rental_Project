@@ -83,28 +83,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         _buildTextField(hint: "hasan", textController: controller.nameRegisterController),
                         const SizedBox(height: 18),
 
+                        _buildLabel(TextString.companyName),
+                        _buildTextField(hint: "SoftSnip", textController: controller.nameRegisterController),
+                        const SizedBox(height: 18),
+
                         _buildLabel(TextString.registerEmail),
                         _buildTextField(hint: "sellostore@company.com", textController: controller.emailRegisterController),
                         const SizedBox(height: 18),
 
                         _buildLabel(TextString.registerPassword),
                         Obx(() => _buildTextField(
-                          hint: "***********",
-                          isPassword: true,
-                          textController: controller.passwordRegisterController,
-                          obscureText: controller.obscureRegisterPassword.value,
-                          onSuffixTap: controller.togglePasswordVisibility,
-                        )),
-                        const SizedBox(height: 18),
-
-                        _buildLabel(TextString.registerConfirmPassword),
-                        Obx(() => _buildTextField(
                           hint: "5ellostore.",
                           isPassword: true,
                           fillColor: AppColors.secondaryColor,
-                          textController: controller.confirmRegisterPasswordController,
-                          obscureText: controller.obscureConfirmRegisterPassword.value,
-                          onSuffixTap: controller.toggleConfirmPasswordVisibility2,
+                          textController: controller.passwordRegisterController,
+                          obscureText: controller.obscureRegisterPassword.value,
+                          onSuffixTap: controller.togglePasswordVisibility2,
                         )),
 
                         const SizedBox(height: 25),

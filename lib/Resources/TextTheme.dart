@@ -95,6 +95,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 10, 11),fontWeight: FontWeight.w500,color: Colors.white);
   }
 
+  static TextStyle h16Style(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 14),fontWeight: FontWeight.w500,color: Colors.white);
+  }
+
   static TextStyle hPending(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w600,color: Colors.white);
   }

@@ -4,14 +4,12 @@ import 'package:get/get.dart';
 class LoginController extends GetxController {
   // Register Screen
   final nameRegisterController = TextEditingController();
+  final companyNameController = TextEditingController();
   final emailRegisterController = TextEditingController();
   final passwordRegisterController = TextEditingController();
-  final confirmRegisterPasswordController = TextEditingController();
   var obscureRegisterPassword = true.obs;
-  var obscureConfirmRegisterPassword = true.obs;
 
   void togglePasswordVisibility2() => obscureRegisterPassword.value = !obscureRegisterPassword.value;
-  void toggleConfirmPasswordVisibility2() => obscureConfirmRegisterPassword.value = !obscureConfirmRegisterPassword.value;
 
    // Authentication Screen
   final emailController = TextEditingController();
@@ -63,7 +61,6 @@ class LoginController extends GetxController {
     nameRegisterController.dispose();
     emailRegisterController.dispose();
     passwordRegisterController.dispose();
-    confirmRegisterPasswordController.dispose();
     super.onClose();
   }
 }

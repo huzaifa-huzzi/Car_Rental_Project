@@ -1,15 +1,16 @@
-import 'package:car_rental_project/Portal/Vendor/SideScreen/Widget/EmailVerificationDialog.dart';
+
+
+import 'package:car_rental_project/Portal/Admin/SidebarAdmin/SidebarController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:go_router/go_router.dart';
-import '../SideBarController.dart' show SideBarController;
 
-class SidebarComponents {
+class SidebarComponentAdmin {
 
   /// Helper: Close drawer if mobile
-  static void closeDrawerIfMobile(
+  static void closeDrawerIfMobileAdmin(
       BuildContext context,
       GlobalKey<ScaffoldState> scaffoldKey,
       ) {
@@ -20,71 +21,11 @@ class SidebarComponents {
     }
   }
 
-  /// Email Verification
-  static Widget emailNotVerifiedCard(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 20),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.primaryColor, width: 1),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppColors.backgroundOfPickupsWidget,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Icon(
-              Icons.report_gmailerrorred_rounded,
-              color: AppColors.primaryColor,
-              size: 24,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            "Email not verified?",
-            style: TTextTheme.h6Style(context),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            height: 40,
-            child: ElevatedButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => const EmailVerificationDialog(),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                elevation: 0,
-              ),
-              child: Text(
-                "Verify Now",
-                style: TTextTheme.h16Style(context)
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
 
   /// Menu item
-  static Widget menuItem(
+  static Widget menuItemAdmin(
       BuildContext context,
-      SideBarController controller, {
+      SideBarAdminController controller, {
         required String iconPath,
         required String title,
         Widget? trailing,
@@ -93,7 +34,7 @@ class SidebarComponents {
         required GlobalKey<ScaffoldState> scaffoldKey,
       }) {
 
-    Widget buildItemContent(bool active) {
+    Widget buildItemContentAdmin(bool active) {
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -130,18 +71,18 @@ class SidebarComponents {
       onTap: () {
         controller.selectMenu(title);
         onTap(title);
-        closeDrawerIfMobile(context, scaffoldKey);
+        closeDrawerIfMobileAdmin(context, scaffoldKey);
       },
       child: isSelected != null
-          ? buildItemContent(isSelected)
-          : Obx(() => buildItemContent(controller.selected.value == title)),
+          ? buildItemContentAdmin(isSelected)
+          : Obx(() => buildItemContentAdmin(controller.selected.value == title)),
     );
   }
 
-   /// Expandable Item
+  /// Expandable Item
   static Widget expandableMenuItem(
       BuildContext context,
-      SideBarController controller, {
+      SideBarAdminController controller, {
         required String iconPath,
         required String title,
         required String route,
@@ -160,7 +101,7 @@ class SidebarComponents {
             onTap: () {
               controller.selectMenu(title);
               context.go(route, extra: extra);
-              closeDrawerIfMobile(context, scaffoldKey);
+              closeDrawerIfMobileAdmin(context, scaffoldKey);
             },
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
@@ -223,7 +164,7 @@ class SidebarComponents {
                             controller.selectSubItem(title, sub['title']!);
                             context.go(sub['route']!, extra: sub['extra']);
 
-                            closeDrawerIfMobile(context, scaffoldKey);
+                            closeDrawerIfMobileAdmin(context, scaffoldKey);
                           },
                           child: Container(
                             margin: const EdgeInsets.only(right: 14, top: 4, bottom: 4),

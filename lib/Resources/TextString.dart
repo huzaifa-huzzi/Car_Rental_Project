@@ -1,5 +1,6 @@
 
 class TextString {
+   /// Vendor Module
 
   /// Car Inventory Module
     // Adding Car Screen
@@ -558,7 +559,8 @@ class TextString {
   // Register Screen
   static const String  registerLogin  =   'Create An Account';
   static const String  registerSubtitle  =   'Join now to streamline your experience from day one.';
-  static const String  registerName =   'Name';
+  static const String  registerName =   'Full Name';
+  static const String  companyName =   'Company Name';
   static const String  registerEmail =   'Email';
   static const String  registerPassword =   'Password';
   static const String  registerConfirmPassword =   'Confirm Password';
@@ -763,5 +765,6 @@ class TextString {
   static const String  markedSuccessFullySubtitleInvoices="Congratulation! payment has marked as re upload successfully in the system.";
 
 
+      /// Admin Module
 
 }

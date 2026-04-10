@@ -48,122 +48,106 @@ class SidebarScreen extends StatelessWidget {
 
 
     /// Sidebar content
+    /// Sidebar content
     Widget sidebarContent({bool showLogo = true}) {
       return SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (showLogo)
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppSizes.horizontalPadding(context),
-                  vertical: AppSizes.verticalPadding(context) / 2,
+        child: SingleChildScrollView( // <--- Poori sidebar ab scroll hogi
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min, // <--- Content ke mutabiq size lega
+            children: [
+              if (showLogo)
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppSizes.horizontalPadding(context),
+                    vertical: AppSizes.verticalPadding(context) / 2,
+                  ),
+                  child: Row(
+                    children: [
+                      Image.asset(IconString.symbol, width: isMobile ? 30 : 36,
+                          height: isMobile ? 32 : 38),
+                      SizedBox(width: AppSizes.horizontalPadding(context) / 2),
+                      Text("Softsnip", style: TTextTheme.h6Style(context)),
+                    ],
+                  ),
                 ),
-                child: Row(
-                  children: [
-                    Image.asset(IconString.symbol, width: isMobile ? 30 : 36,
-                        height: isMobile ? 32 : 38),
-                    SizedBox(width: AppSizes.horizontalPadding(context) / 2),
-                    Text("Softsnip", style: TTextTheme.h6Style(context)),
-                  ],
-                ),
+
+              SizedBox(height: AppSizes.verticalPadding(context) / 2),
+              SidebarComponents.menuItem(
+                context, controller,
+                iconPath: IconString.dashboardIcon,
+                title: TextString.dashboardTitle,
+                onTap: (val) => context.go('/dashboard'),
+                scaffoldKey: _scaffoldKey,
               ),
-            SizedBox(height: AppSizes.verticalPadding(context) / 2),
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                children: [
-
-                  // Dashboard
-                  SidebarComponents.menuItem(
-                    context, controller,
-                    iconPath: IconString.dashboardIcon,
-                    title: TextString.dashboardTitle,
-                    onTap: (val) => context.go('/dashboard'),
-                    scaffoldKey: _scaffoldKey,
-                  ),
-                  // Car Inventory
-                  SidebarComponents.menuItem(
-                    context, controller,
-                    iconPath: IconString.carInventoryIcon,
-                    title: TextString.carInventoryTitle,
-                    onTap: (val) => context.go('/carInventory'),
-                    scaffoldKey: _scaffoldKey,
-                  ),
-
-                  // Customers
-                  SidebarComponents.menuItem(
-                    context, controller,
-                    iconPath: IconString.customerIcon,
-                    title: TextString.customersTitle,
-                    onTap: (val) => context.go('/customers'),
-                    scaffoldKey: _scaffoldKey,
-                  ),
-
-                  //  Pickup Car
-                  SidebarComponents.expandableMenuItem(
-                    context,
-                    controller,
-                    iconPath: IconString.agreementIcon,
-                    title: "Pickup Car",
-                    route: '/pickupcar',
-                    subItems: [
-
-                      {'title': 'Pickup T&C', 'route': '/pickupT&C','icon': IconString.tandCIcon,'extra': {'hideMobileAppBar': true},},
-                    ],
-                    scaffoldKey: _scaffoldKey,
-                  ),
-
-                  //  Dropoff Car
-                  SidebarComponents.expandableMenuItem(
-                    context,
-                    controller,
-                    iconPath: IconString.returnCarIcon,
-                    title: "Dropoff Car",
-                    route: '/dropoffCar',
-                    subItems: [
-
-                      {'title': 'DropOff T&C', 'route': '/dropOffT&C','icon': IconString.tandCIcon,'extra': {'hideMobileAppBar': true},},
-                    ],
-                    scaffoldKey: _scaffoldKey,
-                  ),
-                    // Payments
-                  SidebarComponents.menuItem(
-                    context, controller,
-                    iconPath: IconString.paymentIconModule,
-                    title: "Payment",
-                    onTap: (val) => context.go('/Payment'),
-                    scaffoldKey: _scaffoldKey,
-                  ),
-                  // Staff
-                  SidebarComponents.menuItem(
-                    context, controller,
-                    iconPath: IconString.staffIcon,
-                    title: TextString.staffTitle,
-                    onTap: (val) => context.go('/staff'),
-                    scaffoldKey: _scaffoldKey,
-                  ),
-                  /* SidebarComponents.expenseMenuItem(context, controller, onTap: onTap, scaffoldKey: _scaffoldKey),
-                  SidebarComponents.menuItem(context, controller, iconPath: IconString.maintenanceIcon, title: TextString.maintenanceTitle, onTap: onTap, scaffoldKey: _scaffoldKey),
-                  SidebarComponents.menuItem(context, controller, iconPath: IconString.incomeIcon, title: TextString.incomeTitle,
-                      trailing: SidebarComponents.redDotWithNumber(controller.incomeRedDot.value, context), onTap: onTap, scaffoldKey: _scaffoldKey),*/
+              SidebarComponents.menuItem(
+                context, controller,
+                iconPath: IconString.carInventoryIcon,
+                title: TextString.carInventoryTitle,
+                onTap: (val) => context.go('/carInventory'),
+                scaffoldKey: _scaffoldKey,
+              ),
+              SidebarComponents.menuItem(
+                context, controller,
+                iconPath: IconString.customerIcon,
+                title: TextString.customersTitle,
+                onTap: (val) => context.go('/customers'),
+                scaffoldKey: _scaffoldKey,
+              ),
+              SidebarComponents.expandableMenuItem(
+                context, controller,
+                iconPath: IconString.agreementIcon,
+                title: "Pickup Car",
+                route: '/pickupcar',
+                subItems: [
+                  {'title': 'Pickup T&C', 'route': '/pickupT&C','icon': IconString.tandCIcon,'extra': {'hideMobileAppBar': true},},
                 ],
+                scaffoldKey: _scaffoldKey,
               ),
-            ),
-            SizedBox(height: 30,),
-            Padding(
-              padding: EdgeInsets.only(
-                  bottom: AppSizes.verticalPadding(context) * 0.7),
-              child: SidebarComponents.menuItem(
-                  context, controller, iconPath: IconString.logoutIcon,
-                  title: TextString.logoutTitle,
-                  onTap: (val) {
-                    context.go('/login');
-                  },
-                  scaffoldKey: _scaffoldKey),
-            ),
-          ],
+              SidebarComponents.expandableMenuItem(
+                context, controller,
+                iconPath: IconString.returnCarIcon,
+                title: "Dropoff Car",
+                route: '/dropoffCar',
+                subItems: [
+                  {'title': 'DropOff T&C', 'route': '/dropOffT&C','icon': IconString.tandCIcon,'extra': {'hideMobileAppBar': true},},
+                ],
+                scaffoldKey: _scaffoldKey,
+              ),
+              SidebarComponents.menuItem(
+                context, controller,
+                iconPath: IconString.paymentIconModule,
+                title: "Payment",
+                onTap: (val) => context.go('/Payment'),
+                scaffoldKey: _scaffoldKey,
+              ),
+              SidebarComponents.menuItem(
+                context, controller,
+                iconPath: IconString.staffIcon,
+                title: TextString.staffTitle,
+                onTap: (val) => context.go('/staff'),
+                scaffoldKey: _scaffoldKey,
+              ),
+              const SizedBox(height: 40),
+
+              SidebarComponents.emailNotVerifiedCard(context),
+
+              const SizedBox(height: 10),
+
+
+              Padding(
+                padding: EdgeInsets.only(
+                    bottom: AppSizes.verticalPadding(context) * 0.7),
+                child: SidebarComponents.menuItem(
+                    context, controller, iconPath: IconString.logoutIcon,
+                    title: TextString.logoutTitle,
+                    onTap: (val) {
+                      context.go('/login');
+                    },
+                    scaffoldKey: _scaffoldKey),
+              ),
+            ],
+          ),
         ),
       );
     }
