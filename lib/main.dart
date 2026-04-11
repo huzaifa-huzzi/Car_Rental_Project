@@ -1,6 +1,6 @@
-import 'package:car_rental_project/Portal/Vendor/Routes/AppRoutes.dart';
 import 'package:car_rental_project/Portal/Vendor/SideScreen/SidebarBinding.dart';
 import 'package:car_rental_project/Resources/Theme.dart';
+import 'package:car_rental_project/Routes/AppRoutes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' show FlutterQuillLocalizations;
 import 'package:get/get.dart';
@@ -33,7 +33,6 @@ class MyApp extends StatelessWidget {
 
       /// ROUTER
       initialBinding: SidebarBinding(),
-
       themeMode: ThemeMode.light,
       theme: TAppTheme.lightTheme(context),
       darkTheme: ThemeData(),

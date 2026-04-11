@@ -142,12 +142,12 @@ class IconString {
 
      /// Admin
     // Sidebar
-  static const String  dashboardAdmin = 'assets/icons/DashboardAdmin.png';
-  static const String  brandingIconAdmin = 'assets/icons/BrandingAdmin.png';
-  static const String  companiesIconAdmin = 'assets/icons/CompaniesAdmin.png';
-  static const String  helpCenterIconAdmin = 'assets/icons/HelpCenter.png';
-  static const String  reportsIconAdmin = 'assets/icons/ReportsAdmin.png';
-  static const String  subscriptionIconAdmin = 'assets/icons/SubscriptionAdmin.png';
-  static const String  userRoleAdmin = 'assets/icons/UserRoleAdmin.png';
+  static const String  dashboardAdmin = 'assets/icons/Admin/DasboardAdmin.png';
+  static const String  brandingIconAdmin = 'assets/icons/Admin/BrandingAdmin.png';
+  static const String  companiesIconAdmin = 'assets/icons/Admin/CompaniesAdmin.png';
+  static const String  helpCenterIconAdmin = 'assets/icons/Admin/HelpCenter.png';
+  static const String  reportsIconAdmin = 'assets/icons/Admin/ReportsAdmin.png';
+  static const String  subscriptionIconAdmin = 'assets/icons/Admin/SubscriptionAdmin.png';
+  static const String  userRoleAdmin = 'assets/icons/Admin/UserRoleAdmin.png';
 
 }
