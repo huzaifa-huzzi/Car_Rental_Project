@@ -52,20 +52,7 @@ class AddCarFormWidget extends StatelessWidget {
               _buildSectionTitle(context, "Car Identification"),
               const SizedBox(height: 15),
               _buildResponsiveGrid(context, [
-                _buildDropdown(context, "Car Make", ["Toyota", "Honda"], controller.selectedBrand, id: 'make'),
-                _buildDropdown(context, "Car Model", ["Corolla", "Civic"], controller.selectedModel, id: 'model'),
-                CompositedTransformTarget(
-                  link: controller.carYearLink,
-                  key: controller.carYearKey,
-                  child: _buildCalendarField(
-                    context,
-                    "Car Year",
-                    controller.selectedYearCarController,
-                    onTap: () {
-                      controller.toggleCalendar(context, controller.carYearLink, controller.selectedYearCarController);
-                    },
-                  ),
-                ),
+                _buildSearchCarDropdown(context, "Search Car", controller.selectedBrand, id: 'search_car'),
                 _buildTextField(context, "Car Registration Number", controller.regController, hint: "Write Registration Number..."),
                 _buildTextField(context, "VIN Number", controller.vinController, hint: "Write VIN Number...."),
               ]),
@@ -91,6 +78,8 @@ class AddCarFormWidget extends StatelessWidget {
 
 
               SizedBox(height: AppSizes.verticalPadding(context)),
+              const Divider(thickness: 0.5),
+              const SizedBox(height: 25),
 
               /// IMAGE UPLOAD
               Text(TextString.uploadImageTitle, style: TTextTheme.btnSix(context)),
@@ -325,6 +314,113 @@ class AddCarFormWidget extends StatelessWidget {
     );
   }
 
+  Widget _buildSearchCarDropdown(BuildContext context, String label, RxString selected, {required String id}) {
+    return Obx(() {
+      bool isOpen = controller.openedDropdown3.value == id;
+      List<String> items = controller.filteredCars;
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: TTextTheme.titleTwo(context)),
+          const SizedBox(height: 6),
+          LayoutBuilder(builder: (context, constraints) {
+            return PopupMenuButton<String>(
+              constraints: BoxConstraints(minWidth: constraints.maxWidth, maxWidth: constraints.maxWidth),
+              offset: const Offset(0, 48),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              color: Colors.white,
+              onOpened: () => controller.openedDropdown3.value = id,
+              onCanceled: () {
+                controller.openedDropdown3.value = "";
+                controller.searchCarText.value = "";
+              },
+              onSelected: (val) {
+                if (val != "SEARCH_FIELD") {
+                  selected.value = val;
+                  controller.openedDropdown3.value = "";
+                  controller.searchCarText.value = "";
+                }
+              },
+              child: Container(
+                height: 48,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: AppColors.secondaryColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        selected.value.isEmpty ? "Search Car..." : selected.value,
+                        style: TTextTheme.pOne(context),
+                      ),
+                    ),
+                    Image.asset(isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon, height: 18),
+                  ],
+                ),
+              ),
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem<String>(
+                    enabled: false,
+                    value: "SEARCH_FIELD",
+                    child: Container(
+                      height: 40,
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: AppColors.primaryColor),
+                      ),
+                      child: TextField(
+                        cursorColor: AppColors.blackColor,
+                        onChanged: (val) => controller.searchCarText.value = val,
+                        style: TTextTheme.titleinputTextField(context),
+                        decoration: InputDecoration(
+                          hintText: "Search",
+                          hintStyle: TTextTheme.bodyRegular14Search(context),
+                          prefixIcon: Icon(Icons.search, color: AppColors.primaryColor, size: 18),
+                          filled: true,
+                          fillColor: AppColors.backgroundOfScreenColor,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20), 
+                            borderSide: BorderSide.none, 
+                          ),
+
+                          contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                        ),
+                      ),
+                    ),
+                  ),
+                  ...items.map((car) {
+                    return PopupMenuItem<String>(
+                      value: car,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 18,
+                            height: 18,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: AppColors.primaryColor, width: 2),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Text(car, style: TTextTheme.medium14(context)),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ];
+              },
+            );
+          }),
+        ],
+      );
+    });
+  }
+
   // Status Dropdown
   Widget _buildStatusDropdown(BuildContext context, String label, List<String> items, RxString selected, {required String id}) {
     return Obx(() {
@@ -433,42 +529,6 @@ class AddCarFormWidget extends StatelessWidget {
   }
 
 
-   // Calendar Field
-  Widget _buildCalendarField(BuildContext context, String label, TextEditingController textController, {required VoidCallback onTap}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: TTextTheme.titleThree(context)),
-        const SizedBox(height: 8),
-        GestureDetector(
-          onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-            decoration: BoxDecoration(
-              color: AppColors.secondaryColor,
-              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Obx(() => Text(
-                  controller.selectedCarYear.value.isEmpty
-                      ? "Select Year"
-                      : controller.selectedCarYear.value,
-                  style: TTextTheme.pOne(context)
-                )),
-                const Icon(
-                  Icons.calendar_month_outlined,
-                  color: AppColors.quadrantalTextColor,
-                  size: 20,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
 
 

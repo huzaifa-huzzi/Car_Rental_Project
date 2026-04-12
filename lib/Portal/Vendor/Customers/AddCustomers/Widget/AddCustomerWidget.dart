@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../ReusableWidgetOfCustomers/CustomerPrimaryBtn.dart' show CustomerPrimaryBtn;
 
@@ -38,12 +39,16 @@ class AddCustomerWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
+
+
               /// CUSTOMER HEADER
               Text(TextString.addCustomerTitle, style: TTextTheme.h7Style(context)),
               SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
               Text(TextString.addCustomerSubtitle, style: TTextTheme.titleThree(context)),
               SizedBox(height: spacing/2),
               Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+              _buildStepBadges(context),
+              SizedBox(height: spacing/2),
               SizedBox(height: spacing),
 
               /// PROFILE IMAGE UPLOAD
@@ -55,12 +60,26 @@ class AddCustomerWidget extends StatelessWidget {
 
               /// BASIC INFO GRID FORM
               _buildResponsiveGrid(context, [
-                _buildTextField(context, "Customer Given Name", controller.givenNameController),
-                _buildTextField(context, "Customer Surname", controller.surnameController),
-                _buildTextField(context, "Date of Birth", controller.dobController, hint: "DD/MM/YYYY"),
-                _buildTextField(context, "Customer Contact Number", controller.contactController),
-                _buildTextField(context, "Customer Email", controller.emailController),
-                _buildTextField(context, "Customer Address", controller.addressController),
+                _buildTextField(context, " Given Name", controller.givenNameController),
+                _buildTextField(context, " Surname", controller.surnameController),
+                CompositedTransformTarget(
+                  link: controller.dobLink,
+                  child: _buildDOBField(
+                    context,
+                    "Date of Birth",
+                    controller.dobController,
+                    onTap: () {
+                      controller.toggleCalendar(
+                        context,
+                        controller.dobLink,
+                        controller.dobController,
+                      );
+                    },
+                  ),
+                ),
+                _buildTextField(context, " Contact Number", controller.contactController),
+                _buildTextField(context, " Email Address", controller.emailController),
+                _buildTextField(context, "Residential Address", controller.addressController),
               ]),
 
               SizedBox(height: spacing),
@@ -81,7 +100,22 @@ class AddCustomerWidget extends StatelessWidget {
               SizedBox(height: spacing),
               _buildResponsiveGrid(context, [
                 _buildTextField(context, "Driver License Number", controller.licenseNumberController),
-                _buildTextField(context, "License Expiry Date", controller.licenseExpiryController),
+                CompositedTransformTarget(
+                  link: controller.expiryLink,
+                  child: _buildCalendarFieldGeneric(
+                    context,
+                    "License Expiry Date",
+                    controller.licenseExpiryController,
+                    hint: "DD/MM/YYYY",
+                    onTap: () {
+                      controller.toggleCalendar(
+                        context,
+                        controller.expiryLink,
+                        controller.licenseExpiryController,
+                      );
+                    },
+                  ),
+                ),
                 _buildTextField(context, "Card Number", controller.licenseCardNumberController),
               ]),
 
@@ -103,7 +137,7 @@ class AddCustomerWidget extends StatelessWidget {
 
               Center(
                 child: SizedBox(
-                  width: 450,
+                  width: 600,
                   child: _buildCardSelectionRow(context),
                 ),
               ),
@@ -112,8 +146,28 @@ class AddCustomerWidget extends StatelessWidget {
               _buildCardForm(context),
               SizedBox(height: spacing * 2),
 
-              /// BUTTON
-              _buttonSection(context, isMobile),
+              SizedBox(height: spacing),
+
+              /// Auto Generated Fields
+              Obx(() {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (controller.isCredentialsGenerated.value) ...[
+                      Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+                      SizedBox(height: spacing),
+                      Text(TextString.autoGeneratedText, style: TTextTheme.btnSix(context)),
+                      SizedBox(height: spacing),
+                      _buildResponsiveGrid(context, [
+                        _buildReadOnlyField(context, TextString.customerGeneratedText, controller.userName.value),
+                        _buildReadOnlyField(context, TextString.customerGeneratedPassword, controller.password.value, isPassword: true),
+                      ]),
+                      SizedBox(height: spacing * 2),
+                    ],
+                    _buttonSection(context, isMobile),
+                  ],
+                );
+              }),
             ],
           ),
         ),
@@ -122,6 +176,70 @@ class AddCustomerWidget extends StatelessWidget {
   }
 
   /// ---------- Extra Widgets (Helpers) --------///
+  // Badges
+  Widget _buildStepBadges(BuildContext context) {
+    return Container(
+      width: 220,
+      padding: const EdgeInsets.symmetric(vertical: 12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildStepItem("1", "Step 1", true, context),
+          _buildStepLine(true),
+          _buildStepItem("2", "Step 2", false, context, isCurrent: true),
+        ],
+      ),
+    );
+  }
+  Widget _buildStepItem(String stepNum, String label, bool isCompleted, BuildContext context, {bool isCurrent = false}) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 24,
+          height: 24,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: isCompleted ? AppColors.primaryColor : Colors.white,
+            border: Border.all(color: AppColors.primaryColor, width: 1.5),
+          ),
+          child: Center(
+            child: isCompleted
+                ? const Icon(Icons.check, size: 14, color: Colors.white)
+                : isCurrent
+                ? Container(
+              width: 8,
+              height: 8,
+              decoration: const BoxDecoration(
+                color: AppColors.primaryColor,
+                shape: BoxShape.circle,
+              ),
+            )
+                : null,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          label,
+          style: TTextTheme.stepsText(context).copyWith(
+            color: isCompleted ? AppColors.primaryColor : AppColors.textColor,
+          ),
+        ),
+      ],
+    );
+  }
+  Widget _buildStepLine(bool isActive) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 11.0),
+        child: Container(
+          height: 1.5,
+          color: AppColors.primaryColor,
+        ),
+      ),
+    );
+  }
 
   // Profile Photo Picker Widget
   Widget _buildProfilePhotoPicker(BuildContext context,) {
@@ -282,6 +400,80 @@ class AddCustomerWidget extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+
+   // DOB Field
+  Widget _buildDOBField(BuildContext context, String label, TextEditingController textController, {required VoidCallback onTap}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: TTextTheme.titleThree(context)),
+        const SizedBox(height: 8),
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+            decoration: BoxDecoration(
+              color: AppColors.secondaryColor,
+              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ValueListenableBuilder<TextEditingValue>(
+                  valueListenable: textController,
+                  builder: (context, value, child) {
+                    return Text(
+                      value.text.isEmpty ? "DD/MM/YYYY" : value.text,
+                      style: TTextTheme.pOne(context)
+                    );
+                  },
+                ),
+                Icon(Icons.event, color: AppColors.quadrantalTextColor, size: 20),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+   // Expiry Date
+  Widget _buildCalendarFieldGeneric(BuildContext context, String label, TextEditingController textController,
+      {required VoidCallback onTap, String hint = "Select Date"}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: TTextTheme.titleThree(context)),
+        const SizedBox(height: 8),
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+            decoration: BoxDecoration(
+              color: AppColors.secondaryColor,
+              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ValueListenableBuilder<TextEditingValue>(
+                  valueListenable: textController,
+                  builder: (context, value, child) {
+                    return Text(
+                      value.text.isEmpty ? hint : value.text,
+                      style: TTextTheme.pOne(context)
+                    );
+                  },
+                ),
+                Icon(Icons.event, color: AppColors.quadrantalTextColor, size: 18),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -549,7 +741,7 @@ class AddCustomerWidget extends StatelessWidget {
   Widget _cardTab(BuildContext context, String label, bool isSelected) {
     return Container(
       margin: const EdgeInsets.only(right: 12),
-      width: 120,
+      width: 200,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -587,31 +779,122 @@ class AddCustomerWidget extends StatelessWidget {
 
   //  Card Form Widget
   Widget _buildCardForm(BuildContext context) {
+    final isWeb = MediaQuery.of(context).size.width > 800;
+
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 400),
+        constraints: BoxConstraints(
+          maxWidth: isWeb ? 900 : 400,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildShadowTextField(context,TextString.addCustomerCardNumber , controller.ccNumberController, hint: "1234 1234 1234 1234", isCreditCard: true),
-            const SizedBox(height: 16),
-            _buildShadowTextField(context,TextString.addCustomerCardHolerName , controller.ccHolderController, hint: "Softsnip"),
-            const SizedBox(height: 16),
+            isWeb
+                ? Row(
+              children: [
+                Expanded(
+                  child: _buildShadowTextField(
+                    context,
+                    TextString.addCustomerCardNumber,
+                    controller.ccNumberController,
+                    hint: "1234 1234 1234 1234",
+                    isCreditCard: true,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _buildShadowTextField(
+                    context,
+                    TextString.addCustomerCardHolerName,
+                    controller.ccHolderController,
+                    hint: "Softsnip",
+                  ),
+                ),
+              ],
+            )
+                : Column(
+              children: [
+                _buildShadowTextField(
+                  context,
+                  TextString.addCustomerCardNumber,
+                  controller.ccNumberController,
+                  hint: "1234 1234 1234 1234",
+                  isCreditCard: true,
+                ),
+                const SizedBox(height: 16),
+                _buildShadowTextField(
+                  context,
+                  TextString.addCustomerCardHolerName,
+                  controller.ccHolderController,
+                  hint: "Softsnip",
+                ),
+              ],
+            ),
 
+            const SizedBox(height: 16),
             LayoutBuilder(builder: (context, constraints) {
-              double itemWidth = constraints.maxWidth < 350 ? constraints.maxWidth : (constraints.maxWidth - 16) / 2;
-              return Wrap(
-                spacing: 16,
-                runSpacing: 16,
-                children: [
-                  SizedBox(width: itemWidth, child: _buildShadowTextField(context,TextString.addCustomerCardExpiry , controller.ccExpiryController, hint: "MM / YY", isCompact: true)),
-                  SizedBox(width: itemWidth, child: _buildShadowTextField(context,TextString.addCustomerCvc , controller.ccCvcController, hint: "CVC", isCompact: true)),
-                ],
-              );
+              if (constraints.maxWidth > 600) {
+                return Row(
+                  children: [
+                    Expanded(
+                      child: _buildShadowTextField(
+                        context,
+                        TextString.addCustomerCardExpiry,
+                        controller.ccExpiryController,
+                        hint: "MM / YY",
+                        isCompact: true,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: _buildShadowTextField(
+                        context,
+                        TextString.addCustomerCvc,
+                        controller.ccCvcController,
+                        hint: "CVC",
+                        isCompact: true,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: _buildShadowTextField(
+                        context,
+                        TextString.addCustomerCountry,
+                        controller.ccCountryController,
+                        hint: "United States",
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return Column(
+                  children: [
+                    _buildShadowTextField(
+                      context,
+                      TextString.addCustomerCardExpiry,
+                      controller.ccExpiryController,
+                      hint: "MM / YY",
+                      isCompact: true,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildShadowTextField(
+                      context,
+                      TextString.addCustomerCvc,
+                      controller.ccCvcController,
+                      hint: "CVC",
+                      isCompact: true,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildShadowTextField(
+                      context,
+                      TextString.addCustomerCountry,
+                      controller.ccCountryController,
+                      hint: "United States",
+                    ),
+                  ],
+                );
+              }
             }),
-
-            const SizedBox(height: 16),
-            _buildShadowTextField(context, TextString.addCustomerCountry, controller.ccCountryController, hint: "United States"),
           ],
         ),
       ),
@@ -721,6 +1004,7 @@ class AddCustomerWidget extends StatelessWidget {
             IconString.saveVehicleIcon,
           ),
           onTap: () {
+            context.push('/stepTwoCustomer');
           },
         ),
       ),
@@ -729,5 +1013,28 @@ class AddCustomerWidget extends StatelessWidget {
     return isMobile
         ? Column(children: buttons)
         : Row(mainAxisAlignment: MainAxisAlignment.end, children: buttons);
+  }
+
+   // Read Only Fields
+  Widget _buildReadOnlyField(BuildContext context, String label, String value, {bool isPassword = false}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: TTextTheme.titleTwo(context)),
+        const SizedBox(height: 8),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+          decoration: BoxDecoration(
+            color: AppColors.secondaryColor,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            value,
+            style: TTextTheme.titleThree(context).copyWith(color: AppColors.textColor),
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -30,6 +30,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 24, 28, 30),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
 
+  static TextStyle hnotes(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 20, 22, 24),fontWeight: FontWeight.w600,color: AppColors.textColor);
+  }
+
   static TextStyle h2Style(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 16, 18),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
@@ -123,6 +127,11 @@ class TTextTheme {
 
   static TextStyle btnOne(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 12),fontWeight: FontWeight.w500,color: AppColors.quadrantalTextColor);
+  }
+
+
+  static TextStyle btn16(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 14, 14),fontWeight: FontWeight.w400,color: Colors.white);
   }
 
   static TextStyle btncustomer(BuildContext context){
@@ -289,6 +298,14 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 14),fontWeight: FontWeight.w500,color: AppColors.textColor);
   }
 
+  static TextStyle btnRegenrate(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 13, 14, 16),fontWeight: FontWeight.w500,color: AppColors.primaryColor);
+  }
+
+  static TextStyle btnSave(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 13, 14, 16),fontWeight: FontWeight.w500,color: Colors.white);
+  }
+
   static TextStyle btnNumbering(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 13),fontWeight: FontWeight.w500,color: Colors.white);
   }
@@ -376,6 +393,11 @@ class TTextTheme {
 
   static TextStyle titleThree(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor,
+    );
+  }
+
+  static TextStyle notesSubtitle(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 13, 14, 16),fontWeight: FontWeight.w400,color: AppColors.primaryColor,
     );
   }
 
@@ -627,6 +649,10 @@ class TTextTheme {
 
   static TextStyle bodyRegular14(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.secondTextColor);
+  }
+
+  static TextStyle bodyRegular14Search(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor);
   }
 
   static TextStyle bodyRegular14Green(BuildContext context){

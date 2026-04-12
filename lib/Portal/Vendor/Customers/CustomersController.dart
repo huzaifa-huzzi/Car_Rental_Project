@@ -1,3 +1,4 @@
+import 'package:car_rental_project/Portal/Vendor/Customers/ReusableWidgetOfCustomers/CustomCalendarSutomer.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -173,6 +174,130 @@ class CustomerController extends GetxController {
     }
   }
 
+  final LayerLink dobLink = LayerLink();
+  final LayerLink expiryLink = LayerLink();
+  final TextEditingController selectedYearCarController = TextEditingController();
+  var selectedCarYear = "".obs;
+  final GlobalKey carYearKey = GlobalKey();
+  var isDateDropOpen = false.obs;
+
+  OverlayEntry? calendarOverlay;
+
+  void toggleCalendar(BuildContext context, LayerLink link, TextEditingController targetController, {bool isYearOnly = false}) {
+    if (calendarOverlay != null) {
+      removeCalendar();
+    } else {
+
+      calendarOverlay = _createCalendarOverlay(context, link, targetController);
+      Overlay.of(context).insert(calendarOverlay!);
+      isDateDropOpen.value = true;
+    }
+  }
+
+  void removeCalendar() {
+    calendarOverlay?.remove();
+    calendarOverlay = null;
+    isDateDropOpen.value = false;
+  }
+
+
+  OverlayEntry _createCalendarOverlay(
+      BuildContext context,
+      LayerLink link,
+      TextEditingController targetController,
+      ) {
+    final screenSize = MediaQuery.of(context).size;
+    final renderBox = context.findRenderObject() as RenderBox;
+    final position = renderBox.localToGlobal(Offset.zero);
+
+    double overlayWidth;
+    if (screenSize.width < 400) {
+      overlayWidth = screenSize.width * 0.9;
+    } else if (screenSize.width < 600) {
+      overlayWidth = 260;
+    } else if (screenSize.width < 1000) {
+      overlayWidth = 280;
+    } else {
+      overlayWidth = 300;
+    }
+
+    double dx = 0;
+    if (position.dx + overlayWidth > screenSize.width) {
+      dx = screenSize.width - (position.dx + overlayWidth) - 10;
+    }
+    if (position.dx + dx < 10) {
+      dx = -position.dx + 10;
+    }
+
+    double dy = 6;
+    double estimatedHeight = 320;
+    if (position.dy + estimatedHeight > screenSize.height) {
+      dy = -estimatedHeight - 10;
+    }
+
+    return OverlayEntry(
+      builder: (context) => Stack(
+        children: [
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: removeCalendar,
+              child: Container(color: Colors.transparent),
+            ),
+          ),
+          CompositedTransformFollower(
+            link: link,
+            showWhenUnlinked: false,
+            targetAnchor: Alignment.bottomLeft,
+            followerAnchor: dy < 0 ? Alignment.bottomLeft : Alignment.topLeft,
+            offset: Offset(dx, dy),
+            child: Material(
+              elevation: 10,
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white,
+              child: SizedBox(
+                width: overlayWidth,
+                child: CustomCalendarCustomer(
+                  width: overlayWidth,
+                  allowFuture: targetController == licenseExpiryController,
+                  onCancel: removeCalendar,
+                  onDateSelected: (date) {
+                    String day = date.day.toString().padLeft(2, '0');
+                    String month = date.month.toString().padLeft(2, '0');
+
+                    if (targetController == selectedYearCarController) {
+                      targetController.text = "${date.year}";
+                    } else {
+                      targetController.text = "$day/$month/${date.year}";
+                    }
+                    removeCalendar();
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+   /// StepTwoCustomer
+  var isCredentialsGenerated = false.obs;
+  var userName = "talha bukhari".obs;
+  var password = "5ellostore.".obs;
+  var isPasswordVisible = false.obs;
+  void generateCredentials() {
+    isCredentialsGenerated.value = true;
+  }
+  void regeneratePassword() {
+    password.value = "newpassword123";
+  }
+  void saveCustomer() {
+
+    Get.back();
+  }
+  var isPasswordHidden = true.obs;
+  void togglePasswordVisibility() {
+    isPasswordHidden.value = !isPasswordHidden.value;
+  }
   /// Edit Customer Screen
   Rxn<ImageHolder> profileImage2 = Rxn<ImageHolder>();
 

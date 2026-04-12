@@ -13,10 +13,22 @@ class PaymentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isWeb = AppSizes.isWeb(context);
+    // final isWeb = AppSizes.isWeb(context);
+
     return Scaffold(
       backgroundColor: AppColors.backgroundOfScreenColor,
-      body: SafeArea(
+      body: const Center(
+        child: Text(
+          "Coming Soon",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+
+      /*
+      SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Padding(
@@ -43,8 +55,8 @@ class PaymentScreen extends StatelessWidget {
           ),
         ),
       ),
+      */
     );
   }
 }
-
 

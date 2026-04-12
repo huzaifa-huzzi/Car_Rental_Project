@@ -519,5 +519,14 @@ class CarInventoryController extends GetxController {
   }
 
 
+  var searchCarText = "".obs;
+  var openedDropdown3 = "".obs;
+  var selectedBrand4 = "Select Car".obs;
+
+  List<String> get filteredCars {
+    List<String> allCars = ["Toyota Corolla", "Ford Focus", "Tesla Model S", "Volkswagen Golf"];
+    if (searchCarText.value.isEmpty) return allCars;
+    return allCars.where((car) => car.toLowerCase().contains(searchCarText.value.toLowerCase())).toList();
+  }
 
 }
