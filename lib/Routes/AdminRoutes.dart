@@ -41,7 +41,7 @@ class AdminRoutes {
       },
       routes: [
         GoRoute(path: '/dashboard-admin', builder: (context, state) => const DashBoardAdmin()),
-        GoRoute(path: '/companies', builder: (context, state) => const CompaniesAdmin()),
+        GoRoute(path: '/companies', builder: (context, state) =>  ComapaniesAdmin()),
         GoRoute(path: '/reports', builder: (context, state) => const ReportScreen()),
         GoRoute(path: '/subscription', builder: (context, state) => const SubscriptionScreen()),
         GoRoute(path: '/payment-admin', builder: (context, state) => const PaymentAdmin()),
