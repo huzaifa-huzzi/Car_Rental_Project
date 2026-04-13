@@ -166,6 +166,9 @@ class CarInventoryController extends GetxController {
   var openedDropdown = "".obs;
   var isDateDropOpen = false.obs;
 
+
+
+
   RxList<Rx<DocumentHolder?>> selectedDocuments = <Rx<DocumentHolder?>>[].obs;
   RxList<TextEditingController> documentNameControllers = <TextEditingController>[].obs;
 
@@ -527,6 +530,68 @@ class CarInventoryController extends GetxController {
     List<String> allCars = ["Toyota Corolla", "Ford Focus", "Tesla Model S", "Volkswagen Golf"];
     if (searchCarText.value.isEmpty) return allCars;
     return allCars.where((car) => car.toLowerCase().contains(searchCarText.value.toLowerCase())).toList();
+  }
+
+  final List<String> allBrands = ["Toyota", "Ford", "Honda", "Tesla", "BMW", "Audi"];
+
+  final Map<String, List<String>> brandModels = {
+    "Toyota": ["Corolla", "Camry", "Prado", "Hilux"],
+    "Ford": ["Focus", "Mustang", "F-150", "Explorer"],
+    "Honda": ["Civic", "Accord", "CR-V"],
+    "Tesla": ["Model S", "Model 3", "Model X", "Model Y"],
+  };
+
+  final List<String> bodyTypes = ["Sedan", "SUV", "Hatchback", "Coupe", "Truck"];
+  final List<String> transmissions = ["Automatic", "Manual"];
+  final List<String> fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid"];
+  final List<String> statuses = ["Available", "Maintenance", "Unavailable"];
+
+  List<String> getFilteredItems(String id) {
+    List<String> currentList = [];
+
+    switch (id) {
+      case 'search_car':
+        currentList = allBrands;
+        break;
+
+      case 'Model':
+        if (selectedBrand.value.isEmpty) {
+          currentList = [];
+        } else {
+          currentList = brandModels[selectedBrand.value] ?? [];
+        }
+        break;
+
+      case 'body':
+        currentList = ["Sedan", "SUV", "Hatchback", "Coupe", "Truck"];
+        break;
+
+      case 'trans':
+        currentList = ["Automatic", "Manual"];
+        break;
+
+      case 'fuel':
+        currentList = ["Petrol", "Diesel", "Electric", "Hybrid"];
+        break;
+
+      case 'status':
+        currentList = ["Available", "Maintenance", "Unavailable"];
+        break;
+
+      default:
+        currentList = [];
+    }
+    if (searchCarText.value.isEmpty) {
+      return currentList;
+    } else {
+      return currentList
+          .where((item) => item.toLowerCase().contains(searchCarText.value.toLowerCase()))
+          .toList();
+    }
+  }
+  void resetSearch() {
+    searchCarText.value = "";
+    openedDropdown3.value = "";
   }
 
 }

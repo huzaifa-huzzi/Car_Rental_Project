@@ -52,7 +52,8 @@ class AddCarFormWidget extends StatelessWidget {
               _buildSectionTitle(context, "Car Identification"),
               const SizedBox(height: 15),
               _buildResponsiveGrid(context, [
-                _buildSearchCarDropdown(context, "Search Car", controller.selectedBrand, id: 'search_car'),
+                _buildSearchCarDropdown(context, "Car Make", controller.selectedBrand, id: 'search_car'),
+                _buildSearchCarDropdown(context, "Car Model", controller.selectedModel, id: 'Model'),
                 _buildTextField(context, "Car Registration Number", controller.regController, hint: "Write Registration Number..."),
                 _buildTextField(context, "VIN Number", controller.vinController, hint: "Write VIN Number...."),
               ]),
@@ -65,15 +66,21 @@ class AddCarFormWidget extends StatelessWidget {
               _buildSectionTitle(context, "Car Specification"),
               const SizedBox(height: 15),
               _buildResponsiveGrid(context, [
-                _buildDropdown(context, "Car Body Type", ["Sedan", "SUV"], controller.selectedBodyType, id: 'body'),
-                _buildDropdown(context, "Car Transmission", ["Automatic", "Manual"], controller.selectedTransmission, id: 'trans'),
+                _buildSearchCarDropdown(context, "Car Body Type", controller.selectedBodyType, id: 'body'),
+                _buildSearchCarDropdown(context, "Car Transmission", controller.selectedTransmission, id: 'trans'),
                 _buildTextField(context, "Car Seats", controller.seatsController, hint: "Write Car Seats..."),
                 _buildTextField(context, "Car Engine Size", controller.engineController, hint: "Write Engine Size..."),
                 _buildTextField(context, "Car Color", controller.colorController, hint: "Write Color name OR Code..."),
-                _buildDropdown(context, "Car Fuel Type", ["Petrol", "Diesel"], controller.selectedFuel, id: 'fuel'),
+                _buildSearchCarDropdown(context, "Car Fuel Type", controller.selectedFuel, id: 'fuel'),
                 _buildTextField(context, "Car Value", controller.valueController, prefix: "\$ ", hint: "Car Value...."),
                 _buildTextField(context, "Weekly Rent (AUD)", controller.weeklyRentController, prefix: "\$ "),
-                _buildStatusDropdown(context, "Status", ["Available", "Maintenance", "Unavailable"], controller.selectedStatus, id: 'status'),
+                _buildStatusDropdown(
+                  context,
+                  "Status",
+                  controller.statuses,
+                  controller.selectedStatus,
+                  id: 'status',
+                ),
               ]),
 
 
@@ -317,7 +324,7 @@ class AddCarFormWidget extends StatelessWidget {
   Widget _buildSearchCarDropdown(BuildContext context, String label, RxString selected, {required String id}) {
     return Obx(() {
       bool isOpen = controller.openedDropdown3.value == id;
-      List<String> items = controller.filteredCars;
+      List<String> items = controller.getFilteredItems(id);
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -338,6 +345,10 @@ class AddCarFormWidget extends StatelessWidget {
               onSelected: (val) {
                 if (val != "SEARCH_FIELD") {
                   selected.value = val;
+                  if (id == 'search_car') {
+                    controller.selectedModel.value = "";
+                  }
+
                   controller.openedDropdown3.value = "";
                   controller.searchCarText.value = "";
                 }
@@ -353,7 +364,7 @@ class AddCarFormWidget extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        selected.value.isEmpty ? "Search Car..." : selected.value,
+                        selected.value.isEmpty ? "Search $label..." : selected.value,
                         style: TTextTheme.pOne(context),
                       ),
                     ),
@@ -384,30 +395,47 @@ class AddCarFormWidget extends StatelessWidget {
                           filled: true,
                           fillColor: AppColors.backgroundOfScreenColor,
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20), 
-                            borderSide: BorderSide.none, 
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide.none,
                           ),
-
                           contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                         ),
                       ),
                     ),
                   ),
-                  ...items.map((car) {
+                  ...items.map((item) {
+                    bool isSelected = selected.value == item;
+
                     return PopupMenuItem<String>(
-                      value: car,
+                      value: item,
                       child: Row(
                         children: [
                           Container(
-                            width: 18,
-                            height: 18,
+                            width: 22,
+                            height: 22,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              border: Border.all(color: AppColors.primaryColor, width: 2),
+                              color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                              border: Border.all(
+                                color: AppColors.primaryColor,
+                                width: 2,
+                              ),
                             ),
+                            child: isSelected
+                                ? const Center(
+                              child: Icon(
+                                Icons.done,
+                                color: Colors.white,
+                                size: 14,
+                              ),
+                            )
+                                : null,
                           ),
                           const SizedBox(width: 12),
-                          Text(car, style: TTextTheme.medium14(context)),
+                          Text(
+                            item,
+                            style: TTextTheme.medium14(context),
+                          ),
                         ],
                       ),
                     );
