@@ -5,7 +5,6 @@ import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 
 
-
 class MobileTopBarAdmin extends StatefulWidget {
   final VoidCallback? onAddPressed;
   final VoidCallback? onNotificationPressed;
@@ -27,7 +26,6 @@ class MobileTopBarAdmin extends StatefulWidget {
   @override
   State<MobileTopBarAdmin> createState() => _MobileTopBarAdminState();
 }
-
 class _MobileTopBarAdminState extends State<MobileTopBarAdmin> with WidgetsBindingObserver {
   bool _isDrawerOpen = false;
 

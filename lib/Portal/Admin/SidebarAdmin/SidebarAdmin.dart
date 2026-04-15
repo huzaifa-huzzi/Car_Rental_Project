@@ -150,9 +150,8 @@ class SidebarAdmin extends StatelessWidget {
      // Add Buttons logic
     void handleAddButtonPressed() {
       if (currentRoute.contains('/companies')) {
-        context.push('/add-company', extra: {"hideMobileAppBar": true});
+        context.push('/addCompany');
       } else {
-
         print("Add pressed on $currentRoute");
       }
     }

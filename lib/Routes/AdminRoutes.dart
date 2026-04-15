@@ -1,5 +1,7 @@
 import 'package:car_rental_project/Portal/Admin/Branding/Branding.dart';
+import 'package:car_rental_project/Portal/Admin/Comapnies/AddCompany/AddCompany.dart';
 import 'package:car_rental_project/Portal/Admin/Comapnies/Comapnies.dart';
+import 'package:car_rental_project/Portal/Admin/Comapnies/CompanyDetail/CompanyDetailScreen.dart';
 import 'package:car_rental_project/Portal/Admin/DashboardAdmin/DashboardAdmin.dart';
 import 'package:car_rental_project/Portal/Admin/HelpandCenter/HelpCenter.dart';
 import 'package:car_rental_project/Portal/Admin/PaymentAdmin/PaymentAdmin.dart';
@@ -8,6 +10,7 @@ import 'package:car_rental_project/Portal/Admin/SidebarAdmin/SidebarAdmin.dart';
 import 'package:car_rental_project/Portal/Admin/SidebarAdmin/SidebarController.dart';
 import 'package:car_rental_project/Portal/Admin/Subscription/Subscription.dart';
 import 'package:car_rental_project/Portal/Admin/UserandRole/userandRole.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get/get.dart';
 
@@ -20,7 +23,14 @@ class AdminRoutes {
         Get.put(SideBarAdminController());
 
         final String path = state.uri.toString().toLowerCase();
-        bool hideMobile = path.contains('add') || path.contains('edit') || path.contains('detail');
+        bool hideMobile;
+        if (path.contains('edit') ) {
+          hideMobile = true;
+        } else if (path.contains('add') ||  path.contains('detail')) {
+          hideMobile = false;
+        } else {
+          hideMobile = false;
+        }
 
         return SidebarAdmin(
           onTap: (route) {
@@ -48,9 +58,33 @@ class AdminRoutes {
         GoRoute(path: '/branding', builder: (context, state) => const BrandingScreen()),
         GoRoute(path: '/user-role-admin', builder: (context, state) => const UserandRole()),
         GoRoute(path: '/help-admin', builder: (context, state) => const HelpCenter()),
+
+         // Companies Routes
+        GoRoute(
+            path: '/addCompany',
+            builder: (context, state) =>  AddCompany()
+        ),
+
+        GoRoute(
+            path: '/detailCompany',
+            builder: (context, state) =>  CompaniesDetail()
+        ),
       ],
     ),
 
     /// External Routes
+
   ];
+
+
+  static Widget _wrapSidebar(GoRouterState state, Widget child) {
+    final String path = state.uri.toString().toLowerCase();
+    bool hideMobile = path.contains('t&c') || path.contains('add') ||
+        path.contains('edit') || path.contains('detail');
+
+    return SidebarAdmin.wrapWithSidebarIfNeeded(
+      child: child,
+      hideMobileAppBar: hideMobile,
+    );
+  }
 }

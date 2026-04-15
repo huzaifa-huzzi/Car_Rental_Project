@@ -36,7 +36,7 @@ class ComapaniesAdmin extends StatelessWidget {
                       showSettings: true,
                       showSearch: true,
                     ),
-                const SizedBox(height: 3),
+                const SizedBox(height: 30),
                 CompaniesAdminWidget(),
                 SizedBox(height: baseVerticalSpace * 1.25),
               ],

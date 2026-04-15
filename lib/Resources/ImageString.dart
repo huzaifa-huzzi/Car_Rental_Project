@@ -1,8 +1,8 @@
 
 class ImageString{
+     /// Vendor
 
-
-   /// Car inventory Pics
+   // Car inventory Pics
   static const String userImage = 'assets/Images/CarInventoryPics/User Image.png';
   static const String audiPic = 'assets/Images/CarInventoryPics/AudiPic.png';
   static const String bmwPic = 'assets/Images/CarInventoryPics/BmwPic.png';
@@ -15,10 +15,10 @@ class ImageString{
   static const String corollaPicFive = 'assets/Images/CarInventoryPics/corolla-5.png';
   static const String registrationForm = 'assets/Images/CarInventoryPics/RegistrationForm.png';
 
-  /// Customers Pics
+  // Customers Pics
   static const String  customerUser= 'assets/Images/Customers/CustomerUser.png';
 
-  /// Pickup Car Pics
+  // Pickup Car Pics
   static const String  carDamageInspectionImage= 'assets/Images/PickupCar/Car Inspection Image.png';
   static const String  successCheckPickupImage= 'assets/Images/PickupCar/SuccessCheckIcon.png';
   static const String  frontView = 'assets/Images/PickupCar/FrontView.png';
@@ -29,16 +29,20 @@ class ImageString{
   static const String  backPickImage = 'assets/Images/PickupCar/BackPickImage.png';
   static const String  leftPickImage = 'assets/Images/PickupCar/LeftPickImage.png';
   static const String  rightPickImage= 'assets/Images/PickupCar/RightPickImage.png';
-  /// Authentication
+  // Authentication
   static const String  smartPhoneImage= 'assets/Images/Login/smartphoneImage.png';
-   /// Dashboard
+   // Dashboard
   static const String  hatchBookCar= 'assets/Images/DashBoard/HatchBookCar.png';
   static const String  sedanCar= 'assets/Images/DashBoard/sedanCar.png';
   static const String  suvCar= 'assets/Images/DashBoard/SuvCar.png';
   static const String  uteCar= 'assets/Images/DashBoard/UteCar.png';
   static const String  vanCar= 'assets/Images/DashBoard/VanCar.png';
   static const String  wagonCar= 'assets/Images/DashBoard/WagonCar.png';
-    /// Payment
+    // Payment
   static const String  receipt= 'assets/Images/Payment/Receipt.png';
 
+
+     /// Admin
+     // Companies
+  static const String  plushlogoAdmin= 'assets/Images/Admin/Companies/PlushLogo.png';
 }

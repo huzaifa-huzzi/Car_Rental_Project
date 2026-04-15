@@ -23,7 +23,7 @@ class CompaniesAdminWidget extends StatelessWidget {
       children: [
         _buildStatsRow(context),
 
-        const SizedBox(height: 30),
+        const SizedBox(height: 50),
 
         Container(
           padding: const EdgeInsets.all(20),
@@ -92,9 +92,9 @@ class CompaniesAdminWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("All Companies", style: TTextTheme.h2Style(context)),
+        Text(TextString.companyTitle, style: TTextTheme.h2Style(context)),
         const SizedBox(height: 4),
-        Text("List of All registered Companies", style: TTextTheme.bodyRegular14(context)),
+        Text(TextString.companySubtitle, style: TTextTheme.bodyRegular14(context)),
       ],
     );
   }
@@ -358,16 +358,16 @@ class CompaniesAdminWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          _headerCell("Company Name", 200,context, controller,),
-          _headerCell("Owner Name", 160,context, controller,),
-          _headerCell("Email", 200,context, controller,),
-          _headerCell("Email Status", 140,context, controller,),
-          _headerCell("Account Status", 140,context, controller,),
-          _headerCell("Plan", 100,context, controller,),
-          _headerCell("Plan Status", 120,context, controller,),
-          _headerCell("Joining Date", 140,context, controller),
-          _headerCell("Active Cars", 120,context, controller,),
-          _headerCell("Action", 100,context,controller,canSort: false),
+          _headerCell(TextString.companyTable1, 200,context, controller,),
+          _headerCell(TextString.companyTable2, 160,context, controller,),
+          _headerCell(TextString.companyTable3, 200,context, controller,),
+          _headerCell(TextString.companyTable4, 140,context, controller,),
+          _headerCell(TextString.companyTable5, 140,context, controller,),
+          _headerCell(TextString.companyTable6, 100,context, controller,),
+          _headerCell(TextString.companyTable7, 120,context, controller,),
+          _headerCell(TextString.companyTable8, 140,context, controller),
+          _headerCell(TextString.companyTable9, 120,context, controller,),
+          _headerCell(TextString.companyTable10, 100,context,controller,canSort: false),
         ],
       ),
     );
@@ -463,6 +463,9 @@ class CompaniesAdminWidget extends StatelessWidget {
                   iconPath: IconString.viewIcon,
                   iconColor: Colors.white,
                   bgColor: AppColors.primaryColor,
+                  onTap: (){
+                    context.push('/detailCompany');
+                  }
                 ),
                 const SizedBox(width: 12),
                 GestureDetector(
@@ -573,10 +576,10 @@ class CompaniesAdminWidget extends StatelessWidget {
         mainAxisSpacing: 16,
         childAspectRatio: childAspectRatio,
         children: [
-          _statCard(context, "Total Companies", "35", "3 more joined", IconString.totalCompanies),
-          _statCard(context, "Active Companies", "22", "3 more activated", IconString.activeCompanies),
-          _statCard(context, "Suspended", "6", "3 more cars added", IconString.suspendedCompanies),
-          _statCard(context, "New Joined", "8", "3 more companies", IconString.newCompanies),
+          _statCard(context,TextString.companyCard1 , "35",TextString.companyCard1Subtitle , IconString.totalCompanies),
+          _statCard(context,TextString.companyCard2 , "22",TextString.companyCard2Subtitle  , IconString.activeCompanies),
+          _statCard(context,TextString.companyCard3 , "6",TextString.companyCard3subtitle  , IconString.suspendedCompanies),
+          _statCard(context, TextString.companyCard4, "8",TextString.companyCard4subtitle , IconString.newCompanies),
         ],
       );
     });
@@ -627,7 +630,7 @@ class CompaniesAdminWidget extends StatelessWidget {
   Widget _buildAddPaymentButton(BuildContext context, bool isFullWidth) {
     return PrimaryButtonOfCompanies(
       text: "Add Company",
-      onTap: () => context.push('', extra: {"hideMobileAppBar": true}),
+      onTap: () =>  context.push('/addCompany'),
       width: isFullWidth ? double.infinity : 150,
       borderRadius: BorderRadius.circular(10),
     );
@@ -688,12 +691,12 @@ class CompaniesAdminWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                                Text(
-                                "Delete Company",
+                                TextString.companyDeleteDialog1,
                                 style: TTextTheme.h2Style(context),
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                "Are you sure you want to delete it",
+                                TextString.companyDeleteDialog1Subtitle,
                                 style: TTextTheme.bodyRegular16(context),
                               ),
                             ],
@@ -773,12 +776,12 @@ class CompaniesAdminWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                            Text(
-                            "Company Deleted Successfully",
+                            TextString.succesDialogtitle,
                             style: TTextTheme.h2Style(context),
                           ),
                           const SizedBox(height: 6),
                            Text(
-                            "Congratulation! your company has successfully deleted in the system",
+                            TextString.succesDialogSubtitle,
                             style:  TTextTheme.bodyRegular16(context),
                           ),
                         ],
@@ -824,12 +827,12 @@ class CompaniesAdminWidget extends StatelessWidget {
                 children: [
                   const Icon(Icons.block, color: AppColors.primaryColor, size: 30),
                   const SizedBox(height: 16),
-                  Text("Suspend Company", style: TTextTheme.h2Style(context)),
+                  Text(TextString.suspendedTitle, style: TTextTheme.h2Style(context)),
                   const SizedBox(height: 24),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Reason", style: TTextTheme.tableMedium14(context)),
+                      Text(TextString.reasoncompany, style: TTextTheme.tableMedium14(context)),
                       const SizedBox(height: 8),
                       TextField(
                         cursorColor: AppColors.blackColor,
@@ -955,12 +958,12 @@ class CompaniesAdminWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Suspend Company",
+                                TextString.suspendedTitle,
                                 style: TTextTheme.h2Style(context),
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                "Are you sure you want to delete it",
+                                TextString.companyDeleteDialog1Subtitle,
                                 style: TTextTheme.bodyRegular16(context),
                               ),
                             ],
@@ -1040,12 +1043,12 @@ class CompaniesAdminWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Company Suspended Successfully",
+                            TextString.suspendedTitle2,
                             style: TTextTheme.h2Style(context),
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            "Congratulation! your company has successfully Suspended in the system",
+                            TextString.suspendedTitle2Subtitle,
                             style:  TTextTheme.bodyRegular16(context),
                           ),
                         ],

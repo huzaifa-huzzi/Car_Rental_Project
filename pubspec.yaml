@@ -54,6 +54,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/icons/Admin/
+    - assets/Images/Admin/Companies/
     - assets/Images/CarInventoryPics/
     - assets/Images/Customers/
     - assets/Images/PickupCar/

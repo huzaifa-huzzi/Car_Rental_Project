@@ -1,19 +1,18 @@
-import 'package:car_rental_project/Portal/Admin/Comapnies/AddCompany/Widget/AddCompanyWidget.dart';
+import 'package:car_rental_project/Portal/Admin/Comapnies/CompanyDetail/Widget/CompanyDetailScreenWidget.dart';
+import 'package:flutter/material.dart';
+import 'package:car_rental_project/Portal/Admin/Comapnies/CompaniesController.dart';
 import 'package:car_rental_project/Portal/Admin/Comapnies/ReusableWidget/HeaderWebCompaniesWidget.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
-import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+class CompaniesDetail extends StatelessWidget {
+  CompaniesDetail({super.key});
 
-class AddCompany extends StatelessWidget {
-  AddCompany({super.key});
-
-
+  final controller = Get.put(CompaniesAdminController());
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = AppSizes.isMobile(context);
-    final tablePadding = AppSizes.padding(context);
     final horizontalPadding = AppSizes.horizontalPadding(context);
     final baseVerticalSpace = AppSizes.verticalPadding(context);
 
@@ -29,15 +28,15 @@ class AddCompany extends StatelessWidget {
                 if (AppSizes.isWeb(context))
                   if (AppSizes.isWeb(context))
                     HeaderWebCompaniesWidget(
-                      mainTitle: 'Add Company',
+                      mainTitle: 'Companies Detail',
                       showBack: true,
                       showProfile: true,
                       showNotification: true,
                       showSettings: true,
                       showSearch: false,
                     ),
-                const SizedBox(height: 35),
-                AddCompanyWidget(),
+                const SizedBox(height: 30),
+                CompaniesDetailScreenWidget(),
                 SizedBox(height: baseVerticalSpace * 1.25),
               ],
             ),

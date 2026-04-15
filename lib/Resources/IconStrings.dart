@@ -154,4 +154,11 @@ class IconString {
   static const String  newCompanies = 'assets/icons/Admin/NewCompanies.png';
   static const String  suspendedCompanies = 'assets/icons/Admin/SuspendedCompanies.png';
   static const String  totalCompanies = 'assets/icons/Admin/Total Companies.png';
+  static const String  facebookAdminIcon = 'assets/icons/Admin/facebookAdmin.png';
+  static const String  instaAdminIcon = 'assets/icons/Admin/InstaAdmin.png';
+  static const String  linkedinAdminIcon = 'assets/icons/Admin/linkedinAdmin.png';
+  static const String  xAdminIcon = 'assets/icons/Admin/xAdmin.png';
+  static const String  youtubeAdminIcon = 'assets/icons/Admin/youtubeAdmin.png';
+  static const String  uploadedImageAdmin2 = 'assets/icons/Admin/UploadedImageAdmin.png';
+  static const String  underMaintenanceIcon = 'assets/icons/Admin/underMaintenance.png';
 }

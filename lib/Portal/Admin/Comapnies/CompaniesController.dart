@@ -1,5 +1,19 @@
 
+import 'dart:typed_data';
+import 'package:car_rental_project/Portal/Admin/Comapnies/ReusableWidget/CustomCalendarCompany.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+
+class ImageHolder {
+  final String? path;
+  final Uint8List? bytes;
+  final String? name;
+
+  ImageHolder({this.path, this.bytes, this.name});
+}
 
 class CompaniesAdminController extends GetxController {
 
@@ -43,9 +57,9 @@ class CompaniesAdminController extends GetxController {
       "ownerName": "Adam Jhone",
       "email": "aussie@gmail.com",
       "emailStatus": "Verified",
-      "status": "Pending", // Account Status filter check karega
+      "status": "Pending",
       "plan": "Weekly",
-      "planStatus": "Subscribed", // Plan Status filter check karega
+      "planStatus": "Subscribed",
       "joiningDate": "7th April, 2026",
       "activeCars": 78
     },
@@ -105,8 +119,6 @@ class CompaniesAdminController extends GetxController {
     if (selectedSubFilter.value == "All") {
       return allCompanies;
     }
-
-    // Yahan hum trim aur lowercase kar rahe hain taake match pakka ho
     return allCompanies.where((item) {
       String itemValue = item[dataKey]?.toString().trim().toLowerCase() ?? "";
       String filterValue = selectedSubFilter.value.trim().toLowerCase();
@@ -136,5 +148,149 @@ class CompaniesAdminController extends GetxController {
       sortOrder.value = 1;
     }
   }
+
+
+  /// Add Companies
+  var focusedField = "".obs;
+
+  final totalCars = TextEditingController();
+  final availableCars = TextEditingController();
+  final underMaintenance = TextEditingController();
+  final totalStaff = TextEditingController();
+
+  final companyName = TextEditingController();
+  final adressController = TextEditingController();
+  final phoneNumber = TextEditingController();
+  final emailAddress = TextEditingController();
+  final licenseNumber = TextEditingController();
+  final registrationDate = TextEditingController();
+  final taxNumber = TextEditingController();
+  var accountStatus = "Active".obs;
+
+  void setFocus(String fieldName) => focusedField.value = fieldName;
+  void clearFocus() => focusedField.value = "";
+
+  @override
+  void onClose() {
+    totalCars.dispose(); availableCars.dispose(); underMaintenance.dispose();
+    totalStaff.dispose(); companyName.dispose(); phoneNumber.dispose();
+    emailAddress.dispose(); licenseNumber.dispose(); registrationDate.dispose();
+    taxNumber.dispose();
+    super.onClose();
+  }
+
+
+  Future<void> pickImage2() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['png', 'jpg', 'jpeg', 'svg'],
+      withData: kIsWeb ? true : false,
+      withReadStream: kIsWeb ? false : true,
+    );
+
+    if (result != null) {
+      for (var file in result.files) {
+        if (kIsWeb && file.bytes != null) {
+          selectedImages2.add(ImageHolder(bytes: file.bytes, name: file.name));
+        } else if (!kIsWeb && file.path != null) {
+          selectedImages2.add(ImageHolder(path: file.path, name: file.name));
+        }
+      }
+    }
+  }
+
+  final facebookLink = TextEditingController();
+  final twitterLink = TextEditingController();
+  final instagramLink = TextEditingController();
+  final linkedinLink = TextEditingController();
+  final youtubeLink = TextEditingController();
+
+  var selectedPlan = "Monthly".obs; //
+  var selectedPlanStatus = "Subscribed".obs; //
+
+  final startDateController = TextEditingController(text: "4/03/2027");
+  final endDateController = TextEditingController(text: "4/03/2027");
+  var isDateDropOpen = false.obs;
+
+
+  OverlayEntry? calendarOverlay;
+
+  void toggleCalendar(BuildContext context, LayerLink link, TextEditingController targetController) {
+    if (calendarOverlay != null) {
+      removeCalendar();
+    } else {
+      double screenWidth = MediaQuery.of(context).size.width;
+      double calendarWidth = screenWidth < 500 ? screenWidth * 0.85 : 280;
+
+      calendarOverlay = _createCalendarOverlay(context, link, targetController, calendarWidth);
+      Overlay.of(context).insert(calendarOverlay!);
+      isDateDropOpen.value = true;
+    }
+  }
+
+  OverlayEntry _createCalendarOverlay(
+      BuildContext context,
+      LayerLink link,
+      TextEditingController targetController,
+      double width,
+      ) {
+    return OverlayEntry(
+      builder: (context) => Stack(
+        children: [
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: removeCalendar,
+              behavior: HitTestBehavior.opaque,
+              child: Container(color: Colors.transparent),
+            ),
+          ),
+
+          CompositedTransformFollower(
+            link: link,
+            showWhenUnlinked: false,
+            targetAnchor: Alignment.bottomLeft,
+            followerAnchor: Alignment.topLeft,
+            offset: const Offset(0, 8),
+            child: Material(
+              elevation: 10,
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white,
+              child: CustomCalendarCompany(
+                width: width,
+                onCancel: removeCalendar,
+                onDateSelected: (date) {
+                  targetController.text = "${date.day}/${date.month}/${date.year}";
+                  removeCalendar();
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void removeCalendar() {
+    calendarOverlay?.remove();
+    calendarOverlay = null;
+    isDateDropOpen.value = false;
+  }
+
+  final LayerLink startDateLink = LayerLink();
+  final LayerLink endDateLink = LayerLink();
+  void updateDateRange(DateTime selectedDate) {
+    print("Date Updated: ${selectedDate.day}/${selectedDate.month}/${selectedDate.year}");
+  }
+
+
+
+  RxList<ImageHolder> selectedImages2 = <ImageHolder>[].obs;
+
+  void removeImage2(int index) {
+    selectedImages2.removeAt(index);
+  }
+
+
+  /// Details Screen
 
 }
