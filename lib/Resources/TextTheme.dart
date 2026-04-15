@@ -253,6 +253,11 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 16),fontWeight: FontWeight.w500,color: Colors.white);
   }
 
+
+  static TextStyle mediumCount(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 11, 12, 12),fontWeight: FontWeight.w500,color: AppColors.textColor);
+  }
+
   static TextStyle forgotText(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 12, 14),fontWeight: FontWeight.w500,color: AppColors.primaryColor);
   }
@@ -653,6 +658,10 @@ class TTextTheme {
 
   static TextStyle bodyRegular14Search(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor);
+  }
+
+  static TextStyle bodyRegular14TabsSelected(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: Colors.white);
   }
 
   static TextStyle bodyRegular14Green(BuildContext context){

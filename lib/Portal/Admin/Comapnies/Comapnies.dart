@@ -20,24 +20,27 @@ class ComapaniesAdmin extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundOfScreenColor,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-          child: Column(
-            children: [
-              if (AppSizes.isWeb(context))
+      body: Center(
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+            child: Column(
+              children: [
                 if (AppSizes.isWeb(context))
-                  HeaderWebCompaniesWidget(
-                    mainTitle: 'Companies',
-                    showProfile: true,
-                    showNotification: true,
-                    showSettings: true,
-                    showSearch: true,
-                  ),
-              const SizedBox(height: 3),
-              CompaniesAdminWidget(),
-              SizedBox(height: baseVerticalSpace * 1.25),
-            ],
+                  if (AppSizes.isWeb(context))
+                    HeaderWebCompaniesWidget(
+                      mainTitle: 'Companies',
+                      showProfile: true,
+                      showNotification: true,
+                      showSettings: true,
+                      showSearch: true,
+                    ),
+                const SizedBox(height: 3),
+                CompaniesAdminWidget(),
+                SizedBox(height: baseVerticalSpace * 1.25),
+              ],
+            ),
           ),
         ),
       ),

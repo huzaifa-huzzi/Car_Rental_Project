@@ -149,5 +149,9 @@ class IconString {
   static const String  reportsIconAdmin = 'assets/icons/Admin/ReportsAdmin.png';
   static const String  subscriptionIconAdmin = 'assets/icons/Admin/SubscriptionAdmin.png';
   static const String  userRoleAdmin = 'assets/icons/Admin/UserRoleAdmin.png';
-
+  // Companies
+  static const String  activeCompanies = 'assets/icons/Admin/ActiveCompanies.png';
+  static const String  newCompanies = 'assets/icons/Admin/NewCompanies.png';
+  static const String  suspendedCompanies = 'assets/icons/Admin/SuspendedCompanies.png';
+  static const String  totalCompanies = 'assets/icons/Admin/Total Companies.png';
 }
