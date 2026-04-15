@@ -463,13 +463,15 @@ class CompaniesAdminWidget extends StatelessWidget {
                   iconPath: IconString.viewIcon,
                   iconColor: Colors.white,
                   bgColor: AppColors.primaryColor,
-                  onTap: () => showSuspendCompanyDialog(context),
                 ),
                 const SizedBox(width: 12),
-                const Icon(
-                  Icons.block,
-                  size: 20,
-                  color: AppColors.blackColor,
+                GestureDetector(
+                  onTap: () => showSuspendCompanyDialog(context),
+                  child: Icon(
+                    Icons.block,
+                    size: 20,
+                    color: AppColors.blackColor,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 _buildActionButton(
@@ -810,103 +812,93 @@ class CompaniesAdminWidget extends StatelessWidget {
         return Dialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           backgroundColor: Colors.white,
-          child: Container(
-            padding: const EdgeInsets.all(24),
-            width: 400,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  height: 50,
-                  width: 50,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: const Color(0xFFFF2D55), width: 2),
-                  ),
-                  child: const Icon(
-                      Icons.block,
-                      color: Color(0xFFFF2D55),
-                      size: 30
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  "Suspend Company",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Reason",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF64748B)
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    TextField(
-                      controller: reasonController,
-                      maxLines: 3,
-                      decoration: InputDecoration(
-                        hintText: "Write here",
-                        hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 32),
-                Row(
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        height: 44,
-                        child: OutlinedButton(
-                          onPressed: () => Navigator.pop(context),
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Color(0xFFFF2D55)),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          child: LayoutBuilder(builder: (context, constraints) {
+            double dialogWidth = constraints.maxWidth;
+            bool isSmall = dialogWidth < 280;
+
+            return Container(
+              padding: const EdgeInsets.all(24),
+              width: 400,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.block, color: AppColors.primaryColor, size: 30),
+                  const SizedBox(height: 16),
+                  Text("Suspend Company", style: TTextTheme.h2Style(context)),
+                  const SizedBox(height: 24),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Reason", style: TTextTheme.tableMedium14(context)),
+                      const SizedBox(height: 8),
+                      TextField(
+                        cursorColor: AppColors.blackColor,
+                        controller: reasonController,
+                        maxLines: 3,
+                        style: TTextTheme.titleseven(context),
+                        decoration: InputDecoration(
+                          hintText: "Write here",
+                          hintStyle: TTextTheme.titleseven(context),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: AppColors.quadrantalTextColor),
                           ),
-                          child: const Text(
-                            "Cancel",
-                            style: TextStyle(color: Color(0xFFFF2D55), fontWeight: FontWeight.w600),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: AppColors.primaryColor),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: PrimaryButtonOfCompanies(
-                        text: "Suspend",
-                        height: 44,
-                        onTap: () {
-                          Navigator.pop(context);
-                          showSuspendedDeleteCompanyDialog(context);
-                        },
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                  isSmall
+                      ? Column(
+                    children: [
+                      _buildCancelButton(context),
+                      const SizedBox(height: 12),
+                      _buildSuspendButton(context),
+                    ],
+                  )
+                      : Row(
+                    children: [
+                      Expanded(child: _buildCancelButton(context)),
+                      const SizedBox(width: 16),
+                      Expanded(child: _buildSuspendButton(context)),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }),
         );
       },
+    );
+  }
+  Widget _buildCancelButton(BuildContext context) {
+    return SizedBox(
+      height: 44,
+      width: double.infinity,
+      child: OutlinedButton(
+        onPressed: () => Navigator.pop(context),
+        style: OutlinedButton.styleFrom(
+          side: const BorderSide(color: AppColors.primaryColor),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+        child: Text("Cancel", style: TTextTheme.bodyRegular14Primary(context)),
+      ),
+    );
+  }
+  Widget _buildSuspendButton(BuildContext context) {
+    return PrimaryButtonOfCompanies(
+      text: "Suspend",
+      height: 44,
+      width: double.infinity,
+      onTap: () {
+        Navigator.pop(context);
+       showSuspendedDeleteCompanyDialog(context);
+      },
+      borderRadius: BorderRadius.circular(8),
     );
   }
   void showSuspendedDeleteCompanyDialog(BuildContext context) {
