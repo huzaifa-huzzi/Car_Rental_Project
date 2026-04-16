@@ -869,4 +869,57 @@ class TextString {
   static const String  paymentStaus=    "Payment Status";
   static const String  remaniningDays=    "Remaining Days";
   static const String  Limit=    "Limit";
+
+
+    /// Staff Panel
+     // Settings Module
+  static const String  personalInfoTitle=    "Personal Info";
+  static const String  personalInfoSubtitle=    "Last updated 2hours ago";
+  static const String  generalPersonal=    "General Information";
+  static const String  generalPersonalSubtitle=    "Basic detail about you";
+  static const String  generalPersonal1=    "Given Name";
+  static const String  generalPersonal2=    "Father Name";
+  static const String  generalPersonal3=    "Date of Birth";
+  static const String  generalPersonal4=    "Gender";
+  static const String  generalPersonal5=    "Email Address";
+  static const String  generalPersonal6=   "Contact Number";
+  static const String  generalPersonal7=    "Home Address";
+  static const String  employmentPersonal=    "Employment Details";
+  static const String  employmentPersonalSubtitle=  "Employment Details";
+  static const String  employmentPersonal1=    "Employment ID";
+  static const String  employmentPersonal2=   "Job Title";
+  static const String  employmentPersonal3=   "Reporting Manager";
+  static const String  employmentPersonal4=    "Date of Joining";
+  static const String  employmentPersonal5=   "Work Location";
+  static const String   CompanyProfileTitle=     "Company Profile";
+  static const String  companyProfileSubtitle=     "Last updated 2hours ago";
+  static const String  companyinfoSubtitle=    "Basic detail about your Company";
+  static const String  companyPersonal1=    "Company Name";
+  static const String  companyPersonal2=    "Business Registration #";
+  static const String  companyPersonal3=    "Email Address";
+  static const String  companyPersonal4=    "Phone Number";
+  static const String  companyPersonal5=    "ABN Number";
+  static const String  companyPersonal6=   "ACN Number";
+  static const String  companyPersonal7=     "Website";
+  static const String  adressPersonal=    "Address";
+  static const String  adressPersonalSubtitle=  "Your address detail here";
+  static const String  adressPersonal1=   "Country";
+  static const String  adressPersonal2=   "Province";
+  static const String  adressPersonal3=   "City";
+  static const String  adressPersonal4=    "Postal code";
+  static const String  adressPersonal5=   "Full Address";
+  static const String  adressPersonal6=   "Google map link";
+  static const String  changePasswordTitle=   "Change password";
+  static const String  changePasswordSubtitle=   "You can update your account password here";
+  static const String  changePasswordSubtitle2=  "You can change your password here";
+  static const String  passwordPersonal1= "Email*";
+  static const String  passwordPersonal2=   "Old Password";
+  static const String  passwordPersonal3=  "New Password";
+  static const String  passwordPersonal1subtitle= "Enter your email";
+  static const String  passwordPersonal2subtitle=  "Enter your password";
+  static const String  passwordPersonal3subtitle=   "Enter your new password";
+  static const String  passwordDialog1title=    "Update Password";
+  static const String  passwordDialog1subtitle=    "Are You sure you want to update it";
+  static const String  passwordDialog2title=   "Password Updated Successfully";
+  static const String  passwordDialog2subtitle=    "Congratulations your password has successfully updated";
 }

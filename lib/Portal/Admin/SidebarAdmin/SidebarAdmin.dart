@@ -83,51 +83,57 @@ class SidebarAdmin extends StatelessWidget {
                     scaffoldKey: _scaffoldKey,
                   ),
 
-                  SidebarComponentAdmin.menuItemAdmin(
-                    context, controller,
-                    iconPath: IconString.reportsIconAdmin,
-                    title: "Reports",
-                    onTap: (val) => context.go('/reports'),
-                    scaffoldKey: _scaffoldKey,
-                  ),
+                  //  Remaining modules commented out
 
+                  /*
+      SidebarComponentAdmin.menuItemAdmin(
+        context, controller,
+        iconPath: IconString.reportsIconAdmin,
+        title: "Reports",
+        onTap: (val) => context.go('/reports'),
+        scaffoldKey: _scaffoldKey,
+      ),
 
-                  SidebarComponentAdmin.menuItemAdmin(
-                    context, controller,
-                    iconPath: IconString.subscriptionIconAdmin,
-                    title: "Subscription",
-                    onTap: (val) => context.go('/subscription'),
-                    scaffoldKey: _scaffoldKey,
-                  ),
+      SidebarComponentAdmin.menuItemAdmin(
+        context, controller,
+        iconPath: IconString.subscriptionIconAdmin,
+        title: "Subscription",
+        onTap: (val) => context.go('/subscription'),
+        scaffoldKey: _scaffoldKey,
+      ),
 
-                  SidebarComponentAdmin.menuItemAdmin(
-                    context, controller,
-                    iconPath: IconString.paymentIconModule,
-                    title: "Payment",
-                    onTap: (val) => context.go('/payment-admin'),
-                    scaffoldKey: _scaffoldKey,
-                  ),
-                  SidebarComponentAdmin.menuItemAdmin(
-                    context, controller,
-                    iconPath: IconString.brandingIconAdmin,
-                    title: "Branding",
-                    onTap: (val) => context.go('/branding'),
-                    scaffoldKey: _scaffoldKey,
-                  ),
-                  SidebarComponentAdmin.menuItemAdmin(
-                    context, controller,
-                    iconPath: IconString.userRoleAdmin,
-                    title: "User and Role",
-                    onTap: (val) => context.go('/user-role-admin'),
-                    scaffoldKey: _scaffoldKey,
-                  ),
-                  SidebarComponentAdmin.menuItemAdmin(
-                    context, controller,
-                    iconPath: IconString.helpCenterIconAdmin,
-                    title: "Help Center",
-                    onTap: (val) => context.go('/help-admin'),
-                    scaffoldKey: _scaffoldKey,
-                  ),
+      SidebarComponentAdmin.menuItemAdmin(
+        context, controller,
+        iconPath: IconString.paymentIconModule,
+        title: "Payment",
+        onTap: (val) => context.go('/payment-admin'),
+        scaffoldKey: _scaffoldKey,
+      ),
+
+      SidebarComponentAdmin.menuItemAdmin(
+        context, controller,
+        iconPath: IconString.brandingIconAdmin,
+        title: "Branding",
+        onTap: (val) => context.go('/branding'),
+        scaffoldKey: _scaffoldKey,
+      ),
+
+      SidebarComponentAdmin.menuItemAdmin(
+        context, controller,
+        iconPath: IconString.userRoleAdmin,
+        title: "User and Role",
+        onTap: (val) => context.go('/user-role-admin'),
+        scaffoldKey: _scaffoldKey,
+      ),
+
+      SidebarComponentAdmin.menuItemAdmin(
+        context, controller,
+        iconPath: IconString.helpCenterIconAdmin,
+        title: "Help Center",
+        onTap: (val) => context.go('/help-admin'),
+        scaffoldKey: _scaffoldKey,
+      ),
+      */
                 ],
               ),
             ),

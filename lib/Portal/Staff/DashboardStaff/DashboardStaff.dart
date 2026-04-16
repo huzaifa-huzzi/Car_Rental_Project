@@ -38,8 +38,7 @@ class DashboardStaff extends StatelessWidget {
                 children: [
                   const SizedBox(height: 30),
 
-                  // TODO: Yahan aapne Stats Cards lagane hain
-                  // _buildStaffStatsGrid(context),
+                  Center(child: Text("Dashboard Staff Coming Soon"),),
 
                   SizedBox(height: baseVerticalSpace * 1.25),
                 ],

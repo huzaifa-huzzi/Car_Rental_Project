@@ -2,7 +2,7 @@
 import 'package:car_rental_project/Portal/Staff/CarInventoryStaff/CarInventoryStaff.dart';
 import 'package:car_rental_project/Portal/Staff/DashboardStaff/DashboardStaff.dart';
 import 'package:car_rental_project/Portal/Staff/PickupStaff/pickupStaff.dart';
-import 'package:car_rental_project/Portal/Staff/Setting/Setting.dart';
+import 'package:car_rental_project/Portal/Staff/Setting/SettingStaff.dart';
 import 'package:car_rental_project/Portal/Staff/SidebarStaff/SidebarStaff.dart';
 import 'package:car_rental_project/Portal/Staff/SidebarStaff/SidebarStaffController.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +44,7 @@ class StaffRoutes {
         // Settings
         GoRoute(
             path: '/settings-staff',
-            builder: (context, state) =>  SettingScreen()
+            builder: (context, state) =>  SettingStaffScreen()
         ),
       ],
     ),

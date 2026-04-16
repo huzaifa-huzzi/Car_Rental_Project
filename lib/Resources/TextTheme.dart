@@ -26,6 +26,14 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 22, 22, 32),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
 
+  static TextStyle hsettingsSelectedDesign(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12.25, 12.25, 12.25),fontWeight: FontWeight.w600,color: AppColors.textColor);
+  }
+
+  static TextStyle btnsettingsSelectedDesign(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12.25, 12.25, 12.25),fontWeight: FontWeight.w500,color: AppColors.tertiaryTextColor);
+  }
+
   static TextStyle h11Style(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 24, 28, 30),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
@@ -64,6 +72,10 @@ class TTextTheme {
 
   static TextStyle h6Style(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 16, 16, 20),fontWeight: FontWeight.w600,color: AppColors.textColor);
+  }
+
+  static TextStyle hSettingsgeneral(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 18, 20, 20),fontWeight: FontWeight.w500,color: AppColors.textColor);
   }
 
   static TextStyle hPickupStyle(BuildContext context){

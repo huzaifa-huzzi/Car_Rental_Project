@@ -629,7 +629,7 @@ class CompaniesAdminWidget extends StatelessWidget {
 
    // Add Button
   Widget _buildAddPaymentButton(BuildContext context, bool isFullWidth) {
-    return PrimaryButtonOfCompanies(
+    return PrimaryBtnOfCompanies(
       text: "Add Company",
       onTap: () =>  context.push('/addCompany'),
       width: isFullWidth ? double.infinity : 150,
@@ -729,7 +729,7 @@ class CompaniesAdminWidget extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 12),
-                        PrimaryButtonOfCompanies(
+                        PrimaryBtnOfCompanies(
                           text: "Cancel",
                           width: 110,
                           height: 40,
@@ -894,7 +894,7 @@ class CompaniesAdminWidget extends StatelessWidget {
     );
   }
   Widget _buildSuspendButton(BuildContext context) {
-    return PrimaryButtonOfCompanies(
+    return PrimaryBtnOfCompanies(
       text: "Suspend",
       height: 44,
       width: double.infinity,
@@ -996,7 +996,7 @@ class CompaniesAdminWidget extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 12),
-                        PrimaryButtonOfCompanies(
+                        PrimaryBtnOfCompanies(
                           text: "Cancel",
                           width: 110,
                           height: 40,

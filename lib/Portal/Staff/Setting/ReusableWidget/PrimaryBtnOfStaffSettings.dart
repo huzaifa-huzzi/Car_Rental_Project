@@ -4,7 +4,7 @@ import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 
 
-class PrimaryBtnOfCompanies extends StatelessWidget {
+class PrimaryBtnOfStaffSettings extends StatelessWidget {
   final String text;
   final double? height;
   final double? width;
@@ -13,7 +13,7 @@ class PrimaryBtnOfCompanies extends StatelessWidget {
   final Widget? icon;
   final bool isIconLeft;
 
-  const PrimaryBtnOfCompanies({
+  const PrimaryBtnOfStaffSettings({
     super.key,
     required this.text,
     required this.onTap,

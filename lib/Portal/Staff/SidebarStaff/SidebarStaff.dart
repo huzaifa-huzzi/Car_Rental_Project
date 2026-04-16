@@ -1,6 +1,3 @@
-
-
-
 import 'package:car_rental_project/Portal/Staff/SidebarStaff/SidebarStaffController.dart';
 import 'package:car_rental_project/Portal/Staff/SidebarStaff/Widget/MobileAppbarStaff.dart';
 import 'package:car_rental_project/Portal/Staff/SidebarStaff/Widget/SidebarComponentStaff.dart';
@@ -69,30 +66,35 @@ class SidebarStaff extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 shrinkWrap: true,
                 children: [
-                  SidebarComponentStaff.menuItemStaff( // 🟢 menuItemAdmin ki jagah menuItemStaff use karein
+                  SidebarComponentStaff.menuItemStaff(
                     context,
-                    controller, // Ab ye SidebarStaffController ko accept karega
+                    controller,
                     iconPath: IconString.dashboardAdmin,
                     title: "Dashboard",
                     onTap: (val) => context.go('/dashboard-staff'),
                     scaffoldKey: _scaffoldKey,
                   ),
-                  SidebarComponentStaff.menuItemStaff(
-                    context,
-                    controller,
-                    iconPath: IconString.carInventoryIcon, //
-                    title: "Car Inventory",
-                    onTap: (val) => context.go('/car-inventory'),
-                    scaffoldKey: _scaffoldKey,
-                  ),
-                  SidebarComponentStaff.menuItemStaff(
-                    context,
-                    controller,
-                    iconPath: IconString.agreementIcon, //
-                    title: "Pick up",
-                    onTap: (val) => context.go('/pickup-staff'),
-                    scaffoldKey: _scaffoldKey,
-                  ),
+
+                  //  Remaining items commented out
+
+                  /*
+      SidebarComponentStaff.menuItemStaff(
+        context,
+        controller,
+        iconPath: IconString.carInventoryIcon,
+        title: "Car Inventory",
+        onTap: (val) => context.go('/car-inventory'),
+        scaffoldKey: _scaffoldKey,
+      ),
+      SidebarComponentStaff.menuItemStaff(
+        context,
+        controller,
+        iconPath: IconString.agreementIcon,
+        title: "Pick up",
+        onTap: (val) => context.go('/pickup-staff'),
+        scaffoldKey: _scaffoldKey,
+      ),
+      */
                 ],
               ),
             ),

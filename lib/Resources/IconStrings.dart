@@ -161,4 +161,13 @@ class IconString {
   static const String  youtubeAdminIcon = 'assets/icons/Admin/youtubeAdmin.png';
   static const String  uploadedImageAdmin2 = 'assets/icons/Admin/UploadedImageAdmin.png';
   static const String  underMaintenanceIcon = 'assets/icons/Admin/underMaintenance.png';
+
+
+     /// Staff
+     // settings
+  static const String  changePasswordIcon = 'assets/icons/Staff/ChangePassword.png';
+  static const String  companyInfoIcon = 'assets/icons/Staff/companyInfo.png';
+  static const String  PersonalInfoStaff = 'assets/icons/Staff/PersonalInfoStaff.png';
+  static const String  SettingsEditIcon = 'assets/icons/Staff/SettingsEdit.png';
+  static const String  companyProfileSettings = 'assets/icons/Staff/CompanyProfile.png';
 }
