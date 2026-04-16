@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:car_rental_project/Portal/Admin/Companies/CompaniesController.dart';
+import 'package:car_rental_project/Portal/Admin/Companies/ReusableWidget/PrimaryButtonOfComapnies.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
@@ -223,37 +224,15 @@ class AddCompanyWidget extends StatelessWidget {
               context,
               title: TextString.AddcompanyTitle3,
               subtitle: TextString.AddcompanyTitle3Subtitle,
-              action: SizedBox(
-                height: 40,
-                width: 100,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:AppColors.primaryColor,
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    padding: EdgeInsets.zero,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(12),
-                        bottomLeft: Radius.circular(12),
-                      ),
-                    ),
-                  ),
-                  child:  Text(
-                    "Submit",
-                    style: TTextTheme.btnWhiteColor(context),
-                  ),
-                ),
-              ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (!isSingleColumn)
                     Row(
                       children: [
-                        Expanded(child: _buildDropdownWrapper(context, TextString.plan, "plan_drop", controller.selectedPlan, ["Monthly", "Yearly"], false)),
+                        Expanded(child: _buildDropdownWrapper(context, TextString.plan, "plan_drop", controller.selectedPlan, ["Monthly", "Yearly"], false, )),
                         const SizedBox(width: 20),
-                        Expanded(child: _buildDropdownWrapper(context, TextString.planStatus, "status_drop", controller.selectedPlanStatus, ["Demo", "Subscribed", "Overdue", "Cancelled"], false)),
+                        Expanded(child: _buildDropdownWrapper(context, TextString.planStatus, "status_drop", controller.selectedPlanStatus, ["Demo", "Subscribed", "Overdue", "Cancelled"], false, )),
                         const SizedBox(width: 20),
                         Expanded(
                           child: CompositedTransformTarget(
@@ -267,9 +246,9 @@ class AddCompanyWidget extends StatelessWidget {
                   else
                     Column(
                       children: [
-                        _buildDropdownWrapper(context, TextString.plan, "plan_drop", controller.selectedPlan, ["Monthly", "Yearly"], true),
+                        _buildDropdownWrapper(context, TextString.plan, "plan_drop", controller.selectedPlan, ["Monthly", "Yearly"], true,),
                         const SizedBox(height: 20),
-                        _buildDropdownWrapper(context, TextString.planStatus, "status_drop", controller.selectedPlanStatus, ["Demo", "Subscribed", "Overdue", "Cancelled"], true),
+                        _buildDropdownWrapper(context, TextString.planStatus, "status_drop", controller.selectedPlanStatus, ["Demo", "Subscribed", "Overdue", "Cancelled"], true,),
                         const SizedBox(height: 20),
                         CompositedTransformTarget(
                           link: controller.startDateLink,
@@ -280,7 +259,6 @@ class AddCompanyWidget extends StatelessWidget {
                     ),
 
                   const SizedBox(height: 20),
-
                   if (!isSingleColumn)
                     Row(
                       children: [
@@ -300,14 +278,26 @@ class AddCompanyWidget extends StatelessWidget {
                   else
                     CompositedTransformTarget(
                       link: controller.endDateLink,
-                      child: _buildDateFields(context,TextString.endingDate, controller.endDateController,
+                      child: _buildDateFields(context, TextString.endingDate, controller.endDateController,
                               () => controller.toggleCalendar(context, controller.endDateLink, controller.endDateController)),
                     ),
+
+                  const SizedBox(height: 32),
+                  Align(
+                    alignment: isSingleColumn ? Alignment.center : Alignment.centerRight,
+                    child: PrimaryBtnOfCompanies(
+                      text: "Submit",
+                      width: isSingleColumn ? double.infinity : 200,
+                      onTap: () {
+
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 240),
+            const SizedBox(height: 400),
 
           ],
         );
@@ -523,7 +513,6 @@ class AddCompanyWidget extends StatelessWidget {
     required String title,
     required String subtitle,
     required Widget child,
-    Widget? action,
   }) {
     return Container(
       width: double.infinity,
@@ -536,22 +525,24 @@ class AddCompanyWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 24, left: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title, style: TTextTheme.h2Style(context)),
-                    Text(subtitle, style: TTextTheme.bodyRegular16(context)),
-                  ],
+          Padding(
+            padding: const EdgeInsets.only(top: 24, left: 24, right: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TTextTheme.h2Style(context),
+                  softWrap: true,
                 ),
-              ),
-              if (action != null) action,
-            ],
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: TTextTheme.bodyRegular16(context),
+                  softWrap: true,
+                ),
+              ],
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(24),

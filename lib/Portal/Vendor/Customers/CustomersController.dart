@@ -1,4 +1,5 @@
 import 'package:car_rental_project/Portal/Vendor/Customers/ReusableWidgetOfCustomers/CustomCalendarSutomer.dart';
+import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -207,32 +208,13 @@ class CustomerController extends GetxController {
       TextEditingController targetController,
       ) {
     final screenSize = MediaQuery.of(context).size;
-    final renderBox = context.findRenderObject() as RenderBox;
-    final position = renderBox.localToGlobal(Offset.zero);
+    bool isMobile = screenSize.width < 600;
 
     double overlayWidth;
     if (screenSize.width < 400) {
       overlayWidth = screenSize.width * 0.9;
-    } else if (screenSize.width < 600) {
-      overlayWidth = 260;
-    } else if (screenSize.width < 1000) {
-      overlayWidth = 280;
     } else {
       overlayWidth = 300;
-    }
-
-    double dx = 0;
-    if (position.dx + overlayWidth > screenSize.width) {
-      dx = screenSize.width - (position.dx + overlayWidth) - 10;
-    }
-    if (position.dx + dx < 10) {
-      dx = -position.dx + 10;
-    }
-
-    double dy = 6;
-    double estimatedHeight = 320;
-    if (position.dy + estimatedHeight > screenSize.height) {
-      dy = -estimatedHeight - 10;
     }
 
     return OverlayEntry(
@@ -241,42 +223,55 @@ class CustomerController extends GetxController {
           Positioned.fill(
             child: GestureDetector(
               onTap: removeCalendar,
-              child: Container(color: Colors.transparent),
+              behavior: HitTestBehavior.opaque,
+              child: Container(color: AppColors.fieldsBackground.withOpacity(0.05)),
             ),
           ),
-          CompositedTransformFollower(
+          isMobile
+              ? Center(
+            child: Material(
+              elevation: 20,
+              borderRadius: BorderRadius.circular(12),
+              child: SizedBox(
+                width: overlayWidth,
+                child: _buildCalendarContent(overlayWidth, targetController),
+              ),
+            ),
+          )
+              : CompositedTransformFollower(
             link: link,
             showWhenUnlinked: false,
             targetAnchor: Alignment.bottomLeft,
-            followerAnchor: dy < 0 ? Alignment.bottomLeft : Alignment.topLeft,
-            offset: Offset(dx, dy),
+            followerAnchor: Alignment.topLeft,
+            offset: const Offset(0, 8),
             child: Material(
               elevation: 10,
               borderRadius: BorderRadius.circular(12),
-              color: Colors.white,
               child: SizedBox(
                 width: overlayWidth,
-                child: CustomCalendarCustomer(
-                  width: overlayWidth,
-                  allowFuture: targetController == licenseExpiryController,
-                  onCancel: removeCalendar,
-                  onDateSelected: (date) {
-                    String day = date.day.toString().padLeft(2, '0');
-                    String month = date.month.toString().padLeft(2, '0');
-
-                    if (targetController == selectedYearCarController) {
-                      targetController.text = "${date.year}";
-                    } else {
-                      targetController.text = "$day/$month/${date.year}";
-                    }
-                    removeCalendar();
-                  },
-                ),
+                child: _buildCalendarContent(overlayWidth, targetController),
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+  Widget _buildCalendarContent(double width, TextEditingController controller) {
+    return CustomCalendarCustomer(
+      width: width,
+      allowFuture: controller == licenseExpiryController,
+      onCancel: removeCalendar,
+      onDateSelected: (date) {
+        String day = date.day.toString().padLeft(2, '0');
+        String month = date.month.toString().padLeft(2, '0');
+        if (controller == selectedYearCarController) {
+          controller.text = "${date.year}";
+        } else {
+          controller.text = "$day/$month/${date.year}";
+        }
+        removeCalendar();
+      },
     );
   }
    /// StepTwoCustomer
