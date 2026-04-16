@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 
 
 class DashboardStaff extends StatelessWidget {
-  DashboardStaff({super.key});
+  const DashboardStaff({super.key});
 
 
   @override

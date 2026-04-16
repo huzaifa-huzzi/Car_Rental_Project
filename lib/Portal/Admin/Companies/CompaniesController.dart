@@ -1,5 +1,4 @@
 
-import 'dart:typed_data';
 import 'package:car_rental_project/Portal/Admin/Companies/ReusableWidget/CustomCalendarCompany.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';

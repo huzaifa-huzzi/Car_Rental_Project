@@ -223,7 +223,7 @@ class AddCompanyWidget extends StatelessWidget {
               context,
               title: TextString.AddcompanyTitle3,
               subtitle: TextString.AddcompanyTitle3Subtitle,
-              action: Container(
+              action: SizedBox(
                 height: 40,
                 width: 100,
                 child: ElevatedButton(
@@ -378,7 +378,7 @@ class AddCompanyWidget extends StatelessWidget {
         itemBuilder: (context) => items.map((e) => PopupMenuItem<String>(
           value: e,
           height: 45,
-          child: Container(
+          child: SizedBox(
             width: width,
             child: Text(
               e,

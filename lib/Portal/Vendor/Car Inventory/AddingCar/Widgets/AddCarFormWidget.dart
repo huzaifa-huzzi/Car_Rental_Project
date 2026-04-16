@@ -351,7 +351,7 @@ class AddCarFormWidget extends StatelessWidget {
                         ],
                       ),
                     );
-                  }).toList(),
+                  }),
                 ];
               },
             );

@@ -523,7 +523,7 @@ class CompaniesAdminWidget extends StatelessWidget {
       ),
     );
   }
-  Widget _cell(String? text,BuildContext context ,double width, {bool isHeader = false}) {
+  Widget _cell(String? text,BuildContext context ,double width) {
     return SizedBox(width: width, child: Text(text ?? "-", style: TTextTheme.tableRegular14black(context)));
   }
 

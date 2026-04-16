@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 
 class SettingStaffScreen extends StatelessWidget {
-  SettingStaffScreen({super.key});
+  const SettingStaffScreen({super.key});
 
 
 

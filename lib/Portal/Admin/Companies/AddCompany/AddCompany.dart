@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 
 class AddCompany extends StatelessWidget {
-  AddCompany({super.key});
+  const AddCompany({super.key});
 
 
 
