@@ -1,6 +1,7 @@
-import 'package:car_rental_project/Portal/Admin/Comapnies/CompaniesController.dart';
-import 'package:car_rental_project/Portal/Admin/Comapnies/ReusableWidget/PaginatioBarOfComapnies.dart';
-import 'package:car_rental_project/Portal/Admin/Comapnies/ReusableWidget/PrimaryButtonOfComapnies.dart';
+
+import 'package:car_rental_project/Portal/Admin/Companies/CompaniesController.dart';
+import 'package:car_rental_project/Portal/Admin/Companies/ReusableWidget/PaginatioBarOfComapnies.dart';
+import 'package:car_rental_project/Portal/Admin/Companies/ReusableWidget/PrimaryButtonOfComapnies.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextString.dart';

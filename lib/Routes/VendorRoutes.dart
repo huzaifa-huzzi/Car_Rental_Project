@@ -31,6 +31,8 @@ import 'package:car_rental_project/Portal/Vendor/PickupCar/Subtabs/Pickup%20T&C/
 import 'package:car_rental_project/Portal/Vendor/PickupCar/Subtabs/Pickup%20T&C/PickupT&CDescription.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/TableViewPicukUpScreen/TableViewPickUpScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/SideScreen/SidebarScreen.dart';
+import 'package:car_rental_project/Portal/Vendor/Staff/AddStaff/AddStaffScreen.dart';
+import 'package:car_rental_project/Portal/Vendor/Staff/EditStaff/EditStaffScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Staff/TableViewScreen/StaffScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -108,6 +110,10 @@ class VendorRoutes {
     GoRoute(path: '/dropOffT&C', builder: (context, state) => _wrapSidebar(state, DropOffTandC())),
     GoRoute(path: '/AdddropOffT&C', builder: (context, state) => _wrapSidebar(state, AddDropOffTandC())),
     GoRoute(path: '/dropOffT&Cdescription', builder: (context, state) => _wrapSidebar(state, DropOffTandCDescription())),
+
+     // Staff
+    GoRoute(path: '/EditStaffScreen', builder: (context, state) => _wrapSidebar(state, EditStaffScreen())),
+    GoRoute(path: '/addStaff', builder: (context, state) => _wrapSidebar(state, AddStaffScreen())),
 
     // Payment & Others
     GoRoute(path: '/AddPayment', builder: (context, state) => _wrapSidebar(state, AddPayment())),

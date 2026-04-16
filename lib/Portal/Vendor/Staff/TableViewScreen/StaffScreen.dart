@@ -29,7 +29,6 @@ class TableViewOfStaffScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: Column(
             children: [
-              if (AppSizes.isWeb(context))
                 if (AppSizes.isWeb(context))
                   HeaderWebStaffWidget(
                     mainTitle: 'List Staff',

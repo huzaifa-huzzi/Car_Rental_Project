@@ -1,5 +1,5 @@
-import 'package:car_rental_project/Portal/Admin/Comapnies/AddCompany/Widget/AddCompanyWidget.dart';
-import 'package:car_rental_project/Portal/Admin/Comapnies/ReusableWidget/HeaderWebCompaniesWidget.dart';
+import 'package:car_rental_project/Portal/Admin/Companies/AddCompany/Widget/AddCompanyWidget.dart';
+import 'package:car_rental_project/Portal/Admin/Companies/ReusableWidget/HeaderWebCompaniesWidget.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,6 @@ class AddCompany extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
             child: Column(
               children: [
-                if (AppSizes.isWeb(context))
                   if (AppSizes.isWeb(context))
                     HeaderWebCompaniesWidget(
                       mainTitle: 'Add Company',

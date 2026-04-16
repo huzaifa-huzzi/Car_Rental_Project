@@ -26,7 +26,7 @@ class AddCustomerWidget extends StatelessWidget {
 
     return Center(
       child: Container(
-        width: 800,
+        width: 1100,
         margin: EdgeInsets.all(AppSizes.padding(context)),
         padding: EdgeInsets.all(AppSizes.padding(context)),
         decoration: BoxDecoration(
@@ -409,7 +409,7 @@ class AddCustomerWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: TTextTheme.titleThree(context)),
+        Text(label, style: TTextTheme.titleTwo(context)),
         const SizedBox(height: 8),
         GestureDetector(
           onTap: onTap,
@@ -446,7 +446,7 @@ class AddCustomerWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: TTextTheme.titleThree(context)),
+        Text(label, style: TTextTheme.titleTwo(context)),
         const SizedBox(height: 8),
         GestureDetector(
           onTap: onTap,

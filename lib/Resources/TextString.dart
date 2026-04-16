@@ -90,7 +90,7 @@ class TextString {
   static const String    addCustomerUploadDocument = 'Upload Personal document (Gov. Id, Passport etc.  MAX6)';
   static const String    addCustomerCarDetails = 'Add Card Details';
   static const String    addCustomerPhotoText = 'Photo';
-  static const String    addCustomerPersonalDocumentText = 'Personal Documnet ';
+  static const String    addCustomerPersonalDocumentText = 'Documnet ';
   static const String    addCustomerCardNumber = 'Card number';
   static const String    addCustomerCardHolerName = 'Card Holder Name';
   static const String    addCustomerCardExpiry = 'Expiry';

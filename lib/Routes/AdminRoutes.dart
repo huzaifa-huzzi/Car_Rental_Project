@@ -1,7 +1,7 @@
 import 'package:car_rental_project/Portal/Admin/Branding/Branding.dart';
-import 'package:car_rental_project/Portal/Admin/Comapnies/AddCompany/AddCompany.dart';
-import 'package:car_rental_project/Portal/Admin/Comapnies/Comapnies.dart';
-import 'package:car_rental_project/Portal/Admin/Comapnies/CompanyDetail/CompanyDetailScreen.dart';
+import 'package:car_rental_project/Portal/Admin/Companies/AddCompany/AddCompany.dart';
+import 'package:car_rental_project/Portal/Admin/Companies/Comapnies.dart';
+import 'package:car_rental_project/Portal/Admin/Companies/CompanyDetail/CompanyDetailScreen.dart';
 import 'package:car_rental_project/Portal/Admin/DashboardAdmin/DashboardAdmin.dart';
 import 'package:car_rental_project/Portal/Admin/HelpandCenter/HelpCenter.dart';
 import 'package:car_rental_project/Portal/Admin/PaymentAdmin/PaymentAdmin.dart';

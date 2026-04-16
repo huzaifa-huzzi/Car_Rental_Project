@@ -26,7 +26,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: Column(
             children: [
-              if (AppSizes.isWeb(context))
                 if (AppSizes.isWeb(context))
                   HeaderWebDashboardWidget(
                     mainTitle: 'Dashboard',

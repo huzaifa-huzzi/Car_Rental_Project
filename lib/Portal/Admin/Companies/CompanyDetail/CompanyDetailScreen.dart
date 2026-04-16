@@ -1,20 +1,18 @@
-import 'package:car_rental_project/Portal/Admin/Comapnies/CompaniesController.dart';
-import 'package:car_rental_project/Portal/Admin/Comapnies/ReusableWidget/HeaderWebCompaniesWidget.dart';
-import 'package:car_rental_project/Portal/Admin/Comapnies/Widget/CompaniesAdminWidget.dart';
+import 'package:car_rental_project/Portal/Admin/Companies/CompaniesController.dart';
+import 'package:car_rental_project/Portal/Admin/Companies/CompanyDetail/Widget/CompanyDetailScreenWidget.dart';
+import 'package:car_rental_project/Portal/Admin/Companies/ReusableWidget/HeaderWebCompaniesWidget.dart';
+import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ComapaniesAdmin extends StatelessWidget {
-  ComapaniesAdmin({super.key});
+class CompaniesDetail extends StatelessWidget {
+  CompaniesDetail({super.key});
 
   final controller = Get.put(CompaniesAdminController());
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = AppSizes.isMobile(context);
-    final tablePadding = AppSizes.padding(context);
     final horizontalPadding = AppSizes.horizontalPadding(context);
     final baseVerticalSpace = AppSizes.verticalPadding(context);
 
@@ -27,17 +25,17 @@ class ComapaniesAdmin extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
             child: Column(
               children: [
-                if (AppSizes.isWeb(context))
                   if (AppSizes.isWeb(context))
                     HeaderWebCompaniesWidget(
-                      mainTitle: 'Companies',
+                      mainTitle: 'Companies Detail',
+                      showBack: true,
                       showProfile: true,
                       showNotification: true,
                       showSettings: true,
-                      showSearch: true,
+                      showSearch: false,
                     ),
                 const SizedBox(height: 30),
-                CompaniesAdminWidget(),
+                CompaniesDetailScreenWidget(),
                 SizedBox(height: baseVerticalSpace * 1.25),
               ],
             ),

@@ -150,7 +150,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: _buildSocialButton("Google", IconString.googleIcon),
                             ),
                             const SizedBox(height: 15),
-                            _buildSocialButton("Apple", IconString.appleIcon),
+                            GestureDetector(
+                              onTap: () {
+                                context.go('/dashboard-staff');
+                              },
+                              child: _buildSocialButton("Apple", IconString.appleIcon),
+                            )
                           ],
                         )
                             : Row(
@@ -165,7 +170,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             const SizedBox(width: 15),
                             Expanded(
-                              child: _buildSocialButton("Apple", IconString.appleIcon),
+                              child: GestureDetector(
+                                onTap: () {
+                                  context.go("/dashboard-staff");
+                                },
+                                child: _buildSocialButton("Apple", IconString.appleIcon),
+                              )
                             ),
                           ],
                         ),

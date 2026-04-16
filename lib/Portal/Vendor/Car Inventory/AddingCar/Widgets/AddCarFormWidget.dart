@@ -25,7 +25,7 @@ class AddCarFormWidget extends StatelessWidget {
 
     return Center(
       child: Container(
-        width:1000,
+        width:1100,
         margin: EdgeInsets.all(AppSizes.padding(context)),
         padding: EdgeInsets.all(AppSizes.padding(context)),
         decoration: BoxDecoration(

@@ -84,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         const SizedBox(height: 18),
 
                         _buildLabel(TextString.companyName),
-                        _buildTextField(hint: "SoftSnip", textController: controller.nameRegisterController),
+                        _buildTextField(hint: "SoftSnip", textController: controller.companyNameController),
                         const SizedBox(height: 18),
 
                         _buildLabel(TextString.registerEmail),
