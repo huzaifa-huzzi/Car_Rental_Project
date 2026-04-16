@@ -137,106 +137,6 @@ class AddCarFormWidget extends StatelessWidget {
 
   /// ---------- Extra Widgets  --------///
 
-  // _buildDropdown Widget
-  Widget _buildDropdown(
-      BuildContext context,
-      String label,
-      List<String> items,
-      RxString selected, {
-        required String id,
-      }) {
-    return Obx(() {
-      bool isOpen = controller.openedDropdown.value == id;
-
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label, style: TTextTheme.titleTwo(context)),
-          const SizedBox(height: 6),
-
-          LayoutBuilder(builder: (context, constraints) {
-            return PopupMenuButton<String>(
-              constraints: BoxConstraints(
-                minWidth: constraints.maxWidth,
-                maxWidth: constraints.maxWidth,
-              ),
-              offset: const Offset(0, 45),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              color: AppColors.secondaryColor,
-              elevation: 4,
-              tooltip: '',
-              onOpened: () => controller.openedDropdown.value = id,
-              onCanceled: () => controller.openedDropdown.value = "",
-              onSelected: (value) {
-                selected.value = value;
-                controller.openedDropdown.value = "";
-              },
-              child: Container(
-                height: 45,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(
-                  color: AppColors.secondaryColor,
-                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        selected.value.isEmpty ? "Select" : selected.value,
-                        style: selected.value.isEmpty
-                            ? TTextTheme.titleFour(context)
-                            : TTextTheme.dropdowninsideText(context),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Image.asset(
-                      isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon,
-                      height: 18,
-                    ),
-                  ],
-                ),
-              ),
-              itemBuilder: (context) {
-                return items.asMap().entries.map((entry) {
-                  int index = entry.key;
-                  String value = entry.value;
-                  bool isLast = index == items.length - 1;
-
-                  return PopupMenuItem<String>(
-                    value: value,
-                    padding: EdgeInsets.zero,
-                    height: 48,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                          child: Text(
-                            value,
-                            style: TTextTheme.dropdowninsideText(context),
-                          ),
-                        ),
-                        if (!isLast)
-                          Divider(
-                            height: 1,
-                            thickness: 1,
-                            color: AppColors.quadrantalTextColor,
-                            indent: 0,
-                            endIndent: 0,
-                          ),
-                      ],
-                    ),
-                  );
-                }).toList();
-              },
-            );
-          }),
-        ],
-      );
-    });
-  }
 
   //  Section Title Widget
   Widget _buildSectionTitle(BuildContext context, String title) {
@@ -250,13 +150,25 @@ class AddCarFormWidget extends StatelessWidget {
   Widget _buildResponsiveGrid(BuildContext context, List<Widget> children) {
     return LayoutBuilder(builder: (context, constraints) {
       double spacing = AppSizes.padding(context);
-      int columns = constraints.maxWidth > 600 ? 3 : 2;
-      double itemWidth = (constraints.maxWidth - (spacing * (columns - 1))) / columns;
+
+      int columns;
+      if (AppSizes.isMobile(context)) {
+        columns = 1;
+      } else if (constraints.maxWidth > 900) {
+        columns = 3;
+      } else {
+        columns = 2;
+      }
+
+      double itemWidth =
+          (constraints.maxWidth - (spacing * (columns - 1))) / columns;
 
       return Wrap(
         spacing: spacing,
         runSpacing: 18,
-        children: children.map((child) => SizedBox(width: itemWidth, child: child)).toList(),
+        children: children
+            .map((child) => SizedBox(width: itemWidth, child: child))
+            .toList(),
       );
     });
   }

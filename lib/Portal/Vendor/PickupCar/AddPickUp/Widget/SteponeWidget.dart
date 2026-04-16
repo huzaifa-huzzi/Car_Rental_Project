@@ -274,25 +274,30 @@ class StepOneSelectionWidget extends StatelessWidget {
                                         children: [
                                           _buildMiniInputField(TextString.titleAddCarReportInputFieldOne, TextString.subtitleAddCarReportInputFieldOne, itemWidth, controller.odoAddController,context),
                                           _buildReportDropdown(
-                                             TextString.titleAddCarReportInputFieldTwo,
-                                              ["Full 100%", "High 75%", "Half 50%", "Low 25%","Empty 0%"],
-                                              itemWidth,
-                                              controller.fuelLevelAddController,
-                                              context
+                                            TextString.titleAddCarReportInputFieldTwo,
+                                            ["Full 100%", "High 75%", "Half 50%", "Low 25%", "Empty 0%"],
+                                            itemWidth,
+                                            controller.fuelLevelAddController,
+                                            context,
+                                            id: "fuel_dropdown",
                                           ),
+
                                           _buildReportDropdown(
-                                              TextString.titleAddCarReportInputFieldThree,
-                                              ["Excellent", "Good", "Average", "Dirt"],
-                                              itemWidth,
-                                              controller.interiorCleanlinessAddController,
-                                              context
+                                            TextString.titleAddCarReportInputFieldThree,
+                                            ["Excellent", "Good", "Average", "Dirt"],
+                                            itemWidth,
+                                            controller.interiorCleanlinessAddController,
+                                            context,
+                                            id: "interior_dropdown",
                                           ),
+
                                           _buildReportDropdown(
-                                              TextString.titleAddCarReportInputFieldFour,
-                                              ["Excellent", "Good", "Average", "Dirty"],
-                                              itemWidth,
-                                              controller.exteriorCleanlinessAddController,
-                                              context
+                                            TextString.titleAddCarReportInputFieldFour,
+                                            ["Excellent", "Good", "Average", "Dirty"],
+                                            itemWidth,
+                                            controller.exteriorCleanlinessAddController,
+                                            context,
+                                            id: "exterior_dropdown",
                                           ),
                                         ],
                                       );
@@ -1382,86 +1387,125 @@ class StepOneSelectionWidget extends StatelessWidget {
       ),
     );
   }
-  Widget _buildReportDropdown(String label, List<String> items, double width, TextEditingController txtController, BuildContext context) {
-    return SizedBox(
-      width: width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: TTextTheme.titleTwo(context),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 8),
-          PopupMenuButton<String>(
-            offset: const Offset(0, 45),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            color: AppColors.secondaryColor,
-            constraints: BoxConstraints(minWidth: width, maxWidth: width),
-            onSelected: (val) {
-              txtController.text = val;
-              txtController.notifyListeners();
-            },
-            itemBuilder: (context) => items.asMap().entries.map((entry) {
-              return _buildFilterPopupItem(entry.value, context, isLast: entry.key == items.length - 1);
-            }).toList(),
-            child: Container(
-              height: 45,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: AppColors.secondaryColor,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: ValueListenableBuilder(
-                      valueListenable: txtController,
-                      builder: (context, value, _) {
-                        return Text(
-                          txtController.text.isEmpty ? items.first : txtController.text,
-                          style: TTextTheme.insidetextfieldWrittenText(context),
-                          overflow: TextOverflow.ellipsis,
-                        );
-                      },
-                    ),
-                  ),
-                  const Icon(Icons.keyboard_arrow_down, color: AppColors.textColor, size: 20),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-  PopupMenuItem<String> _buildFilterPopupItem(String text, BuildContext context, {bool isLast = false}) {
-    return PopupMenuItem<String>(
-      value: text,
-      padding: EdgeInsets.zero,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: Text(
-              text,
+  Widget _buildReportDropdown(
+      String label,
+      List<String> items,
+      double width,
+      TextEditingController txtController,
+      BuildContext context,
+      {required String id}
+      ) {
+    return Obx(() {
+      bool isOpen = controller.openedDropdown2.value == id;
+
+      return SizedBox(
+        width: width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
               style: TTextTheme.titleTwo(context),
             ),
-          ),
-          if (!isLast)
-            Divider(
-              height: 1,
-              thickness: 0.5,
-              color: AppColors.quadrantalTextColor,
-            ),
-        ],
-      ),
-    );
+            const SizedBox(height: 6),
+
+            LayoutBuilder(builder: (context, constraints) {
+              return PopupMenuButton<String>(
+                constraints: BoxConstraints(
+                  minWidth: constraints.maxWidth,
+                  maxWidth: constraints.maxWidth,
+                ),
+                offset: const Offset(0, 48),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                color: Colors.white,
+                onOpened: () => controller.openedDropdown2.value = id,
+                onCanceled: () => controller.openedDropdown2.value = "",
+                onSelected: (val) {
+                  txtController.text = val;
+                  txtController.notifyListeners();
+                  controller.openedDropdown2.value = "";
+                },
+                child: Container(
+                  height: 48,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    color: AppColors.secondaryColor,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ValueListenableBuilder(
+                          valueListenable: txtController,
+                          builder: (context, value, _) {
+                            return Text(
+                              txtController.text.isEmpty
+                                  ? items.first
+                                  : txtController.text,
+                              style: TTextTheme.insidetextfieldWrittenText(context),
+                            );
+                          },
+                        ),
+                      ),
+                      Image.asset(
+                        isOpen
+                            ? IconString.upsideDropdownIcon
+                            : IconString.dropdownIcon,
+                        height: 18,
+                      ),
+                    ],
+                  ),
+                ),
+                itemBuilder: (context) {
+                  return items.map((item) {
+                    bool isSelected = txtController.text == item;
+
+                    return PopupMenuItem<String>(
+                      value: item,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 22,
+                            height: 22,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: isSelected
+                                  ? AppColors.primaryColor
+                                  : Colors.transparent,
+                              border: Border.all(
+                                color: AppColors.primaryColor,
+                                width: 2,
+                              ),
+                            ),
+                            child: isSelected
+                                ? const Center(
+                              child: Icon(
+                                Icons.done,
+                                color: Colors.white,
+                                size: 14,
+                              ),
+                            )
+                                : null,
+                          ),
+
+                          const SizedBox(width: 12),
+                          Text(
+                            item,
+                            style: TTextTheme.medium14(context),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList();
+                },
+              );
+            }),
+          ],
+        ),
+      );
+    });
   }
 
 

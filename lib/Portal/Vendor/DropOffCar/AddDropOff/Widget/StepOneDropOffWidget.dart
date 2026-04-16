@@ -1418,7 +1418,13 @@ class AddDropOffDetailWidget extends StatelessWidget {
       ),
     );
   }
-  Widget _buildReportDropdown(String label, List<String> items, double width, TextEditingController txtController, BuildContext context) {
+  Widget _buildReportDropdown(
+      String label,
+      List<String> items,
+      double width,
+      TextEditingController txtController,
+      BuildContext context,
+      ) {
     return SizedBox(
       width: width,
       child: Column(
@@ -1431,26 +1437,65 @@ class AddDropOffDetailWidget extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 8),
+
           PopupMenuButton<String>(
-            initialValue: null,
             offset: const Offset(0, 40),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            color: AppColors.secondaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            color: Colors.white,
+
             constraints: BoxConstraints(
               minWidth: width,
               maxWidth: width,
             ),
+
             onSelected: (val) {
               txtController.text = val;
               txtController.notifyListeners();
             },
-            itemBuilder: (context) => items.asMap().entries.map((entry) {
-              return _buildFilterPopupItem(
-                  entry.value,
-                  context,
-                  isLast: entry.key == items.length - 1
-              );
-            }).toList(),
+            itemBuilder: (context) {
+              return items.map((item) {
+                bool isSelected = txtController.text == item;
+
+                return PopupMenuItem<String>(
+                  value: item,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: isSelected
+                              ? AppColors.primaryColor
+                              : Colors.transparent,
+                          border: Border.all(
+                            color: AppColors.primaryColor,
+                            width: 2,
+                          ),
+                        ),
+                        child: isSelected
+                            ? const Icon(
+                          Icons.done,
+                          size: 14,
+                          color: Colors.white,
+                        )
+                            : null,
+                      ),
+
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          item,
+                          style: TTextTheme.titleTwo(context),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList();
+            },
             child: Container(
               height: 38,
               padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -1466,43 +1511,23 @@ class AddDropOffDetailWidget extends StatelessWidget {
                       valueListenable: txtController,
                       builder: (context, value, _) {
                         return Text(
-                          txtController.text.isEmpty ? items.first : txtController.text,
+                          txtController.text.isEmpty
+                              ? items.first
+                              : txtController.text,
                           style: TTextTheme.dropdowninsideText(context),
                           overflow: TextOverflow.ellipsis,
                         );
                       },
                     ),
                   ),
-                  Image.asset(IconString.dropdownIcon, color: Colors.black),
+                  Image.asset(
+                    IconString.dropdownIcon,
+                    color: Colors.black,
+                  ),
                 ],
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-  PopupMenuItem<String> _buildFilterPopupItem(String text, BuildContext context, {bool isLast = false}) {
-    return PopupMenuItem<String>(
-      value: text,
-      padding: EdgeInsets.zero,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: Text(
-              text,
-              style: TTextTheme.titleTwo(context),
-            ),
-          ),
-          if (!isLast)
-            Divider(
-              height: 1,
-              thickness: 0.5,
-              color: AppColors.quadrantalTextColor,
-            ),
         ],
       ),
     );

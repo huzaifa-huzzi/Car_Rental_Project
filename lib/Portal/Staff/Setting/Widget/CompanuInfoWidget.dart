@@ -33,7 +33,7 @@ class CompanyInfoWidget extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Wrap(
+              child: Obx(() => Wrap(
                 spacing: 20,
                 runSpacing: 15,
                 alignment: WrapAlignment.spaceBetween,
@@ -61,7 +61,7 @@ class CompanyInfoWidget extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                             TextString.CompanyProfileTitle,
+                              TextString.CompanyProfileTitle,
                               style: TTextTheme.UploadText(context),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -76,19 +76,33 @@ class CompanyInfoWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  PrimaryBtnOfStaffSettings(
-                    text: "Edit Info",
-                    width: isMobile ? 200 : 160,
-                    onTap: () {},
-                    icon: Image.asset(
-                        IconString.SettingsEditIcon,
-                        color: Colors.white,
-                        width: 20
+                  if (controller.selectedSubTabIndex.value == 0)
+                    controller.isEditing.value
+                        ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        PrimaryBtnOfStaffSettings(
+                          text: "Back",
+                          width: 100,
+                          onTap: () => controller.toggleEdit(false),
+                        ),
+                        const SizedBox(width: 10),
+                        PrimaryBtnOfStaffSettings(
+                          text: "Save Info",
+                          width: 120,
+                          onTap: () => controller.toggleEdit(false),
+                        ),
+                      ],
+                    )
+                        : PrimaryBtnOfStaffSettings(
+                      text: "Edit Info",
+                      width: isMobile ? 200 : 160,
+                      onTap: () => controller.toggleEdit(true),
+                      icon: Image.asset(IconString.SettingsEditIcon, color: Colors.white, width: 20),
+                      isIconLeft: true,
                     ),
-                    isIconLeft: true,
-                  ),
                 ],
-              ),
+              )),
             ),
 
             const SizedBox(height: 25),
@@ -123,7 +137,7 @@ class CompanyInfoWidget extends StatelessWidget {
     );
   }
 
-  /// ------------ Extra Widgets ------
+  /// --------- Extra Widget-------
 
   // General Information
   Widget _buildCompanyGeneralForm(BuildContext context, SettingStaffController controller) {
@@ -144,9 +158,13 @@ class CompanyInfoWidget extends StatelessWidget {
             [TextString.companyPersonal4, "1234567-8"],
             [TextString.companyPersonal5, "1234567-8"],
             [TextString.companyPersonal6, "1234567-8"],
-          ], isMobile),
+          ], isMobile, isEnabled: controller.isEditing.value),
           const SizedBox(height: 24),
-          _buildAnimatedField(context,TextString.companyPersonal7, "https://softsnip.au", controller, isFullWidth: true),
+          _buildAnimatedField(
+              context, TextString.companyPersonal7, "https://softsnip.au", controller,
+              isFullWidth: true,
+              isEnabled: controller.isEditing.value
+          ),
         ],
       ),
     );
@@ -171,17 +189,85 @@ class CompanyInfoWidget extends StatelessWidget {
             [TextString.adressPersonal4, "6000"],
             [TextString.adressPersonal5, "123 Hay Street"],
             [TextString.adressPersonal6, "https://softsnip.au"],
-          ], isMobile),
+          ], isMobile, isEnabled: false),
         ],
       ),
     );
   }
 
-  // Subtabs
+  // Responsive Grids
+  Widget _buildResponsiveGrid(BuildContext context, SettingStaffController controller, List<List<String>> fields, bool isMobile, {bool isEnabled = true}) {
+    List<Widget> rows = [];
+    for (int i = 0; i < fields.length; i += (isMobile ? 1 : 2)) {
+      if (isMobile) {
+        rows.add(_buildAnimatedField(context, fields[i][0], fields[i][1], controller, isEnabled: isEnabled));
+      } else {
+        rows.add(Row(children: [
+          Expanded(child: _buildAnimatedField(context, fields[i][0], fields[i][1], controller, isEnabled: isEnabled)),
+          const SizedBox(width: 24),
+          if (i + 1 < fields.length)
+            Expanded(child: _buildAnimatedField(context, fields[i + 1][0], fields[i + 1][1], controller, isEnabled: isEnabled))
+          else
+            const Expanded(child: SizedBox()),
+        ]));
+      }
+      rows.add(const SizedBox(height: 20));
+    }
+    return Column(children: rows);
+  }
+
+  // Animated Fields
+  Widget _buildAnimatedField(BuildContext context, String label, String hint, SettingStaffController controller, {bool isFullWidth = false, bool isEnabled = true}) {
+    Widget field = TextFormField(
+      cursorColor: AppColors.blackColor,
+      enabled: isEnabled,
+      initialValue: hint,
+      onTap: isEnabled ? () => controller.setFocus(label) : null,
+      onFieldSubmitted: (_) => controller.clearFocus(),
+      onTapOutside: (_) => controller.clearFocus(),
+      style: TTextTheme.titleinputTextField(context),
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: AppColors.toolBackground)),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: AppColors.toolBackground)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: AppColors.toolBackground)),
+        disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: AppColors.toolBackground)),
+      ),
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: TTextTheme.tableRegular14black(context)),
+        const SizedBox(height: 8),
+        isEnabled
+            ? Obx(() => Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: controller.focusedField.value == label
+                ? [BoxShadow(color: AppColors.fieldsBackground.withOpacity(0.06), blurRadius: 10, offset: const Offset(0, 4))]
+                : [],
+          ),
+          child: field,
+        ))
+            : Container(
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+          child: field,
+        ),
+      ],
+    );
+  }
+
+   // Sub Tabs
   Widget _buildSubTab(BuildContext context, String title, int index, SettingStaffController controller) {
     bool isActive = controller.selectedSubTabIndex.value == index;
     return GestureDetector(
-      onTap: () => controller.changeSubTab(index),
+      onTap: () {
+        controller.changeSubTab(index);
+        controller.toggleEdit(false);
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
@@ -190,47 +276,6 @@ class CompanyInfoWidget extends StatelessWidget {
         ),
         child: Text(title, style: isActive ? TTextTheme.bodyRegular14TabsSelected(context) : TTextTheme.bodyRegular14(context)),
       ),
-    );
-  }
-
-   // Responsive Grids
-  Widget _buildResponsiveGrid(BuildContext context, SettingStaffController controller, List<List<String>> fields, bool isMobile) {
-    List<Widget> rows = [];
-    for (int i = 0; i < fields.length; i += (isMobile ? 1 : 2)) {
-      if (isMobile) {
-        rows.add(_buildAnimatedField(context, fields[i][0], fields[i][1], controller));
-      } else {
-        rows.add(Row(children: [
-          Expanded(child: _buildAnimatedField(context, fields[i][0], fields[i][1], controller)),
-          const SizedBox(width: 24),
-          if (i + 1 < fields.length) Expanded(child: _buildAnimatedField(context, fields[i + 1][0], fields[i + 1][1], controller)) else const Expanded(child: SizedBox()),
-        ]));
-      }
-      rows.add(const SizedBox(height: 20));
-    }
-    return Column(children: rows);
-  }
-
-  // Fields
-  Widget _buildAnimatedField(BuildContext context, String label, String hint, SettingStaffController controller, {bool isFullWidth = false}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: TTextTheme.tableRegular14black(context)),
-        const SizedBox(height: 8),
-        TextFormField(
-          initialValue: hint,
-          style: TTextTheme.titleinputTextField(context),
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Colors.white,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: AppColors.toolBackground)),
-            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: AppColors.toolBackground)),
-            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: AppColors.primaryColor)),
-          ),
-        ),
-      ],
     );
   }
 }

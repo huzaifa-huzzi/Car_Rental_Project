@@ -39,6 +39,23 @@ class PickupCarController extends GetxController {
   final ScrollController customerScrollController = ScrollController();
   final ScrollController carScrollController = ScrollController();
 
+  RxString openedDropdown2 = "".obs;
+
+  void openDropdown(String id) {
+    openedDropdown2.value = id;
+  }
+
+  void closeDropdown() {
+    openedDropdown2.value = "";
+  }
+  void toggleDropdown(String id) {
+    if (openedDropdown2.value == id) {
+      openedDropdown2.value = "";
+    } else {
+      openedDropdown2.value = id;
+    }
+  }
+
   void toggleFilter() {
     isFilterOpen.value = !isFilterOpen.value;
   }
