@@ -66,12 +66,12 @@ class AddCarFormWidget extends StatelessWidget {
               _buildSectionTitle(context, "Car Specification"),
               const SizedBox(height: 15),
               _buildResponsiveGrid(context, [
-                _buildSearchCarDropdown(context, "Car Body Type", controller.selectedBodyType, id: 'body'),
-                _buildSearchCarDropdown(context, "Car Transmission", controller.selectedTransmission, id: 'trans'),
+                _buildSearchCarDropdown2(context, "Car Body Type", controller.selectedBodyType, id: 'body'),
+                _buildSearchCarDropdown2(context, "Car Transmission", controller.selectedTransmission, id: 'trans'),
                 _buildTextField(context, "Car Seats", controller.seatsController, hint: "Write Car Seats..."),
                 _buildTextField(context, "Car Engine Size", controller.engineController, hint: "Write Engine Size..."),
                 _buildTextField(context, "Car Color", controller.colorController, hint: "Write Color name OR Code..."),
-                _buildSearchCarDropdown(context, "Car Fuel Type", controller.selectedFuel, id: 'fuel'),
+                _buildSearchCarDropdown2(context, "Car Fuel Type", controller.selectedFuel, id: 'fuel'),
                 _buildTextField(context, "Car Value", controller.valueController, prefix: "\$ ", hint: "Car Value...."),
                 _buildTextField(context, "Weekly Rent (AUD)", controller.weeklyRentController, prefix: "\$ "),
                 _buildStatusDropdown(
@@ -233,6 +233,7 @@ class AddCarFormWidget extends StatelessWidget {
     );
   }
 
+   //Dropdowns
   Widget _buildSearchCarDropdown(BuildContext context, String label, RxString selected, {required String id}) {
     return Obx(() {
       bool isOpen = controller.openedDropdown3.value == id;
@@ -353,6 +354,99 @@ class AddCarFormWidget extends StatelessWidget {
                     );
                   }),
                 ];
+              },
+            );
+          }),
+        ],
+      );
+    });
+  }
+  Widget _buildSearchCarDropdown2(BuildContext context, String label, RxString selected, {required String id}) {
+    return Obx(() {
+      bool isOpen = controller.openedDropdown3.value == id;
+      List<String> items = controller.getFilteredItems(id);
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: TTextTheme.titleTwo(context)),
+          const SizedBox(height: 6),
+          LayoutBuilder(builder: (context, constraints) {
+            return PopupMenuButton<String>(
+              constraints: BoxConstraints(minWidth: constraints.maxWidth, maxWidth: constraints.maxWidth),
+              offset: const Offset(0, 48),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              color: Colors.white,
+              onOpened: () => controller.openedDropdown3.value = id,
+              onCanceled: () {
+                controller.openedDropdown3.value = "";
+                controller.searchCarText.value = "";
+              },
+              onSelected: (val) {
+                selected.value = val;
+                if (id == 'search_car') {
+                  controller.selectedModel.value = "";
+                }
+                controller.openedDropdown3.value = "";
+                controller.searchCarText.value = "";
+              },
+              child: Container(
+                height: 48,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: AppColors.secondaryColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        selected.value.isEmpty ? "Search $label..." : selected.value,
+                        style: TTextTheme.pOne(context),
+                      ),
+                    ),
+                    Image.asset(isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon, height: 18),
+                  ],
+                ),
+              ),
+              itemBuilder: (context) {
+                return items.map((item) {
+                  bool isSelected = selected.value == item;
+
+                  return PopupMenuItem<String>(
+                    value: item,
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 22,
+                          height: 22,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                            border: Border.all(
+                              color: AppColors.primaryColor,
+                              width: 2,
+                            ),
+                          ),
+                          child: isSelected
+                              ? const Center(
+                            child: Icon(
+                              Icons.done,
+                              color: Colors.white,
+                              size: 14,
+                            ),
+                          )
+                              : null,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          item,
+                          style: TTextTheme.medium14(context),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList();
               },
             );
           }),

@@ -2,6 +2,7 @@ import 'package:car_rental_project/Portal/Vendor/Customers/CustomersController.d
 import 'package:car_rental_project/Portal/Vendor/Customers/ReusableWidgetOfCustomers/HeaderWebCustomersWidget.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -101,15 +102,7 @@ class StepTwoCustomerWidget extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: AppColors.signaturePadColor,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.primaryColor),
-              ),
-              child: Icon(Icons.add, color: AppColors.primaryColor, size: 24),
-            ),
+            Image.asset(IconString.credentialsIcon),
             const SizedBox(height: 20),
             Text(
               TextString.clickHereTogenerate,
@@ -146,14 +139,7 @@ class StepTwoCustomerWidget extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppColors.primaryColor.withOpacity(0.1),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(Icons.check_circle_outline, color: AppColors.primaryColor, size: 32),
-          ),
+          Image.asset(IconString.credentialsIcon),
           const SizedBox(height: 16),
           Text(TextString.credentialsGenerated,
               style: TTextTheme.hnotes(context)),
@@ -340,7 +326,7 @@ class StepTwoCustomerWidget extends StatelessWidget {
         width: buttonWidth,
         height: 45,
         child: ElevatedButton.icon(
-          onPressed: () => controller.saveCustomer(),
+          onPressed: () => controller.saveCustomer(context),
           icon: const Icon(Icons.file_upload_outlined, color: Colors.white, size: 18),
           label: const Text("Save Customer", style: TextStyle(color: Colors.white)),
           style: ElevatedButton.styleFrom(

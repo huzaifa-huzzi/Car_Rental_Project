@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb, Uint8List;
+import 'package:go_router/go_router.dart';
 
 class DocumentHolder {
   final Uint8List? bytes;
@@ -276,7 +277,7 @@ class CustomerController extends GetxController {
   }
    /// StepTwoCustomer
   var isCredentialsGenerated = false.obs;
-  var userName = "talha bukhari".obs;
+  var userName = "talhabukhari".obs;
   var password = "5ellostore.".obs;
   var isPasswordVisible = false.obs;
   void generateCredentials() {
@@ -285,9 +286,8 @@ class CustomerController extends GetxController {
   void regeneratePassword() {
     password.value = "newpassword123";
   }
-  void saveCustomer() {
-
-    Get.back();
+  void saveCustomer(BuildContext context) {
+    context.pop();
   }
   var isPasswordHidden = true.obs;
   void togglePasswordVisibility() {
