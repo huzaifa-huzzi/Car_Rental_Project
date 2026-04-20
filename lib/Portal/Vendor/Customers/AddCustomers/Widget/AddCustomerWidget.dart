@@ -26,7 +26,7 @@ class AddCustomerWidget extends StatelessWidget {
 
     return Center(
       child: Container(
-        width: 1100,
+        width: double.infinity,
         margin: EdgeInsets.all(AppSizes.padding(context)),
         padding: EdgeInsets.all(AppSizes.padding(context)),
         decoration: BoxDecoration(
