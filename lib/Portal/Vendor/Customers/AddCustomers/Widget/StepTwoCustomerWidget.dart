@@ -326,7 +326,15 @@ class StepTwoCustomerWidget extends StatelessWidget {
         width: buttonWidth,
         height: 45,
         child: ElevatedButton.icon(
-          onPressed: () => controller.saveCustomer(context),
+    onPressed: () async {
+    showSavingDialog(context);
+
+    try {
+    await controller.saveCustomer(context);
+    } catch (e) {
+    print("Error: $e");
+    }
+    },
           icon: const Icon(Icons.file_upload_outlined, color: Colors.white, size: 18),
           label: const Text("Save Customer", style: TextStyle(color: Colors.white)),
           style: ElevatedButton.styleFrom(
@@ -337,5 +345,156 @@ class StepTwoCustomerWidget extends StatelessWidget {
       ),
     ];
     return isMobile ? Column(children: buttons) : Row(mainAxisAlignment: MainAxisAlignment.end, children: buttons);
+  }
+
+
+  // Dialogs
+  void showSavingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        double progress = 0.0;
+
+        return StatefulBuilder(
+          builder: (context, setState) {
+            Future.delayed(Duration.zero, () async {
+              while (progress < 1.0) {
+                await Future.delayed(const Duration(milliseconds: 40));
+                progress += 0.02;
+                setState(() {});
+              }
+              Navigator.pop(context);
+              showSuccessDialog(context);
+            });
+
+            double screenWidth = MediaQuery.of(context).size.width;
+
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
+              elevation: 10,
+              backgroundColor: Colors.white,
+              child: Container(
+                width: screenWidth < 600 ? screenWidth * 0.9 : 450,
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          width: 40,
+                          child: Image.asset(IconString.searchingIcon),
+                        ),
+                        const SizedBox(width: 20),
+
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                TextString.dialogCustomers1,
+                                style: TTextTheme.h2Style(context),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                TextString.dialogCustomers2,
+                                style: TTextTheme.bodyRegular16(context),
+                              ),
+                              const SizedBox(height: 25),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: LinearProgressIndicator(
+                                  value: progress,
+                                  minHeight: 6,
+                                  backgroundColor: AppColors.backgroundOfPickupsWidget,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    AppColors.primaryColor,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+  void showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Container(
+            width: 450,
+            padding: const EdgeInsets.all(24),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: AppColors.emojiBackground,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                TextString.dialogCustomers3,
+                                style: TTextTheme.h2Style(context)
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                                TextString.dialogCustomers4,
+                                style: TTextTheme.bodyRegular16(context)
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: AppColors.sideBoxesColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(Icons.close, size: 16, color: AppColors.blackColor),
+                        ),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

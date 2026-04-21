@@ -286,8 +286,9 @@ class CustomerController extends GetxController {
   void regeneratePassword() {
     password.value = "newpassword123";
   }
-  void saveCustomer(BuildContext context) {
-    context.pop();
+
+  Future<void> saveCustomer(BuildContext context) async {
+    await Future.delayed(const Duration(seconds: 3));
   }
   var isPasswordHidden = true.obs;
   void togglePasswordVisibility() {

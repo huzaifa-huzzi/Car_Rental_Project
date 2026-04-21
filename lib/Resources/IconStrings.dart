@@ -67,6 +67,8 @@ class IconString {
   static const String  vinNumberIcon = 'assets/icons/VinNumberIcon.png';
   static const String  editIcon2 = 'assets/icons/Edit-Icon2.png';
   static const String  carNameIcon = 'assets/icons/Car Name.png';
+  static const String  searchingIcon = 'assets/icons/Searching.png';
+  static const String  colorIcon2 = 'assets/icons/ColorsIcon.png';
 
      // Customers Icon
   static const String  licenseIcon = 'assets/icons/LicenseIcon.png';

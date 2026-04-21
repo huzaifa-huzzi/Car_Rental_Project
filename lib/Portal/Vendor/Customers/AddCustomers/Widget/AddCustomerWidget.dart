@@ -970,7 +970,8 @@ class AddCustomerWidget extends StatelessWidget {
           backgroundColor: Colors.white,
           textColor: AppColors.textColor,
           borderColor: AppColors.quadrantalTextColor,
-          onTap: () {},
+          onTap: () {
+          },
         ),
       ),
       if (!isMobile) SizedBox(width: spacing),

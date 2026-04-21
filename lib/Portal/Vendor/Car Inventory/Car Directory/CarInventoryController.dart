@@ -156,9 +156,8 @@ class CarInventoryController extends GetxController {
 
 
  /// AddingCar Screen
-  final seatsController = TextEditingController();
-  final engineController = TextEditingController();
-  final colorController = TextEditingController();
+  var selectedEngine = "".obs;
+  var selectedColor = "".obs;
   final regController = TextEditingController();
   final vinController = TextEditingController();
   final valueController = TextEditingController();
@@ -492,8 +491,6 @@ class CarInventoryController extends GetxController {
   void onClose() {
     // 1. Adding Car Screen Controllers
     seatsController.dispose();
-    engineController.dispose();
-    colorController.dispose();
     regController.dispose();
     vinController.dispose();
     valueController.dispose();
@@ -541,10 +538,16 @@ class CarInventoryController extends GetxController {
     "Tesla": ["Model S", "Model 3", "Model X", "Model Y"],
   };
 
-  final List<String> bodyTypes = ["Sedan", "SUV", "Hatchback", "Coupe", "Truck"];
+
+  var seatsController = TextEditingController(text: "5");
+  var selectedSeats = "5".obs;
+  final List<String> bodyTypes = ["Sedan", "SUV", "Hatchback", "Coupe", "Wagon", "Convertible", "ute", "Van", "Truck", "Other"];
   final List<String> transmissions = ["Automatic", "Manual"];
-  final List<String> fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid"];
+  final List<String> fuelTypes = ["Petrol", "Diesel", "Hybrid", "Plug-in Hybrid", "Electric", "LPG"];
   final List<String> statuses = ["Available", "Maintenance", "Unavailable"];
+  final List<String> seatOptions = ["2", "4", "5", "7"];
+  final List<String> engineOptions = ["0.8", "1.0", "1.2", "1.5", "2.0"];
+  final List<String> colorOptions = ["White", "Black", "Silver", "Grey", "Red", "Blue", "Green", "Yellow", "Brown", "Gold", "Orange", "Purple", "Other"];
 
   List<String> getFilteredItems(String id) {
     List<String> currentList = [];
@@ -555,27 +558,37 @@ class CarInventoryController extends GetxController {
         break;
 
       case 'Model':
-        if (selectedBrand.value.isEmpty) {
-          currentList = [];
-        } else {
-          currentList = brandModels[selectedBrand.value] ?? [];
-        }
+        currentList = selectedBrand.value.isEmpty
+            ? []
+            : (brandModels[selectedBrand.value] ?? []);
         break;
 
       case 'body':
-        currentList = ["Sedan", "SUV", "Hatchback", "Coupe", "Truck"];
+        currentList = bodyTypes;
         break;
 
       case 'trans':
-        currentList = ["Automatic", "Manual"];
+        currentList = transmissions;
         break;
 
       case 'fuel':
-        currentList = ["Petrol", "Diesel", "Electric", "Hybrid"];
+        currentList = fuelTypes;
         break;
 
       case 'status':
-        currentList = ["Available", "Maintenance", "Unavailable"];
+        currentList = statuses;
+        break;
+
+      case 'seats':
+        currentList = seatOptions;
+        break;
+
+      case 'engine':
+        currentList = engineOptions;
+        break;
+
+      case 'color':
+        currentList = colorOptions;
         break;
 
       default:
@@ -585,13 +598,15 @@ class CarInventoryController extends GetxController {
       return currentList;
     } else {
       return currentList
-          .where((item) => item.toLowerCase().contains(searchCarText.value.toLowerCase()))
+          .where((item) => item.toLowerCase().contains(searchCarText.value.toLowerCase().trim()))
           .toList();
     }
   }
+
   void resetSearch() {
     searchCarText.value = "";
     openedDropdown3.value = "";
+    openedDropdown2.value = "";
   }
 
 }

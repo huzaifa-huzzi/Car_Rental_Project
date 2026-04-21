@@ -66,23 +66,22 @@ class AddCarFormWidget extends StatelessWidget {
               _buildSectionTitle(context, "Car Specification"),
               const SizedBox(height: 15),
               _buildResponsiveGrid(context, [
-                _buildSearchCarDropdown2(context, "Car Body Type", controller.selectedBodyType, id: 'body'),
+                _buildSearchCarDropdown(context, "Car Body Type", controller.selectedBodyType, id: 'body'),
                 _buildSearchCarDropdown2(context, "Car Transmission", controller.selectedTransmission, id: 'trans'),
-                _buildTextField(context, "Car Seats", controller.seatsController, hint: "Write Car Seats..."),
-                _buildTextField(context, "Car Engine Size", controller.engineController, hint: "Write Engine Size..."),
-                _buildTextField(context, "Car Color", controller.colorController, hint: "Write Color name OR Code..."),
+                _buildSearchCarDropdown2(context, "Car Seats", controller.selectedSeats, id: 'seats'),
+                _buildSearchCarDropdown2(context, "Car Engine Size", controller.selectedEngine, id: 'engine'),
+                _buildSearchCarDropdown(context, "Car Color", controller.selectedColor, id: 'color'),
                 _buildSearchCarDropdown2(context, "Car Fuel Type", controller.selectedFuel, id: 'fuel'),
                 _buildTextField(context, "Car Value", controller.valueController, prefix: "\$ ", hint: "Car Value...."),
                 _buildTextField(context, "Weekly Rent (AUD)", controller.weeklyRentController, prefix: "\$ "),
                 _buildStatusDropdown(
                   context,
                   "Status",
-                  controller.statuses,
+                  ["Available", "Un Available"],
                   controller.selectedStatus,
                   id: 'status',
                 ),
               ]),
-
 
               SizedBox(height: AppSizes.verticalPadding(context)),
               const Divider(thickness: 0.5),
@@ -122,6 +121,7 @@ class AddCarFormWidget extends StatelessWidget {
               Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
               /// DOCUMENTS SECTION
+              SizedBox(height: 20,),
               _documentsSection(context),
               SizedBox(height: AppSizes.verticalPadding(context)),
 
@@ -246,7 +246,11 @@ class AddCarFormWidget extends StatelessWidget {
           const SizedBox(height: 6),
           LayoutBuilder(builder: (context, constraints) {
             return PopupMenuButton<String>(
-              constraints: BoxConstraints(minWidth: constraints.maxWidth, maxWidth: constraints.maxWidth),
+              constraints: BoxConstraints(
+                minWidth: constraints.maxWidth,
+                maxWidth: constraints.maxWidth,
+                maxHeight: 400,
+              ),
               offset: const Offset(0, 48),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               color: Colors.white,
@@ -261,7 +265,6 @@ class AddCarFormWidget extends StatelessWidget {
                   if (id == 'search_car') {
                     controller.selectedModel.value = "";
                   }
-
                   controller.openedDropdown3.value = "";
                   controller.searchCarText.value = "";
                 }
@@ -292,7 +295,7 @@ class AddCarFormWidget extends StatelessWidget {
                     value: "SEARCH_FIELD",
                     child: Container(
                       height: 40,
-                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      margin: const EdgeInsets.symmetric(vertical: 4),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: AppColors.primaryColor),
@@ -318,7 +321,6 @@ class AddCarFormWidget extends StatelessWidget {
                   ),
                   ...items.map((item) {
                     bool isSelected = selected.value == item;
-
                     return PopupMenuItem<String>(
                       value: item,
                       child: Row(
@@ -336,23 +338,16 @@ class AddCarFormWidget extends StatelessWidget {
                             ),
                             child: isSelected
                                 ? const Center(
-                              child: Icon(
-                                Icons.done,
-                                color: Colors.white,
-                                size: 14,
-                              ),
+                              child: Icon(Icons.done, color: Colors.white, size: 14),
                             )
                                 : null,
                           ),
                           const SizedBox(width: 12),
-                          Text(
-                            item,
-                            style: TTextTheme.medium14(context),
-                          ),
+                          Text(item, style: TTextTheme.medium14(context)),
                         ],
                       ),
                     );
-                  }),
+                  }).toList(),
                 ];
               },
             );
@@ -459,6 +454,7 @@ class AddCarFormWidget extends StatelessWidget {
   Widget _buildStatusDropdown(BuildContext context, String label, List<String> items, RxString selected, {required String id}) {
     return Obx(() {
       bool isOpen = controller.openedDropdown2.value == id;
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -466,10 +462,14 @@ class AddCarFormWidget extends StatelessWidget {
           const SizedBox(height: 6),
           LayoutBuilder(builder: (context, constraints) {
             return PopupMenuButton<String>(
-              constraints: BoxConstraints(minWidth: constraints.maxWidth, maxWidth: constraints.maxWidth),
+              constraints: BoxConstraints(
+                minWidth: constraints.maxWidth,
+                maxWidth: constraints.maxWidth,
+                maxHeight: 250,
+              ),
               offset: const Offset(0, 45),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              color: AppColors.secondaryColor,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              color: Colors.white,
               onOpened: () => controller.openedDropdown2.value = id,
               onCanceled: () => controller.openedDropdown2.value = "",
               onSelected: (val) {
@@ -485,25 +485,40 @@ class AddCarFormWidget extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Expanded(child: Align(alignment: Alignment.centerLeft, child: _getStatusChip(selected.value,context))),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: _getStatusChip(selected.value, context),
+                      ),
+                    ),
                     const SizedBox(width: 8),
-                    Image.asset(isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon, height: 18),
+                    Image.asset(
+                      isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon,
+                      height: 18,
+                    ),
                   ],
                 ),
               ),
-              itemBuilder: (context) => items.asMap().entries.map((entry) {
-                bool isLast = entry.key == items.length - 1;
+              itemBuilder: (context) => items.map((item) {
+                bool isSelected = selected.value == item;
                 return PopupMenuItem<String>(
-                  value: entry.value,
-                  padding: EdgeInsets.zero,
-                  child: Column(
+                  value: item,
+                  child: Row(
                     children: [
                       Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: Align(alignment: Alignment.centerLeft, child: _getStatusChip(entry.value,context)),
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: AppColors.primaryColor, width: 2),
+                          color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                        ),
+                        child: isSelected
+                            ? const Icon(Icons.done, size: 12, color: Colors.white)
+                            : null,
                       ),
-                      if (!isLast) Divider(height: 1, color: AppColors.quadrantalTextColor),
+                      const SizedBox(width: 12),
+                      _getStatusChip(item, context),
                     ],
                   ),
                 );
@@ -518,19 +533,16 @@ class AddCarFormWidget extends StatelessWidget {
 // Status Chip Widget
   Widget _getStatusChip(String status, BuildContext context) {
     Color statusColor = Colors.transparent;
-    Color textColor = Colors.black;
+    Color textColor = Colors.white;
     String displayStatus = status.isEmpty ? "Available" : status;
-    String checkStatus = displayStatus.toLowerCase();
-
+    String checkStatus = displayStatus.toLowerCase().trim();
     if (checkStatus == "available") {
       statusColor = AppColors.availableBackgroundColor;
       textColor = Colors.white;
-    } else if (checkStatus == "maintenance") {
-      statusColor = AppColors.maintenanceBackgroundColor;
-      textColor = AppColors.textColor;
-    } else if (checkStatus == "unavailable") {
-      statusColor = AppColors.sideBoxesColor;
-      textColor = AppColors.secondTextColor;
+    } else if (checkStatus.contains("un")) {
+      statusColor = AppColors.oneBackground;
+      textColor = Colors.white;
+      displayStatus = "Un Available";
     }
 
     return Align(
@@ -543,28 +555,15 @@ class AddCarFormWidget extends StatelessWidget {
           color: statusColor,
           borderRadius: BorderRadius.circular(6),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: Text(
-                displayStatus,
-                style: TTextTheme.titleseven(context).copyWith(
-                  color: textColor,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
+        child: Text(
+          displayStatus,
+          style: TTextTheme.titleseven(context).copyWith(
+            color: textColor,
+          ),
         ),
       ),
     );
   }
-
-
-
-
 
   //  IMAGE UPLOAD BOX Widget
   Widget _imageBox(BuildContext context) {
@@ -956,7 +955,9 @@ class AddCarFormWidget extends StatelessWidget {
               icon: Image.asset(
                 IconString.saveVehicleIcon,
               ),
-              onTap: () {},
+              onTap: () async {
+           showSavingDialog(context);
+              },
             ),
           ),
         ],
@@ -985,13 +986,164 @@ class AddCarFormWidget extends StatelessWidget {
               icon: Image.asset(
                 IconString.saveVehicleIcon,
               ),
-              onTap: () {},
+              onTap: () async {
+                showSavingDialog(context);
+              },
             ),
           ),
 
         ],
       );
     }
+  }
+
+
+
+   // Dialogs
+  void showSavingDialog(BuildContext context) {
+    double progress = 0.0;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        double screenWidth = MediaQuery.of(context).size.width;
+        Future.delayed(Duration.zero, () async {
+          while (progress < 1.0) {
+            await Future.delayed(const Duration(milliseconds: 40));
+            progress += 0.02;
+            (context as Element).markNeedsBuild();
+          }
+          Navigator.pop(context);
+          showSuccessDialog(context);
+        });
+
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              elevation: 10,
+              backgroundColor: Colors.white,
+              child: Container(
+                width: screenWidth < 600 ? screenWidth * 0.9 : 450,
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          width: 40,
+                          child: Image.asset(IconString.searchingIcon),
+                        ),
+                        const SizedBox(width: 20),
+
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                TextString.dialogInventory1,
+                                style: TTextTheme.h2Style(context),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                TextString.dialogInventory2,
+                                style: TTextTheme.bodyRegular16(context),
+                              ),
+                              const SizedBox(height: 25),
+
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: LinearProgressIndicator(
+                                  value: progress,
+                                  minHeight: 6,
+                                  backgroundColor: AppColors.backgroundOfPickupsWidget,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      AppColors.primaryColor),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+  void showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Container(
+            width: 450,
+            padding: const EdgeInsets.all(24),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: AppColors.emojiBackground,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                            TextString.dialogInventory3,
+                                style: TTextTheme.h2Style(context)
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                                TextString.dialogInventory4,
+                                style: TTextTheme.bodyRegular16(context)
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: AppColors.sideBoxesColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(Icons.close, size: 16, color: AppColors.blackColor),
+                        ),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
 }

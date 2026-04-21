@@ -27,8 +27,6 @@ class DashboardContent extends StatelessWidget {
     required this.isTablet,
   });
 
-
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -39,9 +37,9 @@ class DashboardContent extends StatelessWidget {
 
         return SingleChildScrollView(
           padding: EdgeInsets.fromLTRB(
-            isMobile ? 12 : 20,
-            isMobile ? 12 : 20,
-            isMobile ? 12 : 20,
+            isMobile ? 12 : 14,
+            isMobile ? 12 : 14,
+            isMobile ? 12 : 14,
             0,
           ),
           child: Column(
@@ -54,7 +52,7 @@ class DashboardContent extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    flex: 4,
+                    flex:4,
                     child: Column(children: _buildMainSections(context)),
                   ),
                   const SizedBox(width: 10),
@@ -192,9 +190,9 @@ class DashboardContent extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: crossAxisCount,
-      crossAxisSpacing: 16,
-      mainAxisSpacing: 16,
-      childAspectRatio: 2.8,
+      crossAxisSpacing: 17,
+      mainAxisSpacing: 17,
+      childAspectRatio: 2.0,
       children: [
         _statCard("Total Cars", "214", IconString.carInventoryIcon,context),
         _statCard("Total Customers", "386", IconString.customerIcon,context),
@@ -270,7 +268,7 @@ class DashboardContent extends StatelessWidget {
         bool isSmall = constraints.maxWidth < 450;
 
         return Container(
-          height: 440,
+          height: 550,
           padding: const EdgeInsets.all(16),
           decoration: _cardDecoration(),
           child: Column(
@@ -488,7 +486,7 @@ class DashboardContent extends StatelessWidget {
   // Pickup Status Charts Widget
   Widget _buildPickupStatusSection(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(30),
       decoration: _cardDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -624,7 +622,7 @@ class DashboardContent extends StatelessWidget {
   // DropOff Damage Chart Widget
   Widget _buildDropoffDamageSection(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(30),
       decoration: _cardDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -804,7 +802,7 @@ class DashboardContent extends StatelessWidget {
     return Container(
       height: height,
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
       decoration: _cardDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1070,7 +1068,7 @@ class DashboardContent extends StatelessWidget {
     return Column(
       children: [
         _buildQuickActionsCustom(context),
-        const SizedBox(height: 30),
+        const SizedBox(height: 10),
         _buildCarsByBodyType(context),
       ],
     );
@@ -1079,7 +1077,7 @@ class DashboardContent extends StatelessWidget {
   Widget _buildQuickActionsCustom(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
@@ -1110,7 +1108,7 @@ class DashboardContent extends StatelessWidget {
           const SizedBox(height: 16),
 
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: AppColors.secondaryColor,
               borderRadius: BorderRadius.circular(12),
@@ -1134,7 +1132,7 @@ class DashboardContent extends StatelessWidget {
                         context.push('/addNewCar');
                       },
                       width: buttonWidth,
-                      height: 45,
+                      height: 35,
                     ),
                     AddButtonOfDashboard(
                       text: "Add Customer",
@@ -1143,7 +1141,7 @@ class DashboardContent extends StatelessWidget {
                         context.push('/addNewCustomer', extra: {"hideMobileAppBar": true});
                       },
                       width: buttonWidth,
-                      height: 45,
+                      height: 35,
                     ),
                     AddButtonOfDashboard(
                       text: "Add Pickup",
@@ -1152,7 +1150,7 @@ class DashboardContent extends StatelessWidget {
                         context.push('/addpickup',extra: {"hideMobileAppBar": true});
                       },
                       width: buttonWidth,
-                      height: 45,
+                      height: 35,
                     ),
                     AddButtonOfDashboard(
                       text: "Add Dropoff",
@@ -1160,7 +1158,7 @@ class DashboardContent extends StatelessWidget {
                         context.push('/addDropOff');
                       },
                       width: buttonWidth,
-                      height: 45,
+                      height: 35,
                     ),
                   ],
                 );
@@ -1177,13 +1175,17 @@ class DashboardContent extends StatelessWidget {
       {"type": "Sedan", "units": 12, "value": 0.7, "image": ImageString.sedanCar},
       {"type": "SUV", "units": 12, "value": 0.5, "image": ImageString.suvCar},
       {"type": "Hatchback", "units": 12, "value": 0.6, "image": ImageString.hatchBookCar},
+      {"type": "Coupe", "units": 12, "value": 0.4, "image": ImageString.uteCar},
       {"type": "Wagon", "units": 12, "value": 0.4, "image": ImageString.wagonCar},
+      {"type": "convertible", "units": 12, "value": 0.5, "image": ImageString.uteCar},
       {"type": "Ute", "units": 12, "value": 0.8, "image": ImageString.uteCar},
       {"type": "Van", "units": 12, "value": 0.3, "image": ImageString.vanCar},
+      {"type": "Truck", "units": 12, "value": 0.2, "image": ImageString.uteCar},
+      {"type": "Other", "units": 12, "value": 0.2, "image": ImageString.uteCar},
     ];
 
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(8),
       decoration: _cardDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1229,7 +1231,7 @@ class DashboardContent extends StatelessWidget {
               child: Row(
                 children: [
                   SizedBox(
-                    width: isExtraSmall ? 40 : 80,
+                    width: isExtraSmall ? 40 : 100,
                     height: isExtraSmall ? 30 : 50,
                     child: Image.asset(
                       data['image'],
@@ -1287,8 +1289,6 @@ class DashboardContent extends StatelessWidget {
       },
     );
   }
-
-
   // Dashboard Card (helper Widget)
   Widget _dashboardCard(String title, Widget child, {double? height}) {
     return Container(

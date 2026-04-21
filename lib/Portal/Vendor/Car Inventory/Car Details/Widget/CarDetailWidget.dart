@@ -37,6 +37,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
     {'title': 'Car Values', 'value': '35000\$Aud', 'icon': IconString.carValueIcon},
     {'title': 'Mileage', 'value': '43000(Km)', 'icon': IconString.milageIcon},
     {'title': 'Fuel', 'value': 'Petrol', 'icon': IconString.gasPumpIcon},
+    {'title': 'Color', 'value': 'White', 'icon': IconString.colorIcon2},
   ];
 
   @override

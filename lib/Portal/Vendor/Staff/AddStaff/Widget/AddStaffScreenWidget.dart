@@ -37,8 +37,8 @@ class AddStaffScreenWidget extends StatelessWidget {
                  // Staff Name
           _buildSection(context, icon: IconString.staffNameICon, title: TextString.addStaffName, subtitle: TextString.addStaffNameSubtitle,
               children: [
-                _buildTextField(TextString.addStaffNameFieldOne, "Write Staff Name...", controller.firstNameC,context),
-                _buildTextField(TextString.addStaffNameFieldTwo, "Write Staff Name...", controller.lastNameC,context),
+                _buildTextField(TextString.addStaffNameFieldOne, "Write First Name...", controller.firstNameC,context),
+                _buildTextField(TextString.addStaffNameFieldTwo, "Write Last Name...", controller.lastNameC,context),
               ]),
           const Divider(height: 1,thickness: 0.5, color: AppColors.quadrantalTextColor),
              // Staff Details
