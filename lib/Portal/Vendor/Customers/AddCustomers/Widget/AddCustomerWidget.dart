@@ -3,7 +3,6 @@ import 'package:car_rental_project/Portal/Vendor/Customers/CustomersController.d
 import 'package:car_rental_project/Portal/Vendor/Customers/ReusableWidgetOfCustomers/AddButtonOfCustomers.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +13,6 @@ import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl_phone_field/country_picker_dialog.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../ReusableWidgetOfCustomers/CustomerPrimaryBtn.dart' show CustomerPrimaryBtn;
 
@@ -29,7 +25,7 @@ class AddCustomerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = AppSizes.isMobile(context);
     final double spacing = AppSizes.padding(context);
-    final GlobalKey _fieldKey = GlobalKey();
+    final GlobalKey fieldKey = GlobalKey();
 
     return Center(
       child: Container(
@@ -1185,7 +1181,7 @@ class AddCustomerWidget extends StatelessWidget {
                 ctrl.text = value.name;
                 controller.update();
                 if (context is Element) {
-                  (context as Element).markNeedsBuild();
+                  (context).markNeedsBuild();
                 }
               }
             },

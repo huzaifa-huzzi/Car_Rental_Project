@@ -1,13 +1,9 @@
 import 'package:car_rental_project/Portal/Vendor/Customers/ReusableWidgetOfCustomers/CustomCalendarSutomer.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
-import 'package:country_picker/country_picker.dart' hide Country;
-import 'package:country_picker/src/country.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb, Uint8List;
-import 'package:go_router/go_router.dart';
-import 'package:intl_phone_field/countries.dart' hide Country;
 
 class DocumentHolder {
   final Uint8List? bytes;
