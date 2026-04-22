@@ -268,7 +268,7 @@ class DashboardContent extends StatelessWidget {
         bool isSmall = constraints.maxWidth < 450;
 
         return Container(
-          height: 550,
+          height: 530,
           padding: const EdgeInsets.all(16),
           decoration: _cardDecoration(),
           child: Column(
@@ -1181,7 +1181,6 @@ class DashboardContent extends StatelessWidget {
       {"type": "Ute", "units": 12, "value": 0.8, "image": ImageString.uteCar},
       {"type": "Van", "units": 12, "value": 0.3, "image": ImageString.vanCar},
       {"type": "Truck", "units": 12, "value": 0.2, "image": ImageString.uteCar},
-      {"type": "Other", "units": 12, "value": 0.2, "image": ImageString.uteCar},
     ];
 
     return Container(

@@ -3,6 +3,9 @@ import 'package:car_rental_project/Portal/Vendor/Customers/CustomersController.d
 import 'package:car_rental_project/Portal/Vendor/Customers/ReusableWidgetOfCustomers/AddButtonOfCustomers.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
+import 'package:country_code_picker/country_code_picker.dart';
+import 'package:country_picker/country_picker.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -11,6 +14,9 @@ import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl_phone_field/country_picker_dialog.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../ReusableWidgetOfCustomers/CustomerPrimaryBtn.dart' show CustomerPrimaryBtn;
 
@@ -23,6 +29,7 @@ class AddCustomerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = AppSizes.isMobile(context);
     final double spacing = AppSizes.padding(context);
+    final GlobalKey _fieldKey = GlobalKey();
 
     return Center(
       child: Container(
@@ -77,7 +84,7 @@ class AddCustomerWidget extends StatelessWidget {
                     },
                   ),
                 ),
-                _buildTextField(context, " Contact Number", controller.contactController),
+                _buildPhoneField(context, " Contact Number"),
                 _buildTextField(context, " Email Address", controller.emailController),
                 _buildTextField(context, "Residential Address", controller.addressController),
               ]),
@@ -454,6 +461,144 @@ class AddCustomerWidget extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+
+  Widget _buildPhoneField(BuildContext context, String label) {
+    final controller = Get.find<CustomerController>();
+    final List<Country> countryList = CountryService().getAll();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: TTextTheme.titleTwo(context)),
+        const SizedBox(height: 6),
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.secondaryColor,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 4),
+                child: DropdownButtonHideUnderline(
+                  child: Obx(() => DropdownButton2<Country>(
+                    isExpanded: false,
+                    value: countryList.firstWhere(
+                          (c) => c.name == controller.selectedCountryName.value,
+                      orElse: () => countryList.firstWhere((c) => c.name == "Australia"),
+                    ),
+
+                    selectedItemBuilder: (context) {
+                      return countryList.map((Country country) {
+                        return Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const SizedBox(width: 8),
+                            _buildCircleFlag(country.countryCode),
+                            const SizedBox(width: 10),
+                            Text(
+                                "+${country.phoneCode}",
+                                style: TTextTheme.bodyRegular14(context).copyWith(color: AppColors.blackColor)
+                            ),
+                          ],
+                        );
+                      }).toList();
+                    },
+
+                    items: countryList.map((Country country) {
+                      return DropdownMenuItem<Country>(
+                        value: country,
+                        child: Row(
+                          children: [
+                            _buildCircleFlag(country.countryCode),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(country.name, style: const TextStyle(fontSize: 13), overflow: TextOverflow.ellipsis),
+                            ),
+                            Text("+${country.phoneCode}", style: TextStyle(color: Colors.grey.shade600, fontSize: 12)),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+
+                    onChanged: (Country? value) {
+                      if (value != null) {
+                        controller.selectedCountryName.value = value.name;
+                        controller.selectedCode.value = "+${value.phoneCode}";
+                      }
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      height: 48,
+                      padding: EdgeInsets.symmetric(horizontal: 4),
+                    ),
+                    iconStyleData: const IconStyleData(
+                      icon: Icon(Icons.keyboard_arrow_down_rounded, size: 20, color: Colors.black54),
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      maxHeight: 350,
+                      width: 250,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white),
+                      offset: const Offset(0, -5),
+                    ),
+
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: controller.searchController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: _buildSearchField(context, controller.searchController),
+                      searchMatchFn: (item, searchValue) {
+                        return item.value!.name.toLowerCase().contains(searchValue.toLowerCase()) ||
+                            item.value!.phoneCode.contains(searchValue);
+                      },
+                    ),
+                  )),
+                ),
+              ),
+              Expanded(
+                child: TextFormField(
+                  controller: controller.phoneController,
+                  keyboardType: TextInputType.phone,
+                  style: TTextTheme.insidetextfieldWrittenText(context),
+                  decoration: InputDecoration(
+                    hintText: "Enter number",
+                    hintStyle: TTextTheme.titleTwo(context),
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 4),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+  Widget _buildSearchField(BuildContext context, TextEditingController searchController) {
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: TextFormField(
+        cursorColor: AppColors.blackColor,
+        controller: searchController,
+        style: TTextTheme.textFieldWrittenText(context),
+        decoration: InputDecoration(
+          isDense: true,
+          fillColor: AppColors.backgroundOfScreenColor,
+          filled: true,
+          hintText: 'Search',
+          hintStyle: TTextTheme.titleTwo(context),
+          prefixIcon: const Icon(Icons.search, size: 18, color: AppColors.primaryColor),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: const BorderSide(color: AppColors.primaryColor),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: const BorderSide(color: AppColors.primaryColor),
+          ),
+        ),
+      ),
     );
   }
 
@@ -837,11 +982,10 @@ class AddCustomerWidget extends StatelessWidget {
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: _buildShadowTextField(
+                      child: _buildCountryPickerField(
                         context,
                         TextString.addCustomerCountry,
                         controller.ccCountryController,
-                        hint: "United States",
                       ),
                     ),
                   ],
@@ -865,11 +1009,10 @@ class AddCustomerWidget extends StatelessWidget {
                       isCompact: true,
                     ),
                     const SizedBox(height: 16),
-                    _buildShadowTextField(
+                    _buildCountryPickerField(
                       context,
                       TextString.addCustomerCountry,
                       controller.ccCountryController,
-                      hint: "United States",
                     ),
                   ],
                 );
@@ -953,6 +1096,174 @@ class AddCustomerWidget extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+
+   // country Fields
+  Widget _buildCountryPickerField(BuildContext context, String label, TextEditingController ctrl) {
+    final List<Country> countryList = CountryService().getAll();
+    final TextEditingController searchController = TextEditingController();
+    Country? selectedCountry;
+    try {
+      if (ctrl.text.isNotEmpty) {
+        selectedCountry = countryList.firstWhere((c) => c.name == ctrl.text);
+      }
+    } catch (e) {
+      selectedCountry = null;
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: TTextTheme.titleTwo(context)),
+        const SizedBox(height: 8),
+        DropdownButtonHideUnderline(
+          child: DropdownButton2<Country>(
+            isExpanded: true,
+            value: selectedCountry,
+            iconStyleData: const IconStyleData(
+              icon: Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: AppColors.quadrantalTextColor,
+                size: 24,
+              ),
+              openMenuIcon: Icon(
+                Icons.keyboard_arrow_up_rounded,
+                color: AppColors.quadrantalTextColor,
+                size: 24,
+              ),
+            ),
+            hint: Row(
+              children: [
+                _buildCircleFlag("au"),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    ctrl.text.isEmpty ? "Australia" : ctrl.text,
+                    style: TTextTheme.btnOne(context),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
+              ],
+            ),
+            selectedItemBuilder: (context) {
+              return countryList.map((Country country) {
+                return Row(
+                  children: [
+                    _buildCircleFlag(country.countryCode),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        country.name,
+                        style: TTextTheme.btnOne(context),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ),
+                  ],
+                );
+              }).toList();
+            },
+
+            items: countryList.map((Country country) {
+              return DropdownMenuItem<Country>(
+                value: country,
+                child: Row(
+                  children: [
+                    _buildCircleFlag(country.countryCode),
+                    const SizedBox(width: 10),
+                    Expanded(child: Text(country.name, style: TTextTheme.bodyRegular14(context))),
+                  ],
+                ),
+              );
+            }).toList(),
+
+            onChanged: (Country? value) {
+              if (value != null) {
+                ctrl.text = value.name;
+                controller.update();
+                if (context is Element) {
+                  (context as Element).markNeedsBuild();
+                }
+              }
+            },
+            buttonStyleData: ButtonStyleData(
+              padding: const EdgeInsets.only(right: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.fieldsBackground),
+                color: Colors.white,
+              ),
+            ),
+            dropdownStyleData: DropdownStyleData(
+              maxHeight: 400,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white),
+              offset: const Offset(0, -5),
+            ),
+
+            dropdownSearchData: DropdownSearchData(
+              searchController: searchController,
+              searchInnerWidgetHeight: 50,
+              searchInnerWidget: Padding(
+                padding: const EdgeInsets.only(
+                  top: 12,
+                  bottom: 4,
+                  right: 12,
+                  left: 12,
+                ),
+                child: TextFormField(
+                  cursorColor: AppColors.blackColor,
+                  style: TTextTheme.insidetextfieldWrittenText(context),
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
+                    fillColor: AppColors.backgroundOfScreenColor,
+                    filled: true,
+                    hintText: 'Search',
+                    hintStyle: TTextTheme.titleTwo(context),
+                    prefixIcon: const Icon(Icons.search, size: 18, color: AppColors.primaryColor),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: const BorderSide(color: AppColors.primaryColor),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: const BorderSide(color: AppColors.primaryColor,),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: const BorderSide(color: AppColors.primaryColor),
+                    ),
+                  ),
+                ),
+              ),
+              searchMatchFn: (item, searchValue) {
+                return item.value!.name.toLowerCase().contains(searchValue.toLowerCase());
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  Widget _buildCircleFlag(String code) {
+    return Container(
+      width: 24,
+      height: 24,
+      decoration: const BoxDecoration(shape: BoxShape.circle),
+      child: ClipOval(
+        child: Image.network(
+          'https://flagcdn.com/w80/${code.toLowerCase()}.png',
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => const Icon(Icons.flag, size: 14),
+        ),
+      ),
     );
   }
 

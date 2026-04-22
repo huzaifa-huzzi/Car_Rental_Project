@@ -2,7 +2,6 @@ import 'package:car_rental_project/Portal/Vendor/PickupCar/PickupCarInventory.da
 import 'package:car_rental_project/Portal/Vendor/PickupCar/ReusableWidgetOfPickup/AddButtonOfPickup.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/ReusableWidgetOfPickup/AddPickupButton.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/ReusableWidgetOfPickup/HeaderWebPickupWidget.dart';
-import 'package:car_rental_project/Portal/Vendor/PickupCar/ReusableWidgetOfPickup/SuccessConfirmationPickupDialog.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
