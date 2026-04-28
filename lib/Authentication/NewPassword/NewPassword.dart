@@ -26,15 +26,12 @@ class _NewPasswordState extends State<NewPassword> {
     return Scaffold(
       body: Stack(
         children: [
-          // Background
           Row(
             children: [
               Expanded(child: Container(color: AppColors.secondaryColor)),
               Expanded(child: Container(color: AppColors.backgroundOfPickupsWidget)),
             ],
           ),
-
-          // Main Content
           Align(
             alignment: const Alignment(0, -0.2),
             child: SingleChildScrollView(
@@ -53,8 +50,6 @@ class _NewPasswordState extends State<NewPassword> {
                     ),
                   if (isMobile) _buildLogo(),
                   if (isMobile) const SizedBox(height: 30),
-
-                  // Card
                   Container(
                     constraints: const BoxConstraints(maxWidth: 450),
                     padding: EdgeInsets.symmetric(
@@ -72,70 +67,69 @@ class _NewPasswordState extends State<NewPassword> {
                         ),
                       ],
                     ),
-                    child: Column(
-                      children: [
-                         Text(TextString.passwordTitle,
-                            style:TTextTheme.h11Style(context)),
-                        const SizedBox(height: 10),
-                         Text(
-                          TextString.passwordSubtitle,
-                          textAlign: TextAlign.center,
-                          style:TTextTheme.pSeven(context),
-                        ),
-                        const SizedBox(height: 30),
+                    child: Form(
+                      key: LoginController.newPasswordFormKey,
+                      child: Column(
+                        children: [
+                          Text(TextString.passwordTitle, style: TTextTheme.h11Style(context)),
+                          const SizedBox(height: 10),
+                          Text(
+                            TextString.passwordSubtitle,
+                            textAlign: TextAlign.center,
+                            style: TTextTheme.pSeven(context),
+                          ),
+                          const SizedBox(height: 30),
+                          _buildLabel(TextString.passwordFirstLabel),
+                          Obx(() => _buildTextField(
+                            hint: "***********",
+                            isPassword: true,
+                            obscureText: controller.obscurePassword2.value,
+                            textController: controller.newPasswordController,
+                            onSuffixTap: controller.togglePassword,
+                            validator: controller.validateNewPassword,
+                          )),
+                          const SizedBox(height: 20),
+                          _buildLabel(TextString.passwordSecondLabel),
+                          Obx(() => _buildTextField(
+                            hint: "Confirm Password",
+                            isPassword: true,
+                            obscureText: controller.obscureConfirmPassword.value,
+                            textController: controller.newConfirmPasswordController,
+                            onSuffixTap: controller.toggleConfirmPassword,
+                            validator: controller.validateConfirmPassword,
+                          )),
+                          const SizedBox(height: 30),
 
-                        // Password Field
-                        _buildLabel(TextString.passwordFirstLabel),
-                        Obx(() => _buildTextField(
-                          hint: "***********",
-                          isPassword: true,
-                          obscureText: controller.obscurePassword.value,
-                          textController: controller.newPasswordController,
-                          onSuffixTap: controller.togglePassword,
-                        )),
-                        const SizedBox(height: 20),
+                          // Button
+                          PrimaryBtnOfLogin(
+                            text: "Confirm Password",
+                            onTap: () {
+                              controller.resetPassword(context);
+                            },
+                            width: double.infinity,
+                            height: 50,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
 
-                        // Confirm Password Field
-                        _buildLabel(TextString.passwordSecondLabel),
-                        Obx(() => _buildTextField(
-                          hint: "5ellostore.",
-                          isPassword: true,
-                          obscureText: controller.obscureConfirmPassword.value,
-                          textController: controller.newConfirmPasswordController,
-                          onSuffixTap: controller.toggleConfirmPassword,
-                          fillColor: AppColors.secondaryColor,
-                        )),
-                        const SizedBox(height: 30),
+                          const SizedBox(height: 25),
 
-                        //  Button
-                       PrimaryBtnOfLogin(
-                          text: "Confirm Password",
-                          onTap:(){
-                            context.push('/authSuccess');
-                          },
-                          width: double.infinity,
-                          height: 50,
-                          borderRadius: BorderRadius.circular(10),
-                       ),
-
-
-                        const SizedBox(height: 25),
-
-                        // Footer
-                        Wrap(
-                          alignment: WrapAlignment.center,
-                          children: [
-                             Text(TextString.passwordFirstFooter, style: TTextTheme.titleSmallRemember(context)),
-                            GestureDetector(
-                              onTap: (){
-                                context.push('/signUp');
-                              },
-                              child:  Text(TextString.passwordFooterTwo,
-                                  style: TTextTheme.titleSmallRegister(context)),
-                            ),
-                          ],
-                        ),
-                      ],
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            children: [
+                              Text(TextString.passwordFirstFooter, style: TTextTheme.titleSmallRemember(context)),
+                              GestureDetector(
+                                onTap: () {
+                                  context.push('/signUp');
+                                },
+                                child: Text(
+                                  TextString.passwordFooterTwo,
+                                  style: TTextTheme.titleSmallRegister(context),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -173,50 +167,33 @@ class _NewPasswordState extends State<NewPassword> {
 
   Widget _buildTextField({
     required String hint,
-    required TextEditingController textController,
+    TextEditingController? textController,
     bool isPassword = false,
     bool obscureText = false,
     VoidCallback? onSuffixTap,
-    Color? fillColor,
+    String? Function(String?)? validator,
   }) {
-    return Material(
-      elevation: 4,
-      borderRadius: BorderRadius.circular(10),
-      shadowColor: Colors.black.withOpacity(0.2),
-      child: TextField(
-        cursorColor: AppColors.blackColor,
-        controller: textController,
-        obscureText: obscureText,
-        style: TTextTheme.loginInsideTextField(context),
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: TTextTheme.loginInsideTextField(context),
-          filled: true,
-          fillColor: fillColor ?? Colors.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide.none,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide.none,
-          ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          suffixIcon: isPassword
-              ? IconButton(
-            icon: Icon(
-              obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-              color: AppColors.quadrantalTextColor,
-              size: 18,
-            ),
-            onPressed: onSuffixTap,
-          )
-              : null,
-        ),
+    return TextFormField(
+      controller: textController,
+      obscureText: obscureText,
+      validator: validator,
+      cursorColor: AppColors.blackColor,
+      style: TTextTheme.loginInsideTextField(context),
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: TTextTheme.loginInsideTextField(context),
+        filled: true,
+        fillColor: AppColors.secondaryColor,
+        errorStyle: const TextStyle(color: AppColors.primaryColor, fontSize: 12),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+        focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: AppColors.primaryColor)),
+        errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: AppColors.primaryColor)),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        suffixIcon: isPassword ? IconButton(
+            icon: Icon(obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                color: AppColors.quadrantalTextColor, size: 20),
+            onPressed: onSuffixTap
+        ) : null,
       ),
     );
   }

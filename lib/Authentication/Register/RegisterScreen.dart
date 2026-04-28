@@ -26,7 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // Background
+          // Background Design
           Row(
             children: [
               Expanded(child: Container(color: AppColors.secondaryColor)),
@@ -40,7 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  // Icon
+                  // Logo Section
                   if (!isMobile)
                     Align(
                       alignment: Alignment.topLeft,
@@ -71,96 +71,117 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ],
                     ),
-                    child: Column(
-                      children: [
-                        Text(TextString.registerLogin, style: TTextTheme.h11Style(context)),
-                        const SizedBox(height: 8),
-                         Text(TextString.registerSubtitle,
-                            textAlign: TextAlign.center, style:TTextTheme.pSeven(context)),
-                        const SizedBox(height: 25),
+                    child: Form(
+                      key: controller.registerFormKey,
+                      child: Column(
+                        children: [
+                          Text(TextString.registerLogin, style: TTextTheme.h11Style(context)),
+                          const SizedBox(height: 8),
+                          Text(TextString.registerSubtitle,
+                              textAlign: TextAlign.center, style: TTextTheme.pSeven(context)),
+                          const SizedBox(height: 25),
 
-                        _buildLabel(TextString.registerName),
-                        _buildTextField(hint: "hasan", textController: controller.nameRegisterController),
-                        const SizedBox(height: 18),
+                          // Name Field
+                          _buildLabel(TextString.registerName),
+                          _buildTextField(
+                            hint: "hasan",
+                            textController: controller.nameRegisterController,
+                            validator: controller.validateRegisterName,
+                          ),
+                          const SizedBox(height: 18),
 
-                        _buildLabel(TextString.companyName),
-                        _buildTextField(hint: "SoftSnip", textController: controller.companyNameController),
-                        const SizedBox(height: 18),
+                          // Company Field
+                          _buildLabel(TextString.companyName),
+                          _buildTextField(
+                            hint: "SoftSnip",
+                            textController: controller.companyNameController,
+                            validator: controller.validateRegisterCompany,
+                          ),
+                          const SizedBox(height: 18),
 
-                        _buildLabel(TextString.registerEmail),
-                        _buildTextField(hint: "sellostore@company.com", textController: controller.emailRegisterController),
-                        const SizedBox(height: 18),
+                          _buildLabel(TextString.registerEmail),
+                          _buildTextField(
+                            hint: "sellostore@company.com",
+                            textController: controller.emailRegisterController,
+                            validator: controller.validateRegisterEmail,
+                          ),
+                          const SizedBox(height: 18),
 
-                        _buildLabel(TextString.registerPassword),
-                        Obx(() => _buildTextField(
-                          hint: "5ellostore.",
-                          isPassword: true,
-                          fillColor: AppColors.secondaryColor,
-                          textController: controller.passwordRegisterController,
-                          obscureText: controller.obscureRegisterPassword.value,
-                          onSuffixTap: controller.togglePasswordVisibility2,
-                        )),
 
-                        const SizedBox(height: 25),
+                          _buildLabel(TextString.registerPassword),
+                          Obx(() => _buildTextField(
+                            hint: "5ellostore.",
+                            isPassword: true,
+                            textController: controller.passwordRegisterController,
+                            obscureText: controller.obscureRegisterPassword.value,
+                            onSuffixTap: controller.togglePasswordVisibility2,
+                            validator: controller.validateRegisterPassword,
+                          )),
 
-                        //  Button
-                         PrimaryBtnOfLogin(
-                          text:"Register",
-                          onTap: (){
-                            context.push('/authSuccess2');
-                          },
-                          width: double.infinity,
-                          height: 50,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                          const SizedBox(height: 25),
 
-                        const SizedBox(height: 20),
-                        Row(
-                          children: [
-                            Expanded(child: Divider(color: AppColors.quadrantalTextColor,)),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(TextString.registerText, style: TTextTheme.loginDividerText(context)),
-                            ),
-                            Expanded(child: Divider(color: AppColors.quadrantalTextColor,)),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
+                          PrimaryBtnOfLogin(
+                            text: "Register",
+                            onTap: () {
+                              controller.register(context);
+                            },
+                            width: double.infinity,
+                            height: 50,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
 
-                        // Social Button
-                        isMobile
-                            ? Column(
-                          children: [
-                            _buildSocialButton("Google", IconString.googleIcon),
-                            const SizedBox(height: 15),
-                            _buildSocialButton("Apple", IconString.appleIcon),
-                          ],
-                        )
-                            : Row(
-                          children: [
-                            Expanded(child: _buildSocialButton("Google", IconString.googleIcon)),
-                            const SizedBox(width: 15),
-                            Expanded(child: _buildSocialButton("Apple", IconString.appleIcon)),
-                          ],
-                        ),
+                          const SizedBox(height: 20),
 
-                        const SizedBox(height: 25),
 
-                        // Footer
-                        Wrap(
-                          alignment: WrapAlignment.center,
-                          children: [
-                            Text(TextString.registerFooterFirst, style:  TTextTheme.titleSmallRemember(context)),
-                            GestureDetector(
-                              onTap: (){
-                                context.push('/login');
-                              },
-                              child: Text(TextString.registerFooterTwo,
-                                  style: TTextTheme.titleSmallRegister(context)),
-                            ),
-                          ],
-                        ),
-                      ],
+                          Row(
+                            children: [
+                              Expanded(child: Divider(color: AppColors.quadrantalTextColor)),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                child: Text(TextString.registerText, style: TTextTheme.loginDividerText(context)),
+                              ),
+                              Expanded(child: Divider(color: AppColors.quadrantalTextColor)),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+
+
+                          isMobile
+                              ? Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () => context.go('/dashboard-admin'),
+                                child: _buildSocialButton("Google", IconString.googleIcon),
+                              ),
+                              const SizedBox(height: 15),
+                              GestureDetector(
+                                onTap: () => context.go('/dashboard-staff'),
+                                child: _buildSocialButton("Apple", IconString.appleIcon),
+                              )
+                            ],
+                          )
+                              : Row(
+                            children: [
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () => context.go('/dashboard-admin'),
+                                  child: _buildSocialButton("Google", IconString.googleIcon),
+                                ),
+                              ),
+                              const SizedBox(width: 15),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () => context.go("/dashboard-staff"),
+                                  child: _buildSocialButton("Apple", IconString.appleIcon),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 25),
+
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -196,50 +217,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Widget _buildTextField({
     required String hint,
-    required TextEditingController textController,
+    TextEditingController? textController,
     bool isPassword = false,
     bool obscureText = false,
     VoidCallback? onSuffixTap,
-    Color? fillColor,
+    String? Function(String?)? validator,
   }) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: TextField(
-        cursorColor: AppColors.blackColor,
-        controller: textController,
-        style: TTextTheme.loginInsideTextField(context),
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: TTextTheme.loginInsideTextField(context),
-          filled: true,
-          fillColor: fillColor ?? (isPassword ? Colors.white : AppColors.secondaryColor),
-
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide.none,
-          ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          suffixIcon: isPassword
-              ? IconButton(
-            icon: Icon(
-              obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-              color: AppColors.quadrantalTextColor,
-              size: 18,
-            ),
-            onPressed: onSuffixTap,
-          )
-              : null,
-        ),
+    return TextFormField(
+      controller: textController,
+      obscureText: obscureText,
+      validator: validator,
+      cursorColor: AppColors.blackColor,
+      style: TTextTheme.loginInsideTextField(context),
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: TTextTheme.loginInsideTextField(context),
+        filled: true,
+        fillColor: AppColors.secondaryColor,
+        errorStyle: const TextStyle(color: AppColors.primaryColor, fontSize: 12),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+        focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: AppColors.primaryColor)),
+        errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: AppColors.primaryColor)),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        suffixIcon: isPassword ? IconButton(
+            icon: Icon(obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                color: AppColors.quadrantalTextColor, size: 20),
+            onPressed: onSuffixTap
+        ) : null,
       ),
     );
   }

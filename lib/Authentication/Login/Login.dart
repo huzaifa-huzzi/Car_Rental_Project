@@ -27,17 +27,20 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Stack(
         children: [
+          // Background Colors
           Row(
             children: [
               Expanded(child: Container(color: AppColors.secondaryColor)),
               Expanded(child: Container(color: AppColors.backgroundOfPickupsWidget)),
             ],
           ),
+
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
+                  // Logo Section
                   if (!isMobile)
                     Align(
                       alignment: Alignment.topLeft,
@@ -49,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (isMobile) _buildLogo(),
                   if (isMobile) const SizedBox(height: 30),
 
+                  // Main Login Card
                   Container(
                     constraints: const BoxConstraints(maxWidth: 450),
                     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
@@ -63,147 +67,154 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                    child: Column(
-                      children: [
-                        Text(TextString.titleLogin, style: TTextTheme.h11Style(context),),
-                        const SizedBox(height: 10),
-                         Text(TextString.loginSubtitle,
-                            textAlign: TextAlign.center, style:TTextTheme.pSeven(context)),
-                        const SizedBox(height: 30),
 
-                        _buildLabel(TextString.loginEmail),
-                        _buildTextField(
-                          hint: "sellostore@company.com",
-                          textController: controller.emailController,
-                        ),
-                        const SizedBox(height: 20),
+                    // --- FORM VALIDATION STARTS HERE ---
+                    child: Form(
+                      key: controller.loginFormKey, // Key assigned here
+                      child: Column(
+                        children: [
+                          Text(TextString.titleLogin, style: TTextTheme.h11Style(context)),
+                          const SizedBox(height: 10),
+                          Text(
+                            TextString.loginSubtitle,
+                            textAlign: TextAlign.center,
+                            style: TTextTheme.pSeven(context),
+                          ),
+                          const SizedBox(height: 30),
 
-                        _buildLabel(TextString.loginPassword),
-                        Obx(() => _buildTextField(
-                          hint: "Password",
-                          isPassword: true,
-                          textController: controller.passwordController,
-                          obscureText: controller.obscurePassword.value,
-                          onSuffixTap: controller.togglePasswordVisibility,
-                        )),
+                          // Email Field
+                          _buildLabel(TextString.loginEmail),
+                          _buildTextField(
+                            hint: "sellostore@company.com",
+                            textController: controller.emailController,
+                            validator: controller.validateEmail, // Logic from controller
+                          ),
+                          const SizedBox(height: 20),
 
-                        const SizedBox(height: 15),
+                          // Password Field
+                          _buildLabel(TextString.loginPassword),
+                          Obx(() => _buildTextField(
+                            hint: "Password",
+                            isPassword: true,
+                            textController: controller.passwordController,
+                            obscureText: controller.obscurePassword.value,
+                            onSuffixTap: controller.togglePasswordVisibility,
+                            validator: controller.validatePassword, // Logic from controller
+                          )),
 
-                         // Remember Me /Forgot Password
-                        LayoutBuilder(
-                          builder: (context, constraints) {
-                            if (constraints.maxWidth < 300) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _buildRememberMe(),
-                                  const SizedBox(height: 5),
-                                  _buildForgotPassword(),
-                                ],
-                              );
-                            } else {
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  _buildRememberMe(),
-                                  _buildForgotPassword(),
-                                ],
-                              );
-                            }
-                          },
-                        ),
+                          const SizedBox(height: 15),
 
-                        const SizedBox(height: 25),
+                          // Remember Me & Forgot Password
+                          LayoutBuilder(
+                            builder: (context, constraints) {
+                              if (constraints.maxWidth < 300) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildRememberMe(),
+                                    const SizedBox(height: 5),
+                                    _buildForgotPassword(),
+                                  ],
+                                );
+                              } else {
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    _buildRememberMe(),
+                                    _buildForgotPassword(),
+                                  ],
+                                );
+                              }
+                            },
+                          ),
 
-                         // Login Button
-                         PrimaryBtnOfLogin(
-                          text:"Log In",
-                          onTap: (){
-                            context.go('/dashboard');
-                          },
-                          width: double.infinity,
-                          height: 50,
-                          borderRadius: BorderRadius.circular(10),
-                         ),
+                          const SizedBox(height: 25),
 
-                        const SizedBox(height: 25),
-                         Row(
-                          children: [
-                            Expanded(child: Divider(color: AppColors.quadrantalTextColor,)),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(TextString.loginText, style: TTextTheme.loginDividerText(context)),
-                            ),
-                            Expanded(child: Divider(color: AppColors.quadrantalTextColor,)),
-                          ],
-                        ),
-                        const SizedBox(height: 25),
+                          // Log In Button
+                          PrimaryBtnOfLogin(
+                            text: "Log In",
+                            onTap: () {
+                              // Triggering the validation logic in controller
+                              controller.login(context);
+                            },
+                            width: double.infinity,
+                            height: 50,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
 
-                           // Attachments Button
-                        isMobile
-                            ? Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                context.go('/dashboard-admin');
-                              },
-                              child: _buildSocialButton("Google", IconString.googleIcon),
-                            ),
-                            const SizedBox(height: 15),
-                            GestureDetector(
-                              onTap: () {
-                                context.go('/dashboard-staff');
-                              },
-                              child: _buildSocialButton("Apple", IconString.appleIcon),
-                            )
-                          ],
-                        )
-                            : Row(
-                          children: [
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  context.go('/dashboard-admin');
-                                },
+                          const SizedBox(height: 25),
+
+                          // Divider
+                          Row(
+                            children: [
+                              Expanded(child: Divider(color: AppColors.quadrantalTextColor)),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                child: Text(
+                                  TextString.loginText,
+                                  style: TTextTheme.loginDividerText(context),
+                                ),
+                              ),
+                              Expanded(child: Divider(color: AppColors.quadrantalTextColor)),
+                            ],
+                          ),
+
+                          const SizedBox(height: 25),
+
+                          // Social Buttons (Google/Apple)
+                          isMobile
+                              ? Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () => context.go('/dashboard-admin'),
                                 child: _buildSocialButton("Google", IconString.googleIcon),
                               ),
-                            ),
-                            const SizedBox(width: 15),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  context.go("/dashboard-staff");
-                                },
+                              const SizedBox(height: 15),
+                              GestureDetector(
+                                onTap: () => context.go('/dashboard-staff'),
                                 child: _buildSocialButton("Apple", IconString.appleIcon),
                               )
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 30),
-
-
-                         // Down Text
-                        Wrap(
-                          alignment: WrapAlignment.center,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                             Text(
-                              TextString.loginFooterFirst,
-                              style: TTextTheme.titleSmallRemember(context),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                context.push('/signUp');
-                              },
-                              child: Text(
-                                TextString.loginFooterTwo,
-                                style: TTextTheme.titleSmallRegister(context),
+                            ],
+                          )
+                              : Row(
+                            children: [
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () => context.go('/dashboard-admin'),
+                                  child: _buildSocialButton("Google", IconString.googleIcon),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                              const SizedBox(width: 15),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () => context.go("/dashboard-staff"),
+                                  child: _buildSocialButton("Apple", IconString.appleIcon),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 30),
+
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Text(
+                                TextString.loginFooterFirst,
+                                style: TTextTheme.titleSmallRemember(context),
+                              ),
+                              GestureDetector(
+                                onTap: () => context.push('/signUp'),
+                                child: Text(
+                                  TextString.loginFooterTwo,
+                                  style: TTextTheme.titleSmallRegister(context),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -277,26 +288,38 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildTextField({required String hint, TextEditingController? textController, bool isPassword = false, bool obscureText = false, VoidCallback? onSuffixTap}) {
-    return TextField(
-      cursorColor: AppColors.blackColor,
+  Widget _buildTextField({
+    required String hint,
+    TextEditingController? textController,
+    bool isPassword = false,
+    bool obscureText = false,
+    VoidCallback? onSuffixTap,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
       controller: textController,
       obscureText: obscureText,
+      validator: validator,
+      cursorColor: AppColors.blackColor,
       style: TTextTheme.loginInsideTextField(context),
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TTextTheme.loginInsideTextField(context),
         filled: true,
         fillColor: AppColors.secondaryColor,
+        errorStyle: const TextStyle(color: AppColors.primaryColor, fontSize: 12),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+        focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: AppColors.primaryColor)),
+        errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: AppColors.primaryColor)),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        suffixIcon: isPassword ? IconButton(icon: Icon(obscureText
-            ? Icons.visibility_off_outlined
-            : Icons.visibility_outlined,color: AppColors.quadrantalTextColor ,size: 20), onPressed: onSuffixTap) : null,
+        suffixIcon: isPassword ? IconButton(
+            icon: Icon(obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                color: AppColors.quadrantalTextColor, size: 20),
+            onPressed: onSuffixTap
+        ) : null,
       ),
     );
   }
-
 
   Widget _buildSocialButton(String label, String icon) {
     return Container(
