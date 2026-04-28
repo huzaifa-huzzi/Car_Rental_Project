@@ -611,6 +611,11 @@ class TTextTheme {
     );
   }
 
+  static TextStyle ErrorStyle(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 12, 13),fontWeight: FontWeight.w400,color: AppColors.primaryColor,
+    );
+  }
+
     /// Payment / After that Module
   static TextStyle medium14(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w500,color: AppColors.secondTextColor);

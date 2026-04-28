@@ -25,7 +25,6 @@ class AddCustomerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = AppSizes.isMobile(context);
     final double spacing = AppSizes.padding(context);
-    final GlobalKey fieldKey = GlobalKey();
 
     return Center(
       child: Container(
@@ -36,122 +35,131 @@ class AddCustomerWidget extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
         ),
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(spacing),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+        child: Form(
+          key: CustomerController.customerFormKey,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(spacing),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// CUSTOMER HEADER
+                Text(TextString.addCustomerTitle, style: TTextTheme.h7Style(context)),
+                SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
+                Text(TextString.addCustomerSubtitle, style: TTextTheme.titleThree(context)),
+                SizedBox(height: spacing / 2),
+                Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+                _buildStepBadges(context),
+                SizedBox(height: spacing / 2),
+                SizedBox(height: spacing),
 
-
-
-              /// CUSTOMER HEADER
-              Text(TextString.addCustomerTitle, style: TTextTheme.h7Style(context)),
-              SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
-              Text(TextString.addCustomerSubtitle, style: TTextTheme.titleThree(context)),
-              SizedBox(height: spacing/2),
-              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-              _buildStepBadges(context),
-              SizedBox(height: spacing/2),
-              SizedBox(height: spacing),
-
-              /// PROFILE IMAGE UPLOAD
-              Align(
-                alignment: isMobile ? Alignment.center : Alignment.centerLeft,
-                child: _buildProfilePhotoPicker(context),
-              ),
-              SizedBox(height: spacing * 1.5),
-
-              /// BASIC INFO GRID FORM
-              _buildResponsiveGrid(context, [
-                _buildTextField(context, " Given Name", controller.givenNameController),
-                _buildTextField(context, " Surname", controller.surnameController),
-                CompositedTransformTarget(
-                  link: controller.dobLink,
-                  child: _buildDOBField(
-                    context,
-                    "Date of Birth",
-                    controller.dobController,
-                    onTap: () {
-                      controller.toggleCalendar(
-                        context,
-                        controller.dobLink,
-                        controller.dobController,
-                      );
-                    },
+                /// PROFILE IMAGE UPLOAD
+                Align(
+                  alignment: isMobile ? Alignment.center : Alignment.centerLeft,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+                    children: [
+                      _buildProfilePhotoPicker(context),
+                      Obx(() {
+                        if (controller.imageError.value) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: Text(
+                              "Photo is required",
+                              style: TTextTheme.ErrorStyle(context),
+                            ),
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      }),
+                    ],
                   ),
                 ),
-                _buildPhoneField(context, " Contact Number"),
-                _buildTextField(context, " Email Address", controller.emailController),
-                _buildTextField(context, "Residential Address", controller.addressController),
-              ]),
+                SizedBox(height: spacing * 1.5),
 
-              SizedBox(height: spacing),
-              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-
-              /// CUSTOMER NOTE
-              SizedBox(height: spacing),
-              Text(TextString.addCustomerNote, style: TTextTheme.btnSix(context)),
-              SizedBox(height: 8),
-              _buildLargeTextField(context, TextString.addCustomerNoteSubtitle, controller.noteController),
-
-              SizedBox(height: spacing),
-              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-
-              /// LICENSE DETAILS
-              SizedBox(height: spacing),
-              Text(TextString.addCustomerLicenseTitle, style: TTextTheme.btnSix(context)),
-              SizedBox(height: spacing),
-              _buildResponsiveGrid(context, [
-                _buildTextField(context, "Driver License Number", controller.licenseNumberController),
-                CompositedTransformTarget(
-                  link: controller.expiryLink,
-                  child: _buildCalendarFieldGeneric(
-                    context,
-                    "License Expiry Date",
-                    controller.licenseExpiryController,
-                    hint: "DD/MM/YYYY",
-                    onTap: () {
-                      controller.toggleCalendar(
-                        context,
-                        controller.expiryLink,
-                        controller.licenseExpiryController,
-                      );
-                    },
+                /// BASIC INFO GRID FORM
+                _buildResponsiveGrid(context, [
+                  _buildTextField(context, "Given Name", controller.givenNameController,
+                      validator: (v) => controller.validateRequired(v, "Given Name")),
+                  _buildTextField(context, "Surname", controller.surnameController,
+                      validator: (v) => controller.validateRequired(v, "Surname")),
+                  CompositedTransformTarget(
+                    link: controller.dobLink,
+                    child: _buildDOBField(
+                      context,
+                      "Date of Birth",
+                      controller.dobController,
+                      validator: (v) => controller.validateRequired(v, "Date of Birth"),
+                      onTap: () => controller.toggleCalendar(context, controller.dobLink, controller.dobController),
+                    ),
                   ),
+                  _buildPhoneField(context, "Contact Number"),
+                  _buildTextField(context, "Email Address", controller.emailController,
+                      validator: (v) => controller.validateEmail(v)),
+                  _buildTextField(context, "Residential Address", controller.addressController,
+                      validator: (v) => controller.validateRequired(v, "Address")),
+                ]),
+
+                SizedBox(height: spacing),
+                Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+
+                /// CUSTOMER NOTE
+                SizedBox(height: spacing),
+                Text(TextString.addCustomerNote, style: TTextTheme.btnSix(context)),
+                const SizedBox(height: 8),
+                _buildLargeTextField(context, TextString.addCustomerNoteSubtitle, controller.noteController,
+                    validator: (v) => controller.validateRequired(v, "Note")),
+
+                SizedBox(height: spacing),
+                Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+
+                /// LICENSE DETAILS
+                SizedBox(height: spacing),
+                Text(TextString.addCustomerLicenseTitle, style: TTextTheme.btnSix(context)),
+                SizedBox(height: spacing),
+                _buildResponsiveGrid(context, [
+                  _buildTextField(context, "Driver License Number", controller.licenseNumberController,
+                      validator: (v) => controller.validateRequired(v, "License Number")),
+                  CompositedTransformTarget(
+                    link: controller.expiryLink,
+                    child: _buildCalendarFieldGeneric(
+                      context,
+                      "License Expiry Date",
+                      controller.licenseExpiryController,
+                      validator: (v) => controller.validateRequired(v, "Expiry Date"),
+                      onTap: () => controller.toggleCalendar(context, controller.expiryLink, controller.licenseExpiryController),
+                    ),
+                  ),
+                  _buildTextField(context, "Card Number", controller.licenseCardNumberController,
+                      validator: (v) => controller.validateRequired(v, "License Card Number")),
+                ]),
+
+                SizedBox(height: spacing),
+                Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+
+                /// DOCUMENTS UPLOAD
+                SizedBox(height: spacing),
+                Text(TextString.addCustomerUploadDocument, style: TTextTheme.btnSix(context)),
+                SizedBox(height: spacing),
+                _documentsSection(context),
+
+                SizedBox(height: spacing),
+                Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+
+                /// CARD DETAILS
+                Text(TextString.addCustomerCarDetails, style: TTextTheme.btnSix(context)),
+                SizedBox(height: spacing),
+                Center(
+                  child: SizedBox(width: 600, child: _buildCardSelectionRow(context)),
                 ),
-                _buildTextField(context, "Card Number", controller.licenseCardNumberController),
-              ]),
+                SizedBox(height: spacing),
+                _buildCardForm(context),
+                SizedBox(height: spacing * 2),
 
-              SizedBox(height: spacing),
-              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-
-              /// DOCUMENTS UPLOAD
-              SizedBox(height: spacing),
-              Text(TextString.addCustomerUploadDocument, style: TTextTheme.btnSix(context)),
-              SizedBox(height: spacing),
-              _documentsSection(context),
-
-              SizedBox(height: spacing),
-              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-
-              /// CARD DETAILS
-              Text(TextString.addCustomerCarDetails, style: TTextTheme.btnSix(context)),
-              SizedBox(height: spacing),
-
-              Center(
-                child: SizedBox(
-                  width: 600,
-                  child: _buildCardSelectionRow(context),
-                ),
-              ),
-
-              SizedBox(height: spacing),
-              _buildCardForm(context),
-              SizedBox(height: spacing * 2),
-
-              SizedBox(height: spacing),
-              _buttonSection(context, isMobile),
-            ],
+                /// ACTION BUTTONS
+                _buttonSection(context, isMobile),
+              ],
+            ),
           ),
         ),
       ),
@@ -225,43 +233,72 @@ class AddCustomerWidget extends StatelessWidget {
   }
 
   // Profile Photo Picker Widget
-  Widget _buildProfilePhotoPicker(BuildContext context,) {
+  Widget _buildProfilePhotoPicker(BuildContext context) {
     return Obx(() {
       final hasImg = controller.profileImage.value != null;
-      return GestureDetector(
-        onTap: () => controller.pickProfileImage(),
-        child: Container(
-          width: 150,
-          height: 150,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.iconsBackgroundColor, width: 1),
-          ),
-          child: hasImg
-              ? ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: kIsWeb
-                ? Image.memory(controller.profileImage.value!.bytes!, fit: BoxFit.cover)
-                : Image.file(File(controller.profileImage.value!.path!), fit: BoxFit.cover),
-          )
-              : Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: AppColors.iconsBackgroundColor,
-                  borderRadius: BorderRadius.circular(12),
+      final bool hasError = controller.imageError.value;
+
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: () {
+              controller.pickProfileImage();
+            },
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                    color: hasError ? AppColors.primaryColor: AppColors.iconsBackgroundColor,
+                    width: hasError ? 2 : 1
                 ),
-                child: Image.asset(IconString.uploadIcon, color: AppColors.primaryColor, width: 24),
               ),
-              const SizedBox(height: 10),
-              Text(TextString.addCustomerPhotoText, style: TTextTheme.documnetIsnideSmallText(context)),
-              Text(TextString.uploadSubtitle, style: TTextTheme.documnetIsnideSmallText2(context)),
-            ],
+              child: hasImg
+                  ? ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: kIsWeb
+                    ? Image.memory(controller.profileImage.value!.bytes!, fit: BoxFit.cover)
+                    : Image.file(File(controller.profileImage.value!.path!), fit: BoxFit.cover),
+              )
+                  : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.iconsBackgroundColor,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Image.asset(IconString.uploadIcon, color: AppColors.primaryColor, width: 24),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(TextString.addCustomerPhotoText,
+                      textAlign: TextAlign.center,
+                      style: TTextTheme.documnetIsnideSmallText(context)),
+                  Text(TextString.uploadSubtitle,
+                      textAlign: TextAlign.center,
+                      style: TTextTheme.documnetIsnideSmallText2(context)),
+                ],
+              ),
+            ),
           ),
-        ),
+          if (hasError)
+            Padding(
+              padding: const EdgeInsets.only(top: 8, left: 4),
+              child: SizedBox(
+                width: 150,
+                child: Text(
+                  "Photo is required",
+                  style: TTextTheme.ErrorStyle(context),
+                ),
+              ),
+            ),
+        ],
       );
     });
   }
@@ -282,56 +319,32 @@ class AddCustomerWidget extends StatelessWidget {
   }
 
   // Standard TextField
-  Widget _buildTextField(BuildContext context, String label, TextEditingController ctrl, {String? hint}) {
+  Widget _buildTextField(BuildContext context, String label, TextEditingController ctrl, {String? hint, String? Function(String?)? validator}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: TTextTheme.titleTwo(context)),
         const SizedBox(height: 6),
-        Focus(
-          onFocusChange: (hasFocus) {
-            (context as Element).markNeedsBuild();
-          },
-          child: Builder(
-            builder: (context) {
-              final bool isFocused = Focus.of(context).hasFocus;
-
-              return AnimatedContainer(
-                duration: const Duration(milliseconds: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-                  boxShadow: isFocused
-                      ? [
-                    BoxShadow(
-                      color: AppColors.fieldsBackground,
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ]
-                      : [],
-                ),
-                child: TextField(
-                  controller: ctrl,
-                  cursorColor: AppColors.blackColor,
-                  style: TTextTheme.titleTwo(context),
-                  onTapOutside: (event) {
-                    FocusScope.of(context).unfocus();
-                  },
-
-                  decoration: InputDecoration(
-                    hintText: hint ?? "Write $label...",
-                    hintStyle: TTextTheme.titleFour(context),
-                    filled: true,
-                    fillColor: AppColors.secondaryColor,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                  ),
-                ),
-              );
-            },
+        TextFormField(
+          controller: ctrl,
+          validator: validator,
+          cursorColor: AppColors.blackColor,
+          style: TTextTheme.titleTwo(context),
+          decoration: InputDecoration(
+            hintText: hint ?? "Write $label...",
+            hintStyle: TTextTheme.titleFour(context),
+            filled: true,
+            fillColor: AppColors.secondaryColor,
+            errorStyle: const TextStyle(color: AppColors.primaryColor),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+              borderSide: BorderSide.none,
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+              borderSide: const BorderSide(color: AppColors.primaryColor, width: 1),
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           ),
         ),
       ],
@@ -339,7 +352,7 @@ class AddCustomerWidget extends StatelessWidget {
   }
 
   // Customer TextField Widget
-  Widget _buildLargeTextField(BuildContext context, String hint, TextEditingController ctrl) {
+  Widget _buildLargeTextField(BuildContext context, String hint, TextEditingController ctrl, {String? Function(String?)? validator}) {
     return Focus(
       onFocusChange: (hasFocus) {
         (context as Element).markNeedsBuild();
@@ -356,16 +369,19 @@ class AddCustomerWidget extends StatelessWidget {
                   ? [
                 BoxShadow(
                   color: AppColors.fieldsBackground,
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
+                  blurRadius: 8,
+                  spreadRadius: 3,
+                  offset: const Offset(0, 3),
+                )
               ]
                   : [],
             ),
-            child: TextField(
-              cursorColor: AppColors.blackColor,
+            child: TextFormField(
               controller: ctrl,
+              validator: validator,
+              cursorColor: AppColors.blackColor,
               maxLines: 5,
+              style: TTextTheme.titleTwo(context),
               onTapOutside: (event) {
                 FocusScope.of(context).unfocus();
               },
@@ -374,9 +390,18 @@ class AddCustomerWidget extends StatelessWidget {
                 hintStyle: TTextTheme.titleFour(context),
                 filled: true,
                 fillColor: AppColors.secondaryColor,
+                errorStyle: TTextTheme.ErrorStyle(context),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
                   borderSide: BorderSide.none,
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                  borderSide: const BorderSide(color:AppColors.primaryColor, width: 1),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                  borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.5),
                 ),
               ),
             ),
@@ -388,35 +413,38 @@ class AddCustomerWidget extends StatelessWidget {
 
 
    // DOB Field
-  Widget _buildDOBField(BuildContext context, String label, TextEditingController textController, {required VoidCallback onTap}) {
+  Widget _buildDOBField(BuildContext context, String label, TextEditingController textController, {required VoidCallback onTap, String? Function(String?)? validator}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: TTextTheme.titleTwo(context)),
         const SizedBox(height: 8),
-        GestureDetector(
+        TextFormField(
+          controller: textController,
+          readOnly: true,
           onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-            decoration: BoxDecoration(
-              color: AppColors.secondaryColor,
+          validator: validator,
+          style: TTextTheme.pOne(context),
+          decoration: InputDecoration(
+            errorStyle: TTextTheme.ErrorStyle(context),
+            hintText: "DD/MM/YYYY",
+            hintStyle: TTextTheme.pOne(context),
+            filled: true,
+            fillColor: AppColors.secondaryColor,
+            suffixIcon: Icon(Icons.event, color: AppColors.quadrantalTextColor, size: 20),
+            border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+              borderSide: BorderSide.none,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ValueListenableBuilder<TextEditingValue>(
-                  valueListenable: textController,
-                  builder: (context, value, child) {
-                    return Text(
-                      value.text.isEmpty ? "DD/MM/YYYY" : value.text,
-                      style: TTextTheme.pOne(context)
-                    );
-                  },
-                ),
-                Icon(Icons.event, color: AppColors.quadrantalTextColor, size: 20),
-              ],
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+              borderSide: const BorderSide(color: AppColors.primaryColor, width: 1),
             ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+              borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.5),
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
           ),
         ),
       ],
@@ -424,36 +452,43 @@ class AddCustomerWidget extends StatelessWidget {
   }
 
    // Expiry Date
-  Widget _buildCalendarFieldGeneric(BuildContext context, String label, TextEditingController textController,
-      {required VoidCallback onTap, String hint = "Select Date"}) {
+  Widget _buildCalendarFieldGeneric(
+      BuildContext context,
+      String label,
+      TextEditingController textController,
+      {required VoidCallback onTap, String hint = "Select Date", String? Function(String?)? validator}
+      ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: TTextTheme.titleTwo(context)),
         const SizedBox(height: 8),
-        GestureDetector(
+        TextFormField(
+          controller: textController,
+          readOnly: true,
           onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-            decoration: BoxDecoration(
-              color: AppColors.secondaryColor,
+          validator: validator,
+          style: TTextTheme.pOne(context),
+          decoration: InputDecoration(
+            errorStyle: TTextTheme.ErrorStyle(context),
+            hintText: hint,
+            hintStyle: TTextTheme.pOne(context),
+            filled: true,
+            fillColor: AppColors.secondaryColor,
+            suffixIcon: Icon(Icons.event, color: AppColors.quadrantalTextColor, size: 18),
+            border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+              borderSide: BorderSide.none,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ValueListenableBuilder<TextEditingValue>(
-                  valueListenable: textController,
-                  builder: (context, value, child) {
-                    return Text(
-                      value.text.isEmpty ? hint : value.text,
-                      style: TTextTheme.pOne(context)
-                    );
-                  },
-                ),
-                Icon(Icons.event, color: AppColors.quadrantalTextColor, size: 18),
-              ],
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+              borderSide: const BorderSide(color: AppColors.primaryColor, width: 1),
             ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+              borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.5),
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
           ),
         ),
       ],
@@ -470,102 +505,123 @@ class AddCustomerWidget extends StatelessWidget {
       children: [
         Text(label, style: TTextTheme.titleTwo(context)),
         const SizedBox(height: 6),
-        Container(
-          decoration: BoxDecoration(
-            color: AppColors.secondaryColor,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 4),
-                child: DropdownButtonHideUnderline(
-                  child: Obx(() => DropdownButton2<Country>(
-                    isExpanded: false,
-                    value: countryList.firstWhere(
-                          (c) => c.name == controller.selectedCountryName.value,
-                      orElse: () => countryList.firstWhere((c) => c.name == "Australia"),
-                    ),
-
-                    selectedItemBuilder: (context) {
-                      return countryList.map((Country country) {
-                        return Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const SizedBox(width: 8),
-                            _buildCircleFlag(country.countryCode),
-                            const SizedBox(width: 10),
-                            Text(
-                                "+${country.phoneCode}",
-                                style: TTextTheme.bodyRegular14(context).copyWith(color: AppColors.blackColor)
-                            ),
-                          ],
-                        );
-                      }).toList();
-                    },
-
-                    items: countryList.map((Country country) {
-                      return DropdownMenuItem<Country>(
-                        value: country,
-                        child: Row(
-                          children: [
-                            _buildCircleFlag(country.countryCode),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Text(country.name, style: const TextStyle(fontSize: 13), overflow: TextOverflow.ellipsis),
-                            ),
-                            Text("+${country.phoneCode}", style: TextStyle(color: Colors.grey.shade600, fontSize: 12)),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-
-                    onChanged: (Country? value) {
-                      if (value != null) {
-                        controller.selectedCountryName.value = value.name;
-                        controller.selectedCode.value = "+${value.phoneCode}";
-                      }
-                    },
-                    buttonStyleData: const ButtonStyleData(
-                      height: 48,
-                      padding: EdgeInsets.symmetric(horizontal: 4),
-                    ),
-                    iconStyleData: const IconStyleData(
-                      icon: Icon(Icons.keyboard_arrow_down_rounded, size: 20, color: Colors.black54),
-                    ),
-                    dropdownStyleData: DropdownStyleData(
-                      maxHeight: 350,
-                      width: 250,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white),
-                      offset: const Offset(0, -5),
-                    ),
-
-                    dropdownSearchData: DropdownSearchData(
-                      searchController: controller.searchController,
-                      searchInnerWidgetHeight: 50,
-                      searchInnerWidget: _buildSearchField(context, controller.searchController),
-                      searchMatchFn: (item, searchValue) {
-                        return item.value!.name.toLowerCase().contains(searchValue.toLowerCase()) ||
-                            item.value!.phoneCode.contains(searchValue);
+        TextFormField(
+          controller: controller.phoneController,
+          keyboardType: TextInputType.phone,
+          validator: (v) => controller.validateRequired(v, "Phone Number"),
+          style: TTextTheme.insidetextfieldWrittenText(context),
+          cursorColor: AppColors.blackColor,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: AppColors.secondaryColor,
+            hintText: "Enter number",
+            hintStyle: TTextTheme.titleTwo(context),
+            prefixIcon: Padding(
+              padding: const EdgeInsets.only(left: 4),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButtonHideUnderline(
+                    child: Obx(() => DropdownButton2<Country>(
+                      isExpanded: false,
+                      value: countryList.firstWhere(
+                            (c) => c.name == controller.selectedCountryName.value,
+                        orElse: () => countryList.firstWhere((c) => c.name == "Australia"),
+                      ),
+                      selectedItemBuilder: (context) {
+                        return countryList.map((Country country) {
+                          return Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const SizedBox(width: 8),
+                              _buildCircleFlag(country.countryCode),
+                              const SizedBox(width: 10),
+                              Text("+${country.phoneCode}",
+                                  style: TTextTheme.bodyRegular14(context)
+                                      .copyWith(color: AppColors.blackColor)),
+                            ],
+                          );
+                        }).toList();
                       },
-                    ),
-                  )),
-                ),
-              ),
-              Expanded(
-                child: TextFormField(
-                  controller: controller.phoneController,
-                  keyboardType: TextInputType.phone,
-                  style: TTextTheme.insidetextfieldWrittenText(context),
-                  decoration: InputDecoration(
-                    hintText: "Enter number",
-                    hintStyle: TTextTheme.titleTwo(context),
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 4),
+                      items: countryList.map((Country country) {
+                        return DropdownMenuItem<Country>(
+                          value: country,
+                          child: Row(
+                            children: [
+                              _buildCircleFlag(country.countryCode),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(country.name,
+                                    style: const TextStyle(fontSize: 13),
+                                    overflow: TextOverflow.ellipsis),
+                              ),
+                              Text("+${country.phoneCode}",
+                                  style: TTextTheme.titleinputTextField(context)),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (Country? value) {
+                        if (value != null) {
+                          controller.selectedCountryName.value = value.name;
+                          controller.selectedCode.value = "+${value.phoneCode}";
+                        }
+                      },
+                      buttonStyleData: const ButtonStyleData(
+                        height: 48,
+                        padding: EdgeInsets.symmetric(horizontal: 4),
+                      ),
+                      iconStyleData: const IconStyleData(
+                        icon: Icon(Icons.keyboard_arrow_down_rounded,
+                            size: 20, color: Colors.black54),
+                      ),
+                      dropdownStyleData: DropdownStyleData(
+                        maxHeight: 350,
+                        width: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white),
+                        offset: const Offset(0, -5),
+                      ),
+                      dropdownSearchData: DropdownSearchData(
+                        searchController: controller.searchController,
+                        searchInnerWidgetHeight: 50,
+                        searchInnerWidget: _buildSearchField(
+                            context, controller.searchController),
+                        searchMatchFn: (item, searchValue) {
+                          return item.value!.name
+                              .toLowerCase()
+                              .contains(searchValue.toLowerCase()) ||
+                              item.value!.phoneCode.contains(searchValue);
+                        },
+                      ),
+                    )),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: AppColors.primaryColor, width: 1),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.5),
+            ),
+            errorStyle: const TextStyle(color: AppColors.primaryColor, fontSize: 12),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           ),
         ),
       ],
@@ -1034,6 +1090,7 @@ class AddCustomerWidget extends StatelessWidget {
           child: Builder(
             builder: (context) {
               final bool hasFocus = Focus.of(context).hasFocus;
+
               return Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
@@ -1047,43 +1104,64 @@ class AddCustomerWidget extends StatelessWidget {
                     )
                   ] : [],
                 ),
-                child: TextField(
+                child: TextFormField(
                   controller: ctrl,
                   cursorColor: Colors.black,
-                  style: const TextStyle(fontSize: 12),
+                  style: TTextTheme.textFieldWrittenText(context),
+                  onChanged: (value) {
+                    if (value.isNotEmpty) {
+                      CustomerController.customerFormKey.currentState?.validate();
+                    }
+                  },
+
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return "Required";
+                    }
+                    if (isCreditCard && value.length < 16) {
+                      return "Invalid Card Number";
+                    }
+                    return null;
+                  },
+
                   decoration: InputDecoration(
                     hintText: hint,
-                    hintStyle:  TTextTheme.btnOne(context),
+                    hintStyle: TTextTheme.btnOne(context),
                     filled: true,
                     fillColor: Colors.white,
                     hoverColor: Colors.transparent,
-
+                    errorStyle: TTextTheme.ErrorStyle(context),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: AppColors.primaryColor, width: 1),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.5),
+                    ),
                     suffixIcon: isCreditCard ? Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Image.asset(IconString.visaIcon, width: 25),
-                          const SizedBox(width: 2),
+                          const SizedBox(width: 4),
                           Image.asset(IconString.materCard2, width: 25),
-                          const SizedBox(width: 2),
+                          const SizedBox(width: 4),
                           Image.asset(IconString.americanExpressIcon, width: 25),
-                          const SizedBox(width: 2),
+                          const SizedBox(width: 4),
                           Image.asset(IconString.discoverCardIcon, width: 25),
                         ],
                       ),
                     ) : null,
-
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: AppColors.fieldsBackground),
                     ),
-
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color:AppColors.fieldsBackground),
+                      borderSide: BorderSide(color: AppColors.fieldsBackground),
                     ),
-
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                   ),
                 ),
@@ -1100,6 +1178,7 @@ class AddCustomerWidget extends StatelessWidget {
   Widget _buildCountryPickerField(BuildContext context, String label, TextEditingController ctrl) {
     final List<Country> countryList = CountryService().getAll();
     final TextEditingController searchController = TextEditingController();
+
     Country? selectedCountry;
     try {
       if (ctrl.text.isNotEmpty) {
@@ -1114,136 +1193,127 @@ class AddCustomerWidget extends StatelessWidget {
       children: [
         Text(label, style: TTextTheme.titleTwo(context)),
         const SizedBox(height: 8),
-        DropdownButtonHideUnderline(
-          child: DropdownButton2<Country>(
-            isExpanded: true,
-            value: selectedCountry,
-            iconStyleData: const IconStyleData(
-              icon: Icon(
-                Icons.keyboard_arrow_down_rounded,
-                color: AppColors.quadrantalTextColor,
-                size: 24,
-              ),
-              openMenuIcon: Icon(
-                Icons.keyboard_arrow_up_rounded,
-                color: AppColors.quadrantalTextColor,
-                size: 24,
-              ),
-            ),
-            hint: Row(
+        FormField<Country>(
+          initialValue: selectedCountry,
+          validator: (value) {
+            if (ctrl.text.isEmpty) {
+              return "Please select a country";
+            }
+            return null;
+          },
+          builder: (FormFieldState<Country> state) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildCircleFlag("au"),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    ctrl.text.isEmpty ? "Australia" : ctrl.text,
-                    style: TTextTheme.btnOne(context),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                ),
-              ],
-            ),
-            selectedItemBuilder: (context) {
-              return countryList.map((Country country) {
-                return Row(
-                  children: [
-                    _buildCircleFlag(country.countryCode),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        country.name,
-                        style: TTextTheme.btnOne(context),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
+                DropdownButtonHideUnderline(
+                  child: DropdownButton2<Country>(
+                    isExpanded: true,
+                    value: selectedCountry,
+                    iconStyleData: const IconStyleData(
+                      icon: Icon(Icons.keyboard_arrow_down_rounded, color: AppColors.quadrantalTextColor, size: 24),
+                      openMenuIcon: Icon(Icons.keyboard_arrow_up_rounded, color: AppColors.quadrantalTextColor, size: 24),
+                    ),
+                    hint: Row(
+                      children: [
+                        _buildCircleFlag("au"),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            ctrl.text.isEmpty ? "Select Country" : ctrl.text,
+                            style: TTextTheme.btnOne(context),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                    selectedItemBuilder: (context) {
+                      return countryList.map((Country country) {
+                        return Row(
+                          children: [
+                            _buildCircleFlag(country.countryCode),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(country.name, style: TTextTheme.btnOne(context), overflow: TextOverflow.ellipsis),
+                            ),
+                          ],
+                        );
+                      }).toList();
+                    },
+                    items: countryList.map((Country country) {
+                      return DropdownMenuItem<Country>(
+                        value: country,
+                        child: Row(
+                          children: [
+                            _buildCircleFlag(country.countryCode),
+                            const SizedBox(width: 10),
+                            Expanded(child: Text(country.name, style: TTextTheme.bodyRegular14(context))),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (Country? value) {
+                      if (value != null) {
+                        ctrl.text = value.name;
+                        state.didChange(value);
+                        controller.update();
+                      }
+                    },
+                    buttonStyleData: ButtonStyleData(
+                      padding: const EdgeInsets.only(right: 8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: state.hasError ? AppColors.primaryColor : AppColors.fieldsBackground,
+                          width: state.hasError ? 1.5 : 1,
+                        ),
+                        color: Colors.white,
                       ),
                     ),
-                  ],
-                );
-              }).toList();
-            },
-
-            items: countryList.map((Country country) {
-              return DropdownMenuItem<Country>(
-                value: country,
-                child: Row(
-                  children: [
-                    _buildCircleFlag(country.countryCode),
-                    const SizedBox(width: 10),
-                    Expanded(child: Text(country.name, style: TTextTheme.bodyRegular14(context))),
-                  ],
-                ),
-              );
-            }).toList(),
-
-            onChanged: (Country? value) {
-              if (value != null) {
-                ctrl.text = value.name;
-                controller.update();
-                if (context is Element) {
-                  (context).markNeedsBuild();
-                }
-              }
-            },
-            buttonStyleData: ButtonStyleData(
-              padding: const EdgeInsets.only(right: 8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.fieldsBackground),
-                color: Colors.white,
-              ),
-            ),
-            dropdownStyleData: DropdownStyleData(
-              maxHeight: 400,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white),
-              offset: const Offset(0, -5),
-            ),
-
-            dropdownSearchData: DropdownSearchData(
-              searchController: searchController,
-              searchInnerWidgetHeight: 50,
-              searchInnerWidget: Padding(
-                padding: const EdgeInsets.only(
-                  top: 12,
-                  bottom: 4,
-                  right: 12,
-                  left: 12,
-                ),
-                child: TextFormField(
-                  cursorColor: AppColors.blackColor,
-                  style: TTextTheme.insidetextfieldWrittenText(context),
-                  controller: searchController,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 10,
+                    dropdownStyleData: DropdownStyleData(
+                      maxHeight: 400,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white),
+                      offset: const Offset(0, -5),
                     ),
-                    fillColor: AppColors.backgroundOfScreenColor,
-                    filled: true,
-                    hintText: 'Search',
-                    hintStyle: TTextTheme.titleTwo(context),
-                    prefixIcon: const Icon(Icons.search, size: 18, color: AppColors.primaryColor),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: const BorderSide(color: AppColors.primaryColor),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: const BorderSide(color: AppColors.primaryColor,),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: const BorderSide(color: AppColors.primaryColor),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: searchController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 12, 12, 4),
+                        child: TextFormField(
+                          cursorColor: AppColors.blackColor,
+                          style: TTextTheme.insidetextfieldWrittenText(context),
+                          controller: searchController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                            fillColor: AppColors.backgroundOfScreenColor,
+                            filled: true,
+                            hintText: 'Search',
+                            hintStyle: TTextTheme.titleTwo(context),
+                            prefixIcon: const Icon(Icons.search, size: 18, color: AppColors.primaryColor),
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: const BorderSide(color: AppColors.primaryColor)),
+                            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: const BorderSide(color: AppColors.primaryColor)),
+                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: const BorderSide(color: AppColors.primaryColor)),
+                          ),
+                        ),
+                      ),
+                      searchMatchFn: (item, searchValue) {
+                        return item.value!.name.toLowerCase().contains(searchValue.toLowerCase());
+                      },
                     ),
                   ),
                 ),
-              ),
-              searchMatchFn: (item, searchValue) {
-                return item.value!.name.toLowerCase().contains(searchValue.toLowerCase());
-              },
-            ),
-          ),
+                if (state.hasError)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6, left: 4),
+                    child: Text(
+                      state.errorText ?? "",
+                      style: TTextTheme.ErrorStyle(context),
+                    ),
+                  ),
+              ],
+            );
+          },
         ),
       ],
     );
@@ -1268,6 +1338,22 @@ class AddCustomerWidget extends StatelessWidget {
     final double spacing = AppSizes.padding(context);
     final buttonWidth = isMobile ? double.infinity : 180.0;
 
+    void onContinuePressed() {
+      bool isDataValid = controller.saveCustomer2(context);
+
+      if (isDataValid) {
+        context.push('/stepTwoCustomer');
+      } else {
+        Get.snackbar(
+          "Validation Failed",
+          "Please fill all mandatory fields and upload a profile photo.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: AppColors.primaryColor,
+          colorText: Colors.white,
+        );
+      }
+    }
+
     List<Widget> buttons = [
       SizedBox(
         width: buttonWidth,
@@ -1277,8 +1363,7 @@ class AddCustomerWidget extends StatelessWidget {
           backgroundColor: Colors.white,
           textColor: AppColors.textColor,
           borderColor: AppColors.quadrantalTextColor,
-          onTap: () {
-          },
+          onTap: () => Get.back(),
         ),
       ),
       if (!isMobile) SizedBox(width: spacing),
@@ -1288,9 +1373,7 @@ class AddCustomerWidget extends StatelessWidget {
         height: 45,
         child: AddButtonOfCustomer(
           text: "Continue",
-          onTap: () {
-            context.push('/stepTwoCustomer');
-          },
+          onTap: onContinuePressed,
         ),
       ),
     ];

@@ -8,6 +8,7 @@ import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -18,14 +19,13 @@ class AddCarFormWidget extends StatelessWidget {
 
   final CarInventoryController controller = Get.find<CarInventoryController>();
 
-
   @override
   Widget build(BuildContext context) {
     final isMobile = AppSizes.isMobile(context);
 
     return Center(
       child: Container(
-         width:  double.infinity,
+        width: double.infinity,
         margin: EdgeInsets.all(AppSizes.padding(context)),
         padding: EdgeInsets.all(AppSizes.padding(context)),
         decoration: BoxDecoration(
@@ -34,100 +34,125 @@ class AddCarFormWidget extends StatelessWidget {
             AppSizes.borderRadius(context),
           ),
         ),
-
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              /// CAR DETAILS
-              Text(TextString.addScreenTitle, style: TTextTheme.h7Style(context)),
-              SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
-              Text(TextString.addScreenDescription, style: TTextTheme.titleThree(context)),
-              SizedBox(height: AppSizes.verticalPadding(context)/2),
-              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-              SizedBox(height: AppSizes.verticalPadding(context)),
+          child: Form(
+            key: CarInventoryController.carInventoryKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// CAR DETAILS HEADER
+                Text(TextString.addScreenTitle, style: TTextTheme.h7Style(context)),
+                SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
+                Text(TextString.addScreenDescription, style: TTextTheme.titleThree(context)),
+                SizedBox(height: AppSizes.verticalPadding(context) / 2),
+                Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+                SizedBox(height: AppSizes.verticalPadding(context)),
 
+                /// SECTION 1: CAR IDENTIFICATION
+                _buildSectionTitle(context, "Car Identification"),
+                const SizedBox(height: 15),
+                _buildResponsiveGrid(context, [
+                  _buildSearchCarDropdown(context, "Car Make", controller.selectedBrand, id: 'search_car'),
+                  _buildSearchCarDropdown(context, "Car Model", controller.selectedModel, id: 'Model'),
+                  _buildYearField(context, "Car Year", controller.selectedCarYear, id: 'year'),
+                  _buildTextField(context, "Car Registration Number", controller.regController,
+                      maxLength: 10,
+                      hint: "Write Registration Number...",
+                      validator: (v) => controller.validateRegistration(v)),
+                  _buildTextField(
+                    context,
+                    "VIN Number",
+                    hint: "Write VIN Number...",
+                    controller.vinController,
+                    maxLength: 17, 
+                    validator: (v) => controller.validateVIN(v), 
+                  ),
+                ]),
 
-              ///GRID FORM
-              _buildSectionTitle(context, "Car Identification"),
-              const SizedBox(height: 15),
-              _buildResponsiveGrid(context, [
-                _buildSearchCarDropdown(context, "Car Make", controller.selectedBrand, id: 'search_car'),
-                _buildSearchCarDropdown(context, "Car Model", controller.selectedModel, id: 'Model'),
-                _buildTextField(context, "Car Registration Number", controller.regController, hint: "Write Registration Number..."),
-                _buildTextField(context, "VIN Number", controller.vinController, hint: "Write VIN Number...."),
-              ]),
+                const SizedBox(height: 25),
+                const Divider(thickness: 0.5),
+                const SizedBox(height: 25),
 
-              const SizedBox(height: 25),
-              const Divider(thickness: 0.5),
-              const SizedBox(height: 25),
+                /// SECTION 2: CAR SPECIFICATION
+                _buildSectionTitle(context, "Car Specification"),
+                const SizedBox(height: 15),
+                _buildResponsiveGrid(context, [
+                  _buildSearchCarDropdown(context, "Car Body Type", controller.selectedBodyType, id: 'body'),
+                  _buildSearchCarDropdown2(context, "Car Transmission", controller.selectedTransmission, id: 'trans'),
+                  _buildSearchCarDropdown2(context, "Car Seats", controller.selectedSeats, id: 'seats'),
+                  _buildSearchCarDropdown2(context, "Car Engine Size", controller.selectedEngine, id: 'engine'),
+                  _buildSearchCarDropdown(context, "Car Color", controller.selectedColor, id: 'color'),
+                  _buildSearchCarDropdown2(context, "Car Fuel Type", controller.selectedFuel, id: 'fuel'),
 
-              /// SECTION 2: CAR SPECIFICATION
-              _buildSectionTitle(context, "Car Specification"),
-              const SizedBox(height: 15),
-              _buildResponsiveGrid(context, [
-                _buildSearchCarDropdown(context, "Car Body Type", controller.selectedBodyType, id: 'body'),
-                _buildSearchCarDropdown2(context, "Car Transmission", controller.selectedTransmission, id: 'trans'),
-                _buildSearchCarDropdown2(context, "Car Seats", controller.selectedSeats, id: 'seats'),
-                _buildSearchCarDropdown2(context, "Car Engine Size", controller.selectedEngine, id: 'engine'),
-                _buildSearchCarDropdown(context, "Car Color", controller.selectedColor, id: 'color'),
-                _buildSearchCarDropdown2(context, "Car Fuel Type", controller.selectedFuel, id: 'fuel'),
-                _buildTextField(context, "Car Value", controller.valueController, prefix: "\$ ", hint: "Car Value...."),
-                _buildTextField(context, "Weekly Rent (AUD)", controller.weeklyRentController, prefix: "\$ "),
-                _buildStatusDropdown(
-                  context,
-                  "Status",
-                  ["Available", "Un Available"],
-                  controller.selectedStatus,
-                  id: 'status',
-                ),
-              ]),
+                  _buildTextField(context, "Car Value", controller.valueController,
+                      prefix: "\$ ", hint: "Car Value....",
+                      keyboardType: TextInputType.number,
+                      validator: (v) => controller.validateNumeric(v, "Car Value")),
 
-              SizedBox(height: AppSizes.verticalPadding(context)),
-              const Divider(thickness: 0.5),
-              const SizedBox(height: 25),
+                  _buildTextField(context, "Weekly Rent (AUD)", controller.weeklyRentController,
+                      prefix: "\$ ",
+                      hint: "Weekly Rent....",
+                      keyboardType: TextInputType.number,
+                      validator: (v) => controller.validateNumeric(v, "Weekly Rent")),
 
-              /// IMAGE UPLOAD
-              Text(TextString.uploadImageTitle, style: TTextTheme.btnSix(context)),
-              SizedBox(height: AppSizes.verticalPadding(context)),
-              _imageBox(context),
-              SizedBox(height: AppSizes.verticalPadding(context)),
-              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+                  _buildStatusDropdown(
+                    context,
+                    "Status",
+                    ["Available", "UnAvailable"],
+                    controller.selectedStatus,
+                    id: 'status',
+                  ),
+                ]),
 
+                SizedBox(height: AppSizes.verticalPadding(context)),
+                const Divider(thickness: 0.5),
+                const SizedBox(height: 25),
 
-              /// DESCRIPTION
-              SizedBox(height: AppSizes.verticalPadding(context)),
-              Text(TextString.descriptionTitle, style: TTextTheme.btnSix(context)),
-              SizedBox(height: AppSizes.verticalPadding(context) * 0.5),
+                /// SECTION 3: IMAGE UPLOAD
+                Text(TextString.uploadImageTitle, style: TTextTheme.btnSix(context)),
+                SizedBox(height: AppSizes.verticalPadding(context)),
+                _imageBox(context),
+                SizedBox(height: AppSizes.verticalPadding(context)),
+                Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
-              Container(
-                padding: EdgeInsets.all(AppSizes.padding(context)),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-                  color: AppColors.secondaryColor,
-                ),
-                child: TextField(
-                  cursorColor: AppColors.blackColor,
-                  maxLines: 6,
-                  decoration: InputDecoration(
-                    hintText: TextString.descriptionTextFieldText,
-                    hintStyle: TTextTheme.pOne(context),
-                    border: InputBorder.none,
+                /// SECTION 4: DESCRIPTION
+                SizedBox(height: AppSizes.verticalPadding(context)),
+                Text(TextString.descriptionTitle, style: TTextTheme.btnSix(context)),
+                SizedBox(height: AppSizes.verticalPadding(context) * 0.5),
+
+                Container(
+                  padding: EdgeInsets.all(AppSizes.padding(context)),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                    color: AppColors.secondaryColor,
+                  ),
+                  child: TextFormField(
+                    controller: controller.descriptionController,
+                    cursorColor: AppColors.blackColor,
+                    maxLines: 6,
+                    style: TTextTheme.insidetextfieldWrittenText(context),
+                    validator: (value) => controller.validateRequired(value, "Description"),
+                    decoration: InputDecoration(
+                      hintText: TextString.descriptionTextFieldText,
+                      hintStyle: TTextTheme.pOne(context),
+                      border: InputBorder.none,
+                      errorStyle: TTextTheme.ErrorStyle(context),
+                    ),
                   ),
                 ),
-              ),
 
-              SizedBox(height: AppSizes.verticalPadding(context)),
-              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+                SizedBox(height: AppSizes.verticalPadding(context)),
+                Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
-              /// DOCUMENTS SECTION
-              SizedBox(height: 20,),
-              _documentsSection(context),
-              SizedBox(height: AppSizes.verticalPadding(context)),
+                /// SECTION 5: DOCUMENTS SECTION
+                const SizedBox(height: 20),
+                _documentsSection(context),
+                SizedBox(height: AppSizes.verticalPadding(context)),
 
-              ///BUTTON SECTION
-              _buttonSection(context, isMobile),
-            ],
+                /// BUTTON SECTION
+                _buttonSection(context, isMobile),
+              ],
+            ),
           ),
         ),
       ),
@@ -174,59 +199,57 @@ class AddCarFormWidget extends StatelessWidget {
   }
 
   // TextField Widget
-  Widget _buildTextField(BuildContext context, String label, TextEditingController controller,
-      {String? prefix, String? hint}) {
+  Widget _buildTextField(
+      BuildContext context,
+      String label,
+      TextEditingController controller, {
+        String? prefix,
+        String? hint,
+        int? maxLength,
+        TextInputType keyboardType = TextInputType.text,
+        String? Function(String?)? validator,
+      }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: TTextTheme.titleTwo(context)),
-        SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
-        Focus(
-          onFocusChange: (hasFocus) {
-            (context as Element).markNeedsBuild();
-          },
-          child: Builder(
-            builder: (context) {
-              final bool isFocused = Focus.of(context).hasFocus;
-
-              return AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-                  boxShadow: isFocused
-                      ? [
-                    BoxShadow(
-                      color: AppColors.fieldsBackground,
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ]
-                      : [],
-                ),
-                child: TextField(
-                  controller: controller,
-                  cursorColor: AppColors.blackColor,
-                  keyboardType:  TextInputType.number ,
-                  style: TTextTheme.insidetextfieldWrittenText(context),
-                  onTapOutside: (event) {
-                    FocusScope.of(context).unfocus();
-                  },
-
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: AppColors.secondaryColor,
-                    hintText: hint ?? "Enter $label",
-                    hintStyle: TTextTheme.titleFour(context),
-                    prefixText: prefix,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                  ),
-                ),
-              );
-            },
+        const SizedBox(height: 6),
+        TextFormField(
+          controller: controller,
+          validator: validator,
+          keyboardType: keyboardType,
+          style: TTextTheme.insidetextfieldWrittenText(context),
+          inputFormatters: [
+            if (maxLength != null) LengthLimitingTextInputFormatter(maxLength),
+          ],
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: AppColors.secondaryColor,
+            hintText: hint,
+            hintStyle: TTextTheme.pOne(context),
+            prefixText: prefix,
+            errorStyle: TTextTheme.ErrorStyle(context),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none
+            ),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none
+            ),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: AppColors.primaryColor, width: 1)
+            ),
+            errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: AppColors.primaryColor, width: 1)
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.2)
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           ),
         ),
       ],
@@ -238,6 +261,8 @@ class AddCarFormWidget extends StatelessWidget {
     return Obx(() {
       bool isOpen = controller.openedDropdown3.value == id;
       List<String> items = controller.getFilteredItems(id);
+      String errorMsg = controller.dropdownErrors[id] ?? "";
+      bool hasError = errorMsg.isNotEmpty;
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -262,29 +287,43 @@ class AddCarFormWidget extends StatelessWidget {
               onSelected: (val) {
                 if (val != "SEARCH_FIELD") {
                   selected.value = val;
+                  controller.dropdownErrors[id] = "";
+
                   if (id == 'search_car') {
                     controller.selectedModel.value = "";
+                    controller.dropdownErrors['Model'] = "";
                   }
+
                   controller.openedDropdown3.value = "";
                   controller.searchCarText.value = "";
                 }
               },
-              child: Container(
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
                 height: 48,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
                   color: AppColors.secondaryColor,
                   borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: hasError ? AppColors.primaryColor : Colors.transparent,
+                    width: 1.2,
+                  ),
                 ),
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(
                         selected.value.isEmpty ? "Search $label..." : selected.value,
-                        style: TTextTheme.pOne(context),
+                        style: TTextTheme.pOne(context).copyWith(
+                          color: selected.value.isEmpty ? Colors.grey : Colors.black,
+                        ),
                       ),
                     ),
-                    Image.asset(isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon, height: 18),
+                    Image.asset(
+                      isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon,
+                      height: 18,
+                    ),
                   ],
                 ),
               ),
@@ -352,6 +391,14 @@ class AddCarFormWidget extends StatelessWidget {
               },
             );
           }),
+          if (hasError)
+            Padding(
+              padding: const EdgeInsets.only(top: 6, left: 4),
+              child: Text(
+                errorMsg,
+                style: TTextTheme.ErrorStyle(context),
+              ),
+            ),
         ],
       );
     });
@@ -360,6 +407,8 @@ class AddCarFormWidget extends StatelessWidget {
     return Obx(() {
       bool isOpen = controller.openedDropdown3.value == id;
       List<String> items = controller.getFilteredItems(id);
+      String errorMsg = controller.dropdownErrors[id] ?? "";
+      bool hasError = errorMsg.isNotEmpty;
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -368,7 +417,11 @@ class AddCarFormWidget extends StatelessWidget {
           const SizedBox(height: 6),
           LayoutBuilder(builder: (context, constraints) {
             return PopupMenuButton<String>(
-              constraints: BoxConstraints(minWidth: constraints.maxWidth, maxWidth: constraints.maxWidth),
+              constraints: BoxConstraints(
+                minWidth: constraints.maxWidth,
+                maxWidth: constraints.maxWidth,
+                maxHeight: 400,
+              ),
               offset: const Offset(0, 48),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               color: Colors.white,
@@ -379,35 +432,40 @@ class AddCarFormWidget extends StatelessWidget {
               },
               onSelected: (val) {
                 selected.value = val;
-                if (id == 'search_car') {
-                  controller.selectedModel.value = "";
-                }
+                controller.dropdownErrors[id] = "";
                 controller.openedDropdown3.value = "";
                 controller.searchCarText.value = "";
               },
-              child: Container(
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
                 height: 48,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
                   color: AppColors.secondaryColor,
                   borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: hasError ? AppColors.primaryColor : Colors.transparent,
+                    width: 1.2,
+                  ),
                 ),
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(
-                        selected.value.isEmpty ? "Search $label..." : selected.value,
-                        style: TTextTheme.pOne(context),
+                        selected.value.isEmpty ? "Select $label..." : selected.value,
+                        style: TTextTheme.pOne(context)
                       ),
                     ),
-                    Image.asset(isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon, height: 18),
+                    Image.asset(
+                      isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon,
+                      height: 18,
+                    ),
                   ],
                 ),
               ),
               itemBuilder: (context) {
                 return items.map((item) {
                   bool isSelected = selected.value == item;
-
                   return PopupMenuItem<String>(
                     value: item,
                     child: Row(
@@ -425,19 +483,12 @@ class AddCarFormWidget extends StatelessWidget {
                           ),
                           child: isSelected
                               ? const Center(
-                            child: Icon(
-                              Icons.done,
-                              color: Colors.white,
-                              size: 14,
-                            ),
+                            child: Icon(Icons.done, color: Colors.white, size: 14),
                           )
                               : null,
                         ),
                         const SizedBox(width: 12),
-                        Text(
-                          item,
-                          style: TTextTheme.medium14(context),
-                        ),
+                        Text(item, style: TTextTheme.medium14(context)),
                       ],
                     ),
                   );
@@ -445,6 +496,14 @@ class AddCarFormWidget extends StatelessWidget {
               },
             );
           }),
+          if (hasError)
+            Padding(
+              padding: const EdgeInsets.only(top: 6, left: 4),
+              child: Text(
+                errorMsg,
+                style: TTextTheme.ErrorStyle(context),
+              ),
+            ),
         ],
       );
     });
@@ -454,6 +513,8 @@ class AddCarFormWidget extends StatelessWidget {
   Widget _buildStatusDropdown(BuildContext context, String label, List<String> items, RxString selected, {required String id}) {
     return Obx(() {
       bool isOpen = controller.openedDropdown2.value == id;
+      String errorMsg = controller.dropdownErrors[id] ?? "";
+      bool hasError = errorMsg.isNotEmpty;
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -475,13 +536,19 @@ class AddCarFormWidget extends StatelessWidget {
               onSelected: (val) {
                 selected.value = val;
                 controller.openedDropdown2.value = "";
+                controller.dropdownErrors[id] = "";
               },
-              child: Container(
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
                 height: 48,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
                   color: AppColors.secondaryColor,
                   borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: hasError ? AppColors.primaryColor : Colors.transparent,
+                    width: 1.2,
+                  ),
                 ),
                 child: Row(
                   children: [
@@ -525,6 +592,14 @@ class AddCarFormWidget extends StatelessWidget {
               }).toList(),
             );
           }),
+          if (hasError)
+            Padding(
+              padding: const EdgeInsets.only(top: 4, left: 4),
+              child: Text(
+                errorMsg,
+                style: TTextTheme.ErrorStyle(context),
+              ),
+            ),
         ],
       );
     });
@@ -533,9 +608,15 @@ class AddCarFormWidget extends StatelessWidget {
 // Status Chip Widget
   Widget _getStatusChip(String status, BuildContext context) {
     Color statusColor = Colors.transparent;
-    Color textColor = Colors.white;
-    String displayStatus = status.isEmpty ? "Available" : status;
+    Color textColor = AppColors.blackColor;
+
+    if (status.isEmpty) {
+      return Text("Select Status", style: TTextTheme.pOne(context));
+    }
+
+    String displayStatus = status;
     String checkStatus = displayStatus.toLowerCase().trim();
+
     if (checkStatus == "available") {
       statusColor = AppColors.availableBackgroundColor;
       textColor = Colors.white;
@@ -545,21 +626,16 @@ class AddCarFormWidget extends StatelessWidget {
       displayStatus = "Un Available";
     }
 
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        padding: statusColor == Colors.transparent
-            ? EdgeInsets.zero
-            : const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-        decoration: BoxDecoration(
-          color: statusColor,
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: Text(
-          displayStatus,
-          style: TTextTheme.titleseven(context).copyWith(
-            color: textColor,
-          ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: statusColor,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        displayStatus,
+        style: TTextTheme.titleseven(context).copyWith(
+          color: textColor,
         ),
       ),
     );
@@ -568,17 +644,22 @@ class AddCarFormWidget extends StatelessWidget {
   //  IMAGE UPLOAD BOX Widget
   Widget _imageBox(BuildContext context) {
     return GestureDetector(
-      onTap: () => controller.pickImage(),
+      onTap: () {
+        controller.pickImage();
+        controller.dropdownErrors['images'] = "";
+      },
       child: Obx(() {
+        bool hasError = controller.dropdownErrors['images']?.isNotEmpty ?? false;
+
         return DottedBorder(
           borderType: BorderType.RRect,
           radius: Radius.circular(AppSizes.borderRadius(context)),
-          dashPattern: [8, 6],
-          color: AppColors.tertiaryTextColor,
-          strokeWidth: 1,
+          dashPattern: const [8, 6],
+          color: hasError ? AppColors.primaryColor : AppColors.tertiaryTextColor,
+          strokeWidth: hasError ? 2 : 1,
           child: Container(
             width: double.infinity,
-            constraints: BoxConstraints(minHeight: 180),
+            constraints: const BoxConstraints(minHeight: 180),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -597,9 +678,9 @@ class AddCarFormWidget extends StatelessWidget {
                         color: AppColors.iconsBackgroundColor,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child:  Image.asset(IconString.cameraIcon, color: AppColors.primaryColor,width: 18,),
+                      child:  Image.asset(IconString.cameraIcon, color: AppColors.primaryColor, width: 18,),
                     ),
-                     SizedBox(width: 5,),
+                    const SizedBox(width: 5,),
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
@@ -608,12 +689,16 @@ class AddCarFormWidget extends StatelessWidget {
                       ),
                       child:  Image.asset(IconString.uploadIcon, color: AppColors.primaryColor),
                     ),
-
                   ],
                 ),
                 const SizedBox(height: 10),
                 Text(TextString.uploadTitle, style: TTextTheme.btnOne(context)),
                 Text(TextString.uploadSubtitle, style: TTextTheme.documnetIsnideSmallText2(context)),
+                if (hasError)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text("At least one image is required", style: TTextTheme.ErrorStyle(context)),
+                  ),
               ],
             )
                 : Wrap(
@@ -669,48 +754,57 @@ class AddCarFormWidget extends StatelessWidget {
   }
 
   //  DOCUMENT NAME FIELD Widget
-  Widget _documentNameField(BuildContext context, int index, TextEditingController controller) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(TextString.documentName, style: TTextTheme.titleTwo(context)),
-        SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: AppSizes.padding(context)),
-          decoration: BoxDecoration(
-            color: AppColors.secondaryColor,
-            borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-          ),
-          child: TextField(
-            cursorColor: AppColors.blackColor,
-            style:  TTextTheme.insidetextfieldWrittenText(context),
-            controller: controller,
-            decoration: InputDecoration(
-              hintText: TextString.documentSubtitle,
-              border: InputBorder.none,
-              hintStyle: TTextTheme.titleFour(context),
+  Widget _documentNameField(BuildContext context, int index, TextEditingController textController) {
+    return Obx(() {
+      bool hasError = controller.dropdownErrors["doc_$index"]?.isNotEmpty ?? false;
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(TextString.documentName, style: TTextTheme.titleTwo(context)),
+          SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: AppSizes.padding(context)),
+            decoration: BoxDecoration(
+              color: AppColors.secondaryColor,
+              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+              border: Border.all(color: (hasError && textController.text.isEmpty) ? AppColors.primaryColor : Colors.transparent),
+            ),
+            child: TextField(
+              cursorColor: AppColors.blackColor,
+              style: TTextTheme.insidetextfieldWrittenText(context),
+              controller: textController,
+              onChanged: (v) {
+                if(v.isNotEmpty) controller.dropdownErrors["doc_$index"] = "";
+              },
+              decoration: InputDecoration(
+                hintText: TextString.documentSubtitle,
+                border: InputBorder.none,
+                hintStyle: TTextTheme.titleFour(context),
+              ),
             ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
+
 
 
 //  DOCUMENT BOX Widget
   Widget _documentBox(BuildContext context, int index, Rx<DocumentHolder?> selectedDoc) {
-
     bool isImageFile(String fileName) {
       final imageExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
       final lowerCaseName = fileName.toLowerCase();
       return imageExtensions.any((ext) => lowerCaseName.endsWith(ext));
     }
+
     return Obx(() {
       final docValue = selectedDoc.value;
       final bool isUploaded = docValue != null;
       final bool isImage = isUploaded && isImageFile(docValue.name);
       final String hintText = controller.defaultDocumentNames[index];
-
+      bool hasError = controller.dropdownErrors["doc_$index"]?.isNotEmpty ?? false;
 
       ImageProvider? imageProvider;
       if (isImage) {
@@ -722,24 +816,24 @@ class AddCarFormWidget extends StatelessWidget {
       }
 
       return GestureDetector(
-        onTap: isUploaded ? null : () => controller.pickDocument(index),
+        onTap: isUploaded ? null : () {
+          controller.pickDocument(index);
+          controller.dropdownErrors["doc_$index"] = "";
+        },
         child: DottedBorder(
           borderType: BorderType.RRect,
           radius: Radius.circular(AppSizes.borderRadius(context)),
-          dashPattern: [8, 6],
-          color: isUploaded ? AppColors.primaryColor : AppColors.tertiaryTextColor,
-          strokeWidth: isUploaded ? 2 : 1,
+          dashPattern: const [8, 6],
+          color: (hasError && !isUploaded) ? AppColors.primaryColor : (isUploaded ? AppColors.primaryColor : AppColors.tertiaryTextColor),
+          strokeWidth: (isUploaded || hasError) ? 2 : 1,
           child: Container(
             height: 140,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: isUploaded ? Colors.white : Colors.white,
+              color: Colors.white,
               borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
               image: isImage && imageProvider != null
-                  ? DecorationImage(
-                image: imageProvider,
-                fit: BoxFit.cover,
-              )
+                  ? DecorationImage(image: imageProvider, fit: BoxFit.cover)
                   : null,
             ),
             child: Stack(
@@ -760,32 +854,33 @@ class AddCarFormWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Text(hintText, style: TTextTheme.documnetIsnideSmallText(context)),
-                      Text(TextString.uploadSubtitle, style:TTextTheme.documnetIsnideSmallText2(context)),
+                      Text(TextString.uploadSubtitle, style: TTextTheme.documnetIsnideSmallText2(context)),
                     ],
                   )
                       : isImage
                       ? Container()
                       : Column(
-                    //  DOCUMENT STATE (Non-Image)
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.insert_drive_file, size: 40, color: AppColors.primaryColor),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
                         docValue.name,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 12),
+                        style: TTextTheme.titleinputTextField(context),
                       ),
                     ],
                   ),
                 ),
-
                 if (isUploaded)
                   Positioned(
                     top: -8,
                     right: -8,
                     child: GestureDetector(
-                      onTap: () => controller.removeDocumentSlot(index),
+                      onTap: () {
+                        controller.removeDocumentSlot(index);
+                        controller.dropdownErrors.remove("doc_$index");
+                      },
                       child: CircleAvatar(
                         radius: 14,
                         backgroundColor: Colors.white,
@@ -800,8 +895,6 @@ class AddCarFormWidget extends StatelessWidget {
       );
     });
   }
-
-
 
 
 //-----ADD document box widget
@@ -928,78 +1021,108 @@ class AddCarFormWidget extends StatelessWidget {
 
   // Button Section
   Widget _buttonSection(BuildContext context, bool isMobile) {
-    const double webButtonWidth = 150.0;
-    const double webButtonHeight = 45.0;
     final double spacing = AppSizes.padding(context);
 
-    if (isMobile) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(
-            height: webButtonHeight,
-            child: CustomPrimaryButton(
-              text: 'Cancel',
-              backgroundColor: Colors.white,
-              textColor: AppColors.textColor,
-              borderColor: AppColors.quadrantalTextColor,
-              onTap: () {},
-            ),
-          ),
-          SizedBox(height: spacing),
-          SizedBox(
-            width: webButtonWidth,
-            height: webButtonHeight,
-            child: AddButton(
-              text: "Save Vehicle",
-              icon: Image.asset(
-                IconString.saveVehicleIcon,
-              ),
-              onTap: () async {
-           showSavingDialog(context);
-              },
-            ),
-          ),
-        ],
-      );
-    } else {
-      return Row(
-        children: [
-          Spacer(),
-          SizedBox(
-            width: webButtonWidth,
-            height: webButtonHeight,
-            child: CustomPrimaryButton(
-              text: 'Cancel',
-              backgroundColor: Colors.white,
-              textColor: AppColors.textColor,
-              borderColor: AppColors.quadrantalTextColor,
-              onTap: () {},
-            ),
-          ),
-          SizedBox(width: spacing),
-          SizedBox(
-            width: webButtonWidth,
-            height: webButtonHeight,
-            child: AddButton(
-              text: "Save Vehicle",
-              icon: Image.asset(
-                IconString.saveVehicleIcon,
-              ),
-              onTap: () async {
-                showSavingDialog(context);
-              },
-            ),
-          ),
+    void onSavePressed() {
+      bool canShowDialog = controller.saveInventory(context);
 
+      if (canShowDialog) {
+        showSavingDialog(context);
+      } else {
+        Get.snackbar(
+          "Validation Failed",
+          "VIN must be 17 and Registration 8-10 characters.",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    }
+
+    return isMobile
+        ? Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _buildCancelBtn(),
+        SizedBox(height: spacing),
+        _buildSaveBtn(onSavePressed),
+      ],
+    )
+        : Row(
+      children: [
+        const Spacer(),
+        _buildCancelBtn(),
+        SizedBox(width: spacing),
+        _buildSaveBtn(onSavePressed),
+      ],
+    );
+  }
+  Widget _buildCancelBtn() => SizedBox(width: 150, height: 45, child: CustomPrimaryButton(text: 'Cancel', onTap: () => Get.back()));
+  Widget _buildSaveBtn(VoidCallback onTap) => SizedBox(width: 150, height: 45, child: AddButton(text: "Save Vehicle", icon: Image.asset(IconString.saveVehicleIcon), onTap: onTap));
+
+   // Year Field
+  Widget _buildYearField(BuildContext context, String label, RxString selected, {required String id}) {
+    return Obx(() {
+      String errorMsg = controller.dropdownErrors[id] ?? "";
+      bool hasError = errorMsg.isNotEmpty;
+      bool isOpen = controller.isDateDropOpen.value;
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: TTextTheme.titleTwo(context)),
+          const SizedBox(height: 6),
+          CompositedTransformTarget(
+            link: controller.carYearLink,
+            child: GestureDetector(
+              onTap: () => controller.toggleCalendar(
+                  context,
+                  controller.carYearLink,
+                  controller.selectedYearCarController
+              ),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                height: 48,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: AppColors.secondaryColor,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: hasError ? AppColors.primaryColor: Colors.transparent,
+                    width: 1.2,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        selected.value.isEmpty ? "Select Year..." : selected.value,
+                        style: TTextTheme.pOne(context)
+                      ),
+                    ),
+                    Image.asset(
+                      isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon,
+                      height: 18,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          if (hasError)
+            Padding(
+              padding: const EdgeInsets.only(top: 6, left: 4),
+              child: Text(
+                errorMsg,
+                style: TTextTheme.ErrorStyle(context),
+              ),
+            ),
         ],
       );
-    }
+    });
   }
 
-
-
-   // Dialogs
+    // Dialog
   void showSavingDialog(BuildContext context) {
     double progress = 0.0;
 
@@ -1111,7 +1234,7 @@ class AddCarFormWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                            TextString.dialogInventory3,
+                                TextString.dialogInventory3,
                                 style: TTextTheme.h2Style(context)
                             ),
                             const SizedBox(height: 8),

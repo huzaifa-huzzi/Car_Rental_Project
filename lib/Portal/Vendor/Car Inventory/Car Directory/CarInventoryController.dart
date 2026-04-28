@@ -1,4 +1,8 @@
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/CustomCalendarCar.dart';
+import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
+import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -355,6 +359,235 @@ class CarInventoryController extends GetxController {
       selectedImages.removeAt(index);
     }
   }
+  static final GlobalKey<FormState> carInventoryKey = GlobalKey<FormState>();
+
+  String? validateRequired(String? value, String fieldName) {
+    if (value == null || value.isEmpty) return "$fieldName is required";
+    return null;
+  }
+
+  String? validateNumeric(String? value, String fieldName) {
+    if (value == null || value.isEmpty) return "$fieldName is required";
+    if (double.tryParse(value) == null) return "Enter a valid number";
+    return null;
+  }
+  final descriptionController = TextEditingController();
+
+  String? validateVIN(String? value) {
+    if (value == null || value.isEmpty) return "VIN Number is required";
+    if (value.trim().length != 17) {
+      return "VIN must be exactly 17 characters";
+    }
+    return null;
+  }
+
+  String? validateRegistration(String? value) {
+    if (value == null || value.isEmpty) return "Registration is required";
+    if (value.trim().length < 8 || value.trim().length > 10) {
+      return "Must be between 8 to 10 characters";
+    }
+    return null;
+  }
+
+  bool saveInventory(BuildContext context) {
+    final bool isFormValid = carInventoryKey.currentState?.validate() ?? false;
+    final bool isDropValid = validateDropdowns();
+    final bool hasImages = selectedImages.isNotEmpty;
+    if (!hasImages) {
+      dropdownErrors['images'] = "Required";
+    } else {
+      dropdownErrors['images'] = "";
+    }
+    return isFormValid && isDropValid && hasImages;
+  }
+  // Dialogs
+  void showSavingDialog(BuildContext context) {
+    double progress = 0.0;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        double screenWidth = MediaQuery.of(context).size.width;
+        Future.delayed(Duration.zero, () async {
+          while (progress < 1.0) {
+            await Future.delayed(const Duration(milliseconds: 40));
+            progress += 0.02;
+            (context as Element).markNeedsBuild();
+          }
+          Navigator.pop(context);
+          showSuccessDialog(context);
+        });
+
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              elevation: 10,
+              backgroundColor: Colors.white,
+              child: Container(
+                width: screenWidth < 600 ? screenWidth * 0.9 : 450,
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          width: 40,
+                          child: Image.asset(IconString.searchingIcon),
+                        ),
+                        const SizedBox(width: 20),
+
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                TextString.dialogInventory1,
+                                style: TTextTheme.h2Style(context),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                TextString.dialogInventory2,
+                                style: TTextTheme.bodyRegular16(context),
+                              ),
+                              const SizedBox(height: 25),
+
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: LinearProgressIndicator(
+                                  value: progress,
+                                  minHeight: 6,
+                                  backgroundColor: AppColors.backgroundOfPickupsWidget,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      AppColors.primaryColor),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+  void showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Container(
+            width: 450,
+            padding: const EdgeInsets.all(24),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: AppColors.emojiBackground,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                TextString.dialogInventory3,
+                                style: TTextTheme.h2Style(context)
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                                TextString.dialogInventory4,
+                                style: TTextTheme.bodyRegular16(context)
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: AppColors.sideBoxesColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(Icons.close, size: 16, color: AppColors.blackColor),
+                        ),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  var dropdownErrors = <String, String>{}.obs;
+
+  bool validateDropdowns() {
+    bool isValid = true;
+    List<String> requiredIds = [
+      'search_car',
+      'Model',
+      'year',
+      'body',
+      'trans',
+      'seats',
+      'engine',
+      'color',
+      'fuel',
+      'status'
+    ];
+
+    for (var id in requiredIds) {
+      String value = "";
+      if (id == 'search_car') value = selectedBrand.value;
+      else if (id == 'Model') value = selectedModel.value;
+      else if (id == 'year') value = selectedCarYear.value;
+      else if (id == 'body') value = selectedBodyType.value;
+      else if (id == 'trans') value = selectedTransmission.value;
+      else if (id == 'seats') value = selectedSeats.value;
+      else if (id == 'engine') value = selectedEngine.value;
+      else if (id == 'color') value = selectedColor.value;
+      else if (id == 'fuel') value = selectedFuel.value;
+      else if (id == 'status') value = selectedStatus.value;
+
+      if (value.isEmpty) {
+        dropdownErrors[id] = "Please select an option";
+        isValid = false;
+      } else {
+        dropdownErrors[id] = "";
+      }
+    }
+    return isValid;
+  }
+
+
 
   /// Car Details Screen
   RxInt selectedIndex = 0.obs;
@@ -375,6 +608,7 @@ class CarInventoryController extends GetxController {
     isOpen.value = false;
     imagePath.value = '';
   }
+
 
 
   /// Editing Car Screen
