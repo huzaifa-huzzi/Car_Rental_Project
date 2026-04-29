@@ -14,7 +14,6 @@ class EditStaffScreenWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final controller = Get.find<StaffController>();
 
     return Container(
@@ -23,93 +22,96 @@ class EditStaffScreenWidget extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Header
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(TextString.addStaffHeaderTitleEdit, style: TTextTheme.h6Style(context)),
-          ),
-          const Divider(height: 1, thickness: 0.5, color: AppColors.quadrantalTextColor,),
-          // Staff Name
-          _buildSection(context, icon: IconString.staffNameICon, title: TextString.addStaffNameEdit, subtitle: TextString.addStaffNameSubtitleEdit,
-              children: [
-                _buildTextField(TextString.addStaffNameFieldOneEdit, "Write Staff Name...", controller.firstNameCEdit,context),
-                _buildTextField(TextString.addStaffNameFieldTwoEdit, "Write Staff Name...", controller.lastNameCEdit,context),
-              ]),
-          const Divider(height: 1,thickness: 0.5, color: AppColors.quadrantalTextColor),
-          // Staff Details
-          _buildSection(context, icon: IconString.staffContactIcon, title: TextString.addStaffContactEdit, subtitle: TextString.addStaffContactSubtitleEdit,
-              children: [
-                _buildTextField(TextString.addStaffContactFieldOneEdit, "Write Staff Email...", controller.emailCEdit,context),
-                _buildTextField(TextString.addStaffContactFieldTwoEdit, "Write Staff Number...", controller.phoneCEdit,context),
-              ]),
-          const Divider(height: 1,thickness: 0.5, color: AppColors.quadrantalTextColor),
-          // Staff Positions
-          _buildSection(context, icon: IconString.staffDetailIcon, title: TextString.addStaffDetailEdit, subtitle: TextString.addStaffDetailSubtitleEdit,
-              children: [
-                _buildTextField(TextString.addStaffDetailFieldOneEdit, "Write Staff Role Name...", controller.positionCEdit,context),
-                SizedBox(
-                  width: 300,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(TextString.addStaffDetailFieldStatusEdit, style: TTextTheme.staffUpsideField(context)),
-                      const SizedBox(height: 8),
-                      _statusDropdownBox(controller.statusItems, controller.selectedStatusEdit, context),
-                    ],
-                  ),
-                ),
-              ]),
-          const Divider(height: 1,thickness: 0.5, color: AppColors.quadrantalTextColor),
-
-          // Staff Access
-          _buildSection(context, icon: IconString.staffAccessIcon, title: TextString.addStaffAccessEdit, subtitle: TextString.addStaffAccessSubtitleEdit,
-              children: [
-                _buildAccessPermissions(controller,context),
-              ]),
-
-          // Buttons
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Builder(
-              builder: (context) {
-                bool isStacked = AppSizes.isMobile(context) || AppSizes.isTablet(context);
-
-                return Flex(
-                  direction: isStacked ? Axis.vertical : Axis.horizontal,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: isStacked ? CrossAxisAlignment.stretch : CrossAxisAlignment.center,
-                  children: [
-                    CustomButtonOfStaff(
-                      text: 'Cancel',
-                      width: isStacked ? double.infinity : 120,
-                      height: 45,
-                    ),
-
-                    isStacked ? const SizedBox(height: 12) : const SizedBox(width: 16),
-
-                    PrimaryBtnStaff(
-                      text: "Sent Innovation",
-                      width: isStacked ? double.infinity : 200,
-                      height: 45,
-                      onTap: () {},
-                      icon: Icon(Icons.arrow_forward,color: Colors.white,size: 18,),
-                    ),
-                  ],
-                );
-              },
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Header
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text(TextString.addStaffHeaderTitleEdit, style: TTextTheme.h6Style(context)),
             ),
-          ),
-        ],
+            const Divider(height: 1, thickness: 0.5, color: AppColors.quadrantalTextColor),
+
+            // Staff Name
+            _buildSection(context, icon: IconString.staffNameICon, title: TextString.addStaffNameEdit, subtitle: TextString.addStaffNameSubtitleEdit,
+                children: [
+                  _buildTextField(TextString.addStaffNameFieldOneEdit, "Write Staff Name...", controller.firstNameCEdit, context),
+                  _buildTextField(TextString.addStaffNameFieldTwoEdit, "Write Staff Name...", controller.lastNameCEdit, context),
+                ]),
+            const Divider(height: 1, thickness: 0.5, color: AppColors.quadrantalTextColor),
+
+            // Staff Details
+            _buildSection(context, icon: IconString.staffContactIcon, title: TextString.addStaffContactEdit, subtitle: TextString.addStaffContactSubtitleEdit,
+                children: [
+                  _buildTextField(TextString.addStaffContactFieldOneEdit, "Write Staff Email...", controller.emailCEdit, context),
+                  _buildTextField(TextString.addStaffContactFieldTwoEdit, "Write Staff Number...", controller.phoneCEdit, context),
+                ]),
+            const Divider(height: 1, thickness: 0.5, color: AppColors.quadrantalTextColor),
+
+            // Staff Positions
+            _buildSection(context, icon: IconString.staffDetailIcon, title: TextString.addStaffDetailEdit, subtitle: TextString.addStaffDetailSubtitleEdit,
+                children: [
+                  _buildTextField(TextString.addStaffDetailFieldOneEdit, "Write Staff Role Name...", controller.positionCEdit, context),
+                  SizedBox(
+                    width: 300,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(TextString.addStaffDetailFieldStatusEdit, style: TTextTheme.staffUpsideField(context)),
+                        const SizedBox(height: 8),
+                        _statusDropdownBox(controller.statusItems, controller.selectedStatusEdit, context),
+                      ],
+                    ),
+                  ),
+                ]),
+            const Divider(height: 1, thickness: 0.5, color: AppColors.quadrantalTextColor),
+
+            // Staff Access
+            _buildSection(context, icon: IconString.staffAccessIcon, title: TextString.addStaffAccessEdit, subtitle: TextString.addStaffAccessSubtitleEdit,
+                children: [
+                  _buildAccessPermissions(controller, context),
+                ]),
+
+            // Buttons
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Builder(
+                builder: (context) {
+                  bool isStacked = AppSizes.isMobile(context) || AppSizes.isTablet(context);
+
+                  return Flex(
+                    direction: isStacked ? Axis.vertical : Axis.horizontal,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: isStacked ? CrossAxisAlignment.stretch : CrossAxisAlignment.center,
+                    children: [
+                      CustomButtonOfStaff(
+                        text: 'Cancel',
+                        width: isStacked ? double.infinity : 120,
+                        height: 45,
+                        onTap: () => Navigator.pop(context),
+                      ),
+                      isStacked ? const SizedBox(height: 12) : const SizedBox(width: 16),
+                      PrimaryBtnStaff(
+                        text: "Update Staff",
+                        width: isStacked ? double.infinity : 200,
+                        height: 45,
+                        onTap: () => controller.submitDataEdit(context),
+                        icon: const Icon(Icons.arrow_forward, color: Colors.white, size: 18),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  /// ---------- Extra Widgets --------- ///
-
+    /// ---------- Extra Widgets
   // Section
   Widget _buildSection(BuildContext context, {required String icon, required String title, required String subtitle, required List<Widget> children}) {
     bool isWeb = AppSizes.isWeb(context);
@@ -144,6 +146,12 @@ class EditStaffScreenWidget extends StatelessWidget {
 
   // TextFields
   Widget _buildTextField(String label, String hint, TextEditingController controller, BuildContext context) {
+    final staffController = Get.find<StaffController>();
+    String errorKey = label.contains("First") ? "First Name" :
+    label.contains("Last") ? "Last Name" :
+    label.contains("Email") ? "Email" :
+    label.contains("Number") ? "Phone" : "Position";
+
     return SizedBox(
       width: 300,
       child: Column(
@@ -159,40 +167,47 @@ class EditStaffScreenWidget extends StatelessWidget {
               builder: (context) {
                 final bool isFocused = Focus.of(context).hasFocus;
 
-                return AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: isFocused
-                        ? [
-                      BoxShadow(
-                        color: AppColors.fieldsBackground,
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
+                return Obx(() {
+                  bool hasError = staffController.textFieldErrorsEdit.containsKey(errorKey);
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: hasError ? AppColors.primaryColor : Colors.transparent,
+                            width: 1.5,
+                          ),
+                          boxShadow: isFocused && !hasError
+                              ? [BoxShadow(color: AppColors.fieldsBackground, blurRadius: 10, offset: const Offset(0, 4))]
+                              : [],
+                        ),
+                        child: TextField(
+                          cursorColor: AppColors.blackColor,
+                          controller: controller,
+                          style: TTextTheme.insidetextfieldWrittenText(context),
+                          onChanged: (v) { if (hasError) staffController.textFieldErrorsEdit.remove(errorKey); },
+                          onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                          decoration: InputDecoration(
+                            hintText: hint,
+                            filled: true,
+                            fillColor: AppColors.secondaryColor,
+                            hintStyle: TTextTheme.insidetextfieldWrittenText(context),
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                          ),
+                        ),
                       ),
-                    ]
-                        : [],
-                  ),
-                  child: TextField(
-                    cursorColor: AppColors.blackColor,
-                    controller: controller,
-                    style: TTextTheme.insidetextfieldWrittenText(context),
-                    onTapOutside: (event) {
-                      FocusScope.of(context).unfocus();
-                    },
-                    decoration: InputDecoration(
-                      hintText: hint,
-                      filled: true,
-                      fillColor: AppColors.secondaryColor,
-                      hintStyle: TTextTheme.insidetextfieldWrittenText(context),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-                    ),
-                  ),
-                );
+                      if (hasError)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4, left: 4),
+                          child: Text(staffController.textFieldErrorsEdit[errorKey]!, style: TTextTheme.ErrorStyle(context)),
+                        ),
+                    ],
+                  );
+                });
               },
             ),
           ),
@@ -201,105 +216,129 @@ class EditStaffScreenWidget extends StatelessWidget {
     );
   }
 
-  // Status Dropdowns
+  // Status Dropdown
   Widget _statusDropdownBox(List<String> items, RxString selectedRx, BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return PopupMenuButton<String>(
-          offset: const Offset(0, 45),
-          constraints: BoxConstraints(
-            minWidth: constraints.maxWidth,
-            maxWidth: constraints.maxWidth,
-          ),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          color: AppColors.secondaryColor,
-          onSelected: (v) => selectedRx.value = v,
-          itemBuilder: (context) {
-            return items.asMap().entries.map((entry) {
-              int index = entry.key;
-              String item = entry.value;
+    final controller = Get.find<StaffController>();
 
-              return PopupMenuItem<String>(
-                value: item,
-                padding: EdgeInsets.zero,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 10),
+    return Obx(() {
+      bool hasError = controller.statusErrorEdit.value.isNotEmpty;
+      String currentSelection = selectedRx.value;
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return PopupMenuButton<String>(
+                offset: const Offset(0, 45),
+                constraints: BoxConstraints(
+                  minWidth: constraints.maxWidth,
+                  maxWidth: constraints.maxWidth,
+                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                color: AppColors.secondaryColor,
+                onSelected: (v) {
+                  selectedRx.value = v;
+                  controller.statusErrorEdit.value = "";
+                },
+                itemBuilder: (context) {
+                  return items.map((String item) {
+                    return PopupMenuItem<String>(
+                      value: item,
+                      padding: EdgeInsets.zero,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                            child: Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              decoration: BoxDecoration(
+                                color: _getStatusBgColor(item),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: AppColors.sideBoxesColor),
+                              ),
+                              child: Text(
+                                item,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: _getStatusTextColor(item),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                          if (items.indexOf(item) != items.length - 1)
+                            Divider(height: 1, thickness: 0.5, color: AppColors.quadrantalTextColor),
+                        ],
+                      ),
+                    );
+                  }).toList();
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  height: 45,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    color: AppColors.secondaryColor,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: hasError ? AppColors.primaryColor : Colors.transparent,
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      currentSelection.isEmpty
+                          ? Text("Select Status", style: TTextTheme.insidetextfieldWrittenText(context))
+                          : Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                         decoration: BoxDecoration(
-                          color: _getStatusBgColor(item),
-                          borderRadius: BorderRadius.circular(8),
+                          color: _getStatusBgColor(currentSelection),
+                          borderRadius: BorderRadius.circular(6),
                           border: Border.all(color: AppColors.sideBoxesColor),
                         ),
                         child: Text(
-                          item,
-                          textAlign: TextAlign.center,
+                          currentSelection,
                           style: TextStyle(
-                            color: _getStatusTextColor(item),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
+                              color: _getStatusTextColor(currentSelection),
+                              fontSize: 12
                           ),
                         ),
                       ),
-                    ),
-                    if (index != items.length - 1)
-                      Divider(
-                        height: 1,
-                        thickness: 0.5,
-                        color: AppColors.quadrantalTextColor,
-                      ),
-                  ],
+                      const Spacer(),
+                      const Icon(Icons.keyboard_arrow_down, size: 22, color: Colors.black54),
+                    ],
+                  ),
                 ),
               );
-            }).toList();
-          },
-          child: Container(
-            height: 45,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            decoration: BoxDecoration(
-              color: AppColors.secondaryColor,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              children: [
-                Obx(() => Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: _getStatusBgColor(selectedRx.value),
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: AppColors.sideBoxesColor),
-                  ),
-                  child: Text(
-                    selectedRx.value,
-                    style: TextStyle(
-                      color: _getStatusTextColor(selectedRx.value),
-                      fontSize: 12,
-                    ),
-                  ),
-                )),
-                const Spacer(),
-                const Icon(Icons.keyboard_arrow_down, size: 22, color: Colors.black54),
-              ],
-            ),
+            },
           ),
-        );
-      },
-    );
+          if (hasError)
+            Padding(
+              padding: const EdgeInsets.only(top: 4, left: 4),
+              child: Text(
+                  controller.statusErrorEdit.value,
+                  style: TTextTheme.ErrorStyle(context)
+              ),
+            ),
+        ],
+      );
+    });
   }
+
   Color _getStatusBgColor(String status) {
     switch (status) {
       case "Active": return AppColors.textColor;
       case "Awaiting": return AppColors.secondaryColor;
       case "InActive": return AppColors.secondaryColor;
       case "Suspended": return AppColors.iconsBackgroundColor;
-
       default: return Colors.grey.shade100;
     }
   }
+
   Color _getStatusTextColor(String status) {
     switch (status) {
       case "Active": return Colors.white;
@@ -310,42 +349,57 @@ class EditStaffScreenWidget extends StatelessWidget {
     }
   }
 
-  // Access Permission Section
-  Widget _buildAccessPermissions(StaffController controller,BuildContext context) {
+  // Access Permission
+  Widget _buildAccessPermissions(StaffController controller, BuildContext context) {
     List<String> options = ["Car Inventory", "Customers", "Pickup Car", "Dropoff Car"];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(TextString.addStaffAcessPermissionEdit, style: TTextTheme.staffUpsideField(context)),
         const SizedBox(height: 12),
-        Obx(() => Column(
-          children: options.map((opt) => Padding(
-            padding: const EdgeInsets.only(bottom: 12.0),
-            child: Row(
-              children: [
-                Checkbox(
-                  value: controller.permissionsEdit.contains(opt),
-                  activeColor: AppColors.primaryColor,
-                  side: BorderSide(
-                    color: controller.permissionsEdit.contains(opt)
-                        ? AppColors.primaryColor
-                        : AppColors.quadrantalTextColor,
-                    width: 1.5,
-                  ),
-                  onChanged: (v) => controller.togglePermissionEdit(opt),
+        Obx(() {
+          bool hasError = controller.permissionsErrorEdit.value.isNotEmpty;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: hasError ? AppColors.primaryColor : Colors.transparent, width: 1.5),
                 ),
-                const SizedBox(width: 8),
-                PrimaryBtnStaff(
-                  text: opt,
-                  onTap: () => controller.togglePermissionEdit(opt),
-                  height: 35,
-                  borderRadius: BorderRadius.circular(4),
+                child: Column(
+                  children: options.map((opt) => Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
+                    child: Row(
+                      children: [
+                        Checkbox(
+                          value: controller.permissionsEdit.contains(opt),
+                          activeColor: AppColors.primaryColor,
+                          onChanged: (v) => controller.togglePermissionEdit(opt),
+                        ),
+                        const SizedBox(width: 8),
+                        PrimaryBtnStaff(
+                          text: opt,
+                          onTap: () => controller.togglePermissionEdit(opt),
+                          height: 35,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ],
+                    ),
+                  )).toList(),
                 ),
-              ],
-            ),
-          )).toList(),
-        )),
+              ),
+              if (hasError)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(controller.permissionsErrorEdit.value, style: TTextTheme.ErrorStyle(context)),
+                ),
+            ],
+          );
+        }),
       ],
     );
   }
+
 }

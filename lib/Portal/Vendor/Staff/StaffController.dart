@@ -1,5 +1,6 @@
 
 
+import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -71,9 +72,11 @@ class StaffController extends GetxController{
   final phoneC = TextEditingController();
   final positionC = TextEditingController();
 
-
   var selectedStatus = 'Active'.obs;
   var permissions = <String>[].obs;
+  var textFieldErrors = <String, String>{}.obs;
+  var permissionsError = "".obs;
+  var statusError = "".obs;
 
   final List<String> statusItems = ["Active", "Awaiting", "InActive", "Suspended"];
 
@@ -83,12 +86,59 @@ class StaffController extends GetxController{
     } else {
       permissions.add(val);
     }
+    if (permissions.isNotEmpty) permissionsError.value = "";
   }
 
-  void submitData() {
-    print("Sending Invitation for: ${firstNameC.text}");
+  bool validateStaffForm() {
+    bool isValid = true;
+    final fields = {
+      'First Name': firstNameC.text,
+      'Last Name': lastNameC.text,
+      'Email': emailC.text,
+      'Phone': phoneC.text,
+      'Position': positionC.text,
+    };
+
+    fields.forEach((key, value) {
+      if (value.trim().isEmpty) {
+        textFieldErrors[key] = "$key is required";
+        isValid = false;
+      } else if (key == 'Email' && !GetUtils.isEmail(value)) {
+        textFieldErrors[key] = "Enter a valid email";
+        isValid = false;
+      } else {
+        textFieldErrors.remove(key);
+      }
+      if (selectedStatus.value.isEmpty) {
+        statusError.value = "Please select a status";
+        isValid = false;
+      } else {
+        statusError.value = "";
+      }
+    });
+    if (permissions.isEmpty) {
+      permissionsError.value = "Select at least one permission";
+      isValid = false;
+    } else {
+      permissionsError.value = "";
+    }
+
+    return isValid;
   }
 
+  void submitData(BuildContext context) {
+    if (validateStaffForm()) {
+      print("Sending Invitation for: ${firstNameC.text}");
+    } else {
+      Get.snackbar(
+        "Validation Failed",
+        "Please fix the errors before sending invitation.",
+        backgroundColor: AppColors.primaryColor,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
   /// Edit Staff Screen
   final firstNameCEdit = TextEditingController();
   final lastNameCEdit = TextEditingController();
@@ -96,11 +146,14 @@ class StaffController extends GetxController{
   final phoneCEdit = TextEditingController();
   final positionCEdit = TextEditingController();
 
-
-  var selectedStatusEdit = 'Active'.obs;
+  var selectedStatusEdit = "".obs;
   var permissionsEdit = <String>[].obs;
 
-  final List<String> statusItemsEdit = ["Active", "Awaiting", "InActive", "Suspended"];
+  var textFieldErrorsEdit = <String, String>{}.obs;
+  var statusErrorEdit = "".obs;
+  var permissionsErrorEdit = "".obs;
+
+  final List<String> statusItems2 = ["Active", "Awaiting", "InActive", "Suspended"];
 
   void togglePermissionEdit(String val) {
     if (permissionsEdit.contains(val)) {
@@ -108,10 +161,49 @@ class StaffController extends GetxController{
     } else {
       permissionsEdit.add(val);
     }
+    if (permissionsEdit.isNotEmpty) permissionsErrorEdit.value = "";
+  }
+  bool validateEditStaffForm() {
+    bool isValid = true;
+
+    final fields = {
+      'First Name': firstNameCEdit.text,
+      'Last Name': lastNameCEdit.text,
+      'Email': emailCEdit.text,
+      'Phone': phoneCEdit.text,
+      'Position': positionCEdit.text,
+    };
+
+    fields.forEach((key, value) {
+      if (value.trim().isEmpty) {
+        textFieldErrorsEdit[key] = "$key is required";
+        isValid = false;
+      } else {
+        textFieldErrorsEdit.remove(key);
+      }
+    });
+
+    if (selectedStatusEdit.value.isEmpty) {
+      statusErrorEdit.value = "Status is required";
+      isValid = false;
+    } else {
+      statusErrorEdit.value = "";
+    }
+
+    if (permissionsEdit.isEmpty) {
+      permissionsErrorEdit.value = "Select at least one permission";
+      isValid = false;
+    } else {
+      permissionsErrorEdit.value = "";
+    }
+
+    return isValid;
   }
 
-  void submitDataEdit() {
-    print("Sending Invitation for: ${firstNameCEdit.text}");
+  void submitDataEdit(BuildContext context) {
+    if (validateEditStaffForm()) {
+
+    }
   }
 
   /// Sorting
