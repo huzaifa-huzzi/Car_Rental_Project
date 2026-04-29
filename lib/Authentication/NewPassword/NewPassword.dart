@@ -119,7 +119,7 @@ class _NewPasswordState extends State<NewPassword> {
                               Text(TextString.passwordFirstFooter, style: TTextTheme.titleSmallRemember(context)),
                               GestureDetector(
                                 onTap: () {
-                                  context.push('/signUp');
+                                  context.go('/signUp');
                                 },
                                 child: Text(
                                   TextString.passwordFooterTwo,

@@ -110,7 +110,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                ),
                                GestureDetector(
                                  onTap: () {
-                                   context.push('/signUp');
+                                   context.go('/signUp');
                                  },
                                  child: Text(
                                    TextString.forgotFooterTwo,

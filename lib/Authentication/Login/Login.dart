@@ -67,10 +67,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-
-                    // --- FORM VALIDATION STARTS HERE ---
                     child: Form(
-                      key: controller.loginFormKey, // Key assigned here
+                      key: controller.loginFormKey,
                       child: Column(
                         children: [
                           Text(TextString.titleLogin, style: TTextTheme.h11Style(context)),
@@ -87,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           _buildTextField(
                             hint: "sellostore@company.com",
                             textController: controller.emailController,
-                            validator: controller.validateEmail, // Logic from controller
+                            validator: controller.validateEmail,
                           ),
                           const SizedBox(height: 20),
 
@@ -99,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             textController: controller.passwordController,
                             obscureText: controller.obscurePassword.value,
                             onSuffixTap: controller.togglePasswordVisibility,
-                            validator: controller.validatePassword, // Logic from controller
+                            validator: controller.validatePassword,
                           )),
 
                           const SizedBox(height: 15),
@@ -134,7 +132,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           PrimaryBtnOfLogin(
                             text: "Log In",
                             onTap: () {
-                              // Triggering the validation logic in controller
                               controller.login(context);
                             },
                             width: double.infinity,
@@ -205,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: TTextTheme.titleSmallRemember(context),
                               ),
                               GestureDetector(
-                                onTap: () => context.push('/signUp'),
+                                onTap: () => context.go('/signUp'),
                                 child: Text(
                                   TextString.loginFooterTwo,
                                   style: TTextTheme.titleSmallRegister(context),
@@ -264,7 +261,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildForgotPassword() {
     return TextButton(
       onPressed: () {
-        context.push('/forgotPassword');
+        context.go('/forgotPassword');
         },
       style: TextButton.styleFrom(
         padding: EdgeInsets.zero,

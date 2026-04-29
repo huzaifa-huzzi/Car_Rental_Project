@@ -114,7 +114,7 @@ class LoginController extends GetxController {
   }
   void sendResetLink(BuildContext context) {
     if (forgotFormKey.currentState != null && forgotFormKey.currentState!.validate()) {
-      context.push('/newPassword');
+      context.go('/newPassword');
     }
   }
 
@@ -129,38 +129,28 @@ class LoginController extends GetxController {
 
   void togglePassword() => obscurePassword2.value = !obscurePassword2.value;
   void toggleConfirmPassword() => obscureConfirmPassword.value = !obscureConfirmPassword.value;
-
-  // --- STRONG PASSWORD VALIDATOR ---
   String? validateNewPassword(String? value) {
     if (value == null || value.isEmpty) return "Password is required";
     if (value.length < 8) return "Min 8 characters required";
-
-    // Regular Expressions for security rules
     if (!value.contains(RegExp(r'[A-Z]'))) return "Add at least 1 uppercase letter";
     if (!value.contains(RegExp(r'[0-9]'))) return "Add at least 1 digit";
     if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) return "Add 1 special character";
 
     return null;
   }
-
-  // --- MATCH PASSWORD VALIDATOR (Fixed 'size' error) ---
   String? validateConfirmPassword(String? value) {
-    // Check if field is empty
     if (value == null || value.isEmpty) {
       return "Please confirm your password";
     }
-
-    // Exact match check with the first password field
     if (value != newPasswordController.text) {
-      return "Passwords do not match!"; // Ye error Confirm Password box ke niche show hoga
+      return "Passwords do not match!";
     }
     return null;
   }
 
   void resetPassword(BuildContext context) {
-    // Safe check using the static key
     if (newPasswordFormKey.currentState != null && newPasswordFormKey.currentState!.validate()) {
-      context.push('/authSuccess');
+      context.go('/authSuccess');
     }
   }
   // Verification One Screen
