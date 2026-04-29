@@ -13,7 +13,7 @@ class CustomTextField extends StatefulWidget {
   final String? hint;
   final CarInventoryController invController;
 
-  const CustomTextField({
+  const CustomTextField({super.key, 
     required this.parentContext,
     required this.label,
     required this.textController,

@@ -118,6 +118,12 @@ class AddCustomerWidget extends StatelessWidget {
                 Text(TextString.addCustomerLicenseTitle, style: TTextTheme.btnSix(context)),
                 SizedBox(height: spacing),
                 _buildResponsiveGrid(context, [
+                  _buildTextField(
+                    context,
+                    "License Name",
+                    controller.licenseNameController,
+                    validator: (value) => controller.validateRequired(value, "License Name"),
+                  ),
                   _buildTextField(context, "Driver License Number", controller.licenseNumberController,
                       validator: (v) => controller.validateRequired(v, "License Number")),
                   CompositedTransformTarget(

@@ -324,11 +324,16 @@ class CustomerController extends GetxController {
     bool isFormValid = customerFormKey.currentState?.validate() ?? false;
     bool hasProfileImg = profileImage.value != null;
     if (!hasProfileImg) {
+      imageError.value = true;
       Get.snackbar("Photo Required", "Please upload customer profile photo",
           backgroundColor: AppColors.primaryColor, colorText: Colors.white);
     }
-
-    return isFormValid && hasProfileImg;
+    bool isLicenseValid = licenseNameController.text.trim().isNotEmpty;
+    if (!isLicenseValid) {
+      Get.snackbar("License Required", "License Name is required",
+          backgroundColor: AppColors.primaryColor, colorText: Colors.white);
+    }
+    return isFormValid && hasProfileImg && isLicenseValid;
   }
    /// StepTwoCustomer
   var isCredentialsGenerated = false.obs;

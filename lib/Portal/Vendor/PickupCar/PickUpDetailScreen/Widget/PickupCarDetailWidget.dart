@@ -607,13 +607,11 @@ class PickupDetailWidget extends StatelessWidget {
             child: Row(
               children: [
                 _infoBlock(IconString.smsIcon, TextString.titleEmail, "Contact@SoftSnip.com.au", context),
-                const SizedBox(width: 15),
+                const SizedBox(width: 25),
                 _infoBlock(IconString.callIcon, TextString.titleContact, "+12 3456 7890", context),
-                const SizedBox(width: 15),
+                const SizedBox(width: 25),
                 _infoBlock(IconString.location, TextString.titleAddress, "Toronto, California, 1234", context),
-                const SizedBox(width: 15),
-                _infoBlock(IconString.nidIcon, TextString.titleNid, "123 456 789", context),
-                const SizedBox(width: 15),
+                const SizedBox(width: 25),
               ],
             ),
           ),
@@ -659,15 +657,13 @@ class PickupDetailWidget extends StatelessWidget {
       ),
 
       /// INFO BLOCKS
-      const SizedBox(width: 20),
+      const SizedBox(width: 50),
       _infoBlock(IconString.smsIcon, TextString.titleEmail, "Contact@SoftSnip.com.au", context),
-      const SizedBox(width: 20),
+      const SizedBox(width: 50),
       _infoBlock(IconString.callIcon, TextString.titleContact, "+12 3456 7890", context),
-      const SizedBox(width: 20),
+      const SizedBox(width: 50),
       _infoBlock(IconString.location, TextString.titleAddress, "Toronto, California, 1234", context),
-      const SizedBox(width: 20),
-      _infoBlock(IconString.nidIcon, TextString.titleNid, "123 456 789", context),
-      const SizedBox(width: 20),
+      const SizedBox(width: 50),
 
       /// VIEW BUTTON
       AddButtonOfPickup(text: "View", width: 100, onTap: () {}),

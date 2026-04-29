@@ -79,9 +79,9 @@ class ResponsiveCardDetails extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         _item("Card Holder Name", "Jong Ali", context: context, isMobile: false),
-        _item("Country", "Australia", context: context, isMobile: false),
-        _item("Expiry date", "05/2029", context: context, isMobile: false),
         _item("CVC or CVV", "067", context: context, isMobile: false),
+        _item("Expiry date", "05/2029", context: context, isMobile: false),
+        _item("Country", "Australia", context: context, isMobile: false),
       ],
     );
   }
@@ -114,11 +114,11 @@ class ResponsiveCardDetails extends StatelessWidget {
         const SizedBox(height: 12),
         _item("Card Holder Name", "Jong Ali", context: context, expanded: false, isMobile: true),
         const SizedBox(height: 12),
-        _item("Country", "Australia", context: context, expanded: false, isMobile: true),
+        _item("CVC or CVV", "067", context: context, expanded: false, isMobile: true),
         const SizedBox(height: 12),
         _item("Expiry date", "05/2029", context: context, expanded: false, isMobile: true),
         const SizedBox(height: 12),
-        _item("CVC or CVV", "067", context: context, expanded: false, isMobile: true),
+        _item("Country", "Australia", context: context, expanded: false, isMobile: true),
       ],
     );
   }

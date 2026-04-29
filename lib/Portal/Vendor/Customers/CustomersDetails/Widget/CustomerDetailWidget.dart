@@ -18,7 +18,6 @@ class CustomerDetailWidget extends StatelessWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
     final bool isMobile = screenWidth < 800;
     final double horizontalPadding = screenWidth > 1200 ? 40 : 20;
-    final controller = Get.put(CustomerController());
 
     return Container(
       width: double.infinity,
@@ -74,16 +73,8 @@ class CustomerDetailWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(child: _responsiveInfoItem(context, IconString.birthIcon, "Date of Birth", "12/03/2001")),
-                            if (showGrid) ...[
-                              const SizedBox(width: 20),
-                              Expanded(child: _responsiveInfoItem(context,IconString.nidIcon, "NID Number", "123 456 789")),
-                              const SizedBox(width: 20),
-                              const Spacer(),
-                            ] else ...[
-                            ],
                           ],
                         ),
-                        if (!showGrid) _responsiveInfoItem(context, IconString.nidIcon, "NID Number", "123 456 789"),
                       ],
                     );
                   },
