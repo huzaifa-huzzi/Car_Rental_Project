@@ -144,7 +144,7 @@ class PickupTandCWidget extends StatelessWidget {
         AddButtonOfPickup(
           text: "Add Pick up T&C",
           onTap: () {
-            context.push('/AddpickupT&C', extra: {"hideMobileAppBar": true});
+            context.go('/AddpickupT&C', extra: {"hideMobileAppBar": true});
           },
         ),
       ],
@@ -358,7 +358,7 @@ class PickupTandCWidget extends StatelessWidget {
   Widget _viewButton(BuildContext context) {
     return InkWell(
       onTap: (){
-        context.push('/pickupT&Cdescription', extra: {"hideMobileAppBar": true},);
+        context.go('/pickupT&Cdescription', extra: {"hideMobileAppBar": true},);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),

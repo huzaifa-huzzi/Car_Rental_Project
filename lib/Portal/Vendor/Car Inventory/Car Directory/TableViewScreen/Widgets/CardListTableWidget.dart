@@ -103,7 +103,7 @@ class CarListTableWidget extends StatelessWidget {
                                 child: AddButton(
                                   text: "View",
                                   onTap: () {
-                                    context.push('/cardetails', extra: {"hideMobileAppBar": true});
+                                    context.go('/cardetails', extra: {"hideMobileAppBar": true});
                                   },
                                   borderRadius: BorderRadius.circular(6),
                                 ),

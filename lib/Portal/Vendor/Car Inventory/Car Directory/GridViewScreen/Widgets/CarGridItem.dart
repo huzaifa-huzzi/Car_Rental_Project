@@ -357,7 +357,7 @@ class CarGridItem extends StatelessWidget {
               child: AddButton(
                 text: 'View',
                 onTap: onView ??
-                        () => context.push('/cardetails',
+                        () => context.go('/cardetails',
                         extra: {"hideMobileAppBar": true}),
                 height: btnHeight,
               ),

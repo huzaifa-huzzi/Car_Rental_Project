@@ -100,7 +100,7 @@ class CustomerListTableWidget extends StatelessWidget {
                                 width: 71,
                                 height: 34,
                                 onTap: () {
-                                  context.push('/customerDetails', extra: {"hideMobileAppBar": true});
+                                  context.go('/customerDetails', extra: {"hideMobileAppBar": true});
                                 },
                                 borderRadius: BorderRadius.circular(6),
                               ),

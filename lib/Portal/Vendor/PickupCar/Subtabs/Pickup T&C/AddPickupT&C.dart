@@ -43,7 +43,7 @@ class AddPickupTandC extends StatelessWidget {
                   showNotification: true,
                   showProfile: true,
                   onAddPressed: (){
-                    context.push('/addpickup', extra: {"hideMobileAppBar": true});
+                    context.go('/addpickup', extra: {"hideMobileAppBar": true});
                   },
                 ),
               ),

@@ -50,7 +50,7 @@ class CardListStaffWidget extends StatelessWidget {
                   width: 140,
                   height: 40,
                   onTap: (){
-                    context.push('/addStaff', extra: {"hideMobileAppBar": true});
+                    context.go('/addStaff', extra: {"hideMobileAppBar": true});
                   },
                 ),
               ],

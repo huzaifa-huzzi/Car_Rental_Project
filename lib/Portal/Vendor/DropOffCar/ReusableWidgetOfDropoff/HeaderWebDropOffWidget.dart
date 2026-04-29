@@ -96,14 +96,26 @@ class HeaderWebDropOffWidget extends StatelessWidget {
                 if (showBack)
                   GestureDetector(
                     onTap: () {
-                      final router = GoRouter.of(context);
-
                       if (onBackPressed != null) {
                         onBackPressed!();
-                      } else if (router.canPop()) {
+                        return;
+                      }
+
+                      final router = GoRouter.of(context);
+                      final String location = GoRouterState.of(context).uri.toString();
+                      if (router.canPop()) {
                         router.pop();
-                      } else {
-                        router.go('/');
+                      }
+                      else {
+                        List<String> segments = location.split('/');
+                        if (segments.length > 2) {
+                          segments.removeLast();
+                          String previousPath = segments.join('/');
+                          context.go(previousPath.isEmpty ? '/' : previousPath);
+                        }
+                        else {
+                          context.go('/dropOffT&C');
+                        }
                       }
                     },
                     child: Container(

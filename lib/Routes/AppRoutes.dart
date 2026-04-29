@@ -24,9 +24,12 @@ class AppNavigation {
   /// Helper Function
   static Widget wrapWithSidebar(GoRouterState state, Widget child) {
     final String path = state.uri.toString().toLowerCase();
-    bool hideMobile = path.contains('add') || path.contains('edit') || path.contains('detail');
+    bool hideMobile = path.contains('add') ||
+        path.contains('edit') ||
+        path.contains('detail');
 
     return SidebarScreen.wrapWithSidebarIfNeeded(
+      key: state.pageKey,
       child: child,
       hideMobileAppBar: hideMobile,
     );

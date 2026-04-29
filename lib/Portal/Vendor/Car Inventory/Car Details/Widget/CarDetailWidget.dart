@@ -297,7 +297,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
               Row(
                 children: [
                   _buildIconButton(context, IconString.editIcon,onTap: (){
-                    context.push('/editCar', extra: {"hideMobileAppBar": true});
+                    context.go('/editCar', extra: {"hideMobileAppBar": true});
                   }),
                   SizedBox(width: 8),
                   _buildIconButton(context, IconString.deleteIcon,onTap: (){
@@ -391,7 +391,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
                  IconString.editIcon,
                   label: "Edit",
                   onTap: () {
-                    context.push('/editCar', extra: {"hideMobileAppBar": true});
+                    context.go('/editCar', extra: {"hideMobileAppBar": true});
                   },
                 ),
                 SizedBox(width: 8),

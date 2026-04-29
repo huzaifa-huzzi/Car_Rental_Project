@@ -144,7 +144,7 @@ class DropOffTandCWidget extends StatelessWidget {
         PrimaryBthDropOff(
           text: "Add DropOff T&C",
           onTap: () {
-            context.push('/AdddropOffT&C', extra: {"hideMobileAppBar": true});
+            context.go('/AdddropOffT&C', extra: {"hideMobileAppBar": true});
           },
         ),
       ],
@@ -358,7 +358,7 @@ class DropOffTandCWidget extends StatelessWidget {
   Widget _viewButton(BuildContext context) {
     return InkWell(
       onTap: (){
-        context.push('/dropOffT&Cdescription', extra: {"hideMobileAppBar": true},);
+        context.go('/dropOffT&Cdescription', extra: {"hideMobileAppBar": true},);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),

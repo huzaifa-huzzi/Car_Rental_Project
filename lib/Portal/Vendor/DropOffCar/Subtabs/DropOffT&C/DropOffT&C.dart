@@ -39,7 +39,7 @@ class DropOffTandC extends StatelessWidget {
                   showNotification: true,
                   showProfile: true,
                   onAddPressed: () {
-                    context.push('/addDropOff', extra: {"hideMobileAppBar": true});
+                    context.go('/addDropOff', extra: {"hideMobileAppBar": true});
                   },
                 ),
               ),

@@ -3,6 +3,7 @@ import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/AlertDialogs.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/customPrimaryButton.dart';
+import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Editing%20Car/Widgets/customTextField.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
@@ -26,7 +27,7 @@ class EditCarWidget extends StatelessWidget {
 
     return Center(
       child: Container(
-        width: 800,
+        width: double.infinity,
         margin: EdgeInsets.all(AppSizes.padding(context)),
         padding: EdgeInsets.all(AppSizes.padding(context)),
         decoration: BoxDecoration(
@@ -111,33 +112,33 @@ class EditCarWidget extends StatelessWidget {
               Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
               SizedBox(height: AppSizes.verticalPadding(context)),
 
-              ///  CAR IDENTIFICATION
+              /// SECTION 1: CAR IDENTIFICATION
               _buildSectionTitle(context, "Car Identification"),
               const SizedBox(height: 15),
               _buildResponsiveGrid(context, [
                 _buildDropdown(context, "Car Make", ["Toyota", "Bmw", "Aston"], controller.selectedBrand2, id: 'make2'),
                 _buildDropdown(context, "Car Model", ["Corolla", "Civic"], controller.selectedModel2, id: 'model2'),
                 _buildDropdown(context, "Car Year", ["2023", "2024"], controller.selectedYear2, id: 'year2'),
-                _buildTextField(context, "Car Registration Number", controller.reg2Controller, hint: "123-456"),
-                _buildTextField(context, "VIN Number", controller.vin2Controller, hint: "123-456"),
+                _buildTextField(context, "Car Registration Number", controller.reg2Controller, hint: "ABC-12345"),
+                _buildTextField(context, "VIN Number", controller.vin2Controller, hint: "17-digit VIN number"),
               ]),
 
               const SizedBox(height: 25),
               const Divider(thickness: 0.5),
-              const SizedBox(height: 25),
 
-              ///  CAR SPECIFICATION
+              /// SECTION 2: CAR SPECIFICATION
+              const SizedBox(height: 25),
               _buildSectionTitle(context, "Car Specification"),
               const SizedBox(height: 15),
               _buildResponsiveGrid(context, [
-                _buildDropdown(context, "Car Body Type", ["Sedan", "SUV"], controller.selectedBodyType2, id: 'body2'),
+                _buildDropdown(context, "Car Body Type", ["Sedan", "SUV", "Hatchback"], controller.selectedBodyType2, id: 'body2'),
                 _buildDropdown(context, "Car Transmission", ["Automatic", "Manual"], controller.selectedTransmission2, id: 'trans2'),
                 _buildTextField(context, "Car Seats", controller.seats2Controller, hint: "5"),
                 _buildTextField(context, "Car Engine Size", controller.engine2Controller, hint: "2.5L"),
                 _buildTextField(context, "Car Color", controller.color2Controller, hint: "Black"),
-                _buildDropdown(context, "Car Fuel Type", ["Petrol", "Diesel"], controller.selectedFuel2, id: 'fuel2'),
-                _buildTextField(context, "Car Value", controller.value2Controller, prefix: "\$ ", hint: "30,000 (AUD)"),
-                _buildTextField(context, "Weekly Rent (AUD)", controller.weekly2RentController, prefix: "\$ ", hint: "120 (AUD)"),
+                _buildDropdown(context, "Car Fuel Type", ["Petrol", "Diesel", "Electric"], controller.selectedFuel2, id: 'fuel2'),
+                _buildTextField(context, "Car Value", controller.value2Controller, prefix: "\$ ", hint: "30,000"),
+                _buildTextField(context, "Weekly Rent (AUD)", controller.weekly2RentController, prefix: "\$ ", hint: "120"),
                 _buildStatusDropdown(context, "Status", ["Available", "Maintenance", "Unavailable"], controller.selectedStatus2, id: 'status2'),
               ]),
 
@@ -145,8 +146,9 @@ class EditCarWidget extends StatelessWidget {
 
               /// IMAGE UPLOAD
               Text("Upload Car Images", style: TTextTheme.btnSix(context)),
-              SizedBox(height: AppSizes.verticalPadding(context)),
+              SizedBox(height: AppSizes.verticalPadding(context) * 0.5),
               _imageBox(context),
+
               SizedBox(height: AppSizes.verticalPadding(context)),
               Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
@@ -155,31 +157,46 @@ class EditCarWidget extends StatelessWidget {
               Text(TextString.addEditDescriptionTitle, style: TTextTheme.btnSix(context)),
               SizedBox(height: AppSizes.verticalPadding(context) * 0.5),
 
-              Container(
-                padding: EdgeInsets.all(AppSizes.padding(context)),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-                  color: AppColors.secondaryColor,
-                ),
-                child: TextField(
-                  cursorColor: AppColors.blackColor,
-                  maxLines: 6,
-                  decoration: InputDecoration(
-                    hintText: TextString.addEditDescriptionTextFieldText,
-                    hintStyle: TTextTheme.pOne(context),
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
+              Obx(() {
+                bool hasError = controller.textFieldErrors.containsKey('Description');
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(AppSizes.padding(context)),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                        color: AppColors.secondaryColor,
+                        border: Border.all(color: hasError ? AppColors.primaryColor : Colors.transparent, width: 1.5),
+                      ),
+                      child: TextField(
+                        controller: controller.description2Controller,
+                        onChanged: (v) => controller.textFieldErrors.remove('Description'),
+                        cursorColor: AppColors.blackColor,
+                        maxLines: 6,
+                        style: TTextTheme.titleFour(context),
+                        decoration: InputDecoration(
+                          hintText: TextString.addEditDescriptionTextFieldText,
+                          hintStyle: TTextTheme.pOne(context),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                    if (hasError)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5, left: 5),
+                        child: Text("Description is required", style: TTextTheme.ErrorStyle(context)),
+                      ),
+                  ],
+                );
+              }),
 
               SizedBox(height: AppSizes.verticalPadding(context)),
               Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
-              /// DOCUMENTS SECTION
               _documentsSection(context),
-              SizedBox(height: AppSizes.verticalPadding(context)),
 
-              /// BUTTON SECTION
+              SizedBox(height: AppSizes.verticalPadding(context)),
               _buttonSection(context, isMobile),
             ],
           ),
@@ -199,6 +216,7 @@ class EditCarWidget extends StatelessWidget {
       }) {
     return Obx(() {
       bool isOpen2 = controller.openedDropdown2.value == id;
+      bool hasError = controller.dropdownErrors.containsKey(id);
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,6 +239,7 @@ class EditCarWidget extends StatelessWidget {
               onSelected: (value) {
                 selected.value = value;
                 controller.openedDropdown2.value = "";
+                controller.dropdownErrors.remove(id);
               },
               child: Container(
                 height: 45,
@@ -228,6 +247,10 @@ class EditCarWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.secondaryColor,
                   borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                  border: Border.all(
+                    color: hasError ? AppColors.primaryColor : Colors.transparent,
+                    width: 1,
+                  ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -282,169 +305,136 @@ class EditCarWidget extends StatelessWidget {
               },
             );
           }),
+          if (hasError)
+            Padding(
+              padding: const EdgeInsets.only(top: 4, left: 4),
+              child: Text(
+                "Required",
+                style: TTextTheme.ErrorStyle(context),
+              ),
+            ),
         ],
       );
     });
   }
 
    // TextField Widget
-  Widget _buildTextField(BuildContext context, String label, TextEditingController controller,
-      {String? prefix, String? hint}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: TTextTheme.titleTwo(context)),
-        SizedBox(height: AppSizes.verticalPadding(context) * 0.3),
-        Focus(
-          onFocusChange: (hasFocus) {
-            (context as Element).markNeedsBuild();
-          },
-          child: Builder(
-            builder: (context) {
-              final bool isFocused = Focus.of(context).hasFocus;
+  Widget _buildTextField(BuildContext context, String label,
+      TextEditingController textController, {String? prefix, String? hint}) {
 
-              return AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-                  boxShadow: isFocused
-                      ? [
-                    BoxShadow(
-                      color: AppColors.fieldsBackground,
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ]
-                      : [],
-                ),
-                child: TextField(
-                  controller: controller,
-                  cursorColor: AppColors.blackColor,
-                  keyboardType: prefix != null ? TextInputType.number : TextInputType.text,
-                  style: TTextTheme.insidetextfieldWrittenText(context),
-                  onTapOutside: (event) {
-                    FocusScope.of(context).unfocus();
-                  },
-
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: AppColors.secondaryColor,
-                    hintText: hint ?? "Enter $label",
-                    hintStyle: TTextTheme.titleFour(context),
-                    prefixText: prefix,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
+    return CustomTextField(
+      parentContext: context,
+      label: label,
+      textController: textController,
+      invController: Get.find<CarInventoryController>(),
+      prefix: prefix,
+      hint: hint,
     );
   }
 
   // upload image Widget
   Widget _imageBox(BuildContext context) {
     return GestureDetector(
-      onTap: () => controller.pickImage2(),
+      onTap: () {
+        controller.pickImage2();
+        controller.imageError.value = "";
+      },
       child: Obx(() {
-        return DottedBorder(
-          borderType: BorderType.RRect,
-          radius: Radius.circular(AppSizes.borderRadius(context)),
-          dashPattern: [8, 6],
-          color: AppColors.tertiaryTextColor,
-          strokeWidth: 1,
-          child: Container(
-            width: double.infinity,
-            constraints: BoxConstraints(minHeight: 180),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-            ),
-            child: controller.selectedImages2.isEmpty
-                ? Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
+        bool hasError = controller.imageError.value.isNotEmpty;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DottedBorder(
+              borderType: BorderType.RRect,
+              radius: Radius.circular(AppSizes.borderRadius(context)),
+              dashPattern: const [8, 6],
+              color: hasError ? AppColors.primaryColor : AppColors.tertiaryTextColor,
+              strokeWidth: hasError ? 1.5 : 1,
+              child: Container(
+                width: double.infinity,
+                constraints: const BoxConstraints(minHeight: 180),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                ),
+                child: controller.selectedImages2.isEmpty
+                    ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AppColors.iconsBackgroundColor,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child:  Image.asset(IconString.cameraIcon, color: AppColors.primaryColor,width: 18,),
-                    ),
-                    SizedBox(width: 5,),
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AppColors.iconsBackgroundColor,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child:  Image.asset(IconString.uploadIcon, color: AppColors.primaryColor),
-                    ),
-
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Text(TextString.uploadTitle, style: TTextTheme.btnOne(context)),
-                Text(TextString.uploadSubtitle, style: TTextTheme.documnetIsnideSmallText2(context)),
-              ],
-            )
-                : Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: controller.selectedImages2.asMap().entries.map((entry) {
-                int index = entry.key;
-                final imageHolder = entry.value;
-
-                ImageProvider imageProvider;
-                if (kIsWeb) {
-                  imageProvider = (imageHolder.bytes != null)
-                      ? MemoryImage(imageHolder.bytes!)
-                      : const AssetImage("assets/placeholder.png") as ImageProvider;
-                } else {
-                  imageProvider = (imageHolder.path != null)
-                      ? FileImage(File(imageHolder.path!))
-                      : const AssetImage("assets/placeholder.png") as ImageProvider;
-                }
-
-                return Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      height: 120,
-                      width: 120,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: AppColors.primaryColor, width: 0.7),
-                        image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-                      ),
-                    ),
-                    Positioned(
-                      top: -8,
-                      right: -8,
-                      child: GestureDetector(
-                        onTap: () => controller.removeImage2(index),
-                        child: CircleAvatar(
-                          radius: 13,
-                          backgroundColor: Colors.white,
-                          child: Image.asset(IconString.deleteIcon, color: AppColors.primaryColor),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: AppColors.iconsBackgroundColor,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Image.asset(IconString.cameraIcon, color: AppColors.primaryColor, width: 18),
                         ),
-                      ),
+                        const SizedBox(width: 5),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: AppColors.iconsBackgroundColor,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Image.asset(IconString.uploadIcon, color: AppColors.primaryColor),
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 10),
+                    Text(TextString.uploadTitle, style: TTextTheme.btnOne(context)),
+                    Text(TextString.uploadSubtitle, style: TTextTheme.documnetIsnideSmallText2(context)),
                   ],
-                );
-              }).toList(),
+                )
+                    : Wrap(
+                  spacing: 12,
+                  runSpacing: 12,
+                  children: controller.selectedImages2.asMap().entries.map((entry) {
+                    int index = entry.key;
+                    final imageHolder = entry.value;
+
+                    ImageProvider imageProvider;
+                    if (kIsWeb) {
+                      imageProvider = (imageHolder.bytes != null)
+                          ? MemoryImage(imageHolder.bytes!)
+                          : const AssetImage("assets/placeholder.png") as ImageProvider;
+                    } else {
+                      imageProvider = (imageHolder.path != null)
+                          ? FileImage(File(imageHolder.path!))
+                          : const AssetImage("assets/placeholder.png") as ImageProvider;
+                    }
+
+                    return Stack(
+                      children: [
+                        Container(
+                          height: 120,
+                          width: 120,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: AppColors.primaryColor, width: 0.7),
+                            image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                          ),
+                        ),
+                      ],
+
+                    );
+                  }).toList(),
+                ),
+              ),
             ),
-          ),
+            if (hasError)
+              Padding(
+                padding: const EdgeInsets.only(top: 8, left: 4),
+                child: Text(
+                  controller.imageError.value,
+                  style: TTextTheme.ErrorStyle(context),
+                ),
+              ),
+          ],
         );
       }),
     );
@@ -475,6 +465,8 @@ class EditCarWidget extends StatelessWidget {
   Widget _buildStatusDropdown(BuildContext context, String label, List<String> items, RxString selected, {required String id}) {
     return Obx(() {
       bool isOpen = controller.openedDropdown2.value == id;
+      bool hasError = controller.dropdownErrors.containsKey(id);
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -491,6 +483,7 @@ class EditCarWidget extends StatelessWidget {
               onSelected: (val) {
                 selected.value = val;
                 controller.openedDropdown2.value = "";
+                controller.dropdownErrors.remove(id);
               },
               child: Container(
                 height: 48,
@@ -498,10 +491,14 @@ class EditCarWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.secondaryColor,
                   borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: hasError ? AppColors.primaryColor: Colors.transparent,
+                    width: 1,
+                  ),
                 ),
                 child: Row(
                   children: [
-                    Expanded(child: Align(alignment: Alignment.centerLeft, child: _getStatusChip(selected.value,context))),
+                    Expanded(child: Align(alignment: Alignment.centerLeft, child: _getStatusChip(selected.value, context))),
                     const SizedBox(width: 8),
                     Image.asset(isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon, height: 18),
                   ],
@@ -517,7 +514,7 @@ class EditCarWidget extends StatelessWidget {
                       Container(
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: Align(alignment: Alignment.centerLeft, child: _getStatusChip(entry.value,context)),
+                        child: Align(alignment: Alignment.centerLeft, child: _getStatusChip(entry.value, context)),
                       ),
                       if (!isLast) Divider(height: 1, color: AppColors.quadrantalTextColor),
                     ],
@@ -526,6 +523,14 @@ class EditCarWidget extends StatelessWidget {
               }).toList(),
             );
           }),
+          if (hasError)
+            Padding(
+              padding: const EdgeInsets.only(top: 4, left: 4),
+              child: Text(
+                "Status is required",
+                style: TTextTheme.ErrorStyle(context),
+              ),
+            ),
         ],
       );
     });
@@ -841,6 +846,27 @@ class EditCarWidget extends StatelessWidget {
     const double webButtonWidth = 150.0;
     const double webButtonHeight = 45.0;
     final double spacing = AppSizes.padding(context);
+    void handleSave() {
+      if (controller.validateForm()) {
+
+        Get.snackbar(
+          "Success",
+          "Vehicle saved successfully!",
+          backgroundColor: AppColors.completedColor,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        context.go('/carInventory');
+      } else {
+        Get.snackbar(
+          "Validation Error",
+          "Please fix the highlighted errors.",
+          backgroundColor: AppColors.primaryColor,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    }
 
     if (isMobile) {
       return Column(
@@ -853,7 +879,7 @@ class EditCarWidget extends StatelessWidget {
               backgroundColor: Colors.white,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
-              onTap: () {},
+              onTap: () => context.pop(),
             ),
           ),
           SizedBox(height: spacing),
@@ -862,10 +888,8 @@ class EditCarWidget extends StatelessWidget {
             height: webButtonHeight,
             child: AddButton(
               text: "Save Vehicle",
-              icon: Image.asset(
-                IconString.saveVehicleIcon,
-              ),
-              onTap: () {},
+              icon: Image.asset(IconString.saveVehicleIcon),
+              onTap: handleSave,
             ),
           ),
         ],
@@ -873,7 +897,7 @@ class EditCarWidget extends StatelessWidget {
     } else {
       return Row(
         children: [
-          Spacer(),
+          const Spacer(),
           SizedBox(
             width: webButtonWidth,
             height: webButtonHeight,
@@ -882,7 +906,7 @@ class EditCarWidget extends StatelessWidget {
               backgroundColor: Colors.white,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
-              onTap: () {},
+              onTap: () => context.pop(),
             ),
           ),
           SizedBox(width: spacing),
@@ -891,13 +915,10 @@ class EditCarWidget extends StatelessWidget {
             height: webButtonHeight,
             child: AddButton(
               text: "Save Vehicle",
-              icon: Image.asset(
-                IconString.saveVehicleIcon,
-              ),
-              onTap: () {},
+              icon: Image.asset(IconString.saveVehicleIcon),
+              onTap: handleSave,
             ),
           ),
-
         ],
       );
     }

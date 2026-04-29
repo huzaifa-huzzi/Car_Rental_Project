@@ -49,7 +49,7 @@ class CardListDropOffWidget extends StatelessWidget {
                   text: "Add DropOff car",
                   width: 140,
                   height: 40,
-                  onTap: () => context.push('/addDropOff', extra: {"hideMobileAppBar": true}),
+                  onTap: () => context.go('/addDropOff', extra: {"hideMobileAppBar": true}),
                 ),
               ],
             ],

@@ -37,7 +37,7 @@ class CustomerDetails extends StatelessWidget {
                         showNotification: true,
                         showProfile: true,
                         onAddPressed: () {
-                          context.push(
+                          context.go(
                             '/addNewCustomer',
                             extra: {"hideMobileAppBar": true},
                           );

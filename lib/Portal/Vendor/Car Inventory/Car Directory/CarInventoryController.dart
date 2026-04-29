@@ -706,7 +706,78 @@ class CarInventoryController extends GetxController {
   void removeImage2(int index) {
     selectedImages2.removeAt(index);
   }
+  // --- Error Observers ---
+  var vinError = "".obs;
+  var regError = "".obs;
+  var imageError = "".obs;
+  var descriptionError = "".obs;
+// Controller ke andar variables:
+  var textFieldErrors = <String, String>{}.obs; // Har text field ki ID ke liye
+  var dropdownErrors2 = <String, String>{}.obs;
 
+  // Controller ke andar description ka controller aur error maps
+  final description2Controller = TextEditingController(); // Description ke liye
+
+  bool validateForm() {
+    bool isValid = true;
+
+    // 1. Dropdowns Validation (Saari fields cover hain)
+    final dropdowns = {
+      'make2': selectedBrand2.value,
+      'model2': selectedModel2.value,
+      'year2': selectedYear2.value,
+      'body2': selectedBodyType2.value,
+      'trans2': selectedTransmission2.value,
+      'fuel2': selectedFuel2.value,
+      'status2': selectedStatus2.value,
+    };
+
+    dropdowns.forEach((id, value) {
+      if (value.isEmpty) {
+        dropdownErrors[id] = "Required";
+        isValid = false;
+      } else {
+        dropdownErrors.remove(id);
+      }
+    });
+
+    // 2. TextFields Validation (Description samait saari fields)
+    final textFields = {
+      'Registration': reg2Controller.text,
+      'VIN': vin2Controller.text,
+      'Seats': seats2Controller.text,
+      'Engine': engine2Controller.text,
+      'Color': color2Controller.text,
+      'Value': value2Controller.text,
+      'Rent': weekly2RentController.text,
+      'Description': description2Controller.text, // 👈 Description added
+    };
+
+    textFields.forEach((id, value) {
+      if (value.trim().isEmpty) {
+        textFieldErrors[id] = "Required";
+        isValid = false;
+      } else if (id == 'VIN' && value.length != 17) {
+        textFieldErrors[id] = "VIN must be 17 chars";
+        isValid = false;
+      } else if (id == 'Registration' && (value.length < 8 || value.length > 10)) {
+        textFieldErrors[id] = "8-10 chars required";
+        isValid = false;
+      } else {
+        textFieldErrors.remove(id);
+      }
+    });
+
+    // 3. Image Validation
+    if (selectedImages2.isEmpty) {
+      imageError.value = "At least one image is required";
+      isValid = false;
+    } else {
+      imageError.value = "";
+    }
+
+    return isValid;
+  }
   /// Sorting
   var sortColumn = "".obs;
   var sortOrder = 0.obs;

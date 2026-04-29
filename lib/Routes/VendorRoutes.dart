@@ -35,17 +35,30 @@ import 'package:car_rental_project/Portal/Vendor/Staff/AddStaff/AddStaffScreen.d
 import 'package:car_rental_project/Portal/Vendor/Staff/EditStaff/EditStaffScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Staff/TableViewScreen/StaffScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import '../Portal/Vendor/SideScreen/SidebarController.dart';
 
 class VendorRoutes {
   static List<RouteBase> routes = [
-
-
     ShellRoute(
       builder: (context, state, child) {
         final String path = state.uri.toString().toLowerCase();
-        bool hideMobile = path.contains('t&c') || path.contains('add') ||
-            path.contains('edit') || path.contains('detail');
+        bool hideMobile = path.contains('t&c') ||
+            path.contains('add') ||
+            path.contains('edit') ||
+            path.contains('detail') ||
+            path.contains('step');
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+
+          final SideBarController controller = Get.put(
+            SideBarController(),
+            permanent: true,
+            tag: 'sidebar',
+          );
+          controller.syncWithRoute(state.uri.toString());
+        });
 
         return SidebarScreen(
           onTap: (route) {
@@ -53,14 +66,14 @@ class VendorRoutes {
               context.go(route);
             } else {
               switch (route) {
-                case "Dashboard": context.go('/dashboard'); break;
+                case "Dashboard":     context.go('/dashboard');    break;
                 case "Car Inventory": context.go('/carInventory'); break;
-                case "Customers": context.go('/customers'); break;
-                case "Pickup Car": context.go('/pickupcar'); break;
-                case "Pickup T&C": context.go('/pickupT&C'); break;
-                case "Dropoff Car": context.go('/dropoffCar'); break;
-                case "Staff": context.go('/staff'); break;
-                case "Payment": context.go('/Payment'); break;
+                case "Customers":     context.go('/customers');    break;
+                case "Pickup Car":    context.go('/pickupcar');    break;
+                case "Pickup T&C":    context.go('/pickupT&C');    break;
+                case "Dropoff Car":   context.go('/dropoffCar');   break;
+                case "Staff":         context.go('/staff');        break;
+                case "Payment":       context.go('/Payment');      break;
               }
             }
           },
@@ -69,72 +82,61 @@ class VendorRoutes {
         );
       },
       routes: [
-        GoRoute(path: '/dashboard', builder: (context, state) => const DashboardScreen()),
-        GoRoute(path: '/carInventory', builder: (context, state) => CarInventoryMainScreen()),
-        GoRoute(path: '/customers', builder: (context, state) => TableViewCustomerScreen()),
-        GoRoute(path: '/pickupcar', builder: (context, state) => TableViewPickUpScreen()),
-        GoRoute(path: '/pickupT&C', builder: (context, state) => const PickupTandC()),
-        GoRoute(path: '/dropoffCar', builder: (context, state) => TableViewDropOffScreen()),
-        GoRoute(path: '/Payment', builder: (context, state) => PaymentScreen()),
-        GoRoute(path: '/staff', builder: (context, state) => TableViewOfStaffScreen()),
+        // ── Main module routes
+        GoRoute(path: '/dashboard',    builder: (_, __) => const DashboardScreen()),
+        GoRoute(path: '/carInventory', builder: (_, __) => CarInventoryMainScreen()),
+        GoRoute(path: '/customers',    builder: (_, __) => TableViewCustomerScreen()),
+        GoRoute(path: '/pickupcar',    builder: (_, __) => TableViewPickUpScreen()),
+        GoRoute(path: '/pickupT&C',    builder: (_, __) => const PickupTandC()),
+        GoRoute(path: '/dropoffCar',   builder: (_, __) => TableViewDropOffScreen()),
+        GoRoute(path: '/Payment',      builder: (_, __) => PaymentScreen()),
+        GoRoute(path: '/staff',        builder: (_, __) => TableViewOfStaffScreen()),
+
+        // ── Inventory
+        GoRoute(path: '/cardetails',   builder: (_, __) => CarDetailsScreen()),
+        GoRoute(path: '/addNewCar',    builder: (_, __) => AddingCarScreen()),
+        GoRoute(path: '/editCar',      builder: (_, __) => EditCarScreen()),
+
+        // ── Customers
+        GoRoute(path: '/customerDetails',  builder: (_, __) => CustomerDetails()),
+        GoRoute(path: '/addNewCustomer',   builder: (_, __) => const AddCustomerScreen()),
+        GoRoute(path: '/editCustomers',    builder: (_, __) => EditCustomerScreen()),
+        GoRoute(path: '/stepTwoCustomer',  builder: (_, __) => StepTwoCustomerWidget()),
+
+        // ── Pickup
+        GoRoute(path: '/pickupDetail',          builder: (_, __) => PickUpDetailScreen()),
+        GoRoute(path: '/addpickup',             builder: (_, __) => const AddPickup()),
+        GoRoute(path: '/stepOnePickup',         builder: (_, __) => StepOneSelectionWidget()),
+        GoRoute(path: '/stepTwoWidgetScreen',   builder: (_, __) => StepTwoSelectionWidget()),
+        GoRoute(path: '/stepThreeWidgetScreen', builder: (_, __) => StepThreeWidget()),
+        GoRoute(path: '/editPickUp',            builder: (_, __) => EditPickScreen()),
+        GoRoute(path: '/AddpickupT&C',          builder: (_, __) => AddPickupTandC()),
+        GoRoute(path: '/pickupT&Cdescription',  builder: (_, __) => PickupTandCDescription()),
+
+        // ── DropOff
+        GoRoute(path: '/dropOffDetail',       builder: (_, __) => DropOffDetails()),
+        GoRoute(path: '/addDropOff',          builder: (_, __) => const AddDropOffScreen()),
+        GoRoute(path: '/addDropOffDetailTwo', builder: (_, __) => AddDropOffDetailWidget()),
+        GoRoute(path: '/stepTwoDropoff',      builder: (_, __) => StepTwoDropOffWidget()),
+        GoRoute(path: '/stepThreeDropOff',    builder: (_, __) => StepThreeDropOffWidget()),
+        GoRoute(path: '/dropOffT&C',          builder: (_, __) => DropOffTandC()),
+        GoRoute(path: '/AdddropOffT&C',       builder: (_, __) => AddDropOffTandC()),
+        GoRoute(path: '/dropOffT&Cdescription', builder: (_, __) => DropOffTandCDescription()),
+
+        // ── Staff
+        GoRoute(path: '/EditStaffScreen', builder: (_, __) => EditStaffScreen()),
+        GoRoute(path: '/addStaff',        builder: (_, __) => AddStaffScreen()),
+
+        // ── Payment & Others
+        GoRoute(path: '/AddPayment', builder: (_, __) => AddPayment()),
+        GoRoute(
+          path: '/invoicesDetail',
+          builder: (context, state) {
+            final data = state.extra as Map<String, dynamic>?;
+            return InvoicesDetail(invoiceData: data ?? {});
+          },
+        ),
       ],
     ),
-
-    GoRoute(path: '/cardetails', builder: (context, state) => _wrapSidebar(state, CarDetailsScreen())),
-    GoRoute(path: '/addNewCar', builder: (context, state) => _wrapSidebar(state, AddingCarScreen())),
-    GoRoute(path: '/editCar', builder: (context, state) => _wrapSidebar(state, EditCarScreen())),
-
-    // Customers
-    GoRoute(path: '/customerDetails', builder: (context, state) => _wrapSidebar(state, CustomerDetails())),
-    GoRoute(path: '/addNewCustomer', builder: (context, state) => _wrapSidebar(state, const AddCustomerScreen())),
-    GoRoute(path: '/editCustomers', builder: (context, state) => _wrapSidebar(state, EditCustomerScreen())),
-    GoRoute(path: '/stepTwoCustomer', builder: (context, state) => _wrapSidebar(state, StepTwoCustomerWidget())),
-
-    // Pickup
-    GoRoute(path: '/pickupDetail', builder: (context, state) => _wrapSidebar(state, PickUpDetailScreen())),
-    GoRoute(path: '/addpickup', builder: (context, state) => _wrapSidebar(state, const AddPickup())),
-    GoRoute(path: '/stepOnePickup', builder: (context, state) => _wrapSidebar(state,  StepOneSelectionWidget())),
-    GoRoute(path: '/stepTwoWidgetScreen', builder: (context, state) => _wrapSidebar(state,  StepTwoSelectionWidget())),
-    GoRoute(path: '/stepThreeWidgetScreen', builder: (context, state) => _wrapSidebar(state,  StepThreeWidget())),
-    GoRoute(path: '/editPickUp', builder: (context, state) => _wrapSidebar(state, EditPickScreen())),
-    GoRoute(path: '/pickupT&C', builder: (context, state) => _wrapSidebar(state, PickupTandC())),
-    GoRoute(path: '/AddpickupT&C', builder: (context, state) => _wrapSidebar(state, AddPickupTandC())),
-    GoRoute(path: '/pickupT&Cdescription', builder: (context, state) => _wrapSidebar(state, PickupTandCDescription())),
-
-    // DropOff
-    GoRoute(path: '/dropOffDetail', builder: (context, state) => _wrapSidebar(state, DropOffDetails())),
-    GoRoute(path: '/addDropOff', builder: (context, state) => _wrapSidebar(state, const AddDropOffScreen())),
-    GoRoute(path: '/addDropOffDetailTwo', builder: (context, state) => _wrapSidebar(state,  AddDropOffDetailWidget())),
-    GoRoute(path: '/stepTwoDropoff', builder: (context, state) => _wrapSidebar(state,  StepTwoDropOffWidget())),
-    GoRoute(path: '/stepThreeDropOff', builder: (context, state) => _wrapSidebar(state,  StepThreeDropOffWidget())),
-    GoRoute(path: '/dropOffT&C', builder: (context, state) => _wrapSidebar(state, DropOffTandC())),
-    GoRoute(path: '/AdddropOffT&C', builder: (context, state) => _wrapSidebar(state, AddDropOffTandC())),
-    GoRoute(path: '/dropOffT&Cdescription', builder: (context, state) => _wrapSidebar(state, DropOffTandCDescription())),
-
-     // Staff
-    GoRoute(path: '/EditStaffScreen', builder: (context, state) => _wrapSidebar(state, EditStaffScreen())),
-    GoRoute(path: '/addStaff', builder: (context, state) => _wrapSidebar(state, AddStaffScreen())),
-
-    // Payment & Others
-    GoRoute(path: '/AddPayment', builder: (context, state) => _wrapSidebar(state, AddPayment())),
-    GoRoute(
-      path: '/invoicesDetail',
-      builder: (context, state) {
-        final data = state.extra as Map<String, dynamic>?;
-        return _wrapSidebar(state, InvoicesDetail(invoiceData: data ?? {}));
-      },
-    ),
   ];
-
-
-  static Widget _wrapSidebar(GoRouterState state, Widget child) {
-    final String path = state.uri.toString().toLowerCase();
-    bool hideMobile = path.contains('t&c') || path.contains('add') ||
-        path.contains('edit') || path.contains('detail');
-
-    return SidebarScreen.wrapWithSidebarIfNeeded(
-      child: child,
-      hideMobileAppBar: hideMobile,
-    );
-  }
 }

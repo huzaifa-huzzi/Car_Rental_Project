@@ -39,7 +39,7 @@ class _PickupTandCDescriptionState extends State<PickupTandCDescription> {
               showNotification: true,
               showProfile: true,
               onAddPressed: (){
-                context.push('/addpickup', extra: {"hideMobileAppBar": true});
+                context.go('/addpickup', extra: {"hideMobileAppBar": true});
               },
             ),
 

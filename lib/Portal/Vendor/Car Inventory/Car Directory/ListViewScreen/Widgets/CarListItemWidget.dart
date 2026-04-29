@@ -125,7 +125,7 @@ class _CarListCardState extends State<CarListCard> {
             child: AddButton(
                 text: 'View',
                 onTap: widget.onView ?? () {
-                  context.push('/cardetails', extra: {"hideMobileAppBar": true});
+                  context.go('/cardetails', extra: {"hideMobileAppBar": true});
                 }
             ),
           ),

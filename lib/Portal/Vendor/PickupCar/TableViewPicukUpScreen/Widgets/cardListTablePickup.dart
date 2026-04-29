@@ -98,7 +98,7 @@ class CardListTablePickup extends StatelessWidget {
                                 child: AddButtonOfPickup(
                                   text: "View",
                                   onTap: () {
-                                    context.push('/pickupDetail', extra: {"hideMobileAppBar": true});
+                                    context.go('/pickupDetail', extra: {"hideMobileAppBar": true});
                                   },
                                   borderRadius: BorderRadius.circular(6),
                                 ),

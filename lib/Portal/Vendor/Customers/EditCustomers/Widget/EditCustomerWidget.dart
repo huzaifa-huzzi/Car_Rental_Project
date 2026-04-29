@@ -27,162 +27,157 @@ class EditCustomerWidget extends StatelessWidget {
 
     return Center(
       child: Container(
-        width: 800,
+        width: double.infinity,
         margin: EdgeInsets.all(AppSizes.padding(context)),
         padding: EdgeInsets.all(AppSizes.padding(context)),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
         ),
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(spacing),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+        child: Form(
+          key: CustomerController.editCustomerFormKey,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(spacing),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
 
-              /// CUSTOMER HEADER
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: Image.asset(
-                      IconString.editIcon2,
-                      fit: BoxFit.contain,
+                /// CUSTOMER HEADER
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: Image.asset(IconString.editIcon2, fit: BoxFit.contain),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                         TextString.editTitle,
-                          style: TTextTheme.h7Style(context),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          TextString.editSubtitle,
-                          style: TTextTheme.titleThree(context),
-                        ),
-                      ],
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(TextString.editTitle, style: TTextTheme.h7Style(context)),
+                          const SizedBox(height: 4),
+                          Text(TextString.editSubtitle, style: TTextTheme.titleThree(context)),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-
-                  // EDIT BUTTON
-                  CustomPrimaryButton(
-                    text: MediaQuery.of(context).size.width < 900 ? "" : "Edit",
-                    iconPath: IconString.editIcon,
-                    width: MediaQuery.of(context).size.width < 900 ? 40 : 110,
-                    height: 38,
-                    textColor: AppColors.primaryColor,
-                    borderColor: AppColors.primaryColor,
-                    onTap: () => print("Edit Tapped"),
-                  ),
-
-                  const SizedBox(width: 8),
-
-                  // DELETE BUTTON
-                  CustomPrimaryButton(
-                    text: MediaQuery.of(context).size.width < 900 ? "" : "Delete",
-                    iconPath: IconString.deleteIcon,
-                    iconColor: AppColors.secondTextColor,
-                    width: MediaQuery.of(context).size.width < 900 ? 40 : 110,
-                    height: 38,
-                    textColor: AppColors.secondTextColor,
-                    borderColor: AppColors.sideBoxesColor,
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (_) => ResponsiveCustomerDialog(
-                          onCancel: () {
-                            context.pop();
-                          },
-                          onConfirm: () {
-                            context.pop();
-                          },
-                        ),
-                      );
-
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: AppSizes.verticalPadding(context) / 2),
-              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-              SizedBox(height: AppSizes.verticalPadding(context)),
-
-              /// PROFILE IMAGE UPLOAD
-              Align(
-                alignment: isMobile ? Alignment.center : Alignment.centerLeft,
-                child: _buildProfilePhotoPicker(context),
-              ),
-              SizedBox(height: spacing * 1.5),
-
-              /// BASIC INFO GRID FORM
-              _buildResponsiveGrid(context, [
-                _buildTextField(context,TextString.customerName , controller.givenNameController2),
-                _buildTextField(context, TextString.customerSurname , controller.surnameController2),
-                _buildTextField(context, TextString.customerDateOfBirth, controller.dobController2, hint: "DD/MM/YYYY"),
-                _buildTextField(context, TextString.customerContactNumber, controller.contactController2),
-                _buildTextField(context, TextString.customerEmail, controller.emailController2),
-                _buildTextField(context, TextString.customerAddress, controller.addressController2),
-              ]),
-
-              SizedBox(height: spacing),
-              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-
-              /// CUSTOMER NOTE SECTION
-              SizedBox(height: spacing),
-              Text(TextString.customerNote, style: TTextTheme.btnSix(context)),
-              SizedBox(height: 8),
-              _buildLargeTextField(context,TextString.customerNoteSubtitle , controller.noteController2),
-
-              SizedBox(height: spacing),
-              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-
-              /// LICENSE DETAILS SECTION
-              SizedBox(height: spacing),
-              Text(TextString.licenseTitle, style: TTextTheme.btnSix(context)),
-              SizedBox(height: spacing),
-              _buildResponsiveGrid(context, [
-                _buildTextField(context, "Driver License Number", controller.licenseNumberController2),
-                _buildTextField(context, "License Expiry Date", controller.licenseExpiryController2),
-                _buildTextField(context, "Card Number", controller.licenseCardNumberController2),
-              ]),
-
-              SizedBox(height: spacing),
-              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-
-              /// DOCUMENTS UPLOAD SECTION
-              SizedBox(height: spacing),
-              Text(TextString.uploadDocumentTitle, style: TTextTheme.btnSix(context)),
-              SizedBox(height: spacing),
-              _documentsSection(context),
-
-              SizedBox(height: spacing),
-              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-
-              /// CARD DETAILS SECTION
-              Text(TextString.addCardDetailsTitle, style: TTextTheme.btnSix(context)),
-              SizedBox(height: spacing),
-
-              Center(
-                child: SizedBox(
-                  width: 450,
-                  child: _buildCardSelectionRow(context),
+                    const SizedBox(width: 10),
+                    CustomPrimaryButton(
+                      text: MediaQuery.of(context).size.width < 900 ? "" : "Edit",
+                      iconPath: IconString.editIcon,
+                      width: MediaQuery.of(context).size.width < 900 ? 40 : 110,
+                      height: 38,
+                      textColor: AppColors.primaryColor,
+                      borderColor: AppColors.primaryColor,
+                      onTap: () => print("Edit Mode Enabled"),
+                    ),
+                    const SizedBox(width: 8),
+                    CustomPrimaryButton(
+                      text: MediaQuery.of(context).size.width < 900 ? "" : "Delete",
+                      iconPath: IconString.deleteIcon,
+                      iconColor: AppColors.secondTextColor,
+                      width: MediaQuery.of(context).size.width < 900 ? 40 : 110,
+                      height: 38,
+                      textColor: AppColors.secondTextColor,
+                      borderColor: AppColors.sideBoxesColor,
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (_) => ResponsiveCustomerDialog(
+                            onCancel: () => context.pop(),
+                            onConfirm: () => context.pop(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-              ),
+                SizedBox(height: AppSizes.verticalPadding(context) / 2),
+                Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+                SizedBox(height: AppSizes.verticalPadding(context)),
 
-              SizedBox(height: spacing),
-              _buildCardForm(context),
-              SizedBox(height: spacing * 2),
+                /// PROFILE IMAGE UPLOAD
+                Align(
+                  alignment: isMobile ? Alignment.center : Alignment.centerLeft,
+                  child: _buildProfilePhotoPicker(context),
+                ),
+                SizedBox(height: spacing * 1.5),
 
-              /// BUTTON SECTION
-              _buttonSection(context, isMobile),
-            ],
+                /// BASIC INFO GRID FORM
+                _buildResponsiveGrid(context, [
+                  _buildTextField(context, TextString.customerName, controller.givenNameController2,
+                      validator: (v) => controller.validateRequired(v, "Given Name")),
+                  _buildTextField(context, TextString.customerSurname, controller.surnameController2,
+                      validator: (v) => controller.validateRequired(v, "Surname")),
+                  _buildTextField(context, TextString.customerDateOfBirth, controller.dobController2,
+                      hint: "DD/MM/YYYY",
+                      validator: (v) => controller.validateRequired(v, "Date of Birth")),
+                  _buildTextField(context, TextString.customerContactNumber, controller.contactController2,
+                      validator: (v) => controller.validateRequired(v, "Contact Number")),
+                  _buildTextField(context, TextString.customerEmail, controller.emailController2,
+                      validator: (v) => controller.validateEmail(v)),
+                  _buildTextField(context, TextString.customerAddress, controller.addressController2,
+                      validator: (v) => controller.validateRequired(v, "Address")),
+                ]),
+
+                SizedBox(height: spacing),
+                Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+
+                /// CUSTOMER NOTE SECTION
+                SizedBox(height: spacing),
+                Text(TextString.customerNote, style: TTextTheme.btnSix(context)),
+                SizedBox(height: 8),
+                _buildLargeTextField(context, TextString.customerNoteSubtitle, controller.noteController2,
+                    validator: (v) => controller.validateRequired(v, "Note")),
+
+                SizedBox(height: spacing),
+                Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+
+                /// LICENSE DETAILS SECTION
+                SizedBox(height: spacing),
+                Text(TextString.licenseTitle, style: TTextTheme.btnSix(context)),
+                SizedBox(height: spacing),
+                _buildResponsiveGrid(context, [
+                  _buildTextField(context, "License Name", controller.licenseNameController2,
+                      validator: (v) => controller.validateRequired(v, "License Name")),
+                  _buildTextField(context, "Driver License Number", controller.licenseNumberController2,
+                      validator: (v) => controller.validateRequired(v, "License Number")),
+                  _buildTextField(context, "License Expiry Date", controller.licenseExpiryController2,
+                      validator: (v) => controller.validateRequired(v, "Expiry Date")),
+                  _buildTextField(context, "Card Number", controller.licenseCardNumberController2,
+                      validator: (v) => controller.validateRequired(v, "Card Number")),
+                ]),
+
+                SizedBox(height: spacing),
+                Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+
+                /// DOCUMENTS UPLOAD SECTION
+                SizedBox(height: spacing),
+                Text(TextString.uploadDocumentTitle, style: TTextTheme.btnSix(context)),
+                SizedBox(height: spacing),
+                _documentsSection(context),
+
+                SizedBox(height: spacing),
+                Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+
+                /// CARD DETAILS SECTION
+                Text(TextString.addCardDetailsTitle, style: TTextTheme.btnSix(context)),
+                SizedBox(height: spacing),
+
+                Center(
+                  child: SizedBox(
+                    width: 450,
+                    child: _buildCardSelectionRow(context),
+                  ),
+                ),
+
+                SizedBox(height: spacing),
+                _buildCardForm(context),
+                SizedBox(height: spacing * 2),
+                _buttonSection(context, isMobile),
+              ],
+            ),
           ),
         ),
       ),
@@ -191,44 +186,63 @@ class EditCustomerWidget extends StatelessWidget {
 
   /// ---------- Extra Widgets --------///
 
-  // Profile Photo Picker Widget
-  Widget _buildProfilePhotoPicker(BuildContext context,) {
+  Widget _buildProfilePhotoPicker(BuildContext context) {
     return Obx(() {
       final hasImg = controller.profileImage2.value != null;
-      return GestureDetector(
-        onTap: () => controller.pickProfileImage2(),
-        child: Container(
-          width: 150,
-          height: 150,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.iconsBackgroundColor, width: 1),
-          ),
-          child: hasImg
-              ? ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: kIsWeb
-                ? Image.memory(controller.profileImage2.value!.bytes!, fit: BoxFit.cover)
-                : Image.file(File(controller.profileImage2.value!.path!), fit: BoxFit.cover),
-          )
-              : Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: AppColors.iconsBackgroundColor,
-                  borderRadius: BorderRadius.circular(12),
+      final bool hasError = controller.imageError2.value;
+
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: () => controller.pickProfileImage2(),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: hasError ? AppColors.primaryColor : AppColors.iconsBackgroundColor,
+                  width: hasError ? 2 : 1,
                 ),
-                child: Image.asset(IconString.uploadIcon, color: AppColors.primaryColor, width: 24),
               ),
-              const SizedBox(height: 10),
-              Text(TextString.photoTitle, style: TTextTheme.documnetIsnideSmallText(context)),
-              Text(TextString.uploadSubtitle, style: TTextTheme.documnetIsnideSmallText2(context)),
-            ],
+              child: hasImg
+                  ? ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: kIsWeb
+                    ? Image.memory(controller.profileImage2.value!.bytes!, fit: BoxFit.cover)
+                    : Image.file(File(controller.profileImage2.value!.path!), fit: BoxFit.cover),
+              )
+                  : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.iconsBackgroundColor,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Image.asset(IconString.uploadIcon, color: AppColors.primaryColor, width: 24),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(TextString.photoTitle, style: TTextTheme.documnetIsnideSmallText(context)),
+                  Text(TextString.uploadSubtitle, style: TTextTheme.documnetIsnideSmallText2(context)),
+                ],
+              ),
+            ),
           ),
-        ),
+          if (hasError)
+            Padding(
+              padding: const EdgeInsets.only(top: 8, left: 4),
+              child: Text(
+                "Photo is required",
+                style: TTextTheme.ErrorStyle(context),
+              ),
+            ),
+        ],
       );
     });
   }
@@ -249,7 +263,7 @@ class EditCustomerWidget extends StatelessWidget {
   }
 
   //  TextField Widget
-  Widget _buildTextField(BuildContext context, String label, TextEditingController ctrl, {String? hint}) {
+  Widget _buildTextField(BuildContext context, String label, TextEditingController ctrl, {String? hint, String? Function(String?)? validator}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -263,8 +277,7 @@ class EditCustomerWidget extends StatelessWidget {
             builder: (context) {
               final bool isFocused = Focus.of(context).hasFocus;
 
-              return AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
+              return Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
                   boxShadow: isFocused
@@ -272,15 +285,23 @@ class EditCustomerWidget extends StatelessWidget {
                     BoxShadow(
                       color: AppColors.fieldsBackground,
                       blurRadius: 10,
+                      spreadRadius: 1,
                       offset: const Offset(0, 4),
                     ),
                   ]
                       : [],
                 ),
-                child: TextField(
+                child: TextFormField(
                   controller: ctrl,
                   cursorColor: AppColors.blackColor,
                   style: TTextTheme.titleTwo(context),
+                  validator: validator,
+                  onChanged: (value) {
+                    if (value.isNotEmpty) {
+                      CustomerController.editCustomerFormKey.currentState?.validate();
+                    }
+                  },
+
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
@@ -293,6 +314,24 @@ class EditCustomerWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
                       borderSide: BorderSide.none,
                     ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                      borderSide: BorderSide.none,
+                    ),
+                    errorStyle: TTextTheme.ErrorStyle(context),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                      borderSide: const BorderSide(color: AppColors.primaryColor, width: 1),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                      borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.5),
+                    ),
+
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   ),
                 ),
@@ -305,7 +344,7 @@ class EditCustomerWidget extends StatelessWidget {
   }
 
  // Large TextField
-  Widget _buildLargeTextField(BuildContext context, String hint, TextEditingController ctrl) {
+  Widget _buildLargeTextField(BuildContext context, String hint, TextEditingController ctrl, {String? Function(String?)? validator}) {
     return Focus(
       onFocusChange: (hasFocus) {
         (context as Element).markNeedsBuild();
@@ -314,8 +353,7 @@ class EditCustomerWidget extends StatelessWidget {
         builder: (context) {
           final bool isFocused = Focus.of(context).hasFocus;
 
-          return AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
+          return Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
               boxShadow: isFocused
@@ -323,15 +361,23 @@ class EditCustomerWidget extends StatelessWidget {
                 BoxShadow(
                   color: AppColors.fieldsBackground,
                   blurRadius: 10,
+                  spreadRadius: 1,
                   offset: const Offset(0, 4),
                 ),
               ]
                   : [],
             ),
-            child: TextField(
-              cursorColor: AppColors.blackColor,
+            child: TextFormField(
               controller: ctrl,
+              cursorColor: AppColors.blackColor,
               maxLines: 5,
+              validator: validator,
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  CustomerController.editCustomerFormKey.currentState?.validate();
+                }
+              },
+
               onTapOutside: (event) {
                 FocusScope.of(context).unfocus();
               },
@@ -344,6 +390,24 @@ class EditCustomerWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
                   borderSide: BorderSide.none,
                 ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                  borderSide: BorderSide.none,
+                ),
+                errorStyle: TTextTheme.ErrorStyle(context),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                  borderSide: const BorderSide(color: AppColors.primaryColor, width: 1),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                  borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.5),
+                ),
+                contentPadding: const EdgeInsets.all(16),
               ),
             ),
           );
@@ -669,9 +733,22 @@ class EditCustomerWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildShadowTextField(context, "Card number", controller.ccNumberController2, hint: "1234 1234 1234 1234", isCreditCard: true),
+            _buildShadowTextField(
+              context,
+              "Card number",
+              controller.ccNumberController2,
+              hint: "1234 1234 1234 1234",
+              isCreditCard: true,
+              validator: (v) => controller.validateRequired2(v, "Card number"),
+            ),
             const SizedBox(height: 16),
-            _buildShadowTextField(context, "Card Holder Name", controller.ccHolderController2, hint: "Softsnip"),
+            _buildShadowTextField(
+              context,
+              "Card Holder Name",
+              controller.ccHolderController2,
+              hint: "Softsnip",
+              validator: (v) => controller.validateRequired2(v, "Holder Name"),
+            ),
             const SizedBox(height: 16),
 
             LayoutBuilder(builder: (context, constraints) {
@@ -680,14 +757,40 @@ class EditCustomerWidget extends StatelessWidget {
                 spacing: 16,
                 runSpacing: 16,
                 children: [
-                  SizedBox(width: itemWidth, child: _buildShadowTextField(context, "Expiry", controller.ccExpiryController2, hint: "MM / YY", isCompact: true)),
-                  SizedBox(width: itemWidth, child: _buildShadowTextField(context, "CVC", controller.ccCvcController2, hint: "CVC", isCompact: true)),
+                  SizedBox(
+                      width: itemWidth,
+                      child: _buildShadowTextField(
+                        context,
+                        "Expiry",
+                        controller.ccExpiryController2,
+                        hint: "MM / YY",
+                        isCompact: true,
+                        validator: (v) => controller.validateRequired2(v, "Expiry"),
+                      )
+                  ),
+                  SizedBox(
+                      width: itemWidth,
+                      child: _buildShadowTextField(
+                        context,
+                        "CVC",
+                        controller.ccCvcController2,
+                        hint: "CVC",
+                        isCompact: true,
+                        validator: (v) => controller.validateRequired2(v, "CVC"),
+                      )
+                  ),
                 ],
               );
             }),
 
             const SizedBox(height: 16),
-            _buildShadowTextField(context, "Country", controller.ccCountryController2, hint: "United States"),
+            _buildShadowTextField(
+              context,
+              "Country",
+              controller.ccCountryController2,
+              hint: "United States",
+              validator: (v) => controller.validateRequired2(v, "Country"),
+            ),
           ],
         ),
       ),
@@ -695,7 +798,8 @@ class EditCustomerWidget extends StatelessWidget {
   }
 
   // Shadow TextField Widget
-  Widget _buildShadowTextField(BuildContext context, String label, TextEditingController ctrl, {String? hint, bool isCreditCard = false, bool isCompact = false}) {
+  Widget _buildShadowTextField(BuildContext context, String label, TextEditingController ctrl,
+      {String? hint, bool isCreditCard = false, bool isCompact = false, String? Function(String?)? validator}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -708,6 +812,7 @@ class EditCustomerWidget extends StatelessWidget {
           child: Builder(
             builder: (context) {
               final bool hasFocus = Focus.of(context).hasFocus;
+
               return Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
@@ -716,21 +821,45 @@ class EditCustomerWidget extends StatelessWidget {
                     BoxShadow(
                       color: AppColors.fieldsBackground,
                       blurRadius: 8,
-                      spreadRadius: 3,
+                      spreadRadius: 1,
                       offset: const Offset(0, 3),
                     )
                   ] : [],
                 ),
-                child: TextField(
+                child: TextFormField(
                   controller: ctrl,
                   cursorColor: Colors.black,
-                  style: const TextStyle(fontSize: 12),
+                  style: TTextTheme.titleinputTextField(context),
+                  validator: validator,
+                  onChanged: (value) {
+                    if (value.isNotEmpty) {
+                      CustomerController.editCustomerFormKey.currentState?.validate();
+                    }
+                  },
+
                   decoration: InputDecoration(
                     hintText: hint,
-                    hintStyle:  TTextTheme.btnOne(context),
+                    hintStyle: TTextTheme.btnOne(context),
                     filled: true,
                     fillColor: Colors.white,
                     hoverColor: Colors.transparent,
+                    errorStyle: TTextTheme.ErrorStyle(context),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: AppColors.fieldsBackground),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: AppColors.fieldsBackground),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: AppColors.primaryColor, width: 1),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.5),
+                    ),
 
                     suffixIcon: isCreditCard ? Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -747,17 +876,6 @@ class EditCustomerWidget extends StatelessWidget {
                         ],
                       ),
                     ) : null,
-
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: AppColors.fieldsBackground),
-                    ),
-
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color:AppColors.fieldsBackground),
-                    ),
-
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                   ),
                 ),
@@ -783,9 +901,12 @@ class EditCustomerWidget extends StatelessWidget {
           backgroundColor: Colors.white,
           textColor: AppColors.textColor,
           borderColor: AppColors.quadrantalTextColor,
-          onTap: () {},
+          onTap: () {
+            Get.back();
+          },
         ),
       ),
+
       if (!isMobile) SizedBox(width: spacing),
       if (isMobile) SizedBox(height: spacing),
       SizedBox(
@@ -795,15 +916,17 @@ class EditCustomerWidget extends StatelessWidget {
           text: "Save Customer",
           icon: Image.asset(
             IconString.saveVehicleIcon,
+            width: 18,
           ),
           onTap: () {
+            controller.updateCustomerData(context);
           },
         ),
       ),
     ];
 
     return isMobile
-        ? Column(children: buttons)
+        ? Column(children: buttons.reversed.toList())
         : Row(mainAxisAlignment: MainAxisAlignment.end, children: buttons);
   }
 }

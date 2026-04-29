@@ -37,7 +37,7 @@ class TableViewPickUpScreen extends StatelessWidget {
                       showSettings: true,
                       showSearch: true,
                       onAddPressed: () {
-                        context.push(
+                        context.go(
                           '/addpickup',
                           extra: {"hideMobileAppBar": true},
                         );

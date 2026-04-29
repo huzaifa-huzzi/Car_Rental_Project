@@ -162,7 +162,7 @@ class TableViewStaffWidget extends StatelessWidget {
                               children: [
                                 GestureDetector(
                                   onTap: (){
-                                    context.push('/EditStaffScreen', extra: {"hideMobileAppBar": true});
+                                    context.go('/EditStaffScreen', extra: {"hideMobileAppBar": true});
                                   },
                                   child: Image.asset(IconString.editIcon2,color: AppColors.primaryColor,),
                                 ),
@@ -285,7 +285,7 @@ class TableViewStaffWidget extends StatelessWidget {
         textColor = AppColors.primaryColor;
         break;
       default:
-        bgColor = Colors.grey;
+        bgColor = AppColors.quadrantalTextColor;
         textColor = Colors.white;
     }
 

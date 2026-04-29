@@ -32,7 +32,7 @@ class CarDetailsScreen extends StatelessWidget {
               showNotification: true,
               showProfile: true,
               onAddPressed: () {
-                context.push(
+                context.go(
                   '/addNewCar',
                   extra: {"hideMobileAppBar": true},
                 );

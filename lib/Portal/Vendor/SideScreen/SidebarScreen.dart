@@ -221,11 +221,13 @@ class SidebarScreen extends StatelessWidget {
     }
   }
 
- static Widget wrapWithSidebarIfNeeded({
+  static Widget wrapWithSidebarIfNeeded({
     required Widget child,
     bool hideMobileAppBar = false,
+    required ValueKey<String> key,
   }) {
     return SidebarScreen(
+      key: key,
       onTap: (value) {},
       hideMobileAppBar: hideMobileAppBar,
       child: child,

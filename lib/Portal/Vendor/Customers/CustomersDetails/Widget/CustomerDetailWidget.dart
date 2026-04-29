@@ -216,7 +216,7 @@ class CustomerDetailWidget extends StatelessWidget {
                   context, null,
                   isDelete: false,
                   onTap: (){
-                    context.push(
+                    context.go(
                       '/editCustomers',
                       extra: {"hideMobileAppBar": true},
                     );
@@ -262,7 +262,7 @@ class CustomerDetailWidget extends StatelessWidget {
             context, "Edit",
             isDelete: false,
             onTap: (){
-              context.push(
+              context.go(
                 '/editCustomers',
                 extra: {"hideMobileAppBar": true},
               );

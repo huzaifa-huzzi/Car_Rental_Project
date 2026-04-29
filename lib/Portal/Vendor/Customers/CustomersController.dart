@@ -304,12 +304,9 @@ class CustomerController extends GetxController {
       },
     );
   }
-
-  // Controller ke top par
   static final GlobalKey<FormState> customerFormKey = GlobalKey<FormState>();
   var dropdownErrors = <String, String>{}.obs;
 
-// Validation Functions
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) return "Email is required";
     final bool emailValid = RegExp(
@@ -323,17 +320,12 @@ class CustomerController extends GetxController {
     if (value == null || value.isEmpty) return "$fieldName is required";
     return null;
   }
-
-// Final Save Logic
   bool saveCustomer2(BuildContext context) {
-    // 1. TextFields Validation (Name, Email, Address, License etc.)
     bool isFormValid = customerFormKey.currentState?.validate() ?? false;
-
-    // 2. Profile Photo Check (Mandatory agar aap chahen)
     bool hasProfileImg = profileImage.value != null;
     if (!hasProfileImg) {
       Get.snackbar("Photo Required", "Please upload customer profile photo",
-          backgroundColor: Colors.red, colorText: Colors.white);
+          backgroundColor: AppColors.primaryColor, colorText: Colors.white);
     }
 
     return isFormValid && hasProfileImg;
@@ -448,6 +440,42 @@ class CustomerController extends GetxController {
         path: kIsWeb ? null : file.path,
         name: file.name,
       );
+    }
+  }
+  static final editCustomerFormKey = GlobalKey<FormState>();
+  RxBool imageError2 = false.obs;
+
+  String? validateRequired2(String? value, String fieldName) {
+    if (value == null || value.trim().isEmpty) {
+      return "$fieldName is required";
+    }
+    return null;
+  }
+
+  String? validateEmail2(String? value) {
+    if (value == null || value.trim().isEmpty) return "Email is required";
+    final bool emailValid = RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(value);
+    return emailValid ? null : "Please enter a valid email";
+  }
+
+  bool validateProfileImage2() {
+    if (profileImage2.value == null) {
+      imageError2.value = true;
+      return false;
+    }
+    imageError2.value = false;
+    return true;
+  }
+
+// Update Logic
+  void updateCustomerData(BuildContext context) {
+    if (editCustomerFormKey.currentState!.validate() && validateProfileImage2()) {
+      // Agar sab theek hai to update process karein
+      print("Form Validated! Updating...");
+    } else {
+      print("Validation Failed");
     }
   }
 

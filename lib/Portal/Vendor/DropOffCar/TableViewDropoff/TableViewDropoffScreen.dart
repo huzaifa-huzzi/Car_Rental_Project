@@ -38,7 +38,7 @@ class TableViewDropOffScreen extends StatelessWidget {
                     showSettings: true,
                     showSearch: true,
                     onAddPressed: () {
-                      context.push(
+                      context.go(
                         '/addDropOff',
                         extra: {"hideMobileAppBar": true},
                       );

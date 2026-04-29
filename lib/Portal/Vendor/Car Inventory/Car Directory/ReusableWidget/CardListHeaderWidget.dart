@@ -82,7 +82,7 @@ class CardListHeaderWidget extends StatelessWidget {
                               text: "Add Car",
                               width: 110,
                               height: 40,
-                              onTap: () => context.push('/addNewCar', extra: {"hideMobileAppBar": true}),
+                              onTap: () => context.go('/addNewCar', extra: {"hideMobileAppBar": true}),
                             ),
                           ],
                         ],

@@ -164,7 +164,7 @@ class TableViewDropOffWidget extends StatelessWidget {
                             child: Center(
                               child: PrimaryBthDropOff(
                                 text: "View",
-                                onTap: () => context.push('/dropOffDetail', extra: {"hideMobileAppBar": true}),
+                                onTap: () => context.go('/dropOffDetail', extra: {"hideMobileAppBar": true}),
                                 borderRadius: BorderRadius.circular(6),
                                 width: 80,
                                 height: 35,

@@ -287,7 +287,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     return PrimaryBtnOfPayment(
       text: "Add Payment",
       onTap: () {
-        context.push('/AddPayment', extra: {"hideMobileAppBar": true});
+        context.go('/AddPayment', extra: {"hideMobileAppBar": true});
       },
       width: isFullWidth ? double.infinity : 160,
       borderRadius: BorderRadius.circular(10),
@@ -522,7 +522,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                 width: 110,
                 child: OutlinedButton(
                   onPressed: () {
-                    context.push('/invoicesDetail', extra: data);
+                    context.go('/invoicesDetail', extra: data);
                   },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryColor,
