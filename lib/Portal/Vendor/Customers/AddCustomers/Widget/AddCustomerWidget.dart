@@ -1173,7 +1173,6 @@ class AddCustomerWidget extends StatelessWidget {
     );
   }
 
-
    // country Fields
   Widget _buildCountryPickerField(BuildContext context, String label, TextEditingController ctrl) {
     final List<Country> countryList = CountryService().getAll();

@@ -566,8 +566,9 @@ class CarInventoryController extends GetxController {
 
     for (var id in requiredIds) {
       String value = "";
-      if (id == 'search_car') value = selectedBrand.value;
-      else if (id == 'Model') value = selectedModel.value;
+      if (id == 'search_car') {
+        value = selectedBrand.value;
+      } else if (id == 'Model') value = selectedModel.value;
       else if (id == 'year') value = selectedCarYear.value;
       else if (id == 'body') value = selectedBodyType.value;
       else if (id == 'trans') value = selectedTransmission.value;
