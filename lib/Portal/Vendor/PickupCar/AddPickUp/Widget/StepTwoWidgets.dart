@@ -513,8 +513,9 @@ class StepTwoSelectionWidget extends StatelessWidget {
       ImageHolder? image;
       bool hasError = controller.imageErrors.containsKey(type);
 
-      if (type == 'front') image = controller.frontImage.value;
-      else if (type == 'back') image = controller.backImage.value;
+      if (type == 'front') {
+        image = controller.frontImage.value;
+      } else if (type == 'back') image = controller.backImage.value;
       else if (type == 'left') image = controller.leftImage.value;
       else if (type == 'right') image = controller.rightImage.value;
 
@@ -553,8 +554,8 @@ class StepTwoSelectionWidget extends StatelessWidget {
                       ? ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: kIsWeb
-                        ? Image.memory(image!.bytes!, fit: BoxFit.cover, width: double.infinity, height: double.infinity)
-                        : Image.file(File(image!.path!), fit: BoxFit.cover, width: double.infinity, height: double.infinity),
+                        ? Image.memory(image.bytes!, fit: BoxFit.cover, width: double.infinity, height: double.infinity)
+                        : Image.file(File(image.path!), fit: BoxFit.cover, width: double.infinity, height: double.infinity),
                   )
                       : Padding(
                     padding: const EdgeInsets.only(top: 20, bottom: 5),

@@ -1,5 +1,6 @@
 import 'package:car_rental_project/Portal/Vendor/Customers/CustomersController.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/ReusableWidgetOfCustomers/AddButtonOfCustomers.dart';
+import 'package:car_rental_project/Portal/Vendor/Customers/ReusableWidgetOfCustomers/CustomerPrimaryBtn.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
@@ -189,7 +190,6 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
       ),
     );
   }
-  // Filter Panel Widget
   Widget _buildResponsiveFilterPanel(BuildContext context, bool isMobile, CustomerController controller) {
     return Align(
       alignment: isMobile ? Alignment.center : Alignment.centerLeft,
@@ -209,22 +209,73 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _filterItem("Age", _textFieldBox("34", context), context),
+            _filterItem("Age", _textFieldBox("34", context, controller.ageController), context),
             const SizedBox(height: 16),
-            _filterItem("Phone Number", _textFieldBox("012 09786754", context), context),
+            _filterItem("Phone Number", _textFieldBox("012 09786754", context, controller.phoneController), context),
             const SizedBox(height: 16),
-            _filterItem("Address", _textFieldBox("404 super", context), context),
+            _filterItem("Address", _textFieldBox("404 super", context, controller.addressController), context),
+            const SizedBox(height: 20),
+            Align(
+              alignment: Alignment.centerRight,
+              child: _buildResetButton(controller),
+            ),
           ],
         )
             : Wrap(
-          spacing: 10,
+          spacing: 16,
           runSpacing: 16,
-          crossAxisAlignment: WrapCrossAlignment.start,
+          crossAxisAlignment: WrapCrossAlignment.end,
           children: [
-            _filterItem("Age", _textFieldBox("34", context), context, customWidth: 100),
-            _filterItem("Phone Number", _textFieldBox("012 0978754", context), context, customWidth: 150),
-            _filterItem("Address", _textFieldBox("404 super", context), context, customWidth: 200),
+            _filterItem("Age", _textFieldBox("34", context, controller.ageController), context, customWidth: 100),
+            _filterItem("Phone Number", _textFieldBox("012 0978754", context, controller.phoneController), context, customWidth: 150),
+            _filterItem("Address", _textFieldBox("404 super", context, controller.addressController), context, customWidth: 200),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 2),
+              child: _buildResetButton(controller),
+            ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildResetButton(CustomerController controller) {
+    return CustomerPrimaryBtn(
+      text: "Reset",
+      width: 100,
+      height: 38,
+      textColor: Colors.white,
+      backgroundColor: AppColors.primaryColor,
+      borderColor: AppColors.primaryColor,
+      borderRadius: BorderRadius.circular(8),
+      onTap: () {
+        controller.ageController.clear();
+        controller.phoneController.clear();
+        controller.addressController.clear();
+      },
+    );
+  }
+
+//  TextField Widget
+  Widget _textFieldBox(String label, BuildContext context, TextEditingController textController) {
+    return Container(
+      height: 38,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppSizes.borderRadius(context) * 0.8),
+        color: AppColors.secondaryColor,
+      ),
+      padding: EdgeInsets.symmetric(horizontal: AppSizes.padding(context) * 0.5),
+      child: Center(
+        child: TextField(
+          controller: textController,
+          cursorColor: AppColors.blackColor,
+          style: TTextTheme.titleTwo(context),
+          decoration: InputDecoration(
+            hintText: label,
+            hintStyle: TTextTheme.titleTwo(context),
+            border: InputBorder.none,
+            isCollapsed: true,
+          ),
         ),
       ),
     );
@@ -246,54 +297,6 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
           const SizedBox(height: 6),
           child,
         ],
-      ),
-    );
-  }
-  // textfield Widget
-  Widget _textFieldBox(String label, BuildContext context) {
-    return Container(
-      height: 38,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppSizes.borderRadius(context) * 0.8),
-        color: AppColors.secondaryColor,
-      ),
-      padding: EdgeInsets.symmetric(horizontal: AppSizes.padding(context) * 0.5),
-      child: Center(
-        child: TextField(
-          cursorColor: AppColors.blackColor,
-          style: TTextTheme.titleTwo(context),
-          decoration: InputDecoration(
-            hintText: label,
-            hintStyle: TTextTheme.titleTwo(context),
-            border: InputBorder.none,
-            isCollapsed: true,
-          ),
-        ),
-      ),
-    );
-  }
-  // headerButton Widget
-  Widget _headerButton({required BuildContext context, required String icon, required String text, required bool isOpen, required bool showText, VoidCallback? onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: isOpen ? AppColors.primaryColor : Colors.white),
-        ),
-        child: Row(
-          children: [
-            Image.asset(icon, width: 16, color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor),
-            if (showText) ...[
-              const SizedBox(width: 6),
-              Text(text, style: TTextTheme.btnTwo(context).copyWith(color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor)),
-            ],
-            const SizedBox(width: 4),
-            Icon(isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, size: 18, color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor),
-          ],
-        ),
       ),
     );
   }
@@ -330,6 +333,32 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
               color: AppColors.quadrantalTextColor,
             ),
         ],
+      ),
+    );
+  }
+
+  // headerButton Widget
+  Widget _headerButton({required BuildContext context, required String icon, required String text, required bool isOpen, required bool showText, VoidCallback? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: isOpen ? AppColors.primaryColor : Colors.white),
+        ),
+        child: Row(
+          children: [
+            Image.asset(icon, width: 16, color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor),
+            if (showText) ...[
+              const SizedBox(width: 6),
+              Text(text, style: TTextTheme.btnTwo(context).copyWith(color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor)),
+            ],
+            const SizedBox(width: 4),
+            Icon(isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, size: 18, color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor),
+          ],
+        ),
       ),
     );
   }

@@ -1003,12 +1003,18 @@ class PickupCarController extends GetxController {
   }
 
   void confirmCurrentSignature() {
-    if (isOwnerSigned.value) ownerNameError.value = "";
-    else hirerNameError.value = "";
+    if (isOwnerSigned.value) {
+      ownerNameError.value = "";
+    } else {
+      hirerNameError.value = "";
+    }
 
     if (activeNameController.text.trim().isEmpty) {
-      if (isOwnerSigned.value) ownerNameError.value = "Name is required";
-      else hirerNameError.value = "Name is required";
+      if (isOwnerSigned.value) {
+        ownerNameError.value = "Name is required";
+      } else {
+        hirerNameError.value = "Name is required";
+      }
 
       Get.snackbar("Required", "Please enter name before confirming",
           snackPosition: SnackPosition.BOTTOM,

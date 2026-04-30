@@ -1,5 +1,6 @@
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/CarInventoryController.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
+import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/customPrimaryButton.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
@@ -284,12 +285,15 @@ class CardListHeaderWidget extends StatelessWidget {
   // filter Container Widget
   Widget _buildFilterContainer(BuildContext context) {
     final controller = Get.find<CarInventoryController>();
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: AppSizes.horizontalPadding(context), vertical: 8),
       padding: EdgeInsets.all(AppSizes.padding(context)),
       decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
       child: Wrap(
-        spacing: 16, runSpacing: 16,
+        spacing: 16,
+        runSpacing: 16,
+        crossAxisAlignment: WrapCrossAlignment.end,
         children: [
           _filterItem("Make", _dropdownBox(["BMW", "Aston", "Range Rover"], controller.selectedBrand, context), context),
           _filterItem("Model", _dropdownBox(["Corolla", "Civic"], controller.selectedModel, context), context),
@@ -301,6 +305,27 @@ class CardListHeaderWidget extends StatelessWidget {
           _filterItem("Fuel", _dropdownBox(["Petrol", "Hybrid"], controller.selectedFuel, context), context),
           _filterItem("Engine Size", _textFieldBox("2.5[L]", context), context),
           _filterItem("Price (Under)", _textFieldBox(r"$ 1600", context), context),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 2),
+            child: CustomPrimaryButton(
+              text: "Reset",
+              width: 100,
+              height: 38,
+              textColor: Colors.white,
+              backgroundColor: AppColors.primaryColor,
+              borderColor: AppColors.primaryColor,
+              borderRadius: BorderRadius.circular(8),
+              onTap: () {
+                controller.selectedBrand.value = "";
+                controller.selectedModel.value = "";
+                controller.selectedYear.value = "";
+                controller.selectedBodyType.value = "";
+                controller.selectedStatus.value = "";
+                controller.selectedTransmission.value = "";
+                controller.selectedFuel.value = "";
+              },
+            ),
+          ),
         ],
       ),
     );

@@ -2,7 +2,6 @@ import 'package:car_rental_project/Portal/Vendor/DropOffCar/DropOffController.da
 import 'package:car_rental_project/Portal/Vendor/DropOffCar/ReusableWidgetOfDropoff/CustomButtonDropOff.dart';
 import 'package:car_rental_project/Portal/Vendor/DropOffCar/ReusableWidgetOfDropoff/HeaderWebDropOffWidget.dart';
 import 'package:car_rental_project/Portal/Vendor/DropOffCar/ReusableWidgetOfDropoff/PrimaryBtnDropOff.dart';
-import 'package:car_rental_project/Portal/Vendor/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
@@ -276,7 +275,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
               onFocusChange: (hasFocus) {
                 if (!isReadOnly) {
                   if (context is Element && context.mounted) {
-                    (context as Element).markNeedsBuild();
+                    (context).markNeedsBuild();
                   }
                 }
               },
@@ -409,7 +408,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                   Focus(
                     onFocusChange: (hasFocus) {
                       if (isSpecial && context is Element && context.mounted) {
-                        (context as Element).markNeedsBuild();
+                        (context).markNeedsBuild();
                       }
                     },
                     child: Builder(
@@ -1426,7 +1425,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                 onFocusChange: (hasFocus) {
                   if (!isReadOnly) {
                     if (context is Element && context.mounted) {
-                      (context as Element).markNeedsBuild();
+                      (context).markNeedsBuild();
                     }
                   }
                 },

@@ -1,10 +1,12 @@
 import 'package:car_rental_project/Portal/Vendor/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/ReusableWidgetOfPickup/AddButtonOfPickup.dart';
+import 'package:car_rental_project/Portal/Vendor/PickupCar/ReusableWidgetOfPickup/AddPickupButton.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:flutter_quill/flutter_quill_internal.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -284,6 +286,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
         ),
         child: isMobileUI
             ? Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _filterItem("Make", _dropdownBox(controller.makes, controller.selectedMake, context), context),
             _filterItem("Model", _textFieldBox(controller.selectedModel.value, context), context),
@@ -291,11 +294,18 @@ class CardListHeaderPickupWidget extends StatelessWidget {
             _filterItem("Status", _statusDropdownBox(statuses, controller.selectedStatus, context), context),
             _filterItem("Start Date", _textFieldBox(controller.startDate.value, context), context),
             _filterItem("End Date", _textFieldBox(controller.endDate.value, context), context),
+
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerRight,
+              child: _buildPickupResetButton(controller),
+            ),
           ],
         )
             : Wrap(
           spacing: 16,
           runSpacing: 16,
+          crossAxisAlignment: WrapCrossAlignment.end,
           children: [
             _filterItem("Make", _dropdownBox(controller.makes, controller.selectedMake, context), context),
             _filterItem("Model", _textFieldBox(controller.selectedModel.value, context), context),
@@ -303,9 +313,36 @@ class CardListHeaderPickupWidget extends StatelessWidget {
             _filterItem("Status", _statusDropdownBox(statuses, controller.selectedStatus, context), context),
             _filterItem("Start Date", _textFieldBox(controller.startDate.value, context), context),
             _filterItem("End Date", _textFieldBox(controller.endDate.value, context), context),
+
+            Padding(
+              padding: const EdgeInsets.only(bottom: 2),
+              child: _buildPickupResetButton(controller),
+            ),
           ],
         ),
       ),
+    );
+  }
+
+// Reset Button
+  Widget _buildPickupResetButton(PickupCarController controller) {
+    return AddPickUpButton(
+      text: "Reset",
+      width: isMobile ? double.infinity : 100,
+      height: 38,
+      textColor: Colors.white,
+      backgroundColor: AppColors.primaryColor,
+      borderColor: AppColors.primaryColor,
+      borderRadius: BorderRadius.circular(8),
+      onTap: () {
+        controller.selectedMake.value = "";
+        controller.selectedStatus.value = "";
+        controller.selectedModel.value = "";
+        controller.selectYear.value = "";
+        controller.startDate.value = "";
+        controller.endDate.value = "";
+
+      },
     );
   }
 

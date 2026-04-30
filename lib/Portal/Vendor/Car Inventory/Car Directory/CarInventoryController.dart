@@ -46,8 +46,6 @@ class CarInventoryController extends GetxController {
   /// ReusableWidgetOfPickup Controller
   // pagination  Widget
   final RxInt currentPage = 1.obs;
-
-  // Make pageSize reactive
   final RxInt pageSize = 10.obs;
 
   RxList<Map<String, dynamic>> carList = <Map<String, dynamic>>[].obs;
@@ -706,22 +704,17 @@ class CarInventoryController extends GetxController {
   void removeImage2(int index) {
     selectedImages2.removeAt(index);
   }
-  // --- Error Observers ---
   var vinError = "".obs;
   var regError = "".obs;
   var imageError = "".obs;
   var descriptionError = "".obs;
-// Controller ke andar variables:
-  var textFieldErrors = <String, String>{}.obs; // Har text field ki ID ke liye
+  var textFieldErrors = <String, String>{}.obs;
   var dropdownErrors2 = <String, String>{}.obs;
 
-  // Controller ke andar description ka controller aur error maps
-  final description2Controller = TextEditingController(); // Description ke liye
+  final description2Controller = TextEditingController();
 
   bool validateForm() {
     bool isValid = true;
-
-    // 1. Dropdowns Validation (Saari fields cover hain)
     final dropdowns = {
       'make2': selectedBrand2.value,
       'model2': selectedModel2.value,
@@ -740,8 +733,6 @@ class CarInventoryController extends GetxController {
         dropdownErrors.remove(id);
       }
     });
-
-    // 2. TextFields Validation (Description samait saari fields)
     final textFields = {
       'Registration': reg2Controller.text,
       'VIN': vin2Controller.text,
@@ -750,7 +741,7 @@ class CarInventoryController extends GetxController {
       'Color': color2Controller.text,
       'Value': value2Controller.text,
       'Rent': weekly2RentController.text,
-      'Description': description2Controller.text, // 👈 Description added
+      'Description': description2Controller.text,
     };
 
     textFields.forEach((id, value) {
@@ -767,8 +758,6 @@ class CarInventoryController extends GetxController {
         textFieldErrors.remove(id);
       }
     });
-
-    // 3. Image Validation
     if (selectedImages2.isEmpty) {
       imageError.value = "At least one image is required";
       isValid = false;
@@ -837,12 +826,12 @@ class CarInventoryController extends GetxController {
 
   final List<String> allBrands = ["Toyota", "Ford", "Honda", "Tesla", "BMW", "Audi"];
 
-  final Map<String, List<String>> brandModels = {
-    "Toyota": ["Corolla", "Camry", "Prado", "Hilux"],
-    "Ford": ["Focus", "Mustang", "F-150", "Explorer"],
-    "Honda": ["Civic", "Accord", "CR-V"],
-    "Tesla": ["Model S", "Model 3", "Model X", "Model Y"],
-  };
+  final List<String> allModels = [
+    "Corolla", "Camry", "Prado", "Hilux",
+    "Focus", "Mustang", "F-150", "Explorer",
+    "Civic", "Accord", "CR-V",
+    "Model S", "Model 3", "Model X", "Model Y"
+  ];
 
 
   var seatsController = TextEditingController(text: "5");
@@ -851,8 +840,8 @@ class CarInventoryController extends GetxController {
   final List<String> transmissions = ["Automatic", "Manual"];
   final List<String> fuelTypes = ["Petrol", "Diesel", "Hybrid", "Plug-in Hybrid", "Electric", "LPG"];
   final List<String> statuses = ["Available", "Maintenance", "Unavailable"];
-  final List<String> seatOptions = ["2", "4", "5", "7"];
-  final List<String> engineOptions = ["0.8", "1.0", "1.2", "1.5", "2.0"];
+  final List<String> seatOptions = ["2", "4", "5", "7","8","9","other"];
+  final List<String> engineOptions = ["0.8", "1.0", "1.2", "1.3", "1.4", "1.5", "1.6", "1.8", "2.0", "2.2", "2.4", "2.5", "2.7", "3.0", "3.5", "4.0", "4.5", "5.0", "other"];
   final List<String> colorOptions = ["White", "Black", "Silver", "Grey", "Red", "Blue", "Green", "Yellow", "Brown", "Gold", "Orange", "Purple", "Other"];
 
   List<String> getFilteredItems(String id) {
@@ -864,9 +853,7 @@ class CarInventoryController extends GetxController {
         break;
 
       case 'Model':
-        currentList = selectedBrand.value.isEmpty
-            ? []
-            : (brandModels[selectedBrand.value] ?? []);
+        currentList = allModels;
         break;
 
       case 'body':

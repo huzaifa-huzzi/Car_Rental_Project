@@ -699,10 +699,11 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
             controller: controller.activeNameController,
             style: TTextTheme.titleinputTextField(context),
             onChanged: (val) {
-              if (controller.isOwnerSigned.value)
+              if (controller.isOwnerSigned.value) {
                 controller.ownerNameError.value = "";
-              else
+              } else {
                 controller.hirerNameError.value = "";
+              }
             },
             decoration: InputDecoration(
               hintText: "Enter your name",

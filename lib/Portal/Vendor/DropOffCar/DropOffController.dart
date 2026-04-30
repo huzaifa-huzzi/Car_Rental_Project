@@ -197,7 +197,7 @@ class DropOffController extends GetxController{
   final String pickupLeftImg = ImageString.leftPickImage;
   final String pickupRightImg = ImageString.rightPickImage;
 
-  // Additional images ki list
+  // Additional Images
   final List<String> pickupAdditionalImagesDropOff = [
     ImageString.frontPickImage,
     ImageString.backPickImage,
@@ -529,33 +529,25 @@ class DropOffController extends GetxController{
   }
   var isStep2Submitted = false.obs;
 
-  // Controller ke andar ye function add karein
   bool validateStepTwoPhotos() {
     if (frontImage.value == null ||
         backImage.value == null ||
         leftImage.value == null ||
         rightImage.value == null) {
 
-      // Aapka pichla snackbar logic
       showError2("Mandatory images are missing. Please upload Front, Back, Left, and Right views.");
       return false;
     }
     return true;
   }
 
-// Damage Points check karne ke liye (agar aap chahte hain ke kam az kam points check hon)
-  // Controller ke andar ye variable aur function add karein
-
   bool validateDamageInspection() {
-    // Agar user ne "Yes" select kiya hai (Damage hai)
     if (isDamageInspectionOpen2.value) {
-      // Check karein ke points list khali to nahi
       if (damagePoints3.isEmpty) {
         showError2("Please mark the damage points on the car diagram or select 'No'.");
         return false;
       }
     }
-    // Agar "No" hai ya "Yes" ke saath points hain, to pass
     return true;
   }
 
@@ -615,10 +607,8 @@ class DropOffController extends GetxController{
     isConfirmed.value = false;
   }
 
-  // Updated Validation Logic
-  // Updated Validation Logic
   void confirmCurrentSignature() {
-    isStep3Submitted.value = true; // Button click par validation active karein
+    isStep3Submitted.value = true;
 
     bool isNameValid = activeNameController.text.trim().isNotEmpty;
     bool isSigNotEmpty = activeSigController.isNotEmpty;
@@ -628,16 +618,15 @@ class DropOffController extends GetxController{
       Get.snackbar("Success", "Signature confirmed!", backgroundColor: Colors.green, colorText: Colors.white);
     } else {
       String error = "";
-      if (!isNameValid) error = "Name is required.";
-      else if (!isSigNotEmpty) error = "Please draw your signature.";
+      if (!isNameValid) {
+        error = "Name is required.";
+      } else if (!isSigNotEmpty) error = "Please draw your signature.";
 
-      Get.snackbar("Required", error, snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
+      Get.snackbar("Required", error, snackPosition: SnackPosition.BOTTOM, backgroundColor: AppColors.primaryColor, colorText: Colors.white);
     }
   }
 
-
-  // Controller mein ye lines add karein
-  final isStep3Submitted = false.obs; // Validation trigger karne ke liye
+  final isStep3Submitted = false.obs;
 
   final dropOffOwnerEmailController = TextEditingController();
   final dropOffHirerEmailController = TextEditingController();

@@ -358,6 +358,7 @@ class CustomerController extends GetxController {
   RxString selectedFlag = "🇦🇺".obs;
   var selectedCountryName = "Australia".obs;
   final phoneController = TextEditingController();
+  final ageController = TextEditingController();
   final searchController = TextEditingController();
 
 
@@ -553,7 +554,6 @@ class CustomerController extends GetxController {
     ccCvcController2.dispose();
     ccCountryController2.dispose();
 
-    // Dynamic Document Controllers (Edit Screen)
     for (var controller in documentNameControllers2) {
       controller.dispose();
     }
