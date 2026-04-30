@@ -60,18 +60,6 @@ class AddCustomerWidget extends StatelessWidget {
                     crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
                     children: [
                       _buildProfilePhotoPicker(context),
-                      Obx(() {
-                        if (controller.imageError.value) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 8),
-                            child: Text(
-                              "Photo is required",
-                              style: TTextTheme.ErrorStyle(context),
-                            ),
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      }),
                     ],
                   ),
                 ),
