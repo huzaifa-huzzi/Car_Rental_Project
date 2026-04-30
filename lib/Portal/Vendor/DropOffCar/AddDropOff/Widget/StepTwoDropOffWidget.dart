@@ -22,10 +22,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isMobile = MediaQuery
-        .of(context)
-        .size
-        .width < 700;
+    final bool isMobile = MediaQuery.of(context).size.width < 700;
     final isWeb = AppSizes.isWeb(context);
 
     return Scaffold(
@@ -59,18 +56,28 @@ class StepTwoDropOffWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(TextString.titleViewPickStepTwoDropOffAdd2, style:TTextTheme.h6Style(context), overflow: TextOverflow.ellipsis, maxLines: 1,),
+                      Text(
+                        TextString.titleViewPickStepTwoDropOffAdd2,
+                        style: TTextTheme.h6Style(context),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
                       const SizedBox(height: 6),
-                      Text(TextString.titleViewSubtitleStepTwoDropOffAdd3, style: TTextTheme.titleThree(context), overflow: TextOverflow.ellipsis, maxLines: 1,
+                      Text(
+                        TextString.titleViewSubtitleStepTwoDropOffAdd3,
+                        style: TTextTheme.titleThree(context),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
                       const SizedBox(height: 15),
+
                       // Step Badges
                       _buildStepBadges(context),
                       const SizedBox(height: 35),
-                      // Damage Inspection Card
+
                       _buildDamageInspectionComparison(context, isMobile),
+
                       const SizedBox(height: 45),
-                      // Upload Pictures Section
                       _buildUploadPictureCard(context, isMobile),
                     ],
                   ),
@@ -81,6 +88,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: _buttonSection(context, isMobile),
             ),
+
             const SizedBox(height: 40),
           ],
         ),
@@ -160,8 +168,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
   // Damage Inspection
   Widget _buildDamageInspectionComparison(BuildContext context, bool isMobile) {
     return LayoutBuilder(builder: (context, constraints) {
-      double columnWidth = isMobile ? constraints.maxWidth : (constraints
-          .maxWidth - 40) / 2;
+      double columnWidth = isMobile ? constraints.maxWidth : (constraints.maxWidth - 40) / 2;
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,12 +204,14 @@ class StepTwoDropOffWidget extends StatelessWidget {
             spacing: 20,
             runSpacing: 20,
             children: [
+              /// 1. PICKUP VIEW
               SizedBox(
                 width: columnWidth,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(TextString.titleDamageInspectionStepTwoDropOffPickup, style: TTextTheme.titleSix(context)),
+                    Text(TextString.titleDamageInspectionStepTwoDropOffPickup,
+                        style: TTextTheme.titleSix(context)),
                     const SizedBox(height: 10),
                     _buildLegendBox(context, isInteractive: false),
                     const SizedBox(height: 20),
@@ -210,26 +219,63 @@ class StepTwoDropOffWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                width: columnWidth,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppColors.backgroundOfPickupsWidget,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(TextString.titleDamageInspectionStepTwoDropOff2,
-                        style: TTextTheme.titleSix(context).copyWith(
-                            fontSize: 14)),
-                    const SizedBox(height: 10),
-                    _buildLegendBox(context, isInteractive: true),
-                    const SizedBox(height: 20),
-                    _buildInteractiveCarDiagram(context, columnWidth - 24),
-                  ],
-                ),
-              ),
+
+              /// 2. DROPOFF VIEW
+              Obx(() {
+                bool hasError = controller.isStep2Submitted.value &&
+                    controller.damagePoints3.isEmpty;
+
+                return Container(
+                  width: columnWidth,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.backgroundOfPickupsWidget,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: hasError ? AppColors.primaryColor : Colors.transparent,
+                      width: hasError ? 2 : 0,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            TextString.titleDamageInspectionStepTwoDropOff2,
+                            style: TTextTheme.titleSix(context).copyWith(fontSize: 14),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      _buildLegendBox(context, isInteractive: true),
+                      const SizedBox(height: 20),
+                      _buildInteractiveCarDiagram(context, columnWidth - 24),
+
+
+                      if (hasError)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 12.0),
+                          child: Row(
+                            children: [
+                               Icon(Icons.error_outline, color: AppColors.primaryColor, size: 16),
+                              const SizedBox(width: 6),
+                              Expanded(
+                                child: Text(
+                                  controller.isDamageInspectionOpen2.value
+                                      ? "* Please mark the damage points on the car."
+                                      : "* Please switch to 'Yes' and mark damages if any, or confirm inspection.",
+                                  style: TTextTheme.ErrorStyle(context)
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                );
+              }),
             ],
           ),
         ],
@@ -516,12 +562,18 @@ class StepTwoDropOffWidget extends StatelessWidget {
       ImageHolder? image;
       if (type == 'front') {
         image = controller.frontImage.value;
-      } else if (type == 'back') image = controller.backImage.value;
-      else if (type == 'left') image = controller.leftImage.value;
-      else if (type == 'right') image = controller.rightImage.value;
+      } else if (type == 'back') {
+        image = controller.backImage.value;
+      } else if (type == 'left') {
+        image = controller.leftImage.value;
+      } else if (type == 'right') {
+        image = controller.rightImage.value;
+      }
 
       bool hasImage = image != null;
       bool isHovered = controller.hoverStates[type] ?? false;
+      bool isMandatory = ['front', 'back', 'left', 'right'].contains(type);
+      bool showError = controller.isStep2Submitted.value && isMandatory && !hasImage;
 
       return MouseRegion(
         onEnter: (_) => controller.hoverStates[type] = true,
@@ -541,14 +593,28 @@ class StepTwoDropOffWidget extends StatelessWidget {
             decoration: BoxDecoration(
                 color: AppColors.backgroundOfPickupsWidget,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.7))
+                border: Border.all(
+                  color: showError
+                      ? AppColors.primaryColor
+                      : AppColors.tertiaryTextColor.withOpacity(0.7),
+                  width: showError ? 2 : 1,
+                )
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(IconString.returnCarIcon, height: 18, color: AppColors.primaryColor),
-                const SizedBox(height: 3),
-                Text(label, style: TTextTheme.CalendarTitle(context)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset(IconString.returnCarIcon, height: 18, color: AppColors.primaryColor),
+                        const SizedBox(width: 8),
+                        Text(label, style: TTextTheme.CalendarTitle(context)),
+                      ],
+                    ),
+                  ],
+                ),
 
                 Expanded(
                   child: hasImage
@@ -594,11 +660,21 @@ class StepTwoDropOffWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const SizedBox(width: double.infinity),
-                      Image.asset(iconPath, height: 60, fit: BoxFit.contain),
+                      Image.asset(
+                        iconPath,
+                        height: 60,
+                        fit: BoxFit.contain,
+                        color: showError ? AppColors.primaryColor : null,
+                      ),
                       const SizedBox(height: 12),
                       FittedBox(
                         fit: BoxFit.scaleDown,
-                        child: Text(TextString.clickToUpload, style: TTextTheme.UploadText(context)),
+                        child: Text(
+                            TextString.clickToUpload,
+                            style: TTextTheme.UploadText(context).copyWith(
+                                color: showError ? AppColors.primaryColor : null
+                            )
+                        ),
                       ),
                       const SizedBox(height: 4),
                       FittedBox(
@@ -1046,6 +1122,37 @@ class StepTwoDropOffWidget extends StatelessWidget {
     const double webButtonHeight = 45.0;
     final double spacing = AppSizes.padding(context);
 
+    void handleContinue() {
+      controller.isStep2Submitted.value = true;
+      bool isPhotosValid = controller.frontImage.value != null &&
+          controller.backImage.value != null &&
+          controller.leftImage.value != null &&
+          controller.rightImage.value != null;
+      bool isDamageValid = true;
+      if (controller.isDamageInspectionOpen2.value && controller.damagePoints3.isEmpty) {
+        isDamageValid = false;
+      }
+      if (isPhotosValid && isDamageValid) {
+        context.push('/stepThreeDropOff', extra: {"hideMobileAppBar": true});
+      } else {
+        String errorMsg = "";
+        if (!isPhotosValid) {
+          errorMsg = "Please upload all mandatory car photos.";
+        } else if (!isDamageValid) {
+          errorMsg = "Please mark the damage points on the car diagram.";
+        }
+
+        Get.snackbar(
+          "Validation Required",
+          errorMsg,
+          backgroundColor: AppColors.primaryColor,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.all(15),
+        );
+      }
+    }
+
     if (isMobile) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1057,21 +1164,16 @@ class StepTwoDropOffWidget extends StatelessWidget {
               backgroundColor: Colors.transparent,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
-              onTap: () {},
+              onTap: () => context.pop(),
             ),
           ),
           SizedBox(height: spacing),
           SizedBox(
-            width: webButtonWidth,
             height: webButtonHeight,
             child: PrimaryBthDropOff(
               text: "Continue",
-              icon: Image.asset(
-                IconString.continueIcon,
-              ),
-              onTap: () {
-                context.push('/stepThreeDropOff', extra: {"hideMobileAppBar": true});
-              },
+              icon: Image.asset(IconString.continueIcon),
+              onTap: handleContinue,
             ),
           ),
         ],
@@ -1079,7 +1181,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
     } else {
       return Row(
         children: [
-          Spacer(),
+          const Spacer(),
           SizedBox(
             width: webButtonWidth,
             height: webButtonHeight,
@@ -1088,7 +1190,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
               backgroundColor: Colors.transparent,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
-              onTap: () {},
+              onTap: () => context.pop(),
             ),
           ),
           SizedBox(width: spacing),
@@ -1097,15 +1199,10 @@ class StepTwoDropOffWidget extends StatelessWidget {
             height: webButtonHeight,
             child: PrimaryBthDropOff(
               text: "Continue",
-              icon: Image.asset(
-                IconString.continueIcon,
-              ),
-              onTap: () {
-                context.push('/stepThreeDropOff', extra: {"hideMobileAppBar": true});
-              },
+              icon: Image.asset(IconString.continueIcon),
+              onTap: handleContinue,
             ),
           ),
-
         ],
       );
     }

@@ -209,7 +209,7 @@ class DropOffController extends GetxController{
 
 
 
-  /// Add Pickup Car
+  /// Add Dropoff Car
   final TextEditingController searchController = TextEditingController();
   final RxString searchQuery = "".obs;
   var isDamageInspectionOpen2 = false.obs;
@@ -414,6 +414,53 @@ class DropOffController extends GetxController{
   final endTimeControllerStepTwoAdd  = TextEditingController();
   final ownerNameControllerAdd = TextEditingController(text: "Softsnip");
   final hirerNameControllerAdd = TextEditingController(text: "Softsnip");
+  final dropOffFormKey = GlobalKey<FormState>();
+
+  var dropOffError = "".obs;
+
+  bool validateDropOffStep1() {
+    dropOffError.value = "";
+
+    if (endDateControllerStepTwoAdd.text.trim().isEmpty ||
+        endTimeControllerStepTwoAdd.text.trim().isEmpty) {
+      showError("Please select Drop-off Date and Time");
+      return false;
+    }
+    if (dueBondReturnedControllerStepTwoAdd.text.trim().isEmpty) {
+      showError("Bond Returned amount is required");
+      return false;
+    }
+    return true;
+  }
+
+  bool validateDropOffStep2() {
+    dropOffError.value = "";
+    if (odoControllerDropOffAdd.text.trim().isEmpty) {
+      showError("Odometer reading is required");
+      return false;
+    }
+
+    if (fuelLevelControllerDropOffAdd.text.trim().isEmpty) {
+      showError("Fuel level is required");
+      return false;
+    }
+
+    return true;
+  }
+
+  void showError(String msg) {
+    dropOffError.value = msg;
+    Get.snackbar(
+      "Required Info",
+      msg,
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: AppColors.primaryColor,
+      colorText: Colors.white,
+      icon: const Icon(Icons.warning_amber_rounded, color: Colors.white),
+    );
+  }
+
+
 
   var selectedDamageType3 = 1.obs;
   var damagePoints3 = <DamagePoint>[].obs;
@@ -480,6 +527,50 @@ class DropOffController extends GetxController{
       else if (type == 'right') rightImage.value = null;
     }
   }
+  var isStep2Submitted = false.obs;
+
+  // Controller ke andar ye function add karein
+  bool validateStepTwoPhotos() {
+    if (frontImage.value == null ||
+        backImage.value == null ||
+        leftImage.value == null ||
+        rightImage.value == null) {
+
+      // Aapka pichla snackbar logic
+      showError2("Mandatory images are missing. Please upload Front, Back, Left, and Right views.");
+      return false;
+    }
+    return true;
+  }
+
+// Damage Points check karne ke liye (agar aap chahte hain ke kam az kam points check hon)
+  // Controller ke andar ye variable aur function add karein
+
+  bool validateDamageInspection() {
+    // Agar user ne "Yes" select kiya hai (Damage hai)
+    if (isDamageInspectionOpen2.value) {
+      // Check karein ke points list khali to nahi
+      if (damagePoints3.isEmpty) {
+        showError2("Please mark the damage points on the car diagram or select 'No'.");
+        return false;
+      }
+    }
+    // Agar "No" hai ya "Yes" ke saath points hain, to pass
+    return true;
+  }
+
+  void showError2(String msg) {
+    dropOffError.value = msg;
+    Get.snackbar(
+      "Required Info",
+      msg,
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: AppColors.primaryColor,
+      colorText: Colors.white,
+      icon: const Icon(Icons.warning_amber_rounded, color: Colors.white),
+    );
+  }
+
 
   /// Step Three Widget
   final isTermsAgreed = false.obs;
@@ -524,21 +615,41 @@ class DropOffController extends GetxController{
     isConfirmed.value = false;
   }
 
+  // Updated Validation Logic
+  // Updated Validation Logic
   void confirmCurrentSignature() {
-    if (activeNameController.text.trim().isNotEmpty) {
+    isStep3Submitted.value = true; // Button click par validation active karein
+
+    bool isNameValid = activeNameController.text.trim().isNotEmpty;
+    bool isSigNotEmpty = activeSigController.isNotEmpty;
+
+    if (isNameValid  && isSigNotEmpty) {
       isConfirmed.value = true;
+      Get.snackbar("Success", "Signature confirmed!", backgroundColor: Colors.green, colorText: Colors.white);
     } else {
-      Get.snackbar(
-          "Required",
-          "Please enter name before confirming",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white
-      );
+      String error = "";
+      if (!isNameValid) error = "Name is required.";
+      else if (!isSigNotEmpty) error = "Please draw your signature.";
+
+      Get.snackbar("Required", error, snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
 
 
+  // Controller mein ye lines add karein
+  final isStep3Submitted = false.obs; // Validation trigger karne ke liye
+
+  final dropOffOwnerEmailController = TextEditingController();
+  final dropOffHirerEmailController = TextEditingController();
+
+  TextEditingController get activeEmailController => isOwnerSigned.value
+      ? dropOffOwnerEmailController
+      : dropOffHirerEmailController;
+
+
+
+
+   /// Sorting
   var sortColumn = "".obs;
   var sortOrder = 0.obs;
 

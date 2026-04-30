@@ -1,6 +1,7 @@
 import 'package:car_rental_project/Portal/Vendor/DropOffCar/DropOffController.dart';
+import 'package:car_rental_project/Portal/Vendor/DropOffCar/ReusableWidgetOfDropoff/CustomButtonDropOff.dart';
+import 'package:car_rental_project/Portal/Vendor/DropOffCar/ReusableWidgetOfDropoff/PrimaryBtnDropOff.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/ReusableWidgetOfPickup/AddButtonOfPickup.dart';
-import 'package:car_rental_project/Portal/Vendor/PickupCar/ReusableWidgetOfPickup/AddPickupButton.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/ReusableWidgetOfPickup/HeaderWebPickupWidget.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
@@ -63,13 +64,11 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Header title
                           Text(TextString.titleViewPickStepTwoDropOffAdd2, style: TTextTheme.h6Style(context)),
                           const SizedBox(height: 6),
                           Text(TextString.titleViewSubtitleStepTwoDropOffAdd3,
                               style: TTextTheme.titleThree(context)),
                           const SizedBox(height: 7),
-                          // Step Badges
                           _buildStepBadges(context),
                           const SizedBox(height: 15),
 
@@ -184,12 +183,12 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
                 : const SizedBox.shrink()
             ),
 
-            /// Buttons
+            // Buttons
             Padding(
               padding: EdgeInsets.only(
                 right: 20,
                 left: isMobile ? 20 : 0,),
-              child: _buttonSection(context, isMobile),
+              child: _buttonSection(context, isMobile,controller),
             ),
             const SizedBox(height: 20),
           ],
@@ -648,6 +647,9 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
     return Obx(() {
       final isDrawing = controller.isDrawingStarted.value;
       final isConfirmed = controller.isConfirmed.value;
+      final isSubmitted = controller.isStep3Submitted.value;
+      bool nameError = isSubmitted && controller.activeNameController.text.trim().isEmpty;
+      bool sigError = isSubmitted && controller.activeSigController.isEmpty && !isConfirmed;
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -668,11 +670,11 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
               hintStyle: TTextTheme.titleName(context),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: AppColors.quadrantalTextColor),
+                borderSide: BorderSide(color: nameError ? AppColors.primaryColor : AppColors.quadrantalTextColor),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color : AppColors.quadrantalTextColor, width: 1),
+                borderSide: BorderSide(color : nameError ? AppColors.primaryColor : AppColors.quadrantalTextColor, width: 1.5),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -680,56 +682,56 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
               ),
             ),
           ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  bool useColumn = constraints.maxWidth < 280;
+          Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                bool useColumn = constraints.maxWidth < 280;
 
-                  return Flex(
-                    direction: useColumn ? Axis.vertical : Axis.horizontal,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      OutlinedButton(
-                        onPressed: () => controller.clearSignature(),
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: AppColors.quadrantalTextColor, width: 1.5),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                return Flex(
+                  direction: useColumn ? Axis.vertical : Axis.horizontal,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    OutlinedButton(
+                      onPressed: () => controller.clearSignature(),
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: AppColors.quadrantalTextColor, width: 1.5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Text(
-                          "Clear",
-                          style: TTextTheme.titleClear(context),
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      ),
+                      child: Text(
+                        "Clear",
+                        style: TTextTheme.titleClear(context),
+                      ),
+                    ),
+                    useColumn
+                        ? const SizedBox(height: 10)
+                        : const SizedBox(width: 10),
+
+                    ElevatedButton(
+                      onPressed: () => controller.confirmCurrentSignature(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.textColor,
+                        minimumSize: const Size(120, 45),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      useColumn
-                          ? const SizedBox(height: 10)
-                          : const SizedBox(width: 10),
-
-                      ElevatedButton(
-                        onPressed: () => controller.confirmCurrentSignature(),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.textColor,
-                          minimumSize: const Size(120, 45),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: const Text(
-                          "Confirm",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      child: const Text(
+                        "Confirm",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ],
-                  );
-                },
-              ),
+                    ),
+                  ],
+                );
+              },
             ),
+          ),
 
           const SizedBox(height: 20),
           Builder(
@@ -739,7 +741,8 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
                 borderType: BorderType.RRect,
                 radius: const Radius.circular(12),
                 dashPattern: const [6, 3],
-                color: AppColors.primaryColor,
+                color: sigError ? AppColors.primaryColor : AppColors.primaryColor,
+                strokeWidth: sigError ? 2 : 1,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Container(
@@ -796,6 +799,11 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
               );
             },
           ),
+          if (sigError)
+             Padding(
+              padding: EdgeInsets.only(top: 8),
+              child: Text("* Signature is required", style: TTextTheme.ErrorStyle(context)),
+            ),
         ],
       );
     });
@@ -1035,10 +1043,20 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
 
 
   // Button Sections
-  Widget _buttonSection(BuildContext context, bool isMobile) {
-    const double webButtonWidth = 130.0;
+  Widget _buttonSection(BuildContext context, bool isMobile, DropOffController controller) {
+    const double webButtonWidth = 150.0;
     const double webButtonHeight = 45.0;
-    final double spacing = AppSizes.padding(context);
+
+    void onFinishPressed() {
+      if (!controller.isConfirmed.value) {
+        controller.isStep3Submitted.value = true;
+        showSavingDialog(context);
+
+        Get.snackbar("Required", "Please enter name and confirm your signature",
+            backgroundColor: AppColors.primaryColor, colorText: Colors.white);
+        return;
+      }
+    }
 
     if (isMobile) {
       return Column(
@@ -1046,56 +1064,44 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
         children: [
           SizedBox(
             height: webButtonHeight,
-            child: AddPickUpButton(
-              text: 'Cancel',
+            child: CustomButtonDropOff(
+              text: 'Back',
               backgroundColor: Colors.transparent,
-              textColor: AppColors.textColor,
-              borderColor: AppColors.quadrantalTextColor,
-              onTap: () {
-              },
+              onTap: () => context.pop(),
             ),
           ),
-          SizedBox(height: spacing),
+          const SizedBox(height: 10),
           SizedBox(
-            width: webButtonWidth,
             height: webButtonHeight,
-            child: AddButtonOfPickup(
-                text: "Confirm",
-                onTap: () async {
-                  showSavingDialog(context);
-                }
+            child: PrimaryBthDropOff(
+              text: "Done",
+              onTap: onFinishPressed,
             ),
           ),
         ],
       );
     } else {
       return Row(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Spacer(),
           SizedBox(
             width: webButtonWidth,
             height: webButtonHeight,
-            child: AddPickUpButton(
-              text: 'Cancel',
+            child: CustomButtonDropOff(
+              text: 'Back',
               backgroundColor: Colors.transparent,
-              textColor: AppColors.textColor,
-              borderColor: AppColors.quadrantalTextColor,
-              onTap: () {
-              },
+              onTap: () => context.pop(),
             ),
           ),
-          SizedBox(width: spacing),
+          const SizedBox(width: 15),
           SizedBox(
             width: webButtonWidth,
             height: webButtonHeight,
-            child: AddButtonOfPickup(
-                text: "Confirm",
-                onTap: () async{
-                  showSavingDialog(context);
-                }
+            child: PrimaryBthDropOff(
+              text: "Done",
+              onTap: onFinishPressed,
             ),
           ),
-
         ],
       );
     }
