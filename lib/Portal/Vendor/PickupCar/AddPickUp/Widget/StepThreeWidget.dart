@@ -63,79 +63,71 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Header title
-                          Text(TextString.titleViewPickStepTwo, style: TTextTheme.h6Style(context)),
+                          Text(
+                              TextString.titleViewPickStepTwo, style: TTextTheme
+                              .h6Style(context)),
                           const SizedBox(height: 6),
                           Text(TextString.titleViewSubtitleStepTwo,
                               style: TTextTheme.titleThree(context)),
                           const SizedBox(height: 7),
+
                           // Step Badges
                           _buildStepBadges(context),
                           const SizedBox(height: 15),
 
                           _buildVersionHeader(context),
                           const SizedBox(height: 15),
-                          // Terms Content
+
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: _buildTermsAndConditions(context),
                           ),
                           const SizedBox(height: 40),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: _buildAcceptanceOfTerm(context),
-                          ),
-                          const SizedBox(height: 20),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: _buildEligibility(context),
-                          ),
-                          const SizedBox(height: 20),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: _buildAccountRegistration(context),
-                          ),
-                          const SizedBox(height: 20),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: _buildBookingTerms(context),
-                          ),
-                          const SizedBox(height: 20),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: _buildPaymentTerms(context),
-                          ),
-                          const SizedBox(height: 20),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: _buildSecurityDeposit(context),
-                          ),
-                          const SizedBox(height: 20),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: _buildVehicleRestrictions(context),
-                          ),
-                          const SizedBox(height: 20),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: _buildInsuranceLiability(context),
-                          ),
-                          const SizedBox(height: 20),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: _buildCancellationsRefunds(context),
-                          ),
-                          const SizedBox(height: 20),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: _buildPrivacyPolicy(context),
-                          ),
-                          const SizedBox(height: 20),
-                          Padding(padding: const EdgeInsets.symmetric(horizontal: 20), child: _buildIntellectualProperty(context)),
-                          const SizedBox(height: 20),
-                          Padding(padding: const EdgeInsets.symmetric(horizontal: 20), child: _buildGoverningLaw(context)),
+
+                          // All Terms Sections
+                          ...[
+                            _buildAcceptanceOfTerm(context),
+                            _buildEligibility(context),
+                            _buildAccountRegistration(context),
+                            _buildBookingTerms(context),
+                            _buildPaymentTerms(context),
+                            _buildSecurityDeposit(context),
+                            _buildVehicleRestrictions(context),
+                            _buildInsuranceLiability(context),
+                            _buildCancellationsRefunds(context),
+                            _buildPrivacyPolicy(context),
+                            _buildIntellectualProperty(context),
+                            _buildGoverningLaw(context),
+                          ].map((widget) =>
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                child: widget,
+                              )),
+
                           const SizedBox(height: 25),
-                          Padding(padding: const EdgeInsets.symmetric(horizontal: 10), child: _buildAgreementCheckbox(context, controller)),
+                          Obx(() {
+                            bool hasError = controller.isTermsAgreed.value ==
+                                false &&
+                                controller.errorMessageStep2.value ==
+                                    "Please agree to terms";
+
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: hasError
+                                      ? AppColors.primaryColor
+                                      : Colors.transparent,
+                                  width: 1,
+                                ),
+                              ),
+                              child: _buildAgreementCheckbox(
+                                  context, controller),
+                            );
+                          }),
                         ],
                       ),
                     ),
@@ -143,30 +135,32 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
                 ),
               ),
             ),
+
             const SizedBox(height: 10),
 
-            // Signature Section
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: (controller.signatureError.value.isNotEmpty)
+                        ? AppColors.primaryColor
+                        : Colors.transparent,
+                    width: 1,
+                  ),
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(padding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildSignatureSection(context, controller),
-                    ],
-                  ),
+                  child: _buildSignatureSection(context, controller),
                 ),
               ),
             ),
 
             // Preview Signature Section
-            Obx(() => controller.isConfirmed.value
+            Obx(() =>
+            controller.isConfirmed.value
                 ? Padding(
               padding: const EdgeInsets.all(20),
               child: Container(
@@ -183,21 +177,23 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
                 : const SizedBox.shrink()
             ),
 
-            /// Buttons
+            const SizedBox(height: 10),
             Padding(
               padding: EdgeInsets.only(
                 right: 20,
-                left: isMobile ? 20 : 0,),
+                left: isMobile ? 20 : 0,
+              ),
               child: _buttonSection(context, isMobile),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
           ],
         ),
       ),
     );
   }
-   /// ----------- Extra Widget ---------- ///
-   // Badges
+
+  /// ----------- Extra Widget ---------- ///
+  // Badges
   Widget _buildStepBadges(BuildContext context) {
     return Container(
       width: 280,
@@ -206,16 +202,18 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildStepItem("1", "Step 1", false, context,isCurrent: true),
+          _buildStepItem("1", "Step 1", false, context, isCurrent: true),
           _buildStepLine(true),
-          _buildStepItem("2", "Step 2", false, context,isCurrent: true),
+          _buildStepItem("2", "Step 2", false, context, isCurrent: true),
           _buildStepLine(true),
           _buildStepItem("3", "Step 3", true, context),
         ],
       ),
     );
   }
-  Widget _buildStepItem(String stepNum, String label, bool isCompleted, BuildContext context, {bool isCurrent = false}) {
+
+  Widget _buildStepItem(String stepNum, String label, bool isCompleted,
+      BuildContext context, {bool isCurrent = false}) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -252,6 +250,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       ],
     );
   }
+
   Widget _buildStepLine(bool isActive) {
     return Expanded(
       child: Padding(
@@ -293,18 +292,20 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
+        border: Border.all(
+            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             TextString.acceptanceOfTerms,
-            style: TTextTheme.hPickupStyle(context).copyWith(color: AppColors.primaryColor),
+            style: TTextTheme.hPickupStyle(context).copyWith(
+                color: AppColors.primaryColor),
           ),
           const SizedBox(height: 10),
           Text(
-           TextString.acceptanceSubtitle,
+            TextString.acceptanceSubtitle,
             style: TTextTheme.titleThree(context).copyWith(height: 1.5),
           ),
         ],
@@ -321,7 +322,8 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
+        border: Border.all(
+            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -333,15 +335,16 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
           const SizedBox(height: 12),
           _buildEligibilityItem(context, TextString.eligibilityTitle1),
           _buildEligibilityItem(context, TextString.eligibilityTitle2),
-          _buildEligibilityItem(context,TextString.eligibilityTitle3 ),
-          _buildEligibilityItem(context,TextString.eligibilityTitle4 ),
-          _buildEligibilityItem(context,TextString.eligibilityTitle5),
+          _buildEligibilityItem(context, TextString.eligibilityTitle3),
+          _buildEligibilityItem(context, TextString.eligibilityTitle4),
+          _buildEligibilityItem(context, TextString.eligibilityTitle5),
           _buildEligibilityItem(context, TextString.eligibilityTitle6),
-          _buildEligibilityItem(context,TextString.eligibilityTitle7 ),
+          _buildEligibilityItem(context, TextString.eligibilityTitle7),
         ],
       ),
     );
   }
+
   Widget _buildEligibilityItem(BuildContext context, String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
@@ -360,24 +363,26 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
+        border: Border.all(
+            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-           TextString.accounting,
+            TextString.accounting,
             style: TTextTheme.hPickupStyle(context),
           ),
           const SizedBox(height: 12),
-          _buildBulletItem(context,TextString.accounting1 ),
+          _buildBulletItem(context, TextString.accounting1),
           _buildBulletItem(context, TextString.accounting2),
-          _buildBulletItem(context,TextString.accounting3),
+          _buildBulletItem(context, TextString.accounting3),
         ],
       ),
     );
   }
-   // Booking Items
+
+  // Booking Items
   Widget _buildBookingTerms(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -385,24 +390,26 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
+        border: Border.all(
+            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-           TextString.booking,
+            TextString.booking,
             style: TTextTheme.hPickupStyle(context),
           ),
           const SizedBox(height: 12),
           _buildBulletItem(context, TextString.booking1),
           _buildBulletItem(context, TextString.booking2),
           _buildBulletItem(context, TextString.booking3),
-          _buildBulletItem(context,TextString.booking4),
+          _buildBulletItem(context, TextString.booking4),
         ],
       ),
     );
   }
+
   Widget _buildBulletItem(BuildContext context, String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
@@ -421,7 +428,8 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
+        border: Border.all(
+            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -434,15 +442,24 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
           const SizedBox(height: 8),
           Text(TextString.payment3, style: TTextTheme.titleThree(context)),
           const SizedBox(height: 10),
-          ...["Late return", "Fuel refill", "Toll fees", "Traffic violations", "Cleaning fees", "Damage repair"]
-              .map((item) => Padding(
-            padding: const EdgeInsets.only(left: 10, bottom: 4),
-            child: Text("• $item", style: TTextTheme.titleThree(context)),
-          )),
+          ...[
+            "Late return",
+            "Fuel refill",
+            "Toll fees",
+            "Traffic violations",
+            "Cleaning fees",
+            "Damage repair"
+          ]
+              .map((item) =>
+              Padding(
+                padding: const EdgeInsets.only(left: 10, bottom: 4),
+                child: Text("• $item", style: TTextTheme.titleThree(context)),
+              )),
         ],
       ),
     );
   }
+
   // Security Deposit
   Widget _buildSecurityDeposit(BuildContext context) {
     return Container(
@@ -451,20 +468,22 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
+        border: Border.all(
+            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(TextString.security, style: TTextTheme.hPickupStyle(context)),
           const SizedBox(height: 12),
-          _buildBulletItem(context,TextString.security1),
-          _buildBulletItem(context,TextString.security2),
-          _buildBulletItem(context,TextString.security3 ),
+          _buildBulletItem(context, TextString.security1),
+          _buildBulletItem(context, TextString.security2),
+          _buildBulletItem(context, TextString.security3),
         ],
       ),
     );
   }
+
   // Vehicles Restriction
   Widget _buildVehicleRestrictions(BuildContext context) {
     return Container(
@@ -473,14 +492,15 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
+        border: Border.all(
+            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(TextString.vehicle, style: TTextTheme.hPickupStyle(context)),
           const SizedBox(height: 12),
-          _buildBulletItem(context,TextString.vehicle1),
+          _buildBulletItem(context, TextString.vehicle1),
           _buildBulletItem(context, TextString.vehicle2),
           _buildBulletItem(context, TextString.vehicle3),
           _buildBulletItem(context, TextString.vehicle4),
@@ -498,7 +518,8 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
+        border: Border.all(
+            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -508,14 +529,15 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
             style: TTextTheme.hPickupStyle(context),
           ),
           const SizedBox(height: 12),
-          _buildBulletItem(context,TextString.insurance1 ),
+          _buildBulletItem(context, TextString.insurance1),
           _buildBulletItem(context, TextString.insurance2),
           _buildBulletItem(context, TextString.insurance3),
         ],
       ),
     );
   }
-   // Cancellation Returns
+
+  // Cancellation Returns
   Widget _buildCancellationsRefunds(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -523,7 +545,8 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
+        border: Border.all(
+            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -534,13 +557,14 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
           ),
           const SizedBox(height: 12),
           _buildBulletItem(context, TextString.cancellation1),
-          _buildBulletItem(context,TextString.cancellation2),
+          _buildBulletItem(context, TextString.cancellation2),
           _buildBulletItem(context, TextString.cancellation3),
         ],
       ),
     );
   }
-   // Build privacy policy
+
+  // Build privacy policy
   Widget _buildPrivacyPolicy(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -548,7 +572,8 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
+        border: Border.all(
+            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -566,6 +591,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       ),
     );
   }
+
   // Intellectual property
   Widget _buildIntellectualProperty(BuildContext context) {
     return Container(
@@ -574,7 +600,8 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
+        border: Border.all(
+            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -585,13 +612,14 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
           ),
           const SizedBox(height: 12),
           Text(
-           TextString.intellactual1,
+            TextString.intellactual1,
             style: TTextTheme.titleThree(context).copyWith(height: 1.5),
           ),
         ],
       ),
     );
   }
+
   // Governing Law
   Widget _buildGoverningLaw(BuildContext context) {
     return Container(
@@ -600,7 +628,8 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
+        border: Border.all(
+            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -622,31 +651,38 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       ),
     );
   }
+
   // Agreement checkBox
-  Widget _buildAgreementCheckbox(BuildContext context,PickupCarController controller) {
-    return Obx(() => Row(
-      children: [
-        Checkbox(
-          value: controller.isTermsAgreed.value,
-          onChanged: (value) => controller.isTermsAgreed.value = value!,
-          activeColor: AppColors.primaryColor,
-          side: const BorderSide(color: AppColors.primaryColor, width: 1.5),
-        ),
-        Expanded(
-          child: Text(
-           TextString.agreementText,
-            style: TTextTheme.titleSmallRegister(context),
-          ),
-        ),
-      ],
-    ));
+  Widget _buildAgreementCheckbox(BuildContext context,
+      PickupCarController controller) {
+    return Obx(() =>
+        Row(
+          children: [
+            Checkbox(
+              value: controller.isTermsAgreed.value,
+              onChanged: (value) => controller.isTermsAgreed.value = value!,
+              activeColor: AppColors.primaryColor,
+              side: const BorderSide(color: AppColors.primaryColor, width: 1.5),
+            ),
+            Expanded(
+              child: Text(
+                TextString.agreementText,
+                style: TTextTheme.titleSmallRegister(context),
+              ),
+            ),
+          ],
+        ));
   }
 
   // Signature
-  Widget _buildSignatureSection(BuildContext context, PickupCarController controller) {
+  Widget _buildSignatureSection(BuildContext context,
+      PickupCarController controller) {
     return Obx(() {
       final isDrawing = controller.isDrawingStarted.value;
       final isConfirmed = controller.isConfirmed.value;
+      final String currentError = controller.isOwnerSigned.value
+          ? controller.ownerNameError.value
+          : controller.hirerNameError.value;
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -662,83 +698,94 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
             cursorColor: AppColors.blackColor,
             controller: controller.activeNameController,
             style: TTextTheme.titleinputTextField(context),
+            onChanged: (val) {
+              if (controller.isOwnerSigned.value)
+                controller.ownerNameError.value = "";
+              else
+                controller.hirerNameError.value = "";
+            },
             decoration: InputDecoration(
               hintText: "Enter your name",
               hintStyle: TTextTheme.titleName(context),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: AppColors.quadrantalTextColor),
+                borderSide: BorderSide(
+                  color: currentError.isNotEmpty
+                      ? AppColors.primaryColor
+                      : AppColors.quadrantalTextColor,
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color : AppColors.quadrantalTextColor, width: 1),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: AppColors.primaryColor),
+                borderSide: BorderSide(
+                    color: currentError.isNotEmpty
+                        ? AppColors.primaryColor
+                        : AppColors.quadrantalTextColor,
+                    width: 1
+                ),
               ),
             ),
           ),
+          if (currentError.isNotEmpty)
             Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  bool useColumn = constraints.maxWidth < 280;
-
-                  return Flex(
-                    direction: useColumn ? Axis.vertical : Axis.horizontal,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      OutlinedButton(
-                        onPressed: () => controller.clearSignature(),
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: AppColors.quadrantalTextColor, width: 1.5),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                        ),
-                        child: Text(
-                          "Clear",
-                          style: TTextTheme.titleClear(context),
-                        ),
-                      ),
-                      useColumn
-                          ? const SizedBox(height: 10)
-                          : const SizedBox(width: 10),
-
-                      ElevatedButton(
-                        onPressed: () => controller.confirmCurrentSignature(),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.textColor,
-                          minimumSize: const Size(120, 45),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: const Text(
-                          "Confirm",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
+              padding: const EdgeInsets.only(top: 4, left: 4),
+              child: Text(currentError, style: TTextTheme.ErrorStyle(context)),
             ),
+
+          Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                bool useColumn = constraints.maxWidth < 280;
+                return Flex(
+                  direction: useColumn ? Axis.vertical : Axis.horizontal,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    OutlinedButton(
+                      onPressed: () => controller.clearSignature(),
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(
+                            color: AppColors.quadrantalTextColor, width: 1.5),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 12),
+                      ),
+                      child: Text("Clear", style: TTextTheme.titleClear(
+                          context)),
+                    ),
+                    useColumn ? const SizedBox(height: 10) : const SizedBox(
+                        width: 10),
+                    ElevatedButton(
+                      onPressed: () => controller.confirmCurrentSignature(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.textColor,
+                        minimumSize: const Size(120, 45),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                      ),
+                      child: const Text("Confirm", style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
 
           const SizedBox(height: 20),
           Builder(
             builder: (context) {
               final boxHeight = _signatureBoxHeight(context);
+              final bool hasPadError = controller.signatureError.value
+                  .isNotEmpty && !isConfirmed;
+
               return DottedBorder(
-                borderType: BorderType.RRect,
+                borderType:hasPadError ? BorderType.Rect: BorderType.RRect,
                 radius: const Radius.circular(12),
                 dashPattern: const [6, 3],
-                color: AppColors.primaryColor,
+                color: hasPadError ? AppColors.primaryColor : AppColors
+                    .primaryColor.withOpacity(0.5),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Container(
@@ -749,8 +796,10 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
                     child: isConfirmed
                         ? LayoutBuilder(
                       builder: (context, constraints) {
-                        final w = constraints.maxWidth.clamp(1.0, double.infinity);
-                        final h = constraints.maxHeight.clamp(1.0, double.infinity);
+                        final w = constraints.maxWidth.clamp(
+                            1.0, double.infinity);
+                        final h = constraints.maxHeight.clamp(
+                            1.0, double.infinity);
                         return SizedBox(
                           width: w,
                           height: h,
@@ -777,17 +826,14 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
                               height: 150,
                               child: Signature(
                                 controller: controller.activeSigController,
-                                backgroundColor: Colors.white,
+                                backgroundColor: Colors.transparent,
                               ),
                             ),
                           ),
                         ),
                         if (!isDrawing)
-                          Positioned.fill(
-                            child: Center(
-                              child: _buildEmptyPadPlaceholder(),
-                            ),
-                          ),
+                          Positioned.fill(child: Center(
+                              child: _buildEmptyPadPlaceholder())),
                       ],
                     ),
                   ),
@@ -799,7 +845,9 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       );
     });
   }
-  Widget _buildSignaturePreviewSection(BuildContext context, PickupCarController controller) {
+
+  Widget _buildSignaturePreviewSection(BuildContext context,
+      PickupCarController controller) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -831,8 +879,10 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
                     height: previewHeight,
                     child: LayoutBuilder(
                       builder: (context, constraints) {
-                        final w = constraints.maxWidth.clamp(1.0, double.infinity);
-                        final h = constraints.maxHeight.clamp(1.0, double.infinity);
+                        final w = constraints.maxWidth.clamp(
+                            1.0, double.infinity);
+                        final h = constraints.maxHeight.clamp(
+                            1.0, double.infinity);
                         return SizedBox(
                           width: w,
                           height: h,
@@ -857,12 +907,14 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       ),
     );
   }
-  Widget _buildSignatureHeader(BuildContext context, PickupCarController controller) {
+
+  Widget _buildSignatureHeader(BuildContext context,
+      PickupCarController controller) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color:AppColors.secondaryColor,
+        color: AppColors.secondaryColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -881,7 +933,9 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       ),
     );
   }
-  Widget _buildTogglesSection(BuildContext context, PickupCarController controller) {
+
+  Widget _buildTogglesSection(BuildContext context,
+      PickupCarController controller) {
     return Obx(() {
       return Container(
         padding: const EdgeInsets.all(6),
@@ -909,6 +963,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       );
     });
   }
+
   Widget _buildToggleOption(String text, bool isSelected, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
@@ -918,10 +973,13 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
           color: isSelected ? AppColors.primaryColor : Colors.transparent,
           borderRadius: BorderRadius.circular(6),
         ),
-        child: Text(text, style: isSelected ? TTextTheme.OwnerSelected(context) : TTextTheme.hirerSelected(context) ),
+        child: Text(text,
+            style: isSelected ? TTextTheme.OwnerSelected(context) : TTextTheme
+                .hirerSelected(context)),
       ),
     );
   }
+
   Widget _buildEmptyPadPlaceholder() {
     return Center(
       child: Column(
@@ -937,6 +995,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       ),
     );
   }
+
   /// Responsive height for signature box (mobile / tablet / web)
   double _signatureBoxHeight(BuildContext context) {
     if (AppSizes.isWeb(context)) return 180;
@@ -965,7 +1024,8 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
           decoration: BoxDecoration(
             color: AppColors.signaturePadColor,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.1)),
+            border: Border.all(
+                color: AppColors.tertiaryTextColor.withOpacity(0.1)),
           ),
           child: isMobile
               ? Column(
@@ -992,6 +1052,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       },
     );
   }
+
   Widget _buildHeaderText(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1023,6 +1084,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       ],
     );
   }
+
   Widget _buildEditButton(BuildContext context) {
     return AddButtonOfPickup(
       text: "Edit and Manage",
@@ -1039,6 +1101,17 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
     const double webButtonWidth = 130.0;
     const double webButtonHeight = 45.0;
     final double spacing = AppSizes.padding(context);
+    final controller = Get.put(PickupCarController());
+    void handleConfirm() async {
+      bool isValid = controller.validateSignatureSection();
+
+      if (isValid) {
+        print("Validation Success! Showing Dialog...");
+        showSavingDialog(context);
+      } else {
+        print("Validation Failed: Check snacks/errors");
+      }
+    }
 
     if (isMobile) {
       return Column(
@@ -1052,6 +1125,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
               onTap: () {
+                Get.back();
               },
             ),
           ),
@@ -1060,10 +1134,8 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
             width: webButtonWidth,
             height: webButtonHeight,
             child: AddButtonOfPickup(
-                text: "Confirm",
-                onTap: () async{
-                  showSavingDialog(context);
-                }
+              text: "Confirm",
+              onTap: handleConfirm,
             ),
           ),
         ],
@@ -1071,7 +1143,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
     } else {
       return Row(
         children: [
-          Spacer(),
+          const Spacer(),
           SizedBox(
             width: webButtonWidth,
             height: webButtonHeight,
@@ -1081,6 +1153,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
               onTap: () {
+                Get.back();
               },
             ),
           ),
@@ -1089,13 +1162,10 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
             width: webButtonWidth,
             height: webButtonHeight,
             child: AddButtonOfPickup(
-                text: "Confirm",
-                onTap: () async {
-                  showSavingDialog(context);
-                }
+              text: "Confirm",
+              onTap: handleConfirm,
             ),
           ),
-
         ],
       );
     }

@@ -32,8 +32,6 @@ class StepTwoSelectionWidget extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 20),
-
-             // Header of the Screen
             HeaderWebPickupWidget(
               mainTitle: 'Add Pickup Car',
               showBack: true,
@@ -45,7 +43,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
               showNotification: true,
               showProfile: true,
             ),
-            
+
             Padding(
               padding: const EdgeInsets.all(20),
               child: Container(
@@ -61,7 +59,6 @@ class StepTwoSelectionWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Header
                           Text(TextString.titleViewPickStepTwo, style: TTextTheme.h6Style(context)),
                           const SizedBox(height: 6),
                           Text(TextString.titleViewSubtitleStepTwo,
@@ -69,8 +66,9 @@ class StepTwoSelectionWidget extends StatelessWidget {
                           const SizedBox(height: 7),
                           _buildStepBadges(context),
 
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 30),
                           _buildDamageInspectionCard(context),
+
                           const SizedBox(height: 30),
                           _buildUploadPictureCard(context, isMobile),
                         ],
@@ -80,15 +78,16 @@ class StepTwoSelectionWidget extends StatelessWidget {
                 ),
               ),
             ),
+
             const SizedBox(height: 10),
-            /// Buttons
-          Padding(
-            padding: EdgeInsets.only(
-              right: 20,
-              left: isMobile ? 20 : 0,),
-            child:  _buttonSection(context, isMobile),
+            Padding(
+              padding: EdgeInsets.only(
+                right: 20,
+                left: isMobile ? 20 : 0,
+              ),
+              child: _buttonSection(context, isMobile),
             ),
-            const SizedBox(height: 20), 
+            const SizedBox(height: 40),
           ],
         ),
       ),
@@ -169,113 +168,167 @@ class StepTwoSelectionWidget extends StatelessWidget {
       builder: (context, constraints) {
         final double cardWidth = constraints.maxWidth;
         bool isMobile = cardWidth < 700;
-
         double responsiveWidth = isMobile ? cardWidth * 0.95 : cardWidth * 0.85;
         if (responsiveWidth > 950) responsiveWidth = 950;
         double height = responsiveWidth * 0.5;
 
-        return Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: AppColors.tertiaryTextColor, width: 0.7),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Column(
+        return Obx(() {
+          bool hasError = controller.errorMessageStep2.value == "Please mark damage points or confirm inspection" &&
+              controller.damagePoints2.isEmpty;
+
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (isMobile)
-                Column(
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                      color: hasError ? AppColors.primaryColor : AppColors.tertiaryTextColor,
+                      width: hasError ? 1.5 : 0.7
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: hasError
+                      ? [BoxShadow(color: AppColors.primaryColor.withOpacity(0.1), blurRadius: 10)]
+                      : [],
+                ),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildDamageHeading(context),
-                    const SizedBox(height: 15),
-                    _buildControlsUnit(context, isMobile),
-                  ],
-                )
-              else
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Flexible(
-                      flex: 0,
-                      child: _buildDamageHeading(context),
-                    ),
-                    Flexible(
-                      child: _buildControlsUnit(context, isMobile),
-                    ),
-                  ],
-                ),
+                    if (isMobile)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildDamageHeading(context),
+                          const SizedBox(height: 15),
+                          _buildControlsUnit(context, isMobile),
+                        ],
+                      )
+                    else
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(flex: 0, child: _buildDamageHeading(context)),
+                          Flexible(child: _buildControlsUnit(context, isMobile)),
+                        ],
+                      ),
 
-              const SizedBox(height: 40),
+                    const SizedBox(height: 40),
+                    IgnorePointer(
+                      ignoring: !controller.isDamageInspectionOpen.value,
+                      child: Opacity(
+                        opacity: controller.isDamageInspectionOpen.value ? 1.0 : 0.4,
+                        child: Center(
+                          child: GestureDetector(
+                            onTapDown: (details) {
+                              if (controller.errorMessageStep2.value == "Please mark damage points or confirm inspection") {
+                                controller.errorMessageStep2.value = "";
+                              }
 
-              Obx(() {
-                return IgnorePointer(
-                  ignoring: !controller.isDamageInspectionOpen.value,
-                  child: Opacity(
-                    opacity: controller.isDamageInspectionOpen.value ? 1.0 : 0.4,
-                    child: Center(
-                      child: GestureDetector(
-                        onTapDown: (details) {
-                          double dx = details.localPosition.dx / responsiveWidth;
-                          double dy = details.localPosition.dy / height;
+                              double dx = details.localPosition.dx / responsiveWidth;
+                              double dy = details.localPosition.dy / height;
 
-                          int existingIndex = controller.damagePoints2.indexWhere(
-                                (p) => (p.dx - dx).abs() < 0.04 && (p.dy - dy).abs() < 0.04,
-                          );
-
-                          if (existingIndex != -1) {
-                            controller.damagePoints2.removeAt(existingIndex);
-                          } else {
-                            var type = controller.damageTypes2.firstWhere(
-                                    (t) => t['id'] == controller.selectedDamageType2.value);
-
-                            controller.damagePoints2.add(
-                              DamagePoint(
-                                dx: dx,
-                                dy: dy,
-                                typeId: type['id'],
-                                color: type['color'],
-                              ),
-                            );
-                          }
-                        },
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Image.asset(
-                              ImageString.carDamageInspectionImage,
-                              width: responsiveWidth,
-                              height: height,
-                              fit: BoxFit.contain,
-                            ),
-                            ...controller.damagePoints2.map((point) {
-                              return Positioned(
-                                left: (point.dx * responsiveWidth) - 10,
-                                top: (point.dy * height) - 10,
-                                child: CircleAvatar(
-                                  radius: 10,
-                                  backgroundColor: point.color,
-                                  child: Text(
-                                    point.typeId.toString(),
-                                    style: TTextTheme.btnNumbering(context),
-                                  ),
-                                ),
+                              int existingIndex = controller.damagePoints2.indexWhere(
+                                    (p) => (p.dx - dx).abs() < 0.04 && (p.dy - dy).abs() < 0.04,
                               );
-                            }),
-                          ],
+
+                              if (existingIndex != -1) {
+                                controller.damagePoints2.removeAt(existingIndex);
+                              } else {
+                                var type = controller.damageTypes2.firstWhere(
+                                        (t) => t['id'] == controller.selectedDamageType2.value);
+
+                                controller.damagePoints2.add(
+                                  DamagePoint(dx: dx, dy: dy, typeId: type['id'], color: type['color']),
+                                );
+                              }
+                            },
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Image.asset(
+                                  ImageString.carDamageInspectionImage,
+                                  width: responsiveWidth,
+                                  height: height,
+                                  fit: BoxFit.contain,
+                                ),
+                                ...controller.damagePoints2.map((point) {
+                                  return Positioned(
+                                    left: (point.dx * responsiveWidth) - 10,
+                                    top: (point.dy * height) - 10,
+                                    child: CircleAvatar(
+                                      radius: 10,
+                                      backgroundColor: point.color,
+                                      child: Text(
+                                        point.typeId.toString(),
+                                        style: TTextTheme.btnNumbering(context),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
+                  ],
+                ),
+              ),
+              if (hasError)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8, left: 12),
+                  child: Text(
+                    controller.errorMessageStep2.value,
+                    style: TTextTheme.ErrorStyle(context),
                   ),
-                );
-              }),
+                ),
             ],
-          ),
-        );
+          );
+        });
       },
     );
+  }
+  Widget _buildToggleWidget(BuildContext context) {
+    return Obx(() => GestureDetector(
+      onTap: () {
+        controller.isDamageInspectionOpen.value = !controller.isDamageInspectionOpen.value;
+        if (!controller.isDamageInspectionOpen.value) {
+          if (controller.errorMessageStep2.value == "Please mark damage points or confirm inspection") {
+            controller.errorMessageStep2.value = "";
+          }
+        }
+      },
+      child: Container(
+        width: 60, height: 32,
+        padding: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: controller.isDamageInspectionOpen.value ? AppColors.primaryColor : AppColors.quadrantalTextColor,
+        ),
+        child: Stack(
+          children: [
+            AnimatedAlign(
+              duration: const Duration(milliseconds: 200),
+              alignment: controller.isDamageInspectionOpen.value ? Alignment.centerRight : Alignment.centerLeft,
+              child: Container(
+                width: 24, height: 24,
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4)),
+              ),
+            ),
+            Align(
+              alignment: controller.isDamageInspectionOpen.value ? const Alignment(-0.6, 0) : const Alignment(0.6, 0),
+              child: Text(
+                controller.isDamageInspectionOpen.value ? "Yes" : "No",
+                style: TTextTheme.btnWhiteColor(context),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ));
   }
   Widget _buildControlsUnit(BuildContext context, bool isMobile) {
     return Row(
@@ -375,40 +428,6 @@ class StepTwoSelectionWidget extends StatelessWidget {
       ],
     );
   }
-  Widget _buildToggleWidget(BuildContext context) {
-  return Obx(() => GestureDetector(
-  onTap: () => controller.isDamageInspectionOpen.value = !controller.isDamageInspectionOpen.value,
-  child: Container(
-  width: 60,
-  height: 32,
-  padding: const EdgeInsets.all(4),
-  decoration: BoxDecoration(
-  borderRadius: BorderRadius.circular(8),
-  color: controller.isDamageInspectionOpen.value ? AppColors.primaryColor : AppColors.quadrantalTextColor,
-  ),
-  child: Stack(
-  children: [
-  AnimatedAlign(
-  duration: const Duration(milliseconds: 200),
-  alignment: controller.isDamageInspectionOpen.value ? Alignment.centerRight : Alignment.centerLeft,
-  child: Container(
-  width: 24,
-  height: 24,
-  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4)),
-  ),
-  ),
-  Align(
-  alignment: controller.isDamageInspectionOpen.value ? const Alignment(-0.6, 0) : const Alignment(0.6, 0),
-  child: Text(
-  controller.isDamageInspectionOpen.value ? "Yes" : "No",
-  style:TTextTheme.btnWhiteColor(context),
-  ),
-  ),
-  ],
-  ),
-  ),
-  ));
-  }
   /// Add Picture Section
   Widget _buildUploadPictureCard(BuildContext context, bool isMobile) {
     return LayoutBuilder(builder: (context, bConstraints) {
@@ -459,12 +478,10 @@ class StepTwoSelectionWidget extends StatelessWidget {
             const SizedBox(height: 4),
             Text(TextString.requireImages, style: TTextTheme.requireImagesText(context)),
             const SizedBox(height: 20),
+
             LayoutBuilder(builder: (context, innerConstraints) {
               int crossAxisCount = innerConstraints.maxWidth < 550 ? 1 : 2;
-
-              double aspectRatio = innerConstraints.maxWidth < 350
-                  ? 1.2
-                  : (innerConstraints.maxWidth < 600 ? 1.5 : 1.9);
+              double aspectRatio = innerConstraints.maxWidth < 350 ? 1.2 : (innerConstraints.maxWidth < 600 ? 1.5 : 1.9);
 
               return GridView.count(
                 shrinkWrap: true,
@@ -494,9 +511,10 @@ class StepTwoSelectionWidget extends StatelessWidget {
   Widget _buildImagePickerBox(BuildContext context, String label, String iconPath, String type, double boxWidth) {
     return Obx(() {
       ImageHolder? image;
-      if (type == 'front') {
-        image = controller.frontImage.value;
-      } else if (type == 'back') image = controller.backImage.value;
+      bool hasError = controller.imageErrors.containsKey(type);
+
+      if (type == 'front') image = controller.frontImage.value;
+      else if (type == 'back') image = controller.backImage.value;
       else if (type == 'left') image = controller.leftImage.value;
       else if (type == 'right') image = controller.rightImage.value;
 
@@ -514,10 +532,15 @@ class StepTwoSelectionWidget extends StatelessWidget {
               controller.pickImageNew(type);
             }
           },
-          child: Container(
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
             decoration: BoxDecoration(
               color: AppColors.secondaryColor,
               borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                  color: hasError ? AppColors.primaryColor : Colors.transparent,
+                  width: 1.5
+              ),
             ),
             child: Stack(
               children: [
@@ -530,8 +553,8 @@ class StepTwoSelectionWidget extends StatelessWidget {
                       ? ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: kIsWeb
-                        ? Image.memory(image.bytes!, fit: BoxFit.cover, width: double.infinity, height: double.infinity)
-                        : Image.file(File(image.path!), fit: BoxFit.cover, width: double.infinity, height: double.infinity),
+                        ? Image.memory(image!.bytes!, fit: BoxFit.cover, width: double.infinity, height: double.infinity)
+                        : Image.file(File(image!.path!), fit: BoxFit.cover, width: double.infinity, height: double.infinity),
                   )
                       : Padding(
                     padding: const EdgeInsets.only(top: 20, bottom: 5),
@@ -569,8 +592,8 @@ class StepTwoSelectionWidget extends StatelessWidget {
                       color: Colors.black.withOpacity(0.5),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child:  Center(
-                      child: Image.asset(IconString.zoomIcon,height: 50,width: 50,),
+                    child: Center(
+                      child: Image.asset(IconString.zoomIcon, height: 50, width: 50),
                     ),
                   ),
                 if (hasImage && !isHovered)
@@ -799,6 +822,13 @@ class StepTwoSelectionWidget extends StatelessWidget {
     const double webButtonWidth = 150.0;
     const double webButtonHeight = 45.0;
     final double spacing = AppSizes.padding(context);
+    void handleContinue() {
+      if (controller.validateStep2Form()) {
+        context.push('/stepThreeWidgetScreen', extra: {"hideMobileAppBar": true});
+      } else {
+        print("Validation Failed: ${controller.errorMessageStep2.value}");
+      }
+    }
 
     if (isMobile) {
       return Column(
@@ -811,7 +841,9 @@ class StepTwoSelectionWidget extends StatelessWidget {
               backgroundColor: Colors.transparent,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
-              onTap: () {},
+              onTap: () {
+                Get.back();
+              },
             ),
           ),
           SizedBox(height: spacing),
@@ -823,9 +855,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
               icon: Image.asset(
                 IconString.continueIcon,
               ),
-              onTap: () {
-                context.push('/stepThreeWidgetScreen', extra: {"hideMobileAppBar": true});
-              },
+              onTap: handleContinue,
             ),
           ),
         ],
@@ -833,7 +863,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
     } else {
       return Row(
         children: [
-          Spacer(),
+          const Spacer(),
           SizedBox(
             width: webButtonWidth,
             height: webButtonHeight,
@@ -842,7 +872,9 @@ class StepTwoSelectionWidget extends StatelessWidget {
               backgroundColor: Colors.transparent,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
-              onTap: () {},
+              onTap: () {
+                Get.back();
+              },
             ),
           ),
           SizedBox(width: spacing),
@@ -854,12 +886,9 @@ class StepTwoSelectionWidget extends StatelessWidget {
               icon: Image.asset(
                 IconString.continueIcon,
               ),
-              onTap: () {
-                context.push('/stepThreeWidgetScreen', extra: {"hideMobileAppBar": true});
-              },
+              onTap: handleContinue,
             ),
           ),
-
         ],
       );
     }

@@ -276,7 +276,7 @@ class PickupCarController extends GetxController {
   var isCustomerDropdownOpen = false.obs;
   var isCarDropdownOpen = false.obs;
   var isDamageInspectionOpen = false.obs;
-
+  var errorMessage = "".obs;
   var isCustomerDropdownOpen2 = false.obs;
 
   final LayerLink startDateLink = LayerLink();
@@ -348,7 +348,7 @@ class PickupCarController extends GetxController {
                   onDateSelected: (date) {
                     targetController.text = "${date.day}/${date.month}/${date.year}";
                     update();
-
+                    errorMessage.value = "";
                     removeCalendar();
                   },
                 ),
@@ -558,30 +558,99 @@ class PickupCarController extends GetxController {
     isCarDropdownOpen.value = false;
   }
 
+
+  bool validateForm() {
+    if (selectedCustomer.value == null) {
+      errorMessage.value = "Please select a customer";
+      return false;
+    }
+    if (selectedCar.value == null) {
+      errorMessage.value = "Please select a car";
+      return false;
+    }
+    if (startDateAddController.text.isEmpty || startTimeAddController.text.isEmpty) {
+      errorMessage.value = "Start Date and Time are required";
+      return false;
+    }
+    if (endDateAddController.text.isEmpty || endTimeAddController.text.isEmpty) {
+      errorMessage.value = "End Date and Time are required";
+      return false;
+    }
+    if (odoAddController.text.isEmpty) {
+      errorMessage.value = "Odometer reading is required";
+      return false;
+    }
+    if (dailyRentController2.text.isEmpty) {
+      errorMessage.value = "Daily rent amount is required";
+      return false;
+    }
+    if (bondAmountController2.text.isEmpty) {
+      errorMessage.value = "Bond amount is required";
+      return false;
+    }
+    errorMessage.value = "";
+    return true;
+  }
+
+
+  void submitForm() {
+    if (validateForm()) {
+      print("All fields are valid. Proceeding to save data...");
+    } else {
+      Get.snackbar(
+        "Validation Error",
+        errorMessage.value,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: AppColors.primaryColor,
+        colorText: Colors.white,
+      );
+    }
+  }
+
   /// StepTwo Widget
   // This will take values from the stepone Widget (  from Add Pickup Car)
    // Note : Backend Developer Will set it accordign to requirments  But I have to show the Dummy Data so, Iam adding this code
-  final weeklyRentControllerStepTwo = TextEditingController();
-  final rentBondAmountControllerStepTwo  = TextEditingController();
-  final rentDueAmountControllerStepTwo  = TextEditingController();
+  var errorMessageStep2 = "".obs;
+  var imageErrors = <String, String>{}.obs;
 
-  final bondAmountControllerStepTwo  = TextEditingController();
-  final paidBondControllerStepTwo  = TextEditingController();
-  final dueBondAmountControllerStepTwo  = TextEditingController();
+  bool validateStep2Form() {
+    bool isValid = true;
+    imageErrors.clear();
 
-  final odoControllerStepTwo  = TextEditingController();
-  final fuelLevelControllerStepTwo  = TextEditingController();
-  final interiorCleanlinessControllerStepTwo  = TextEditingController();
-  final exteriorCleanlinessControllerStepTwo  = TextEditingController();
-  final additionalCommentsControllerStepTwo  = TextEditingController();
+    if (damagePoints2.isEmpty) {
+      errorMessageStep2.value = "Please mark damage points or confirm inspection";
+      return false;
+    }
+    if (frontImage.value == null) imageErrors['front'] = "Required";
+    if (backImage.value == null) imageErrors['back'] = "Required";
+    if (leftImage.value == null) imageErrors['left'] = "Required";
+    if (rightImage.value == null) imageErrors['right'] = "Required";
 
+    if (imageErrors.isNotEmpty) {
+      errorMessageStep2.value = "Main 4 car images are required";
+      isValid = false;
+    }
 
-  var isPersonalUseStepTwo  = true.obs;
-  var isManualPaymentStepTwo  = true.obs;
-  final startDateControllerStepTwo  = TextEditingController();
-  final startTimeControllerStepTwo  = TextEditingController();
-  final endDateControllerStepTwo  = TextEditingController();
-  final endTimeControllerStepTwo  = TextEditingController();
+    return isValid;
+  }
+
+  void submitStep2() {
+    if (validateStep2Form()) {
+      errorMessageStep2.value = "";
+      print("Step 2 Validated! Saving: ${selectedCar.value?['name']}");
+    } else {
+      Get.snackbar(
+        "Incomplete Form",
+        errorMessageStep2.value,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: AppColors.primaryColor,
+        colorText: Colors.white,
+        margin: const EdgeInsets.all(15),
+      );
+    }
+  }
+
+  /// Step Three
 
 
   /// EditPickup
@@ -899,19 +968,64 @@ class PickupCarController extends GetxController {
     isDrawingStarted.value = false;
     isConfirmed.value = false;
   }
+  var ownerNameError = "".obs;
+  var hirerNameError = "".obs;
+  var signatureError = "".obs;
+
+  bool validateSignatureSection() {
+    bool isValid = true;
+    signatureError.value = "";
+    if (pickupOwnerNameFieldController.text.trim().isEmpty) {
+      ownerNameError.value = "Owner name is required";
+      isValid = false;
+    } else {
+      ownerNameError.value = "";
+    }
+
+    if (!isPickupOwnerSignatureConfirmed.value) {
+      signatureError.value = "Please confirm owner signature";
+      isValid = false;
+    }
+
+    if (pickupHirerNameFieldController.text.trim().isEmpty) {
+      hirerNameError.value = "Hirer name is required";
+      isValid = false;
+    } else {
+      hirerNameError.value = "";
+    }
+
+    if (!isPickupHirerSignatureConfirmed.value) {
+      signatureError.value = "Please confirm hirer signature";
+      isValid = false;
+    }
+
+    return true;
+  }
 
   void confirmCurrentSignature() {
-    if (activeNameController.text.trim().isNotEmpty) {
-      isConfirmed.value = true;
-    } else {
-      Get.snackbar(
-          "Required",
-          "Please enter name before confirming",
+    if (isOwnerSigned.value) ownerNameError.value = "";
+    else hirerNameError.value = "";
+
+    if (activeNameController.text.trim().isEmpty) {
+      if (isOwnerSigned.value) ownerNameError.value = "Name is required";
+      else hirerNameError.value = "Name is required";
+
+      Get.snackbar("Required", "Please enter name before confirming",
           snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white
-      );
+          backgroundColor: AppColors.primaryColor,
+          colorText: Colors.white);
+      return;
     }
+    if (activeSigController.isEmpty) {
+      Get.snackbar("Required", "Please draw a signature first",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: AppColors.primaryColor,
+          colorText: Colors.white);
+      return;
+    }
+
+    isConfirmed.value = true;
+    signatureError.value = "";
   }
 
 }

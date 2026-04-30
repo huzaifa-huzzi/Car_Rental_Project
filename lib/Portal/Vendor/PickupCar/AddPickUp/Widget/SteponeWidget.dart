@@ -31,315 +31,282 @@ class StepOneSelectionWidget extends StatelessWidget {
           double totalWidth = constraints.maxWidth;
           bool isMobile = AppSizes.isMobile(context);
           bool isTablet = AppSizes.isTablet(context);
-          final screenWidth = MediaQuery.sizeOf(context).width ;
+          final screenWidth = MediaQuery.sizeOf(context).width;
           double padding = 24.0;
-
           double buttonWidth = (isMobile || isTablet)
               ? (totalWidth - (padding * 2))
               : (totalWidth - 48) * (2.8 / 5);
 
-          return  Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Column(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(padding),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                 Text(TextString.titleAddHeader, style:TTextTheme.h6Style(context), overflow: TextOverflow.ellipsis, maxLines: 1,),
-                                const SizedBox(height: 6),
-                                Text(TextString.subtitleHeader, style: TTextTheme.titleThree(context), overflow: TextOverflow.ellipsis, maxLines: 1,
-                                ),
-                                SizedBox(height: 7,),
-                                _buildStepBadges(context),
-                                const SizedBox(height: 20),
-                                ///  CUSTOMER SECTION
-                                _buildSelectionRow(
-                                  context,
-                                  icon:IconString.customerNameIcon,
-                                  title:TextString.titleAddCustomer ,
-                                  subtitle:TextString.subtitleAddCustomer ,
-                                  content: Obx(() {
-                                    if (controller.selectedCustomer.value != null) {
-                                      return _buildSelectedCustomerDisplay(context);
-                                    }
-            
-                                    return Column(
+          return Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(padding),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(TextString.titleAddHeader, style: TTextTheme.h6Style(context), overflow: TextOverflow.ellipsis, maxLines: 1),
+                              const SizedBox(height: 6),
+                              Text(TextString.subtitleHeader, style: TTextTheme.titleThree(context), overflow: TextOverflow.ellipsis, maxLines: 1),
+                              const SizedBox(height: 7),
+                              _buildStepBadges(context),
+                              const SizedBox(height: 20),
+
+                              ///  CUSTOMER SECTION
+                              _buildSelectionRow(
+                                context,
+                                icon: IconString.customerNameIcon,
+                                title: TextString.titleAddCustomer,
+                                subtitle: TextString.subtitleAddCustomer,
+                                content: Obx(() {
+                                  bool hasError = controller.errorMessage.value.contains("customer") && controller.selectedCustomer.value == null;
+
+                                  if (controller.selectedCustomer.value != null) {
+                                    return _buildSelectedCustomerDisplay(context);
+                                  }
+
+                                  return Column(
+                                    children: [
+                                      Obx(() {
+                                        bool hasError = controller.errorMessage.value.contains("customer") && controller.selectedCustomer.value == null;
+
+                                        if (controller.selectedCustomer.value != null) {
+                                          return _buildSelectedCustomerDisplay(context);
+                                        }
+
+                                        return Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              child: AddButtonOfPickup(
+                                                text: "Select The Customers",
+                                                height: 45,
+                                                width: buttonWidth,
+                                                icon: Image.asset(IconString.pickCarIconArrow, color: Colors.white),
+                                                onTap: () {
+                                                  if (controller.isCarDropdownOpen.value) {
+                                                    controller.isCarDropdownOpen.value = false;
+                                                  }
+                                                  controller.isCustomerDropdownOpen.value = !controller.isCustomerDropdownOpen.value;
+                                                },
+                                              ),
+                                            ),
+                                            if (hasError)
+                                              Padding(
+                                                padding:  EdgeInsets.only(top: 4, left: 4),
+                                                child: Text("Required", style: TTextTheme.ErrorStyle(context)),
+                                              ),
+                                            const SizedBox(height: 10),
+                                            SizedBox(
+                                              height: 32,
+                                              child: AddPickUpButton(
+                                                  text: "Add new customer",
+                                                  width: buttonWidth,
+                                                  onTap: () {
+                                                    Get.lazyPut(() => CustomerController());
+                                                    context.go('/addNewCustomer', extra: {"hideMobileAppBar": true});
+                                                  }
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                      }),
+                                    ],
+                                  );
+                                }),
+                              ),
+
+                              const SizedBox(height: 30),
+
+                              ///  CAR SECTION
+                              _buildSelectionRow(
+                                context,
+                                icon: IconString.pickupCarIcon,
+                                title: TextString.titleAddCar,
+                                subtitle: TextString.subtitleAddCar,
+                                content: Obx(() {
+                                  bool hasError = controller.errorMessage.value.contains("car") && controller.selectedCar.value == null;
+                                  double carButtonWidth = (AppSizes.isMobile(context) || AppSizes.isTablet(context))
+                                      ? buttonWidth
+                                      : (totalWidth - 48) * (1 / 5);
+
+                                  return controller.selectedCar.value != null
+                                      ? _buildSelectedCarDisplay(context, controller)
+                                      : Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(color: hasError ? AppColors.primaryColor : Colors.transparent, width: 1.5),
+                                    ),
+                                    child: AddButtonOfPickup(
+                                      text: "Select The Car",
+                                      height: 45,
+                                      width: carButtonWidth,
+                                      icon: Image.asset(IconString.pickCarIconArrow),
+                                      onTap: () => controller.isCarDropdownOpen.value = !controller.isCarDropdownOpen.value,
+                                    ),
+                                  );
+                                }),
+                              ),
+                              const SizedBox(height: 30),
+
+                              ///  RENT PURPOSE
+                              _buildSelectionRow(
+                                context,
+                                icon: IconString.rentPurposeIcon,
+                                title: TextString.titleAddRent,
+                                subtitle: TextString.subtitleAddRent,
+                                content: Obx(() {
+                                  bool hasError = controller.errorMessage.value.isNotEmpty &&
+                                      controller.selectedRentPurpose.value.isEmpty;
+
+                                  return Container(
+                                    padding: const EdgeInsets.symmetric(vertical: 4),
+                                    decoration: BoxDecoration(
+                                      border: Border(bottom: BorderSide(color: hasError ? AppColors.primaryColor : Colors.transparent, width: 1)),
+                                    ),
+                                    child: Wrap(
+                                      spacing: 20,
+                                      runSpacing: 12,
                                       children: [
-                                        AddButtonOfPickup(
-                                          text: "Select The Customers",
-                                          height: 45,
-                                          width: buttonWidth,
-                                          icon:  Image.asset(IconString.pickCarIconArrow, color: Colors.white),
-                                          onTap: () {
-                                            if (controller.isCarDropdownOpen.value) {
-                                              controller.isCarDropdownOpen.value = false;
-                                            }
-                                            controller.isCustomerDropdownOpen.value = !controller.isCustomerDropdownOpen.value;
-                                          },
+                                        _buildRadioButton(
+                                          context,
+                                          TextString.subtitleAddOne,
+                                          controller.selectedRentPurpose.value == TextString.subtitleAddOne,
+                                          onTap: () => controller.selectedRentPurpose.value = TextString.subtitleAddOne,
                                         ),
-                                        const SizedBox(height: 10),
-                                        SizedBox(
-                                          height: 32,
-                                          child: AddPickUpButton(
-                                              text: "Add new customer",
-                                              width: buttonWidth,
-                                              onTap: () {
-                                                Get.lazyPut(() => CustomerController());
-                                                context.push('/addNewCustomer', extra: {"hideMobileAppBar": true});
-                                              }
-                                          ),
-                                        )
+                                        _buildRadioButton(
+                                          context,
+                                          TextString.subtitleAddTwo,
+                                          controller.selectedRentPurpose.value == TextString.subtitleAddTwo,
+                                          onTap: () => controller.selectedRentPurpose.value = TextString.subtitleAddTwo,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }),
+                              ),
+
+                              const SizedBox(height: 30),
+
+                              ///  WEEKLY RENT SECTION
+                              _buildSelectionRow(
+                                context,
+                                icon: IconString.rentMoneyIcon,
+                                title: TextString.titleAddWeekly,
+                                subtitle: TextString.subtitleAddWeekly,
+                                content: Wrap(
+                                  spacing: 15,
+                                  runSpacing: 15,
+                                  children: [
+                                    _buildMiniInputField(TextString.titleAddWeeklyInputFieldOne, TextString.subtitleAddWeeklyInputFieldOne, isMobile ? double.infinity : 200, controller.weeklyRentController2, context),
+                                    _buildMiniInputField(TextString.titleAddWeeklyInputFieldTwo, TextString.subtitleAddWeeklyInputFieldTwo, isMobile ? double.infinity : 200, controller.dailyRentController2, context),
+                                  ],
+                                ),
+                              ),
+
+                              const SizedBox(height: 30),
+
+                              ///  BOND PAYMENT SECTION
+                              _buildSelectionRow(
+                                context,
+                                icon: IconString.bondPaymentIcon,
+                                title: TextString.titleAddBond,
+                                subtitle: TextString.subtitleAddBond,
+                                content: Wrap(
+                                  spacing: 15,
+                                  runSpacing: 15,
+                                  children: [
+                                    _buildMiniInputField(TextString.titleAddBondInputFieldOne, TextString.subtitleAddBondInputFieldOne, isMobile ? double.infinity : 200, controller.bondAmountController2, context),
+                                    _buildMiniInputField(TextString.titleAddBondInputFieldTwo, TextString.subtitleAddBondInputFieldTwo, isMobile ? double.infinity : 200, controller.paidBondController2, context),
+                                    _buildMiniInputField(TextString.titleAddBondInputFieldThree, TextString.subtitleAddBondInputFieldThree, isMobile ? double.infinity : 200, controller.leftBondController2, context),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 30),
+
+                              /// PAYMENT METHOD SECTION
+                              _buildSelectionRow(
+                                context,
+                                icon: IconString.paymentMethodIcon,
+                                title: TextString.titleAddPayment,
+                                subtitle: TextString.subtitleAddPayment,
+                                content: Obx(() => Wrap(
+                                  spacing: 20,
+                                  runSpacing: 10,
+                                  children: [
+                                    _buildRadioButton(context, TextString.subtitleAddPaymentOne, controller.isManualPayment.value, onTap: () => controller.isManualPayment.value = true),
+                                    _buildRadioButton(context, TextString.subtitleAddPaymentTwo, !controller.isManualPayment.value, onTap: () => controller.isManualPayment.value = false),
+                                  ],
+                                )),
+                              ),
+
+                              const SizedBox(height: 30),
+
+                              ///  CAR REPORT
+                              _buildSelectionRow(
+                                context,
+                                icon: IconString.carReportIcon,
+                                title: TextString.titleAddCarReport,
+                                subtitle: TextString.subtitleAddCarReport,
+                                content: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    double itemWidth = screenWidth < 600 ? constraints.maxWidth : (constraints.maxWidth - 30) / 3;
+                                    return Wrap(
+                                      spacing: 15,
+                                      runSpacing: 20,
+                                      children: [
+                                        _buildMiniInputField(TextString.titleAddCarReportInputFieldOne, TextString.subtitleAddCarReportInputFieldOne, itemWidth, controller.odoAddController, context),
+                                        _buildReportDropdown(TextString.titleAddCarReportInputFieldTwo, ["Full 100%", "High 75%", "Half 50%", "Low 25%", "Empty 0%"], itemWidth, controller.fuelLevelAddController, context, id: "fuel_dropdown"),
+                                        _buildReportDropdown(TextString.titleAddCarReportInputFieldThree, ["Excellent", "Good", "Average", "Dirt"], itemWidth, controller.interiorCleanlinessAddController, context, id: "interior_dropdown"),
+                                        _buildReportDropdown(TextString.titleAddCarReportInputFieldFour, ["Excellent", "Good", "Average", "Dirty"], itemWidth, controller.exteriorCleanlinessAddController, context, id: "exterior_dropdown"),
                                       ],
                                     );
-                                  }),
+                                  },
                                 ),
-            
-                                const SizedBox(height: 30),
-            
-                                ///  CAR SECTION
-                                _buildSelectionRow(
-                                  context,
-                                  icon: IconString.pickupCarIcon,
-                                  title: TextString.titleAddCar,
-                                  subtitle: TextString.subtitleAddCar,
-                                  content: Obx(() => controller.selectedCar.value != null
-                                      ? _buildSelectedCarDisplay(context)
-                                      : Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      AddButtonOfPickup(
-                                        text: "Select The Car",
-                                        height: 45,
-                                        width: buttonWidth,
-                                        icon:  Image.asset(IconString.pickCarIconArrow),
-                                        onTap: () => controller.isCarDropdownOpen.value = !controller.isCarDropdownOpen.value,
-                                      ),
-                                    ],
-                                  )
-                                  ),
-                                ),
-                                const SizedBox(height: 30),
-            
-                                ///  RENT PURPOSE
-                                _buildSelectionRow(
-                                  context,
-                                  icon: IconString.rentPurposeIcon,
-                                  title:TextString.titleAddRent,
-                                  subtitle: TextString.subtitleAddRent,
-                                  content: Obx(() => Wrap(
-                                    spacing: 20,
-                                    runSpacing: 12,
-                                    children: [
-                                      _buildRadioButton(
-                                        context,
-                                        TextString.subtitleAddOne,
-                                        controller.selectedRentPurpose.value == TextString.subtitleAddOne,
-                                        onTap: () => controller.selectedRentPurpose.value = TextString.subtitleAddOne,
-                                      ),
-                                      _buildRadioButton(
-                                        context,
-                                        TextString.subtitleAddTwo,
-                                        controller.selectedRentPurpose.value == TextString.subtitleAddTwo,
-                                        onTap: () => controller.selectedRentPurpose.value = TextString.subtitleAddTwo,
-                                      ),
-                                    ],
-                                  )),
-                                ),
-            
-                                const SizedBox(height: 30),
-            
-            
-            
-                      ///  WEEKLY RENT SECTION
-                      _buildSelectionRow(
-                      context,
-                      icon: IconString.rentMoneyIcon,
-                      title: TextString.titleAddWeekly,
-                      subtitle: TextString.subtitleAddWeekly,
-                      content: Wrap(
-                        spacing: 15,
-                        runSpacing: 15,
-                        children: [
-                          _buildMiniInputField(
-                              TextString.titleAddWeeklyInputFieldOne,
-                             TextString.subtitleAddWeeklyInputFieldOne,
-                              isMobile ? double.infinity : 200,
-                              controller.weeklyRentController2,
-                              context
-                          ),
-                          _buildMiniInputField(
-                              TextString.titleAddWeeklyInputFieldTwo,
-                              TextString.subtitleAddWeeklyInputFieldTwo,
-                              isMobile ? double.infinity : 200,
-                              controller.dailyRentController2,
-                              context
-                          ),
-                        ],
-                      ),
-                    ),
-            
-                    const SizedBox(height: 30),
-            
-                    ///  BOND PAYMENT SECTION
-                    _buildSelectionRow(
-                      context,
-                      icon: IconString.bondPaymentIcon,
-                      title: TextString.titleAddBond,
-                      subtitle: TextString.subtitleAddBond,
-                      content: Wrap(
-                        spacing: 15,
-                        runSpacing: 15,
-                        children: [
-                          _buildMiniInputField(
-                              TextString.titleAddBondInputFieldOne,
-                             TextString.subtitleAddBondInputFieldOne,
-                              isMobile ? double.infinity : 200,
-                              controller.bondAmountController2,
-                              context
-                          ),
-                          _buildMiniInputField(
-                              TextString.titleAddBondInputFieldTwo,
-                              TextString.subtitleAddBondInputFieldTwo,
-                              isMobile ? double.infinity : 200,
-                              controller.paidBondController2,
-                              context
-                          ),
-                          _buildMiniInputField(
-                              TextString.titleAddBondInputFieldThree,
-                              TextString.subtitleAddBondInputFieldThree,
-                              isMobile ? double.infinity : 200,
-                              controller.leftBondController2,
-                              context
-                          ),
-                        ],
-                      ),
-                    ),
-                                const SizedBox(height: 30),
-            
-                                /// PAYMENT METHOD SECTION
-                                _buildSelectionRow(
-                                  context,
-                                  icon: IconString.paymentMethodIcon,
-                                  title: TextString.titleAddPayment,
-                                  subtitle: TextString.subtitleAddPayment,
-                                  content: Obx(() => Wrap(
-                                    spacing: 20,
-                                    runSpacing: 10,
-                                    children: [
-                                      _buildRadioButton(
-                                        context,
-                                        TextString.subtitleAddPaymentOne,
-                                        controller.isManualPayment.value,
-                                        onTap: () => controller.isManualPayment.value = true,
-                                      ),
-                                      _buildRadioButton(
-                                        context,
-                                        TextString.subtitleAddPaymentTwo,
-                                        !controller.isManualPayment.value,
-                                        onTap: () => controller.isManualPayment.value = false,
-                                      ),
-                                    ],
-                                  )),
-                                ),
-            
-                                const SizedBox(height: 30),
-            
-                                ///  CAR REPORT
-                                _buildSelectionRow(
-                                  context,
-                                  icon: IconString.carReportIcon,
-                                  title: TextString.titleAddCarReport,
-                                  subtitle: TextString.subtitleAddCarReport,
-                                  content: LayoutBuilder(
-                                    builder: (context, constraints) {
-                                      double screenWidth = MediaQuery.of(context).size.width;
-                                      double itemWidth = screenWidth < 600
-                                          ? constraints.maxWidth
-                                          : (constraints.maxWidth - 30) / 3;
-            
-                                      return Wrap(
-                                        spacing: 15,
-                                        runSpacing: 20,
-                                        children: [
-                                          _buildMiniInputField(TextString.titleAddCarReportInputFieldOne, TextString.subtitleAddCarReportInputFieldOne, itemWidth, controller.odoAddController,context),
-                                          _buildReportDropdown(
-                                            TextString.titleAddCarReportInputFieldTwo,
-                                            ["Full 100%", "High 75%", "Half 50%", "Low 25%", "Empty 0%"],
-                                            itemWidth,
-                                            controller.fuelLevelAddController,
-                                            context,
-                                            id: "fuel_dropdown",
-                                          ),
+                              ),
 
-                                          _buildReportDropdown(
-                                            TextString.titleAddCarReportInputFieldThree,
-                                            ["Excellent", "Good", "Average", "Dirt"],
-                                            itemWidth,
-                                            controller.interiorCleanlinessAddController,
-                                            context,
-                                            id: "interior_dropdown",
-                                          ),
+                              const SizedBox(height: 30),
 
-                                          _buildReportDropdown(
-                                            TextString.titleAddCarReportInputFieldFour,
-                                            ["Excellent", "Good", "Average", "Dirty"],
-                                            itemWidth,
-                                            controller.exteriorCleanlinessAddController,
-                                            context,
-                                            id: "exterior_dropdown",
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                ),
-            
-            
-                                const SizedBox(height: 30),
-            
-                                ///  PICKUP NOTE
-                                _buildSelectionRow(
-                                  context,
-                                  icon: IconString.pickupNote,
-                                  title: TextString.titleAddNote,
-                                  subtitle: TextString.subtitleAddNote,
-                                  content: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(TextString.subtitleAddNoteOne, style: TTextTheme.titleTwo(context)),
-                                      const SizedBox(height: 12),
-
-                                      Focus(
-                                        onFocusChange: (hasFocus) {
-                                          (context as Element).markNeedsBuild();
-                                        },
-                                        child: Builder(
-                                          builder: (context) {
-                                            final bool hasFocus = Focus.of(context).hasFocus;
-
+                              ///  PICKUP NOTE
+                              _buildSelectionRow(
+                                context,
+                                icon: IconString.pickupNote,
+                                title: TextString.titleAddNote,
+                                subtitle: TextString.subtitleAddNote,
+                                content: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(TextString.subtitleAddNoteOne, style: TTextTheme.titleTwo(context)),
+                                    const SizedBox(height: 12),
+                                    Focus(
+                                      onFocusChange: (hasFocus) {
+                                        (context as Element).markNeedsBuild();
+                                      },
+                                      child: Builder(
+                                        builder: (context) {
+                                          final bool hasFocus = Focus.of(context).hasFocus;
+                                          return Obx(() {
+                                            bool hasError = controller.errorMessage.value.isNotEmpty && controller.additionalAddCommentsController.text.isEmpty;
                                             return Container(
                                               padding: const EdgeInsets.all(8),
                                               decoration: BoxDecoration(
                                                 color: AppColors.secondaryColor,
                                                 borderRadius: BorderRadius.circular(12),
-                                                boxShadow: hasFocus ? [
-                                                  BoxShadow(
-                                                    color: AppColors.fieldsBackground,
-                                                    blurRadius: 12,
-                                                    offset: const Offset(0, 4),
-                                                  ),
-                                                ] : [],
+                                                border: Border.all(color: hasError ? AppColors.primaryColor : Colors.transparent, width: 1.5),
+                                                boxShadow: hasFocus ? [BoxShadow(color: AppColors.fieldsBackground, blurRadius: 12, offset: const Offset(0, 4))] : [],
                                               ),
                                               child: TextField(
                                                 cursorColor: AppColors.blackColor,
@@ -347,130 +314,112 @@ class StepOneSelectionWidget extends StatelessWidget {
                                                 maxLines: 6,
                                                 style: TTextTheme.insidetextfieldWrittenText(context),
                                                 decoration: InputDecoration(
-                                                  hintText: 'Describe the vehicles condition, unique features, or rental policies...',
+                                                  hintText: TextString.subtitleViewEditPickup,
                                                   hintStyle: TTextTheme.titleFour(context),
                                                   filled: false,
                                                   fillColor: Colors.transparent,
                                                   contentPadding: const EdgeInsets.all(16),
                                                   border: InputBorder.none,
-                                                  enabledBorder: InputBorder.none,
-                                                  focusedBorder: InputBorder.none,
                                                 ),
                                               ),
                                             );
-                                          },
-                                        ),
+                                          });
+                                        },
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(height: 30),
-            
-                                ///  RENT TIME
-                                _buildSelectionRow(
-                                  context,
-                                  icon: IconString.rentTimeIcon,
-                                  title: TextString.titleAddRentTime,
-                                  subtitle: TextString.subtitleAddDRentTime,
-                                  content: _buildRentTimeSection(context),
-                                ),
-                                const SizedBox(height: 12)
-                              ],
-                            ),
+                              ),
+                              const SizedBox(height: 30),
+
+                              ///  RENT TIME
+                              _buildSelectionRow(
+                                context,
+                                icon: IconString.rentTimeIcon,
+                                title: TextString.titleAddRentTime,
+                                subtitle: TextString.subtitleAddDRentTime,
+                                content: _buildRentTimeSection(context),
+                              ),
+                              const SizedBox(height: 12)
+                            ],
                           ),
-                        ],
-            
-                      ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 24),
-                    _buttonSection(context, isMobile),
-                     SizedBox(height:isMobile ? 230 :  180),
-                  ],
-                ),
-                 /// Linker Layer remover
-                Obx(() {
-                  if (controller.isCustomerDropdownOpen.value || controller.isCarDropdownOpen.value) {
-                    return Positioned.fill(
-                      child: GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          controller.isCustomerDropdownOpen.value = false;
-                          controller.isCarDropdownOpen.value = false;
-                        },
-                        child: Container(color: Colors.transparent),
-                      ),
-                    );
-                  }
-                  return const SizedBox.shrink();
-                }),
-            
-                ///  Customer DROPDOWN OVERLAY
-                Obx(() {
-                  if (!controller.isCustomerDropdownOpen.value) return const SizedBox.shrink();
-            
-                  //  Responsive TOP Calculation
-                  double topOffset;
-                  if (isMobile) {
-                    topOffset = 250;
-                  } else if (isTablet) {
-                    topOffset = 250;
-                  } else {
-                    topOffset = 195;
-                  }
-            
-                  //  Responsive RIGHT Calculation
-                  double rightOffset;
-                  if (isMobile) {
-                    rightOffset = 24;
-                  } else if (isTablet) {
-                    rightOffset = screenWidth * 0.034;
-                  } else {
-                    rightOffset = screenWidth * 0.078;
-                  }
-            
-                  return Positioned(
-                    top: topOffset,
-                    right: rightOffset,
-                    child: Material(
-                      elevation: 25,
-                      borderRadius: BorderRadius.circular(12),
-                      shadowColor: AppColors.quadrantalTextColor,
-                      child: _buildModernDropdown(context, buttonWidth,PickupCarController()),
+                  ),
+                  const SizedBox(height: 24),
+                  _buttonSection(context, isMobile),
+                  SizedBox(height: isMobile ? 230 : 180),
+                ],
+              ),
+
+              /// Overlays
+              Obx(() {
+                if (controller.isCustomerDropdownOpen.value || controller.isCarDropdownOpen.value) {
+                  return Positioned.fill(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
+                        controller.isCustomerDropdownOpen.value = false;
+                        controller.isCarDropdownOpen.value = false;
+                      },
+                      child: Container(color: Colors.transparent),
                     ),
                   );
-                }),
-            
-                ///  CAR DROPDOWN OVERLAY
-                Obx(() {
-                  if (!controller.isCarDropdownOpen.value) return const SizedBox.shrink();
-            
-                  bool isCustomerSelected = controller.selectedCustomer.value != null;
-            
-                  double topOffset;
-                  if (isMobile) {
-                    topOffset = isCustomerSelected ? 535 : 480;
-                  } else if (isTablet) {
-                    topOffset = isCustomerSelected ? 425 : 490;
-                  } else {
-                    topOffset = isCustomerSelected ? 435 : 362;
-                  }
-            
-                  double screenWidth = MediaQuery.of(context).size.width;
-                  double rightOffset = isMobile ? 24.0 : (isTablet ? screenWidth * 0.04 : screenWidth * 0.079);
-            
-                  return Positioned(
-                    top: topOffset,
-                    right: rightOffset,
-                    child: Material(
-                      elevation: 25,
-                      borderRadius: BorderRadius.circular(15),
-                      shadowColor: AppColors.quadrantalTextColor,
-                      child: _buildCarModernDropdown(context, buttonWidth,PickupCarController()),
-                    ),
-                  );
-                }),
-              ]
-            );
+                }
+                return const SizedBox.shrink();
+              }),
+
+              /// Overlays
+              Obx(() {
+                if (!controller.isCustomerDropdownOpen.value) return const SizedBox.shrink();
+                double topOffset = isMobile ? 250 : (isTablet ? 250 : 195);
+                double rightOffset = isMobile ? 24 : (isTablet ? screenWidth * 0.034 : screenWidth * 0.078);
+
+                return Positioned(
+                  top: topOffset,
+                  right: rightOffset,
+                  child: Material(
+                    elevation: 25,
+                    borderRadius: BorderRadius.circular(12),
+                    shadowColor: AppColors.quadrantalTextColor,
+                    child: _buildModernDropdown(context, buttonWidth, controller),
+                  ),
+                );
+              }),
+
+              /// Car Overlays
+              Obx(() {
+                if (!controller.isCarDropdownOpen.value) return const SizedBox.shrink();
+
+                bool isCustomerSelected = controller.selectedCustomer.value != null;
+                double topOffset;
+                if (isMobile) {
+                  topOffset = isCustomerSelected ? 560 : 480;
+                } else if (isTablet) {
+                  topOffset = isCustomerSelected ? 600 : 490;
+                } else {
+                  topOffset = isCustomerSelected ? 460 : 362;
+                }
+                double rightOffset = isMobile ? 24.0 : (isTablet ? screenWidth * 0.04 : screenWidth * 0.04);
+
+                double carDropdownWidth = (isMobile || isTablet)
+                    ? buttonWidth
+                    : (totalWidth - 48) * (3.5 / 5);
+
+                return Positioned(
+                  top: topOffset,
+                  right: rightOffset,
+                  child: Material(
+                    elevation: 25,
+                    borderRadius: BorderRadius.circular(15),
+                    shadowColor: AppColors.quadrantalTextColor,
+                    child: _buildCarModernDropdown(context, carDropdownWidth, controller),
+                  ),
+                );
+              }),
+            ],
+          );
         },
       ),
     );
@@ -582,7 +531,7 @@ class StepOneSelectionWidget extends StatelessWidget {
   }
 
    // Cars Dropdown
-  Widget _buildCarModernDropdown(BuildContext context, double width,PickupCarController controller) {
+  Widget _buildCarModernDropdown(BuildContext context, double width, PickupCarController controller) {
     return GestureDetector(
       onTap: () {},
       child: Material(
@@ -607,41 +556,41 @@ class StepOneSelectionWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: TextField(
+                    controller: controller.carSearchController,
                     cursorColor: AppColors.blackColor,
-                    style:TTextTheme.insidetextfieldWrittenText(context) ,
+                    style: TTextTheme.insidetextfieldWrittenText(context),
                     decoration: InputDecoration(
                       hintText: "Search Car...",
                       hintStyle: TTextTheme.insidetextfieldWrittenText(context),
-                      prefixIcon: Icon(Icons.search, size: 20, color:AppColors.secondTextColor),
+                      prefixIcon: Icon(Icons.search, size: 20, color: AppColors.secondTextColor),
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 15),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 12),
                     ),
                   ),
                 ),
               ),
-
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxHeight: 200),
-          child: Scrollbar(
-            thumbVisibility: true,
-            controller:controller.carScrollController,
-            child: SingleChildScrollView(
-              controller: controller.carScrollController,
-              scrollDirection: Axis.vertical,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: IntrinsicWidth(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Column(
-                      children: List.generate(6, (index) => _buildCarCardItem(context)),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 200),
+                child: Scrollbar(
+                  thumbVisibility: true,
+                  controller: controller.carScrollController,
+                  child: SingleChildScrollView(
+                    controller: controller.carScrollController,
+                    scrollDirection: Axis.vertical,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: IntrinsicWidth(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Column(
+                            children: List.generate(6, (index) => _buildCarCardItem(context, controller)),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ),
-        ),
               const SizedBox(height: 12),
             ],
           ),
@@ -650,7 +599,7 @@ class StepOneSelectionWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildCarCardItem(BuildContext context) {
+  Widget _buildCarCardItem(BuildContext context, PickupCarController controller) {
     return Container(
       width: 790,
       margin: const EdgeInsets.only(bottom: 10, left: 4, right: 4),
@@ -670,7 +619,6 @@ class StepOneSelectionWidget extends StatelessWidget {
             child: Image.asset(ImageString.astonPic, width: 75, height: 48, fit: BoxFit.cover),
           ),
           const SizedBox(width: 12),
-
           SizedBox(
             width: 105,
             child: Column(
@@ -679,57 +627,53 @@ class StepOneSelectionWidget extends StatelessWidget {
               children: [
                 Text(TextString.titleAddCarDropdown, style: TTextTheme.dropdownOfCar(context)),
                 Text(
-                 TextString.subtitleAddCarDropdown,
+                  TextString.subtitleAddCarDropdown,
                   maxLines: 1,
                   style: TTextTheme.dropdownOfCartitle(context),
                 ),
               ],
             ),
           ),
-
           const SizedBox(width: 10),
-
           Container(
-            padding:  EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(color: AppColors.availableBackgroundColor, borderRadius: BorderRadius.circular(6)),
-            child:  Text("Available", style: TTextTheme.titleeight(context)),
+            child: Text("Available", style: TTextTheme.titleeight(context)),
           ),
-
           const SizedBox(width: 15),
-
-          _buildInfoChip(TextString.subtitleAddCarDropdownReg, "1234567890", AppColors.textColor,context),
-
+          _buildInfoChip(TextString.subtitleAddCarDropdownReg, "1234567890", AppColors.textColor, context),
           const SizedBox(width: 8),
-
-          _buildInfoChip(TextString.subtitleAddCarDropdownVin, "JTNBA3HK134567890", AppColors.backgroundOfVin,context),
-
+          _buildInfoChip(TextString.subtitleAddCarDropdownVin, "JTNBA3HK134567890", AppColors.backgroundOfVin, context),
           const SizedBox(width: 25),
-
           SizedBox(
             width: 75,
             height: 38,
             child: AddButtonOfPickup(
               text: "Select",
-    onTap: () {
-    controller.selectedCar.value = <String, dynamic>{
-    "name": "Martin",
-    "year": "Aston 2025",
-    "reg": "1234567890",
-    "vin": "JTNBA3HK134567890",
-    "image": ImageString.astonPic,
-    "transmission": "Automatic",
-    "seats": "2 seats"
-    };
-    controller.isCarDropdownOpen.value = false;
-    }
-            )
+              onTap: () {
+                controller.selectedCar.value = <String, dynamic>{
+                  "name": "Martin",
+                  "year": "Aston 2025",
+                  "reg": "1234567890",
+                  "vin": "JTNBA3HK134567890",
+                  "image": ImageString.astonPic,
+                  "transmission": "Automatic",
+                  "seats": "2 seats"
+                };
+                if (controller.errorMessage.value.contains("car")) {
+                  controller.errorMessage.value = "";
+                }
+
+                controller.isCarDropdownOpen.value = false;
+              },
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSelectedCarDisplay(BuildContext context) {
+  Widget _buildSelectedCarDisplay(BuildContext context, PickupCarController controller) {
     var car = controller.selectedCar.value!;
 
     return LayoutBuilder(builder: (context, constraints) {
@@ -746,10 +690,9 @@ class StepOneSelectionWidget extends StatelessWidget {
               Container(
                   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.tertiaryTextColor,width: 0.7)
-                  ),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: AppColors.tertiaryTextColor, width: 0.7)),
                   child: isMobile
                       ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -767,28 +710,13 @@ class StepOneSelectionWidget extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text(
-                                  car['year'] ?? "2024",
-                                  style: TTextTheme.titleThree(context),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Text(
-                                  car['name'] ?? "Velar",
-                                  style: TTextTheme.h3Style(context),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                                Text(car['year'] ?? "2024", style: TTextTheme.titleThree(context), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                Text(car['name'] ?? "Velar", style: TTextTheme.h3Style(context), maxLines: 1, overflow: TextOverflow.ellipsis),
                               ],
                             ),
                           ),
                           const SizedBox(width: 5),
-                          AddButtonOfPickup(
-                              text: "View",
-                              width: isExtraSmall ? 60 : 70,
-                              height: 35,
-                              onTap: () {}
-                          ),
+                          AddButtonOfPickup(text: "View", width: isExtraSmall ? 60 : 70, height: 35, onTap: () {}),
                         ],
                       ),
                       const SizedBox(height: 12),
@@ -809,8 +737,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                       ),
                     ],
                   )
-                      :
-                  Row(
+                      : Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
@@ -823,8 +750,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(car['year'] ?? "2024", style: TTextTheme.titleThree(context)),
-                              Text(car['name'] ?? "Velar",
-                                  style: TTextTheme.h3Style(context)),
+                              Text(car['name'] ?? "Velar", style: TTextTheme.h3Style(context)),
                               const SizedBox(height: 10),
                               _buildInfoChip(TextString.subtitleAddCarDropdownReg, car['reg'], AppColors.textColor, context),
                               const SizedBox(height: 8),
@@ -833,7 +759,6 @@ class StepOneSelectionWidget extends StatelessWidget {
                           ),
                         ],
                       ),
-
                       Row(
                         children: [
                           _buildCarSpecIcon(context, IconString.transmissionIcon, TextString.subtitleAddCarDropdownTrans, car['transmission'] ?? "Automatic"),
@@ -844,21 +769,21 @@ class StepOneSelectionWidget extends StatelessWidget {
                         ],
                       ),
                     ],
-                  )
-              ),
-
-              // DELETE BUTTON
+                  )),
               Positioned(
                 top: -12,
                 right: -12,
                 child: GestureDetector(
-                  onTap: () => controller.selectedCar.value = null,
+                  onTap: () {
+                    controller.selectedCar.value = null;
+                  },
                   child: Container(
                     width: 33,
                     height: 33,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
+
                     ),
                     child: Center(
                       child: Image.asset(
@@ -912,51 +837,62 @@ class StepOneSelectionWidget extends StatelessWidget {
 
 
 
-  // Customer Display (web/mobile next two widgets)
+  // Customer Display
   Widget _buildSelectedCustomerDisplay(BuildContext context) {
-    var customer = controller.selectedCustomer.value!;
+    return Obx(() {
+      bool hasError = controller.errorMessage.value.contains("customer") &&
+          controller.selectedCustomer.value == null;
 
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(color :AppColors.tertiaryTextColor ,width: 0.7),
-          ),
-          child: AppSizes.isMobile(context)
-              ? _buildMobileLayout(context, customer)
-              : _buildWebLayout(context, customer),
-        ),
+      var customer = controller.selectedCustomer.value!;
 
-        //  DELETE BUTTON
-        Positioned(
-          top: -12,
-          right: -12,
-          child: GestureDetector(
-            onTap: () => controller.selectedCustomer.value = null,
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
+      return Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                color: hasError ? AppColors.primaryColor : AppColors.tertiaryTextColor,
+                width: hasError ? 1.5 : 0.7,
               ),
-              child: Center(
-                child: Image.asset(
-                  IconString.deleteIcon,
-                  color: AppColors.primaryColor,
-                  filterQuality: FilterQuality.high,
+              boxShadow: hasError
+                  ? [BoxShadow(color: AppColors.primaryColor, blurRadius: 10)]
+                  : [],
+            ),
+            child: AppSizes.isMobile(context)
+                ? _buildMobileLayout(context, customer)
+                : _buildWebLayout(context, customer),
+          ),
+          Positioned(
+            top: -12,
+            right: -12,
+            child: GestureDetector(
+              onTap: () {
+                controller.selectedCustomer.value = null;
+              },
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Center(
+                  child: Image.asset(
+                    IconString.deleteIcon,
+                    color: AppColors.primaryColor,
+                    filterQuality: FilterQuality.high,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
   Widget _buildWebLayout(BuildContext context, Map customer) {
     return LayoutBuilder(
@@ -968,7 +904,6 @@ class StepOneSelectionWidget extends StatelessWidget {
         return Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // User Image & Name
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.asset(ImageString.customerUser, width: 60, height: 60, fit: BoxFit.cover),
@@ -991,8 +926,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 220),
                   child: Wrap(
-                    spacing: 20,
-                    runSpacing: 15,
+                    spacing: 20, runSpacing: 15,
                     alignment: WrapAlignment.center,
                     children: [
                       _buildCarSpecIcon(context, IconString.callIcon, TextString.subtitleAddCustomerInputFieldOne, customer['phone'] ?? "+12 3456 7890"),
@@ -1023,50 +957,31 @@ class StepOneSelectionWidget extends StatelessWidget {
               child: Image.asset(ImageString.customerUser, width: 55, height: 55, fit: BoxFit.cover),
             ),
             const SizedBox(width: 12),
-
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    customer['name'] ?? "Carlie Harvy",
-                    style: TTextTheme.h2Style(context),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    TextString.subtitleAddCustomerDropdownDriver,
-                    style: TTextTheme.titleDriver(context),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  Text(customer['name'] ?? "Carlie Harvy", style: TTextTheme.h2Style(context), maxLines: 1, overflow: TextOverflow.ellipsis),
+                  Text(TextString.subtitleAddCustomerDropdownDriver, style: TTextTheme.titleDriver(context), maxLines: 1, overflow: TextOverflow.ellipsis),
                 ],
               ),
             ),
-
             const SizedBox(width: 8),
-
-            AddButtonOfPickup(
-                text: "View",
-                width: 65,
-                height: 38,
-                onTap: () {}
-            ),
+            AddButtonOfPickup(text: "View", width: 65, height: 38, onTap: () {}),
           ],
         ),
         const SizedBox(height: 20),
-
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(),
           child: Row(
             children: [
-              _buildCarSpecIcon(context, IconString.callIcon,TextString.subtitleAddCustomerInputFieldOne , customer['phone'] ?? "+12 3456 7890"),
+              _buildCarSpecIcon(context, IconString.callIcon, TextString.subtitleAddCustomerInputFieldOne, customer['phone'] ?? "+12 3456 7890"),
               const SizedBox(width: 20),
               _buildCarSpecIcon(context, IconString.licesnseNo, TextString.subtitleAddCustomerInputFieldTwo, customer['license'] ?? "1245985642"),
               const SizedBox(width: 20),
-              _buildCarSpecIcon(context, IconString.cardIconPickup,TextString.subtitleAddCustomerInputFieldThree, customer['card'] ?? "1243567434"),
+              _buildCarSpecIcon(context, IconString.cardIconPickup, TextString.subtitleAddCustomerInputFieldThree, customer['card'] ?? "1243567434"),
               const SizedBox(width: 20),
               _buildCarSpecIcon(context, IconString.nidIcon, TextString.subtitleAddCustomerInputFieldFour, customer['Nid'] ?? "123 456 789"),
             ],
@@ -1081,41 +996,25 @@ class StepOneSelectionWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: 34,
-          height: 34,
+          width: 34, height: 34,
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: AppColors.secondaryColor,
             borderRadius: BorderRadius.circular(7),
           ),
-          child: Image.asset(
-            assetPath,
-            width: 17,
-            height: 17,
-            fit: BoxFit.scaleDown,
-            color: AppColors.textColor,
-          ),
+          child: Image.asset(assetPath, width: 17, height: 17, fit: BoxFit.scaleDown, color: AppColors.textColor),
         ),
         const SizedBox(height: 4),
-        Text(
-          label,
-          style: TTextTheme.smallXX(context),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+        Text(label, style: TTextTheme.smallXX(context), maxLines: 1, overflow: TextOverflow.ellipsis),
         const SizedBox(height: 1),
-        Text(
-          value,
-          style: TTextTheme.pFive(context),
-        ),
+        Text(value, style: TTextTheme.pFive(context)),
       ],
     );
   }
 
 
 
-  // Dropdown of customers
-  Widget _buildModernDropdown(BuildContext context, double width,PickupCarController controller) {
+  Widget _buildModernDropdown(BuildContext context, double width, PickupCarController controller) {
     return Material(
       elevation: 10,
       borderRadius: BorderRadius.circular(12),
@@ -1135,17 +1034,21 @@ class StepOneSelectionWidget extends StatelessWidget {
               child: SizedBox(
                 height: 38,
                 child: TextField(
+                  controller: controller.customerSearchController,
                   cursorColor: AppColors.blackColor,
-                  style:TTextTheme.insidetextfieldWrittenText(context) ,
+                  style: TTextTheme.insidetextfieldWrittenText(context),
                   autofocus: true,
                   decoration: InputDecoration(
-                    hintText: "Search Name,reg etc",
+                    hintText: "Search Name, reg etc",
                     hintStyle: TTextTheme.insidetextfieldWrittenText(context),
                     prefixIcon: const Icon(Icons.search, size: 18),
                     filled: true,
                     fillColor: Colors.white,
                     contentPadding: EdgeInsets.zero,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none
+                    ),
                   ),
                 ),
               ),
@@ -1156,7 +1059,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                 thumbVisibility: true,
                 controller: controller.customerScrollController,
                 child: SingleChildScrollView(
-                  controller:controller.customerScrollController,
+                  controller: controller.customerScrollController,
                   scrollDirection: Axis.vertical,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -1164,7 +1067,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: List.generate(
                         4,
-                            (index) => _buildCustomerCard(context),
+                            (index) => _buildCustomerCard(context, controller),
                       ),
                     ),
                   ),
@@ -1179,13 +1082,20 @@ class StepOneSelectionWidget extends StatelessWidget {
   }
 
   // Customer Card inside dropdown
-  Widget _buildCustomerCard(BuildContext context) {
+  Widget _buildCustomerCard(BuildContext context, PickupCarController controller) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.fieldsBackground.withOpacity(0.05),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -1195,22 +1105,36 @@ class StepOneSelectionWidget extends StatelessWidget {
             backgroundImage: AssetImage(ImageString.customerUser),
           ),
           const SizedBox(width: 15),
-           SizedBox(
+          SizedBox(
             width: 140,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(TextString.titleAddCustomerDropdown, style: TTextTheme.pOne(context),overflow: TextOverflow.ellipsis,maxLines: 1,),
-                Text(TextString.subtitleAddCustomerDropdown, style: TTextTheme.pFour(context)),
+                Text(
+                  TextString.titleAddCustomerDropdown,
+                  style: TTextTheme.pOne(context),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+                Text(
+                    TextString.subtitleAddCustomerDropdown,
+                    style: TTextTheme.pFour(context)
+                ),
               ],
             ),
           ),
           const SizedBox(width: 20),
-           SizedBox(width: 65, child: Text(TextString.titleAddCustomerYear, style: TTextTheme.pOne(context))),
+          SizedBox(
+              width: 65,
+              child: Text(TextString.titleAddCustomerYear, style: TTextTheme.pOne(context))
+          ),
           const SizedBox(width: 20),
-           SizedBox(width: 95, child: Text(TextString.titleAddCustomerNumber, style: TTextTheme.pOne(context))),
+          SizedBox(
+              width: 95,
+              child: Text(TextString.titleAddCustomerNumber, style: TTextTheme.pOne(context))
+          ),
           const SizedBox(width: 20),
-           SizedBox(
+          SizedBox(
             width: 180,
             child: Text(
               TextString.titleAddCustomerAddress,
@@ -1228,8 +1152,15 @@ class StepOneSelectionWidget extends StatelessWidget {
                 controller.selectedCustomer.value = {
                   "name": "Jack Morrison",
                   "email": "Jack@rhyta.com",
+                  "phone": "+12 3456 7890",
+                  "card": "1243567434",
+                  "license": "1245985642",
+                  "Nid": "123 456 789",
                   "image": ImageString.customerUser,
                 };
+                if (controller.errorMessage.value.toLowerCase().contains("customer")) {
+                  controller.errorMessage.value = "";
+                }
                 controller.isCustomerDropdownOpen.value = false;
               },
               borderRadius: BorderRadius.circular(6),
@@ -1308,84 +1239,100 @@ class StepOneSelectionWidget extends StatelessWidget {
   }
 
   // Radio Buttons Widget
-  Widget _buildRadioButton(BuildContext context,String text, bool isSelected, {required VoidCallback onTap}){
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
-            color: AppColors.blackColor,
-            size: 20,
-          ),
-          const SizedBox(width: 8),
-          Text(
+  Widget _buildRadioButton(BuildContext context, String text, bool isSelected, {required VoidCallback onTap}) {
+    return Obx(() {
+      bool hasError = controller.errorMessage.value.isNotEmpty &&
+          controller.selectedRentPurpose.value.isEmpty;
+
+      return GestureDetector(
+        onTap: () {
+          onTap();
+          controller.errorMessage.value = "";
+        },
+        behavior: HitTestBehavior.opaque,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
+              color: isSelected
+                  ? AppColors.blackColor
+                  : (hasError ? AppColors.primaryColor
+                  : AppColors.blackColor),
+              size: 20,
+            ),
+            const SizedBox(width: 8),
+            Text(
               text,
-              style: TTextTheme.titleRadios(context),
-          ),
-        ],
-      ),
-    );
+              style: TTextTheme.titleRadios(context).copyWith(
+                color: hasError && !isSelected ? AppColors.primaryColor: null,
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   // Input Fields Widget
   Widget _buildMiniInputField(String label, String hint, double width, TextEditingController txtController, BuildContext context) {
-    return SizedBox(
-      width: width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-              label,
-              style: TTextTheme.titleTwo(context),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis
-          ),
-          const SizedBox(height: 8),
-          Focus(
-            onFocusChange: (hasFocus) {
-              (context as Element).markNeedsBuild();
-            },
-            child: Builder(
-              builder: (context) {
-                final bool hasFocus = Focus.of(context).hasFocus;
+    return Obx(() {
+      bool hasError = controller.errorMessage.value.isNotEmpty && txtController.text.isEmpty;
 
-                return Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: AppColors.secondaryColor,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: hasFocus ? [
-                      BoxShadow(
-                        color: AppColors.fieldsBackground,
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ] : [],
-                  ),
-                  child: TextFormField(
-                    cursorColor: AppColors.blackColor,
-                    keyboardType: TextInputType.number,
-                    controller: txtController,
-                    textAlignVertical: TextAlignVertical.center,
-                    style: TTextTheme.insidetextfieldWrittenText(context),
-                    decoration: InputDecoration(
-                      hintText: hint,
-                      hintStyle: TTextTheme.insidetextfieldWrittenText(context),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                      border: InputBorder.none,
-                      isDense: true,
-                    ),
-                  ),
-                );
+      return SizedBox(
+        width: width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(label, style: TTextTheme.titleTwo(context), maxLines: 1, overflow: TextOverflow.ellipsis),
+            const SizedBox(height: 8),
+            Focus(
+              onFocusChange: (hasFocus) {
+                (context as Element).markNeedsBuild();
               },
+              child: Builder(
+                builder: (context) {
+                  final bool hasFocus = Focus.of(context).hasFocus;
+
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: AppColors.secondaryColor,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: hasError ? AppColors.primaryColor: (hasFocus ? AppColors.primaryColor : Colors.transparent),
+                        width: 1,
+                      ),
+                      boxShadow: hasFocus ? [
+                        BoxShadow(color: AppColors.fieldsBackground, blurRadius: 10, offset: const Offset(0, 4)),
+                      ] : [],
+                    ),
+                    child: TextFormField(
+                      cursorColor: AppColors.blackColor,
+                      keyboardType: TextInputType.number,
+                      controller: txtController,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: TTextTheme.insidetextfieldWrittenText(context),
+                      onChanged: (val) {
+                        if (val.isNotEmpty) controller.errorMessage.value = "";
+                      },
+                      decoration: InputDecoration(
+                        hintText: hint,
+                        hintStyle: TTextTheme.insidetextfieldWrittenText(context),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        border: InputBorder.none,
+                        isDense: true,
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
   Widget _buildReportDropdown(
       String label,
@@ -1393,10 +1340,15 @@ class StepOneSelectionWidget extends StatelessWidget {
       double width,
       TextEditingController txtController,
       BuildContext context,
-      {required String id}
-      ) {
+      {required String id}) {
     return Obx(() {
       bool isOpen = controller.openedDropdown2.value == id;
+
+      bool hasError = controller.errorMessage.value.isNotEmpty &&
+          txtController.text.isEmpty &&
+          items.isNotEmpty;
+
+      bool isActuallyEmpty = txtController.text.isEmpty;
 
       return SizedBox(
         width: width,
@@ -1408,7 +1360,6 @@ class StepOneSelectionWidget extends StatelessWidget {
               style: TTextTheme.titleTwo(context),
             ),
             const SizedBox(height: 6),
-
             LayoutBuilder(builder: (context, constraints) {
               return PopupMenuButton<String>(
                 constraints: BoxConstraints(
@@ -1425,6 +1376,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                 onSelected: (val) {
                   txtController.text = val;
                   txtController.notifyListeners();
+                  controller.errorMessage.value = "";
                   controller.openedDropdown2.value = "";
                 },
                 child: Container(
@@ -1433,6 +1385,11 @@ class StepOneSelectionWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: AppColors.secondaryColor,
                     borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+
+                      color: (hasError && isActuallyEmpty) ? AppColors.primaryColor : Colors.transparent,
+                      width: 1.5,
+                    ),
                   ),
                   child: Row(
                     children: [
@@ -1460,7 +1417,7 @@ class StepOneSelectionWidget extends StatelessWidget {
                 ),
                 itemBuilder: (context) {
                   return items.map((item) {
-                    bool isSelected = txtController.text == item;
+                    bool isSelected = txtController.text == item || (txtController.text.isEmpty && item == items.first);
 
                     return PopupMenuItem<String>(
                       value: item,
@@ -1489,7 +1446,6 @@ class StepOneSelectionWidget extends StatelessWidget {
                             )
                                 : null,
                           ),
-
                           const SizedBox(width: 12),
                           Text(
                             item,
@@ -1522,8 +1478,8 @@ class StepOneSelectionWidget extends StatelessWidget {
             _buildDateTimeColumn(
               context,
               label: "Agreement Start Time",
-              dateController: controller.startDateController,
-              timeController: controller.startTimeController,
+              dateController: controller.startDateAddController,
+              timeController: controller.startTimeAddController,
               dateLink: controller.startDateLink,
               timeLink: controller.startTimeLink,
               isMobile: isMobile,
@@ -1531,8 +1487,8 @@ class StepOneSelectionWidget extends StatelessWidget {
             _buildDateTimeColumn(
               context,
               label: "Agreement End Time",
-              dateController: controller.endDateController,
-              timeController: controller.endTimeController,
+              dateController: controller.endDateAddController,
+              timeController: controller.endTimeAddController,
               dateLink: controller.endDateLink,
               timeLink: controller.endTimeLink,
               isMobile: isMobile,
@@ -1557,81 +1513,83 @@ class StepOneSelectionWidget extends StatelessWidget {
 
     final carController = Get.find<PickupCarController>();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: TTextTheme.titleTwo(context)),
-        const SizedBox(height: 10),
+    return Obx(() {
+      bool dateError = carController.errorMessage.value.isNotEmpty && dateController.text.isEmpty;
+      bool timeError = carController.errorMessage.value.isNotEmpty && timeController.text.isEmpty;
 
-        // Calendar Box
-        CompositedTransformTarget(
-          link: dateLink,
-          child: _buildCustomTimeBox(
-            context,
-            controller: dateController,
-            hint: "DD/MM/YYYY",
-            iconWidget: Image.asset(IconString.calendarIcon, height: 20, width: 20),
-            width: fieldWidth,
-            onTap: () => carController.toggleCalendar(context, dateLink, dateController, fieldWidth),
-          ),
-        ),
-
-        const SizedBox(height: 12),
-
-        // Time Box
-        CompositedTransformTarget(
-          link: timeLink,
-          child: _buildCustomTimeBox(
-            context,
-            controller: timeController,
-            hint: "00:00 AM",
-            width: fieldWidth,
-            onTap: () => carController.toggleTimePicker(context, timeLink, timeController, fieldWidth),
-            iconWidget: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(Icons.keyboard_arrow_up, size: 16, color: AppColors.textColor),
-                SizedBox(height: 2),
-                Icon(Icons.keyboard_arrow_down, size: 16, color: AppColors.textColor),
-              ],
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: TTextTheme.titleTwo(context)),
+          const SizedBox(height: 10),
+          CompositedTransformTarget(
+            link: dateLink,
+            child: _buildCustomTimeBox(
+              context,
+              controller: dateController,
+              hint: "DD/MM/YYYY",
+              iconWidget: Image.asset(IconString.calendarIcon, height: 20, width: 20),
+              width: fieldWidth,
+              borderColor: dateError ? AppColors.primaryColor : Colors.transparent,
+              onTap: () => carController.toggleCalendar(context, dateLink, dateController, fieldWidth),
             ),
           ),
-        ),
-      ],
-    );
+
+          const SizedBox(height: 12),
+          CompositedTransformTarget(
+            link: timeLink,
+            child: _buildCustomTimeBox(
+              context,
+              controller: timeController,
+              hint: "00:00 AM",
+              width: fieldWidth,
+              borderColor: timeError ? AppColors.primaryColor : Colors.transparent,
+              onTap: () => carController.toggleTimePicker(context, timeLink, timeController, fieldWidth),
+              iconWidget: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.keyboard_arrow_up, size: 16, color: AppColors.textColor),
+                  SizedBox(height: 2),
+                  Icon(Icons.keyboard_arrow_down, size: 16, color: AppColors.textColor),
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
+    });
   }
 
 //  Custom Box
-  Widget _buildCustomTimeBox(BuildContext context, {
-    required TextEditingController controller,
-    required String hint,
-    required Widget iconWidget,
-    required double width,
-    required VoidCallback onTap,
-  }) {
+  Widget _buildCustomTimeBox(
+      BuildContext context, {
+        required TextEditingController controller,
+        required String hint,
+        required double width,
+        required VoidCallback onTap,
+        required Widget iconWidget,
+        Color borderColor = Colors.transparent,
+      }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: width,
-        height: 52,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        height: 48,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         decoration: BoxDecoration(
           color: AppColors.secondaryColor,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: borderColor != Colors.transparent ? borderColor : Colors.transparent,
+            width: borderColor != Colors.transparent ? 1.5 : 0,
+          ),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: ValueListenableBuilder<TextEditingValue>(
-                valueListenable: controller,
-                builder: (context, value, child) {
-                  return Text(
-                    value.text.isEmpty ? hint : value.text,
-                    style: TTextTheme.insidetextfieldWrittenText(context),
-                    overflow: TextOverflow.ellipsis,
-                  );
-                },
+              child: Text(
+                controller.text.isEmpty ? hint : controller.text,
+                style: TTextTheme.insidetextfieldWrittenText(context),
               ),
             ),
             iconWidget,
@@ -1647,6 +1605,23 @@ class StepOneSelectionWidget extends StatelessWidget {
     const double webButtonWidth = 150.0;
     const double webButtonHeight = 45.0;
     final double spacing = AppSizes.padding(context);
+    void handleContinue() {
+      bool isValid = controller.validateForm();
+      print("Validation Result: $isValid"); // Debugging ke liye
+      print("Error Message: ${controller.errorMessage.value}");
+      if (controller.validateForm()) {
+        context.push('/stepTwoWidgetScreen', extra: {"hideMobileAppBar": true});
+      } else {
+        Get.snackbar(
+          "Required Fields",
+          "Please fill all marked fields to continue.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: AppColors.primaryColor,
+          colorText: Colors.white,
+          margin: const EdgeInsets.all(15),
+        );
+      }
+    }
 
     if (isMobile) {
       return Column(
@@ -1659,21 +1634,16 @@ class StepOneSelectionWidget extends StatelessWidget {
               backgroundColor: Colors.transparent,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
-              onTap: () {},
+              onTap: () => Get.back(),
             ),
           ),
           SizedBox(height: spacing),
           SizedBox(
-            width: webButtonWidth,
             height: webButtonHeight,
             child: AddButtonOfPickup(
               text: "Continue",
-              icon: Image.asset(
-                IconString.continueIcon,
-              ),
-              onTap: () {
-                context.push('/stepTwoWidgetScreen', extra: {"hideMobileAppBar": true});
-              },
+              icon: Image.asset(IconString.continueIcon),
+              onTap: handleContinue,
             ),
           ),
         ],
@@ -1681,7 +1651,7 @@ class StepOneSelectionWidget extends StatelessWidget {
     } else {
       return Row(
         children: [
-          Spacer(),
+          const Spacer(),
           SizedBox(
             width: webButtonWidth,
             height: webButtonHeight,
@@ -1690,7 +1660,7 @@ class StepOneSelectionWidget extends StatelessWidget {
               backgroundColor: Colors.transparent,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
-              onTap: () {},
+              onTap: () => Get.back(),
             ),
           ),
           SizedBox(width: spacing),
@@ -1699,15 +1669,10 @@ class StepOneSelectionWidget extends StatelessWidget {
             height: webButtonHeight,
             child: AddButtonOfPickup(
               text: "Continue",
-              icon: Image.asset(
-                IconString.continueIcon,
-              ),
-              onTap: () {
-                context.push('/stepTwoWidgetScreen', extra: {"hideMobileAppBar": true});
-              },
+              icon: Image.asset(IconString.continueIcon),
+              onTap: handleContinue,
             ),
           ),
-
         ],
       );
     }
