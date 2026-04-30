@@ -981,13 +981,11 @@ class AddDropOffDetailWidget extends StatelessWidget {
             child: Row(
               children: [
                 _infoBlock(IconString.smsIcon, TextString.titleEmailStepTwoDropOffAdd, "Contact@SoftSnip.com.au", context),
-                const SizedBox(width: 12),
+                const SizedBox(width: 24),
                 _infoBlock(IconString.callIcon, TextString.titleContactStepTwoDropOffAdd, "+12 3456 7890", context),
-                const SizedBox(width: 12),
+                const SizedBox(width: 24),
                 _infoBlock(IconString.location, TextString.titleAddressStepTwoDropOffAdd, "Toronto, California, 1234", context),
-                const SizedBox(width: 12),
-                _infoBlock(IconString.nidIcon, TextString.titleNidStepTwoDropOffAdd, "123 456 789", context),
-                const SizedBox(width: 12),
+                const SizedBox(width: 24),
               ],
             ),
           ),
@@ -1032,12 +1030,10 @@ class AddDropOffDetailWidget extends StatelessWidget {
       /// INFO BLOCKS
       const SizedBox(width: 20),
       _infoBlock(IconString.smsIcon, TextString.titleEmailStepTwoDropOffAdd, "Contact@SoftSnip.com.au", context),
-      const SizedBox(width: 15),
+      const SizedBox(width: 20),
       _infoBlock(IconString.callIcon,  TextString.titleContactStepTwoDropOffAdd, "+12 3456 7890", context),
-      const SizedBox(width: 15),
+      const SizedBox(width: 20),
       _infoBlock(IconString.location, TextString.titleAddressStepTwoDropOffAdd, "Toronto, California, 1234", context),
-      const SizedBox(width: 15),
-      _infoBlock(IconString.nidIcon, TextString.titleNidStepTwoDropOffAdd, "123 456 789", context),
       const SizedBox(width: 18),
 
       /// VIEW BUTTON

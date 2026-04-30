@@ -598,7 +598,6 @@ class StepOneSelectionWidget extends StatelessWidget {
       ),
     );
   }
-
   Widget _buildCarCardItem(BuildContext context, PickupCarController controller) {
     return Container(
       width: 790,
@@ -672,7 +671,6 @@ class StepOneSelectionWidget extends StatelessWidget {
       ),
     );
   }
-
   Widget _buildSelectedCarDisplay(BuildContext context, PickupCarController controller) {
     var car = controller.selectedCar.value!;
 
@@ -801,7 +799,6 @@ class StepOneSelectionWidget extends StatelessWidget {
       );
     });
   }
-
   Widget _buildInfoChip(String label, String value, Color color,BuildContext context) {
     return Container(
       decoration: BoxDecoration(
@@ -918,28 +915,25 @@ class StepOneSelectionWidget extends StatelessWidget {
               ],
             ),
 
-            const Spacer(),
-
-            Flexible(
-              flex: 10,
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 220),
-                  child: Wrap(
-                    spacing: 20, runSpacing: 15,
-                    alignment: WrapAlignment.center,
-                    children: [
-                      _buildCarSpecIcon(context, IconString.callIcon, TextString.subtitleAddCustomerInputFieldOne, customer['phone'] ?? "+12 3456 7890"),
-                      _buildCarSpecIcon(context, IconString.cardIconPickup, TextString.subtitleAddCustomerInputFieldTwo, customer['card'] ?? "1243567434"),
-                      _buildCarSpecIcon(context, IconString.licesnseNo, TextString.subtitleAddCustomerInputFieldThree, customer['license'] ?? "1245985642"),
-                      _buildCarSpecIcon(context, IconString.nidIcon, TextString.subtitleAddCustomerInputFieldFour, customer['Nid'] ?? "123 456 789"),
-                    ],
-                  ),
+            const SizedBox(width: 20),
+            Expanded(
+              flex: 3,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildCarSpecIcon(context, IconString.callIcon, TextString.subtitleAddCustomerInputFieldOne, customer['phone'] ?? "+12 3456 7890"),
+                    const SizedBox(width: 25),
+                    _buildCarSpecIcon(context, IconString.cardIconPickup, TextString.subtitleAddCustomerInputFieldTwo, customer['card'] ?? "1243567434"),
+                    const SizedBox(width: 25),
+                    _buildCarSpecIcon(context, IconString.licesnseNo, TextString.subtitleAddCustomerInputFieldThree, customer['license'] ?? "1245985642"),
+                  ],
                 ),
               ),
             ),
 
-            const Spacer(),
+            const SizedBox(width: 20),
             AddButtonOfPickup(text: "View", width: 80, height: 44, onTap: () {}),
           ],
         );
@@ -978,12 +972,10 @@ class StepOneSelectionWidget extends StatelessWidget {
           child: Row(
             children: [
               _buildCarSpecIcon(context, IconString.callIcon, TextString.subtitleAddCustomerInputFieldOne, customer['phone'] ?? "+12 3456 7890"),
-              const SizedBox(width: 20),
+              const SizedBox(width: 30),
               _buildCarSpecIcon(context, IconString.licesnseNo, TextString.subtitleAddCustomerInputFieldTwo, customer['license'] ?? "1245985642"),
-              const SizedBox(width: 20),
+              const SizedBox(width: 30),
               _buildCarSpecIcon(context, IconString.cardIconPickup, TextString.subtitleAddCustomerInputFieldThree, customer['card'] ?? "1243567434"),
-              const SizedBox(width: 20),
-              _buildCarSpecIcon(context, IconString.nidIcon, TextString.subtitleAddCustomerInputFieldFour, customer['Nid'] ?? "123 456 789"),
             ],
           ),
         ),
