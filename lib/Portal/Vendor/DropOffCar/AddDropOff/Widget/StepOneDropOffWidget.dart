@@ -1669,5 +1669,4 @@ class AddDropOffDetailWidget extends StatelessWidget {
     }
   }
 
-
 }
