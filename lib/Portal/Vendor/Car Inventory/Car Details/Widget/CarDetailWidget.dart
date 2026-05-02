@@ -659,7 +659,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
               spacing: gap,
               runSpacing: 12.0,
               children: [
-                _buildSizedBoxTile(itemWidth, context, "Registration", "1234567890", isMobile, tab),
+                _buildSizedBoxTile(itemWidth, context, "carRegistration.pdf", "Document", isMobile, tab),
                 _buildSizedBoxTile(itemWidth, context, "Tax Token", "Uploaded", isMobile, tab),
                 _buildSizedBoxTile(itemWidth, context, "Incoherence Paper", "Uploaded", isMobile, tab),
                 _buildSizedBoxTile(itemWidth, context, "Vin Number", "JTNBA3HK003001234", isMobile, tab),
@@ -688,13 +688,14 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
       String title,
       String status,
       bool uploaded,
-      {required bool isMobile, required bool tab}
+      {required bool isMobile, required bool tab, bool isPdf = false}
       ) {
 
     String iconPath;
     String lowerTitle = title.toLowerCase();
-
-    if (lowerTitle.contains("tax") || lowerTitle.contains("paper")) {
+    if (isPdf || lowerTitle.contains(".pdf") || lowerTitle.contains("registration")) {
+      iconPath = IconString.pdfIcon;
+    } else if (lowerTitle.contains("tax") || lowerTitle.contains("paper")) {
       iconPath = IconString.taxIcon;
     } else if (lowerTitle.contains("vin")) {
       iconPath = IconString.vinNumberIcon;
@@ -703,113 +704,65 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: isMobile
-          ? Column(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: 28,
-            width: 28,
-            padding: const EdgeInsets.all(6),
+            height: tab ? 40 : 45,
+            width: tab ? 40 : 45,
             decoration: BoxDecoration(
               color: AppColors.secondaryColor,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Image.asset(iconPath, fit: BoxFit.contain),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TTextTheme.pThree(context),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Flexible(
-                child: Text(
-                  status,
-                  style: TTextTheme.titleseven(context),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              const SizedBox(width: 4),
-              if (uploaded)
-                GestureDetector(
-                  onTap: () => Get.find<CarInventoryController>().open(ImageString.registrationForm),
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Image.asset(
-                      IconString.uploadedIcon,
-                      height: 14,
-                      width: 14,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ],
-      )
-          : Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            height: tab ? 32 : 38,
-            width: tab ? 32 : 38,
-            decoration: BoxDecoration(
-              color: AppColors.secondaryColor,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: Center(
-              child: Image.asset(iconPath, height: 18, width: 18),
+              child: Image.asset(
+                iconPath,
+                height: 24,
+                width: 24,
+                errorBuilder: (context, error, stackTrace) => const Icon(Icons.picture_as_pdf, color: Colors.red),
+              ),
             ),
           ),
-          const SizedBox(width: 6),
+          const SizedBox(width: 10),
           Flexible(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  title,
-                  style: TTextTheme.pThree(context),
+                  isPdf ? "Document" : status,
+                  style: TTextTheme.titleseven(context).copyWith(color: Colors.grey),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
+                const SizedBox(height: 2),
+
                 Row(
                   children: [
                     Flexible(
                       child: Text(
-                        status,
-                        style: TTextTheme.titleseven(context),
+                        title,
+                        style: TTextTheme.pThree(context).copyWith(fontWeight: FontWeight.w600),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const SizedBox(width: 7),
+                    const SizedBox(width: 8),
                     if (uploaded)
                       GestureDetector(
                         onTap: () => Get.find<CarInventoryController>().open(ImageString.registrationForm),
                         child: Container(
-                          padding: const EdgeInsets.all(4),
+                          padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                             color: AppColors.primaryColor,
-                            borderRadius: BorderRadius.circular(4),
+                            borderRadius: BorderRadius.circular(6),
                           ),
                           child: Image.asset(
                             IconString.uploadedIcon,
-                            height: 14,
-                            width: 14,
+                            height: 16,
+                            width: 16,
                             color: Colors.white,
                           ),
                         ),

@@ -54,7 +54,12 @@ class AddCarFormWidget extends StatelessWidget {
                 _buildResponsiveGrid(context, [
                   _buildSearchCarDropdown(context, "Car Make", controller.selectedBrand, id: 'search_car'),
                   _buildSearchCarDropdown(context, "Car Model", controller.selectedModel, id: 'Model'),
-                  _buildYearField(context, "Car Year", controller.selectedCarYear, id: 'year'),
+                  _buildYearField(
+                      context,
+                      "Car Year",
+                      controller.selectedCarYear,
+                      id: "year"
+                  ),
                   _buildTextField(context, "Car Registration Number", controller.regController,
                       maxLength: 10,
                       hint: "Write Registration Number...",
@@ -1061,25 +1066,49 @@ class AddCarFormWidget extends StatelessWidget {
   Widget _buildSaveBtn(VoidCallback onTap) => SizedBox(width: 150, height: 45, child: AddButton(text: "Save Vehicle", icon: Image.asset(IconString.saveVehicleIcon), onTap: onTap));
 
    // Year Field
-  Widget _buildYearField(BuildContext context, String label, RxString selected, {required String id}) {
+  Widget _buildYearField(
+      BuildContext context,
+      String label,
+      RxString selected,
+      {required String id}
+      ) {
     return Obx(() {
+      bool isOpen = controller.openedDropdown2.value == id;
+      var items = controller.getFilteredItems(id);
       String errorMsg = controller.dropdownErrors[id] ?? "";
       bool hasError = errorMsg.isNotEmpty;
-      bool isOpen = controller.isDateDropOpen.value;
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label, style: TTextTheme.titleTwo(context)),
           const SizedBox(height: 6),
-          CompositedTransformTarget(
-            link: controller.carYearLink,
-            child: GestureDetector(
-              onTap: () => controller.toggleCalendar(
-                  context,
-                  controller.carYearLink,
-                  controller.selectedYearCarController
+          LayoutBuilder(builder: (context, constraints) {
+            return PopupMenuButton<String>(
+              constraints: BoxConstraints(
+                minWidth: constraints.maxWidth,
+                maxWidth: constraints.maxWidth,
+                maxHeight: 400,
               ),
+              offset: const Offset(0, 48),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              color: Colors.white,
+              onOpened: () => controller.openedDropdown2.value = id,
+              onCanceled: () {
+                controller.openedDropdown2.value = "";
+                controller.searchCarText.value = "";
+              },
+              onSelected: (val) {
+                if (val != "SEARCH_FIELD") {
+                  selected.value = val;
+                  if (controller.dropdownErrors.containsKey(id)) {
+                    controller.dropdownErrors[id] = "";
+                  }
+
+                  controller.openedDropdown2.value = "";
+                  controller.searchCarText.value = "";
+                }
+              },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 height: 48,
@@ -1088,7 +1117,7 @@ class AddCarFormWidget extends StatelessWidget {
                   color: AppColors.secondaryColor,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: hasError ? AppColors.primaryColor: Colors.transparent,
+                    color: hasError ? AppColors.primaryColor : Colors.transparent,
                     width: 1.2,
                   ),
                 ),
@@ -1096,8 +1125,10 @@ class AddCarFormWidget extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        selected.value.isEmpty ? "Select Year..." : selected.value,
-                        style: TTextTheme.pOne(context)
+                        selected.value.isEmpty ? "Select $label" : selected.value,
+                        style: TTextTheme.pOne(context).copyWith(
+                          color: selected.value.isEmpty ? Colors.grey : Colors.black,
+                        ),
                       ),
                     ),
                     Image.asset(
@@ -1107,15 +1138,78 @@ class AddCarFormWidget extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-          ),
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem<String>(
+                    enabled: false,
+                    value: "SEARCH_FIELD",
+                    child: Container(
+                      height: 40,
+                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: AppColors.primaryColor.withOpacity(0.4)),
+                      ),
+                      child: TextField(
+                        cursorColor: AppColors.blackColor,
+                        autofocus: true,
+                        onChanged: (val) {
+                          controller.searchCarText.value = val;
+                        },
+                        style: TTextTheme.titleinputTextField(context),
+                        decoration: InputDecoration(
+                          hintText: "Search Year",
+                          hintStyle: TTextTheme.bodyRegular14Search(context),
+                          prefixIcon: Icon(Icons.search, color: AppColors.primaryColor, size: 18),
+                          filled: true,
+                          fillColor: AppColors.backgroundOfScreenColor,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (items.isEmpty)
+                    const PopupMenuItem(
+                      enabled: false,
+                      child: Center(child: Text("No years found")),
+                    ),
+
+                  ...items.map((item) {
+                    bool isSelected = selected.value == item;
+                    return PopupMenuItem<String>(
+                      value: item,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 22,
+                            height: 22,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                              border: Border.all(color: AppColors.primaryColor, width: 2),
+                            ),
+                            child: isSelected
+                                ? const Center(child: Icon(Icons.done, color: Colors.white, size: 14))
+                                : null,
+                          ),
+                          const SizedBox(width: 12),
+                          Text(item, style: TTextTheme.medium14(context)),
+                        ],
+                      ),
+                    );
+                  }),
+                ];
+              },
+            );
+          }),
           if (hasError)
             Padding(
               padding: const EdgeInsets.only(top: 6, left: 4),
-              child: Text(
-                errorMsg,
-                style: TTextTheme.ErrorStyle(context),
-              ),
+              child: Text(errorMsg, style: TTextTheme.ErrorStyle(context)),
             ),
         ],
       );

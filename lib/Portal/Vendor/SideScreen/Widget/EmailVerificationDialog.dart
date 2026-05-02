@@ -1,6 +1,7 @@
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
+import 'package:go_router/go_router.dart';
 
 class EmailVerificationDialog extends StatelessWidget {
   const EmailVerificationDialog({super.key});
@@ -71,13 +72,15 @@ class EmailVerificationDialog extends StatelessWidget {
                         height: 45,
                         width: isSmallMobile ? double.infinity : 145,
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                           Navigator.pop(context);
+                          },
                           style: OutlinedButton.styleFrom(
                             side: const BorderSide(color:AppColors.primaryColor, width: 1.2),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           ),
                           child: Text(
-                            "Verify Now",
+                            "Verify Later",
                             style: TTextTheme.requireImagesText(context),
                           ),
                         ),
@@ -86,14 +89,16 @@ class EmailVerificationDialog extends StatelessWidget {
                         height: 45,
                         width: isSmallMobile ? double.infinity : 145,
                         child: ElevatedButton(
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () {
+                            context.go('/twoStepVerificationOne');
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primaryColor,
                             elevation: 0,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           ),
                           child: Text(
-                            "Verify Later",
+                            "Verify Now",
                             style: TTextTheme.OwnerSelected(context),
                           ),
                         ),

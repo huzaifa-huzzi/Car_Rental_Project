@@ -116,9 +116,15 @@ class EditCarWidget extends StatelessWidget {
               _buildSectionTitle(context, "Car Identification"),
               const SizedBox(height: 15),
               _buildResponsiveGrid(context, [
-                _buildDropdown(context, "Car Make", ["Toyota", "Bmw", "Aston"], controller.selectedBrand2, id: 'make2'),
-                _buildDropdown(context, "Car Model", ["Corolla", "Civic"], controller.selectedModel2, id: 'model2'),
-                _buildDropdown(context, "Car Year", ["2023", "2024"], controller.selectedYear2, id: 'year2'),
+                _buildDropdown(context, "Car Make", controller.getFilteredItems2('make2'), controller.selectedBrand2, id: 'make2'),
+
+                _buildDropdown(context, "Car Model", controller.getFilteredItems2('model2'), controller.selectedModel2, id: 'model2'),
+                _buildYearField(
+                  context,
+                  "Car Year",
+                  controller.selectedYear2,
+                  id: "year2",
+                ),
                 _buildTextField(context, "Car Registration Number", controller.reg2Controller, hint: "ABC-12345"),
                 _buildTextField(context, "VIN Number", controller.vin2Controller, hint: "17-digit VIN number"),
               ]),
@@ -131,19 +137,22 @@ class EditCarWidget extends StatelessWidget {
               _buildSectionTitle(context, "Car Specification"),
               const SizedBox(height: 15),
               _buildResponsiveGrid(context, [
-                _buildDropdown(context, "Car Body Type", ["Sedan", "SUV", "Hatchback"], controller.selectedBodyType2, id: 'body2'),
-                _buildDropdown(context, "Car Transmission", ["Automatic", "Manual"], controller.selectedTransmission2, id: 'trans2'),
-                _buildTextField(context, "Car Seats", controller.seats2Controller, hint: "5"),
-                _buildTextField(context, "Car Engine Size", controller.engine2Controller, hint: "2.5L"),
-                _buildTextField(context, "Car Color", controller.color2Controller, hint: "Black"),
-                _buildDropdown(context, "Car Fuel Type", ["Petrol", "Diesel", "Electric"], controller.selectedFuel2, id: 'fuel2'),
+                _buildDropdown(context, "Car Body Type", controller.getFilteredItems2('body2'), controller.selectedBodyType2, id: 'body2'),
+                _buildDropdown(context, "Car Transmission", controller.getFilteredItems2('trans2'), controller.selectedTransmission2, id: 'trans2'),
+                _buildDropdown(context, "Car Seats", controller.getFilteredItems2('seats2'), controller.selectedSeats2, id: 'seats2'),
+                _buildDropdown(context, "Car Engine Size", controller.getFilteredItems2('engine2'), controller.selectedEngine2, id: 'engine2'),
+                _buildDropdown(context, "Car Color", controller.getFilteredItems2('color2'), controller.selectedColor2, id: 'color2'),
+
+                _buildDropdown(context, "Car Fuel Type", controller.getFilteredItems2('fuel2'), controller.selectedFuel2, id: 'fuel2'),
+
                 _buildTextField(context, "Car Value", controller.value2Controller, prefix: "\$ ", hint: "30,000"),
                 _buildTextField(context, "Weekly Rent (AUD)", controller.weekly2RentController, prefix: "\$ ", hint: "120"),
-                _buildStatusDropdown(context, "Status", ["Available", "Maintenance", "Unavailable"], controller.selectedStatus2, id: 'status2'),
+
+                _buildStatusDropdown(context, "Status", controller.getFilteredItems2('status2'), controller.selectedStatus2, id: 'status2'),
               ]),
-
               SizedBox(height: AppSizes.verticalPadding(context)),
-
+              Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
+              SizedBox(height: AppSizes.verticalPadding(context)),
               /// IMAGE UPLOAD
               Text("Upload Car Images", style: TTextTheme.btnSix(context)),
               SizedBox(height: AppSizes.verticalPadding(context) * 0.5),
@@ -228,11 +237,12 @@ class EditCarWidget extends StatelessWidget {
               constraints: BoxConstraints(
                 minWidth: constraints.maxWidth,
                 maxWidth: constraints.maxWidth,
+                maxHeight: 300,
               ),
-              offset: const Offset(0, 45),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              color: AppColors.secondaryColor,
-              elevation: 4,
+              offset: const Offset(0, 48),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              color: Colors.white,
+              elevation: 8,
               tooltip: '',
               onOpened: () => controller.openedDropdown2.value = id,
               onCanceled: () => controller.openedDropdown2.value = "",
@@ -241,15 +251,16 @@ class EditCarWidget extends StatelessWidget {
                 controller.openedDropdown2.value = "";
                 controller.dropdownErrors.remove(id);
               },
-              child: Container(
-                height: 45,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                height: 48,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
                   color: AppColors.secondaryColor,
-                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
+                  borderRadius: BorderRadius.circular(8),
                   border: Border.all(
                     color: hasError ? AppColors.primaryColor : Colors.transparent,
-                    width: 1,
+                    width: 1.2,
                   ),
                 ),
                 child: Row(
@@ -257,9 +268,9 @@ class EditCarWidget extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        selected.value.isEmpty ? "Select" : selected.value,
+                        selected.value.isEmpty ? "Select $label" : selected.value,
                         style: selected.value.isEmpty
-                            ? TTextTheme.titleFour(context)
+                            ? TTextTheme.pOne(context).copyWith(color: Colors.grey)
                             : TTextTheme.dropdowninsideText(context),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -272,33 +283,44 @@ class EditCarWidget extends StatelessWidget {
                 ),
               ),
               itemBuilder: (context) {
-                return items.asMap().entries.map((entry) {
-                  int index = entry.key;
-                  String value = entry.value;
-                  bool isLast = index == items.length - 1;
+                return items.map((value) {
+                  bool isSelected = selected.value == value;
 
                   return PopupMenuItem<String>(
                     value: value,
                     padding: EdgeInsets.zero,
-                    height: 48,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                          child: Text(
-                            value,
-                            style: TTextTheme.dropdowninsideText(context),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 22,
+                            height: 22,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                              border: Border.all(
+                                color: AppColors.primaryColor,
+                                width: 2,
+                              ),
+                            ),
+                            child: isSelected
+                                ? const Center(
+                              child: Icon(Icons.done, color: Colors.white, size: 14),
+                            )
+                                : null,
                           ),
-                        ),
-                        if (!isLast)
-                          Divider(
-                            height: 1,
-                            thickness: 1,
-                            color: AppColors.quadrantalTextColor,
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              value,
+                              style: TTextTheme.medium14(context).copyWith(
+                                color: isSelected ? AppColors.primaryColor : Colors.black87,
+                              ),
+                            ),
                           ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 }).toList();
@@ -307,11 +329,161 @@ class EditCarWidget extends StatelessWidget {
           }),
           if (hasError)
             Padding(
-              padding: const EdgeInsets.only(top: 4, left: 4),
+              padding: const EdgeInsets.only(top: 6, left: 4),
               child: Text(
-                "Required",
+                controller.dropdownErrors[id] ?? "Required",
                 style: TTextTheme.ErrorStyle(context),
               ),
+            ),
+        ],
+      );
+    });
+  }
+
+
+  Widget _buildYearField(
+      BuildContext context,
+      String label,
+      RxString selected,
+      {
+        required String id,
+      }) {
+    return Obx(() {
+      bool isEditScreen = id.endsWith("2");
+      List<String> items = isEditScreen
+          ? controller.getFilteredItems2(id)
+          : controller.getFilteredItems(id);
+
+      RxString searchText = isEditScreen
+          ? controller.searchCarText2
+          : controller.searchCarText;
+
+      bool isOpen = controller.openedDropdown3.value == id;
+      String errorMsg = controller.dropdownErrors[id] ?? controller.dropdownErrors2[id] ?? "";
+      bool hasError = errorMsg.isNotEmpty;
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: TTextTheme.titleTwo(context)),
+          const SizedBox(height: 6),
+          LayoutBuilder(builder: (context, constraints) {
+            return PopupMenuButton<String>(
+              constraints: BoxConstraints(
+                minWidth: constraints.maxWidth,
+                maxWidth: constraints.maxWidth,
+                maxHeight: 400,
+              ),
+              offset: const Offset(0, 48),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              color: Colors.white,
+              onOpened: () => controller.openedDropdown3.value = id,
+              onCanceled: () {
+                controller.openedDropdown3.value = "";
+                searchText.value = "";
+              },
+              onSelected: (val) {
+                if (val != "SEARCH_FIELD") {
+                  selected.value = val;
+                  if (controller.dropdownErrors.containsKey(id)) controller.dropdownErrors[id] = "";
+                  if (controller.dropdownErrors2.containsKey(id)) controller.dropdownErrors2[id] = "";
+
+                  controller.openedDropdown3.value = "";
+                  searchText.value = "";
+                }
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                height: 48,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: AppColors.secondaryColor,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: hasError ? AppColors.primaryColor : Colors.transparent,
+                    width: 1.2,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        selected.value.isEmpty ? "Search $label..." : selected.value,
+                        style: TTextTheme.pOne(context).copyWith(
+                          color: selected.value.isEmpty ? Colors.grey : Colors.black,
+                        ),
+                      ),
+                    ),
+                    Image.asset(
+                      isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon,
+                      height: 18,
+                    ),
+                  ],
+                ),
+              ),
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem<String>(
+                    enabled: false,
+                    value: "SEARCH_FIELD",
+                    child: Container(
+                      height: 40,
+                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: AppColors.primaryColor.withOpacity(0.5)),
+                      ),
+                      child: TextField(
+                        cursorColor: AppColors.blackColor,
+                        onChanged: (val) => searchText.value = val,
+                        style: TTextTheme.titleinputTextField(context),
+                        decoration: InputDecoration(
+                          hintText: "Search",
+                          hintStyle: TTextTheme.bodyRegular14Search(context),
+                          prefixIcon: Icon(Icons.search, color: AppColors.primaryColor, size: 18),
+                          filled: true,
+                          fillColor: AppColors.backgroundOfScreenColor,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                        ),
+                      ),
+                    ),
+                  ),
+                  ...items.map((item) {
+                    bool isSelected = selected.value == item;
+                    return PopupMenuItem<String>(
+                      value: item,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 22,
+                            height: 22,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                              border: Border.all(color: AppColors.primaryColor, width: 2),
+                            ),
+                            child: isSelected
+                                ? const Center(child: Icon(Icons.done, color: Colors.white, size: 14))
+                                : null,
+                          ),
+                          const SizedBox(width: 12),
+                          Text(item, style: TTextTheme.medium14(context)),
+                        ],
+                      ),
+                    );
+                  }),
+                ];
+              },
+            );
+          }),
+          if (hasError)
+            Padding(
+              padding: const EdgeInsets.only(top: 6, left: 4),
+              child: Text(errorMsg, style: TTextTheme.ErrorStyle(context)),
             ),
         ],
       );
@@ -463,9 +635,11 @@ class EditCarWidget extends StatelessWidget {
 
 //  Responsive Status Dropdown
   Widget _buildStatusDropdown(BuildContext context, String label, List<String> items, RxString selected, {required String id}) {
+    final List<String> statusItems = ["Available", "Unavailable"];
+
     return Obx(() {
       bool isOpen = controller.openedDropdown2.value == id;
-      bool hasError = controller.dropdownErrors.containsKey(id);
+      bool hasError = controller.dropdownErrors2.containsKey(id);
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -474,16 +648,21 @@ class EditCarWidget extends StatelessWidget {
           const SizedBox(height: 6),
           LayoutBuilder(builder: (context, constraints) {
             return PopupMenuButton<String>(
-              constraints: BoxConstraints(minWidth: constraints.maxWidth, maxWidth: constraints.maxWidth),
-              offset: const Offset(0, 45),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              color: AppColors.secondaryColor,
+              constraints: BoxConstraints(
+                minWidth: constraints.maxWidth,
+                maxWidth: constraints.maxWidth,
+                maxHeight: 200,
+              ),
+              offset: const Offset(0, 48),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              color: Colors.white,
+              elevation: 8,
               onOpened: () => controller.openedDropdown2.value = id,
               onCanceled: () => controller.openedDropdown2.value = "",
               onSelected: (val) {
                 selected.value = val;
                 controller.openedDropdown2.value = "";
-                controller.dropdownErrors.remove(id);
+                controller.dropdownErrors2.remove(id);
               },
               child: Container(
                 height: 48,
@@ -492,32 +671,55 @@ class EditCarWidget extends StatelessWidget {
                   color: AppColors.secondaryColor,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: hasError ? AppColors.primaryColor: Colors.transparent,
-                    width: 1,
+                    color: hasError ? AppColors.primaryColor : Colors.transparent,
+                    width: 1.2,
                   ),
                 ),
                 child: Row(
                   children: [
-                    Expanded(child: Align(alignment: Alignment.centerLeft, child: _getStatusChip(selected.value, context))),
+                    Expanded(
+                        child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: _getStatusChip(selected.value.isEmpty ? "Available" : selected.value, context)
+                        )
+                    ),
                     const SizedBox(width: 8),
-                    Image.asset(isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon, height: 18),
+                    Image.asset(
+                        isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon,
+                        height: 18
+                    ),
                   ],
                 ),
               ),
-              itemBuilder: (context) => items.asMap().entries.map((entry) {
-                bool isLast = entry.key == items.length - 1;
+              itemBuilder: (context) => statusItems.map((value) {
+                bool isSelected = (selected.value.isEmpty && value == "Available") || selected.value == value;
+
                 return PopupMenuItem<String>(
-                  value: entry.value,
+                  value: value,
                   padding: EdgeInsets.zero,
-                  child: Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: Align(alignment: Alignment.centerLeft, child: _getStatusChip(entry.value, context)),
-                      ),
-                      if (!isLast) Divider(height: 1, color: AppColors.quadrantalTextColor),
-                    ],
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 22,
+                          height: 22,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                            border: Border.all(
+                              color: AppColors.primaryColor,
+                              width: 2,
+                            ),
+                          ),
+                          child: isSelected
+                              ? const Center(child: Icon(Icons.done, color: Colors.white, size: 14))
+                              : null,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(child: _getStatusChip(value, context)),
+                      ],
+                    ),
                   ),
                 );
               }).toList(),
@@ -525,7 +727,7 @@ class EditCarWidget extends StatelessWidget {
           }),
           if (hasError)
             Padding(
-              padding: const EdgeInsets.only(top: 4, left: 4),
+              padding: const EdgeInsets.only(top: 6, left: 4),
               child: Text(
                 "Status is required",
                 style: TTextTheme.ErrorStyle(context),
@@ -550,8 +752,8 @@ class EditCarWidget extends StatelessWidget {
       statusColor = AppColors.maintenanceBackgroundColor;
       textColor = AppColors.textColor;
     } else if (checkStatus == "unavailable") {
-      statusColor = AppColors.sideBoxesColor;
-      textColor = AppColors.secondTextColor;
+      statusColor = AppColors.oneBackground;
+      textColor = Colors.white;
     }
 
     return Align(

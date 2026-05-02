@@ -6,7 +6,6 @@ import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'dart:math';
 import 'package:flutter/foundation.dart' show kIsWeb, Uint8List;
 
 class ImageHolder {
@@ -103,23 +102,12 @@ class CarInventoryController extends GetxController {
     }
   }
 
-
-  final _random = Random();
-
-  String _getRandomStatus() {
-    final statusOptions = ["Available", "Maintenance", "Unavailable"];
-    final randomIndex = _random.nextInt(statusOptions.length);
-    return statusOptions[randomIndex];
-  }
-
   @override
   void onInit() {
     super.onInit();
 
     List<String> brands = ["Aston", "BMW", "Audi", "Ford", "Honda"];
-    List<String> models = ["Martin", "X7", "A4", "Focus", "Civic"];
     List<String> transmissions = ["Auto", "Manual"];
-    List<String> years = ["2023", "2022", "2020", "2018", "2017"];
 
     carList.value = List.generate(10, (i) {
       int index = i % brands.length;
@@ -145,6 +133,7 @@ class CarInventoryController extends GetxController {
         "price": "120\$ Weekly",
       };
     });
+    selectedSeats2.value = "5";
   }
 
 
@@ -190,19 +179,19 @@ class CarInventoryController extends GetxController {
     }
   }
 
-
+  // Links aur Variables
   final LayerLink carYearLink = LayerLink();
-  final TextEditingController selectedYearCarController = TextEditingController();
+  final LayerLink year2Link = LayerLink();
   var selectedCarYear = "".obs;
-  final GlobalKey carYearKey = GlobalKey();
+  var selectedYear2 = "".obs;
 
   OverlayEntry? calendarOverlay;
 
-  void toggleCalendar(BuildContext context, LayerLink link, TextEditingController targetController) {
+  void toggleCalendar(BuildContext context, LayerLink link, Function(String) onSelected) {
     if (calendarOverlay != null) {
       removeCalendar();
     } else {
-      calendarOverlay = _createCalendarOverlay(context, link, targetController);
+      calendarOverlay = _createCalendarOverlay(context, link, onSelected);
       Overlay.of(context).insert(calendarOverlay!);
       isDateDropOpen.value = true;
     }
@@ -214,39 +203,13 @@ class CarInventoryController extends GetxController {
     isDateDropOpen.value = false;
   }
 
-
   OverlayEntry _createCalendarOverlay(
       BuildContext context,
       LayerLink link,
-      TextEditingController targetController,
+      Function(String) onSelected,
       ) {
     final screenSize = MediaQuery.of(context).size;
-    final renderBox = context.findRenderObject() as RenderBox;
-    final position = renderBox.localToGlobal(Offset.zero);
-
-    double overlayWidth;
-    if (screenSize.width < 400) {
-      overlayWidth = screenSize.width * 0.9;
-    } else if (screenSize.width < 600) {
-      overlayWidth = 260;
-    } else if (screenSize.width < 1000) {
-      overlayWidth = 280;
-    } else {
-      overlayWidth = 300;
-    }
-    double dx = 0;
-    if (position.dx + overlayWidth > screenSize.width) {
-      dx = screenSize.width - (position.dx + overlayWidth) - 10;
-    }
-    if (position.dx + dx < 10) {
-      dx = -position.dx + 10;
-    }
-    double dy = 6;
-    double estimatedHeight = 320;
-
-    if (position.dy + estimatedHeight > screenSize.height) {
-      dy = -estimatedHeight - 10;
-    }
+    double overlayWidth = screenSize.width < 400 ? screenSize.width * 0.9 : 300;
 
     return OverlayEntry(
       builder: (context) => Stack(
@@ -261,12 +224,8 @@ class CarInventoryController extends GetxController {
             link: link,
             showWhenUnlinked: false,
             targetAnchor: Alignment.bottomLeft,
-            followerAnchor: dy < 0
-                ? Alignment.bottomLeft
-                : Alignment.topLeft,
-
-            offset: Offset(dx, dy),
-
+            followerAnchor: Alignment.topLeft,
+            offset: const Offset(0, 5),
             child: Material(
               elevation: 10,
               borderRadius: BorderRadius.circular(12),
@@ -277,8 +236,7 @@ class CarInventoryController extends GetxController {
                   width: overlayWidth,
                   onCancel: removeCalendar,
                   onDateSelected: (date) {
-                    selectedCarYear.value = "${date.year}";
-                    targetController.text = "${date.year}";
+                    onSelected("${date.year}");
                     removeCalendar();
                   },
                 ),
@@ -289,6 +247,20 @@ class CarInventoryController extends GetxController {
       ),
     );
   }
+
+
+
+  List<String> yearsList = List.generate(
+      101,
+          (index) => (2050 - index).toString()
+  );
+
+  List<String> yearsList2 = List.generate(
+      101,
+          (index) => (2050 - index).toString()
+  );
+
+
 
   void removeDocumentSlot(int index) {
     if (index >= 0 && index < selectedDocuments.length) {
@@ -622,11 +594,12 @@ class CarInventoryController extends GetxController {
 
   var selectedBrand2 = "".obs;
   var selectedModel2 = "".obs;
-  var selectedYear2 = "".obs;
   var selectedBodyType2 = "".obs;
   var selectedStatus2 = "".obs;
   var selectedTransmission2 = "".obs;
   var selectedFuel2 = "".obs;
+
+
 
 
 
@@ -767,6 +740,88 @@ class CarInventoryController extends GetxController {
 
     return isValid;
   }
+
+  var selectedSeats2 = "5".obs;
+  var selectedEngine2 = "".obs;
+  var selectedColor2 = "".obs;
+  var searchCarText2 = "".obs;
+
+  final List<String> allBrands2 = ["Toyota", "Ford", "Honda", "Tesla", "BMW", "Audi"];
+
+  final List<String> allModels2 = [
+    "Corolla", "Camry", "Prado", "Hilux",
+    "Focus", "Mustang", "F-150", "Explorer",
+    "Civic", "Accord", "CR-V",
+    "Model S", "Model 3", "Model X", "Model Y"
+  ];
+  final List<String> bodyTypes2 = ["Sedan", "SUV", "Hatchback", "Coupe", "Wagon", "Convertible", "ute", "Van", "Truck", "Other"];
+  final List<String> transmissions2 = ["Automatic", "Manual"];
+  final List<String> fuelTypes2 = ["Petrol", "Diesel", "Hybrid", "Plug-in Hybrid", "Electric", "LPG"];
+  final List<String> statuses2 = ["Available", "Maintenance", "Unavailable"];
+  final List<String> seatOptions2 = ["2", "4", "5", "7","8","9","other"];
+  final List<String> engineOptions2 = ["0.8", "1.0", "1.2", "1.3", "1.4", "1.5", "1.6", "1.8", "2.0", "2.2", "2.4", "2.5", "2.7", "3.0", "3.5", "4.0", "4.5", "5.0", "other"];
+  final List<String> colorOptions2 = ["White", "Black", "Silver", "Grey", "Red", "Blue", "Green", "Yellow", "Brown", "Gold", "Orange", "Purple", "Other"];
+
+  List<String> getFilteredItems2(String id) {
+    List<String> currentList = [];
+    switch (id) {
+      case 'year2':
+        currentList = yearsList;
+
+      case 'make2':
+        currentList = allBrands2;
+        break;
+
+      case 'model2':
+        currentList = allModels2;
+        break;
+
+      case 'body2':
+        currentList = bodyTypes2;
+        break;
+
+      case 'trans2':
+        currentList = transmissions2;
+        break;
+
+      case 'fuel2':
+        currentList = fuelTypes2;
+        break;
+
+      case 'status2':
+        currentList = statuses2;
+        break;
+
+      case 'seats2':
+        currentList = seatOptions2;
+        break;
+
+      case 'engine2':
+        currentList = engineOptions2;
+        break;
+
+      case 'color2':
+        currentList = colorOptions2;
+        break;
+
+      default:
+        currentList = [];
+    }
+
+    if (searchCarText2.value.isEmpty) {
+      return currentList;
+    } else {
+      return currentList
+          .where((item) => item.toLowerCase().contains(searchCarText2.value.toLowerCase().trim()))
+          .toList();
+    }
+  }
+  void resetSearch2() {
+    searchCarText2.value = "";
+    openedDropdown2.value = "";
+  }
+
+
   /// Sorting
   var sortColumn = "".obs;
   var sortOrder = 0.obs;
@@ -848,6 +903,9 @@ class CarInventoryController extends GetxController {
     List<String> currentList = [];
 
     switch (id) {
+      case 'year':
+        currentList = yearsList2;
+        break;
       case 'search_car':
         currentList = allBrands;
         break;

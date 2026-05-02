@@ -1033,6 +1033,7 @@ class PickupCarController extends GetxController {
     isConfirmed.value = true;
     signatureError.value = "";
   }
+  final formKey = GlobalKey<FormState>();
 
 }
 

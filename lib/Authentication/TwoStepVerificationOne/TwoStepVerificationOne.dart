@@ -18,7 +18,7 @@ class TwoStepVerificationOne extends StatefulWidget {
 }
 
 class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
-  final controller = Get.put(LoginController());
+  final controller = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,21 +28,18 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
     return Scaffold(
       body: Stack(
         children: [
-          // Background
           Row(
             children: [
               Expanded(child: Container(color: AppColors.secondaryColor)),
               Expanded(child: Container(color: AppColors.backgroundOfPickupsWidget)),
             ],
           ),
-
           Align(
             alignment: const Alignment(0, -0.1),
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  // Logo
                   if (!isMobile)
                     Align(
                       alignment: Alignment.topLeft,
@@ -54,7 +51,6 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
                   if (isMobile) _buildLogo(),
                   if (isMobile) const SizedBox(height: 30),
 
-                  // OTP Card
                   Container(
                     constraints: const BoxConstraints(maxWidth: 450),
                     padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 40),
@@ -71,71 +67,65 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
                     ),
                     child: Column(
                       children: [
-
                         Image.asset(ImageString.smartPhoneImage),
                         const SizedBox(height: 25),
-
-                        //  Headings
-                         Text(TextString.twoStepLogin,
-                            style: TTextTheme.h11Style(context)),
+                        Text(TextString.twoStepLogin, style: TTextTheme.h11Style(context)),
                         const SizedBox(height: 10),
 
-                        RichText(
+                        Obx(() => RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
                             children: [
-                              TextSpan(text: "Enter the verification code we sent to \n",style: TTextTheme.otpMainText(context)),
-                              TextSpan(text: TextString.twoStepName,
-                                  style: TTextTheme.otpSubtitleText(context)),
-                              TextSpan(
-                                text: TextString.twoStepResend,
-                                style: TTextTheme.titleSmallRegister(context)
-                              ),
+                              TextSpan(text: "Enter the verification code we sent to \n", style: TTextTheme.otpMainText(context)),
+                              TextSpan(text: TextString.twoStepName, style: TTextTheme.otpSubtitleText(context)),
+                              TextSpan(text: " ${TextString.twoStepResend}", style: TTextTheme.titleSmallRegister(context)),
                               TextSpan(
                                 text: " ${controller.secondsRemaining}S",
                                 style: TTextTheme.otpResend(context),
                               ),
                             ],
                           ),
-                        ),
+                        )),
                         const SizedBox(height: 35),
-
-                         Text(TextString.twoStepSixDigit,
-                            style: TTextTheme.otpSubtitleText2(context)),
+                        Text(TextString.twoStepSixDigit, style: TTextTheme.otpSubtitleText2(context)),
                         const SizedBox(height: 20),
-
-                        //  6-Digit OTP Boxes
                         Wrap(
                           alignment: WrapAlignment.center,
                           spacing: 8,
                           runSpacing: 8,
                           children: List.generate(6, (index) => _buildOtpBox(index)),
                         ),
-                        const SizedBox(height: 35),
+                        Obx(() => controller.showOtpError.value
+                            ? Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Text(
+                            "* Required: Please enter 6-digit code",
+                            style: TextStyle(color: AppColors.primaryColor, fontSize: 12, fontWeight: FontWeight.w500),
+                          ),
+                        )
+                            : const SizedBox.shrink()),
 
-                        //  Submit Button
-                        PrimaryBtnOfLogin(
-                          text:"Submit",
-                          onTap:(){
-                            context.push('/newPassword');
+                        const SizedBox(height: 35),
+                        Obx(() => PrimaryBtnOfLogin(
+                          text: controller.isLoading.value ? "Verifying..." : "Submit",
+                          onTap: () {
+                            if (controller.validateOtp()) {
+                              context.push('/newPassword');
+                            }
                           },
                           width: double.infinity,
                           height: 50,
                           borderRadius: BorderRadius.circular(8),
-                        ),
+                        )),
 
                         const SizedBox(height: 30),
-
-                        //  Footer
                         Wrap(
                           alignment: WrapAlignment.center,
                           children: [
-                             Text(TextString.twoStepFooterOne, style:TTextTheme.titleSmallRemember(context)),
-                             Text(TextString.twoStepResend,
-                                style: TTextTheme.titleSmallRegister(context)),
-                             Text(TextString.twoStepFooterTwo, style: TTextTheme.titleSmallRemember(context)),
-                             Text(TextString.twoStepEdit,
-                                style: TTextTheme.titleSmallRegister(context)),
+                            Text(TextString.twoStepFooterOne, style: TTextTheme.titleSmallRemember(context)),
+                            Text(TextString.twoStepResend, style: TTextTheme.titleSmallRegister(context)),
+                            Text(TextString.twoStepFooterTwo, style: TTextTheme.titleSmallRemember(context)),
+                            Text(TextString.twoStepEdit, style: TTextTheme.titleSmallRegister(context)),
                           ],
                         ),
                       ],
@@ -149,58 +139,77 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
       ),
     );
   }
+  /// ----------- Extra Widget --------///
 
-  /// ---------- Extra Widgets ------ ///
-
-
+   // Otp
   Widget _buildOtpBox(int index) {
     final width = MediaQuery.of(context).size.width;
     final boxSize = width < 400 ? 42.0 : 50.0;
 
-    return SizedBox(
-      width: boxSize,
-      height: boxSize + 5,
-      child: TextField(
-        cursorColor: AppColors.blackColor,
-        controller: controller.otpControllers2[index],
-        textAlign: TextAlign.center,
-        keyboardType: TextInputType.number,
-        inputFormatters: [
-          LengthLimitingTextInputFormatter(1),
-          FilteringTextInputFormatter.digitsOnly,
-        ],
-        onChanged: (value) {
-          if (value.isNotEmpty && index < 5) {
-            FocusScope.of(context).nextFocus();
-          } else if (value.isEmpty && index > 0) {
-            FocusScope.of(context).previousFocus();
-          }
-        },
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.white,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: AppColors.tertiaryTextColor),
+    return Obx(() {
+      bool hasError = controller.showOtpError.value && controller.otpControllers2[index].text.isEmpty;
+
+      return SizedBox(
+        width: boxSize,
+        height: boxSize + 5,
+        child: TextField(
+          cursorColor: AppColors.blackColor,
+          controller: controller.otpControllers2[index],
+          textAlign: TextAlign.center,
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(1),
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          onChanged: (value) {
+            if (value.isNotEmpty) {
+              controller.showOtpError.value = false;
+            }
+
+            if (value.isNotEmpty && index < 5) {
+              FocusScope.of(context).nextFocus();
+            } else if (value.isEmpty && index > 0) {
+              FocusScope.of(context).previousFocus();
+            }
+
+            if (value.isNotEmpty && index == 5) {
+              if (controller.validateOtp()) {
+                context.go('/newPassword');
+              }
+            }
+          },
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.white,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                color: hasError ? AppColors.primaryColor : AppColors.tertiaryTextColor,
+                width: hasError ? 1.5 : 1.0,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                color: hasError ? AppColors.primaryColor : AppColors.primaryColor,
+                width: 1.5,
+              ),
+            ),
           ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.5),
-          ),
+          style: TTextTheme.btnEight(context),
         ),
-        style: TTextTheme.btnEight(context),
-      ),
-    );
+      );
+    });
   }
 
-
+   // Logo
   Widget _buildLogo() {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Image.asset(IconString.symbol),
         const SizedBox(width: 10),
-         Text("SoftSnip", style: TTextTheme.h6Style(context)),
+        Text("SoftSnip", style: TTextTheme.h6Style(context)),
       ],
     );
   }

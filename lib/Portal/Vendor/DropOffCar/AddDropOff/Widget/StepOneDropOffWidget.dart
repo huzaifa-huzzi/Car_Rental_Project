@@ -1395,7 +1395,6 @@ class AddDropOffDetailWidget extends StatelessWidget {
     return SizedBox(
       width: width,
       child: FormField<String>(
-        // 🔥 Validation logic yahan shift ho gayi
         validator: (value) {
           if (!isReadOnly) {
             if (txtController.text.trim().isEmpty) {
@@ -1415,8 +1414,6 @@ class AddDropOffDetailWidget extends StatelessWidget {
                   overflow: TextOverflow.ellipsis
               ),
               const SizedBox(height: 8),
-
-              // Input Box
               Focus(
                 onFocusChange: (hasFocus) {
                   if (!isReadOnly) {
@@ -1434,8 +1431,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: AppColors.secondaryColor,
                         borderRadius: BorderRadius.circular(6),
-                        // Agar error hai to border red dikhana hai to line niche add karein
-                        border: state.hasError ? Border.all(color: Colors.red.withOpacity(0.5), width: 1) : null,
+                        border: state.hasError ? Border.all(color: AppColors.primaryColor, width: 1) : null,
                         boxShadow: (!isReadOnly && hasFocus) ? [
                           BoxShadow(
                             color: AppColors.fieldsBackground,
@@ -1445,21 +1441,20 @@ class AddDropOffDetailWidget extends StatelessWidget {
                           )
                         ] : [],
                       ),
-                      child: TextField( // TextFormField ki jagah TextField kyunki validation FormField handle kar raha hai
+                      child: TextField(
                         readOnly: isReadOnly,
                         cursorColor: AppColors.blackColor,
                         controller: txtController,
                         textAlignVertical: TextAlignVertical.center,
                         style: TTextTheme.insidetextfieldWrittenText(context),
                         keyboardType: TextInputType.number,
-                        onChanged: (val) => state.didChange(val), // 🔥 Error reset karne ke liye
+                        onChanged: (val) => state.didChange(val),
                         decoration: InputDecoration(
                           hintText: hint,
                           hintStyle: TTextTheme.insidetextfieldWrittenText(context),
                           contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                           border: InputBorder.none,
                           isDense: true,
-                          // Default error hide kar di
                           errorText: null,
                           errorStyle: const TextStyle(height: 0),
                         ),
@@ -1468,14 +1463,12 @@ class AddDropOffDetailWidget extends StatelessWidget {
                   },
                 ),
               ),
-
-              // 🔥 Yeh hai aapka "Required" text jo field se bahar niche aayega
               if (state.hasError)
                 Padding(
                   padding: const EdgeInsets.only(top: 6, left: 4),
                   child: Text(
                     state.errorText!,
-                    style: const TextStyle(color: Colors.red, fontSize: 11, fontWeight: FontWeight.w400),
+                    style: TTextTheme.ErrorStyle(context),
                   ),
                 ),
             ],
@@ -1494,7 +1487,6 @@ class AddDropOffDetailWidget extends StatelessWidget {
     if (txtController.text.isEmpty && items.isNotEmpty) {
       txtController.text = items.first;
     }
-
     return SizedBox(
       width: width,
       child: FormField<String>(
@@ -1668,5 +1660,8 @@ class AddDropOffDetailWidget extends StatelessWidget {
       );
     }
   }
+
+
+
 
 }

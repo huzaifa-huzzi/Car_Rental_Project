@@ -1,3 +1,4 @@
+import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -153,15 +154,27 @@ class LoginController extends GetxController {
       context.go('/authSuccess');
     }
   }
-  // Verification One Screen
 
-  final List<TextEditingController> otpControllers = List.generate(6, (index) => TextEditingController());
+  // Two StepVerification
+  var secondsRemaining = 30.obs;
+  var showOtpError = false.obs;
 
-  var secondsRemaining = 59.obs;
+  final List<TextEditingController> otpControllers2 =
+  List.generate(6, (index) => TextEditingController());
+  bool get isOtpFilled => otpControllers2.every((c) => c.text.isNotEmpty);
 
+  bool validateOtp() {
+    if (isOtpFilled) {
+      showOtpError.value = false;
+      return true;
+    } else {
+      showOtpError.value = true;
+      return false;
+    }
+  }
   // Verification two Screen
 
-  final List<TextEditingController> otpControllers2 = List.generate(6, (index) => TextEditingController());
+  final List<TextEditingController> otpControllers = List.generate(6, (index) => TextEditingController());
 
   var secondsRemaining2 = 59.obs;
 

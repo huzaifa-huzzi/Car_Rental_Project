@@ -4,6 +4,7 @@ import 'package:car_rental_project/Authentication/NewPassword/NewPassword.dart';
 import 'package:car_rental_project/Authentication/RecoveryShowScreen/RecoveryShowScreen.dart';
 import 'package:car_rental_project/Authentication/RecoveryShowScreen/RecoveryShowScreenTwo.dart';
 import 'package:car_rental_project/Authentication/Register/RegisterScreen.dart';
+import 'package:car_rental_project/Authentication/TwoStepVerificationOne/TwoStepVerificationOne.dart';
 import 'package:go_router/go_router.dart';
 
 class AuthRoutes {
@@ -14,5 +15,6 @@ class AuthRoutes {
     GoRoute(path: '/newPassword', builder: (context, state) => const NewPassword()),
     GoRoute(path: '/authSuccess', builder: (context, state) => const RecoveryShowScreenOne()),
     GoRoute(path: '/authSuccess2', builder: (context, state) => RecoveryShowScreenTwo()),
+    GoRoute(path: '/twoStepVerificationOne', builder: (context, state) => const TwoStepVerificationOne()),
   ];
 }

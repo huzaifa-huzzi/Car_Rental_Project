@@ -142,6 +142,7 @@ class CustomerController extends GetxController {
   final licenseNameController = TextEditingController();
   final licenseNumberController = TextEditingController();
   final licenseExpiryController = TextEditingController();
+  final licenseExpiryController2 = TextEditingController();
   final licenseCardNumberController = TextEditingController();
 
   RxList<Rx<DocumentHolder?>> selectedDocuments = <Rx<DocumentHolder?>>[].obs;
@@ -201,7 +202,9 @@ class CustomerController extends GetxController {
   }
 
   final LayerLink dobLink = LayerLink();
+  final LayerLink dobLink2 = LayerLink();
   final LayerLink expiryLink = LayerLink();
+  final LayerLink expiryLink2 = LayerLink();
   final TextEditingController selectedYearCarController = TextEditingController();
   var selectedCarYear = "".obs;
   final GlobalKey carYearKey = GlobalKey();
@@ -286,20 +289,12 @@ class CustomerController extends GetxController {
           ),
     );
   }
-
-  Widget _buildCalendarContent(double width, TextEditingController controller) {
+  Widget _buildCalendarContent(double width, TextEditingController targetController) {
     return CustomCalendarCustomer(
       width: width,
-      allowFuture: controller == licenseExpiryController,
-      onCancel: removeCalendar,
+      onCancel: () => removeCalendar(),
       onDateSelected: (date) {
-        String day = date.day.toString().padLeft(2, '0');
-        String month = date.month.toString().padLeft(2, '0');
-        if (controller == selectedYearCarController) {
-          controller.text = "${date.year}";
-        } else {
-          controller.text = "$day/$month/${date.year}";
-        }
+        targetController.text = "${date.day}/${date.month}/${date.year}";
         removeCalendar();
       },
     );
@@ -357,14 +352,19 @@ class CustomerController extends GetxController {
   RxString selectedCode = "+61".obs;
   RxString selectedFlag = "🇦🇺".obs;
   var selectedCountryName = "Australia".obs;
+  RxString selectedCode2 = "+61".obs;
+  RxString selectedFlag2 = "🇦🇺".obs;
+  var selectedCountryName2 = "Australia".obs;
   final phoneController = TextEditingController();
   final ageController = TextEditingController();
   final searchController = TextEditingController();
+  final searchController2 = TextEditingController();
 
 
 
   /// Edit Customer Screen
   Rxn<ImageHolder> profileImage2 = Rxn<ImageHolder>();
+  final phoneController2 = TextEditingController();
 
   final givenNameController2 = TextEditingController();
   final surnameController2 = TextEditingController();
@@ -377,7 +377,6 @@ class CustomerController extends GetxController {
 
   final licenseNameController2 = TextEditingController();
   final licenseNumberController2 = TextEditingController();
-  final licenseExpiryController2 = TextEditingController();
   final licenseCardNumberController2 = TextEditingController();
 
   RxList<Rx<DocumentHolder?>> selectedDocuments2 = <Rx<DocumentHolder?>>[].obs;
@@ -474,11 +473,8 @@ class CustomerController extends GetxController {
     imageError2.value = false;
     return true;
   }
-
-// Update Logic
   void updateCustomerData(BuildContext context) {
     if (editCustomerFormKey.currentState!.validate() && validateProfileImage2()) {
-      // Agar sab theek hai to update process karein
       print("Form Validated! Updating...");
     } else {
       print("Validation Failed");
