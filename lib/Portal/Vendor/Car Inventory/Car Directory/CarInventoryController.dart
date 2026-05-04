@@ -148,6 +148,7 @@ class CarInventoryController extends GetxController {
 
  /// AddingCar Screen
   var selectedEngine = "".obs;
+  var selectedEngine3 = "".obs;
   var selectedColor = "".obs;
   final regController = TextEditingController();
   final vinController = TextEditingController();

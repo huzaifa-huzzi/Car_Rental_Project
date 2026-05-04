@@ -288,10 +288,10 @@ class CardListHeaderPickupWidget extends StatelessWidget {
             ? Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _filterItem("Make", _dropdownBox(controller.makes, controller.selectedMake, context), context),
+            _filterItem("Make", _dropdownBox(controller.makes, controller.selectedMake, context,controller,id: "make"), context),
             _filterItem("Model", _textFieldBox(controller.selectedModel.value, context), context),
             _filterItem("Year", _textFieldBox(controller.selectYear.value, context), context),
-            _filterItem("Status", _statusDropdownBox(statuses, controller.selectedStatus, context), context),
+            _filterItem("Status", _statusDropdownBox(statuses, controller.selectedStatus, context,id: "status"), context),
             _filterItem("Start Date", _textFieldBox(controller.startDate.value, context), context),
             _filterItem("End Date", _textFieldBox(controller.endDate.value, context), context),
 
@@ -307,10 +307,10 @@ class CardListHeaderPickupWidget extends StatelessWidget {
           runSpacing: 16,
           crossAxisAlignment: WrapCrossAlignment.end,
           children: [
-            _filterItem("Make", _dropdownBox(controller.makes, controller.selectedMake, context), context),
+            _filterItem("Make", _dropdownBox(controller.makes, controller.selectedMake, context,controller,id: "make"), context),
             _filterItem("Model", _textFieldBox(controller.selectedModel.value, context), context),
             _filterItem("Year", _textFieldBox(controller.selectYear.value, context), context),
-            _filterItem("Status", _statusDropdownBox(statuses, controller.selectedStatus, context), context),
+            _filterItem("Status", _statusDropdownBox(statuses, controller.selectedStatus, context,id: "status"), context),
             _filterItem("Start Date", _textFieldBox(controller.startDate.value, context), context),
             _filterItem("End Date", _textFieldBox(controller.endDate.value, context), context),
 
@@ -351,177 +351,229 @@ class CardListHeaderPickupWidget extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     bool isMobileUI = screenWidth < 600;
 
-    if (isMobileUI) {
-      return SizedBox(
-        width: double.infinity,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: TTextTheme.btnFour(context)),
-            const SizedBox(height: 6),
-            child,
-          ],
-        ),
-      );
-    }
-
-    return IntrinsicWidth(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(
-          minWidth: 100,
-          maxWidth: 250,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: TTextTheme.btnFour(context),
-              maxLines: 1,
-              softWrap: false,
-              overflow: TextOverflow.visible,
-            ),
-            const SizedBox(height: 6),
-            child,
-          ],
-        ),
+    return Container(
+      width: isMobileUI ? double.infinity : 180,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TTextTheme.btnFour(context),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 6),
+          child,
+        ],
       ),
     );
   }
 
 //  Dropdown  for other Fields
-  Widget _dropdownBox(List<String> items, RxString selectedRx, BuildContext context) {
-    return Obx(() => PopupMenuButton<String>(
-      offset: const Offset(0, 40),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      color: AppColors.secondaryColor,
-      onSelected: (v) => selectedRx.value = v,
-      itemBuilder: (BuildContext context) {
-        List<PopupMenuEntry<String>> menuItems = [];
-        for (int i = 0; i < items.length; i++) {
-          menuItems.add(
-            PopupMenuItem<String>(
-              value: items[i],
-              height: 35,
-              child: Text(items[i], style: TTextTheme.dropdowninsideText(context)),
+  Widget _dropdownBox(
+      List<String> items,
+      RxString selectedRx,
+      BuildContext context,
+      PickupCarController controller,
+          {required String id}
+      ) {
+    return Obx(() {
+      bool isOpen = controller.openedDropdown3.value == id;
+
+      return LayoutBuilder(builder: (context, constraints) {
+        double width = constraints.maxWidth == double.infinity ? 150 : constraints.maxWidth;
+
+        return PopupMenuButton<String>(
+          constraints: BoxConstraints(
+            minWidth: width,
+            maxWidth: width,
+            maxHeight: 300,
+          ),
+          offset: const Offset(0, 42),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          color: Colors.white,
+          onOpened: () => controller.openedDropdown3.value = id,
+          onCanceled: () => controller.openedDropdown3.value = "",
+          onSelected: (val) {
+            selectedRx.value = val;
+            controller.openedDropdown3.value = "";
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 10),
+            height: 38,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            decoration: BoxDecoration(
+              color: AppColors.secondaryColor,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                  color: Colors.transparent,
+                  width: 1.2
+              ),
             ),
-          );
-          if (i < items.length - 1) {
-            menuItems.add(
-              PopupMenuDivider(height: 1),
-            );
-          }
-        }
-        return menuItems;
-      },
-      child: Container(
-        height: 38,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        decoration: BoxDecoration(
-            color: AppColors.secondaryColor,
-            borderRadius: BorderRadius.circular(8)
-        ),
-        child: Row(
-          children: [
-            Expanded(
-                child: Text(
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
                     selectedRx.value.isEmpty ? "Select" : selectedRx.value,
                     style: TTextTheme.dropdowninsideText(context),
-                    overflow: TextOverflow.ellipsis
-                )
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Image.asset(
+                  isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon,
+                  height: 14,
+                ),
+              ],
             ),
-            const Icon(Icons.keyboard_arrow_down, size: 20, color: AppColors.secondTextColor),
-          ],
-        ),
-      ),
-    ));
+          ),
+          itemBuilder: (BuildContext context) {
+            return items.map((item) {
+              bool isSelected = selectedRx.value == item;
+              return PopupMenuItem<String>(
+                value: item,
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 18,
+                      height: 18,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                        border: Border.all(color: AppColors.primaryColor, width: 2),
+                      ),
+                      child: isSelected
+                          ? const Center(child: Icon(Icons.done, color: Colors.white, size: 12))
+                          : null,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                          item,
+                          style: TTextTheme.medium14(context),
+                          overflow: TextOverflow.ellipsis
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList();
+          },
+        );
+      });
+    });
   }
 
 // Status Dropdown Widget
-  Widget _statusDropdownBox(List<String> items, RxString selectedRx, BuildContext context) {
-    return Obx(() => PopupMenuButton<String>(
-      offset: const Offset(0, 45),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      color: AppColors.secondaryColor,
-      elevation: 4,
-      onSelected: (v) => selectedRx.value = v,
-      itemBuilder: (BuildContext context) {
-        List<PopupMenuEntry<String>> menuItems = [];
+  Widget _statusDropdownBox(List<String> items, RxString selectedRx, BuildContext context, {required String id}) {
+    final controller = Get.find<PickupCarController>();
 
-        for (int i = 0; i < items.length; i++) {
-          menuItems.add(
-            PopupMenuItem<String>(
-              value: items[i],
-              height: 45,
-              child: Container(
-                width: 120,
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                decoration: BoxDecoration(
-                  color: _getStatusBgColor(items[i]),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: AppColors.sideBoxesColor,
-                    width: 1,
-                  ),
-                ),
-                child: Text(
-                  items[i],
-                  textAlign: TextAlign.center,
-                  style: TTextTheme.textFieldStatusTheme(context).copyWith(
-                    color: _getStatusTextColor(items[i]),
-                  ),
-                ),
+    return Obx(() {
+      bool isOpen = controller.openedDropdown3.value == id;
+
+      return LayoutBuilder(builder: (context, constraints) {
+        double dropdownWidth = constraints.maxWidth == double.infinity ? 180 : constraints.maxWidth;
+
+        return PopupMenuButton<String>(
+          constraints: BoxConstraints(
+            minWidth: dropdownWidth,
+            maxWidth: dropdownWidth,
+            maxHeight: 300,
+          ),
+          offset: const Offset(0, 42),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          color: Colors.white,
+          onOpened: () => controller.openedDropdown3.value = id,
+          onCanceled: () => controller.openedDropdown3.value = "",
+          onSelected: (val) {
+            selectedRx.value = val;
+            controller.openedDropdown3.value = "";
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 10),
+            height: 38,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: AppColors.secondaryColor,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: isOpen ? AppColors.primaryColor : Colors.transparent,
+                width: 1.2,
               ),
             ),
-          );
-
-          if (i < items.length - 1) {
-            menuItems.add(
-               PopupMenuDivider(   height: 0.3,
-                thickness: 0.3,
-                color: AppColors.quadrantalTextColor,),
-            );
-          }
-        }
-        return menuItems;
-      },
-      child: Container(
-        height: 38,
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        decoration: BoxDecoration(
-            color: AppColors.secondaryColor,
-            borderRadius: BorderRadius.circular(8)
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: _getStatusBgColor(selectedRx.value),
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(
-                  color: AppColors.sideBoxesColor,
-                  width: 1,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: selectedRx.value.isEmpty
+                        ? Text("Select Status", style: TTextTheme.dropdowninsideText(context))
+                        : _buildStatusChip(selectedRx.value, context),
+                  ),
                 ),
-              ),
-              child: Text(
-                selectedRx.value,
-                style: TTextTheme.textFieldStatusTheme(context).copyWith(
-                  color: _getStatusTextColor(selectedRx.value),
+                Image.asset(
+                  isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon,
+                  height: 14,
                 ),
-              ),
+              ],
             ),
-            const Spacer(),
-            const Icon(Icons.keyboard_arrow_down, size: 20, color: AppColors.secondTextColor),
-          ],
+          ),
+          itemBuilder: (BuildContext context) {
+            return items.map((item) {
+              bool isSelected = selectedRx.value == item;
+              return PopupMenuItem<String>(
+                value: item,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 18,
+                      height: 18,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                        border: Border.all(color: AppColors.primaryColor, width: 2),
+                      ),
+                      child: isSelected
+                          ? const Center(child: Icon(Icons.done, color: Colors.white, size: 12))
+                          : null,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: _buildStatusChip(item, context),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList();
+          },
+        );
+      });
+    });
+  }
+  Widget _buildStatusChip(String status, BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: _getStatusBgColor(status),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: AppColors.sideBoxesColor, width: 0.5),
+      ),
+      child: Text(
+        status,
+        style: TTextTheme.textFieldStatusTheme(context).copyWith(
+          color: _getStatusTextColor(status),
+          fontSize: 11,
         ),
       ),
-    ));
+    );
   }
-
-  // Helper methods for colors for filter dropdowns
   Color _getStatusBgColor(String status) {
     switch (status) {
       case "Completed": return AppColors.textColor;
@@ -531,7 +583,6 @@ class CardListHeaderPickupWidget extends StatelessWidget {
       default: return Colors.grey.shade100;
     }
   }
-
   Color _getStatusTextColor(String status) {
     switch (status) {
       case "Completed": return Colors.white;

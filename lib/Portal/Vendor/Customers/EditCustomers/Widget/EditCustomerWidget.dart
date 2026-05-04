@@ -1009,7 +1009,7 @@ class EditCustomerWidget extends StatelessWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     child: _buildCountryPickerField(
-                      context, "Country", controller.ccCountryController,
+                      context, "Country", controller.ccCountryController2,
                     ),
                   ),
                 ],
@@ -1148,14 +1148,17 @@ class EditCustomerWidget extends StatelessWidget {
   Widget _buildCountryPickerField(BuildContext context, String label, TextEditingController ctrl) {
     final List<Country> countryList = CountryService().getAll();
     final TextEditingController searchController = TextEditingController();
-
+    if (ctrl.text.isEmpty) {
+      ctrl.text = "Australia";
+    }
     Country? selectedCountry;
     try {
-      if (ctrl.text.isNotEmpty) {
-        selectedCountry = countryList.firstWhere((c) => c.name == ctrl.text);
-      }
+      selectedCountry = countryList.firstWhere(
+            (c) => c.name.toLowerCase() == ctrl.text.toLowerCase(),
+        orElse: () => countryList.firstWhere((c) => c.name == "Australia"),
+      );
     } catch (e) {
-      selectedCountry = null;
+      selectedCountry = countryList.firstWhere((c) => c.name == "Australia");
     }
 
     return Column(
@@ -1183,19 +1186,6 @@ class EditCustomerWidget extends StatelessWidget {
                       icon: Icon(Icons.keyboard_arrow_down_rounded, color: AppColors.quadrantalTextColor, size: 24),
                       openMenuIcon: Icon(Icons.keyboard_arrow_up_rounded, color: AppColors.quadrantalTextColor, size: 24),
                     ),
-                    hint: Row(
-                      children: [
-                        _buildCircleFlag("au"),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            ctrl.text.isEmpty ? "Select Country" : ctrl.text,
-                            style: TTextTheme.btnOne(context),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
                     selectedItemBuilder: (context) {
                       return countryList.map((Country country) {
                         return Row(
@@ -1203,7 +1193,11 @@ class EditCustomerWidget extends StatelessWidget {
                             _buildCircleFlag(country.countryCode),
                             const SizedBox(width: 10),
                             Expanded(
-                              child: Text(country.name, style: TTextTheme.btnOne(context), overflow: TextOverflow.ellipsis),
+                              child: Text(
+                                country.name,
+                                style: TTextTheme.btnOne(context),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
                         );
@@ -1216,7 +1210,12 @@ class EditCustomerWidget extends StatelessWidget {
                           children: [
                             _buildCircleFlag(country.countryCode),
                             const SizedBox(width: 10),
-                            Expanded(child: Text(country.name, style: TTextTheme.bodyRegular14(context))),
+                            Expanded(
+                              child: Text(
+                                country.name,
+                                style: TTextTheme.bodyRegular14(context),
+                              ),
+                            ),
                           ],
                         ),
                       );
@@ -1226,8 +1225,12 @@ class EditCustomerWidget extends StatelessWidget {
                         ctrl.text = value.name;
                         state.didChange(value);
                         controller.update();
+                        if (context is Element) {
+                          (context as Element).markNeedsBuild();
+                        }
                       }
                     },
+
                     buttonStyleData: ButtonStyleData(
                       padding: const EdgeInsets.only(right: 8),
                       decoration: BoxDecoration(
@@ -1241,7 +1244,10 @@ class EditCustomerWidget extends StatelessWidget {
                     ),
                     dropdownStyleData: DropdownStyleData(
                       maxHeight: 400,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.white,
+                      ),
                       offset: const Offset(0, -5),
                     ),
                     dropdownSearchData: DropdownSearchData(
@@ -1261,9 +1267,18 @@ class EditCustomerWidget extends StatelessWidget {
                             hintText: 'Search',
                             hintStyle: TTextTheme.titleTwo(context),
                             prefixIcon: const Icon(Icons.search, size: 18, color: AppColors.primaryColor),
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: const BorderSide(color: AppColors.primaryColor)),
-                            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: const BorderSide(color: AppColors.primaryColor)),
-                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: const BorderSide(color: AppColors.primaryColor)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: const BorderSide(color: AppColors.primaryColor),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: const BorderSide(color: AppColors.primaryColor),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: const BorderSide(color: AppColors.primaryColor),
+                            ),
                           ),
                         ),
                       ),

@@ -132,9 +132,6 @@ class _TwoStepVerificationTwoState extends State<TwoStepVerificationTwo> {
                           children: [
                              Text(TextString.twoStepFooterOne, style: TTextTheme.titleSmallRemember(context)),
                              Text(TextString.twoStepResend, style: TTextTheme.titleSmallRegister(context)),
-                             Text(TextString.twoStepFooterTwo, style: TTextTheme.titleSmallRemember(context)),
-                             Text(TextString.twoStepEdit,
-                                style:TTextTheme.titleSmallRegister(context)),
                           ],
                         ),
                       ],

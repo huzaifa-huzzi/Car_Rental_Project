@@ -635,8 +635,12 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
 //  Documents Section Widget
   Widget _buildCarDocumentsSection(BuildContext context) {
     final spacing = AppSizes.padding(context);
-    final isMobile = AppSizes.isMobile(context);
-    final tab = AppSizes.isTablet(context);
+    final List<dynamic> documents = [
+      {'title': 'Car Registration.pdf', 'status': 'Document', 'uploaded': true, 'isPdf': true},
+      {'title': 'Tax Token', 'status': 'Uploaded', 'uploaded': true, 'isPdf': false},
+      {'title': 'Incoherence Paper', 'status': 'Uploaded', 'uploaded': true, 'isPdf': false},
+      {'title': 'Vin Number', 'status': 'JTNBA3HK003001234', 'uploaded': true, 'isPdf': false},
+    ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -645,55 +649,46 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
         SizedBox(height: spacing),
         LayoutBuilder(
           builder: (context, constraints) {
-            final double totalWidth = constraints.maxWidth;
-            double gap = 6.0;
+            int crossAxisCount = constraints.maxWidth < 600 ? 1 : 3;
 
-            double itemWidth;
-            if (totalWidth < 600) {
-              itemWidth = (totalWidth - gap) / 2;
-            } else {
-              itemWidth = (totalWidth - (gap * 3)) / 4;
-            }
-
-            return Wrap(
-              spacing: gap,
-              runSpacing: 12.0,
-              children: [
-                _buildSizedBoxTile(itemWidth, context, "carRegistration.pdf", "Document", isMobile, tab),
-                _buildSizedBoxTile(itemWidth, context, "Tax Token", "Uploaded", isMobile, tab),
-                _buildSizedBoxTile(itemWidth, context, "Incoherence Paper", "Uploaded", isMobile, tab),
-                _buildSizedBoxTile(itemWidth, context, "Vin Number", "JTNBA3HK003001234", isMobile, tab),
-              ],
+            return GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: documents.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                mainAxisExtent: constraints.maxWidth < 600 ? 85 : 70,
+              ),
+              itemBuilder: (context, index) {
+                final doc = documents[index];
+                return _buildDocumentTile(
+                  context,
+                  doc['title'],
+                  doc['status'],
+                  doc['uploaded'],
+                  isPdf: doc['isPdf'],
+                );
+              },
             );
           },
-        ),
+        )
       ],
     );
   }
-
-   // Box Tile
-  Widget _buildSizedBoxTile(double width, BuildContext context, String title, String status, bool isMobile, bool tab) {
-    return SizedBox(
-      width: width,
-      child: _buildDocumentTile(
-        context, title, status, true,
-        isMobile: isMobile, tab: tab,
-      ),
-    );
-  }
-
-  // DocumnetTile Widget
   Widget _buildDocumentTile(
       BuildContext context,
       String title,
       String status,
       bool uploaded,
-      {required bool isMobile, required bool tab, bool isPdf = false}
+      {bool isPdf = false}
       ) {
 
     String iconPath;
     String lowerTitle = title.toLowerCase();
-    if (isPdf || lowerTitle.contains(".pdf") || lowerTitle.contains("registration")) {
+    bool actuallyIsPdf = isPdf || lowerTitle.contains(".pdf");
+    if (actuallyIsPdf || lowerTitle.contains("registration")) {
       iconPath = IconString.pdfIcon;
     } else if (lowerTitle.contains("tax") || lowerTitle.contains("paper")) {
       iconPath = IconString.taxIcon;
@@ -703,81 +698,79 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
       iconPath = IconString.registrationIcon;
     }
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            height: tab ? 40 : 45,
-            width: tab ? 40 : 45,
-            decoration: BoxDecoration(
-              color: AppColors.secondaryColor,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Center(
-              child: Image.asset(
-                iconPath,
-                height: 24,
-                width: 24,
-                errorBuilder: (context, error, stackTrace) => const Icon(Icons.picture_as_pdf, color: Colors.red),
-              ),
-            ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          height: 45,
+          width: 45,
+          decoration: BoxDecoration(
+            color: AppColors.secondaryColor,
+            borderRadius: BorderRadius.circular(12),
           ),
-          const SizedBox(width: 10),
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          child: Center(
+            child: Image.asset(iconPath, height: 24, width: 24),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                actuallyIsPdf ? "Document" : status,
+                style: TTextTheme.titleseven(context).copyWith(color: Colors.grey),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                title,
+                style: TTextTheme.pThree(context).copyWith(fontWeight: FontWeight.w600),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+        if (uploaded)
+          Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  isPdf ? "Document" : status,
-                  style: TTextTheme.titleseven(context).copyWith(color: Colors.grey),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 2),
-
-                Row(
-                  children: [
-                    Flexible(
-                      child: Text(
-                        title,
-                        style: TTextTheme.pThree(context).copyWith(fontWeight: FontWeight.w600),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                if (actuallyIsPdf)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 6),
+                    child: _buildActionButton(
+                      icon: Icons.file_download_outlined,
+                      onTap: () {
+                      },
                     ),
-                    const SizedBox(width: 8),
-                    if (uploaded)
-                      GestureDetector(
-                        onTap: () => Get.find<CarInventoryController>().open(ImageString.registrationForm),
-                        child: Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryColor,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Image.asset(
-                            IconString.uploadedIcon,
-                            height: 16,
-                            width: 16,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                  ],
+                  ),
+                _buildActionButton(
+                  icon: Icons.visibility_outlined,
+                  onTap: () => Get.find<CarInventoryController>().open(ImageString.registrationForm),
                 ),
               ],
             ),
           ),
-        ],
+      ],
+    );
+  }
+  Widget _buildActionButton({required IconData icon, required VoidCallback onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(7),
+        decoration: BoxDecoration(
+          color: AppColors.primaryColor,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Icon(icon, size: 18, color: Colors.white),
       ),
     );
   }
-
-
 
 // Icon Button (Used for Edit/Delete) Widget
   Widget _buildIconButton(

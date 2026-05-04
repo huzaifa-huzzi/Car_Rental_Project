@@ -65,7 +65,7 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
                   text: "Add Customers",
                   width: 135,
                   height: 40,
-                  onTap: () => context.go('/addNewCustomer', extra: {"hideMobileAppBar": true}),
+                  onTap: () => context.push('/addNewCustomer', extra: {"hideMobileAppBar": true}),
                 ),
               ],
             ],

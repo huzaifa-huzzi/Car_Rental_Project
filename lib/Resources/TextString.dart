@@ -607,18 +607,16 @@ class TextString {
   static const String  passwordFooterTwo  =   'Sign Up';
   // RecoverShow Screen One
   static const String  recoveryTitle  =   'Congratulation';
-  static const String  recoverySubtitle =   'Successfully Recover Your Account';
+  static const String  recoverySubtitle =   'Successfully Verified Your Account';
   // RecoveryShow Screen Two
   static const String  recoveryTitleTwo  =   'Congratulation';
-  static const String  recoverySubtitleTwo =   'SuccessFully Created Your Account';
+  static const String  recoverySubtitleTwo =   'SuccessFully Verified Your Account';
   // Two Step Verification Texts
   static const String  twoStepLogin  =   'Two Step Verification';
   static const String  twoStepName =   'sellostore@company.com ';
   static const String  twoStepResend =   'Resend ';
   static const String  twoStepSixDigit =   'Type your 6 digit security code';
   static const String  twoStepFooterOne =   'Didnt get the code? ';
-  static const String  twoStepFooterTwo  =   'Or';
-  static const String  twoStepEdit  =    ' Edit';
 
      /// Dashboard
   static const String  carStatusText  =   'Cars by Status';

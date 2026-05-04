@@ -83,49 +83,34 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
                             child: _buildTermsAndConditions(context),
                           ),
                           const SizedBox(height: 40),
-
-                          // All Terms Sections
-                          ...[
-                            _buildAcceptanceOfTerm(context),
-                            _buildEligibility(context),
-                            _buildAccountRegistration(context),
-                            _buildBookingTerms(context),
-                            _buildPaymentTerms(context),
-                            _buildSecurityDeposit(context),
-                            _buildVehicleRestrictions(context),
-                            _buildInsuranceLiability(context),
-                            _buildCancellationsRefunds(context),
-                            _buildPrivacyPolicy(context),
-                            _buildIntellectualProperty(context),
-                            _buildGoverningLaw(context),
-                          ].map((widget) =>
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
-                                child: widget,
-                              )),
-
-                          const SizedBox(height: 25),
                           Obx(() {
-                            bool hasError = controller.isTermsAgreed.value ==
-                                false &&
-                                controller.errorMessageStep2.value ==
-                                    "Please agree to terms";
+                            // Checkbox validation logic
+                            bool hasError = controller.isTermsAgreed.value == false &&
+                                controller.errorMessageStep2.value == "Please agree to terms";
 
-                            return Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: hasError
-                                      ? AppColors.primaryColor
-                                      : Colors.transparent,
-                                  width: 1,
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color: hasError ? AppColors.primaryColor : Colors.transparent,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: _buildAgreementCheckbox(context, controller),
                                 ),
-                              ),
-                              child: _buildAgreementCheckbox(
-                                  context, controller),
+                                if (hasError)
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10, top: 4),
+                                    child: Text(
+                                      controller.errorMessageStep2.value,
+                                      style: TTextTheme.ErrorStyle(context),
+                                    ),
+                                  ),
+                              ],
                             );
                           }),
                         ],
@@ -266,412 +251,65 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
 
   // Terms & conditions
   Widget _buildTermsAndConditions(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          TextString.titleTermsStepTwo,
-          style: TTextTheme.h6Style(context),
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppColors.tertiaryTextColor.withOpacity(0.3),
+          width: 0.7,
         ),
-        const SizedBox(height: 15),
-        Text(
-          TextString.termsSubtitle,
-          style: TTextTheme.titleAgreement(context).copyWith(height: 1.5),
-          textAlign: TextAlign.justify,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            TextString.titleTermsStepTwo,
+            style: TTextTheme.hPickupStyle(context),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            TextString.termsSubtitle,
+            style: TTextTheme.titleThree(context),
+            textAlign: TextAlign.justify,
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
+  // Agreement checkBox
+  Widget _buildAgreementCheckbox(BuildContext context, PickupCarController controller) {
+    return Row(
+      children: [
+        SizedBox(
+          height: 24,
+          width: 24,
+          child: Checkbox(
+            value: controller.isTermsAgreed.value,
+            onChanged: (value) {
+              controller.isTermsAgreed.value = value!;
+              if (value == true) {
+                controller.errorMessageStep2.value = "";
+              }
+            },
+            activeColor: AppColors.primaryColor,
+            side: const BorderSide(color: AppColors.primaryColor, width: 1.5),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Text(
+            TextString.agreementText,
+            style: TTextTheme.titleSmallRegister(context),
+          ),
         ),
       ],
     );
-  }
-
-
-  // Acceptance Of Terms
-  Widget _buildAcceptanceOfTerm(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            TextString.acceptanceOfTerms,
-            style: TTextTheme.hPickupStyle(context).copyWith(
-                color: AppColors.primaryColor),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            TextString.acceptanceSubtitle,
-            style: TTextTheme.titleThree(context).copyWith(height: 1.5),
-          ),
-        ],
-      ),
-    );
-  }
-
-
-  // Eligibility
-  Widget _buildEligibility(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            TextString.eligibilityTitle,
-            style: TTextTheme.hPickupStyle(context),
-          ),
-          const SizedBox(height: 12),
-          _buildEligibilityItem(context, TextString.eligibilityTitle1),
-          _buildEligibilityItem(context, TextString.eligibilityTitle2),
-          _buildEligibilityItem(context, TextString.eligibilityTitle3),
-          _buildEligibilityItem(context, TextString.eligibilityTitle4),
-          _buildEligibilityItem(context, TextString.eligibilityTitle5),
-          _buildEligibilityItem(context, TextString.eligibilityTitle6),
-          _buildEligibilityItem(context, TextString.eligibilityTitle7),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEligibilityItem(BuildContext context, String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Text(
-        text,
-        style: TTextTheme.titleThree(context).copyWith(height: 1.4),
-      ),
-    );
-  }
-
-  // Account Registration
-  Widget _buildAccountRegistration(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            TextString.accounting,
-            style: TTextTheme.hPickupStyle(context),
-          ),
-          const SizedBox(height: 12),
-          _buildBulletItem(context, TextString.accounting1),
-          _buildBulletItem(context, TextString.accounting2),
-          _buildBulletItem(context, TextString.accounting3),
-        ],
-      ),
-    );
-  }
-
-  // Booking Items
-  Widget _buildBookingTerms(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            TextString.booking,
-            style: TTextTheme.hPickupStyle(context),
-          ),
-          const SizedBox(height: 12),
-          _buildBulletItem(context, TextString.booking1),
-          _buildBulletItem(context, TextString.booking2),
-          _buildBulletItem(context, TextString.booking3),
-          _buildBulletItem(context, TextString.booking4),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBulletItem(BuildContext context, String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Text(
-        text,
-        style: TTextTheme.titleThree(context).copyWith(height: 1.4),
-      ),
-    );
-  }
-
-  // Payment Terms
-  Widget _buildPaymentTerms(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(TextString.payment, style: TTextTheme.hPickupStyle(context)),
-          const SizedBox(height: 12),
-          Text(TextString.payment1, style: TTextTheme.titleThree(context)),
-          const SizedBox(height: 8),
-          Text(TextString.payment2, style: TTextTheme.titleThree(context)),
-          const SizedBox(height: 8),
-          Text(TextString.payment3, style: TTextTheme.titleThree(context)),
-          const SizedBox(height: 10),
-          ...[
-            "Late return",
-            "Fuel refill",
-            "Toll fees",
-            "Traffic violations",
-            "Cleaning fees",
-            "Damage repair"
-          ]
-              .map((item) =>
-              Padding(
-                padding: const EdgeInsets.only(left: 10, bottom: 4),
-                child: Text("• $item", style: TTextTheme.titleThree(context)),
-              )),
-        ],
-      ),
-    );
-  }
-
-  // Security Deposit
-  Widget _buildSecurityDeposit(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(TextString.security, style: TTextTheme.hPickupStyle(context)),
-          const SizedBox(height: 12),
-          _buildBulletItem(context, TextString.security1),
-          _buildBulletItem(context, TextString.security2),
-          _buildBulletItem(context, TextString.security3),
-        ],
-      ),
-    );
-  }
-
-  // Vehicles Restriction
-  Widget _buildVehicleRestrictions(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(TextString.vehicle, style: TTextTheme.hPickupStyle(context)),
-          const SizedBox(height: 12),
-          _buildBulletItem(context, TextString.vehicle1),
-          _buildBulletItem(context, TextString.vehicle2),
-          _buildBulletItem(context, TextString.vehicle3),
-          _buildBulletItem(context, TextString.vehicle4),
-          _buildBulletItem(context, TextString.vehicle5),
-        ],
-      ),
-    );
-  }
-
-  // Insurance Liability
-  Widget _buildInsuranceLiability(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            TextString.insurance,
-            style: TTextTheme.hPickupStyle(context),
-          ),
-          const SizedBox(height: 12),
-          _buildBulletItem(context, TextString.insurance1),
-          _buildBulletItem(context, TextString.insurance2),
-          _buildBulletItem(context, TextString.insurance3),
-        ],
-      ),
-    );
-  }
-
-  // Cancellation Returns
-  Widget _buildCancellationsRefunds(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            TextString.cancellation,
-            style: TTextTheme.hPickupStyle(context),
-          ),
-          const SizedBox(height: 12),
-          _buildBulletItem(context, TextString.cancellation1),
-          _buildBulletItem(context, TextString.cancellation2),
-          _buildBulletItem(context, TextString.cancellation3),
-        ],
-      ),
-    );
-  }
-
-  // Build privacy policy
-  Widget _buildPrivacyPolicy(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            TextString.privacy,
-            style: TTextTheme.hPickupStyle(context),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            TextString.privacy1,
-            style: TTextTheme.titleThree(context).copyWith(height: 1.5),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Intellectual property
-  Widget _buildIntellectualProperty(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            TextString.intellactual,
-            style: TTextTheme.hPickupStyle(context),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            TextString.intellactual1,
-            style: TTextTheme.titleThree(context).copyWith(height: 1.5),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Governing Law
-  Widget _buildGoverningLaw(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: AppColors.tertiaryTextColor.withOpacity(0.3), width: 0.7),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            TextString.law,
-            style: TTextTheme.hPickupStyle(context),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            TextString.law1,
-            style: TTextTheme.titleThree(context).copyWith(height: 1.5),
-          ),
-          Text(
-            TextString.law2,
-            style: TTextTheme.titleThree(context).copyWith(height: 1.5),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Agreement checkBox
-  Widget _buildAgreementCheckbox(BuildContext context,
-      PickupCarController controller) {
-    return Obx(() =>
-        Row(
-          children: [
-            Checkbox(
-              value: controller.isTermsAgreed.value,
-              onChanged: (value) => controller.isTermsAgreed.value = value!,
-              activeColor: AppColors.primaryColor,
-              side: const BorderSide(color: AppColors.primaryColor, width: 1.5),
-            ),
-            Expanded(
-              child: Text(
-                TextString.agreementText,
-                style: TTextTheme.titleSmallRegister(context),
-              ),
-            ),
-          ],
-        ));
   }
 
   // Signature
@@ -1110,7 +748,14 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
         print("Validation Success! Showing Dialog...");
         showSavingDialog(context);
       } else {
-        print("Validation Failed: Check snacks/errors");
+        Get.snackbar(
+          "Incomplete Form",
+          "Please fill all required fields and confirm signatures.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: AppColors.primaryColor,
+          colorText: Colors.white,
+          margin: const EdgeInsets.all(10),
+        );
       }
     }
 

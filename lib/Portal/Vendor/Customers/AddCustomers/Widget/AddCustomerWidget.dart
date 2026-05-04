@@ -491,7 +491,6 @@ class AddCustomerWidget extends StatelessWidget {
 
 
   Widget _buildPhoneField(BuildContext context, String label) {
-    final controller = Get.find<CustomerController>();
     final List<Country> countryList = CountryService().getAll();
 
     return Column(
@@ -1172,13 +1171,18 @@ class AddCustomerWidget extends StatelessWidget {
     final List<Country> countryList = CountryService().getAll();
     final TextEditingController searchController = TextEditingController();
 
-    Country? selectedCountry;
+    if (ctrl.text.isEmpty) {
+      ctrl.text = "Australia";
+    }
+
+    Country currentSelected;
     try {
-      if (ctrl.text.isNotEmpty) {
-        selectedCountry = countryList.firstWhere((c) => c.name == ctrl.text);
-      }
+      currentSelected = countryList.firstWhere(
+            (c) => c.name.toLowerCase() == ctrl.text.toLowerCase(),
+        orElse: () => countryList.firstWhere((c) => c.name == "Australia"),
+      );
     } catch (e) {
-      selectedCountry = null;
+      currentSelected = countryList.firstWhere((c) => c.name == "Australia");
     }
 
     return Column(
@@ -1186,38 +1190,23 @@ class AddCustomerWidget extends StatelessWidget {
       children: [
         Text(label, style: TTextTheme.titleTwo(context)),
         const SizedBox(height: 8),
-        FormField<Country>(
-          initialValue: selectedCountry,
+        FormField<String>(
+          initialValue: ctrl.text,
           validator: (value) {
-            if (ctrl.text.isEmpty) {
-              return "Please select a country";
-            }
+            if (ctrl.text.isEmpty) return "Please select a country";
             return null;
           },
-          builder: (FormFieldState<Country> state) {
+          builder: (FormFieldState<String> state) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 DropdownButtonHideUnderline(
                   child: DropdownButton2<Country>(
                     isExpanded: true,
-                    value: selectedCountry,
+                    value: currentSelected,
                     iconStyleData: const IconStyleData(
                       icon: Icon(Icons.keyboard_arrow_down_rounded, color: AppColors.quadrantalTextColor, size: 24),
                       openMenuIcon: Icon(Icons.keyboard_arrow_up_rounded, color: AppColors.quadrantalTextColor, size: 24),
-                    ),
-                    hint: Row(
-                      children: [
-                        _buildCircleFlag("au"),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            ctrl.text.isEmpty ? "Select Country" : ctrl.text,
-                            style: TTextTheme.btnOne(context),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
                     ),
                     selectedItemBuilder: (context) {
                       return countryList.map((Country country) {
@@ -1226,7 +1215,11 @@ class AddCustomerWidget extends StatelessWidget {
                             _buildCircleFlag(country.countryCode),
                             const SizedBox(width: 10),
                             Expanded(
-                              child: Text(country.name, style: TTextTheme.btnOne(context), overflow: TextOverflow.ellipsis),
+                              child: Text(
+                                country.name,
+                                style: TTextTheme.btnOne(context),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
                         );
@@ -1239,7 +1232,12 @@ class AddCustomerWidget extends StatelessWidget {
                           children: [
                             _buildCircleFlag(country.countryCode),
                             const SizedBox(width: 10),
-                            Expanded(child: Text(country.name, style: TTextTheme.bodyRegular14(context))),
+                            Expanded(
+                              child: Text(
+                                country.name,
+                                style: TTextTheme.bodyRegular14(context),
+                              ),
+                            ),
                           ],
                         ),
                       );
@@ -1247,8 +1245,11 @@ class AddCustomerWidget extends StatelessWidget {
                     onChanged: (Country? value) {
                       if (value != null) {
                         ctrl.text = value.name;
-                        state.didChange(value);
+                        state.didChange(value.name);
                         controller.update();
+                        if (context is Element) {
+                          (context as Element).markNeedsBuild();
+                        }
                       }
                     },
                     buttonStyleData: ButtonStyleData(
@@ -1264,7 +1265,10 @@ class AddCustomerWidget extends StatelessWidget {
                     ),
                     dropdownStyleData: DropdownStyleData(
                       maxHeight: 400,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.white,
+                      ),
                       offset: const Offset(0, -5),
                     ),
                     dropdownSearchData: DropdownSearchData(
@@ -1284,9 +1288,18 @@ class AddCustomerWidget extends StatelessWidget {
                             hintText: 'Search',
                             hintStyle: TTextTheme.titleTwo(context),
                             prefixIcon: const Icon(Icons.search, size: 18, color: AppColors.primaryColor),
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: const BorderSide(color: AppColors.primaryColor)),
-                            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: const BorderSide(color: AppColors.primaryColor)),
-                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: const BorderSide(color: AppColors.primaryColor)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: const BorderSide(color: AppColors.primaryColor),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: const BorderSide(color: AppColors.primaryColor),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: const BorderSide(color: AppColors.primaryColor),
+                            ),
                           ),
                         ),
                       ),
@@ -1311,6 +1324,7 @@ class AddCustomerWidget extends StatelessWidget {
       ],
     );
   }
+
   Widget _buildCircleFlag(String code) {
     return Container(
       width: 24,

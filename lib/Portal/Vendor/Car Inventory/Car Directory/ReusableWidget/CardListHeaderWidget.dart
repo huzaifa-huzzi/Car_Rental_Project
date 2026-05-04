@@ -225,64 +225,103 @@ class CardListHeaderWidget extends StatelessWidget {
     );
   }
 
-  // Filter popMenuItem
-  PopupMenuItem<String> _buildFilterPopupItem(String text, BuildContext context, {bool isLast = false}) {
-    return PopupMenuItem<String>(
-      value: text,
-      padding: EdgeInsets.zero,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: Text(
-              text,
-              style: TTextTheme.titleTwo(context)),
-          ),
-          if (!isLast)
-            Divider(
-              height: 1,
-              thickness: 0.5,
-              color: AppColors.quadrantalTextColor,
-            ),
-        ],
-      ),
-    );
-  }
 
   //  Filter Dropdown Widget
-  Widget _dropdownBox(List<String> items, RxString selectedRx, BuildContext context) {
-    return Obx(() => PopupMenuButton<String>(
-      offset: const Offset(0, 40),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      color: AppColors.secondaryColor,
-      onSelected: (v) => selectedRx.value = v,
-      itemBuilder: (BuildContext context) {
-        return items.asMap().entries.map<PopupMenuEntry<String>>((entry) {
-          return _buildFilterPopupItem(
-              entry.value,
-              context,
-              isLast: entry.key == items.length - 1
-          );
-        }).toList();
-      },
-      child: Container(
-        height: 38,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        decoration: BoxDecoration(color: AppColors.secondaryColor, borderRadius: BorderRadius.circular(8)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(child: Text(selectedRx.value.isEmpty ? "Select" : selectedRx.value, style: TTextTheme.dropdowninsideText(context), overflow: TextOverflow.ellipsis)),
-            const Icon(Icons.keyboard_arrow_down, size: 22, color: Colors.black),
-          ],
-        ),
-      ),
-    ));
+  Widget _dropdownBox(List<String> items, RxString selectedRx, BuildContext context, {required String id, bool isStatus = false}) {
+    return Obx(() {
+      final controller  = Get.put(CarInventoryController());
+      bool isOpen = controller.openedDropdown3.value == id;
+
+      return LayoutBuilder(builder: (context, constraints) {
+        return PopupMenuButton<String>(
+          padding: EdgeInsets.zero,
+          constraints: BoxConstraints(
+            minWidth: constraints.maxWidth,
+            maxWidth: constraints.maxWidth,
+            maxHeight: 300,
+          ),
+          offset: const Offset(0, 42),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          color: Colors.white,
+          onOpened: () => controller.openedDropdown3.value = id,
+          onCanceled: () => controller.openedDropdown3.value = "",
+          onSelected: (val) {
+            selectedRx.value = val;
+            controller.openedDropdown3.value = "";
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            height: 38,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              color: AppColors.secondaryColor,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: isStatus
+                      ? Align(alignment: Alignment.centerLeft, child: _getStatusChip(selectedRx.value, context))
+                      : Text(
+                    selectedRx.value.isEmpty ? "Select" : selectedRx.value,
+                    style: TTextTheme.dropdowninsideText(context),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Image.asset(
+                  isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon,
+                  height: 12,
+                ),
+              ],
+            ),
+          ),
+          itemBuilder: (BuildContext context) {
+            return items.map((item) {
+              bool isSelected = selectedRx.value == item;
+              return PopupMenuItem<String>(
+                value: item,
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                height: 40,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 16,
+                      height: 16,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                        border: Border.all(color: AppColors.primaryColor, width: 1.5),
+                      ),
+                      child: isSelected
+                          ? const Center(child: Icon(Icons.done, color: Colors.white, size: 10))
+                          : null,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: isStatus
+                          ? FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: _getStatusChip(item, context),
+                      )
+                          : Text(
+                        item,
+                        style: TTextTheme.medium14(context).copyWith(fontSize: 12),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList();
+          },
+        );
+      });
+    });
   }
 
-  // filter Container Widget
   Widget _buildFilterContainer(BuildContext context) {
     final controller = Get.find<CarInventoryController>();
 
@@ -295,16 +334,19 @@ class CardListHeaderWidget extends StatelessWidget {
         runSpacing: 16,
         crossAxisAlignment: WrapCrossAlignment.end,
         children: [
-          _filterItem("Make", _dropdownBox(["BMW", "Aston", "Range Rover"], controller.selectedBrand, context), context),
-          _filterItem("Model", _dropdownBox(["Corolla", "Civic"], controller.selectedModel, context), context),
-          _filterItem("Year", _dropdownBox(["2025", "2024"], controller.selectedYear, context), context),
-          _filterItem("Body Type", _dropdownBox(["Sedan", "SUV"], controller.selectedBodyType, context), context),
-          _filterItem("Status", _dropdownBox(["Available", "Unavailable"], controller.selectedStatus, context), context),
-          _filterItem("Transmission", _dropdownBox(["Auto", "Manual"], controller.selectedTransmission, context), context),
-          _filterItem("Capacity", _textFieldBox("2 person", context), context),
-          _filterItem("Fuel", _dropdownBox(["Petrol", "Hybrid"], controller.selectedFuel, context), context),
-          _filterItem("Engine Size", _textFieldBox("2.5[L]", context), context),
+          _filterItem("Make", _dropdownBox(controller.getFilteredItems('search_car'), controller.selectedBrand, context, id: "make"), context),
+          _filterItem("Model", _dropdownBox(controller.getFilteredItems('Model'), controller.selectedModel, context, id: "model"), context),
+          _filterItem("Year", _dropdownBox(controller.getFilteredItems('year'), controller.selectedYear, context, id: "year"), context),
+          _filterItem("Body Type", _dropdownBox(controller.getFilteredItems('body'), controller.selectedBodyType, context, id: "body"), context),
+          _filterItem("Status", _dropdownBox(controller.getFilteredItems('status'), controller.selectedStatus, context, id: "status"), context),
+          _filterItem("Transmission", _dropdownBox(controller.getFilteredItems('trans'), controller.selectedTransmission, context, id: "trans"), context),
+          _filterItem("Capacity", _dropdownBox(controller.getFilteredItems('seats'), controller.selectedSeats, context, id: "seats"), context),
+
+          _filterItem("Fuel", _dropdownBox(controller.getFilteredItems('fuel'), controller.selectedFuel, context, id: "fuel"), context),
+
+          _filterItem("Engine Size", _dropdownBox(controller.getFilteredItems('engine'), controller.selectedEngine3, context, id: "engine"), context),
           _filterItem("Price (Under)", _textFieldBox(r"$ 1600", context), context),
+
           Padding(
             padding: const EdgeInsets.only(bottom: 2),
             child: CustomPrimaryButton(
@@ -323,6 +365,10 @@ class CardListHeaderWidget extends StatelessWidget {
                 controller.selectedStatus.value = "";
                 controller.selectedTransmission.value = "";
                 controller.selectedFuel.value = "";
+                controller.selectedSeats.value = "5";
+                controller.selectedEngine3.value = "";
+                controller.searchCarText.value = "";
+                controller.openedDropdown3.value = "";
               },
             ),
           ),
@@ -438,6 +484,41 @@ class CardListHeaderWidget extends StatelessWidget {
             height: size * 0.8,
             color: isSelected ? Colors.white : AppColors.blackColor,
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _getStatusChip(String status, BuildContext context) {
+    Color statusColor = Colors.transparent;
+    Color textColor = AppColors.blackColor;
+
+    if (status.isEmpty) {
+      return Text("Select Status", style: TTextTheme.pOne(context));
+    }
+
+    String displayStatus = status;
+    String checkStatus = displayStatus.toLowerCase().trim();
+
+    if (checkStatus == "available") {
+      statusColor = AppColors.availableBackgroundColor;
+      textColor = Colors.white;
+    } else if (checkStatus.contains("un")) {
+      statusColor = AppColors.oneBackground;
+      textColor = Colors.white;
+      displayStatus = "Un Available";
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: statusColor,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        displayStatus,
+        style: TTextTheme.titleseven(context).copyWith(
+          color: textColor,
         ),
       ),
     );

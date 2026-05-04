@@ -37,24 +37,20 @@ class SidebarScreen extends StatelessWidget {
 
 
 
-    final String currentRoute = GoRouterState
-        .of(context)
-        .uri
-        .toString();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.syncWithRoute(currentRoute);
-    });
+    final String currentRoute = GoRouterState.of(context).uri.toString();
 
 
-    /// Sidebar content
+ WidgetsBinding.instance.addPostFrameCallback((_) {
+  controller.syncWithRoute(currentRoute);
+ });
+
     /// Sidebar content
     Widget sidebarContent({bool showLogo = true}) {
       return SafeArea(
-        child: SingleChildScrollView( // <--- Poori sidebar ab scroll hogi
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min, // <--- Content ke mutabiq size lega
+            mainAxisSize: MainAxisSize.min,
             children: [
               if (showLogo)
                 Padding(
@@ -154,7 +150,7 @@ class SidebarScreen extends StatelessWidget {
 
     void handleAddButtonPressed() {
       if (currentRoute.contains('/customers')) {
-        context.push('/addNewCustomer', extra: {"hideMobileAppBar": true});
+        context.push('/customers/addNewCustomer', extra: {"hideMobileAppBar": true});
       }
       else if (currentRoute.contains('/pickupcar')) {
         context.push('/addpickup', extra: {"hideMobileAppBar": true});

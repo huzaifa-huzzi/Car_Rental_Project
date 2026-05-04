@@ -98,9 +98,7 @@ class HeaderWebCustomersWidget extends StatelessWidget {
                     onTap: () {
                       final router = GoRouter.of(context);
 
-                      if (onBackPressed != null) {
-                        onBackPressed!();
-                      } else if (router.canPop()) {
+                      if (router.canPop()) {
                         router.pop();
                       } else {
                         router.go('/customers');

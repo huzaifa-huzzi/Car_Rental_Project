@@ -4,6 +4,8 @@ import 'package:car_rental_project/Portal/Vendor/Staff/StaffController.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
+import 'package:country_picker/country_picker.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
@@ -43,10 +45,37 @@ class EditStaffScreenWidget extends StatelessWidget {
             const Divider(height: 1, thickness: 0.5, color: AppColors.quadrantalTextColor),
 
             // Staff Details
-            _buildSection(context, icon: IconString.staffContactIcon, title: TextString.addStaffContactEdit, subtitle: TextString.addStaffContactSubtitleEdit,
+            _buildSection(context,
+                icon: IconString.staffContactIcon,
+                title: TextString.addStaffContact,
+                subtitle: TextString.addStaffContactSubtitle,
                 children: [
-                  _buildTextField(TextString.addStaffContactFieldOneEdit, "Write Staff Email...", controller.emailCEdit, context),
-                  _buildTextField(TextString.addStaffContactFieldTwoEdit, "Write Staff Number...", controller.phoneCEdit, context),
+                  LayoutBuilder(builder: (context, constraints) {
+                    if (constraints.maxWidth > 600) {
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: _buildTextField(TextString.addStaffContactFieldOne, "Write Staff Email...", controller.emailC, context),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: _buildPhoneField(context, "Write Staff Number ...."),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildTextField(TextString.addStaffContactFieldOne, "Write Staff Email...", controller.emailC, context),
+                          const SizedBox(height: 16),
+                          _buildPhoneField(context, "Contact Number ...."),
+                        ],
+                      );
+                    }
+                  }),
                 ]),
             const Divider(height: 1, thickness: 0.5, color: AppColors.quadrantalTextColor),
 
@@ -399,6 +428,177 @@ class EditStaffScreenWidget extends StatelessWidget {
           );
         }),
       ],
+    );
+  }
+
+
+   // Phone Fields
+  Widget _buildPhoneField(BuildContext context, String label) {
+    final controller = Get.find<StaffController>();
+    final List<Country> countryList = CountryService().getAll();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(label, style: TTextTheme.titleTwo(context)),
+        const SizedBox(height: 6),
+        Obx(() => TextFormField(
+          controller: controller.phoneControllerEdit,
+          keyboardType: TextInputType.phone,
+          style: TTextTheme.insidetextfieldWrittenText(context),
+          cursorColor: AppColors.blackColor,
+          decoration: InputDecoration(
+            errorText: controller.textFieldErrorsEdit['Phone'],
+            filled: true,
+            fillColor: AppColors.secondaryColor,
+            hintText: "Enter number",
+            hintStyle: TTextTheme.titleTwo(context),
+            prefixIcon: Padding(
+              padding: const EdgeInsets.only(left: 4),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButtonHideUnderline(
+                    child: DropdownButton2<Country>(
+                      isExpanded: false,
+                      value: countryList.firstWhere(
+                            (c) => c.name == controller.selectedCountryNameEdit.value,
+                        orElse: () => countryList.firstWhere((c) => c.name == "Australia"),
+                      ),
+                      selectedItemBuilder: (context) {
+                        return countryList.map((Country country) {
+                          return Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const SizedBox(width: 8),
+                              _buildCircleFlag(country.countryCode),
+                              const SizedBox(width: 10),
+                              Text("+${country.phoneCode}",
+                                  style: TTextTheme.bodyRegular14(context)
+                                      .copyWith(color: AppColors.blackColor)),
+                            ],
+                          );
+                        }).toList();
+                      },
+                      items: countryList.map((Country country) {
+                        return DropdownMenuItem<Country>(
+                          value: country,
+                          child: Row(
+                            children: [
+                              _buildCircleFlag(country.countryCode),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(country.name,
+                                    style: const TextStyle(fontSize: 13),
+                                    overflow: TextOverflow.ellipsis),
+                              ),
+                              Text("+${country.phoneCode}",
+                                  style: TTextTheme.titleinputTextField(context)),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (Country? value) {
+                        if (value != null) {
+                          controller.selectedCountryNameEdit.value = value.name;
+                          controller.selectedCode2.value = "+${value.phoneCode}";
+                        }
+                      },
+                      buttonStyleData: const ButtonStyleData(
+                        height: 48,
+                        padding: EdgeInsets.symmetric(horizontal: 4),
+                      ),
+                      iconStyleData: const IconStyleData(
+                        icon: Icon(Icons.keyboard_arrow_down_rounded,
+                            size: 20, color: Colors.black54),
+                      ),
+                      dropdownStyleData: DropdownStyleData(
+                        maxHeight: 350,
+                        width: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white),
+                        offset: const Offset(0, -5),
+                      ),
+                      dropdownSearchData: DropdownSearchData(
+                        searchController: controller.searchController2,
+                        searchInnerWidgetHeight: 50,
+                        searchInnerWidget: _buildSearchField(
+                            context, controller.searchController2),
+                        searchMatchFn: (item, searchValue) {
+                          return item.value!.name
+                              .toLowerCase()
+                              .contains(searchValue.toLowerCase()) ||
+                              item.value!.phoneCode.contains(searchValue);
+                        },
+                      ),
+                    ),
+                  ),
+                  Container(height: 24, width: 1, color: Colors.grey.withOpacity(0.3)),
+                  const SizedBox(width: 8),
+                ],
+              ),
+            ),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: AppColors.primaryColor, width: 1),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.5),
+            ),
+            errorStyle: const TextStyle(color: AppColors.primaryColor, fontSize: 12),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          ),
+        )),
+      ],
+    );
+  }
+  Widget _buildSearchField(BuildContext context, TextEditingController searchController) {
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: TextFormField(
+        cursorColor: AppColors.blackColor,
+        controller: searchController,
+        style: TTextTheme.textFieldWrittenText(context),
+        decoration: InputDecoration(
+          isDense: true,
+          fillColor: AppColors.backgroundOfScreenColor,
+          filled: true,
+          hintText: 'Search',
+          hintStyle: TTextTheme.titleTwo(context),
+          prefixIcon: const Icon(Icons.search, size: 18, color: AppColors.primaryColor),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: const BorderSide(color: AppColors.primaryColor),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: const BorderSide(color: AppColors.primaryColor),
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildCircleFlag(String code) {
+    return Container(
+      width: 24,
+      height: 24,
+      decoration: const BoxDecoration(shape: BoxShape.circle),
+      child: ClipOval(
+        child: Image.network(
+          'https://flagcdn.com/w80/${code.toLowerCase()}.png',
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => const Icon(Icons.flag, size: 14),
+        ),
+      ),
     );
   }
 

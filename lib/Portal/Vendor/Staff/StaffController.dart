@@ -4,7 +4,7 @@ import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class StaffController extends GetxController{
+class StaffController extends GetxController {
   final RxString selectedSearchType2 = "Staff Name".obs;
 
 
@@ -69,16 +69,32 @@ class StaffController extends GetxController{
   final firstNameC = TextEditingController();
   final lastNameC = TextEditingController();
   final emailC = TextEditingController();
-  final phoneC = TextEditingController();
+  final phoneController = TextEditingController();
   final positionC = TextEditingController();
-
+  final searchController = TextEditingController();
+  var selectedCountryName = "Australia".obs;
+  var selectedCode = "+61".obs;
   var selectedStatus = 'Active'.obs;
   var permissions = <String>[].obs;
   var textFieldErrors = <String, String>{}.obs;
   var permissionsError = "".obs;
   var statusError = "".obs;
 
-  final List<String> statusItems = ["Active", "Awaiting", "InActive", "Suspended"];
+  final List<String> statusItems = [
+    "Active",
+    "Awaiting",
+    "InActive",
+    "Suspended"
+  ];
+
+  String? validateRequired(String? value, String fieldName) {
+    if (value == null || value
+        .trim()
+        .isEmpty) {
+      return "$fieldName is required";
+    }
+    return null;
+  }
 
   void togglePermission(String val) {
     if (permissions.contains(val)) {
@@ -91,11 +107,15 @@ class StaffController extends GetxController{
 
   bool validateStaffForm() {
     bool isValid = true;
+    textFieldErrors.clear();
+    statusError.value = "";
+    permissionsError.value = "";
+
     final fields = {
       'First Name': firstNameC.text,
       'Last Name': lastNameC.text,
       'Email': emailC.text,
-      'Phone': phoneC.text,
+      'Phone Number': phoneController.text,
       'Position': positionC.text,
     };
 
@@ -104,23 +124,19 @@ class StaffController extends GetxController{
         textFieldErrors[key] = "$key is required";
         isValid = false;
       } else if (key == 'Email' && !GetUtils.isEmail(value)) {
-        textFieldErrors[key] = "Enter a valid email";
+        textFieldErrors[key] = "Email is invalid";
         isValid = false;
-      } else {
-        textFieldErrors.remove(key);
-      }
-      if (selectedStatus.value.isEmpty) {
-        statusError.value = "Please select a status";
-        isValid = false;
-      } else {
-        statusError.value = "";
       }
     });
+
+    if (selectedStatus.value.isEmpty) {
+      statusError.value = "Status is required";
+      isValid = false;
+    }
+
     if (permissions.isEmpty) {
       permissionsError.value = "Select at least one permission";
       isValid = false;
-    } else {
-      permissionsError.value = "";
     }
 
     return isValid;
@@ -128,32 +144,42 @@ class StaffController extends GetxController{
 
   void submitData(BuildContext context) {
     if (validateStaffForm()) {
-      print("Sending Invitation for: ${firstNameC.text}");
+      String fullNumber = "${selectedCode.value} ${phoneController.text}";
+      print("Final Data: ${firstNameC.text}, Phone: $fullNumber");
     } else {
       Get.snackbar(
-        "Validation Failed",
-        "Please fix the errors before sending invitation.",
+        "Error",
+        "Please check the fields",
         backgroundColor: AppColors.primaryColor,
         colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM,
       );
     }
   }
-  /// Edit Staff Screen
+
+   /// Edit Staff
   final firstNameCEdit = TextEditingController();
   final lastNameCEdit = TextEditingController();
   final emailCEdit = TextEditingController();
-  final phoneCEdit = TextEditingController();
+  final phoneControllerEdit = TextEditingController();
+  final searchControllerEdit = TextEditingController();
   final positionCEdit = TextEditingController();
-
+  final searchController2 = TextEditingController();
+  var selectedCountryNameEdit = "Australia".obs;
+  var selectedCodeEdit = "+61".obs;
   var selectedStatusEdit = "".obs;
   var permissionsEdit = <String>[].obs;
-
+  var selectedCode2 = "+61".obs;
   var textFieldErrorsEdit = <String, String>{}.obs;
   var statusErrorEdit = "".obs;
   var permissionsErrorEdit = "".obs;
 
-  final List<String> statusItems2 = ["Active", "Awaiting", "InActive", "Suspended"];
+  final List<String> statusItems2 = [
+    "Active",
+    "Awaiting",
+    "InActive",
+    "Suspended"
+  ];
 
   void togglePermissionEdit(String val) {
     if (permissionsEdit.contains(val)) {
@@ -163,14 +189,27 @@ class StaffController extends GetxController{
     }
     if (permissionsEdit.isNotEmpty) permissionsErrorEdit.value = "";
   }
+
+  String? validateRequiredEdit(String? value, String fieldName) {
+    if (value == null || value
+        .trim()
+        .isEmpty) {
+      return "$fieldName is required";
+    }
+    return null;
+  }
+
   bool validateEditStaffForm() {
     bool isValid = true;
+    textFieldErrorsEdit.clear();
+    statusErrorEdit.value = "";
+    permissionsErrorEdit.value = "";
 
     final fields = {
       'First Name': firstNameCEdit.text,
       'Last Name': lastNameCEdit.text,
       'Email': emailCEdit.text,
-      'Phone': phoneCEdit.text,
+      'Phone': phoneControllerEdit.text,
       'Position': positionCEdit.text,
     };
 
@@ -178,23 +217,20 @@ class StaffController extends GetxController{
       if (value.trim().isEmpty) {
         textFieldErrorsEdit[key] = "$key is required";
         isValid = false;
-      } else {
-        textFieldErrorsEdit.remove(key);
+      } else if (key == 'Email' && !GetUtils.isEmail(value)) {
+        textFieldErrorsEdit[key] = "Email is invalid";
+        isValid = false;
       }
     });
 
     if (selectedStatusEdit.value.isEmpty) {
       statusErrorEdit.value = "Status is required";
       isValid = false;
-    } else {
-      statusErrorEdit.value = "";
     }
 
     if (permissionsEdit.isEmpty) {
       permissionsErrorEdit.value = "Select at least one permission";
       isValid = false;
-    } else {
-      permissionsErrorEdit.value = "";
     }
 
     return isValid;
@@ -202,10 +238,11 @@ class StaffController extends GetxController{
 
   void submitDataEdit(BuildContext context) {
     if (validateEditStaffForm()) {
-
+      String fullNumber = "${selectedCodeEdit.value} ${phoneControllerEdit
+          .text}";
+      print("Update Data: ${firstNameCEdit.text}, Phone: $fullNumber");
     }
   }
-
   /// Sorting
   var sortColumn = "".obs;
   var sortOrder = 0.obs;
@@ -226,12 +263,10 @@ class StaffController extends GetxController{
     firstNameC.dispose();
     lastNameC.dispose();
     emailC.dispose();
-    phoneC.dispose();
     positionC.dispose();
     firstNameCEdit.dispose();
     lastNameCEdit.dispose();
     emailCEdit.dispose();
-    phoneCEdit.dispose();
     positionCEdit.dispose();
     super.onClose();
   }

@@ -12,7 +12,7 @@ class AuthRoutes {
     GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
     GoRoute(path: '/signUp', builder: (context, state) => const RegisterScreen()),
     GoRoute(path: '/forgotPassword', builder: (context, state) => const ForgotPassword()),
-    GoRoute(path: '/newPassword', builder: (context, state) => const NewPassword()),
+    // GoRoute(path: '/newPassword', builder: (context, state) => const NewPassword()),
     GoRoute(path: '/authSuccess', builder: (context, state) => const RecoveryShowScreenOne()),
     GoRoute(path: '/authSuccess2', builder: (context, state) => RecoveryShowScreenTwo()),
     GoRoute(path: '/twoStepVerificationOne', builder: (context, state) => const TwoStepVerificationOne()),

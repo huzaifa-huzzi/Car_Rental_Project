@@ -123,9 +123,15 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
                           alignment: WrapAlignment.center,
                           children: [
                             Text(TextString.twoStepFooterOne, style: TTextTheme.titleSmallRemember(context)),
-                            Text(TextString.twoStepResend, style: TTextTheme.titleSmallRegister(context)),
-                            Text(TextString.twoStepFooterTwo, style: TTextTheme.titleSmallRemember(context)),
-                            Text(TextString.twoStepEdit, style: TTextTheme.titleSmallRegister(context)),
+                            InkWell(
+                              onTap: () {
+                                showCodeSentDialog(context);
+                              },
+                              child: Text(
+                                TextString.twoStepResend,
+                                style: TTextTheme.titleSmallRegister(context),
+                              ),
+                            )
                           ],
                         ),
                       ],
@@ -211,6 +217,110 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
         const SizedBox(width: 10),
         Text("SoftSnip", style: TTextTheme.h6Style(context)),
       ],
+    );
+  }
+
+  // Dialog
+  void showCodeSentDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        double screenWidth = MediaQuery.of(context).size.width;
+        bool isMobile = screenWidth < 600;
+
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 5,
+          backgroundColor: Colors.white,
+          child: Container(
+            width: isMobile ? screenWidth * 0.9 : 500,
+            padding: const EdgeInsets.all(20),
+            child: Stack(
+              children: [
+
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: AppColors.sideBoxesColor,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.close,
+                        size: 14,
+                        color: AppColors.quadrantalTextColor
+                      ),
+                    ),
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 45,
+                            width: 45,
+                            decoration: BoxDecoration(
+                              color: AppColors.backgroundOfPickupsWidget,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.cell_tower,
+                                color: AppColors.primaryColor,
+                                size: 24,
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(width: 16),
+
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "New Code Sent",
+                                  style: TTextTheme.h2Style(context)
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  "A new verification code has been sent to your registered mobile number/email. Please check and enter the code to continue.",
+                                  style: TTextTheme.bodyRegular16(context)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 24),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: SizedBox(
+                          width: isMobile ? 120 : 150,
+                          height: 40,
+                          child: PrimaryBtnOfLogin(text: "New Code ", onTap: () => Navigator.pop(context))
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

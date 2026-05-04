@@ -42,14 +42,13 @@ class SideBarController extends GetxController {
       selected.value = "Car Inventory";
 
       // Customers
-    } else if (r.startsWith('/customers') ||
-        r.startsWith('/customerdetails') ||
+    }  else if (r.startsWith('/customers') ||
         r.startsWith('/addnewcustomer') ||
         r.startsWith('/editcustomers') ||
+        r.startsWith('/customerdetails') ||
         r.startsWith('/steptwocustomer')) {
       selected.value = "Customers";
 
-      // Pickup Car
     } else if (r.startsWith('/pickupcar') ||
         r.startsWith('/pickupdetail') ||
         r.startsWith('/addpickup') ||

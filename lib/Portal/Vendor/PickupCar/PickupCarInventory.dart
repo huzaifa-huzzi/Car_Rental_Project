@@ -1,4 +1,4 @@
-import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/Widget/CalendarManagingScreen.dart';
+import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/Widget/CalendarManagingScreen.dart' hide AppColors;
 import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/Widget/ResponsiveTimerWidget.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:file_picker/file_picker.dart';
@@ -38,6 +38,7 @@ class PickupCarController extends GetxController {
   var hoveredRowIndex = (-1).obs;
   final ScrollController customerScrollController = ScrollController();
   final ScrollController carScrollController = ScrollController();
+  var openedDropdown3 = "".obs;
 
   RxString openedDropdown2 = "".obs;
 
@@ -975,31 +976,32 @@ class PickupCarController extends GetxController {
   bool validateSignatureSection() {
     bool isValid = true;
     signatureError.value = "";
+    ownerNameError.value = "";
+    hirerNameError.value = "";
+    errorMessageStep2.value = "";
+    if (isTermsAgreed.value == false) {
+      errorMessageStep2.value = "Please agree to terms";
+      isValid = false;
+    }
+
     if (pickupOwnerNameFieldController.text.trim().isEmpty) {
       ownerNameError.value = "Owner name is required";
       isValid = false;
-    } else {
-      ownerNameError.value = "";
     }
-
     if (!isPickupOwnerSignatureConfirmed.value) {
       signatureError.value = "Please confirm owner signature";
       isValid = false;
     }
-
     if (pickupHirerNameFieldController.text.trim().isEmpty) {
       hirerNameError.value = "Hirer name is required";
       isValid = false;
-    } else {
-      hirerNameError.value = "";
     }
-
     if (!isPickupHirerSignatureConfirmed.value) {
-      signatureError.value = "Please confirm hirer signature";
+      signatureError.value = "Please confirm signatures";
       isValid = false;
     }
 
-    return true;
+    return isValid;
   }
 
   void confirmCurrentSignature() {
@@ -1034,6 +1036,7 @@ class PickupCarController extends GetxController {
     signatureError.value = "";
   }
   final formKey = GlobalKey<FormState>();
+
 
 }
 

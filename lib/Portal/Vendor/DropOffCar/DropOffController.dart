@@ -265,8 +265,10 @@ class DropOffController extends GetxController{
       double fieldWidth,
       ) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final double popupWidth = screenWidth < 500 ? 260 : 280;
-    bool isMobile = screenWidth < 600;
+    final RenderBox? renderBox = context.findRenderObject() as RenderBox?;
+    final offset = renderBox?.localToGlobal(Offset.zero);
+    final fieldLeftPos = offset?.dx ?? 0;
+    bool isOnRightSide = fieldLeftPos > (screenWidth / 2);
 
     return OverlayEntry(
       builder: (context) => Stack(
@@ -280,15 +282,15 @@ class DropOffController extends GetxController{
           CompositedTransformFollower(
             link: link,
             showWhenUnlinked: false,
-            targetAnchor: isMobile ? Alignment.bottomRight : Alignment.bottomLeft,
-            followerAnchor: isMobile ? Alignment.topRight : Alignment.topLeft,
+            targetAnchor: isOnRightSide ? Alignment.bottomRight : Alignment.bottomLeft,
+            followerAnchor: isOnRightSide ? Alignment.topRight : Alignment.topLeft,
             offset: const Offset(0, 8),
             child: Material(
               elevation: 10,
               borderRadius: BorderRadius.circular(12),
               color: Colors.white,
               child: CustomCalendarDropOff(
-                width: popupWidth,
+                width: screenWidth < 400 ? 250 : 300,
                 onCancel: removeCalendar,
                 onDateSelected: (date) {
                   targetController.text = "${date.day}/${date.month}/${date.year}";
@@ -606,22 +608,54 @@ class DropOffController extends GetxController{
     isDrawingStarted.value = false;
     isConfirmed.value = false;
   }
+  var ownerNameError = "".obs;
+  var hirerNameError = "".obs;
+  var signatureError = "".obs;
+  var termsError = "".obs;
 
+  bool validateDropOffStep() {
+    bool isValid = true;
+    ownerNameError.value = "";
+    hirerNameError.value = "";
+    signatureError.value = "";
+    termsError.value = "";
+    if (!isTermsAgreed.value) {
+      termsError.value = "Please agree to terms and conditions";
+      isValid = false;
+    }
+    if (dropOffOwnerNameFieldController.text.trim().isEmpty) {
+      ownerNameError.value = "Owner name is required";
+      isValid = false;
+    }
+    if (!isDropOffOwnerSignatureConfirmed.value) {
+      signatureError.value = "Please confirm owner signature";
+      isValid = false;
+    }
+    if (dropOffHirerNameFieldController.text.trim().isEmpty) {
+      hirerNameError.value = "Hirer name is required";
+      isValid = false;
+    }
+    if (!isDropOffHirerSignatureConfirmed.value) {
+      if (isValid) signatureError.value = "Please confirm hirer signature";
+      isValid = false;
+    }
+
+    return isValid;
+  }
   void confirmCurrentSignature() {
     isStep3Submitted.value = true;
 
     bool isNameValid = activeNameController.text.trim().isNotEmpty;
     bool isSigNotEmpty = activeSigController.isNotEmpty;
 
-    if (isNameValid  && isSigNotEmpty) {
+    if (isNameValid && isSigNotEmpty) {
       isConfirmed.value = true;
+      if (isOwnerSigned.value) ownerNameError.value = ""; else hirerNameError.value = "";
+      signatureError.value = "";
+
       Get.snackbar("Success", "Signature confirmed!", backgroundColor: Colors.green, colorText: Colors.white);
     } else {
-      String error = "";
-      if (!isNameValid) {
-        error = "Name is required.";
-      } else if (!isSigNotEmpty) error = "Please draw your signature.";
-
+      String error = !isNameValid ? "Name is required." : "Please draw your signature.";
       Get.snackbar("Required", error, snackPosition: SnackPosition.BOTTOM, backgroundColor: AppColors.primaryColor, colorText: Colors.white);
     }
   }
