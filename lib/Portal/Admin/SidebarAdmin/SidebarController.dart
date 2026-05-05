@@ -28,25 +28,31 @@ class SideBarAdminController extends GetxController {
 
   void syncWithRoute(String route) {
     String path = route.toLowerCase();
+
     if (path == '/dashboard-admin' || path == '/' || path.isEmpty) {
       selected.value = "Dashboard";
     }
-    else if (path.contains('/companies')) {
+    else if (path.contains('company') || path.contains('companies')) {
       selected.value = "Companies";
-    } else if (path.contains('/reports')) {
+    }
+    else if (path.contains('/reports')) {
       selected.value = "Reports";
-    } else if (path.contains('/subscription')) {
+    }
+    else if (path.contains('/subscription')) {
       selected.value = "Subscription";
-    } else if (path.contains('/payment')) {
+    }
+    else if (path.contains('/payment-admin') || path.contains('/payment')) {
       selected.value = "Payment";
-    } else if (path.contains('/branding')) {
+    }
+    else if (path.contains('/branding')) {
       selected.value = "Branding";
-    } else if (path.contains('/user-role')) {
+    }
+    else if (path.contains('/user-role-admin') || path.contains('/user-role')) {
       selected.value = "User and Role";
-    } else if (path.contains('/help')) {
+    }
+    else if (path.contains('/help-admin') || path.contains('/help')) {
       selected.value = "Help Center";
     }
-
     subSelected.value = null;
     update();
   }

@@ -1,9 +1,11 @@
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/AddingCar/AddingCar.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Details/CarDetails.dart';
+import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/CarInventoryController.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/CarInventoryMainScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Editing%20Car/EditingCar.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/AddCustomers/AddCustomers.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/AddCustomers/Widget/StepTwoCustomerWidget.dart';
+import 'package:car_rental_project/Portal/Vendor/Customers/CustomersController.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/CustomersDetails/CustomersDetails.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/EditCustomers/EditCustomerScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/TableViewCustomerScreen/TableViewScreen.dart';
@@ -12,6 +14,7 @@ import 'package:car_rental_project/Portal/Vendor/DropOffCar/AddDropOff/AddDropOf
 import 'package:car_rental_project/Portal/Vendor/DropOffCar/AddDropOff/Widget/StepOneDropOffWidget.dart';
 import 'package:car_rental_project/Portal/Vendor/DropOffCar/AddDropOff/Widget/StepThreeDropOffWidget.dart';
 import 'package:car_rental_project/Portal/Vendor/DropOffCar/AddDropOff/Widget/StepTwoDropOffWidget.dart';
+import 'package:car_rental_project/Portal/Vendor/DropOffCar/DropOffController.dart';
 import 'package:car_rental_project/Portal/Vendor/DropOffCar/DropOffDetails/DropOffDetails.dart';
 import 'package:car_rental_project/Portal/Vendor/DropOffCar/Subtabs/DropOffT&C/AddDropOffT&C.dart';
 import 'package:car_rental_project/Portal/Vendor/DropOffCar/Subtabs/DropOffT&C/DropOffT&C.dart';
@@ -26,6 +29,7 @@ import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/Widget/Step
 import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/Widget/SteponeWidget.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/EditPicUp/EditPickUpScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/PickUpDetailScreen/PickUpDetailScreen.dart';
+import 'package:car_rental_project/Portal/Vendor/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/Subtabs/Pickup%20T&C/AddPickupT&C.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/Subtabs/Pickup%20T&C/PickupT&C.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/Subtabs/Pickup%20T&C/PickupT&CDescription.dart';
@@ -51,7 +55,6 @@ class VendorRoutes {
             path.contains('step');
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
-
           final SideBarController controller = Get.put(
             SideBarController(),
             permanent: true,
@@ -82,52 +85,116 @@ class VendorRoutes {
         );
       },
       routes: [
-        // ── Main module routes
-        GoRoute(path: '/dashboard',    builder: (_, __) => const DashboardScreen()),
-        GoRoute(path: '/carInventory', builder: (_, __) => CarInventoryMainScreen()),
-        GoRoute(path: '/customers',    builder: (_, __) => TableViewCustomerScreen()),
-        GoRoute(path: '/pickupcar',    builder: (_, __) => TableViewPickUpScreen()),
-        GoRoute(path: '/pickupT&C',    builder: (_, __) => const PickupTandC()),
-        GoRoute(path: '/dropoffCar',   builder: (_, __) => TableViewDropOffScreen()),
-        GoRoute(path: '/Payment',      builder: (_, __) => PaymentScreen()),
-        GoRoute(path: '/staff',        builder: (_, __) => TableViewOfStaffScreen()),
+        // Main module routes
+        GoRoute(path: '/dashboard', builder: (_, __) => const DashboardScreen()),
+        GoRoute(path: '/carInventory', builder: (_, __) {
+          Get.put(CarInventoryController());
+          return CarInventoryMainScreen();
+        }),
+        GoRoute(path: '/customers', builder: (_, __) {
+          Get.put(CustomerController());
+          return TableViewCustomerScreen();
+        }),
+        GoRoute(path: '/pickupcar', builder: (_, __) {
+          Get.put(PickupCarController());
+          return TableViewPickUpScreen();
+        }),
+        GoRoute(path: '/pickupT&C', builder: (_, __) => const PickupTandC()),
+        GoRoute(path: '/dropoffCar', builder: (_, __) {
+          Get.put(DropOffController());
+          return TableViewDropOffScreen();
+        }),
+        GoRoute(path: '/Payment', builder: (_, __) => PaymentScreen()),
+        GoRoute(path: '/staff', builder: (_, __) => TableViewOfStaffScreen()),
 
-        // ── Inventory
-        GoRoute(path: '/cardetails',   builder: (_, __) => CarDetailsScreen()),
-        GoRoute(path: '/addNewCar',    builder: (_, __) => AddingCarScreen()),
-        GoRoute(path: '/editCar',      builder: (_, __) => EditCarScreen()),
+        // Car Inventory Details & Add/Edit
+        GoRoute(path: '/cardetails', builder: (_, __) {
+          Get.put(CarInventoryController());
+          return CarDetailsScreen();
+        }),
+        GoRoute(path: '/addNewCar', builder: (_, __) {
+          Get.put(CarInventoryController());
+          return AddingCarScreen();
+        }),
+        GoRoute(path: '/editCar', builder: (_, __) {
+          Get.put(CarInventoryController());
+          return EditCarScreen();
+        }),
+        //  Customers Details & Add/Edit
+        GoRoute(path: '/customerDetails', builder: (_, __) {
+          Get.put(CustomerController());
+          return CustomerDetails();
+        }),
+        GoRoute(path: '/addNewCustomer', builder: (_, __) {
+          Get.put(CustomerController());
+          return const AddCustomerScreen();
+        }),
+        GoRoute(path: '/editCustomers', builder: (_, __) {
+          Get.put(CustomerController());
+          return EditCustomerScreen();
+        }),
+        GoRoute(path: '/stepTwoCustomer', builder: (_, __) {
+          Get.put(CustomerController());
+          return StepTwoCustomerWidget();
+        }),
 
-        // ── Customers
-        GoRoute(path: '/customerDetails',  builder: (_, __) => CustomerDetails()),
-        GoRoute(path: '/addNewCustomer',   builder: (_, __) => const AddCustomerScreen()),
-        GoRoute(path: '/editCustomers',    builder: (_, __) => EditCustomerScreen()),
-        GoRoute(path: '/stepTwoCustomer',  builder: (_, __) => StepTwoCustomerWidget()),
+        //  Pickup Sub-Routes
+        GoRoute(path: '/pickupDetail', builder: (_, __) {
+          Get.put(PickupCarController());
+          return PickUpDetailScreen();
+        }),
+        GoRoute(path: '/addpickup', builder: (_, __) {
+          Get.put(PickupCarController());
+          return const AddPickup();
+        }),
+        GoRoute(path: '/stepOnePickup', builder: (_, __) {
+          Get.put(PickupCarController());
+          return StepOneSelectionWidget();
+        }),
+        GoRoute(path: '/stepTwoWidgetScreen', builder: (_, __) {
+          Get.put(PickupCarController());
+          return StepTwoSelectionWidget();
+        }),
+        GoRoute(path: '/stepThreeWidgetScreen', builder: (_, __) {
+          Get.put(PickupCarController());
+          return StepThreeWidget();
+        }),
+        GoRoute(path: '/editPickUp', builder: (_, __) {
+          Get.put(PickupCarController());
+          return EditPickScreen();
+        }),
+        GoRoute(path: '/AddpickupT&C', builder: (_, __) => AddPickupTandC()),
+        GoRoute(path: '/pickupT&Cdescription', builder: (_, __) => PickupTandCDescription()),
 
-        // ── Pickup
-        GoRoute(path: '/pickupDetail',          builder: (_, __) => PickUpDetailScreen()),
-        GoRoute(path: '/addpickup',             builder: (_, __) => const AddPickup()),
-        GoRoute(path: '/stepOnePickup',         builder: (_, __) => StepOneSelectionWidget()),
-        GoRoute(path: '/stepTwoWidgetScreen',   builder: (_, __) => StepTwoSelectionWidget()),
-        GoRoute(path: '/stepThreeWidgetScreen', builder: (_, __) => StepThreeWidget()),
-        GoRoute(path: '/editPickUp',            builder: (_, __) => EditPickScreen()),
-        GoRoute(path: '/AddpickupT&C',          builder: (_, __) => AddPickupTandC()),
-        GoRoute(path: '/pickupT&Cdescription',  builder: (_, __) => PickupTandCDescription()),
-
-        // ── DropOff
-        GoRoute(path: '/dropOffDetail',       builder: (_, __) => DropOffDetails()),
-        GoRoute(path: '/addDropOff',          builder: (_, __) => const AddDropOffScreen()),
-        GoRoute(path: '/addDropOffDetailTwo', builder: (_, __) => AddDropOffDetailWidget()),
-        GoRoute(path: '/stepTwoDropoff',      builder: (_, __) => StepTwoDropOffWidget()),
-        GoRoute(path: '/stepThreeDropOff',    builder: (_, __) => StepThreeDropOffWidget()),
-        GoRoute(path: '/dropOffT&C',          builder: (_, __) => DropOffTandC()),
-        GoRoute(path: '/AdddropOffT&C',       builder: (_, __) => AddDropOffTandC()),
+        //  DropOff Sub-Routes
+        GoRoute(path: '/dropOffDetail', builder: (_, __) {
+          Get.put(DropOffController());
+          return DropOffDetails();
+        }),
+        GoRoute(path: '/addDropOff', builder: (_, __) {
+          Get.put(DropOffController());
+          return const AddDropOffScreen();
+        }),
+        GoRoute(path: '/addDropOffDetailTwo', builder: (_, __) {
+          Get.put(DropOffController());
+          return AddDropOffDetailWidget();
+        }),
+        GoRoute(path: '/stepTwoDropoff', builder: (_, __) {
+          Get.put(DropOffController());
+          return StepTwoDropOffWidget();
+        }),
+        GoRoute(path: '/stepThreeDropOff', builder: (_, __) {
+          Get.put(DropOffController());
+          return StepThreeDropOffWidget();
+        }),
+        GoRoute(path: '/dropOffT&C', builder: (_, __) => DropOffTandC()),
+        GoRoute(path: '/AdddropOffT&C', builder: (_, __) => AddDropOffTandC()),
         GoRoute(path: '/dropOffT&Cdescription', builder: (_, __) => DropOffTandCDescription()),
 
-        // ── Staff
+        //  Staff
         GoRoute(path: '/EditStaffScreen', builder: (_, __) => EditStaffScreen()),
-        GoRoute(path: '/addStaff',        builder: (_, __) => AddStaffScreen()),
-
-        // ── Payment & Others
+        GoRoute(path: '/addStaff', builder: (_, __) => AddStaffScreen()),
+        // Payments
         GoRoute(path: '/AddPayment', builder: (_, __) => AddPayment()),
         GoRoute(
           path: '/invoicesDetail',
