@@ -1248,7 +1248,7 @@ class AddCustomerWidget extends StatelessWidget {
                         state.didChange(value.name);
                         controller.update();
                         if (context is Element) {
-                          (context as Element).markNeedsBuild();
+                          (context).markNeedsBuild();
                         }
                       }
                     },

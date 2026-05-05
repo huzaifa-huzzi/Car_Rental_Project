@@ -351,7 +351,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     bool isMobileUI = screenWidth < 600;
 
-    return Container(
+    return SizedBox(
       width: isMobileUI ? double.infinity : 180,
       child: Column(
         mainAxisSize: MainAxisSize.min,

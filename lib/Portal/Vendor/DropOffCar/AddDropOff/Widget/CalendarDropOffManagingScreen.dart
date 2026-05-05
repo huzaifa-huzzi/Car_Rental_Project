@@ -2,7 +2,6 @@ import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
 
 class CustomCalendarDropOff extends StatefulWidget {
   final Function(DateTime) onDateSelected;

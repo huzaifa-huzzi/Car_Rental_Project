@@ -650,7 +650,11 @@ class DropOffController extends GetxController{
 
     if (isNameValid && isSigNotEmpty) {
       isConfirmed.value = true;
-      if (isOwnerSigned.value) ownerNameError.value = ""; else hirerNameError.value = "";
+      if (isOwnerSigned.value) {
+        ownerNameError.value = "";
+      } else {
+        hirerNameError.value = "";
+      }
       signatureError.value = "";
 
       Get.snackbar("Success", "Signature confirmed!", backgroundColor: Colors.green, colorText: Colors.white);
