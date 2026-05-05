@@ -331,24 +331,58 @@ class CustomerController extends GetxController {
     return isFormValid && hasProfileImg && isLicenseValid;
   }
    /// StepTwoCustomer
-  var isCredentialsGenerated = false.obs;
-  var userName = "talhabukhari".obs;
-  var password = "5ellostore.".obs;
-  var isPasswordVisible = false.obs;
-  void generateCredentials() {
-    isCredentialsGenerated.value = true;
-  }
-  void regeneratePassword() {
-    password.value = "newpassword123";
-  }
+  final userNameController = TextEditingController();
+  final passwordController = TextEditingController();
 
-  Future<void> saveCustomer(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 3));
-  }
+  // Observers for Visibility and State
   var isPasswordHidden = true.obs;
+  var isCredentialsGenerated = false.obs; // Note: In manual mode, we might not need this, but keeping it for UI flow if needed.
+
+  // Error Observers for Validation
+  var userNameError = RxnString();
+  var passwordError = RxnString();
+
   void togglePasswordVisibility() {
     isPasswordHidden.value = !isPasswordHidden.value;
   }
+
+  // Validation Logic
+  bool validateFields() {
+    bool isValid = true;
+
+    // UserName Validation
+    if (userNameController.text.trim().isEmpty) {
+      userNameError.value = "User name is required";
+      isValid = false;
+    } else {
+      userNameError.value = null;
+    }
+
+    // Password Validation: Capital letter, Special character, Length 8
+    String pwd = passwordController.text;
+    bool hasCapital = pwd.contains(RegExp(r'[A-Z]'));
+    bool hasSpecial = pwd.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+    bool hasMinLength = pwd.length >= 8;
+
+    if (pwd.isEmpty) {
+      passwordError.value = "Password is required";
+      isValid = false;
+    } else if (!hasCapital || !hasSpecial || !hasMinLength) {
+      passwordError.value = "The password must contain special character, capital letter, and length must be at least 8 characters";
+      isValid = false;
+    } else {
+      passwordError.value = null;
+    }
+
+    return isValid;
+  }
+
+  Future<void> saveCustomer(BuildContext context) async {
+    // Yahan backend call logic ayegi
+    await Future.delayed(const Duration(seconds: 3));
+  }
+
+
   RxString selectedCode = "+61".obs;
   RxString selectedFlag = "🇦🇺".obs;
   var selectedCountryName = "Australia".obs;
@@ -514,6 +548,8 @@ class CustomerController extends GetxController {
     surnameController.dispose();
     dobController.dispose();
     contactController.dispose();
+    userNameController.dispose();
+    passwordController.dispose();
     emailController.dispose();
     addressController.dispose();
     noteController.dispose();
