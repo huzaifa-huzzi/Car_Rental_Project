@@ -372,7 +372,8 @@ class AddCustomerWidget extends StatelessWidget {
             ),
             child: TextFormField(
               controller: ctrl,
-              validator: validator,
+              validator: (value) => null,
+
               cursorColor: AppColors.blackColor,
               maxLines: 5,
               style: TTextTheme.titleTwo(context),
@@ -1069,7 +1070,7 @@ class AddCustomerWidget extends StatelessWidget {
     );
   }
 
-  //   Shadow TextField Widget
+//  Shadow TextField
   Widget _buildShadowTextField(BuildContext context, String label, TextEditingController ctrl, {String? hint, bool isCreditCard = false, bool isCompact = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1101,21 +1102,8 @@ class AddCustomerWidget extends StatelessWidget {
                   controller: ctrl,
                   cursorColor: Colors.black,
                   style: TTextTheme.textFieldWrittenText(context),
-                  onChanged: (value) {
-                    if (value.isNotEmpty) {
-                      CustomerController.customerFormKey.currentState?.validate();
-                    }
-                  },
-
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return "Required";
-                    }
-                    if (isCreditCard && value.length < 16) {
-                      return "Invalid Card Number";
-                    }
-                    return null;
-                  },
+                  onChanged: (value) {},
+                  validator: (value) => null,
 
                   decoration: InputDecoration(
                     hintText: hint,
@@ -1132,6 +1120,7 @@ class AddCustomerWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                       borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.5),
                     ),
+
                     suffixIcon: isCreditCard ? Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
@@ -1147,6 +1136,7 @@ class AddCustomerWidget extends StatelessWidget {
                         ],
                       ),
                     ) : null,
+
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: AppColors.fieldsBackground),

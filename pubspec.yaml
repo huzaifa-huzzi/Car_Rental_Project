@@ -35,6 +35,7 @@ dependencies:
   intl_phone_number_input: ^0.7.4
   country_picker: ^2.0.20
   dropdown_button2: ^2.3.9
+  syncfusion_flutter_pdfviewer: ^33.2.5
 
   #  Dashboard
   fl_chart: ^0.70.0
@@ -64,6 +65,7 @@ flutter:
     - assets/icons/Admin/
     - assets/icons/Staff/
     - assets/Images/Admin/Companies/
+    - assets/Images/Error/
     - assets/Images/CarInventoryPics/
     - assets/Images/Customers/
     - assets/Images/PickupCar/

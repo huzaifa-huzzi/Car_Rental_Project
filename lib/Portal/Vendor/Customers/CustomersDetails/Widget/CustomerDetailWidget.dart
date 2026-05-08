@@ -1,4 +1,5 @@
 import 'package:car_rental_project/Portal/Vendor/Customers/CustomersController.dart';
+import 'package:car_rental_project/Portal/Vendor/Customers/CustomersDetails/Widget/PdfViewer.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/CustomersDetails/Widget/ResponsiveCardDetails.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/ReusableWidgetOfCustomers/AlertDialogCustomers.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
@@ -18,6 +19,7 @@ class CustomerDetailWidget extends StatelessWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
     final bool isMobile = screenWidth < 800;
     final double horizontalPadding = screenWidth > 1200 ? 40 : 20;
+    final controller  = Get.put(CustomerController());
 
     return Container(
       width: double.infinity,
@@ -160,9 +162,49 @@ class CustomerDetailWidget extends StatelessWidget {
                       mainAxisSpacing: 20,
                       childAspectRatio: isMobile ? 10 : 2.5,
                       children: [
-                        _documentBox(context, "Gov ID", "PDF", isPdf: true),
-                        _documentBox(context, "Passport", "JPG", isPdf: false),
-                        _documentBox(context, "Driving License", "PNG", isPdf: false),
+                        // 1. GOV ID (PDF Specific Logic)
+                        _documentBox(
+                          context,
+                          "Gov ID",
+                          "PDF",
+                          isPdf: true,
+                          onView: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const GovIdPdfViewer(
+                                  assetPath: ImageString.carRentalPdf,
+                                  title: 'Course Outline - Mids',
+                                ),
+                              ),
+                            );
+                          },
+                          onDownload: () => print("Downloading..."),
+                        ),
+                        _documentBox(
+                          context,
+                          "Passport",
+                          "JPG",
+                          isPdf: false,
+                          onView: () {
+                            controller.open(ImageString.registrationForm);
+                          },
+                          onDownload: () {
+                            print("Downloading Passport Image");
+                          },
+                        ),
+                        _documentBox(
+                          context,
+                          "Driving License",
+                          "PNG",
+                          isPdf: false,
+                          onView: () {
+                            controller.open(ImageString.registrationForm);
+                          },
+                          onDownload: () {
+                            print("Downloading License Image");
+                          },
+                        ),
                       ],
                     );
                   },
@@ -297,9 +339,14 @@ class CustomerDetailWidget extends StatelessWidget {
   }
 
  // document Box Widget
-  Widget _documentBox(BuildContext context, String label, String status, {bool isPdf = false}) {
-    final controller = Get.put(CustomerController());
-
+  Widget _documentBox(
+      BuildContext context,
+      String label,
+      String status, {
+        bool isPdf = false,
+        required VoidCallback onView,
+        required VoidCallback onDownload,
+      }) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -337,21 +384,16 @@ class CustomerDetailWidget extends StatelessWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (isPdf)
-              Padding(
-                padding: const EdgeInsets.only(right: 6),
-                child: _buildActionBtn(
-                  icon: Icons.file_download_outlined,
-                  onTap: () {
-
-                  },
-                ),
+            Padding(
+              padding: const EdgeInsets.only(right: 6),
+              child: _buildActionBtn(
+                icon: Icons.file_download_outlined,
+                onTap: onDownload,
               ),
+            ),
             _buildActionBtn(
               icon: Icons.visibility_outlined,
-              onTap: () {
-                controller.open(ImageString.registrationForm);
-              },
+              onTap: onView,
             ),
           ],
         ),

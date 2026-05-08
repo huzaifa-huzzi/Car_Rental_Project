@@ -1,7 +1,9 @@
 import 'package:car_rental_project/Authentication/ForgotPassword/ForgotPassword.dart';
 import 'package:car_rental_project/Authentication/Login/Login.dart';
 import 'package:car_rental_project/Authentication/LoginController.dart';
+import 'package:car_rental_project/Authentication/NewPassword/NewPassword.dart';
 import 'package:car_rental_project/Authentication/RecoveryShowScreen/RecoveryShowScreen.dart';
+import 'package:car_rental_project/Authentication/RecoveryShowScreen/RecoveryShowScreenThree.dart';
 import 'package:car_rental_project/Authentication/RecoveryShowScreen/RecoveryShowScreenTwo.dart';
 import 'package:car_rental_project/Authentication/Register/RegisterScreen.dart';
 import 'package:car_rental_project/Authentication/TwoStepVerificationOne/TwoStepVerificationOne.dart';
@@ -42,11 +44,28 @@ class AuthRoutes {
         }
     ),
 
+
+    GoRoute(
+        path: '/newPassword',
+        builder: (context, state) {
+          Get.put(LoginController());
+          return const NewPassword();
+        }
+    ),
+
     GoRoute(
         path: '/authSuccess2',
         builder: (context, state) {
           Get.put(LoginController());
           return RecoveryShowScreenTwo();
+        }
+    ),
+
+    GoRoute(
+        path: '/authSuccess3',
+        builder: (context, state) {
+          Get.put(LoginController());
+          return RecoveryShowScreenThree();
         }
     ),
 

@@ -17,6 +17,10 @@ class ImageString{
 
   // Customers Pics
   static const String  customerUser= 'assets/Images/Customers/CustomerUser.png';
+  static const String  carRentalPdf= 'assets/Images/Customers/carRentalAgreement.pdf';
+
+   // 404 Error
+  static const String  ErrorScreen= 'assets/Images/Error/404Error.png';
 
   // Pickup Car Pics
   static const String  carDamageInspectionImage= 'assets/Images/PickupCar/Car Inspection Image.png';

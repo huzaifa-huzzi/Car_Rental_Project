@@ -26,6 +26,15 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 22, 22, 32),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
 
+
+  static TextStyle h1StyleBlack(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 35, 38, 40),fontWeight: FontWeight.w600,color: AppColors.blackColor);
+  }
+
+  static TextStyle btnTwomain(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 20, 20, 20),fontWeight: FontWeight.w400,color: AppColors.secondTextColor);
+  }
+
   static TextStyle hsettingsSelectedDesign(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 12.25, 12.25, 12.25),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }

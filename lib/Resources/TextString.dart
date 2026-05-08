@@ -610,7 +610,10 @@ class TextString {
   static const String  recoverySubtitle =   'Successfully Verified Your Account';
   // RecoveryShow Screen Two
   static const String  recoveryTitleTwo  =   'Congratulation';
-  static const String  recoverySubtitleTwo =   'SuccessFully Verified Your Account';
+  static const String  recoverySubtitleTwo =   'SuccessFully Created Your Account';
+
+  static const String  recoveryTitleThree  =   'Congratulation';
+  static const String  recoverySubtitleThree =   'SuccessFully Changed Your Password';
   // Two Step Verification Texts
   static const String  twoStepLogin  =   'Two Step Verification';
   static const String  twoStepName =   'sellostore@company.com ';
@@ -936,4 +939,8 @@ class TextString {
   static const String  passwordDialog1subtitle=    "Are You sure you want to update it";
   static const String  passwordDialog2title=   "Password Updated Successfully";
   static const String  passwordDialog2subtitle=    "Congratulations your password has successfully updated";
+
+   // Not Found Screen
+  static const String  title=   "Page Not Found";
+  static const String  foundSubtitle=   "Something Went Wrong on Website Server";
 }

@@ -1,5 +1,6 @@
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/CarInventoryController.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/AlertDialogs.dart';
+import 'package:car_rental_project/Portal/Vendor/Customers/CustomersDetails/Widget/PdfViewer.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
@@ -636,7 +637,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
   Widget _buildCarDocumentsSection(BuildContext context) {
     final spacing = AppSizes.padding(context);
     final List<dynamic> documents = [
-      {'title': 'Car Registration.pdf', 'status': 'Document', 'uploaded': true, 'isPdf': true},
+      {'title': 'Car Registration.pdf', 'status': 'Document', 'uploaded': true, 'isPdf': true}, // Sirf ye PDF
       {'title': 'Tax Token', 'status': 'Uploaded', 'uploaded': true, 'isPdf': false},
       {'title': 'Incoherence Paper', 'status': 'Uploaded', 'uploaded': true, 'isPdf': false},
       {'title': 'Vin Number', 'status': 'JTNBA3HK003001234', 'uploaded': true, 'isPdf': false},
@@ -684,15 +685,12 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
       bool uploaded,
       {bool isPdf = false}
       ) {
-
     String iconPath;
-    String lowerTitle = title.toLowerCase();
-    bool actuallyIsPdf = isPdf || lowerTitle.contains(".pdf");
-    if (actuallyIsPdf || lowerTitle.contains("registration")) {
+    if (isPdf) {
       iconPath = IconString.pdfIcon;
-    } else if (lowerTitle.contains("tax") || lowerTitle.contains("paper")) {
+    } else if (title.toLowerCase().contains("tax") || title.toLowerCase().contains("paper")) {
       iconPath = IconString.taxIcon;
-    } else if (lowerTitle.contains("vin")) {
+    } else if (title.toLowerCase().contains("vin")) {
       iconPath = IconString.vinNumberIcon;
     } else {
       iconPath = IconString.registrationIcon;
@@ -719,7 +717,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                actuallyIsPdf ? "Document" : status,
+                isPdf ? "Document" : status,
                 style: TTextTheme.titleseven(context).copyWith(color: Colors.grey),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -739,18 +737,32 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (actuallyIsPdf)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 6),
-                    child: _buildActionButton(
-                      icon: Icons.file_download_outlined,
-                      onTap: () {
-                      },
-                    ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 6),
+                  child: _buildActionButton(
+                    icon: Icons.file_download_outlined,
+                    onTap: () {
+                      print("Downloading: $title");
+                    },
                   ),
+                ),
                 _buildActionButton(
                   icon: Icons.visibility_outlined,
-                  onTap: () => Get.find<CarInventoryController>().open(ImageString.registrationForm),
+                  onTap: () {
+                    if (isPdf) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const GovIdPdfViewer(
+                            assetPath: ImageString.carRentalPdf,
+                            title: "Car Rental Document",
+                          ),
+                        ),
+                      );
+                    } else {
+                      Get.find<CarInventoryController>().open(ImageString.registrationForm);
+                    }
+                  },
                 ),
               ],
             ),

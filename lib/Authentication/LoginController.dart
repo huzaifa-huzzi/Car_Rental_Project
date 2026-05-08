@@ -114,7 +114,7 @@ class LoginController extends GetxController {
   }
   void sendResetLink(BuildContext context) {
     if (forgotFormKey.currentState != null && forgotFormKey.currentState!.validate()) {
-       context.go('/login');
+       context.go('/newPassword');
     }
   }
 
@@ -150,7 +150,7 @@ class LoginController extends GetxController {
 
   void resetPassword(BuildContext context) {
     if (newPasswordFormKey.currentState != null && newPasswordFormKey.currentState!.validate()) {
-      context.go('/authSuccess');
+      context.go('/authSuccess3');
     }
   }
 

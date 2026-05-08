@@ -1,4 +1,3 @@
-import 'package:car_rental_project/Authentication/ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
@@ -6,15 +5,17 @@ import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../ReusableWidgetOfLogin/PrimaryBtnOfLogin.dart' show PrimaryBtnOfLogin;
 
-class RecoveryShowScreenOne extends StatefulWidget {
-  const RecoveryShowScreenOne({super.key});
+
+class RecoveryShowScreenThree extends StatefulWidget {
+  const RecoveryShowScreenThree({super.key});
 
   @override
-  State<RecoveryShowScreenOne> createState() => _RecoveryShowScreenOneState();
+  State<RecoveryShowScreenThree> createState() => _RecoveryShowScreenThreeState();
 }
 
-class _RecoveryShowScreenOneState extends State<RecoveryShowScreenOne> {
+class _RecoveryShowScreenThreeState extends State<RecoveryShowScreenThree> {
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +70,7 @@ class _RecoveryShowScreenOneState extends State<RecoveryShowScreenOne> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Icon
+                        //  Icon
                         Container(
                           padding: const EdgeInsets.all(15),
                           decoration: BoxDecoration(
@@ -85,24 +86,25 @@ class _RecoveryShowScreenOneState extends State<RecoveryShowScreenOne> {
                         const SizedBox(height: 30),
 
                         //  Heading
-                         Text(
-                          TextString.recoveryTitle,
+                        Text(
+                          TextString.recoveryTitleThree,
                           style: TTextTheme.h11Style(context),
                         ),
                         const SizedBox(height: 10),
 
-                        // Subtitle
-                         Text(
-                          TextString.recoverySubtitle,
-                          textAlign: TextAlign.center,
-                          style: TTextTheme.h6Style(context)),
+                        //  Subtitle
+                        Text(
+                            TextString.recoverySubtitleThree,
+                            textAlign: TextAlign.center,
+                            style: TTextTheme.h6Style(context)
+                        ),
                         const SizedBox(height: 40),
 
-                        // 4. Button
+                        //  Button
                         PrimaryBtnOfLogin(
-                          text: "Back",
+                          text: "Back to Login",
                           onTap: () {
-                            context.push('/dashboard');
+                            context.push('/login');
                           },
                           width: 180,
                           height: 48,
@@ -119,7 +121,8 @@ class _RecoveryShowScreenOneState extends State<RecoveryShowScreenOne> {
       ),
     );
   }
-  /// ---------- Extra Widget ---------- ///
+
+  /// ---------- Extra Widget ------- ///
 
   Widget _buildLogo() {
     return Row(

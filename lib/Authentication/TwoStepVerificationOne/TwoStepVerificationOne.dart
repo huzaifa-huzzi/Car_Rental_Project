@@ -110,7 +110,7 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
                           text: controller.isLoading.value ? "Verifying..." : "Submit",
                           onTap: () {
                             if (controller.validateOtp()) {
-                              context.push('/newPassword');
+                              context.go('/authSuccess');
                             }
                           },
                           width: double.infinity,
@@ -180,7 +180,7 @@ class _TwoStepVerificationOneState extends State<TwoStepVerificationOne> {
 
             if (value.isNotEmpty && index == 5) {
               if (controller.validateOtp()) {
-                context.go('/newPassword');
+                context.go('/authSuccess');
               }
             }
           },
