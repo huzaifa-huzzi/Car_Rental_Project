@@ -219,21 +219,14 @@ class StepTwoDropOffWidget extends StatelessWidget {
                   ],
                 ),
               ),
-
-              /// 2. DROPOFF VIEW
-              Obx(() {
-                bool hasError = controller.isStep2Submitted.value &&
-                    controller.damagePoints3.isEmpty;
-
-                return Container(
+                 Container(
                   width: columnWidth,
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: AppColors.backgroundOfPickupsWidget,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: hasError ? AppColors.primaryColor : Colors.transparent,
-                      width: hasError ? 2 : 0,
+                      color:  Colors.transparent,
                     ),
                   ),
                   child: Column(
@@ -252,30 +245,10 @@ class StepTwoDropOffWidget extends StatelessWidget {
                       _buildLegendBox(context, isInteractive: true),
                       const SizedBox(height: 20),
                       _buildInteractiveCarDiagram(context, columnWidth - 24),
-
-
-                      if (hasError)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 12.0),
-                          child: Row(
-                            children: [
-                               Icon(Icons.error_outline, color: AppColors.primaryColor, size: 16),
-                              const SizedBox(width: 6),
-                              Expanded(
-                                child: Text(
-                                  controller.isDamageInspectionOpen2.value
-                                      ? "* Please mark the damage points on the car."
-                                      : "* Please switch to 'Yes' and mark damages if any, or confirm inspection.",
-                                  style: TTextTheme.ErrorStyle(context)
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                     ],
                   ),
-                );
-              }),
+
+      ),
             ],
           ),
         ],

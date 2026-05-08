@@ -617,11 +617,6 @@ class PickupCarController extends GetxController {
   bool validateStep2Form() {
     bool isValid = true;
     imageErrors.clear();
-
-    if (damagePoints2.isEmpty) {
-      errorMessageStep2.value = "Please mark damage points or confirm inspection";
-      return false;
-    }
     if (frontImage.value == null) imageErrors['front'] = "Required";
     if (backImage.value == null) imageErrors['back'] = "Required";
     if (leftImage.value == null) imageErrors['left'] = "Required";

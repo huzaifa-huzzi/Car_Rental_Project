@@ -257,14 +257,8 @@ class AddDropOffDetailWidget extends StatelessWidget {
   //  Note Fields
   Widget _buildCommentField(BuildContext context, String label, TextEditingController controller, String hint, {bool isReadOnly = false}) {
     return FormField<String>(
-      validator: (value) {
-        if (!isReadOnly) {
-          if (controller.text.trim().isEmpty) {
-            return 'Required';
-          }
-        }
-        return null;
-      },
+      validator: (value) => null,
+
       builder: (FormFieldState<String> state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -326,8 +320,8 @@ class AddDropOffDetailWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 6, left: 4),
                 child: Text(
-                  state.errorText!,
-                  style: TTextTheme.ErrorStyle(context)
+                    state.errorText!,
+                    style: TTextTheme.ErrorStyle(context)
                 ),
               ),
           ],

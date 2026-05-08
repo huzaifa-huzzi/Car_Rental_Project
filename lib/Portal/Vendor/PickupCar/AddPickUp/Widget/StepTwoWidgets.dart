@@ -173,8 +173,6 @@ class StepTwoSelectionWidget extends StatelessWidget {
         double height = responsiveWidth * 0.5;
 
         return Obx(() {
-          bool hasError = controller.errorMessageStep2.value == "Please mark damage points or confirm inspection" &&
-              controller.damagePoints2.isEmpty;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,13 +183,10 @@ class StepTwoSelectionWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: hasError ? AppColors.primaryColor : AppColors.tertiaryTextColor,
-                      width: hasError ? 1.5 : 0.7
+                      color: AppColors.tertiaryTextColor,
+                      width: 0.7
                   ),
                   borderRadius: BorderRadius.circular(16),
-                  boxShadow: hasError
-                      ? [BoxShadow(color: AppColors.primaryColor.withOpacity(0.1), blurRadius: 10)]
-                      : [],
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -223,10 +218,6 @@ class StepTwoSelectionWidget extends StatelessWidget {
                         child: Center(
                           child: GestureDetector(
                             onTapDown: (details) {
-                              if (controller.errorMessageStep2.value == "Please mark damage points or confirm inspection") {
-                                controller.errorMessageStep2.value = "";
-                              }
-
                               double dx = details.localPosition.dx / responsiveWidth;
                               double dy = details.localPosition.dy / height;
 
@@ -277,14 +268,6 @@ class StepTwoSelectionWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              if (hasError)
-                Padding(
-                  padding: const EdgeInsets.only(top: 8, left: 12),
-                  child: Text(
-                    controller.errorMessageStep2.value,
-                    style: TTextTheme.ErrorStyle(context),
-                  ),
-                ),
             ],
           );
         });
@@ -295,31 +278,35 @@ class StepTwoSelectionWidget extends StatelessWidget {
     return Obx(() => GestureDetector(
       onTap: () {
         controller.isDamageInspectionOpen.value = !controller.isDamageInspectionOpen.value;
-        if (!controller.isDamageInspectionOpen.value) {
-          if (controller.errorMessageStep2.value == "Please mark damage points or confirm inspection") {
-            controller.errorMessageStep2.value = "";
-          }
-        }
       },
       child: Container(
         width: 60, height: 32,
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: controller.isDamageInspectionOpen.value ? AppColors.primaryColor : AppColors.quadrantalTextColor,
+          color: controller.isDamageInspectionOpen.value
+              ? AppColors.primaryColor
+              : AppColors.quadrantalTextColor,
         ),
         child: Stack(
           children: [
             AnimatedAlign(
               duration: const Duration(milliseconds: 200),
-              alignment: controller.isDamageInspectionOpen.value ? Alignment.centerRight : Alignment.centerLeft,
+              alignment: controller.isDamageInspectionOpen.value
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
               child: Container(
                 width: 24, height: 24,
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4)),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4)
+                ),
               ),
             ),
             Align(
-              alignment: controller.isDamageInspectionOpen.value ? const Alignment(-0.6, 0) : const Alignment(0.6, 0),
+              alignment: controller.isDamageInspectionOpen.value
+                  ? const Alignment(-0.6, 0)
+                  : const Alignment(0.6, 0),
               child: Text(
                 controller.isDamageInspectionOpen.value ? "Yes" : "No",
                 style: TTextTheme.btnWhiteColor(context),
