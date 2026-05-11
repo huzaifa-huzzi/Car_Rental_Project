@@ -726,6 +726,14 @@ class TextString {
   static const String  yearlyRevenue= "Yearly Revenue";
   static const String  monthlyrevenue= "Monthly Revenue";
   static const String  monthlyrevenuesubtitle= "Revenue per Month";
+  static const String  dialogPayment1= "Paused Payment";
+  static const String  dialogPaymentSubtitle1= "Are you sure you want to payment invoice In-2026-004 as paused? This action confirm that payment has paused.";
+  static const String  dialogPayment2= "Payment Marked as Paused Successfully";
+  static const String  dialogPaymentSubtitle2= "Congratulation! payment has marked as paused successfully in the system.";
+  static const String  dialogPayment3= "Cancel Payment";
+  static const String  dialogPaymentSubtitle3= "Are you sure you want to  cancel  payment invoice In-2026-004 as cancel? This action confirm that payment has cancelled.";
+  static const String  dialogPayment4= "Payment Marked as Canceled Successfully";
+  static const String  dialogPaymentSubtitle4= "Congratulation! payment has marked as Cancel successfully in the system.";
    // Add Payment
   static const String  titlePaymentAdd= "Payment Information";
   static const String  titlePaymentAddSubtitle= "All details about the payment";

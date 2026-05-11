@@ -142,6 +142,12 @@ class IconString {
   static const String  weeklyDropwnIcon = 'assets/icons/weeklyDropdown.png';
   static const String  receiptIcon = 'assets/icons/ReceiptIcon.png';
   static const String  invoicesIcon = 'assets/icons/InvoicesIconIncreased.png';
+  static const String  pendingAuto = 'assets/icons/PendingPaymentAuto.png';
+  static const String  SuccessRateAuto = 'assets/icons/SuccessRate.png';
+  static const String  PausedAccountAuto = 'assets/icons/PausedAccountAuto.png';
+  static const String  stripeICon = 'assets/icons/Stripe.png';
+  static const String  paytoIcon = 'assets/icons/PayTo.png';
+  static const String  ddIcon = 'assets/icons/DDIcon.png';
 
 
      /// Admin
