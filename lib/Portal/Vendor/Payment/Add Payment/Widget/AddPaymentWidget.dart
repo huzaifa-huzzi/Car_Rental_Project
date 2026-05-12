@@ -6,6 +6,8 @@ import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextString.dart' show TextString;
 import 'package:car_rental_project/Resources/TextTheme.dart';
+import 'package:country_picker/country_picker.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -35,12 +37,12 @@ class AddPaymentWidget extends StatelessWidget {
               _buildResponsiveRow(isMobile, [
                 _buildField(context, TextString.field1,TextString.field1Subtitle , controller.invoiceIdController, "invoice"),
                 _buildField(context, TextString.field2, TextString.field2Subtitle , controller.customerNameController, "customer"),
-                _buildField(context,TextString.field3, TextString.field3Subtitle , controller.phoneNumberController, "phone"),
+                _buildPhoneField(context, "Phone Number"),
               ]),
               const SizedBox(height: 20),
               _buildResponsiveRow(isMobile, [
                 _buildField(context, TextString.field4,TextString.field4Subtitle  , controller.paymentAmountController, "amount"),
-                _buildDateField(context, TextString.field5,TextString.field5Subtitle  , controller.dueDateController, _dueLink),
+                _buildDateField(context, TextString.field5,TextString.field5Subtitle  , controller.dueDateController, _dueLink,),
                 if (!isMobile) const SizedBox(),
               ]),
             ],
@@ -156,7 +158,13 @@ class AddPaymentWidget extends StatelessWidget {
   }
 
 //  Date Field
-  Widget _buildDateField(BuildContext context, String label, String hint, TextEditingController ctr, LayerLink link) {
+  Widget _buildDateField(
+      BuildContext context,
+      String label,
+      String hint,
+      TextEditingController ctr,
+      LayerLink link,
+      ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -168,20 +176,27 @@ class AddPaymentWidget extends StatelessWidget {
             cursorColor: AppColors.blackColor,
             controller: ctr,
             readOnly: true,
-            onTap: () => controller.toggleCalendar(context, link, ctr, 280),
+            onTap: () => controller.toggleCalendar2(
+                context,
+                link,
+                ctr,
+                320,
+            ),
             style: TTextTheme.titleinputTextField(context),
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: TTextTheme.bodyRegular16(context),
               suffixIcon: Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: Image.asset(IconString.calendarIcon, width: 18, color:AppColors.quadrantalTextColor),
+                child: Image.asset(
+                    IconString.calendarIcon,
+                    width: 18,
+                    color: AppColors.quadrantalTextColor
+                ),
               ),
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               filled: true,
               fillColor: Colors.white,
-              hoverColor: Colors.transparent,
-              focusColor: Colors.transparent,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: const BorderSide(color: AppColors.toolBackground),
@@ -741,6 +756,191 @@ class AddPaymentWidget extends StatelessWidget {
   }
   Widget _cell({required double width, required Widget child}) {
     return SizedBox(width: width, child: child);
+  }
+
+  Widget _buildPhoneField(BuildContext context, String label) {
+    final List<Country> countryList = CountryService().getAll();
+    final FocusNode phoneFocusNode = FocusNode();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: TTextTheme.bodyRegular14(context)),
+        const SizedBox(height: 8),
+
+        ListenableBuilder(
+          listenable: phoneFocusNode,
+          builder: (context, child) {
+            bool hasFocus = phoneFocusNode.hasFocus;
+
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: hasFocus ? [
+                  BoxShadow(
+                    color: AppColors.fieldsBackground.withOpacity(0.06),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ] : [],
+              ),
+              child: TextFormField(
+                controller: controller.phoneController,
+                focusNode: phoneFocusNode,
+                keyboardType: TextInputType.phone,
+                style: TTextTheme.titleinputTextField(context),
+                cursorColor: AppColors.blackColor,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  hintText: "Enter number",
+                  hintStyle: TTextTheme.bodyRegular16(context),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: AppColors.toolBackground),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: AppColors.toolBackground),
+                  ),
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.only(left: 4),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        DropdownButtonHideUnderline(
+                          child: Obx(() => DropdownButton2<Country>(
+                            isExpanded: false,
+                            value: countryList.firstWhere(
+                                  (c) => c.name == controller.selectedCountryName.value,
+                              orElse: () => countryList.firstWhere((c) => c.name == "Australia"),
+                            ),
+                            selectedItemBuilder: (context) {
+                              return countryList.map((Country country) {
+                                return Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const SizedBox(width: 8),
+                                    _buildCircleFlag(country.countryCode),
+                                    const SizedBox(width: 10),
+                                    Text("+${country.phoneCode}",
+                                        style: TTextTheme.bodyRegular14(context)
+                                            .copyWith(color: AppColors.blackColor)),
+                                  ],
+                                );
+                              }).toList();
+                            },
+                            items: countryList.map((Country country) {
+                              return DropdownMenuItem<Country>(
+                                value: country,
+                                child: Row(
+                                  children: [
+                                    _buildCircleFlag(country.countryCode),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: Text(country.name,
+                                          style: const TextStyle(fontSize: 13),
+                                          overflow: TextOverflow.ellipsis),
+                                    ),
+                                    Text("+${country.phoneCode}",
+                                        style: TTextTheme.titleinputTextField(context)),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (Country? value) {
+                              if (value != null) {
+                                controller.selectedCountryName.value = value.name;
+                                controller.selectedCode.value = "+${value.phoneCode}";
+                              }
+                            },
+                            buttonStyleData: const ButtonStyleData(
+                              height: 48,
+                              padding: EdgeInsets.symmetric(horizontal: 4),
+                            ),
+                            iconStyleData: const IconStyleData(
+                              icon: Icon(Icons.keyboard_arrow_down_rounded,
+                                  size: 20, color: Colors.black54),
+                            ),
+                            dropdownStyleData: DropdownStyleData(
+                              maxHeight: 350,
+                              width: 250,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.white),
+                              offset: const Offset(0, -5),
+                            ),
+                            dropdownSearchData: DropdownSearchData(
+                              searchController: controller.searchController,
+                              searchInnerWidgetHeight: 50,
+                              searchInnerWidget: _buildSearchField(
+                                  context, controller.searchController),
+                              searchMatchFn: (item, searchValue) {
+                                return item.value!.name
+                                    .toLowerCase()
+                                    .contains(searchValue.toLowerCase()) ||
+                                    item.value!.phoneCode.contains(searchValue);
+                              },
+                            ),
+                          )),
+                        ),
+                        Container(
+                          height: 24,
+                          width: 1,
+                          color: AppColors.toolBackground.withOpacity(0.5),
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+  Widget _buildSearchField(BuildContext context, TextEditingController searchController) {
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: TextFormField(
+        cursorColor: AppColors.blackColor,
+        controller: searchController,
+        style: TTextTheme.textFieldWrittenText(context),
+        decoration: InputDecoration(
+          isDense: true,
+          fillColor: AppColors.backgroundOfScreenColor,
+          filled: true,
+          hintText: 'Search',
+          hintStyle: TTextTheme.titleTwo(context),
+          prefixIcon: const Icon(Icons.search, size: 18, color: AppColors.primaryColor),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: const BorderSide(color: AppColors.primaryColor),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: const BorderSide(color: AppColors.primaryColor),
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildCircleFlag(String code) {
+    return Container(
+      width: 24,
+      height: 24,
+      decoration: const BoxDecoration(shape: BoxShape.circle),
+      child: ClipOval(
+        child: Image.network(
+          'https://flagcdn.com/w80/${code.toLowerCase()}.png',
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => const Icon(Icons.flag, size: 14),
+        ),
+      ),
+    );
   }
 
 

@@ -80,36 +80,25 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                       LayoutBuilder(
                         builder: (context, constraints) {
                           return Obx(() {
+                            // 1. Controller se current list uthao
+                            var currentList = controller.displayedCarList;
                             bool isManual = controller.selectedMainTab.value == "Manual Payment";
-                            var currentDataList = isManual
-                                ? controller.displayedCarList
-                                : controller.autoData;
 
+                            // 2. Scrollable container (agar zaroorat ho)
                             return SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
-                              child: SizedBox(
-                                width: isManual ? 1180 : 1520,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    isManual
-                                        ? _buildTableHeader(controller)
-                                        : _buildAutoTableHeader(controller),
+                              child: Column(
+                                children: [
+                                  // Header Switch
+                                  isManual ? _buildTableHeader(controller) : _buildAutoTableHeader(controller),
 
-                                    const SizedBox(height: 8),
-
-                                    if (currentDataList.isEmpty)
-                                      const SizedBox(height: 200, child: Center(child: Text("No Data Found")))
-                                    else
-                                      Column(
-                                        children: currentDataList
-                                            .map((data) => isManual
-                                            ? _buildPaymentRow(data)
-                                            : _buildAutoPaymentRow(data))
-                                            .toList(),
-                                      ),
-                                  ],
-                                ),
+                                  // Data Rows
+                                  ...currentList.map((data) {
+                                    return isManual
+                                        ? _buildPaymentRow(data)
+                                        : _buildAutoPaymentRow(data);
+                                  }).toList(),
+                                ],
                               ),
                             );
                           });
@@ -217,6 +206,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
               controller.dateFilterLink,
               controller.dateTextController,
               isMobile ? MediaQuery.of(context).size.width * 0.9 : 320
+
           );
         },
         borderRadius: BorderRadius.circular(8),
@@ -227,7 +217,6 @@ class _PaymentWidgetState extends State<PaymentWidget> {
           decoration: BoxDecoration(
             color: AppColors.signaturePadColor,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.quadrantalTextColor.withOpacity(0.7)),
           ),
           child: Row(
             children: [
@@ -306,7 +295,9 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     );
   }
   Widget _buildCustomerDropdown(BuildContext context, String id, RxString selectedValue, bool isMobile, double height) {
-    List<String> items = ["Customer Name", "Invoice Id",];
+    List<String> items = controller.selectedMainTab.value == "Auto Payment"
+        ? ["Customer Name", "Car Name", "Registration", "Source", "Amount"]
+        : ["Customer Name", "Invoice Id"];
 
     return Obx(() {
       bool isOpen = controller.openedDropdown2.value == id;
@@ -354,22 +345,18 @@ class _PaymentWidgetState extends State<PaymentWidget> {
             ],
           ),
         ),
-        itemBuilder: (context) => items.asMap().entries.map((entry) {
+        itemBuilder: (context) => items.map((String item) {
           return PopupMenuItem<String>(
-            value: entry.value,
+            value: item,
             padding: EdgeInsets.zero,
             height: 40,
-            child: Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  child: Text(
-                    entry.value,
-                    style: TTextTheme.bodyRegular14(context),
-                  ),
-                ),
-              ],
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: Text(
+                item,
+                style: TTextTheme.bodyRegular14(context),
+              ),
             ),
           );
         }).toList(),
@@ -503,8 +490,18 @@ class _PaymentWidgetState extends State<PaymentWidget> {
    // Auto PAyment Cards
   Widget _buildAutoPaymentStatsGrid(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      int crossAxisCount = constraints.maxWidth > 850 ? 3 : (constraints.maxWidth > 480 ? 2 : 1);
-      double aspectRatio = constraints.maxWidth > 850 ? 2.2 : 1.5;
+      double width = constraints.maxWidth;
+      int crossAxisCount = width >= 820
+          ? 3
+          : (width >= 500 ? 2 : 1);
+      double aspectRatio;
+      if (width >= 800) {
+        aspectRatio = 2.3;
+      } else if (width >= 500) {
+        aspectRatio = 2.1;
+      } else {
+        aspectRatio = width / 120;
+      }
 
       return GridView.count(
         shrinkWrap: true,
@@ -522,10 +519,10 @@ class _PaymentWidgetState extends State<PaymentWidget> {
               null, AppColors.secondaryColor, isDot: true, dotColor: AppColors.primaryColor),
           _autoStatCard(context, "Pending Payments", "50", "50 more payments will be executed further",
               IconString.pendingAuto, AppColors.secondaryColor),
+          _autoStatCard(context, "Overdue Payments", "20", "3 More Payments Overdue",
+              IconString.overdueIcon, AppColors.secondaryColor),
           _autoStatCard(context, "Paused Accounts", "2", "2 more accounts got paused",
               IconString.PausedAccountAuto, AppColors.secondaryColor),
-          _autoStatCard(context, "Success Rate", "80%", "3 more percent improve this week",
-              IconString.SuccessRateAuto, AppColors.secondaryColor),
         ],
       );
     });
@@ -728,7 +725,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                 width: 110,
                 child: OutlinedButton(
                   onPressed: () {
-                    context.go('/invoicesDetail', extra: data);
+                    context.push('/invoicesDetail', extra: data);
                   },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryColor,
@@ -757,7 +754,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
   }
   Widget _buildAutoTableHeader(PaymentController controller) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
       decoration: BoxDecoration(
         color: AppColors.secondaryColor,
         borderRadius: BorderRadius.circular(8),
@@ -820,16 +817,22 @@ class _PaymentWidgetState extends State<PaymentWidget> {
           _cell(width: 110, child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: const Icon(
-                  Icons.visibility_outlined,
-                  size: 18,
-                  color: Colors.white,
+              InkWell(
+                onTap: () {
+                  context.push('/invoicesAutoDetail', extra: data);
+                },
+                borderRadius: BorderRadius.circular(6),
+                child: Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: const Icon(
+                    Icons.visibility_outlined,
+                    size: 18,
+                    color: Colors.white,
+                  ),
                 ),
               ),
               const SizedBox(width: 8),

@@ -17,7 +17,6 @@ class CustomCalendarPayment extends StatefulWidget {
   @override
   State<CustomCalendarPayment> createState() => _CustomCalendarPaymentState();
 }
-
 class _CustomCalendarPaymentState extends State<CustomCalendarPayment> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedWeekStart;
@@ -160,9 +159,9 @@ class _CustomCalendarPaymentState extends State<CustomCalendarPayment> {
   }
 
 
-   /// ----------- Extra Widget ------- ///
+  /// ----------- Extra Widget ------- ///
 
-   // Week Row
+  // Week Row
   Widget _buildWeekRow(int rowIndex, int offset, int daysInMonth) {
     DateTime firstDayOfWeek = DateTime(_focusedDay.year, _focusedDay.month, (rowIndex * 7) - offset + 1);
     bool isWeekSelected = _selectedWeekStart != null &&
@@ -197,7 +196,7 @@ class _CustomCalendarPaymentState extends State<CustomCalendarPayment> {
     );
   }
 
-   // Searchable List
+  // Searchable List
   Widget _buildSearchableList(List<String> items, Function(String) onSelect, {required bool isMonth}) {
     List<String> filtered = items.where((i) => i.toLowerCase().contains(_searchQuery.toLowerCase())).toList();
     String currentVal = isMonth ? _months[_focusedDay.month - 1] : _focusedDay.year.toString();
@@ -257,7 +256,7 @@ class _CustomCalendarPaymentState extends State<CustomCalendarPayment> {
       ),
     );
   }
-   // SelectedInfoBox
+  // SelectedInfoBox
   Widget _buildSelectedInfoBox() {
     DateTime end = _selectedWeekStart!.add(const Duration(days: 6));
     String range = "${_selectedWeekStart!.day} ${_getMonthAbbr(_selectedWeekStart!.month)},${_selectedWeekStart!.year.toString().substring(2)} to ${end.day} ${_getMonthAbbr(end.month)} ${end.year.toString().substring(2)}";
@@ -285,7 +284,7 @@ class _CustomCalendarPaymentState extends State<CustomCalendarPayment> {
     );
   }
 
-   // Action Button
+  // Action Button
   Widget _buildActionButton(String text, VoidCallback onTap, bool isOutline) {
     return SizedBox(
       height: 35,
@@ -303,7 +302,7 @@ class _CustomCalendarPaymentState extends State<CustomCalendarPayment> {
     );
   }
 
-   // Header Trigger
+  // Header Trigger
   Widget _buildHeaderTrigger(String label, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
