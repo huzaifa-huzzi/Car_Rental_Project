@@ -1,4 +1,5 @@
 
+import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/CustomCalendarPayment2.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/CustomCalenderPayment.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -16,21 +17,30 @@ class ImageHolder {
 
 class PaymentController extends GetxController {
   final RxList<Map<String, dynamic>> baseData = <Map<String, dynamic>>[].obs;
+  final RxList<Map<String, dynamic>> autoData = <Map<String, dynamic>>[].obs;
+
   var selectedTab = "Pending".obs;
   final RxInt currentPage3 = 1.obs;
   final RxInt pageSize3 = 5.obs;
   var selectedTab2 = 0.obs;
   var openedDropdown2 = "".obs;
+  var selectedMainTab = "Manual Payment".obs;
   var selectedCustomerValue = "Customer Name".obs;
+  final LayerLink dateFilterLink = LayerLink();
+  final TextEditingController dateTextController = TextEditingController();
+  final FocusNode reasonFocusNode = FocusNode();
+  var isReasonFocused = false.obs;
 
   var isDateDropOpen = false.obs;
   var isWeeklyDropOpen = false.obs;
   var selectedFilter = "Weekly".obs;
   var selectedDateRangeText = "".obs;
+
   var chartData = <double>[30, 45, 25, 50, 35, 40, 20].obs;
   var weeklyData = <double>[30, 45, 25, 50, 35, 40, 20].obs;
   var monthlyData = <double>[40, 35, 35, 32].obs;
   var yearlyData = <double>[35, 35, 45, 35, 35, 35, 25, 30, 32, 28, 35, 34].obs;
+
   List<double> get currentChartData {
     if (selectedFilter.value == "Weekly") return weeklyData;
     if (selectedFilter.value == "Monthly") return monthlyData;
@@ -49,33 +59,42 @@ class PaymentController extends GetxController {
       String startStr = "${startDate.day} ${_getMonthAbbr(startDate.month)}, ${startDate.year}";
       String endStr = "${endDate.day} ${_getMonthAbbr(endDate.month)}, ${endDate.year}";
       selectedDateRangeText.value = "$startStr - $endStr";
-
       chartData.value = List.generate(7, (index) => (index + 2) * 10.0);
-    }
-    else if (selectedFilter.value == "Monthly") {
+    } else if (selectedFilter.value == "Monthly") {
       selectedDateRangeText.value = "${_getMonthName(startDate.month)} ${startDate.year}";
       chartData.value = List.generate(4, (index) => (index + 3) * 12.0);
-    }
-    else if (selectedFilter.value == "Yearly") {
+    } else if (selectedFilter.value == "Yearly") {
       selectedDateRangeText.value = "${startDate.year}";
       chartData.value = List.generate(12, (index) => (index + 1) * 8.0);
     }
   }
 
-
   String _getMonthName(int month) => ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][month - 1];
   String _getMonthAbbr(int month) => ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][month - 1];
 
-
-
   OverlayEntry? calendarOverlay;
+  OverlayEntry? calendarOverlay2;
 
   void toggleCalendar(BuildContext context, LayerLink link, TextEditingController targetController, double width) {
     if (calendarOverlay != null) {
       removeCalendar();
     } else {
-      calendarOverlay = _createCalendarOverlay(context, link, targetController, width);
+      double screenWidth = MediaQuery.of(context).size.width;
+      double dynamicWidth = screenWidth < 500 ? screenWidth * 0.85 : 320;
+      calendarOverlay = _createCalendarOverlay(context, link, targetController, dynamicWidth);
       Overlay.of(context).insert(calendarOverlay!);
+      isDateDropOpen.value = true;
+    }
+  }
+
+  void toggleCalendar2(BuildContext context, LayerLink link, TextEditingController targetController, double width) {
+    if (calendarOverlay2 != null) {
+      removeCalendar();
+    } else {
+      double screenWidth = MediaQuery.of(context).size.width;
+      double dynamicWidth = screenWidth < 500 ? screenWidth * 0.85 : 320;
+      calendarOverlay2 = _createCalendarOverlay2(context, link, targetController, dynamicWidth);
+      Overlay.of(context).insert(calendarOverlay2!);
       isDateDropOpen.value = true;
     }
   }
@@ -83,19 +102,15 @@ class PaymentController extends GetxController {
   void removeCalendar() {
     calendarOverlay?.remove();
     calendarOverlay = null;
+    calendarOverlay2?.remove();
+    calendarOverlay2 = null;
     isDateDropOpen.value = false;
   }
 
-  OverlayEntry _createCalendarOverlay(
-      BuildContext context,
-      LayerLink link,
-      TextEditingController targetController,
-      double width,
-      ) {
+  OverlayEntry _createCalendarOverlay(BuildContext context, LayerLink link, TextEditingController targetController, double width) {
     final screenSize = MediaQuery.of(context).size;
     final renderBox = context.findRenderObject() as RenderBox;
     final position = renderBox.localToGlobal(Offset.zero);
-
     double overlayWidth = screenSize.width < 500 ? 260 : 280;
     double dx = 0;
     if (position.dx + overlayWidth > screenSize.width) {
@@ -105,20 +120,13 @@ class PaymentController extends GetxController {
     return OverlayEntry(
       builder: (context) => Stack(
         children: [
-          Positioned.fill(
-            child: GestureDetector(
-              onTap: removeCalendar,
-              child: Container(color: Colors.transparent),
-            ),
-          ),
-
+          Positioned.fill(child: GestureDetector(onTap: removeCalendar, child: Container(color: Colors.transparent))),
           CompositedTransformFollower(
             link: link,
             showWhenUnlinked: false,
             targetAnchor: Alignment.bottomLeft,
             followerAnchor: Alignment.topLeft,
             offset: Offset(dx, 8),
-
             child: Material(
               elevation: 10,
               borderRadius: BorderRadius.circular(12),
@@ -127,9 +135,48 @@ class PaymentController extends GetxController {
                 width: overlayWidth,
                 onCancel: removeCalendar,
                 onDateSelected: (date) {
-                  targetController.text =
-                  "${date.day}/${date.month}/${date.year}";
+                  targetController.text = "${date.day}/${date.month}/${date.year}";
                   updateDateRange(date);
+                  removeCalendar();
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  OverlayEntry _createCalendarOverlay2(BuildContext context, LayerLink link, TextEditingController targetController, double width) {
+    final screenSize = MediaQuery.of(context).size;
+    final RenderBox renderBox = context.findRenderObject() as RenderBox;
+    final position = renderBox.localToGlobal(Offset.zero);
+    double calendarWidth = 320;
+
+    double dx = 0;
+    if (position.dx + calendarWidth > screenSize.width) {
+      dx = screenSize.width - (position.dx + calendarWidth) - 20;
+    }
+
+    return OverlayEntry(
+      builder: (context) => Stack(
+        children: [
+          Positioned.fill(child: GestureDetector(onTap: removeCalendar, child: Container(color: Colors.transparent))),
+          CompositedTransformFollower(
+            link: link,
+            showWhenUnlinked: false,
+            targetAnchor: Alignment.bottomLeft,
+            followerAnchor: Alignment.topLeft,
+            offset: Offset(dx, 8),
+            child: Material(
+              elevation: 10,
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white,
+              child: CustomCalendarPayment2(
+                width: calendarWidth,
+                allowFuture: true,
+                onCancel: removeCalendar,
+                onDateSelected: (date) {
+                  targetController.text = "${date.day} ${_getMonthName(date.month)}, ${date.year}";
                   removeCalendar();
                 },
               ),
@@ -144,19 +191,28 @@ class PaymentController extends GetxController {
   void onInit() {
     super.onInit();
     baseData.assignAll([
-      {"id": "INV-RSC-202603-0001","customerName": "Jhon Martin", "duration": "Mar 7, 2026 - Mar 14 2026", "car": "Mazda CX-5 (2017)", "amount": "245"},
-      {"id": "INV-RSC-202603-0002", "customerName": "Ethan Miles","duration": "Mar 7, 2026 - Mar 14 2026", "car": "Mazda CX-5 (2017)", "amount": "245"},
-      {"id": "INV-RSC-202603-0003", "customerName": "Adam Jhones","duration": "Mar 7, 2026 - Mar 14 2026", "car": "Mazda CX-5 (2017)", "amount": "245"},
+      {"id": "INV-RSC-202603-0001", "customerName": "Jhon Martin", "duration": "Mar 7, 2026 - Mar 14 2026", "car": "Mazda CX-5 (2017)", "amount": "245"},
+      {"id": "INV-RSC-202603-0002", "customerName": "Ethan Miles", "duration": "Mar 7, 2026 - Mar 14 2026", "car": "Mazda CX-5 (2017)", "amount": "245"},
+      {"id": "INV-RSC-202603-0003", "customerName": "Adam Jhones", "duration": "Mar 7, 2026 - Mar 14 2026", "car": "Mazda CX-5 (2017)", "amount": "245"},
+    ]);
+
+    autoData.assignAll([
+      {"customerName": "Jack Milson", "email": "jack@gmail.com", "car": "Toyota Corolla ", "registration": "1234567890", "duration": "Mar 7, 2026 - Mar 14, 2026", "source": "Stripe", "amount": "45.00", "dueDate": "7th April, 2026", "attempts": "2/3"},
+      {"customerName": "Ethan Miles", "email": "ethan@gmail.com", "car": "Mazda CX-5 (2017)", "registration": "1234567890", "duration": "Mar 7, 2026 - Mar 14, 2026", "source": "Direct Debit", "amount": "245.00", "dueDate": "10th April, 2026", "attempts": "1/3"}
     ]);
 
     loadOtherPayments();
     loadOtherPaymentsinvoices();
+
     reasonFocusNode.addListener(() {
       isReasonFocused.value = reasonFocusNode.hasFocus;
     });
   }
   List<Map<String, dynamic>> get displayedCarList {
-    return baseData.map((item) {
+    bool isManual = selectedMainTab.value == "Manual Payment";
+    List<Map<String, dynamic>> sourceData = isManual ? baseData : autoData;
+
+    return sourceData.map((item) {
       var newItem = Map<String, dynamic>.from(item);
       newItem['status'] = selectedTab.value;
       return newItem;
@@ -167,14 +223,12 @@ class PaymentController extends GetxController {
     selectedTab.value = tabName;
     currentPage3.value = 1;
   }
-  int get totalPages => 1;
 
+  int get totalPages => 1;
   void goToPreviousPage() {}
   void goToNextPage() {}
   void goToPage(int page) {}
-  void setPageSize(int newSize) {
-    pageSize3.value = newSize;
-  }
+  void setPageSize(int newSize) { pageSize3.value = newSize; }
 
   /// Sorting
   var sortColumn = "".obs;
@@ -193,8 +247,6 @@ class PaymentController extends GetxController {
   /// Invoices Detail screen
   var isImageHovered = false.obs;
   void setHover(bool value) => isImageHovered.value = value;
-  final FocusNode reasonFocusNode = FocusNode();
-  var isReasonFocused = false.obs;
 
   var selectedImage = Rxn<ImageHolder>();
 
@@ -274,6 +326,12 @@ class PaymentController extends GetxController {
   final fromDateController = TextEditingController();
   final toDateController = TextEditingController();
   final durationController = TextEditingController();
+  RxString selectedCode = "+61".obs;
+  RxString selectedFlag = "🇦🇺".obs;
+  var selectedCountryName = "Australia".obs;
+  final phoneController = TextEditingController();
+  final ageController = TextEditingController();
+  final searchController = TextEditingController();
 
   @override
   void onClose() {
