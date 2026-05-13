@@ -4,6 +4,8 @@ import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
+import 'package:country_picker/country_picker.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -104,6 +106,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             hint: "sellostore@company.com",
                             textController: controller.emailRegisterController,
                             validator: controller.validateRegisterEmail,
+                          ),
+                          const SizedBox(height: 5),
+                          _buildCountryPickerField(
+                            context,
+                            TextString.addCustomerCountry,
+                            controller.ccCountryController,
                           ),
                           const SizedBox(height: 18),
 
@@ -244,6 +252,168 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 color: AppColors.quadrantalTextColor, size: 20),
             onPressed: onSuffixTap
         ) : null,
+      ),
+    );
+  }
+
+
+  Widget _buildCountryPickerField(BuildContext context, String label, TextEditingController ctrl) {
+    final List<Country> countryList = CountryService().getAll();
+    final TextEditingController searchController = TextEditingController();
+
+    if (ctrl.text.isEmpty) {
+      ctrl.text = "Australia";
+    }
+
+    Country currentSelected;
+    try {
+      currentSelected = countryList.firstWhere(
+            (c) => c.name.toLowerCase() == ctrl.text.toLowerCase(),
+        orElse: () => countryList.firstWhere((c) => c.name == "Australia"),
+      );
+    } catch (e) {
+      currentSelected = countryList.firstWhere((c) => c.name == "Australia");
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: TTextTheme.bodyRegular14(context)),
+        const SizedBox(height: 8),
+        FormField<String>(
+          initialValue: ctrl.text,
+          validator: (value) {
+            if (ctrl.text.isEmpty) return "Please select a country";
+            return null;
+          },
+          builder: (FormFieldState<String> state) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DropdownButtonHideUnderline(
+                  child: DropdownButton2<Country>(
+                    isExpanded: true,
+                    value: currentSelected,
+                    iconStyleData: const IconStyleData(
+                      icon: Padding(
+                        padding: EdgeInsets.only(right: 8),
+                        child: Icon(Icons.keyboard_arrow_down_rounded, color: AppColors.quadrantalTextColor, size: 22),
+                      ),
+                    ),
+                    selectedItemBuilder: (context) {
+                      return countryList.map((Country country) {
+                        return Row(
+                          children: [
+                            _buildCircleFlag(country.countryCode),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                country.name,
+                                style: TTextTheme.loginInsideTextField(context), 
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        );
+                      }).toList();
+                    },
+                    items: countryList.map((Country country) {
+                      return DropdownMenuItem<Country>(
+                        value: country,
+                        child: Row(
+                          children: [
+                            _buildCircleFlag(country.countryCode),
+                            const SizedBox(width: 12),
+                            Text(
+                              country.name,
+                              style: TTextTheme.bodyRegular14(context),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (Country? value) {
+                      if (value != null) {
+                        ctrl.text = value.name;
+                        state.didChange(value.name);
+                        controller.update();
+                        if (context is Element) {
+                          (context).markNeedsBuild();
+                        }
+                      }
+                    },
+                    buttonStyleData: ButtonStyleData(
+                      height: 50,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppColors.secondaryColor,
+                        border: state.hasError
+                            ? Border.all(color: AppColors.primaryColor)
+                            : null,
+                      ),
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      maxHeight: 300,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, 5))
+                          ]
+                      ),
+                    ),
+                    dropdownSearchData: DropdownSearchData(
+                      searchController: searchController,
+                      searchInnerWidgetHeight: 50,
+                      searchInnerWidget: Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+                        child: TextFormField(
+                          controller: searchController,
+                          cursorColor: AppColors.blackColor,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            fillColor: AppColors.backgroundOfScreenColor,
+                            filled: true,
+                            hintText: 'Search Country...',
+                            prefixIcon: const Icon(Icons.search, size: 18, color: AppColors.primaryColor),
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
+                          ),
+                        ),
+                      ),
+                      searchMatchFn: (item, searchValue) {
+                        return item.value!.name.toLowerCase().contains(searchValue.toLowerCase());
+                      },
+                    ),
+                  ),
+                ),
+                if (state.hasError)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6, left: 4),
+                    child: Text(
+                      state.errorText ?? "",
+                      style: TTextTheme.ErrorStyle(context),
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
+      ],
+    );
+  }
+  Widget _buildCircleFlag(String code) {
+    return Container(
+      width: 24,
+      height: 24,
+      decoration: const BoxDecoration(shape: BoxShape.circle),
+      child: ClipOval(
+        child: Image.network(
+          'https://flagcdn.com/w80/${code.toLowerCase()}.png',
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => const Icon(Icons.flag, size: 14),
+        ),
       ),
     );
   }

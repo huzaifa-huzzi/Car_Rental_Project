@@ -8,6 +8,7 @@ class LoginController extends GetxController {
   final companyNameController = TextEditingController();
   final emailRegisterController = TextEditingController();
   final passwordRegisterController = TextEditingController();
+  final ccCountryController = TextEditingController();
   var obscureRegisterPassword = true.obs;
   final loginFormKey = GlobalKey<FormState>();
   final registerFormKey = GlobalKey<FormState>();
