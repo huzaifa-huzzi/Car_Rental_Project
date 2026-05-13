@@ -215,19 +215,65 @@ class AddPaymentWidget extends StatelessWidget {
   //  Car Detail Section
   Widget _buildCarDetail(BuildContext context, bool isMobile) {
     return _buildCard(
-      title: TextString.carDetailTitlepayment,context,
+      context,
+      title: TextString.carDetailTitlepayment,
       subtitle: TextString.carDetailTitleSubtitle,
+      child: Obx(() {
+        if (!controller.isCarSelected.value) {
+          return _buildPickupPlaceholder(context);
+        }
+        return Column(
+          children: [
+            _buildResponsiveRow(isMobile, [
+              _buildField(context, TextString.carField1, TextString.carField1Subtitle, controller.carNameController, "carName"),
+              _buildCustomDropdown(context, TextString.carField4, ["Sedan", "SUV", "Hatchback"], controller.selectedCarType, id: "carType"),
+            ]),
+            const SizedBox(height: 15),
+            _buildResponsiveRow(isMobile, [
+              _buildField(context, TextString.carField2, TextString.carField2Subtitle, controller.registrationController, "registration"),
+              _buildCustomDropdown(context, TextString.carField3, ["Manual", "Automatic"], controller.selectedTransmission, id: "transmission"),
+            ]),
+          ],
+        );
+      }),
+    );
+  }
+  Widget _buildPickupPlaceholder(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.quadrantalTextColor.withOpacity(0.7)),
+      ),
       child: Column(
         children: [
-          _buildResponsiveRow(isMobile, [
-            _buildField(context, TextString.carField1,TextString.carField1Subtitle , controller.carNameController, "carName"),
-            _buildCustomDropdown(context, TextString.carField4, ["Sedan", "SUV", "Hatchback"], controller.selectedCarType, id: "carType"),
-          ]),
-          const SizedBox(height: 15),
-          _buildResponsiveRow(isMobile, [
-            _buildField(context, TextString.carField2, TextString.carField2Subtitle, controller.registrationController, "registration"),
-            _buildCustomDropdown(context, TextString.carField3, ["Manual", "Automatic"], controller.selectedTransmission, id: "transmission"),
-          ]),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+               Image.asset(IconString.returnCarIcon, color: AppColors.primaryColor, width: 20,height: 20,),
+              const SizedBox(width: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(TextString.paymentPickupTitle, style: TTextTheme.PickupPayment(context)),
+                  Text(TextString.paymentPickupSubtitle, style: TTextTheme.bodyRegular12Gay10(context)),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 25),
+          PrimaryBtnOfPayment(
+            text: "Select The pickup",
+            height: 48,
+            width: double.infinity,
+            onTap: () {
+              controller.isCarSelected.value = true;
+            },
+            icon: Image.asset(IconString.pickCarIconArrow, color: Colors.white, width: 18,height: 18,),
+            isIconLeft: true,
+            borderRadius: BorderRadius.circular(10),
+          ),
         ],
       ),
     );
@@ -236,16 +282,37 @@ class AddPaymentWidget extends StatelessWidget {
   //  Rental Period Section
   Widget _buildRentalPeriod(BuildContext context, bool isMobile) {
     return _buildCard(
-      title: TextString.RentDetailTitlepayment,context,
+      context,
+      title: TextString.RentDetailTitlepayment,
       subtitle: TextString.RentDetailTitleSubtitle,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildResponsiveRow(isMobile, [
-            _buildDateField(context,TextString.rentField1 , TextString.rentField1subtitle, controller.fromDateController, _fromLink),
-            _buildDateField(context, TextString.rentField2,  TextString.rentField2subtitle, controller.toDateController, _toLink),
-          ]),
+          _buildDateField(
+              context,
+              TextString.rentField1,
+              TextString.rentField1subtitle,
+              controller.fromDateController,
+              _fromLink
+          ),
+
           const SizedBox(height: 15),
-          _buildField(context, TextString.rentField3,TextString.rentField3subtitle , controller.durationController, "duration"),
+          _buildDateField(
+              context,
+              TextString.rentField2,
+              TextString.rentField2subtitle,
+              controller.toDateController,
+              _toLink
+          ),
+
+          const SizedBox(height: 15),
+          _buildField(
+              context,
+              TextString.rentField3,
+              TextString.rentField3subtitle,
+              controller.durationController,
+              "duration"
+          ),
         ],
       ),
     );
@@ -284,41 +351,103 @@ class AddPaymentWidget extends StatelessWidget {
   Widget _buildCustomDropdown(BuildContext context, String label, List<String> items, RxString selected, {required String id}) {
     return Obx(() {
       bool isOpen = controller.openedDropdown2.value == id;
+      String errorMsg = controller.dropdownErrors[id] ?? "";
+      bool hasError = errorMsg.isNotEmpty;
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: TTextTheme.bodyRegular14(context)),
-          const SizedBox(height: 8),
+          Text(label, style: TTextTheme.titleTwo(context)),
+          const SizedBox(height: 6),
           LayoutBuilder(builder: (context, constraints) {
             return PopupMenuButton<String>(
-              constraints: BoxConstraints(minWidth: constraints.maxWidth, maxWidth: constraints.maxWidth),
-              offset: const Offset(0, 52),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side:  BorderSide(color: AppColors.toolBackground)),
+              constraints: BoxConstraints(
+                minWidth: constraints.maxWidth,
+                maxWidth: constraints.maxWidth,
+                maxHeight: 400,
+              ),
+              offset: const Offset(0, 48),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               color: Colors.white,
               onOpened: () => controller.openedDropdown2.value = id,
               onCanceled: () => controller.openedDropdown2.value = "",
               onSelected: (val) {
                 selected.value = val;
+                if (controller.dropdownErrors.containsKey(id)) {
+                  controller.dropdownErrors[id] = "";
+                }
                 controller.openedDropdown2.value = "";
               },
-              child: Container(
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
                 height: 48,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: AppColors.toolBackground),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: hasError ? AppColors.primaryColor : AppColors.toolBackground,
+                    width: 1.2,
+                  ),
                 ),
                 child: Row(
                   children: [
-                    Expanded(child: Text(selected.value, style: TTextTheme.tableRegular14black(context))),
-                    Image.asset(isOpen ? IconString.aboveDropdown : IconString.dropdownIcon, height: 16),
+                    Expanded(
+                      child: Text(
+                        selected.value.isEmpty ? "Select $label..." : selected.value,
+                        style: TTextTheme.pOne(context).copyWith(
+                          color: selected.value.isEmpty ? Colors.grey : Colors.black,
+                        ),
+                      ),
+                    ),
+                    Image.asset(
+                      isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon,
+                      height: 18,
+                    ),
                   ],
                 ),
               ),
-              itemBuilder: (context) => items.map((val) => PopupMenuItem(value: val, child: Text(val))).toList(),
+              itemBuilder: (context) {
+                return items.map((item) {
+                  bool isSelected = selected.value == item;
+                  return PopupMenuItem<String>(
+                    value: item,
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 22,
+                          height: 22,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                            border: Border.all(
+                              color: AppColors.primaryColor,
+                              width: 2,
+                            ),
+                          ),
+                          child: isSelected
+                              ? const Center(
+                            child: Icon(Icons.done, color: Colors.white, size: 14),
+                          )
+                              : null,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(item, style: TTextTheme.medium14(context)),
+                      ],
+                    ),
+                  );
+                }).toList();
+              },
             );
           }),
+          if (hasError)
+            Padding(
+              padding: const EdgeInsets.only(top: 6, left: 4),
+              child: Text(
+                errorMsg,
+                style: TTextTheme.ErrorStyle(context),
+              ),
+            ),
         ],
       );
     });

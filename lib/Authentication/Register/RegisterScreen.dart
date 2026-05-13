@@ -100,18 +100,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             validator: controller.validateRegisterCompany,
                           ),
                           const SizedBox(height: 18),
-
+                          _buildCountryPickerField(
+                            context,
+                            TextString.addCustomerCountry,
+                            controller.ccCountryController,
+                          ),
+                          const SizedBox(height: 18),
                           _buildLabel(TextString.registerEmail),
                           _buildTextField(
                             hint: "sellostore@company.com",
                             textController: controller.emailRegisterController,
                             validator: controller.validateRegisterEmail,
-                          ),
-                          const SizedBox(height: 5),
-                          _buildCountryPickerField(
-                            context,
-                            TextString.addCustomerCountry,
-                            controller.ccCountryController,
                           ),
                           const SizedBox(height: 18),
 
@@ -278,7 +277,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: TTextTheme.bodyRegular14(context)),
+        Text(label, style: TTextTheme.dropdowninsideText(context)),
         const SizedBox(height: 8),
         FormField<String>(
           initialValue: ctrl.text,

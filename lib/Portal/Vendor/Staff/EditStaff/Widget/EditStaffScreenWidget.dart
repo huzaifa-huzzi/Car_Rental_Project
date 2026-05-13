@@ -56,11 +56,11 @@ class EditStaffScreenWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: _buildTextField(TextString.addStaffContactFieldOne, "Write Staff Email...", controller.emailC, context),
+                            child: _buildTextField(TextString.addStaffContactFieldOne, "Write Email...", controller.emailC, context),
                           ),
                           const SizedBox(width: 16),
                           Expanded(
-                            child: _buildPhoneField(context, "Write Staff Number ...."),
+                            child: _buildPhoneField(context, "Phone Number"),
                           ),
                         ],
                       );
@@ -69,7 +69,7 @@ class EditStaffScreenWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildTextField(TextString.addStaffContactFieldOne, "Write Staff Email...", controller.emailC, context),
+                          _buildTextField(TextString.addStaffContactFieldOne, "Write Email...", controller.emailC, context),
                           const SizedBox(height: 16),
                           _buildPhoneField(context, "Contact Number ...."),
                         ],
@@ -140,7 +140,7 @@ class EditStaffScreenWidget extends StatelessWidget {
     );
   }
 
-    /// ---------- Extra Widgets
+    /// ---------- Extra Widgets ----- ///
   // Section
   Widget _buildSection(BuildContext context, {required String icon, required String title, required String subtitle, required List<Widget> children}) {
     bool isWeb = AppSizes.isWeb(context);

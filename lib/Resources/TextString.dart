@@ -769,7 +769,9 @@ class TextString {
   static const String  rentField3subtitle=  "Select Number of days";
   static const String  uploadPaymentReceipt= "Upload Payment Receipt";
   static const String  paymentJpeg= "JPEG,PNG ";
+  static const String  paymentPickupTitle= "Pickup";
   static const String  pending= "Pending";
+  static const String  paymentPickupSubtitle= "Select a Pickup";
   static const String  paymentAsCompleted= "Mark payment as completed?";
   static const String  paymentAsCompletedSubtitle="Are you sure you want to mark invoice In-2026-004 as completed? This action confirm that payment has verified and proceed";
   static const String  markedSuccessFully=  "Payment Marked as Completed Successfully";
@@ -797,6 +799,34 @@ class TextString {
   static const String  paymentAsCompletedSubtitleInvoices= "Are you sure you want to mark invoice In-2026-004 as re upload? The status will be change as re upload and notification will be sent to the customer";
   static const String  markedSuccessFullyInvoices=  "Payment Marked as resubmit Successfully";
   static const String  markedSuccessFullySubtitleInvoices="Congratulation! payment has marked as re upload successfully in the system.";
+  static const String  autoPaymentTitle= "Payment Information";
+  static const String  autoPaymentSubtitle= "All details about the payment";
+  static const String  autoPaymentTitle1= "Invoice Id";
+  static const String  autoPaymentTitle2= "Customer Name";
+  static const String  autoPaymentTitle3= "Source";
+  static const String  autoPaymentTitle4= "Payment Amount";
+  static const String  autoPaymentTitle5= "Due Date";
+  static const String  autoDetailTitle= "Car Detail";
+  static const String  autoDetailSubtitle= "Your Car detail listed here";
+  static const String  autoDetailTitle1= "Car Name";
+  static const String  autoDetailTitle2= "Type";
+  static const String  autoDetailTitle3= "Registration";
+  static const String  autoDetailTitle4=  "Transmission";
+  static const String  autoRentalDetailTitle= "Rental Period";
+  static const String  autoRentalDetailSubtitle= "Your rental period detail listed here";
+  static const String  fromDate= "from Date";
+  static const String  toDate= "to Date";
+  static const String  duration2= "Duration";
+  static const String  autoHeader1= "Customer";
+  static const String  autoHeader2= "Car Name";
+  static const String  autoHeader3= "Registration";
+  static const String  autoHeader4= "Duration";
+  static const String  autoHeader5= "Source";
+  static const String  autoHeader6= "Amount";
+  static const String  autoHeader7= "Due Date";
+  static const String  autoHeader8= "Status";
+  static const String  autoHeader9= "Attempts";
+  static const String  autoHeader10= "Action";
 
 
       /// Admin Module

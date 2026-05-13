@@ -379,7 +379,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     return PrimaryBtnOfPayment(
       text: "Add Payment",
       onTap: () {
-        context.go('/AddPayment', extra: {"hideMobileAppBar": true});
+        context.push('/AddPayment', extra: {"hideMobileAppBar": true});
       },
       width: isFullWidth ? double.infinity : 160,
       borderRadius: BorderRadius.circular(10),
@@ -761,16 +761,16 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       ),
       child: Row(
         children: [
-          SizedBox(width: 220, child: _headerCell("Customer", controller)),
-          SizedBox(width: 180, child: _headerCell("Car Name", controller)),
-          SizedBox(width: 120, child: _headerCell("Registration", controller)),
-          SizedBox(width: 220, child: _headerCell("Duration", controller)),
-          SizedBox(width: 140, child: _headerCell("Source", controller)),
-          SizedBox(width: 100, child: _headerCell("Amount", controller)),
-          SizedBox(width: 150, child: _headerCell("Due Date", controller)),
-          SizedBox(width: 120, child: _headerCell("Status", controller, isCenter: true)),
-          SizedBox(width: 100, child: _headerCell("Attempts", controller, isCenter: true)),
-          SizedBox(width: 110, child: _headerCell("Action", controller, isCenter: true, canSort: false)),
+          SizedBox(width: 220, child: _headerCell(TextString.autoHeader1, controller)),
+          SizedBox(width: 180, child: _headerCell(TextString.autoHeader2, controller)),
+          SizedBox(width: 120, child: _headerCell(TextString.autoHeader3, controller)),
+          SizedBox(width: 220, child: _headerCell(TextString.autoHeader4, controller)),
+          SizedBox(width: 140, child: _headerCell(TextString.autoHeader5, controller)),
+          SizedBox(width: 100, child: _headerCell(TextString.autoHeader6, controller)),
+          SizedBox(width: 150, child: _headerCell(TextString.autoHeader7, controller)),
+          SizedBox(width: 120, child: _headerCell(TextString.autoHeader8, controller, isCenter: true)),
+          SizedBox(width: 100, child: _headerCell(TextString.autoHeader9, controller, isCenter: true)),
+          SizedBox(width: 110, child: _headerCell(TextString.autoHeader10, controller, isCenter: true, canSort: false)),
         ],
       ),
     );

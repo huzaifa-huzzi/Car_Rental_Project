@@ -30,6 +30,8 @@ class PaymentController extends GetxController {
   final TextEditingController dateTextController = TextEditingController();
   final FocusNode reasonFocusNode = FocusNode();
   var isReasonFocused = false.obs;
+  var isCarSelected = false.obs;
+  var dropdownErrors = <String, String>{}.obs;
 
   var isDateDropOpen = false.obs;
   var isWeeklyDropOpen = false.obs;

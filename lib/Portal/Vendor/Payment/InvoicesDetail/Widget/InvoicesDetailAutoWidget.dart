@@ -2,6 +2,7 @@ import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/HeaderWe
 import 'package:car_rental_project/Portal/Vendor/Payment/paymentController.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,7 +30,7 @@ class InvoicesDetailAutoWidget extends StatelessWidget {
                 HeaderWebPaymentWidget(
                   mainTitle: 'Payment',
                   showSmallTitle: true,
-                  smallTitle: 'Payment / Auto Payment Detail',
+                  smallTitle: 'Payment / Payment Detail',
                   showProfile: isWeb || isTab,
                   showNotification: true,
                   showSettings: true,
@@ -102,8 +103,8 @@ class InvoicesDetailWidget2 extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Payment Information", style: TTextTheme.h2Style(context)),
-                  Text("All details about the payment", style: TTextTheme.bodyRegular16(context)),
+                  Text(TextString.autoPaymentTitle, style: TTextTheme.h2Style(context)),
+                  Text(TextString.autoPaymentSubtitle, style: TTextTheme.bodyRegular16(context)),
                 ],
               ),
               _buildStatusChip(status, context),
@@ -111,15 +112,15 @@ class InvoicesDetailWidget2 extends StatelessWidget {
           ),
           const SizedBox(height: 32),
           _buildResponsiveRow(context, [
-            _buildReadOnlyField(context, "Invoice Id", data["id"] ?? "In-2026-004"),
-            _buildReadOnlyField(context, "Customer Name", data["customerName"] ?? "Adam Jhon"),
+            _buildReadOnlyField(context, TextString.autoPaymentTitle1, data["id"] ?? "In-2026-004"),
+            _buildReadOnlyField(context,TextString.autoPaymentTitle2 , data["customerName"] ?? "Adam Jhon"),
             _buildReadOnlyField(context, "Phone Number", data["phone"] ?? "12345667"),
           ]),
           const SizedBox(height: 20),
           _buildResponsiveRow(context, [
-            _buildReadOnlyField(context, "Source", data["source"] ?? "Stripe"),
-            _buildReadOnlyField(context, "Payment Amount", "\$${data["amount"] ?? "1425"}", isPrice: true),
-            _buildReadOnlyField(context, "Due Date", data["dueDate"] ?? "12 March, 2026"),
+            _buildReadOnlyField(context,TextString.autoPaymentTitle3 , data["source"] ?? "Stripe"),
+            _buildReadOnlyField(context,TextString.autoPaymentTitle4 , "\$${data["amount"] ?? "1425"}", isPrice: true),
+            _buildReadOnlyField(context,TextString.autoPaymentTitle5 , data["dueDate"] ?? "12 March, 2026"),
           ]),
         ],
       ),
@@ -130,18 +131,18 @@ class InvoicesDetailWidget2 extends StatelessWidget {
   Widget _buildCarDetailCard(BuildContext context) {
     return _buildBaseCard(
       context,
-      title: "Car Detail",
-      subtitle: "Your Car detail listed here",
+      title: TextString.autoDetailTitle,
+      subtitle: TextString.autoDetailSubtitle,
       child: Column(
         children: [
           _buildResponsiveRow(context, [
-            _buildReadOnlyField(context, "Car Name", data["car"] ?? "Mazada CX-5(2017)"),
-            _buildReadOnlyField(context, "Type", "Sedan"),
+            _buildReadOnlyField(context, TextString.autoDetailTitle1, data["car"] ?? "Mazada CX-5(2017)"),
+            _buildReadOnlyField(context, TextString.autoDetailTitle2, "Sedan"),
           ]),
           const SizedBox(height: 16),
           _buildResponsiveRow(context, [
-            _buildReadOnlyField(context, "Registration", "Abc12345"),
-            _buildReadOnlyField(context, "Transmission", "Automatic"),
+            _buildReadOnlyField(context,TextString.autoDetailTitle3 , "1234567890"),
+            _buildReadOnlyField(context,TextString.autoDetailTitle4, "Automatic"),
           ]),
         ],
       ),
@@ -151,16 +152,16 @@ class InvoicesDetailWidget2 extends StatelessWidget {
   Widget _buildRentalCard(BuildContext context) {
     return _buildBaseCard(
       context,
-      title: "Rental Period",
-      subtitle: "Your rental period detail listed here",
+      title: TextString.autoRentalDetailTitle,
+      subtitle: TextString.autoRentalDetailSubtitle,
       child: Column(
         children: [
           _buildResponsiveRow(context, [
-            _buildReadOnlyField(context, "From Date", data["fromDate"] ?? "March 7, 2026"),
-            _buildReadOnlyField(context, "To Date", data["toDate"] ?? "March 14, 2026"),
+            _buildReadOnlyField(context,TextString.fromDate, data["fromDate"] ?? "March 7, 2026"),
+            _buildReadOnlyField(context, TextString.toDate, data["toDate"] ?? "March 14, 2026"),
           ]),
           const SizedBox(height: 16),
-          _buildReadOnlyField(context, "Duration", data["duration"] ?? "7 days"),
+          _buildReadOnlyField(context, TextString.duration2, data["duration"] ?? "7 days"),
         ],
       ),
     );
@@ -196,7 +197,7 @@ class InvoicesDetailWidget2 extends StatelessWidget {
           child: Text(
             value,
             style: isPrice
-                ? TTextTheme.bodySemiBold16(context).copyWith(color: Colors.red, fontWeight: FontWeight.bold)
+                ? TTextTheme.bodySemiBold16(context).copyWith(color: AppColors.primaryColor, fontWeight: FontWeight.bold)
                 : TTextTheme.bodyRegular16black(context),
           ),
         ),

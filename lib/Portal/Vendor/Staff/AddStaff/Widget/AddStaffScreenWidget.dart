@@ -59,12 +59,12 @@ class AddStaffScreenWidget extends StatelessWidget {
                         children: [
                           // Email Field
                           Expanded(
-                            child: _buildTextField(TextString.addStaffContactFieldOne, "Write Staff Email...", controller.emailC, context),
+                            child: _buildTextField(TextString.addStaffContactFieldOne, "Write Email...", controller.emailC, context),
                           ),
                           const SizedBox(width: 16),
                           // Phone Field
                           Expanded(
-                            child: _buildPhoneField(context, "Write Staff Number ...."),
+                            child: _buildPhoneField(context, "Phone Number"),
                           ),
                         ],
                       );
@@ -73,7 +73,7 @@ class AddStaffScreenWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildTextField(TextString.addStaffContactFieldOne, "Write Staff Email...", controller.emailC, context),
+                          _buildTextField(TextString.addStaffContactFieldOne, "Write  Email...", controller.emailC, context),
                           const SizedBox(height: 16),
                           _buildPhoneField(context, "Contact Number ...."),
                         ],

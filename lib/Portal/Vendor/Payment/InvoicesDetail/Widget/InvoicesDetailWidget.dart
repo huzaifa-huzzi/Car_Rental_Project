@@ -319,7 +319,7 @@ class InvoicesDetailWidget extends StatelessWidget {
 
 
 
-   // Submitted(Write reason Box)
+   // Submitted
   Widget _buildResubmitReasonSection(BuildContext context) {
     final String status = (data["status"] ?? "").toString().toLowerCase();
     if (status != "submitted") return const SizedBox.shrink();

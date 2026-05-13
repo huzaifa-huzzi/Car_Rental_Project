@@ -677,6 +677,9 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w400,color: AppColors.tertiaryTextColor);
   }
 
+  static TextStyle bodyRegular12Gay10(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor);
+  }
 
   static TextStyle bodyRegular12Primary(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w400,color: AppColors.primaryColor);
@@ -696,6 +699,10 @@ class TTextTheme {
 
   static TextStyle bodyRegular14Green(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.completedColor);
+  }
+
+  static TextStyle PickupPayment(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 17, 18, 20),fontWeight: FontWeight.w600,color: AppColors.blackColor);
   }
 
   static TextStyle bodyRegular14Primary(BuildContext context){

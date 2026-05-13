@@ -24,6 +24,7 @@ import 'package:car_rental_project/Portal/Vendor/Payment/Add%20Payment/AddPaymen
 import 'package:car_rental_project/Portal/Vendor/Payment/InvoicesDetail/InvoicesDetail.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/InvoicesDetail/Widget/InvoicesDetailAutoWidget.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/payment.dart';
+import 'package:car_rental_project/Portal/Vendor/Payment/paymentController.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/AddPickup.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/Widget/StepThreeWidget.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/Widget/StepTwoWidgets.dart';
@@ -196,17 +197,33 @@ class VendorRoutes {
         GoRoute(path: '/EditStaffScreen', builder: (_, __) => EditStaffScreen()),
         GoRoute(path: '/addStaff', builder: (_, __) => AddStaffScreen()),
         // Payments
-        GoRoute(path: '/AddPayment', builder: (_, __) => AddPayment()),
+        GoRoute(
+          path: '/AddPayment',
+          builder: (context, state) {
+            if (!Get.isRegistered<PaymentController>()) {
+              Get.put(PaymentController());
+            }
+            return const AddPayment();
+          },
+        ),
+
         GoRoute(
           path: '/invoicesDetail',
           builder: (context, state) {
+            if (!Get.isRegistered<PaymentController>()) {
+              Get.put(PaymentController());
+            }
             final data = state.extra as Map<String, dynamic>?;
             return InvoicesDetail(invoiceData: data ?? {});
           },
         ),
+
         GoRoute(
           path: '/invoicesAutoDetail',
           builder: (context, state) {
+            if (!Get.isRegistered<PaymentController>()) {
+              Get.put(PaymentController());
+            }
             final data = state.extra as Map<String, dynamic>?;
             return InvoicesDetailAutoWidget(invoiceData: data ?? {});
           },
