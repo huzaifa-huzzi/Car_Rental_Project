@@ -97,7 +97,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                                     return isManual
                                         ? _buildPaymentRow(data)
                                         : _buildAutoPaymentRow(data);
-                                  }).toList(),
+                                  }),
                                 ],
                               ),
                             );
