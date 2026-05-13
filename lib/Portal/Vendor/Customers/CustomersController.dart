@@ -26,6 +26,8 @@ class CustomerController extends GetxController {
   RxBool isFilterOpen = false.obs;
   var hoveredRowIndex = (-1).obs;
 
+  final RxInt currentPage = 1.obs;
+  final RxInt pageSize = 10.obs;
   void toggleFilter() {
     isFilterOpen.value = !isFilterOpen.value;
   }

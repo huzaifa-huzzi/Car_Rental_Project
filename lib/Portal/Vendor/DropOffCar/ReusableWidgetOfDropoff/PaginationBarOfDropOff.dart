@@ -42,43 +42,62 @@ class PaginationBarOfDropOff extends StatelessWidget {
 
   ///  RESULTS PER PAGE DROPDOWN (Left side content for web only )
   Widget _resultsPerPageDropdown(BuildContext context) {
-
-    String? selectedValue = controller.pageSize3.toString();
-
     return Row(
       children: [
         Text(
             "Results per page",
             style: TTextTheme.titleThree(context)
         ),
-        const SizedBox(width: 8),
-        Container(
-          height: 36,
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(color: AppColors.sideBoxesColor),
-          ),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: selectedValue,
-              isDense: true,
-              icon: Icon(Icons.keyboard_arrow_down, color: AppColors.secondTextColor),
-              style: TTextTheme.btnTwo(context),
-              items: <String>['10', '20', '30', '40']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
+        const SizedBox(width: 12),
+        LayoutBuilder(builder: (context, constraints) {
+          String selectedValue = controller.pageSize3.value.toString();
 
-              },
+          return PopupMenuButton<String>(
+            constraints: const BoxConstraints(minWidth: 70, maxWidth: 80),
+            offset: const Offset(0, 40),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            color: Colors.white,
+            onSelected: (String newValue) {
+              controller.pageSize3.value = int.parse(newValue);
+              controller.currentPage3.value = 1;
+            },
+            child: Container(
+              height: 36,
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(color: AppColors.sideBoxesColor.withOpacity(0.5)),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    selectedValue,
+                    style: TTextTheme.btnTwo(context).copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(width: 4),
+                  Icon(Icons.keyboard_arrow_down, size: 18, color: AppColors.secondTextColor),
+                ],
+              ),
             ),
-          ),
-        ),
+            itemBuilder: (BuildContext context) {
+              return <String>['10', '20', '30', '40'].map((String value) {
+                bool isSelected = selectedValue == value;
+                return PopupMenuItem<String>(
+                  value: value,
+                  height: 35,
+                  child: Center(
+                    child: Text(
+                        value,
+                        style: TTextTheme.btnTwo(context)
+                    ),
+                  ),
+                );
+              }).toList();
+            },
+          );
+        }),
         const SizedBox(width: 16),
       ],
     );
