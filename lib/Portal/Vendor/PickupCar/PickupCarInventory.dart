@@ -61,17 +61,25 @@ class PickupCarController extends GetxController {
     isFilterOpen.value = !isFilterOpen.value;
   }
 
-  /// Pagination State
+  /// Pagination
+
   final RxInt currentPage3 = 1.obs;
   final RxInt pageSize3 = 10.obs;
   final RxInt selectedView3 = 0.obs;
 
   RxList<Map<String, dynamic>> carList3 = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> displayedCarList = <Map<String, dynamic>>[].obs;
+
+  int get totalPages {
+    if (carList3.isEmpty) return 1;
+    return (carList3.length / pageSize3.value).ceil();
+  }
 
   @override
   void onInit() {
     super.onInit();
     generateDummyData();
+
     pickupOwnerSigPadController.addListener(() {
       if (pickupOwnerSigPadController.isNotEmpty) {
         isPickupOwnerDrawingActive.value = true;
@@ -85,20 +93,26 @@ class PickupCarController extends GetxController {
     termsController.addListener(() {
       update();
     });
+    _updateDisplayedList();
+    ever(currentPage3, (_) => _updateDisplayedList());
+    ever(pageSize3, (_) => _updateDisplayedList());
+    ever(carList3, (_) => _updateDisplayedList());
   }
-
-  int get totalPages {
-    if (carList3.isEmpty) return 1;
-    return (carList3.length / pageSize3.value).ceil();
-  }
-
-  List<Map<String, dynamic>> get displayedCarList {
+  void _updateDisplayedList() {
     int start = (currentPage3.value - 1) * pageSize3.value;
-    int end = start + pageSize3.value;
 
-    if (start >= carList3.length) return [];
-    return carList3.sublist(
-        start, end > carList3.length ? carList3.length : end);
+    if (start >= carList3.length) {
+      start = 0;
+    }
+
+    int end = start + pageSize3.value;
+    if (end > carList3.length) end = carList3.length;
+
+    if (carList3.isEmpty) {
+      displayedCarList.clear();
+    } else {
+      displayedCarList.value = carList3.sublist(start, end);
+    }
   }
 
   void goToPreviousPage() {
@@ -117,7 +131,6 @@ class PickupCarController extends GetxController {
     pageSize3.value = newSize;
     currentPage3.value = 1;
   }
-
   /// Popup Widget Logic
   RxBool isOpen = false.obs;
   RxString imagePath = ''.obs;

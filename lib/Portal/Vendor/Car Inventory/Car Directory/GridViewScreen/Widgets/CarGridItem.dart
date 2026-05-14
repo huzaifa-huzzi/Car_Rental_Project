@@ -88,6 +88,8 @@ class CarGridItem extends StatelessWidget {
     // header widget
   Widget _buildHeader(BuildContext context) {
     final paddingH = AppSizes.padding(context) * (AppSizes.isMobile(context) ? 0.4 : 0.75);
+    List<String> parts = price.split('/');
+    String amount = parts[0].trim().replaceAll('\$', '');
 
     return Padding(
       padding: EdgeInsets.only(
@@ -96,6 +98,7 @@ class CarGridItem extends StatelessWidget {
         top: AppSizes.verticalPadding(context) * 0.75,
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: Column(
@@ -109,16 +112,12 @@ class CarGridItem extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 4),
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text("\$${price.split('/').first.trim()}", style: TTextTheme.titleOne(context)),
-                Text("/${price.split('/').last.trim()}", style: TTextTheme.titleThree(context)),
-              ],
-            ),
+          const SizedBox(width: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text("\$$amount", style: TTextTheme.titleOne(context)),
+            ],
           ),
         ],
       ),

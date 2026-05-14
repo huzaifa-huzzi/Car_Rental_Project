@@ -51,15 +51,15 @@ class EditStaffScreenWidget extends StatelessWidget {
                 subtitle: TextString.addStaffContactSubtitle,
                 children: [
                   LayoutBuilder(builder: (context, constraints) {
-                    if (constraints.maxWidth > 600) {
+                    if (constraints.maxWidth > 700) {
                       return Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: _buildTextField(TextString.addStaffContactFieldOne, "Write Email...", controller.emailC, context),
-                          ),
+                           _buildTextField(TextString.addStaffContactFieldOne, "Write Email...", controller.emailC, context),
+
                           const SizedBox(width: 16),
-                          Expanded(
+                          SizedBox(
+                            width: 320,
                             child: _buildPhoneField(context, "Phone Number"),
                           ),
                         ],
@@ -71,7 +71,10 @@ class EditStaffScreenWidget extends StatelessWidget {
                         children: [
                           _buildTextField(TextString.addStaffContactFieldOne, "Write Email...", controller.emailC, context),
                           const SizedBox(height: 16),
-                          _buildPhoneField(context, "Contact Number ...."),
+                          SizedBox(
+                            width: 320,
+                            child: _buildPhoneField(context, "Phone Number"),
+                          ),
                         ],
                       );
                     }

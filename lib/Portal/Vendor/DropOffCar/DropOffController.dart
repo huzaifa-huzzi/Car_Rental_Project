@@ -35,9 +35,15 @@ class DropOffController extends GetxController{
   final RxInt currentPage3 = 1.obs;
   final RxInt pageSize3 = 10.obs;
   final RxInt selectedView3 = 0.obs;
-
+  var hoveredRowIndex = (-1).obs;
 
   RxList<Map<String, dynamic>> carList3 = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> displayedDropOffList = <Map<String, dynamic>>[].obs;
+
+  int get totalPages {
+    if (carList3.isEmpty) return 1;
+    return (carList3.length / pageSize3.value).ceil();
+  }
 
   @override
   void onInit() {
@@ -47,21 +53,17 @@ class DropOffController extends GetxController{
     fuelLevelControllerStepTwo.text = "Full (100%)";
     exteriorCleanlinessControllerStepTwo.text = "Excellent";
     interiorCleanlinessControllerStepTwo.text = "Excellent";
-
     bondAmountControllerStepTwo.text = "2600 \$";
     paidBondControllerStepTwo.text = "600 \$";
     dueBondAmountControllerStepTwo.text = "2000 \$";
-
     odoControllerStepTwoAdd.text = "12457678";
     fuelLevelControllerStepTwoAdd.text = "Full (100%)";
     exteriorCleanlinessControllerStepTwoAdd.text = "Excellent";
     interiorCleanlinessControllerStepTwoAdd.text = "Excellent";
-
     bondAmountControllerStepTwoAdd.text = "2600 \$";
     paidBondControllerStepTwoAdd.text = "600 \$";
     dueBondAmountControllerStepTwoAdd.text = "2000 \$";
 
-     // DropOff Signatures
     dropOffOwnerSigPadController.addListener(() {
       if (dropOffOwnerSigPadController.isNotEmpty) {
         isDropOffOwnerDrawingActive.value = true;
@@ -80,20 +82,26 @@ class DropOffController extends GetxController{
       DamagePoint(dx: 0.8, dy: 0.7, typeId: 3, color: AppColors.threeBackground),
     ]);
     termsController.addListener(() => update());
+    _updateDisplayedList();
+    ever(currentPage3, (_) => _updateDisplayedList());
+    ever(pageSize3, (_) => _updateDisplayedList());
+    ever(carList3, (_) => _updateDisplayedList());
   }
-
-  int get totalPages {
-    if (carList3.isEmpty) return 1;
-    return (carList3.length / pageSize3.value).ceil();
-  }
-
-  List<Map<String, dynamic>> get displayedCarList {
+  void _updateDisplayedList() {
     int start = (currentPage3.value - 1) * pageSize3.value;
-    int end = start + pageSize3.value;
 
-    if (start >= carList3.length) return [];
-    return carList3.sublist(
-        start, end > carList3.length ? carList3.length : end);
+    if (start >= carList3.length) {
+      start = 0;
+    }
+
+    int end = start + pageSize3.value;
+    if (end > carList3.length) end = carList3.length;
+
+    if (carList3.isEmpty) {
+      displayedDropOffList.clear();
+    } else {
+      displayedDropOffList.value = carList3.sublist(start, end);
+    }
   }
 
   void goToPreviousPage() {
@@ -112,10 +120,7 @@ class DropOffController extends GetxController{
     pageSize3.value = newSize;
     currentPage3.value = 1;
   }
-
   /// Table View Screen Data
-  var hoveredRowIndex = (-1).obs;
-
   void generateDummyData() {
     carList3.clear();
     for (int i = 0; i < 25; i++) {

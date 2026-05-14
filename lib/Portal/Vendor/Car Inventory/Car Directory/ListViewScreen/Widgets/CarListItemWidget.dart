@@ -46,7 +46,6 @@ class CarListCard extends StatefulWidget {
 class _CarListCardState extends State<CarListCard> {
   bool isHover = false;
 
-  @override
   Widget build(BuildContext context) {
     final cardPadding = AppSizes.padding(context);
 
@@ -58,38 +57,39 @@ class _CarListCardState extends State<CarListCard> {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final bool isMobile = constraints.maxWidth <= 600;
-
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: MouseRegion(
-                  onEnter: (_) => setState(() => isHover = true),
-                  onExit: (_) => setState(() => isHover = false),
-                  child: Container(
-                    padding: EdgeInsets.all(cardPadding * 0.5),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(AppSizes.borderRadius(context)),
-                        bottomLeft: Radius.circular(AppSizes.borderRadius(context)),
-                        topRight: isMobile ? Radius.circular(AppSizes.borderRadius(context)) : Radius.zero,
-                        bottomRight: isMobile ? Radius.circular(AppSizes.borderRadius(context)) : Radius.zero,
+          return IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: MouseRegion(
+                    onEnter: (_) => setState(() => isHover = true),
+                    onExit: (_) => setState(() => isHover = false),
+                    child: Container(
+                      padding: EdgeInsets.all(cardPadding * 0.5),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(AppSizes.borderRadius(context)),
+                          bottomLeft: Radius.circular(AppSizes.borderRadius(context)),
+                          topRight: isMobile ? Radius.circular(AppSizes.borderRadius(context)) : Radius.zero,
+                          bottomRight: isMobile ? Radius.circular(AppSizes.borderRadius(context)) : Radius.zero,
+                        ),
+                        border: Border.all(
+                          color: isHover ? AppColors.primaryColor : Colors.transparent,
+                          width: 0.5,
+                        ),
                       ),
-                      border: Border.all(
-                        color: isHover ? AppColors.primaryColor : Colors.transparent,
-                        width: 0.5,
-                      ),
+                      child: _innerWhiteCard(context),
                     ),
-                    child: _innerWhiteCard(context),
                   ),
                 ),
-              ),
-              if (!isMobile)
-                _buildEditDelete(context)
-              else
-                const SizedBox.shrink(),
-            ],
+                if (!isMobile)
+                  _buildEditDelete(context)
+                else
+                  const SizedBox.shrink(),
+              ],
+            ),
           );
         },
       ),
@@ -313,18 +313,11 @@ class _CarListCardState extends State<CarListCard> {
 
   //  Edit / Delete Widget
   Widget _buildEditDelete(BuildContext context) {
-
     final double boxWidth = AppSizes.isWeb(context)
         ? 155
         : AppSizes.isTablet(context) ? 160 : 150;
 
-    final double boxHeight = AppSizes.isWeb(context)
-        ? 146
-        : AppSizes.isTablet(context) ? 120 : 115;
-
-
     return Container(
-      height: boxHeight,
       width: boxWidth,
       decoration: BoxDecoration(
         color: AppColors.sideBoxesColor,

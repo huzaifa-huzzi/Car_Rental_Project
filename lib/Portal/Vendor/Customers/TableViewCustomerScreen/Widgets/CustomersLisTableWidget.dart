@@ -16,7 +16,6 @@ class CustomerListTableWidget extends StatelessWidget {
 
   final controller = Get.put(CustomerController());
 
-
   final double clientColWidth = 210.0;
   final double ageColWidth = 100.0;
   final double phoneColWidth = 150.0;
@@ -61,58 +60,74 @@ class CustomerListTableWidget extends StatelessWidget {
               ),
             ),
 
-            /// ---------- TABLE BODY ----------
-            Column(
-              children: controller.displayedCarList.asMap().entries.map((entry) {
-                int rowIndex = entry.key;
+            /// ---------- TABLE BODY
+            Obx(() {
+              final customers = controller.displayedCarList;
+              final bool enableHover = !AppSizes.isMobile(context);
 
-                return Obx(() {
-                  bool isHovered = controller.hoveredRowIndex.value == rowIndex;
-                  final bool enableHover = !AppSizes.isMobile(context);
+              if (customers.isEmpty) {
+                double totalWidth = clientColWidth + phoneColWidth + addressColWidth + ageColWidth + licenseColWidth + cardColWidth + actionColWidth;
+                return SizedBox(
+                  width: totalWidth,
+                  child: const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(30.0),
+                      child: Text("No customers found"),
+                    ),
+                  ),
+                );
+              }
 
-                  return MouseRegion(
-                    onEnter: (_) => controller.hoveredRowIndex.value = rowIndex,
-                    onExit: (_) => controller.hoveredRowIndex.value = -1,
-                    cursor: SystemMouseCursors.click,
-                    child: Container(
-                      padding: EdgeInsets.only(left: tablePadding, top: 14, bottom: 14),
-                      decoration: BoxDecoration(
-                        color: (enableHover && isHovered) ? Colors.white :AppColors.backgroundOfScreenColor,
-                        border: Border(
-                          bottom: BorderSide(color: AppColors.sideBoxesColor, width: 0.5),
+              return Column(
+                children: List.generate(customers.length, (rowIndex) {
+
+                  return Obx(() {
+                    bool isHovered = controller.hoveredRowIndex.value == rowIndex;
+
+                    return MouseRegion(
+                      onEnter: (_) => controller.hoveredRowIndex.value = rowIndex,
+                      onExit: (_) => controller.hoveredRowIndex.value = -1,
+                      cursor: SystemMouseCursors.click,
+                      child: Container(
+                        padding: EdgeInsets.only(left: tablePadding, top: 14, bottom: 14),
+                        decoration: BoxDecoration(
+                          color: (enableHover && isHovered) ? Colors.white : AppColors.backgroundOfScreenColor,
+                          border: Border(
+                            bottom: BorderSide(color: AppColors.sideBoxesColor, width: 0.5),
+                          ),
                         ),
-                      ),
-                      child: Row(
-                        children: [
-                          _clientDataCell(clientColWidth, context),
-                          _dataCell("789-012-3456", phoneColWidth, context),
-                          _dataCell("404 Spruce Road", addressColWidth, context),
-                          _dataCell("34 years", ageColWidth, context),
-                          _licenseDataCell(licenseColWidth, context),
-                          _dataCell("2 Card", cardColWidth, context),
+                        child: Row(
+                          children: [
+                            _clientDataCell(clientColWidth, context),
+                            _dataCell("789-012-3456", phoneColWidth, context),
+                            _dataCell("404 Spruce Road", addressColWidth, context),
+                            _dataCell("34 years", ageColWidth, context),
+                            _licenseDataCell(licenseColWidth, context),
+                            _dataCell("2 Card", cardColWidth, context),
 
-                          /// ACTION BUTTON
-                          SizedBox(
-                            width: actionColWidth,
-                            child: Center(
-                              child: AddButtonOfCustomer(
-                                text: "View",
-                                width: 71,
-                                height: 34,
-                                onTap: () {
-                                  context.go('/customerDetails', extra: {"hideMobileAppBar": true});
-                                },
-                                borderRadius: BorderRadius.circular(6),
+                            /// ACTION BUTTON
+                            SizedBox(
+                              width: actionColWidth,
+                              child: Center(
+                                child: AddButtonOfCustomer(
+                                  text: "View",
+                                  width: 71,
+                                  height: 34,
+                                  onTap: () {
+                                    context.go('/customerDetails', extra: {"hideMobileAppBar": true});
+                                  },
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                });
-              }).toList(),
-            )
+                    );
+                  });
+                }),
+              );
+            })
           ],
         ),
       ),
@@ -121,7 +136,6 @@ class CustomerListTableWidget extends StatelessWidget {
 
   /// --------- Refined Widgets for Spacing & Alignment ---------
 
-  // header cell Widget
   Widget _headerCell(String title, double width, BuildContext context, {bool isAction = false}) {
     return SizedBox(
       width: width,
@@ -152,9 +166,7 @@ class CustomerListTableWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 1),
-
                     ClipRect(
                       child: Align(
                         alignment: Alignment.bottomCenter,
@@ -175,17 +187,13 @@ class CustomerListTableWidget extends StatelessWidget {
     );
   }
 
-  // data cell widget
   Widget _dataCell(String text, double width, BuildContext context) {
     return SizedBox(
       width: width,
-      child: Text(
-        text,
-        style: TTextTheme.pOne(context))
+      child: Text(text, style: TTextTheme.pOne(context)),
     );
   }
 
-   // client Data cell Widget
   Widget _clientDataCell(double width, BuildContext context) {
     return SizedBox(
       width: width,
@@ -201,12 +209,8 @@ class CustomerListTableWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                   TextString.titlename,
-                    style: TTextTheme.pOne(context)),
-                Text(
-                    TextString.Subtitlename,
-                    style: TTextTheme.pFour(context)),
+                Text(TextString.titlename, style: TTextTheme.pOne(context)),
+                Text(TextString.Subtitlename, style: TTextTheme.pFour(context)),
               ],
             ),
           ),
@@ -215,7 +219,6 @@ class CustomerListTableWidget extends StatelessWidget {
     );
   }
 
-   // license Data Cell Widget
   Widget _licenseDataCell(double width, BuildContext context) {
     return SizedBox(
       width: width,

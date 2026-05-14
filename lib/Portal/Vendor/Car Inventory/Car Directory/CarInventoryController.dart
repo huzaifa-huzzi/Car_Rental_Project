@@ -51,14 +51,17 @@ class CarInventoryController extends GetxController {
 
   int get totalPages => (carList.length / pageSize.value).ceil();
 
-  RxList<Map<String, dynamic>> get displayedCarList {
+// Is getter ko sahi aur crash-proof reactive banaya hai
+  List<Map<String, dynamic>> get displayedCarList {
+    if (carList.isEmpty) return [];
+
     int start = (currentPage.value - 1) * pageSize.value;
     int end = start + pageSize.value;
+
+    if (start > carList.length) start = 0; // Guard filter checks
     if (end > carList.length) end = carList.length;
 
-    if (carList.isEmpty) return <Map<String, dynamic>>[].obs;
-
-    return carList.sublist(start, end).obs;
+    return carList.sublist(start, end);
   }
 
   void goToPreviousPage() {
@@ -78,11 +81,9 @@ class CarInventoryController extends GetxController {
     currentPage.value = 1;
   }
 
-
   /// Table View Screen
   RxBool isFilterOpen = false.obs;
   var hoveredRowIndex = (-1).obs;
-
   RxBool isSearchCategoryOpen = false.obs;
   RxString selectedSearchType = "VIN Number".obs;
 
@@ -102,6 +103,7 @@ class CarInventoryController extends GetxController {
     }
   }
 
+
   @override
   void onInit() {
     super.onInit();
@@ -109,13 +111,13 @@ class CarInventoryController extends GetxController {
     List<String> brands = ["Aston", "BMW", "Audi", "Ford", "Honda"];
     List<String> transmissions = ["Auto", "Manual"];
 
-    carList.value = List.generate(10, (i) {
+    carList.value = List.generate(60, (i) {
       int index = i % brands.length;
       int transIndex = i % transmissions.length;
 
-      String getStatus(int i) {
-        if (i % 3 == 0) return "Available";
-        if (i % 3 == 1) return "Maintenance";
+      String getStatus(int index) {
+        if (index % 3 == 0) return "Available";
+        if (index % 3 == 1) return "Maintenance";
         return "Unavailable";
       }
 

@@ -52,7 +52,7 @@ class PaginationBarOfCustomer extends StatelessWidget {
         LayoutBuilder(builder: (context, constraints) {
           return Obx(() {
 
-            String selectedValue = controller.pageSize.value.toString();
+            String selectedValue = controller.pageSize2.value.toString();
 
             return PopupMenuButton<String>(
               constraints: const BoxConstraints(minWidth: 70, maxWidth: 80),
@@ -60,8 +60,8 @@ class PaginationBarOfCustomer extends StatelessWidget {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               color: Colors.white,
               onSelected: (String newValue) {
-                controller.pageSize.value = int.parse(newValue);
-                controller.currentPage.value = 1;
+                controller.pageSize2.value = int.parse(newValue);
+                controller.currentPage2.value = 1;
               },
               child: Container(
                 height: 36,

@@ -49,7 +49,7 @@ class PaginationBarOfStaff extends StatelessWidget {
             style: TTextTheme.titleThree(context)
         ),
         const SizedBox(width: 12),
-        LayoutBuilder(builder: (context, constraints) {
+        Obx(() {
           String selectedValue = controller.pageSize3.value.toString();
 
           return PopupMenuButton<String>(
@@ -58,8 +58,7 @@ class PaginationBarOfStaff extends StatelessWidget {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             color: Colors.white,
             onSelected: (String newValue) {
-              controller.pageSize3.value = int.parse(newValue);
-              controller.currentPage3.value = 1;
+              controller.setPageSize(int.parse(newValue));
             },
             child: Container(
               height: 36,
@@ -83,14 +82,13 @@ class PaginationBarOfStaff extends StatelessWidget {
             ),
             itemBuilder: (BuildContext context) {
               return <String>['10', '20', '30', '40'].map((String value) {
-                bool isSelected = selectedValue == value;
                 return PopupMenuItem<String>(
                   value: value,
                   height: 35,
                   child: Center(
                     child: Text(
-                        value,
-                        style: TTextTheme.btnTwo(context)
+                      value,
+                      style: TTextTheme.btnTwo(context)
                     ),
                   ),
                 );

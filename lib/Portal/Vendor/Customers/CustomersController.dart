@@ -26,38 +26,42 @@ class CustomerController extends GetxController {
   RxBool isFilterOpen = false.obs;
   var hoveredRowIndex = (-1).obs;
 
-  final RxInt currentPage = 1.obs;
-  final RxInt pageSize = 10.obs;
-  void toggleFilter() {
-    isFilterOpen.value = !isFilterOpen.value;
-  }
-
-  /// Pagination
-  // Pagination State
   final RxInt currentPage2 = 1.obs;
   final RxInt pageSize2 = 10.obs;
   final RxInt selectedView2 = 0.obs;
 
   RxList<Map<String, dynamic>> carList2 = <Map<String, dynamic>>[].obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-    carList2.addAll(List.generate(
-        50, (index) => {"id": index, "Customer name": "Customer $index"}));
-  }
+  RxList<Map<String, dynamic>> displayedCarList = <Map<String, dynamic>>[].obs;
 
   int get totalPages {
     if (carList2.isEmpty) return 1;
     return (carList2.length / pageSize2.value).ceil();
   }
 
-  List<Map<String, dynamic>> get displayedCarList {
+  @override
+  void onInit() {
+    super.onInit();
+    carList2.addAll(List.generate(
+        50, (index) => {"id": index, "Customer name": "Customer $index"}));
+    _updateDisplayedList();
+    ever(currentPage2, (_) => _updateDisplayedList());
+    ever(pageSize2, (_) => _updateDisplayedList());
+  }
+  void _updateDisplayedList() {
     int start = (currentPage2.value - 1) * pageSize2.value;
-    if (start >= carList2.length) return [];
+
+    if (start >= carList2.length) {
+      start = 0;
+    }
+
     int end = start + pageSize2.value;
-    return carList2.sublist(
-        start, end > carList2.length ? carList2.length : end);
+    if (end > carList2.length) end = carList2.length;
+
+    if (carList2.isEmpty) {
+      displayedCarList.clear();
+    } else {
+      displayedCarList.value = carList2.sublist(start, end);
+    }
   }
 
   void goToPreviousPage() {
@@ -75,6 +79,10 @@ class CustomerController extends GetxController {
   void setPageSize(int newSize) {
     pageSize2.value = newSize;
     currentPage2.value = 1;
+  }
+
+  void toggleFilter() {
+    isFilterOpen.value = !isFilterOpen.value;
   }
 
   /// CustomerDetail Screen
@@ -335,32 +343,22 @@ class CustomerController extends GetxController {
    /// StepTwoCustomer
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
-
-  // Observers for Visibility and State
   var isPasswordHidden = true.obs;
-  var isCredentialsGenerated = false.obs; // Note: In manual mode, we might not need this, but keeping it for UI flow if needed.
-
-  // Error Observers for Validation
+  var isCredentialsGenerated = false.obs;
   var userNameError = RxnString();
   var passwordError = RxnString();
 
   void togglePasswordVisibility() {
     isPasswordHidden.value = !isPasswordHidden.value;
   }
-
-  // Validation Logic
   bool validateFields() {
     bool isValid = true;
-
-    // UserName Validation
     if (userNameController.text.trim().isEmpty) {
       userNameError.value = "User name is required";
       isValid = false;
     } else {
       userNameError.value = null;
     }
-
-    // Password Validation: Capital letter, Special character, Length 8
     String pwd = passwordController.text;
     bool hasCapital = pwd.contains(RegExp(r'[A-Z]'));
     bool hasSpecial = pwd.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
@@ -380,7 +378,6 @@ class CustomerController extends GetxController {
   }
 
   Future<void> saveCustomer(BuildContext context) async {
-    // Yahan backend call logic ayegi
     await Future.delayed(const Duration(seconds: 3));
   }
 

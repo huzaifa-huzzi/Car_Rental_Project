@@ -1,8 +1,11 @@
+import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/CarInventoryController.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/GridViewScreen/Widgets/CarGridItem.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/PaginationWidget.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart' ;
+import 'package:go_router/go_router.dart';
 
 
 final List<Map<String, String>> dummyCarData = [
@@ -78,26 +81,10 @@ final List<Map<String, String>> dummyCarData = [
 class GridViewScreen extends StatelessWidget {
   const GridViewScreen({super.key});
 
-
-  List<Widget> _buildCarGridItems() {
-    return dummyCarData.map((car) {
-      return CarGridItem(
-        image: car['image']!,
-        name: car['name']!,
-        model: car['model']!,
-        transmission: car['transmission']!,
-        capacity: "${car['capacity']} seats",
-        price: car['price']!,
-        status: car['status']!,
-        regId: car['regId']!,
-        fuelType: car['fuelType']!,
-        regId2: 'JTNBA3HK003001234',
-      );
-    }).toList();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<CarInventoryController>();
+
     final isMobile = AppSizes.isMobile(context);
     final isTablet = AppSizes.isTablet(context);
     final baseVerticalSpace = AppSizes.verticalPadding(context);
@@ -116,12 +103,9 @@ class GridViewScreen extends StatelessWidget {
       extent = 260;
     }
 
-    final carGridItems = _buildCarGridItems();
-
     return SingleChildScrollView(
       child: Column(
         children: [
-          // Top Spacing
           SizedBox(
             height: isMobile
                 ? baseVerticalSpace * 1.2
@@ -129,31 +113,66 @@ class GridViewScreen extends StatelessWidget {
                 ? baseVerticalSpace * 0.9
                 : baseVerticalSpace * 0.4,
           ),
+          Obx(() {
+            final cars = controller.displayedCarList;
 
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppSizes.horizontalPadding(context),
-            ),
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: carGridItems.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: crossAxisCount,
-                mainAxisSpacing: baseVerticalSpace,
-                crossAxisSpacing: baseVerticalSpace,
-                mainAxisExtent: extent,
+            if (cars.isEmpty) {
+              return const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(50.0),
+                  child: Text("No cars found in inventory"),
+                ),
+              );
+            }
+
+            return Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSizes.horizontalPadding(context),
               ),
-              itemBuilder: (context, index) => carGridItems[index],
-            ),
-          ),
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: cars.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  mainAxisSpacing: baseVerticalSpace,
+                  crossAxisSpacing: baseVerticalSpace,
+                  mainAxisExtent: extent,
+                ),
+                itemBuilder: (context, index) {
+                  final car = cars[index];
+                  String currentImage = ImageString.bmwPic;
+                  if (index == 0 && controller.currentPage.value == 1) currentImage = ImageString.astonPic;
+                  if (index == 1 && controller.currentPage.value == 1) currentImage = ImageString.rangePic;
+                  if (index == 2 && controller.currentPage.value == 1) currentImage = ImageString.audiPic;
+
+                  return CarGridItem(
+                    image: currentImage,
+                    name: car['brand'] ?? "Unknown",
+                    model: car['model'] ?? "2025",
+                    transmission: car['transmission'] ?? "Auto",
+                    capacity: car['capacity'] ?? "4 seats",
+                    price: car['price'] ?? "0 / Weekly",
+                    status: car['status'] ?? "Available",
+                    regId: car['reg'] ?? "1234567890",
+                    regId2: car['vin'] ?? "JTNBA3HK003001234",
+                    fuelType: car['fuelType'] ?? "Petrol",
+                    onView: () => context.go('/cardetails', extra: {"hideMobileAppBar": true}),
+                  );
+                },
+              ),
+            );
+          }),
 
           SizedBox(height: baseVerticalSpace * 1.5),
-
           Padding(
             padding: EdgeInsets.symmetric(horizontal: AppSizes.horizontalPadding(context)),
-            child: PaginationBar(isMobile: isMobile, tablePadding: AppSizes.padding(context)),
+            child: PaginationBar(
+                isMobile: isMobile,
+                tablePadding: AppSizes.padding(context)
+            ),
           ),
+
           SizedBox(height: baseVerticalSpace * 1.35),
         ],
       ),

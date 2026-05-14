@@ -22,55 +22,66 @@ class CarListTableWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tablePadding = AppSizes.padding(context);
-
-    return Obx(() {
-      return Container(
-        margin: EdgeInsets.all(tablePadding),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              /// ---------- TABLE HEADINGS ----------
-              Container(
-                padding: EdgeInsets.only(
-                    left: tablePadding,
-                    right: tablePadding,
-                    top: 9,
-                    bottom: 12
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.secondaryColor,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(AppSizes.borderRadius(context)),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    _headerCell("Registration", context),
-                    _headerCell("VIN Number", context, customWidth: vinColumnWidth),
-                    _headerCell("Car Name", context),
-                    _headerCell("Status", context),
-                    _headerCell("Transmission", context),
-                    _headerCell("Capacity", context),
-                    _headerCell("Fuel Type", context),
-                    _headerCell("Engine Size", context),
-                    _headerCell("Rent Price", context),
-                    _headerCell("Action", context, isAction: true),
-                  ],
+    return Container(
+      margin: EdgeInsets.all(tablePadding),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            /// ---------- TABLE HEADINGS ----------
+            Container(
+              padding: EdgeInsets.only(
+                  left: tablePadding,
+                  right: tablePadding,
+                  top: 9,
+                  bottom: 12
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.secondaryColor,
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(AppSizes.borderRadius(context)),
                 ),
               ),
+              child: Row(
+                children: [
+                  _headerCell("Registration", context),
+                  _headerCell("VIN Number", context, customWidth: vinColumnWidth),
+                  _headerCell("Car Name", context),
+                  _headerCell("Status", context),
+                  _headerCell("Transmission", context),
+                  _headerCell("Capacity", context),
+                  _headerCell("Fuel Type", context),
+                  _headerCell("Engine Size", context),
+                  _headerCell("Rent Price", context),
+                  _headerCell("Action", context, isAction: true),
+                ],
+              ),
+            ),
 
-              /// ---------- TABLE BODY ----------
-              Column(
-                children: controller.displayedCarList.asMap().entries.map((entry) {
-                  int rowIndex = entry.key;
-                  var car = entry.value;
+            /// ---------- TABLE BODY
+            Obx(() {
+              final displayedCars = controller.displayedCarList;
+              final bool enableHover = !AppSizes.isMobile(context);
 
+              if (displayedCars.isEmpty) {
+                return SizedBox(
+                  width: (columnWidth * 8) + vinColumnWidth + actionColumnWidth,
+                  child: const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(30.0),
+                      child: Text("No data available"),
+                    ),
+                  ),
+                );
+              }
+
+              return Column(
+                children: List.generate(displayedCars.length, (rowIndex) {
+                  var car = displayedCars[rowIndex];
                   return Obx(() {
                     bool isHovered = controller.hoveredRowIndex.value == rowIndex;
-                    final bool enableHover = !AppSizes.isMobile(context);
 
                     return MouseRegion(
                       onEnter: (_) => controller.hoveredRowIndex.value = rowIndex,
@@ -114,19 +125,18 @@ class CarListTableWidget extends StatelessWidget {
                       ),
                     );
                   });
-                }).toList(),
-              )
-            ],
-          ),
+                }),
+              );
+            })
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 
   /// --------- Extra Widgets ---------///
 
-
-   // header Cell Widget
+  // header Cell Widget
   Widget _headerCell(String title, BuildContext context, {bool isAction = false, double? customWidth}) {
     return SizedBox(
       width: isAction ? actionColumnWidth : (customWidth ?? columnWidth),
@@ -157,9 +167,7 @@ class CarListTableWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 1),
-
                     ClipRect(
                       child: Align(
                         alignment: Alignment.bottomCenter,
@@ -264,6 +272,7 @@ class CarListTableWidget extends StatelessWidget {
       ),
     );
   }
+
   // Icon Column
   Widget _iconDataCell(String text, BuildContext context, {double? customWidth}) {
     return SizedBox(

@@ -9,24 +9,34 @@ class StaffController extends GetxController {
 
 
   /// Pagination Bar
+
   final RxInt currentPage3 = 1.obs;
   final RxInt pageSize3 = 10.obs;
   final RxInt selectedView3 = 0.obs;
+  var hoveredRowIndex = (-1).obs;
 
   RxList<Map<String, dynamic>> carList3 = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> displayedStaffList = <Map<String, dynamic>>[].obs;
 
   int get totalPages {
     if (carList3.isEmpty) return 1;
     return (carList3.length / pageSize3.value).ceil();
   }
-
-  List<Map<String, dynamic>> get displayedCarList {
+  void _updateDisplayedList() {
     int start = (currentPage3.value - 1) * pageSize3.value;
-    int end = start + pageSize3.value;
 
-    if (start >= carList3.length) return [];
-    return carList3.sublist(
-        start, end > carList3.length ? carList3.length : end);
+    if (start >= carList3.length) {
+      start = 0;
+    }
+
+    int end = start + pageSize3.value;
+    if (end > carList3.length) end = carList3.length;
+
+    if (carList3.isEmpty) {
+      displayedStaffList.clear();
+    } else {
+      displayedStaffList.value = carList3.sublist(start, end);
+    }
   }
 
   void goToPreviousPage() {
@@ -47,7 +57,6 @@ class StaffController extends GetxController {
   }
 
   /// Table View Screen Data
-  var hoveredRowIndex = (-1).obs;
 
   void generateDummyData() {
     carList3.clear();
@@ -276,6 +285,13 @@ class StaffController extends GetxController {
   void onInit() {
     super.onInit();
     generateDummyData();
+    carList3.refresh();
+
+
+    ever(currentPage3, (_) => _updateDisplayedList());
+    ever(pageSize3, (_) => _updateDisplayedList());
+    ever(carList3, (_) => _updateDisplayedList());
+    _updateDisplayedList();
   }
 
 

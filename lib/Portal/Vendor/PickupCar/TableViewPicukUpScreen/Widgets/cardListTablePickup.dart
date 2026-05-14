@@ -14,7 +14,6 @@ class CardListTablePickup extends StatelessWidget {
 
   final controller = Get.find<PickupCarController>();
 
-
   final double nameColumnWidth = 160.0;
   final double regColumnWidth = 110.0;
   final double vinColumnWidth = 140.0;
@@ -28,43 +27,56 @@ class CardListTablePickup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tablePadding = AppSizes.padding(context);
-
-    return Obx(() {
-      return Container(
-        margin: EdgeInsets.all(tablePadding),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ///  TABLE HEADINGS
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: tablePadding, vertical: 12),
-                decoration: BoxDecoration(
-                  color: AppColors.secondaryColor,
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
-                ),
-                child: Row(
-                  children: [
-                    _headerCell(TextString.tableFour, context, customWidth: nameColumnWidth),
-                    _headerCell(TextString.tableThree, context, customWidth: regColumnWidth),
-                    _headerCell(TextString.tableTwo, context, customWidth: vinColumnWidth),
-                    _headerCell(TextString.tableOne, context, customWidth: customerColumnWidth),
-                    _headerCell(TextString.tableSeven, context, customWidth: rentColumnWidth),
-                    _headerCell(TextString.tableEight, context, customWidth: periodColumnWidth),
-                    _headerCell(TextString.tableNine, context, customWidth: dateColumnWidth),
-                    _headerCell(TextString.tableTen, context, customWidth: statusColumnWidth),
-                    _headerCell(TextString.tableEleven, context, isAction: true, customWidth: actionColumnWidth),
-                  ],
-                ),
+    return Container(
+      margin: EdgeInsets.all(tablePadding),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ///  TABLE HEADINGS
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: tablePadding, vertical: 12),
+              decoration: BoxDecoration(
+                color: AppColors.secondaryColor,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
               ),
+              child: Row(
+                children: [
+                  _headerCell(TextString.tableFour, context, customWidth: nameColumnWidth),
+                  _headerCell(TextString.tableThree, context, customWidth: regColumnWidth),
+                  _headerCell(TextString.tableTwo, context, customWidth: vinColumnWidth),
+                  _headerCell(TextString.tableOne, context, customWidth: customerColumnWidth),
+                  _headerCell(TextString.tableSeven, context, customWidth: rentColumnWidth),
+                  _headerCell(TextString.tableEight, context, customWidth: periodColumnWidth),
+                  _headerCell(TextString.tableNine, context, customWidth: dateColumnWidth),
+                  _headerCell(TextString.tableTen, context, customWidth: statusColumnWidth),
+                  _headerCell(TextString.tableEleven, context, isAction: true, customWidth: actionColumnWidth),
+                ],
+              ),
+            ),
 
-              /// TABLE BODY
-              Column(
-                children: controller.displayedCarList.asMap().entries.map((entry) {
-                  int rowIndex = entry.key;
-                  var car = entry.value;
+            /// TABLE BODY
+            Obx(() {
+              final displayedCars = controller.displayedCarList;
+
+              if (displayedCars.isEmpty) {
+                double totalWidth = nameColumnWidth + regColumnWidth + vinColumnWidth + customerColumnWidth + rentColumnWidth + periodColumnWidth + dateColumnWidth + statusColumnWidth + actionColumnWidth;
+                return SizedBox(
+                  width: totalWidth,
+                  child: const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(30.0),
+                      child: Text("No pickup records found"),
+                    ),
+                  ),
+                );
+              }
+
+              return Column(
+                children: List.generate(displayedCars.length, (rowIndex) {
+                  var car = displayedCars[rowIndex];
 
                   return Obx(() {
                     bool isHovered = controller.hoveredRowIndex.value == rowIndex;
@@ -109,18 +121,17 @@ class CardListTablePickup extends StatelessWidget {
                       ),
                     );
                   });
-                }).toList(),
-              )
-            ],
-          ),
+                }),
+              );
+            })
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 
   /// --------- Extra Widgets ---------///
 
-  // Pickup dates cell Widget
   Widget _dateDataCell(String start, String end, BuildContext context, {required double customWidth}) {
     return SizedBox(
       width: customWidth,
@@ -140,11 +151,9 @@ class CardListTablePickup extends StatelessWidget {
     );
   }
 
-  // status data cells Widget
   Widget _statusDataCell(String text, BuildContext context, {required double customWidth}) {
     Color bgColor = AppColors.sideBoxesColor;
     Color textColor = AppColors.secondTextColor;
-    Color borderColor = Colors.transparent;
     String status = text.toLowerCase();
 
     if (status == "completed") {
@@ -183,7 +192,6 @@ class CardListTablePickup extends StatelessWidget {
     );
   }
 
-   // header of table Widget
   Widget _headerCell(String title, BuildContext context, {bool isAction = false, double? customWidth}) {
     return SizedBox(
       width: customWidth,
@@ -213,9 +221,7 @@ class CardListTablePickup extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 1),
-
                     ClipRect(
                       child: Align(
                         alignment: Alignment.bottomCenter,
@@ -236,7 +242,6 @@ class CardListTablePickup extends StatelessWidget {
     );
   }
 
-  // table inside text Widget
   Widget _dataCell(String text, BuildContext context, {double? customWidth}) {
     return SizedBox(
       width: customWidth,
@@ -244,7 +249,6 @@ class CardListTablePickup extends StatelessWidget {
     );
   }
 
-   // icon Cell
   Widget _carNameCell(String text, BuildContext context, {double? customWidth}) {
     return SizedBox(
       width: customWidth,
