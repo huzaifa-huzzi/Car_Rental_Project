@@ -41,7 +41,12 @@ class AddPaymentWidget extends StatelessWidget {
               ]),
               const SizedBox(height: 20),
               _buildResponsiveRow(isMobile, [
-                _buildField(context, TextString.field4,TextString.field4Subtitle  , controller.paymentAmountController, "amount"),
+                _buildPaymentAmountField(
+                    context,
+                    TextString.field4,
+                    controller.paymentAmountController,
+                    "amount"
+                ),
                 _buildDateField(context, TextString.field5,TextString.field5Subtitle  , controller.dueDateController, _dueLink,),
                 if (!isMobile) const SizedBox(),
               ]),
@@ -1069,6 +1074,229 @@ class AddPaymentWidget extends StatelessWidget {
           errorBuilder: (context, error, stackTrace) => const Icon(Icons.flag, size: 14),
         ),
       ),
+    );
+  }
+
+
+
+
+  Widget _buildPaymentAmountField(BuildContext context, String label, TextEditingController ctr, String id) {
+    final Map<String, FocusNode> focusNodes = {};
+    focusNodes[id] ??= FocusNode();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: TTextTheme.bodyRegular14(context)),
+        const SizedBox(height: 8),
+        ListenableBuilder(
+          listenable: focusNodes[id]!.hasFocus ? focusNodes[id]! : focusNodes[id]!,
+          builder: (context, child) {
+            bool hasFocus = focusNodes[id]!.hasFocus;
+
+            return Container(
+              height: 48,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: AppColors.toolBackground),
+                boxShadow: hasFocus ? [
+                  BoxShadow(
+                    color: AppColors.fieldsBackground.withOpacity(0.06),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ] : [],
+              ),
+              child: Row(
+                children: [
+                  Obx(() {
+                    bool isOpen = controller.openedDropdownPayment.value == id;
+
+                    return PopupMenuButton<Country>(
+                      constraints: const BoxConstraints(
+                        minWidth: 280,
+                        maxWidth: 300,
+                        maxHeight: 400,
+                      ),
+                      offset: const Offset(0, 44),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      color: Colors.white,
+                      onOpened: () {
+                        controller.openedDropdownPayment.value = id;
+                      },
+                      onCanceled: () {
+                        controller.openedDropdownPayment.value = "";
+                        controller.searchCountryText.value = "";
+                      },
+                      onSelected: (Country country) {
+                        controller.updateCountryAndCurrency(country);
+                        controller.openedDropdownPayment.value = "";
+                        controller.searchCountryText.value = "";
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        height: double.infinity,
+                        color: Colors.transparent,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              controller.selectedCountryFlag.value,
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              controller.selectedCountryCode.value,
+                              style: TTextTheme.titleinputTextField(context).copyWith(
+                                color: AppColors.quadrantalTextColor,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            Icon(
+                              isOpen ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded,
+                              size: 18,
+                              color: AppColors.quadrantalTextColor,
+                            ),
+                          ],
+                        ),
+                      ),
+                      itemBuilder: (context) {
+                        return [
+                          PopupMenuItem<Country>(
+                            enabled: false,
+                            value: null,
+                            child: StatefulBuilder(
+                              builder: (context, menuState) {
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      height: 40,
+                                      margin: const EdgeInsets.symmetric(vertical: 4),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(color: AppColors.primaryColor),
+                                      ),
+                                      child: TextField(
+                                        cursorColor: AppColors.blackColor,
+                                        autofocus: true,
+                                        style: TTextTheme.titleinputTextField(context),
+                                        onChanged: (val) {
+                                          controller.searchCountryText.value = val;
+                                          menuState(() {});
+                                        },
+                                        decoration: InputDecoration(
+                                          hintText: "Search country...",
+                                          hintStyle: TTextTheme.bodyRegular14Search(context),
+                                          prefixIcon: Icon(Icons.search, color: AppColors.primaryColor, size: 18),
+                                          filled: true,
+                                          fillColor: AppColors.backgroundOfScreenColor,
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(20),
+                                            borderSide: BorderSide.none,
+                                          ),
+                                          contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                        ),
+                                      ),
+                                    ),
+                                    const Divider(),
+                                    Container(
+                                      constraints: const BoxConstraints(maxHeight: 250),
+                                      width: 260,
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          children: controller.getFilteredCountries().map((country) {
+                                            bool isSelected = controller.selectedCountryCode.value == country.countryCode.toUpperCase();
+
+                                            return InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).pop(country);
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      width: 22,
+                                                      height: 22,
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                                                        border: Border.all(color: AppColors.primaryColor, width: 2),
+                                                      ),
+                                                      child: isSelected
+                                                          ? const Center(child: Icon(Icons.done, color: Colors.white, size: 14))
+                                                          : null,
+                                                    ),
+                                                    const SizedBox(width: 12),
+                                                    Text(country.flagEmoji, style: const TextStyle(fontSize: 14)),
+                                                    const SizedBox(width: 8),
+                                                    Expanded(
+                                                      child: Text(
+                                                        "${country.name} (${country.countryCode.toUpperCase()})",
+                                                        style: TTextTheme.medium14(context),
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ];
+                      },
+                    );
+                  }),
+                  Container(
+                    width: 1,
+                    height: 28,
+                    color: AppColors.toolBackground,
+                  ),
+                  Expanded(
+                    child: Obx(() {
+                      return TextField(
+                        controller: ctr,
+                        focusNode: focusNodes[id],
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        cursorColor: AppColors.blackColor,
+                        style: TTextTheme.titleinputTextField(context),
+                        decoration: InputDecoration(
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.only(left: 14, top: 13),
+                            child: Text(
+                              controller.selectedCurrencySymbol.value,
+                              style: TTextTheme.titleinputTextField(context).copyWith(
+                                color: AppColors.quadrantalTextColor,
+                              ),
+                            ),
+                          ),
+                          hintText: "0.0",
+                          hintStyle: TTextTheme.bodyRegular16(context).copyWith(color: Colors.grey.withOpacity(0.5)),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                          filled: true,
+                          fillColor: Colors.transparent,
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                        ),
+                      );
+                    }),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 

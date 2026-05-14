@@ -1,10 +1,12 @@
 
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/CustomCalendarPayment2.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/CustomCalenderPayment.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class ImageHolder {
   final String? path;
@@ -32,6 +34,51 @@ class PaymentController extends GetxController {
   var isReasonFocused = false.obs;
   var isCarSelected = false.obs;
   var dropdownErrors = <String, String>{}.obs;
+
+  var selectedCountryFlag = "🇦🇺".obs;
+  var selectedCountryCode = "AUD".obs;
+  var selectedCurrencySymbol = "\$ ".obs;
+
+  // Search bar ke liye reactive string
+  var searchCountryText = "".obs;
+
+  // Har dropdown ko tracking id dene ke liye state
+  var openedDropdownPayment = "".obs;
+
+  // Poori duniya ki countries filter karne ka proper function
+  List<Country> getFilteredCountries() {
+    final List<Country> allCountries = CountryService().getAll();
+    if (searchCountryText.value.isEmpty) {
+      return allCountries;
+    }
+    return allCountries.where((country) {
+      return country.name.toLowerCase().contains(searchCountryText.value.toLowerCase()) ||
+          country.countryCode.toLowerCase().contains(searchCountryText.value.toLowerCase());
+    }).toList();
+  }
+
+  void updateCountryAndCurrency(Country country) {
+    selectedCountryFlag.value = country.flagEmoji;
+    String isoCode = country.countryCode.toUpperCase();
+
+    // Universal mapping table for top global currencies
+    final Map<String, String> isoToCurrency = {
+      "US": "USD", "GB": "GBP", "PK": "PKR", "AU": "AUD", "CA": "CAD",
+      "EU": "EUR", "DE": "EUR", "FR": "EUR", "IT": "EUR", "ES": "EUR",
+      "AE": "AED", "SA": "SAR", "IN": "INR", "CN": "CNY", "JP": "JPY",
+    };
+
+    String computedCurrencyCode = isoToCurrency[isoCode] ?? "${isoCode}D";
+    selectedCountryCode.value = computedCurrencyCode;
+
+    try {
+      var format = NumberFormat.simpleCurrency(name: computedCurrencyCode);
+      selectedCurrencySymbol.value = "${format.currencySymbol} ";
+    } catch (e) {
+      selectedCurrencySymbol.value = "$computedCurrencyCode ";
+    }
+  }
+
 
   var isDateDropOpen = false.obs;
   var isWeeklyDropOpen = false.obs;
