@@ -637,7 +637,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
   Widget _buildCarDocumentsSection(BuildContext context) {
     final spacing = AppSizes.padding(context);
     final List<dynamic> documents = [
-      {'title': 'Car Registration.pdf', 'status': 'Document', 'uploaded': true, 'isPdf': true}, // Sirf ye PDF
+      {'title': 'Car Registration.pdf', 'status': 'Document', 'uploaded': true, 'isPdf': true},
       {'title': 'Tax Token', 'status': 'Uploaded', 'uploaded': true, 'isPdf': false},
       {'title': 'Incoherence Paper', 'status': 'Uploaded', 'uploaded': true, 'isPdf': false},
       {'title': 'Vin Number', 'status': 'JTNBA3HK003001234', 'uploaded': true, 'isPdf': false},
@@ -687,11 +687,11 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
       ) {
     String iconPath;
     if (isPdf) {
-      iconPath = IconString.pdfIcon;
+      iconPath = IconString.taxIcon;
     } else if (title.toLowerCase().contains("tax") || title.toLowerCase().contains("paper")) {
       iconPath = IconString.taxIcon;
     } else if (title.toLowerCase().contains("vin")) {
-      iconPath = IconString.vinNumberIcon;
+      iconPath = IconString.taxIcon;
     } else {
       iconPath = IconString.registrationIcon;
     }

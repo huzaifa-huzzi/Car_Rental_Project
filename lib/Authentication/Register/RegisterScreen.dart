@@ -323,9 +323,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           children: [
                             _buildCircleFlag(country.countryCode),
                             const SizedBox(width: 12),
-                            Text(
-                              country.name,
-                              style: TTextTheme.bodyRegular14(context),
+                            Expanded(
+                              child: Text(
+                                country.name,
+                                style: TTextTheme.bodyRegular14(context),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
                             ),
                           ],
                         ),

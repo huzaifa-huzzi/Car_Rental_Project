@@ -8,6 +8,7 @@ import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 
 class StepTwoCustomerWidget extends StatelessWidget {
@@ -284,13 +285,19 @@ class StepTwoCustomerWidget extends StatelessWidget {
           builder: (context, setState) {
             Future.delayed(Duration.zero, () async {
               while (progress < 1.0) {
-                await Future.delayed(const Duration(milliseconds: 40));
+                await Future.delayed(const Duration(milliseconds: 200));
                 progress += 0.02;
                 setState(() {});
               }
-              Navigator.pop(context);
-              showSuccessDialog(context);
+              if (context.mounted) Navigator.pop(context);
+
+              showSuccessDialog(context).then((_) {
+                if (context.mounted) {
+                  context.go('/customers');
+                }
+              });
             });
+
             double screenWidth = MediaQuery.of(context).size.width;
             return Dialog(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -339,10 +346,18 @@ class StepTwoCustomerWidget extends StatelessWidget {
       },
     );
   }
-  void showSuccessDialog(BuildContext context) {
-    showDialog(
+
+// Success Dialog
+  Future<void> showSuccessDialog(BuildContext context) {
+    return showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (dialogContext) {
+        Future.delayed(const Duration(seconds: 1), () {
+          if (dialogContext.mounted && Navigator.canPop(dialogContext)) {
+            Navigator.pop(dialogContext);
+          }
+        });
+
         return Dialog(
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
@@ -375,7 +390,7 @@ class StepTwoCustomerWidget extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () => Navigator.pop(dialogContext),
                         icon: Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(

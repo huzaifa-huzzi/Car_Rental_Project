@@ -136,8 +136,7 @@ class EditCustomerWidget extends StatelessWidget {
                 SizedBox(height: spacing),
                 Text(TextString.customerNote, style: TTextTheme.btnSix(context)),
                 SizedBox(height: 8),
-                _buildLargeTextField(context, TextString.customerNoteSubtitle, controller.noteController2,
-                    validator: (v) => controller.validateRequired(v, "Note")),
+                _buildLargeTextField(context, TextString.customerNoteSubtitle, controller.noteController2),
 
                 SizedBox(height: spacing),
                 Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
@@ -387,12 +386,6 @@ class EditCustomerWidget extends StatelessWidget {
               controller: ctrl,
               cursorColor: AppColors.blackColor,
               maxLines: 5,
-              validator: validator,
-              onChanged: (value) {
-                if (value.isNotEmpty) {
-                  CustomerController.editCustomerFormKey.currentState?.validate();
-                }
-              },
 
               onTapOutside: (event) {
                 FocusScope.of(context).unfocus();
@@ -958,7 +951,6 @@ class EditCustomerWidget extends StatelessWidget {
                       context, "Card number", controller.ccNumberController2,
                       hint: "1234 1234 1234 1234",
                       isCreditCard: true,
-                      validator: (v) => controller.validateRequired2(v, "Card number"),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -966,7 +958,6 @@ class EditCustomerWidget extends StatelessWidget {
                     child: _buildShadowTextField(
                       context, "Card Holder Name", controller.ccHolderController2,
                       hint: "Softsnip",
-                      validator: (v) => controller.validateRequired2(v, "Holder Name"),
                     ),
                   ),
                 ],
@@ -976,13 +967,11 @@ class EditCustomerWidget extends StatelessWidget {
                 context, "Card number", controller.ccNumberController2,
                 hint: "1234 1234 1234 1234",
                 isCreditCard: true,
-                validator: (v) => controller.validateRequired2(v, "Card number"),
               ),
               const SizedBox(height: 16),
               _buildShadowTextField(
                 context, "Card Holder Name", controller.ccHolderController2,
                 hint: "Softsnip",
-                validator: (v) => controller.validateRequired2(v, "Holder Name"),
               ),
             ],
 
@@ -995,7 +984,6 @@ class EditCustomerWidget extends StatelessWidget {
                     child: _buildShadowTextField(
                       context, "Expiry", controller.ccExpiryController2,
                       hint: "MM / YY",
-                      validator: (v) => controller.validateRequired2(v, "Expiry"),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -1003,7 +991,6 @@ class EditCustomerWidget extends StatelessWidget {
                     child: _buildShadowTextField(
                       context, "CVC", controller.ccCvcController2,
                       hint: "CVC",
-                      validator: (v) => controller.validateRequired2(v, "CVC"),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -1028,7 +1015,6 @@ class EditCustomerWidget extends StatelessWidget {
                           child: _buildShadowTextField(
                             context, "Expiry", controller.ccExpiryController2,
                             hint: "MM / YY", isCompact: true,
-                            validator: (v) => controller.validateRequired2(v, "Expiry"),
                           ),
                         ),
                         SizedBox(
@@ -1036,7 +1022,6 @@ class EditCustomerWidget extends StatelessWidget {
                           child: _buildShadowTextField(
                             context, "CVC", controller.ccCvcController2,
                             hint: "CVC", isCompact: true,
-                            validator: (v) => controller.validateRequired2(v, "CVC"),
                           ),
                         ),
                       ],
@@ -1054,9 +1039,9 @@ class EditCustomerWidget extends StatelessWidget {
     );
   }
 
-  // Shadow TextField Widget
+// Shadow TextField Widget
   Widget _buildShadowTextField(BuildContext context, String label, TextEditingController ctrl,
-      {String? hint, bool isCreditCard = false, bool isCompact = false, String? Function(String?)? validator}) {
+      {String? hint, bool isCreditCard = false, bool isCompact = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1087,20 +1072,12 @@ class EditCustomerWidget extends StatelessWidget {
                   controller: ctrl,
                   cursorColor: Colors.black,
                   style: TTextTheme.titleinputTextField(context),
-                  validator: validator,
-                  onChanged: (value) {
-                    if (value.isNotEmpty) {
-                      CustomerController.editCustomerFormKey.currentState?.validate();
-                    }
-                  },
-
                   decoration: InputDecoration(
                     hintText: hint,
                     hintStyle: TTextTheme.btnOne(context),
                     filled: true,
                     fillColor: Colors.white,
                     hoverColor: Colors.transparent,
-                    errorStyle: TTextTheme.ErrorStyle(context),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: AppColors.fieldsBackground),
@@ -1109,15 +1086,6 @@ class EditCustomerWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: AppColors.fieldsBackground),
                     ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: AppColors.primaryColor, width: 1),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.5),
-                    ),
-
                     suffixIcon: isCreditCard ? Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Row(

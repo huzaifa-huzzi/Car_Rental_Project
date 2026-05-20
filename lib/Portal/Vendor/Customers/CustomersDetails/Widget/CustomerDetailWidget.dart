@@ -21,6 +21,44 @@ class CustomerDetailWidget extends StatelessWidget {
     final double horizontalPadding = screenWidth > 1200 ? 40 : 20;
     final controller  = Get.put(CustomerController());
 
+    final List<Map<String, dynamic>> documentsList = [
+      {
+        "title": "Gov ID",
+        "status": "PDF",
+        "isPdf": true,
+        "onView": () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const GovIdPdfViewer(
+                assetPath: ImageString.carRentalPdf,
+                title: 'Course Outline - Mids',
+              ),
+            ),
+          );
+        },
+        "onDownload": () => print("Downloading Gov ID..."),
+      },
+      {
+        "title": "Passport",
+        "status": "JPG",
+        "isPdf": false,
+        "onView": () {
+          controller.open(ImageString.registrationForm);
+        },
+        "onDownload": () => print("Downloading Passport Image"),
+      },
+      {
+        "title": "Driving License",
+        "status": "PNG",
+        "isPdf": false,
+        "onView": () {
+          controller.open(ImageString.registrationForm);
+        },
+        "onDownload": () => print("Downloading License Image"),
+      },
+    ];
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 30),
@@ -141,71 +179,38 @@ class CustomerDetailWidget extends StatelessWidget {
 
           ///  DOCUMENTS SECTION
           _buildBorderedContainer(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                     TextString.customerDocumentDetails,
                     style: TTextTheme.titleSix(context)),
-                const SizedBox(height: 10),
+                const SizedBox(height: 16),
 
                 LayoutBuilder(
                   builder: (context, constraints) {
-                    int crossAxisCount = constraints.maxWidth < 600 ? 1 : 3;
+                    final bool checkMobile = constraints.maxWidth < 600;
+                    int crossAxisCount = checkMobile ? 1 : 3;
 
                     return GridView.count(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       crossAxisCount: crossAxisCount,
                       crossAxisSpacing: 20,
-                      mainAxisSpacing: 20,
-                      childAspectRatio: isMobile ? 10 : 2.5,
-                      children: [
-                        // 1. GOV ID (PDF Specific Logic)
-                        _documentBox(
+                      mainAxisSpacing: 12,
+                      childAspectRatio: checkMobile ? 6.5 : 4.2,
+
+                      children: documentsList.map((doc) {
+                        return _documentBox(
                           context,
-                          "Gov ID",
-                          "PDF",
-                          isPdf: true,
-                          onView: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const GovIdPdfViewer(
-                                  assetPath: ImageString.carRentalPdf,
-                                  title: 'Course Outline - Mids',
-                                ),
-                              ),
-                            );
-                          },
-                          onDownload: () => print("Downloading..."),
-                        ),
-                        _documentBox(
-                          context,
-                          "Passport",
-                          "JPG",
-                          isPdf: false,
-                          onView: () {
-                            controller.open(ImageString.registrationForm);
-                          },
-                          onDownload: () {
-                            print("Downloading Passport Image");
-                          },
-                        ),
-                        _documentBox(
-                          context,
-                          "Driving License",
-                          "PNG",
-                          isPdf: false,
-                          onView: () {
-                            controller.open(ImageString.registrationForm);
-                          },
-                          onDownload: () {
-                            print("Downloading License Image");
-                          },
-                        ),
-                      ],
+                          doc["title"],
+                          doc["status"],
+                          isPdf: doc["isPdf"],
+                          onView: doc["onView"],
+                          onDownload: doc["onDownload"],
+                        );
+                      }).toList(),
                     );
                   },
                 ),
@@ -359,7 +364,7 @@ class CustomerDetailWidget extends StatelessWidget {
           ),
           child: Center(
             child: Image.asset(
-              isPdf ? IconString.pdfIcon : IconString.taxIcon,
+              IconString.taxIcon,
               height: 22,
               width: 22,
             ),
