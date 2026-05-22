@@ -1,6 +1,8 @@
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/CustomCalendarCar.dart';
+import 'package:car_rental_project/Portal/Vendor/Customers/CustomersDetails/Widget/PdfViewer.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:file_picker/file_picker.dart';
@@ -51,14 +53,13 @@ class CarInventoryController extends GetxController {
 
   int get totalPages => (carList.length / pageSize.value).ceil();
 
-// Is getter ko sahi aur crash-proof reactive banaya hai
   List<Map<String, dynamic>> get displayedCarList {
     if (carList.isEmpty) return [];
 
     int start = (currentPage.value - 1) * pageSize.value;
     int end = start + pageSize.value;
 
-    if (start > carList.length) start = 0; // Guard filter checks
+    if (start > carList.length) start = 0;
     if (end > carList.length) end = carList.length;
 
     return carList.sublist(start, end);
@@ -583,6 +584,71 @@ class CarInventoryController extends GetxController {
     imagePath.value = '';
   }
 
+  final List<Map<String, dynamic>> carDocuments = [
+    {
+      'title': 'Car Registration',
+      'status': 'PDF',
+      'uploaded': true,
+      'isPdf': true,
+      'filePath': ImageString.carRentalPdf
+    },
+    {
+      'title': 'Tax Token',
+      'status': 'Jpeg',
+      'uploaded': true,
+      'isPdf': false,
+      'filePath': ImageString.registrationForm,
+    },
+    {
+      'title': 'Incoherence Paper',
+      'status': 'PNG',
+      'uploaded': true,
+      'isPdf': false,
+      'filePath': ImageString.registrationForm,
+    },
+    {
+      'title': 'Vin Number',
+      'status': 'JPG',
+      'uploaded': true,
+      'isPdf': false,
+      'filePath': ImageString.registrationForm,
+    },
+  ];
+
+  void onViewDocument(BuildContext context, Map<String, dynamic> doc) {
+    final String path = (doc['filePath'] ?? '') as String;
+    final bool isPdf = (doc['isPdf'] ?? false) as bool;
+    final String title = (doc['title'] ?? 'Document') as String;
+
+    if (path.isEmpty) {
+      print("Error: Document file Empty!");
+      return;
+    }
+
+    if (isPdf) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => GovIdPdfViewer(
+            assetPath: path,
+            title: title,
+          ),
+        ),
+      );
+    } else {
+      try {
+        final inventoryController = Get.find<CarInventoryController>();
+        inventoryController.open(path);
+      } catch (e) {
+        print("Controller Error: CarInventoryController not initialized -> $e");
+      }
+    }
+  }
+
+  void onDownloadDocument(Map<String, dynamic> doc) {
+    final String path = (doc['filePath'] ?? '') as String;
+    print("API Download stream triggered for path: $path");
+  }
 
 
   /// Editing Car Screen

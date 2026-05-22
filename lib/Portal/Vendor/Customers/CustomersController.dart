@@ -1,5 +1,8 @@
+import 'package:car_rental_project/Portal/Vendor/Customers/CustomersDetails/Widget/PdfViewer.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/ReusableWidgetOfCustomers/CustomCalendarSutomer.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -99,9 +102,60 @@ class CustomerController extends GetxController {
     isOpen.value = false;
     imagePath.value = '';
   }
+  final List<Map<String, dynamic>> documentsList = [
+    {
+      "title": "Gov ID",
+      "status": "PDF",
+      "isPdf": true,
+      "filePath": ImageString.carRentalPdf,
+    },
+    {
+      "title": "Passport",
+      "status": "JPG",
+      "isPdf": false,
+      "filePath": ImageString.registrationForm,
+    },
+    {
+      "title": "Driving License",
+      "status": "PNG",
+      "isPdf": false,
+      "filePath": ImageString.registrationForm,
+    },
+  ];
+  void handleDynamicView(BuildContext context, Map<String, dynamic> doc) {
+    final String path = (doc["filePath"] ?? "") as String;
+    final bool isPdf = (doc["isPdf"] ?? false) as bool;
+    final String title = (doc["title"] ?? "Document") as String;
+
+    if (path.isEmpty) {
+      print("Error: File Empty !");
+      return;
+    }
+
+    if (isPdf) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => GovIdPdfViewer(
+            assetPath: path,
+            title: title,
+          ),
+        ),
+      );
+    } else {
+      try {
+        Get.find<CustomerController>().open(path);
+      } catch (e) {
+        print("Controller Error: Customercontrolelr not Initialized -> $e");
+      }
+    }
+  }
+  void handleDynamicDownload(Map<String, dynamic> doc) {
+    final String fileUrl = (doc["filePath"] ?? "") as String;
+    print("Controller standard downloading engine active for: $fileUrl");
+  }
 
   /// Add Customer Screen
-
 
   Rxn<ImageHolder> profileImage = Rxn<ImageHolder>();
   var imageError = false.obs;

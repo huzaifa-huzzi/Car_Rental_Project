@@ -21,43 +21,7 @@ class CustomerDetailWidget extends StatelessWidget {
     final double horizontalPadding = screenWidth > 1200 ? 40 : 20;
     final controller  = Get.put(CustomerController());
 
-    final List<Map<String, dynamic>> documentsList = [
-      {
-        "title": "Gov ID",
-        "status": "PDF",
-        "isPdf": true,
-        "onView": () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const GovIdPdfViewer(
-                assetPath: ImageString.carRentalPdf,
-                title: 'Course Outline - Mids',
-              ),
-            ),
-          );
-        },
-        "onDownload": () => print("Downloading Gov ID..."),
-      },
-      {
-        "title": "Passport",
-        "status": "JPG",
-        "isPdf": false,
-        "onView": () {
-          controller.open(ImageString.registrationForm);
-        },
-        "onDownload": () => print("Downloading Passport Image"),
-      },
-      {
-        "title": "Driving License",
-        "status": "PNG",
-        "isPdf": false,
-        "onView": () {
-          controller.open(ImageString.registrationForm);
-        },
-        "onDownload": () => print("Downloading License Image"),
-      },
-    ];
+
 
     return Container(
       width: double.infinity,
@@ -152,21 +116,44 @@ class CustomerDetailWidget extends StatelessWidget {
 
                 LayoutBuilder(
                   builder: (context, constraints) {
-                    bool isWideScreen = constraints.maxWidth > 900;
+                    final double width = constraints.maxWidth;
+                    int columns = 4;
+                    if (width < 500) {
+                      columns = 1;
+                    } else if (width < 900) {
+                      columns = 2;
+                    }
+
+                    const double horizontalSpacing = 24.0;
+                    const double runSpacing = 24.0;
+                    final double itemWidth = (width - (horizontalSpacing * (columns - 1))) / columns;
 
                     return Wrap(
-                      spacing: isWideScreen ? (constraints.maxWidth / 10) : 42,
-                      runSpacing: 30,
+                      spacing: horizontalSpacing,
+                      runSpacing: runSpacing,
                       alignment: WrapAlignment.start,
                       children: [
-                        _responsiveLicenseItem(context, IconString.licenseName, "License Name", "Carly Hevy"),
-                        _responsiveLicenseItem(context,IconString.licesnseNo, "License Number", "1245985642"),
-                        _responsiveLicenseItem(context, IconString.licenseCard, "Card Number", "1243567434"),
-                        _responsiveLicenseItem(context, IconString.expiryDate, "Expiry Date", "12/02/2035"),
+                        SizedBox(
+                          width: itemWidth,
+                          child: _responsiveLicenseItem(context, IconString.licenseName, "License Name", "Carly Hevy"),
+                        ),
+                        SizedBox(
+                          width: itemWidth,
+                          child: _responsiveLicenseItem(context, IconString.licesnseNo, "License Number", "1245985642"),
+                        ),
+                        SizedBox(
+                          width: itemWidth,
+                          child: _responsiveLicenseItem(context, IconString.licenseCard, "Card Number", "1243567434"),
+                        ),
+                        SizedBox(
+                          width: itemWidth,
+                          child: _responsiveLicenseItem(context, IconString.expiryDate, "Expiry Date", "12/02/2035"),
+                        ),
                       ],
                     );
                   },
                 ),
+                const SizedBox(height: 32),
               ],
             ),
           ),
@@ -191,29 +178,53 @@ class CustomerDetailWidget extends StatelessWidget {
                 LayoutBuilder(
                   builder: (context, constraints) {
                     final bool checkMobile = constraints.maxWidth < 600;
-                    int crossAxisCount = checkMobile ? 1 : 3;
 
-                    return GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: crossAxisCount,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: checkMobile ? 6.5 : 4.2,
+                    if (checkMobile) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: controller.documentsList.length,
+                        itemBuilder: (context, index) {
+                          final doc = controller.documentsList[index];
+                          final String title = (doc["title"] ?? "Unknown") as String;
+                          final String status = (doc["status"] ?? "FILE") as String;
 
-                      children: documentsList.map((doc) {
-                        return _documentBox(
-                          context,
-                          doc["title"],
-                          doc["status"],
-                          isPdf: doc["isPdf"],
-                          onView: doc["onView"],
-                          onDownload: doc["onDownload"],
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 12.0),
+                            child: _documentBox(
+                              context,
+                              title,
+                              status,
+                              onView: () => controller.handleDynamicView(context, doc),
+                              onDownload: () => controller.handleDynamicDownload(doc),
+                            ),
+                          );
+                        },
+                      );
+                    }
+                    return Wrap(
+                      spacing: 20,
+                      runSpacing: 12,
+                      children: controller.documentsList.map((doc) {
+                        double cardWidth = (constraints.maxWidth - 40) / 3;
+
+                        final String title = (doc["title"] ?? "Unknown") as String;
+                        final String status = (doc["status"] ?? "FILE") as String;
+
+                        return SizedBox(
+                          width: cardWidth,
+                          child: _documentBox(
+                            context,
+                            title,
+                            status,
+                            onView: () => controller.handleDynamicView(context, doc),
+                            onDownload: () => controller.handleDynamicDownload(doc),
+                          ),
                         );
                       }).toList(),
                     );
                   },
-                ),
+                )
               ],
             ),
           ),
@@ -348,7 +359,6 @@ class CustomerDetailWidget extends StatelessWidget {
       BuildContext context,
       String label,
       String status, {
-        bool isPdf = false,
         required VoidCallback onView,
         required VoidCallback onDownload,
       }) {
@@ -376,11 +386,16 @@ class CustomerDetailWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(label, style: TTextTheme.pThree(context).copyWith(fontWeight: FontWeight.bold)),
+              Text(
+                label,
+                style: TTextTheme.pThree(context).copyWith(fontWeight: FontWeight.bold),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
               const SizedBox(height: 2),
               Text(
                 status,
-                style: TTextTheme.titleseven(context).copyWith(color: Colors.grey),
+                style: TTextTheme.titleseven(context),
                 overflow: TextOverflow.ellipsis,
               ),
             ],
@@ -570,51 +585,61 @@ class CustomerDetailWidget extends StatelessWidget {
 
   //  Generated Credentials
   Widget _autoGeneratedSection(BuildContext context) {
-    final controller = Get.find<CustomerController>();
     final double screenWidth = MediaQuery.of(context).size.width;
     final bool isMobile = screenWidth < 600;
-    return _buildBorderedContainer(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            TextString.autoGeneratedText,
-            style: TTextTheme.titleSix(context),
-          ),
-          const SizedBox(height: 20),
 
-          isMobile
-              ? Column(
-            children: [
-              _responsiveInfoItem(context, IconString.userRoleAdmin, "Username", controller.userNameController.text),
-              const SizedBox(height: 15),
-              _responsiveInfoItem(context, IconString.changePasswordIcon, "Password", controller.passwordController.text),
-            ],
-          )
-              : Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+    return GetBuilder<CustomerController>(
+      builder: (controller) {
+        final String username = controller.userNameController.text.trim();
+        final String password = controller.passwordController.text.trim();
+
+        if (username.isEmpty || password.isEmpty) {
+          return const SizedBox.shrink();
+        }
+        return _buildBorderedContainer(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _responsiveInfoItem(
-                context,
-                IconString.staffContactIcon,
-                "Username",
-                controller.userNameController.text,
-                width: 180,
+              Text(
+                TextString.autoGeneratedText,
+                style: TTextTheme.titleSix(context),
               ),
-              const SizedBox(width: 40),
-              _responsiveInfoItem(
-                context,
-                IconString.changePasswordIcon,
-                "Password",
-                controller.passwordController.text,
-                width: 180,
+              const SizedBox(height: 20),
+
+              isMobile
+                  ? Column(
+                children: [
+                  _responsiveInfoItem(context, IconString.userRoleAdmin, "Username", username),
+                  const SizedBox(height: 15),
+                  _responsiveInfoItem(context, IconString.changePasswordIcon, "Password", password),
+                ],
+              )
+                  : Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _responsiveInfoItem(
+                    context,
+                    IconString.staffContactIcon,
+                    "Username",
+                    username,
+                    width: 180,
+                  ),
+                  const SizedBox(width: 40),
+                  _responsiveInfoItem(
+                    context,
+                    IconString.changePasswordIcon,
+                    "Password",
+                    password,
+                    width: 180,
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

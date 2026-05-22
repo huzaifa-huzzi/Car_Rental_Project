@@ -636,12 +636,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
 //  Documents Section Widget
   Widget _buildCarDocumentsSection(BuildContext context) {
     final spacing = AppSizes.padding(context);
-    final List<dynamic> documents = [
-      {'title': 'Car Registration.pdf', 'status': 'Document', 'uploaded': true, 'isPdf': true},
-      {'title': 'Tax Token', 'status': 'Uploaded', 'uploaded': true, 'isPdf': false},
-      {'title': 'Incoherence Paper', 'status': 'Uploaded', 'uploaded': true, 'isPdf': false},
-      {'title': 'Vin Number', 'status': 'JTNBA3HK003001234', 'uploaded': true, 'isPdf': false},
-    ];
+    final docController = Get.find<CarInventoryController>();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -650,28 +645,41 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
         SizedBox(height: spacing),
         LayoutBuilder(
           builder: (context, constraints) {
-            int crossAxisCount = constraints.maxWidth < 600 ? 1 : 3;
+            final double width = constraints.maxWidth;
 
-            return GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: documents.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: crossAxisCount,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                mainAxisExtent: constraints.maxWidth < 600 ? 85 : 70,
-              ),
-              itemBuilder: (context, index) {
-                final doc = documents[index];
-                return _buildDocumentTile(
-                  context,
-                  doc['title'],
-                  doc['status'],
-                  doc['uploaded'],
-                  isPdf: doc['isPdf'],
+            int columns = 3;
+            if (width < 600) {
+              columns = 1;
+            } else if (width < 900) {
+              columns = 2;
+            }
+
+            const double crossAxisSpacing = 16.0;
+            const double mainAxisSpacing = 16.0;
+            final double itemWidth = (width - (crossAxisSpacing * (columns - 1))) / columns;
+            final double itemHeight = width < 600 ? 75.0 : 65.0;
+
+            return Wrap(
+              spacing: crossAxisSpacing,
+              runSpacing: mainAxisSpacing,
+              children: docController.carDocuments.map((doc) {
+                final String title = (doc['title'] ?? 'Unknown') as String;
+                final String status = (doc['status'] ?? 'FILE') as String;
+                final bool uploaded = (doc['uploaded'] ?? false) as bool;
+
+                return SizedBox(
+                  width: itemWidth,
+                  height: itemHeight,
+                  child: _buildDocumentTile(
+                    context,
+                    title,
+                    status,
+                    uploaded,
+                    onView: () => docController.onViewDocument(context, doc),
+                    onDownload: () => docController.onDownloadDocument(doc),
+                  ),
                 );
-              },
+              }).toList(),
             );
           },
         )
@@ -682,20 +690,10 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
       BuildContext context,
       String title,
       String status,
-      bool uploaded,
-      {bool isPdf = false}
-      ) {
-    String iconPath;
-    if (isPdf) {
-      iconPath = IconString.taxIcon;
-    } else if (title.toLowerCase().contains("tax") || title.toLowerCase().contains("paper")) {
-      iconPath = IconString.taxIcon;
-    } else if (title.toLowerCase().contains("vin")) {
-      iconPath = IconString.taxIcon;
-    } else {
-      iconPath = IconString.registrationIcon;
-    }
-
+      bool uploaded, {
+        required VoidCallback onView,
+        required VoidCallback onDownload,
+      }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -707,7 +705,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
             borderRadius: BorderRadius.circular(12),
           ),
           child: Center(
-            child: Image.asset(iconPath, height: 24, width: 24),
+            child: Image.asset(IconString.taxIcon, height: 24, width: 24),
           ),
         ),
         const SizedBox(width: 12),
@@ -717,14 +715,15 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                isPdf ? "Document" : status,
-                style: TTextTheme.titleseven(context).copyWith(color: Colors.grey),
+                title,
+                style: TTextTheme.pThree(context).copyWith(fontWeight: FontWeight.w600),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
+              const SizedBox(height: 2),
               Text(
-                title,
-                style: TTextTheme.pThree(context).copyWith(fontWeight: FontWeight.w600),
+                status,
+                style: TTextTheme.titleseven(context).copyWith(color: Colors.grey),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -741,28 +740,12 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
                   padding: const EdgeInsets.only(right: 6),
                   child: _buildActionButton(
                     icon: Icons.file_download_outlined,
-                    onTap: () {
-                      print("Downloading: $title");
-                    },
+                    onTap: onDownload,
                   ),
                 ),
                 _buildActionButton(
                   icon: Icons.visibility_outlined,
-                  onTap: () {
-                    if (isPdf) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const GovIdPdfViewer(
-                            assetPath: ImageString.carRentalPdf,
-                            title: "Car Rental Document",
-                          ),
-                        ),
-                      );
-                    } else {
-                      Get.find<CarInventoryController>().open(ImageString.registrationForm);
-                    }
-                  },
+                  onTap: onView,
                 ),
               ],
             ),
