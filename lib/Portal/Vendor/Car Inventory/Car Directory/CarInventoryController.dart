@@ -253,16 +253,15 @@ class CarInventoryController extends GetxController {
   }
 
 
-
-  List<String> yearsList = List.generate(
-      101,
-          (index) => (2050 - index).toString()
-  );
-
-  List<String> yearsList2 = List.generate(
-      101,
-          (index) => (2050 - index).toString()
-  );
+   /// Years list
+  int get currentYear => DateTime.now().year;
+  List<String> get yearsList2 {
+    return List.generate(
+        (currentYear - 1950) + 1,
+            (index) => (currentYear - index).toString()
+    );
+  }
+  List<String> get yearsList => yearsList2;
 
 
 

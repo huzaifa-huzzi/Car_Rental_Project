@@ -1072,9 +1072,10 @@ class AddCarFormWidget extends StatelessWidget {
       RxString selected,
       {required String id}
       ) {
+    final TextEditingController searchController = TextEditingController();
+
     return Obx(() {
       bool isOpen = controller.openedDropdown2.value == id;
-      var items = controller.getFilteredItems(id);
       String errorMsg = controller.dropdownErrors[id] ?? "";
       bool hasError = errorMsg.isNotEmpty;
 
@@ -1093,21 +1094,23 @@ class AddCarFormWidget extends StatelessWidget {
               offset: const Offset(0, 48),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               color: Colors.white,
-              onOpened: () => controller.openedDropdown2.value = id,
+              onOpened: () {
+                controller.openedDropdown2.value = id;
+                searchController.text = controller.searchCarText.value;
+              },
               onCanceled: () {
                 controller.openedDropdown2.value = "";
                 controller.searchCarText.value = "";
+                searchController.clear();
               },
               onSelected: (val) {
-                if (val != "SEARCH_FIELD") {
-                  selected.value = val;
-                  if (controller.dropdownErrors.containsKey(id)) {
-                    controller.dropdownErrors[id] = "";
-                  }
-
-                  controller.openedDropdown2.value = "";
-                  controller.searchCarText.value = "";
+                selected.value = val;
+                if (controller.dropdownErrors.containsKey(id)) {
+                  controller.dropdownErrors[id] = "";
                 }
+                controller.openedDropdown2.value = "";
+                controller.searchCarText.value = "";
+                searchController.clear();
               },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
@@ -1142,66 +1145,91 @@ class AddCarFormWidget extends StatelessWidget {
                 return [
                   PopupMenuItem<String>(
                     enabled: false,
-                    value: "SEARCH_FIELD",
-                    child: Container(
-                      height: 40,
-                      margin: const EdgeInsets.symmetric(vertical: 4),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: AppColors.primaryColor.withOpacity(0.4)),
-                      ),
-                      child: TextField(
-                        cursorColor: AppColors.blackColor,
-                        autofocus: true,
-                        onChanged: (val) {
-                          controller.searchCarText.value = val;
-                        },
-                        style: TTextTheme.titleinputTextField(context),
-                        decoration: InputDecoration(
-                          hintText: "Search Year",
-                          hintStyle: TTextTheme.bodyRegular14Search(context),
-                          prefixIcon: Icon(Icons.search, color: AppColors.primaryColor, size: 18),
-                          filled: true,
-                          fillColor: AppColors.backgroundOfScreenColor,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide.none,
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                        ),
-                      ),
-                    ),
-                  ),
-                  if (items.isEmpty)
-                    const PopupMenuItem(
-                      enabled: false,
-                      child: Center(child: Text("No years found")),
-                    ),
+                    child: Obx(() {
 
-                  ...items.map((item) {
-                    bool isSelected = selected.value == item;
-                    return PopupMenuItem<String>(
-                      value: item,
-                      child: Row(
+                      var items = controller.getFilteredItems(id);
+
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Container(
-                            width: 22,
-                            height: 22,
+                            height: 40,
+                            margin: const EdgeInsets.symmetric(vertical: 4),
                             decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: isSelected ? AppColors.primaryColor : Colors.transparent,
-                              border: Border.all(color: AppColors.primaryColor, width: 2),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: AppColors.primaryColor.withOpacity(0.4)),
                             ),
-                            child: isSelected
-                                ? const Center(child: Icon(Icons.done, color: Colors.white, size: 14))
-                                : null,
+                            child: TextFormField(
+                              controller: searchController,
+                              cursorColor: AppColors.blackColor,
+                              autofocus: true,
+                              onChanged: (val) {
+                                controller.searchCarText.value = val;
+                              },
+                              style: TTextTheme.titleinputTextField(context),
+                              decoration: InputDecoration(
+                                hintText: "Search Year",
+                                hintStyle: TTextTheme.bodyRegular14Search(context),
+                                prefixIcon: Icon(Icons.search, color: AppColors.primaryColor, size: 18),
+                                filled: true,
+                                fillColor: AppColors.backgroundOfScreenColor,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: BorderSide.none,
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                              ),
+                            ),
                           ),
-                          const SizedBox(width: 12),
-                          Text(item, style: TTextTheme.medium14(context)),
+                          const SizedBox(height: 8),
+                          ConstrainedBox(
+                            constraints: const BoxConstraints(maxHeight: 280),
+                            child: items.isEmpty
+                                ? const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                              child: Center(child: Text("No years found")),
+                            )
+                                : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: items.length,
+                              physics: const BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                final item = items[index];
+                                bool isSelected = selected.value == item;
+
+                                return InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pop(item);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 22,
+                                          height: 22,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                                            border: Border.all(color: AppColors.primaryColor, width: 2),
+                                          ),
+                                          child: isSelected
+                                              ? const Center(child: Icon(Icons.done, color: Colors.white, size: 14))
+                                              : null,
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Text(item, style: TTextTheme.medium14(context)),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
                         ],
-                      ),
-                    );
-                  }),
+                      );
+                    }),
+                  ),
                 ];
               },
             );

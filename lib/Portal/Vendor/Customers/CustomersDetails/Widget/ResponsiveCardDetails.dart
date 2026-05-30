@@ -7,6 +7,27 @@ import 'package:flutter/material.dart';
 class ResponsiveCardDetails extends StatelessWidget {
   const ResponsiveCardDetails({super.key});
 
+  static const List<Map<String, String>> cardsList = [
+    {
+      "label": "Card Number 01",
+      "cardNumber": "•••• •••• •••• 4242",
+      "cardHolderName": "Jong Ali",
+      "cvc": "067",
+      "expiryDate": "05/2029",
+      "country": "Australia",
+      "iconPath": IconString.visaIcon,
+    },
+    {
+      "label": "Card Number 02",
+      "cardNumber": "•••• •••• •••• 5555",
+      "cardHolderName": "Softsnip",
+      "cvc": "123",
+      "expiryDate": "12/2030",
+      "country": "United States",
+      "iconPath": IconString.masterCardIcon,
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -21,22 +42,37 @@ class ResponsiveCardDetails extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(TextString.cardDetailsTitle, style: TTextTheme.titleSix(context)),
 
           const SizedBox(height: 20),
 
-          _buildRow(isMobile, "Card Number 01", IconString.visaIcon, context),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: cardsList.length,
+            itemBuilder: (context, index) {
+              final card = cardsList[index];
+              final isLastItem = index == cardsList.length - 1;
+              final String label = card['label'] ?? "Card Details";
+              final String cardNumber = card['cardNumber'] ?? "";
+              final String cardHolderName = card['cardHolderName'] ?? "";
+              final String cvc = card['cvc'] ?? "";
+              final String expiryDate = card['expiryDate'] ?? "";
+              final String country = card['country'] ?? "";
+              final String iconPath = card['iconPath'] ?? "";
 
-          if (isMobile)
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: Divider(color: Colors.white, thickness: 1),
-            )
-          else
-            const SizedBox(height: 22),
-
-          _buildRow(isMobile, "Card Number 02", IconString.masterCardIcon, context),
+              return Column(
+                children: [
+                  isMobile
+                      ? _mobileRow(label, cardNumber, cardHolderName, cvc, expiryDate, country, iconPath, context)
+                      : _webRow(cardNumber, cardHolderName, cvc, expiryDate, country, iconPath, context),
+                  SizedBox(height: 20,),
+                ],
+              );
+            },
+          ),
         ],
       ),
     );
@@ -44,14 +80,8 @@ class ResponsiveCardDetails extends StatelessWidget {
 
   /// -------- Extra Widgets ----------///
 
-  Widget _buildRow(bool isMobile, String label, String iconPath, BuildContext context) {
-    return isMobile
-        ? _mobileRow(label, iconPath, context)
-        : _webRow(iconPath, context);
-  }
-
   // WEB / TABLET VIEW
-  Widget _webRow(String iconPath, BuildContext context) {
+  Widget _webRow(String cardNumber, String holderName, String cvc, String expiry, String country, String iconPath, BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -67,7 +97,7 @@ class ResponsiveCardDetails extends StatelessWidget {
                   _brand(iconPath),
                   Expanded(
                     child: Text(
-                      TextString.cardNumberDetailScreen,
+                      cardNumber,
                       style: TTextTheme.titleSmallTexts(context),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -78,16 +108,16 @@ class ResponsiveCardDetails extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
-        _item("Card Holder Name", "Jong Ali", context: context, isMobile: false),
-        _item("CVC or CVV", "067", context: context, isMobile: false),
-        _item("Expiry date", "05/2029", context: context, isMobile: false),
-        _item("Country", "Australia", context: context, isMobile: false),
+        _item("Card Holder Name", holderName, context: context, isMobile: false),
+        _item("CVC or CVV", cvc, context: context, isMobile: false),
+        _item("Expiry date", expiry, context: context, isMobile: false),
+        _item("Country", country, context: context, isMobile: false),
       ],
     );
   }
 
   // MOBILE VIEW
-  Widget _mobileRow(String label, String iconPath, BuildContext context) {
+  Widget _mobileRow(String label, String cardNumber, String holderName, String cvc, String expiry, String country, String iconPath, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -103,7 +133,7 @@ class ResponsiveCardDetails extends StatelessWidget {
             Flexible(
               child: _item(
                   TextString.cardNumberDetail,
-                  TextString.cardNumberDetailScreen,
+                  cardNumber,
                   context: context,
                   expanded: false,
                   isMobile: true
@@ -112,18 +142,18 @@ class ResponsiveCardDetails extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 12),
-        _item("Card Holder Name", "Jong Ali", context: context, expanded: false, isMobile: true),
+        _item("Card Holder Name", holderName, context: context, expanded: false, isMobile: true),
         const SizedBox(height: 12),
-        _item("CVC or CVV", "067", context: context, expanded: false, isMobile: true),
+        _item("CVC or CVV", cvc, context: context, expanded: false, isMobile: true),
         const SizedBox(height: 12),
-        _item("Expiry date", "05/2029", context: context, expanded: false, isMobile: true),
+        _item("Expiry date", expiry, context: context, expanded: false, isMobile: true),
         const SizedBox(height: 12),
-        _item("Country", "Australia", context: context, expanded: false, isMobile: true),
+        _item("Country", country, context: context, expanded: false, isMobile: true),
       ],
     );
   }
 
- // Item Widget
+  // Item Widget
   Widget _item(String title, String value, {
     bool expanded = true,
     required BuildContext context,
@@ -156,7 +186,6 @@ class ResponsiveCardDetails extends StatelessWidget {
     }
     return content;
   }
-
 
   Widget _brand(String iconPath) {
     return Container(

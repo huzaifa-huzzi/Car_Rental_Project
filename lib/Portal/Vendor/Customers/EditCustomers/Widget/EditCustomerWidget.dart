@@ -278,6 +278,7 @@ class EditCustomerWidget extends StatelessWidget {
   }
 
   //  TextField Widget
+  // Optimized TextField Widget
   Widget _buildTextField(BuildContext context, String label, TextEditingController ctrl, {String? hint, String? Function(String?)? validator}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -310,13 +311,8 @@ class EditCustomerWidget extends StatelessWidget {
                   controller: ctrl,
                   cursorColor: AppColors.blackColor,
                   style: TTextTheme.titleTwo(context),
+                  autovalidateMode: AutovalidateMode.disabled,
                   validator: validator,
-                  onChanged: (value) {
-                    if (value.isNotEmpty) {
-                      CustomerController.editCustomerFormKey.currentState?.validate();
-                    }
-                  },
-
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
@@ -346,7 +342,6 @@ class EditCustomerWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
                       borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.5),
                     ),
-
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   ),
                 ),

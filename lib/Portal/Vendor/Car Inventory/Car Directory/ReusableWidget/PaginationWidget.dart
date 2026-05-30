@@ -113,13 +113,22 @@ class PaginationBar extends StatelessWidget {
 
     List<Widget> pageButtons = [];
     final int total = controller.totalPages;
-    int maxDisplayPages = total > 4 ? 4 : total;
+    final int current = controller.currentPage.value;
+    int startPage = current - 1;
+    if (startPage < 1) startPage = 1;
 
-    for (int i = 1; i <= maxDisplayPages; i++) {
+    int endPage = startPage + 3;
+    if (endPage > total) {
+      endPage = total;
+      startPage = endPage - 3;
+      if (startPage < 1) startPage = 1;
+    }
+
+    for (int i = startPage; i <= endPage; i++) {
       pageButtons.add(_pageButton(
         context,
         i.toString(),
-        isSelected: controller.currentPage.value == i,
+        isSelected: current == i,
         onTap: () => controller.goToPage(i),
         size: buttonSize,
       ));
@@ -148,7 +157,6 @@ class PaginationBar extends StatelessWidget {
     } else {
       return paginationRow;
     }
-
   }
 
   Widget _pageButton(BuildContext context, String text, {
