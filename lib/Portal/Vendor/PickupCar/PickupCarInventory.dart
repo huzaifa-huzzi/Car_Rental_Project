@@ -163,7 +163,31 @@ class PickupCarController extends GetxController {
   }
 
   List<String> makes = ["Toyota", "Honda", "Suzuki", "Tesla"];
+  List<String> model = ["city", "Haval", "Suzuki", "Tesla"];
   List<String> statuses = ["Completed", "Pending", "Cancelled"];
+
+  var openedDropdown4 = "".obs;
+  var dropdownErrors = <String, String>{}.obs;
+  var searchCarText = "".obs;
+  List<String> get allYears {
+    int startYear = 1950;
+    int currentYear = DateTime.now().year;
+    return List.generate(
+        (currentYear - startYear) + 1,
+            (index) => (currentYear - index).toString()
+    );
+  }
+  List<String> getFilteredItems(String id) {
+    if (id == "year") {
+      if (searchCarText.value.isEmpty) {
+        return allYears;
+      }
+      return allYears
+          .where((year) => year.contains(searchCarText.value.trim()))
+          .toList();
+    }
+    return [];
+  }
 
   void generateDummyData() {
     carList3.clear();
@@ -229,6 +253,7 @@ class PickupCarController extends GetxController {
     {'id': 4, 'label': 'Scuff', 'color': AppColors.fourBackground},
     {'id': 5, 'label': 'Other', 'color': AppColors.fiveBackground},
   ];
+  final TextEditingController yearSearchController = TextEditingController();
 
 
   /// selected tab index

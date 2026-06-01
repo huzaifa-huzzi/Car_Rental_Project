@@ -256,8 +256,6 @@ class VehicleConditionDropOff extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildImageHeader(context, width),
-          const SizedBox(height: 10),
-          Text(TextString.requireImages, style: TTextTheme.requireImagesText(context)),
           const SizedBox(height: 20),
           _buildComparisonRow(context, "front", "Front View", isMobile),
           const SizedBox(height: 20),

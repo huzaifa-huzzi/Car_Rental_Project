@@ -814,14 +814,6 @@ class CarInventoryController extends GetxController {
   var selectedColor2 = "".obs;
   var searchCarText2 = "".obs;
 
-  final List<String> allBrands2 = ["Toyota", "Ford", "Honda", "Tesla", "BMW", "Audi"];
-
-  final List<String> allModels2 = [
-    "Corolla", "Camry", "Prado", "Hilux",
-    "Focus", "Mustang", "F-150", "Explorer",
-    "Civic", "Accord", "CR-V",
-    "Model S", "Model 3", "Model X", "Model Y"
-  ];
   final List<String> bodyTypes2 = ["Sedan", "SUV", "Hatchback", "Coupe", "Wagon", "Convertible", "ute", "Van", "Truck", "Other"];
   final List<String> transmissions2 = ["Automatic", "Manual"];
   final List<String> fuelTypes2 = ["Petrol", "Diesel", "Hybrid", "Plug-in Hybrid", "Electric", "LPG"];
@@ -835,14 +827,6 @@ class CarInventoryController extends GetxController {
     switch (id) {
       case 'year2':
         currentList = yearsList;
-
-      case 'make2':
-        currentList = allBrands2;
-        break;
-
-      case 'model2':
-        currentList = allModels2;
-        break;
 
       case 'body2':
         currentList = bodyTypes2;
@@ -947,14 +931,6 @@ class CarInventoryController extends GetxController {
     return allCars.where((car) => car.toLowerCase().contains(searchCarText.value.toLowerCase())).toList();
   }
 
-  final List<String> allBrands = ["Toyota", "Ford", "Honda", "Tesla", "BMW", "Audi"];
-
-  final List<String> allModels = [
-    "Corolla", "Camry", "Prado", "Hilux",
-    "Focus", "Mustang", "F-150", "Explorer",
-    "Civic", "Accord", "CR-V",
-    "Model S", "Model 3", "Model X", "Model Y"
-  ];
 
 
   var seatsController = TextEditingController(text: "5");
@@ -973,13 +949,6 @@ class CarInventoryController extends GetxController {
     switch (id) {
       case 'year':
         currentList = yearsList2;
-        break;
-      case 'search_car':
-        currentList = allBrands;
-        break;
-
-      case 'Model':
-        currentList = allModels;
         break;
 
       case 'body':

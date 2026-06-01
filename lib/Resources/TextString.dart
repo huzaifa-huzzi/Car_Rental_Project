@@ -93,7 +93,7 @@ class TextString {
   static const String    addCustomerNoteSubtitle = 'Describe the customer Note...';
   static const String    addCustomerLicenseTitle = 'License Detail';
   static const String    addCustomerUploadDocument = 'Customer document (MAX6)';
-  static const String    addCustomerCarDetails = 'Add Card Details';
+  static const String    addCustomerCarDetails = 'Customer Atm Card (Max 5)';
   static const String    addCustomerPhotoText = 'Photo';
   static const String    addCustomerPersonalDocumentText = 'Document';
   static const String    addCustomerCardNumber = 'Card number';

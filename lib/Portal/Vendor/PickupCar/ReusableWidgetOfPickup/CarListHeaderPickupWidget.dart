@@ -1,17 +1,20 @@
+import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/Widget/CalendarManagingScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/PickupCarInventory.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/ReusableWidgetOfPickup/AddButtonOfPickup.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/ReusableWidgetOfPickup/AddPickupButton.dart';
+import 'package:car_rental_project/Portal/Vendor/SystemUniversalController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
-import 'package:flutter_quill/flutter_quill_internal.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class CardListHeaderPickupWidget extends StatelessWidget {
   const CardListHeaderPickupWidget({super.key});
+  static final TextEditingController startDateController = TextEditingController();
+  static final TextEditingController endDateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +41,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
 
               const SizedBox(width: 8),
 
-              ///
+              /// Search Bar
               Expanded(
                 flex: 1,
                 child: _searchBarWithButton(context, controller, buttonHeight, showRedSearchButton),
@@ -77,9 +80,10 @@ class CardListHeaderPickupWidget extends StatelessWidget {
       ],
     );
   }
-   /// ------ Extra Widgets ---------///
 
-  //  Category Selection Widget
+  /// ------ Extra Widgets ---------///
+
+  // Category Selection Widget
   Widget _buildCategorySelection(BuildContext context, PickupCarController controller, double height, bool showText) {
     return Obx(() {
       final double screenWidth = MediaQuery.of(context).size.width;
@@ -115,7 +119,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.asset(_getIconPathForType(controller.selectedSearchType.value), width: 18,color: AppColors.quadrantalTextColor,),
+                Image.asset(_getIconPathForType(controller.selectedSearchType.value), width: 18, color: AppColors.quadrantalTextColor,),
                 if (showText) ...[
                   const SizedBox(width: 6),
                   Flexible(
@@ -127,7 +131,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
                     ),
                   ),
                 ],
-                const Icon(Icons.keyboard_arrow_down, size: 16,color: AppColors.secondTextColor,),
+                const Icon(Icons.keyboard_arrow_down, size: 16, color: AppColors.secondTextColor,),
               ],
             ),
           ),
@@ -136,7 +140,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
     });
   }
 
-  //  Search Bar Widget
+  // Search Bar Widget
   Widget _searchBarWithButton(BuildContext context, PickupCarController controller, double height, bool showButton) {
     final double screenWidth = MediaQuery.of(context).size.width;
 
@@ -163,7 +167,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
                 hintText: screenWidth > 750 ? "Search Pickup by Customer" : "Search...",
                 hintStyle: TTextTheme.smallX(context),
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.only(bottom: 18),
+                contentPadding: const EdgeInsets.only(bottom: 18),
               ),
             ),
           ),
@@ -206,19 +210,14 @@ class CardListHeaderPickupWidget extends StatelessWidget {
               const SizedBox(width: 6),
               Text(text, style: TTextTheme.btnTwo(context).copyWith(color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor)),
             ],
-            Icon(isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, size: 18,color: isOpen?AppColors.primaryColor : AppColors.secondTextColor,),
+            Icon(isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, size: 18, color: isOpen ? AppColors.primaryColor : AppColors.secondTextColor,),
           ],
         ),
       ),
     );
   }
 
-  PopupMenuItem<String> _buildPopupItem(
-      String text,
-      String icon,
-      BuildContext context, {
-        bool isLast = false,
-      }) {
+  PopupMenuItem<String> _buildPopupItem(String text, String icon, BuildContext context, {bool isLast = false,}) {
     return PopupMenuItem(
       value: text,
       padding: EdgeInsets.zero,
@@ -228,7 +227,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Row(
               children: [
-                Image.asset(icon, width: 18, height: 18,color: AppColors.quadrantalTextColor,),
+                Image.asset(icon, width: 18, height: 18, color: AppColors.quadrantalTextColor,),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -241,7 +240,6 @@ class CardListHeaderPickupWidget extends StatelessWidget {
               ],
             ),
           ),
-
           if (!isLast)
             Divider(
               height: 1,
@@ -253,7 +251,6 @@ class CardListHeaderPickupWidget extends StatelessWidget {
     );
   }
 
-  // Icon Paths
   String _getIconPathForType(String type) {
     switch (type) {
       case "Customer Name": return IconString.nameIcon;
@@ -264,10 +261,12 @@ class CardListHeaderPickupWidget extends StatelessWidget {
     }
   }
 
-  // Filter Buttons Widgets
+  // Filter Buttons Panels
   Widget _buildResponsiveFilterPanel(BuildContext context, bool isMobile, PickupCarController controller) {
     double screenWidth = MediaQuery.of(context).size.width;
     bool isMobileUI = screenWidth < 600;
+
+    final SystemUniversalController systemCtrl = Get.find<SystemUniversalController>();
 
     final List<String> statuses = ["Completed", "Awaiting", "Processing", "Overdue"];
 
@@ -288,17 +287,17 @@ class CardListHeaderPickupWidget extends StatelessWidget {
             ? Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _filterItem("Make", _dropdownBox(controller.makes, controller.selectedMake, context,controller,id: "make"), context),
-            _filterItem("Model", _textFieldBox(controller.selectedModel.value, context), context),
-            _filterItem("Year", _textFieldBox(controller.selectYear.value, context), context),
-            _filterItem("Status", _statusDropdownBox(statuses, controller.selectedStatus, context,id: "status"), context),
-            _filterItem("Start Date", _textFieldBox(controller.startDate.value, context), context),
-            _filterItem("End Date", _textFieldBox(controller.endDate.value, context), context),
+            _filterItem("Make", _dropdownBox([], controller.selectedMake, context, controller, id: "make", universalCtrl: systemCtrl), context),
+            _filterItem("Model", _dropdownBox([], controller.selectedModel, context, controller, id: "model", universalCtrl: systemCtrl), context),
+            _filterItem("Year", _buildYearField(context, "Year", controller.selectYear, id: "year", searchController:controller.yearSearchController), context),
+            _filterItem("Status", _statusDropdownBox(statuses, controller.selectedStatus, context, id: "status"), context),
+            _filterItem("Start Date", _buildDateFieldBox(context, startDateController, startDateLink), context),
+            _filterItem("End Date", _buildDateFieldBox(context, endDateController, endDateLink), context),
 
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerRight,
-              child: _buildPickupResetButton(controller),
+              child: _buildPickupResetButton(controller, isMobileUI),
             ),
           ],
         )
@@ -307,16 +306,16 @@ class CardListHeaderPickupWidget extends StatelessWidget {
           runSpacing: 16,
           crossAxisAlignment: WrapCrossAlignment.end,
           children: [
-            _filterItem("Make", _dropdownBox(controller.makes, controller.selectedMake, context,controller,id: "make"), context),
-            _filterItem("Model", _textFieldBox(controller.selectedModel.value, context), context),
-            _filterItem("Year", _textFieldBox(controller.selectYear.value, context), context),
-            _filterItem("Status", _statusDropdownBox(statuses, controller.selectedStatus, context,id: "status"), context),
-            _filterItem("Start Date", _textFieldBox(controller.startDate.value, context), context),
-            _filterItem("End Date", _textFieldBox(controller.endDate.value, context), context),
+            _filterItem("Make", _dropdownBox([], controller.selectedMake, context, controller, id: "make", universalCtrl: systemCtrl), context),
+            _filterItem("Model", _dropdownBox([], controller.selectedModel, context, controller, id: "model", universalCtrl: systemCtrl), context),
+            _filterItem("Year", _buildYearField(context, "Year", controller.selectYear, id: "year", searchController:controller.yearSearchController), context),
+            _filterItem("Status", _statusDropdownBox(statuses, controller.selectedStatus, context, id: "status"), context),
+            _filterItem("Start Date", _buildDateFieldBox(context, startDateController, startDateLink), context),
+            _filterItem("End Date", _buildDateFieldBox(context, endDateController, endDateLink), context),
 
             Padding(
               padding: const EdgeInsets.only(bottom: 2),
-              child: _buildPickupResetButton(controller),
+              child: _buildPickupResetButton(controller, isMobileUI),
             ),
           ],
         ),
@@ -324,11 +323,11 @@ class CardListHeaderPickupWidget extends StatelessWidget {
     );
   }
 
-// Reset Button
-  Widget _buildPickupResetButton(PickupCarController controller) {
+  // Reset Button
+  Widget _buildPickupResetButton(PickupCarController controller, bool isMobileUI) {
     return AddPickUpButton(
       text: "Reset",
-      width: isMobile ? double.infinity : 100,
+      width: isMobileUI ? double.infinity : 100,
       height: 38,
       textColor: Colors.white,
       backgroundColor: AppColors.primaryColor,
@@ -339,14 +338,14 @@ class CardListHeaderPickupWidget extends StatelessWidget {
         controller.selectedStatus.value = "";
         controller.selectedModel.value = "";
         controller.selectYear.value = "";
-        controller.startDate.value = "";
-        controller.endDate.value = "";
-
+        startDateController.clear();
+        endDateController.clear();
+        controller.openedDropdown3.value = "";
+        removeCalendar();
       },
     );
   }
 
-// Filter Item Widget
   Widget _filterItem(String title, Widget child, BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     bool isMobileUI = screenWidth < 600;
@@ -370,70 +369,100 @@ class CardListHeaderPickupWidget extends StatelessWidget {
     );
   }
 
-//  Dropdown  for other Fields
+  // Dropdown for Make and Model
   Widget _dropdownBox(
       List<String> items,
-      RxString selectedRx,
+      RxString selected,
       BuildContext context,
-      PickupCarController controller,
-          {required String id}
-      ) {
+      PickupCarController localController, {
+        required String id,
+        SystemUniversalController? universalCtrl,
+      }) {
     return Obx(() {
-      bool isOpen = controller.openedDropdown3.value == id;
+      bool isOpen = universalCtrl != null
+          ? universalCtrl.openedDropdownId.value == id
+          : localController.openedDropdown2.value == id;
+
+      List<String> finalItems = universalCtrl != null
+          ? universalCtrl.getFilteredUniversalItems(id)
+          : items;
 
       return LayoutBuilder(builder: (context, constraints) {
-        double width = constraints.maxWidth == double.infinity ? 150 : constraints.maxWidth;
-
         return PopupMenuButton<String>(
           constraints: BoxConstraints(
-            minWidth: width,
-            maxWidth: width,
-            maxHeight: 300,
+            minWidth: constraints.maxWidth,
+            maxWidth: constraints.maxWidth,
+            maxHeight: 240,
           ),
-          offset: const Offset(0, 42),
+          offset: const Offset(0, 48),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           color: Colors.white,
-          onOpened: () => controller.openedDropdown3.value = id,
-          onCanceled: () => controller.openedDropdown3.value = "",
-          onSelected: (val) {
-            selectedRx.value = val;
-            controller.openedDropdown3.value = "";
+          elevation: 6,
+          tooltip: '',
+          onOpened: () {
+            if (universalCtrl != null) {
+              universalCtrl.openedDropdownId.value = id;
+            } else {
+              localController.openedDropdown2.value = id;
+            }
+          },
+          onCanceled: () {
+            if (universalCtrl != null) {
+              universalCtrl.openedDropdownId.value = "";
+              universalCtrl.searchCarText.value = "";
+            } else {
+              localController.openedDropdown2.value = "";
+            }
+          },
+          onSelected: (value) {
+            selected.value = value;
+
+            if (universalCtrl != null) {
+              universalCtrl.openedDropdownId.value = "";
+              universalCtrl.searchCarText.value = "";
+            } else {
+              localController.openedDropdown2.value = "";
+            }
+
+            if (id == 'make') {
+              localController.selectedModel.value = "";
+            }
           },
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 10),
-            height: 38,
+            duration: const Duration(milliseconds: 200),
+            height: 37,
             padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
               color: AppColors.secondaryColor,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                  color: Colors.transparent,
-                  width: 1.2
-              ),
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: Text(
-                    selectedRx.value.isEmpty ? "Select" : selectedRx.value,
-                    style: TTextTheme.dropdowninsideText(context),
+                    selected.value.isEmpty ? "Select" : selected.value,
+                    style: selected.value.isEmpty
+                        ? const TextStyle(color: Colors.grey, fontSize: 14)
+                        : const TextStyle(color: Colors.black87, fontSize: 14),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const SizedBox(width: 4),
-                Image.asset(
-                  isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon,
-                  height: 14,
+                Icon(
+                  isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                  color: Colors.grey.shade600,
+                  size: 20,
                 ),
               ],
             ),
           ),
-          itemBuilder: (BuildContext context) {
-            return items.map((item) {
-              bool isSelected = selectedRx.value == item;
+          itemBuilder: (context) {
+            return finalItems.map((value) {
+              bool isSelected = selected.value == value;
+
               return PopupMenuItem<String>(
-                value: item,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                value: value,
+                height: 38,
                 child: Row(
                   children: [
                     Container(
@@ -442,18 +471,17 @@ class CardListHeaderPickupWidget extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: isSelected ? AppColors.primaryColor : Colors.transparent,
-                        border: Border.all(color: AppColors.primaryColor, width: 2),
+                        border: Border.all(color: AppColors.primaryColor, width: 1.8),
                       ),
                       child: isSelected
                           ? const Center(child: Icon(Icons.done, color: Colors.white, size: 12))
                           : null,
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                          item,
-                          style: TTextTheme.medium14(context),
-                          overflow: TextOverflow.ellipsis
+                        value,
+                        style: TTextTheme.insidetextfieldWrittenText(context),
                       ),
                     ),
                   ],
@@ -466,7 +494,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
     });
   }
 
-// Status Dropdown Widget
+  // Status Dropdown Widget
   Widget _statusDropdownBox(List<String> items, RxString selectedRx, BuildContext context, {required String id}) {
     final controller = Get.find<PickupCarController>();
 
@@ -557,6 +585,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
       });
     });
   }
+
   Widget _buildStatusChip(String status, BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -574,6 +603,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
       ),
     );
   }
+
   Color _getStatusBgColor(String status) {
     switch (status) {
       case "Completed": return AppColors.textColor;
@@ -583,6 +613,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
       default: return Colors.grey.shade100;
     }
   }
+
   Color _getStatusTextColor(String status) {
     switch (status) {
       case "Completed": return Colors.white;
@@ -593,28 +624,287 @@ class CardListHeaderPickupWidget extends StatelessWidget {
     }
   }
 
-  // TextField Widget
-  Widget _textFieldBox(String label, BuildContext context) {
-    return Container(
-      height: 38,
-      alignment: Alignment.centerLeft,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: AppColors.secondaryColor,
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: TextField(
-        cursorColor: AppColors.blackColor,
-        style: TTextTheme.titleTwo(context),
-        decoration: InputDecoration(
-          hintText: label,
-          hintStyle: TTextTheme.titleTwo(context),
-          border: InputBorder.none,
-          isDense: true,
-          contentPadding: EdgeInsets.zero,
+  Widget _buildYearField(
+      BuildContext context,
+      String label,
+      RxString selected,
+      {required String id, required TextEditingController searchController}
+      ) {
+    final controller = Get.find<PickupCarController>();
+
+    return Obx(() {
+      bool isOpen = controller.openedDropdown2.value == id;
+
+      return LayoutBuilder(builder: (context, constraints) {
+        double width = constraints.maxWidth == double.infinity ? 180 : constraints.maxWidth;
+
+        return PopupMenuButton<String>(
+          constraints: BoxConstraints(
+            minWidth: width,
+            maxWidth: width,
+            maxHeight: 400,
+          ),
+          offset: const Offset(0, 42),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          color: Colors.white,
+          onOpened: () {
+            controller.openedDropdown2.value = id;
+          },
+          onCanceled: () {
+            controller.openedDropdown2.value = "";
+            controller.searchCarText.value = "";
+            searchController.clear();
+          },
+          onSelected: (val) {
+            selected.value = val;
+            controller.openedDropdown2.value = "";
+            controller.searchCarText.value = "";
+            searchController.clear();
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 10),
+            height: 38,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            decoration: BoxDecoration(
+              color: AppColors.secondaryColor,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: isOpen ? AppColors.primaryColor : Colors.transparent,
+                width: 1.2,
+              ),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    selected.value.isEmpty ? "Select" : selected.value,
+                    style: TTextTheme.dropdowninsideText(context),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Image.asset(
+                  isOpen ? IconString.upsideDropdownIcon : IconString.dropdownIcon,
+                  height: 14,
+                ),
+              ],
+            ),
+          ),
+          itemBuilder: (context) {
+            return [
+              PopupMenuItem<String>(
+                enabled: false,
+                child: Obx(() {
+                  var items = controller.getFilteredItems(id);
+
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        height: 36,
+                        margin: const EdgeInsets.symmetric(vertical: 4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: AppColors.primaryColor.withOpacity(0.4)),
+                        ),
+                        child: TextFormField(
+                          controller: searchController,
+                          cursorColor: AppColors.blackColor,
+                          autofocus: true,
+                          onChanged: (val) {
+                            controller.searchCarText.value = val;
+                          },
+                          style: TTextTheme.titleinputTextField(context),
+                          decoration: InputDecoration(
+                            hintText: "Search Year",
+                            hintStyle: TTextTheme.bodyRegular14Search(context),
+                            prefixIcon: Icon(Icons.search, color: AppColors.primaryColor, size: 16),
+                            filled: true,
+                            fillColor: AppColors.backgroundOfScreenColor,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(maxHeight: 250),
+                        child: items.isEmpty
+                            ? const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          child: Center(child: Text("No years found")),
+                        )
+                            : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: items.length,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            final item = items[index];
+                            bool isSelected = selected.value == item;
+
+                            return InkWell(
+                              onTap: () {
+                                Navigator.of(context).pop(item);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 18,
+                                      height: 18,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                                        border: Border.all(color: AppColors.primaryColor, width: 2),
+                                      ),
+                                      child: isSelected
+                                          ? const Center(child: Icon(Icons.done, color: Colors.white, size: 12))
+                                          : null,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(item, style: TTextTheme.medium14(context)),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+              ),
+            ];
+          },
+        );
+      });
+    });
+  }
+
+  // Date Field
+  Widget _buildDateFieldBox(BuildContext context, TextEditingController targetController, LayerLink link) {
+    return CompositedTransformTarget(
+      link: link,
+      child: Container(
+        height: 38,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: AppColors.secondaryColor,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                controller: targetController,
+                readOnly: true,
+                style: TTextTheme.titleTwo(context),
+                onTap: () {
+                  toggleCalendar(context, link, targetController, 180);
+                },
+                decoration: InputDecoration(
+                  hintText: "Select Date",
+                  hintStyle: TTextTheme.titleTwo(context).copyWith(color: Colors.grey),
+                  border: InputBorder.none,
+                  isDense: true,
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                toggleCalendar(context, link, targetController, 180);
+              },
+              child:  Image.asset(IconString.calendarIcon, height: 16,width: 16,),
+            ),
+          ],
         ),
       ),
     );
   }
 
+  ///  Calendar Overlay Integration ---
+  static final LayerLink startDateLink = LayerLink();
+  static final LayerLink endDateLink = LayerLink();
+  static OverlayEntry? calendarOverlay;
+
+  void toggleCalendar(
+      BuildContext context,
+      LayerLink link,
+      TextEditingController targetController,
+      double width,
+      ) {
+    removeCalendar();
+
+    calendarOverlay =
+        _createCalendarOverlay(context, link, targetController, width);
+
+    Overlay.of(context).insert(calendarOverlay!);
+  }
+
+  void removeCalendar() {
+    calendarOverlay?.remove();
+    calendarOverlay = null;
+  }
+
+  OverlayEntry _createCalendarOverlay(
+      BuildContext context,
+      LayerLink link,
+      TextEditingController targetController,
+      double fieldWidth,
+      ) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    final double popupWidth = fieldWidth.isInfinite
+        ? screenWidth.clamp(250, 320)
+        : fieldWidth.clamp(250, 380);
+
+    return OverlayEntry(
+      builder: (context) => Stack(
+        children: [
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: removeCalendar,
+              child: Container(color: Colors.transparent),
+            ),
+          ),
+
+          CompositedTransformFollower(
+            link: link,
+            showWhenUnlinked: false,
+            targetAnchor: Alignment.bottomLeft,
+            followerAnchor: Alignment.topLeft,
+            offset: const Offset(0, 6),
+            child: Material(
+              elevation: 12,
+              borderRadius: BorderRadius.circular(12),
+              clipBehavior: Clip.antiAlias,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: 250,
+                  maxWidth: popupWidth,
+                ),
+                child: CustomCalendarPopup(
+                  width: popupWidth,
+                  onCancel: removeCalendar,
+                  onDateSelected: (date) {
+                    final now = DateTime.now();
+                    final today = DateTime(now.year, now.month, date.day);
+                    if (date.isAfter(today)) {
+                      return;
+                    }
+                    targetController.text = "${date.day}/${date.month}/${date.year}";
+                    removeCalendar();
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

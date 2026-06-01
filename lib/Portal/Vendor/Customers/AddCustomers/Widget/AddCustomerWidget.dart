@@ -77,19 +77,21 @@ class AddCustomerWidget extends StatelessWidget {
                 Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
                 /// 5. LICENSE DETAILS
+                SizedBox(height: spacing,),
                 _buildLicenseGrid(context, controller, spacing),
 
                 SizedBox(height: spacing),
                 Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
 
                 /// 6. DOCUMENTS UPLOAD & CARD DETAILS
+                SizedBox(height: spacing,),
                 Text(TextString.addCustomerUploadDocument, style: TTextTheme.btnSix(context)),
                 SizedBox(height: spacing),
                 _documentsSection(context),
 
                 SizedBox(height: spacing),
                 Divider(thickness: 0.5, color: AppColors.quadrantalTextColor),
-
+                SizedBox(height: spacing,),
                 Text(TextString.addCustomerCarDetails, style: TTextTheme.btnSix(context)),
                 SizedBox(height: spacing),
                 Center(
@@ -106,60 +108,6 @@ class AddCustomerWidget extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-// Separate Method for Basic Info Grid to reduce building pressure
-  Widget _buildBasicInfoGrid(BuildContext context, CustomerController controller) {
-    return _buildResponsiveGrid(context, [
-      _buildTextField(context, "Given Name", controller.givenNameController,
-          validator: (v) => controller.validateRequired(v, "Given Name")),
-      _buildTextField(context, "Surname", controller.surnameController,
-          validator: (v) => controller.validateRequired(v, "Surname")),
-      CompositedTransformTarget(
-        link: controller.dobLink,
-        child: _buildDOBField(
-          context,
-          "Date of Birth",
-          controller.dobController,
-          validator: (v) => controller.validateRequired(v, "Date of Birth"),
-          onTap: () => controller.toggleCalendar(context, controller.dobLink, controller.dobController),
-        ),
-      ),
-      _buildPhoneField(context, "Contact Number"),
-      _buildTextField(context, "Email Address", controller.emailController,
-          validator: (v) => controller.validateEmail(v)),
-      _buildTextField(context, "Residential Address", controller.addressController,
-          validator: (v) => controller.validateRequired(v, "Address")),
-    ]);
-  }
-
-// Separate Method for License Grid
-  Widget _buildLicenseGrid(BuildContext context, CustomerController controller, double spacing) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(TextString.addCustomerLicenseTitle, style: TTextTheme.btnSix(context)),
-        SizedBox(height: spacing),
-        _buildResponsiveGrid(context, [
-          _buildTextField(context, "License Name", controller.licenseNameController,
-              validator: (value) => controller.validateRequired(value, "License Name")),
-          _buildTextField(context, "Driver License Number", controller.licenseNumberController,
-              validator: (v) => controller.validateRequired(v, "License Number")),
-          CompositedTransformTarget(
-            link: controller.expiryLink,
-            child: _buildCalendarFieldGeneric(
-              context,
-              "License Expiry Date",
-              controller.licenseExpiryController,
-              validator: (v) => controller.validateRequired(v, "Expiry Date"),
-              onTap: () => controller.toggleCalendar(context, controller.expiryLink, controller.licenseExpiryController),
-            ),
-          ),
-          _buildTextField(context, "Card Number", controller.licenseCardNumberController,
-              validator: (v) => controller.validateRequired(v, "License Card Number")),
-        ]),
-      ],
     );
   }
 
@@ -298,6 +246,61 @@ class AddCustomerWidget extends StatelessWidget {
         ],
       );
     });
+  }
+
+
+// Separate Method
+  Widget _buildBasicInfoGrid(BuildContext context, CustomerController controller) {
+    return _buildResponsiveGrid(context, [
+      _buildTextField(context, "Given Name", controller.givenNameController,
+          validator: (v) => controller.validateRequired(v, "Given Name")),
+      _buildTextField(context, "Surname", controller.surnameController,
+          validator: (v) => controller.validateRequired(v, "Surname")),
+      CompositedTransformTarget(
+        link: controller.dobLink,
+        child: _buildDOBField(
+          context,
+          "Date of Birth",
+          controller.dobController,
+          validator: (v) => controller.validateRequired(v, "Date of Birth"),
+          onTap: () => controller.toggleCalendar(context, controller.dobLink, controller.dobController),
+        ),
+      ),
+      _buildPhoneField(context, "Contact Number"),
+      _buildTextField(context, "Email Address", controller.emailController,
+          validator: (v) => controller.validateEmail(v)),
+      _buildTextField(context, "Residential Address", controller.addressController,
+          validator: (v) => controller.validateRequired(v, "Address")),
+    ]);
+  }
+
+// Separate Method for License Grid
+  Widget _buildLicenseGrid(BuildContext context, CustomerController controller, double spacing) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(TextString.addCustomerLicenseTitle, style: TTextTheme.btnSix(context)),
+        SizedBox(height: spacing),
+        _buildResponsiveGrid(context, [
+          _buildTextField(context, "License Name", controller.licenseNameController,
+              validator: (value) => controller.validateRequired(value, "License Name")),
+          _buildTextField(context, "Driver License Number", controller.licenseNumberController,
+              validator: (v) => controller.validateRequired(v, "License Number")),
+          CompositedTransformTarget(
+            link: controller.expiryLink,
+            child: _buildCalendarFieldGeneric(
+              context,
+              "License Expiry Date",
+              controller.licenseExpiryController,
+              validator: (v) => controller.validateRequired(v, "Expiry Date"),
+              onTap: () => controller.toggleCalendar(context, controller.expiryLink, controller.licenseExpiryController),
+            ),
+          ),
+          _buildTextField(context, "Card Number", controller.licenseCardNumberController,
+              validator: (v) => controller.validateRequired(v, "License Card Number")),
+        ]),
+      ],
+    );
   }
 
   // Responsive Grid Widget
@@ -470,7 +473,6 @@ class AddCustomerWidget extends StatelessWidget {
         Text(label, style: TTextTheme.titleTwo(context)),
         const SizedBox(height: 6),
         Obx(() {
-          // Agar background mein countries load ho rahi hain to loading spinner dikhao
           if (controller.isLoadingCountries.value) {
             return SizedBox(
               height: 48,

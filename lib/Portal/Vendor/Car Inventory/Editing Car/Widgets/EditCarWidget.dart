@@ -4,6 +4,7 @@ import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/customPrimaryButton.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Editing%20Car/Widgets/customTextField.dart';
+import 'package:car_rental_project/Portal/Vendor/SystemUniversalController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
@@ -20,6 +21,7 @@ class EditCarWidget extends StatelessWidget {
   EditCarWidget({super.key});
 
   final CarInventoryController controller = Get.find<CarInventoryController>();
+  final SystemUniversalController systemCtrl = Get.find<SystemUniversalController>();
 
   @override
   Widget build(BuildContext context) {
@@ -116,9 +118,22 @@ class EditCarWidget extends StatelessWidget {
               _buildSectionTitle(context, "Car Identification"),
               const SizedBox(height: 15),
               _buildResponsiveGrid(context, [
-                _buildDropdown(context, "Car Make", controller.getFilteredItems2('make2'), controller.selectedBrand2, id: 'make2'),
-
-                _buildDropdown(context, "Car Model", controller.getFilteredItems2('model2'), controller.selectedModel2, id: 'model2'),
+                _buildDropdown(
+                  context,
+                  "Car Make",
+                  [],
+                  controller.selectedBrand2,
+                  id: 'make2',
+                  universalCtrl: systemCtrl,
+                ),
+                _buildDropdown(
+                  context,
+                  "Car Model",
+                  [],
+                  controller.selectedModel2,
+                  id: 'model2',
+                  universalCtrl: systemCtrl,
+                ),
                 _buildYearField(
                   context,
                   "Car Year",
@@ -222,10 +237,17 @@ class EditCarWidget extends StatelessWidget {
       List<String> items,
       RxString selected, {
         required String id,
+        SystemUniversalController? universalCtrl,
       }) {
     return Obx(() {
-      bool isOpen2 = controller.openedDropdown2.value == id;
+      bool isOpen2 = universalCtrl != null
+          ? universalCtrl.openedDropdownId.value == id
+          : controller.openedDropdown2.value == id;
+
       bool hasError = controller.dropdownErrors.containsKey(id);
+      List<String> finalItems = universalCtrl != null
+          ? universalCtrl.getFilteredUniversalItems(id)
+          : items;
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -244,12 +266,37 @@ class EditCarWidget extends StatelessWidget {
               color: Colors.white,
               elevation: 8,
               tooltip: '',
-              onOpened: () => controller.openedDropdown2.value = id,
-              onCanceled: () => controller.openedDropdown2.value = "",
+              onOpened: () {
+                if (universalCtrl != null) {
+                  universalCtrl.openedDropdownId.value = id;
+                } else {
+                  controller.openedDropdown2.value = id;
+                }
+              },
+              onCanceled: () {
+                if (universalCtrl != null) {
+                  universalCtrl.openedDropdownId.value = "";
+                  universalCtrl.searchCarText.value = "";
+                } else {
+                  controller.openedDropdown2.value = "";
+                }
+              },
               onSelected: (value) {
-                selected.value = value;
-                controller.openedDropdown2.value = "";
-                controller.dropdownErrors.remove(id);
+                if (value != "SEARCH_FIELD") {
+                  selected.value = value;
+                  controller.dropdownErrors.remove(id);
+                  if (id == 'make2') {
+                    controller.selectedModel2.value = "";
+                    controller.dropdownErrors.remove('model2');
+                  }
+
+                  if (universalCtrl != null) {
+                    universalCtrl.openedDropdownId.value = "";
+                    universalCtrl.searchCarText.value = "";
+                  } else {
+                    controller.openedDropdown2.value = "";
+                  }
+                }
               },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
@@ -283,47 +330,79 @@ class EditCarWidget extends StatelessWidget {
                 ),
               ),
               itemBuilder: (context) {
-                return items.map((value) {
-                  bool isSelected = selected.value == value;
-
-                  return PopupMenuItem<String>(
-                    value: value,
-                    padding: EdgeInsets.zero,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 22,
-                            height: 22,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: isSelected ? AppColors.primaryColor : Colors.transparent,
-                              border: Border.all(
-                                color: AppColors.primaryColor,
-                                width: 2,
-                              ),
+                return [
+                  if (universalCtrl != null)
+                    PopupMenuItem<String>(
+                      enabled: false,
+                      value: "SEARCH_FIELD",
+                      child: Container(
+                        height: 40,
+                        margin: const EdgeInsets.symmetric(vertical: 4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: AppColors.primaryColor),
+                        ),
+                        child: TextField(
+                          cursorColor: AppColors.blackColor,
+                          onChanged: (val) => universalCtrl.searchCarText.value = val,
+                          style: TTextTheme.titleinputTextField(context),
+                          decoration: InputDecoration(
+                            hintText: "Search",
+                            hintStyle: TTextTheme.pOne(context),
+                            prefixIcon: Icon(Icons.search, color: AppColors.primaryColor, size: 18),
+                            filled: true,
+                            fillColor: AppColors.backgroundOfScreenColor,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide.none,
                             ),
-                            child: isSelected
-                                ? const Center(
-                              child: Icon(Icons.done, color: Colors.white, size: 14),
-                            )
-                                : null,
+                            contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                           ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              value,
-                              style: TTextTheme.medium14(context).copyWith(
-                                color: isSelected ? AppColors.primaryColor : Colors.black87,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                  );
-                }).toList();
+                  ...finalItems.map((value) {
+                    bool isSelected = selected.value == value;
+
+                    return PopupMenuItem<String>(
+                      value: value,
+                      padding: EdgeInsets.zero,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 22,
+                              height: 22,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                                border: Border.all(
+                                  color: AppColors.primaryColor,
+                                  width: 2,
+                                ),
+                              ),
+                              child: isSelected
+                                  ? const Center(
+                                child: Icon(Icons.done, color: Colors.white, size: 14),
+                              )
+                                  : null,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                value,
+                                style: TTextTheme.medium14(context).copyWith(
+                                  color: isSelected ? AppColors.primaryColor : Colors.black87,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+                ];
               },
             );
           }),

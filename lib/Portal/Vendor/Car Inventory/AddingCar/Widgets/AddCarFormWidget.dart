@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/CarInventoryController.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/customPrimaryButton.dart';
+import 'package:car_rental_project/Portal/Vendor/SystemUniversalController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
@@ -22,6 +23,7 @@ class AddCarFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = AppSizes.isMobile(context);
+    final controller2 = Get.put(SystemUniversalController());
 
     return Center(
       child: Container(
@@ -52,8 +54,22 @@ class AddCarFormWidget extends StatelessWidget {
                 _buildSectionTitle(context, "Car Identification"),
                 const SizedBox(height: 15),
                 _buildResponsiveGrid(context, [
-                  _buildSearchCarDropdown(context, "Car Make", controller.selectedBrand, id: 'search_car'),
-                  _buildSearchCarDropdown(context, "Car Model", controller.selectedModel, id: 'Model'),
+                  _buildSearchCarDropdown(
+                    context,
+                    "Car Make",
+                    controller.selectedBrand,
+                    id: 'search_car',
+                    universalCtrl: controller2,
+                  ),
+
+                  _buildSearchCarDropdown(
+                    context,
+                    "Car Model",
+                    controller.selectedModel,
+                    id: 'Model',
+                    universalCtrl: controller2,
+                    selectedBrand: controller.selectedBrand.value,
+                  ),
                   _buildYearField(
                       context,
                       "Car Year",
@@ -264,10 +280,24 @@ class AddCarFormWidget extends StatelessWidget {
   }
 
    //Dropdowns
-  Widget _buildSearchCarDropdown(BuildContext context, String label, RxString selected, {required String id}) {
+  Widget _buildSearchCarDropdown(
+      BuildContext context,
+      String label,
+      RxString selected,
+      {
+        required String id,
+        SystemUniversalController? universalCtrl,
+        String selectedBrand = "",
+      }
+      ) {
     return Obx(() {
-      bool isOpen = controller.openedDropdown3.value == id;
-      List<String> items = controller.getFilteredItems(id);
+      bool isOpen = universalCtrl != null
+          ? universalCtrl.openedDropdownId.value == id
+          : controller.openedDropdown3.value == id;
+      List<String> items = universalCtrl != null
+          ? universalCtrl.getFilteredUniversalItems(id)
+          : controller.getFilteredItems(id);
+
       String errorMsg = controller.dropdownErrors[id] ?? "";
       bool hasError = errorMsg.isNotEmpty;
 
@@ -286,23 +316,38 @@ class AddCarFormWidget extends StatelessWidget {
               offset: const Offset(0, 48),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               color: Colors.white,
-              onOpened: () => controller.openedDropdown3.value = id,
+              onOpened: () {
+                if (universalCtrl != null) {
+                  universalCtrl.openedDropdownId.value = id;
+                } else {
+                  controller.openedDropdown3.value = id;
+                }
+              },
               onCanceled: () {
-                controller.openedDropdown3.value = "";
-                controller.searchCarText.value = "";
+                if (universalCtrl != null) {
+                  universalCtrl.openedDropdownId.value = "";
+                  universalCtrl.searchCarText.value = "";
+                } else {
+                  controller.openedDropdown3.value = "";
+                  controller.searchCarText.value = "";
+                }
               },
               onSelected: (val) {
                 if (val != "SEARCH_FIELD") {
                   selected.value = val;
                   controller.dropdownErrors[id] = "";
-
                   if (id == 'search_car') {
                     controller.selectedModel.value = "";
                     controller.dropdownErrors['Model'] = "";
                   }
 
-                  controller.openedDropdown3.value = "";
-                  controller.searchCarText.value = "";
+                  if (universalCtrl != null) {
+                    universalCtrl.openedDropdownId.value = "";
+                    universalCtrl.searchCarText.value = "";
+                  } else {
+                    controller.openedDropdown3.value = "";
+                    controller.searchCarText.value = "";
+                  }
                 }
               },
               child: AnimatedContainer(
@@ -348,7 +393,13 @@ class AddCarFormWidget extends StatelessWidget {
                       ),
                       child: TextField(
                         cursorColor: AppColors.blackColor,
-                        onChanged: (val) => controller.searchCarText.value = val,
+                        onChanged: (val) {
+                          if (universalCtrl != null) {
+                            universalCtrl.searchCarText.value = val;
+                          } else {
+                            controller.searchCarText.value = val;
+                          }
+                        },
                         style: TTextTheme.titleinputTextField(context),
                         decoration: InputDecoration(
                           hintText: "Search",

@@ -1,6 +1,7 @@
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/CarInventoryController.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/ButtonWidget.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/ReusableWidget/customPrimaryButton.dart';
+import 'package:car_rental_project/Portal/Vendor/SystemUniversalController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
@@ -227,10 +228,24 @@ class CardListHeaderWidget extends StatelessWidget {
 
 
   //  Filter Dropdown Widget
-  Widget _dropdownBox(List<String> items, RxString selectedRx, BuildContext context, {required String id, bool isStatus = false}) {
+  Widget _dropdownBox(
+      List<String> items,
+      RxString selectedRx,
+      BuildContext context, {
+        required String id,
+        bool isStatus = false,
+        SystemUniversalController? universalCtrl,
+      }) {
     return Obx(() {
-      final controller  = Get.put(CarInventoryController());
-      bool isOpen = controller.openedDropdown3.value == id;
+      final controller = Get.put(CarInventoryController());
+
+      bool isOpen = universalCtrl != null
+          ? universalCtrl.openedDropdownId.value == id
+          : controller.openedDropdown3.value == id;
+
+      List<String> finalItems = universalCtrl != null
+          ? universalCtrl.getFilteredUniversalItems(id)
+          : items;
 
       return LayoutBuilder(builder: (context, constraints) {
         return PopupMenuButton<String>(
@@ -238,16 +253,39 @@ class CardListHeaderWidget extends StatelessWidget {
           constraints: BoxConstraints(
             minWidth: constraints.maxWidth,
             maxWidth: constraints.maxWidth,
-            maxHeight: 300,
+            maxHeight: 250,
           ),
           offset: const Offset(0, 42),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           color: Colors.white,
-          onOpened: () => controller.openedDropdown3.value = id,
-          onCanceled: () => controller.openedDropdown3.value = "",
+          onOpened: () {
+            if (universalCtrl != null) {
+              universalCtrl.openedDropdownId.value = id;
+            } else {
+              controller.openedDropdown3.value = id;
+            }
+          },
+          onCanceled: () {
+            if (universalCtrl != null) {
+              universalCtrl.openedDropdownId.value = "";
+              universalCtrl.searchCarText.value = "";
+            } else {
+              controller.openedDropdown3.value = "";
+            }
+          },
           onSelected: (val) {
             selectedRx.value = val;
-            controller.openedDropdown3.value = "";
+
+            if (id == 'make') {
+              controller.selectedModel.value = "";
+            }
+
+            if (universalCtrl != null) {
+              universalCtrl.openedDropdownId.value = "";
+              universalCtrl.searchCarText.value = "";
+            } else {
+              controller.openedDropdown3.value = "";
+            }
           },
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
@@ -277,12 +315,12 @@ class CardListHeaderWidget extends StatelessWidget {
             ),
           ),
           itemBuilder: (BuildContext context) {
-            return items.map((item) {
+            return finalItems.map((item) {
               bool isSelected = selectedRx.value == item;
               return PopupMenuItem<String>(
                 value: item,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                height: 40,
+                height: 38,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -308,7 +346,10 @@ class CardListHeaderWidget extends StatelessWidget {
                       )
                           : Text(
                         item,
-                        style: TTextTheme.medium14(context).copyWith(fontSize: 12),
+                        style: TTextTheme.medium14(context).copyWith(
+                          fontSize: 12,
+                          color: isSelected ? AppColors.primaryColor : Colors.black87,
+                        ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -324,6 +365,7 @@ class CardListHeaderWidget extends StatelessWidget {
 
   Widget _buildFilterContainer(BuildContext context) {
     final controller = Get.find<CarInventoryController>();
+    final SystemUniversalController universalCtrl = Get.find<SystemUniversalController>();
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: AppSizes.horizontalPadding(context), vertical: 8),
@@ -334,8 +376,28 @@ class CardListHeaderWidget extends StatelessWidget {
         runSpacing: 16,
         crossAxisAlignment: WrapCrossAlignment.end,
         children: [
-          _filterItem("Make", _dropdownBox(controller.getFilteredItems('search_car'), controller.selectedBrand, context, id: "make"), context),
-          _filterItem("Model", _dropdownBox(controller.getFilteredItems('Model'), controller.selectedModel, context, id: "model"), context),
+          _filterItem(
+            "Make",
+            _dropdownBox(
+              [],
+              controller.selectedBrand,
+              context,
+              id: "make",
+              universalCtrl: universalCtrl,
+            ),
+            context,
+          ),
+          _filterItem(
+            "Model",
+            _dropdownBox(
+              [],
+              controller.selectedModel,
+              context,
+              id: "model",
+              universalCtrl: universalCtrl,
+            ),
+            context,
+          ),
           _filterItem("Year", _dropdownBox(controller.getFilteredItems('year'), controller.selectedYear, context, id: "year"), context),
           _filterItem("Body Type", _dropdownBox(controller.getFilteredItems('body'), controller.selectedBodyType, context, id: "body"), context),
           _filterItem("Status", _dropdownBox(controller.getFilteredItems('status'), controller.selectedStatus, context, id: "status"), context),

@@ -42,9 +42,6 @@ class VehicleConditionScreen extends StatelessWidget {
 
             /// PICKUP PICTURES SECTION
             _buildPicturesHeader(context),
-            const SizedBox(height: 4),
-            Text(TextString.requireImages, style: TTextTheme.requireImagesText(context)),
-
             const SizedBox(height: 20),
             _buildStaticImageGrid(context, screenWidth),
 

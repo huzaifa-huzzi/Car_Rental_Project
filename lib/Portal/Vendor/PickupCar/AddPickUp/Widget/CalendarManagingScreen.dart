@@ -25,12 +25,15 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
   bool _showYearDropdown = false;
   String _searchQuery = "";
 
+  final DateTime _today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+
   final List<String> _months = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
   List<String> _getYears() {
-    return List.generate(101, (index) => (1950 + index).toString());
+    int currentYear = DateTime.now().year;
+    return List.generate((currentYear - 1950) + 1, (index) => (1950 + index).toString());
   }
 
   @override
@@ -45,6 +48,8 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
     int firstDayWeekday = DateTime(_focusedDay.year, _focusedDay.month, 1).weekday;
     int offset = firstDayWeekday - 1;
     int totalCellsNeeded = offset + daysInMonth;
+    DateTime nextMonthDate = DateTime(_focusedDay.year, _focusedDay.month + 1, 1);
+    bool isNextMonthFuture = nextMonthDate.isAfter(DateTime(_today.year, _today.month, 1));
 
     return Stack(
       children: [
@@ -84,8 +89,8 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
                   ),
                   IconButton(
                     visualDensity: VisualDensity.compact,
-                    onPressed: () => setState(() => _focusedDay = DateTime(_focusedDay.year, _focusedDay.month + 1)),
-                    icon: const Icon(Icons.arrow_forward_ios, size: 14),
+                    onPressed: isNextMonthFuture ? null : () => setState(() => _focusedDay = DateTime(_focusedDay.year, _focusedDay.month + 1)),
+                    icon: Icon(Icons.arrow_forward_ios, size: 14, color: isNextMonthFuture ? Colors.grey.shade300 : Colors.black),
                   ),
                 ],
               ),
@@ -116,6 +121,8 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
                 itemBuilder: (context, index) {
                   int dayNum = index - offset + 1;
                   if (dayNum < 1 || dayNum > daysInMonth) return const SizedBox();
+                  DateTime cellDate = DateTime(_focusedDay.year, _focusedDay.month, dayNum);
+                  bool isFuture = cellDate.isAfter(_today);
 
                   bool isSelected = _selectedDay != null &&
                       _selectedDay!.day == dayNum &&
@@ -123,7 +130,7 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
                       _selectedDay!.year == _focusedDay.year;
 
                   return GestureDetector(
-                    onTap: () => setState(() => _selectedDay = DateTime(_focusedDay.year, _focusedDay.month, dayNum)),
+                    onTap: isFuture ? null : () => setState(() => _selectedDay = cellDate),
                     child: Container(
                       decoration: BoxDecoration(
                         color: isSelected ? AppColors.primaryColor : Colors.transparent,
@@ -136,7 +143,9 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                              color: isSelected ? Colors.white : AppColors.textColor,
+                              color: isSelected
+                                  ? Colors.white
+                                  : (isFuture ? Colors.grey.shade300 : AppColors.textColor),
                             ),
                           ),
                         ),
@@ -161,16 +170,28 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
         ),
         if (_showMonthDropdown)
           _buildSearchableList(_months, (val) {
+            int selectedMonthIndex = _months.indexOf(val) + 1;
+            DateTime targetCheck = DateTime(_focusedDay.year, selectedMonthIndex, 1);
+            if (targetCheck.isAfter(DateTime(_today.year, _today.month, 1))) {
+              return;
+            }
+
             setState(() {
-              _focusedDay = DateTime(_focusedDay.year, _months.indexOf(val) + 1);
+              _focusedDay = DateTime(_focusedDay.year, selectedMonthIndex);
               _showMonthDropdown = false;
             });
           }, isMonth: true),
 
         if (_showYearDropdown)
           _buildSearchableList(_getYears(), (val) {
+            int selectedYear = int.parse(val);
+            int targetMonth = _focusedDay.month;
+            if (selectedYear == _today.year && targetMonth > _today.month) {
+              targetMonth = _today.month;
+            }
+
             setState(() {
-              _focusedDay = DateTime(int.parse(val), _focusedDay.month);
+              _focusedDay = DateTime(selectedYear, targetMonth);
               _showYearDropdown = false;
             });
           }, isMonth: false),
@@ -178,8 +199,7 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
     );
   }
 
-   /// --------Extra Widgets ---------- ///
-  // Header Dropdown Box
+  /// --------Extra Widgets ---------- ///
   Widget _buildHeaderDropBox(String label, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
@@ -206,7 +226,6 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
     );
   }
 
-  // Searchable List Overlay
   Widget _buildSearchableList(List<String> items, Function(String) onSelect, {required bool isMonth}) {
     List<String> filtered = items.where((i) => i.toLowerCase().contains(_searchQuery.toLowerCase())).toList();
     String currentVal = isMonth ? _months[_focusedDay.month - 1] : _focusedDay.year.toString();
@@ -261,19 +280,36 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
                       itemBuilder: (context, index) {
                         String item = filtered[index];
                         bool isSelected = item == currentVal;
+                        bool isItemDisabled = false;
+                        if (isMonth) {
+                          int itemMonthIndex = _months.indexOf(item) + 1;
+                          DateTime itemCheck = DateTime(_focusedDay.year, itemMonthIndex, 1);
+                          if (itemCheck.isAfter(DateTime(_today.year, _today.month, 1))) {
+                            isItemDisabled = true;
+                          }
+                        }
+
                         return ListTile(
                           dense: true,
-                          onTap: () => onSelect(item),
+                          onTap: isItemDisabled ? null : () => onSelect(item),
                           leading: Container(
                             width: 18, height: 18,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: isSelected ? AppColors.primaryColor : Colors.transparent,
-                              border: Border.all(color: AppColors.primaryColor, width: 2),
+                              border: Border.all(
+                                  color: isItemDisabled ? Colors.grey.shade200 : AppColors.primaryColor,
+                                  width: 2
+                              ),
                             ),
                             child: isSelected ? const Icon(Icons.done, color: Colors.white, size: 10) : null,
                           ),
-                          title: Text(item, style: TTextTheme.medium14(context)),
+                          title: Text(
+                              item,
+                              style: TTextTheme.medium14(context).copyWith(
+                                  color: isItemDisabled ? Colors.grey.shade300 : AppColors.textColor
+                              )
+                          ),
                         );
                       },
                     ),
@@ -287,7 +323,6 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
     );
   }
 
-  ///  Action Buttons
   Widget _buildActionBtn(String text, VoidCallback onTap, {required bool isOutline}) {
     return Container(
       height: 34,
