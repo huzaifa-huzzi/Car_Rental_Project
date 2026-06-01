@@ -6,7 +6,7 @@ class TextString {
     // Adding Car Screen
   static const String  addScreenTitle= 'Add New Car';
   static const String  addScreenDescription= 'Enter the specification for the new fleet Car';
-  static const String  descriptionTitle= 'Description';
+  static const String  descriptionTitle= 'Car Description';
   static const String descriptionTextFieldText = 'Describe the vehicles condition, unique features, or rental policies.';
   static const String  dialogInventory1= "Saving Vehicle Details";
   static const String  dialogInventory2= "Please wait while we process your request.";
@@ -26,17 +26,18 @@ class TextString {
   // Edit Car Screen Texts
   static const String  uploadImageTitle= 'Upload Car Images';
   static const String  uploadTitle= 'Click to upload Images';
-  static const String  uploadSubtitle= 'SVG, PNG, JPG';
+  static const String  uploadSubtitle= 'PNG, JPG, JPEG';
+  static const String  uploadSubtitleDocument= 'PNG, JPG, JPEG,PDF';
   static const String  documentName= 'Document Name';
   static const String  addDocument= 'Add Document';
-  static const String  uploadMax6= 'Document (Max 6)';
+  static const String  uploadMax6= 'Car Document (Max 6)';
   static const String  documentSubtitle= 'Write your document name';
    //  Car Details Screen
   static const String  carDescriptionTitle= 'Audi A6 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys. Renowned for its powerful performance and advanced technology features, the A6 provides a refined driving experience with exceptional comfort. Audi A6 is a luxurious and sophisticated sedan, ideal for both daily commutes and extended journeys. Renowned for its powerful performance and advanced technology features, the A6 provides a refined driving experience with exceptional comfort.';
   // Editing Car Screen
   static const String  addEditCarScreenTitle= 'Edit Car';
   static const String  addEditCarDescription= 'Enter the specification for the Edit fleet Car';
-  static const String  addEditDescriptionTitle= 'Description';
+  static const String  addEditDescriptionTitle= 'Car Description';
   static const String addEditDescriptionTextFieldText = 'Describe the vehicles condition, unique features, or rental policies.';
   // ListViewScreen Texts
   static const String  vin= 'VIN';
@@ -69,7 +70,7 @@ class TextString {
   static const String  customerNote =   'Customer Note';
   static const String  customerNoteSubtitle = 'Describe the Customer Note....';
   static const String  licenseTitle =  'License Details';
-  static const String  uploadDocumentTitle =  'Upload Personal document (Gov. Id, Passport etc.  MAX6)';
+  static const String  uploadDocumentTitle =  'Customer document (MAX6)';
   static const String   addCardDetailsTitle =  'Add Card Details';
   static const String   photoTitle =  'Photo';
   static const String   documentTitleTextField =  'Personal Document';
@@ -91,7 +92,7 @@ class TextString {
   static const String    addCustomerNote = 'Customer Note';
   static const String    addCustomerNoteSubtitle = 'Describe the customer Note...';
   static const String    addCustomerLicenseTitle = 'License Detail';
-  static const String    addCustomerUploadDocument = 'Upload Personal document (Gov. Id, Passport etc.  MAX6)';
+  static const String    addCustomerUploadDocument = 'Customer document (MAX6)';
   static const String    addCustomerCarDetails = 'Add Card Details';
   static const String    addCustomerPhotoText = 'Photo';
   static const String    addCustomerPersonalDocumentText = 'Document';
@@ -339,7 +340,7 @@ class TextString {
   static const String  titleImageStepTwo  =   'Upload Car Pictures';
   static const String  clickToUpload  =   'Upload Car Pictures';
   static const String  subtitleImageStepTwo  =   'PNG, JPG, SVG ';
-  static const String  jpgsPngs  =   'JPG, PNG ';
+  static const String  jpgsPngs  =   'JPG, PNG,JPEG ';
   static const String  under50  = '(Must be under 10 MB)';
   static const String  titleCustomerImageStepTwo  =   'Carlie Harvy';
   static const String  titleEmailStepTwo  =   'Email';

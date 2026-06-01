@@ -185,7 +185,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ],
                           ),
 
-                          const SizedBox(height: 25),
+                          const SizedBox(height: 20),
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Text(
+                                TextString.registerFooterFirst,
+                                style: TTextTheme.titleSmallRemember(context),
+                              ),
+                              GestureDetector(
+                                onTap: () => context.go('/login'),
+                                child: Text(
+                                  TextString.registerFooterTwo,
+                                  style: TTextTheme.titleSmallRegister(context),
+                                ),
+                              ),
+                            ],
+                          ),
+
 
                         ],
                       ),

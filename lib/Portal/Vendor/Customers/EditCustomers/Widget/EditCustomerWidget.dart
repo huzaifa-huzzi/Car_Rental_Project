@@ -550,7 +550,7 @@ class EditCustomerWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Text(hintText, style: TTextTheme.documnetIsnideSmallText(context)),
-                      Text(TextString.uploadSubtitle, style: TTextTheme.documnetIsnideSmallText2(context)),
+                      Text(TextString.uploadSubtitleDocument, style: TTextTheme.documnetIsnideSmallText2(context)),
                     ],
                   )
                       : isImage

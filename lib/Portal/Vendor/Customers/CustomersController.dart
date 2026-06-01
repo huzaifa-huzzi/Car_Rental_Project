@@ -1,13 +1,13 @@
 import 'package:car_rental_project/Portal/Vendor/Customers/CustomersDetails/Widget/PdfViewer.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/ReusableWidgetOfCustomers/CustomCalendarSutomer.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
-import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
+import 'package:country_picker/country_picker.dart' hide Country;
+import 'package:country_picker/src/country.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb, Uint8List;
-
 class DocumentHolder {
   final Uint8List? bytes;
   final String? path;
@@ -19,15 +19,17 @@ class ImageHolder {
   final String? path;
   final Uint8List? bytes;
   final String? name;
-
   ImageHolder({this.path, this.bytes, this.name});
 }
 
-
 class CustomerController extends GetxController {
+
+  //  CORE GLOBAL & FILTER VARIABLES
+
   var selectAge = "".obs;
   RxBool isFilterOpen = false.obs;
   var hoveredRowIndex = (-1).obs;
+  final customerFormKey = GlobalKey<FormState>();
 
   final RxInt currentPage2 = 1.obs;
   final RxInt pageSize2 = 10.obs;
@@ -41,18 +43,45 @@ class CustomerController extends GetxController {
     return (carList2.length / pageSize2.value).ceil();
   }
 
+
   @override
   void onInit() {
     super.onInit();
-    carList2.addAll(List.generate(
-        50, (index) => {"id": index, "Customer name": "Customer $index"}));
-    _updateDisplayedList();
     ever(currentPage2, (_) => _updateDisplayedList());
     ever(pageSize2, (_) => _updateDisplayedList());
   }
-  void _updateDisplayedList() {
-    int start = (currentPage2.value - 1) * pageSize2.value;
 
+  @override
+  void onReady() {
+    super.onReady();
+    _asyncLoadData();
+  }
+
+  void _asyncLoadData() async {
+    try {
+      isLoadingCountries.value = true;
+      await Future.delayed(const Duration(milliseconds: 50));
+      carList2.assignAll(List.generate(
+          50, (index) => {"id": index, "Customer name": "Customer $index"}
+      ));
+      _updateDisplayedList();
+      final data = CountryService().getAll();
+      countryList.assignAll(data);
+    } catch (e) {
+      debugPrint("Error loading initialization data: $e");
+    } finally {
+      isLoadingCountries.value = false;
+    }
+  }
+
+  //  PAGINATION LOGIC
+  void _updateDisplayedList() {
+    if (carList2.isEmpty) {
+      displayedCarList.clear();
+      return;
+    }
+
+    int start = (currentPage2.value - 1) * pageSize2.value;
     if (start >= carList2.length) {
       start = 0;
     }
@@ -60,11 +89,7 @@ class CustomerController extends GetxController {
     int end = start + pageSize2.value;
     if (end > carList2.length) end = carList2.length;
 
-    if (carList2.isEmpty) {
-      displayedCarList.clear();
-    } else {
-      displayedCarList.value = carList2.sublist(start, end);
-    }
+    displayedCarList.value = carList2.sublist(start, end);
   }
 
   void goToPreviousPage() {
@@ -88,8 +113,8 @@ class CustomerController extends GetxController {
     isFilterOpen.value = !isFilterOpen.value;
   }
 
-  /// CustomerDetail Screen
-  // Popup Logic
+ // CUSTOMER DETAIL VIEW LOGIC
+
   RxBool isOpen = false.obs;
   RxString imagePath = ''.obs;
 
@@ -102,6 +127,7 @@ class CustomerController extends GetxController {
     isOpen.value = false;
     imagePath.value = '';
   }
+
   final List<Map<String, dynamic>> documentsList = [
     {
       "title": "Gov ID",
@@ -122,43 +148,65 @@ class CustomerController extends GetxController {
       "filePath": ImageString.registrationForm,
     },
   ];
+
   void handleDynamicView(BuildContext context, Map<String, dynamic> doc) {
     final String path = (doc["filePath"] ?? "") as String;
     final bool isPdf = (doc["isPdf"] ?? false) as bool;
     final String title = (doc["title"] ?? "Document") as String;
 
-    if (path.isEmpty) {
-      print("Error: File Empty !");
-      return;
-    }
+    if (path.isEmpty) return;
 
     if (isPdf) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => GovIdPdfViewer(
-            assetPath: path,
-            title: title,
-          ),
+          builder: (context) => GovIdPdfViewer(assetPath: path, title: title),
         ),
       );
     } else {
-      try {
-        Get.find<CustomerController>().open(path);
-      } catch (e) {
-        print("Controller Error: Customercontrolelr not Initialized -> $e");
-      }
+      open(path);
     }
   }
+
   void handleDynamicDownload(Map<String, dynamic> doc) {
     final String fileUrl = (doc["filePath"] ?? "") as String;
-    print("Controller standard downloading engine active for: $fileUrl");
+    debugPrint("Standard downloading active: $fileUrl");
   }
 
-  /// Add Customer Screen
+  //  ADD CUSTOMER CONTROLLERS & LOGIC
 
   Rxn<ImageHolder> profileImage = Rxn<ImageHolder>();
   var imageError = false.obs;
+
+  // Form Fields Controllers
+  final givenNameController = TextEditingController();
+  final surnameController = TextEditingController();
+  final dobController = TextEditingController();
+  final contactController = TextEditingController();
+  final emailController = TextEditingController();
+  final addressController = TextEditingController();
+  final noteController = TextEditingController();
+
+  // License Block
+  final licenseNameController = TextEditingController();
+  final licenseNumberController = TextEditingController();
+  final licenseExpiryController = TextEditingController();
+  final licenseExpiryController2 = TextEditingController();
+  final licenseCardNumberController = TextEditingController();
+
+  // Documents Dynamic Management
+  RxList<Rx<DocumentHolder?>> selectedDocuments = <Rx<DocumentHolder?>>[].obs;
+  RxList<TextEditingController> documentNameControllers = <TextEditingController>[].obs;
+  final int maxDocuments = 6;
+
+  // Cards Block
+  final ccNumberController = TextEditingController();
+  final ccHolderController = TextEditingController();
+  final ccExpiryController = TextEditingController();
+  final ccCvcController = TextEditingController();
+  final ccCountryController = TextEditingController();
+  var selectedCardIndex = 0.obs;
+  RxInt totalCardsAdd2 = 1.obs;
 
   Future<void> pickProfileImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -188,40 +236,10 @@ class CustomerController extends GetxController {
           snackPosition: SnackPosition.BOTTOM
       );
       return false;
-    } else {
-      imageError.value = false;
-      return true;
     }
+    imageError.value = false;
+    return true;
   }
-
-  final givenNameController = TextEditingController();
-  final surnameController = TextEditingController();
-  final dobController = TextEditingController();
-  final contactController = TextEditingController();
-  final emailController = TextEditingController();
-  final addressController = TextEditingController();
-
-  final noteController = TextEditingController();
-
-  final licenseNameController = TextEditingController();
-  final licenseNumberController = TextEditingController();
-  final licenseExpiryController = TextEditingController();
-  final licenseExpiryController2 = TextEditingController();
-  final licenseCardNumberController = TextEditingController();
-
-  RxList<Rx<DocumentHolder?>> selectedDocuments = <Rx<DocumentHolder?>>[].obs;
-  RxList<TextEditingController> documentNameControllers = <
-      TextEditingController>[].obs;
-  final int maxDocuments = 6;
-
-  final ccNumberController = TextEditingController();
-  final ccHolderController = TextEditingController();
-  final ccExpiryController = TextEditingController();
-  final ccCvcController = TextEditingController();
-  final ccCountryController = TextEditingController();
-  var selectedCardIndex = 0.obs;
-
-  RxInt totalCardsAdd2 = 1.obs;
 
   void addNewCardSlot() {
     if (totalCardsAdd2.value < 5) {
@@ -231,6 +249,7 @@ class CustomerController extends GetxController {
       Get.snackbar("Limit Reached", "You can only add up to 5 cards.");
     }
   }
+
   void addDocumentSlot() {
     if (selectedDocuments.length < maxDocuments) {
       documentNameControllers.add(TextEditingController());
@@ -265,6 +284,8 @@ class CustomerController extends GetxController {
     }
   }
 
+  //  CUSTOM CUSTOM CALENDAR OVERLAY LOGIC
+
   final LayerLink dobLink = LayerLink();
   final LayerLink dobLink2 = LayerLink();
   final LayerLink expiryLink = LayerLink();
@@ -276,8 +297,7 @@ class CustomerController extends GetxController {
 
   OverlayEntry? calendarOverlay;
 
-  void toggleCalendar(BuildContext context, LayerLink link,
-      TextEditingController targetController, {bool isYearOnly = false}) {
+  void toggleCalendar(BuildContext context, LayerLink link, TextEditingController targetController, {bool isYearOnly = false}) {
     if (calendarOverlay != null) {
       removeCalendar();
     } else {
@@ -293,66 +313,46 @@ class CustomerController extends GetxController {
     isDateDropOpen.value = false;
   }
 
-
-  OverlayEntry _createCalendarOverlay(BuildContext context,
-      LayerLink link,
-      TextEditingController targetController,) {
-    final screenSize = MediaQuery
-        .of(context)
-        .size;
+  OverlayEntry _createCalendarOverlay(BuildContext context, LayerLink link, TextEditingController targetController) {
+    final screenSize = MediaQuery.of(context).size;
     bool isMobile = screenSize.width < 600;
-
-    double overlayWidth;
-    if (screenSize.width < 400) {
-      overlayWidth = screenSize.width * 0.9;
-    } else {
-      overlayWidth = 300;
-    }
+    double overlayWidth = screenSize.width < 400 ? screenSize.width * 0.9 : 300;
 
     return OverlayEntry(
-      builder: (context) =>
-          Stack(
-            children: [
-              Positioned.fill(
-                child: GestureDetector(
-                  onTap: removeCalendar,
-                  behavior: HitTestBehavior.opaque,
-                  child: Container(
-                      color: AppColors.fieldsBackground.withOpacity(0.05)),
-                ),
-              ),
-              isMobile
-                  ? Center(
-                child: Material(
-                  elevation: 20,
-                  borderRadius: BorderRadius.circular(12),
-                  child: SizedBox(
-                    width: overlayWidth,
-                    child: _buildCalendarContent(
-                        overlayWidth, targetController),
-                  ),
-                ),
-              )
-                  : CompositedTransformFollower(
-                link: link,
-                showWhenUnlinked: false,
-                targetAnchor: Alignment.bottomLeft,
-                followerAnchor: Alignment.topLeft,
-                offset: const Offset(0, 8),
-                child: Material(
-                  elevation: 10,
-                  borderRadius: BorderRadius.circular(12),
-                  child: SizedBox(
-                    width: overlayWidth,
-                    child: _buildCalendarContent(
-                        overlayWidth, targetController),
-                  ),
-                ),
-              ),
-            ],
+      builder: (context) => Stack(
+        children: [
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: removeCalendar,
+              behavior: HitTestBehavior.opaque,
+              child: Container(color: AppColors.fieldsBackground.withOpacity(0.05)),
+            ),
           ),
+          isMobile
+              ? Center(
+            child: Material(
+              elevation: 20,
+              borderRadius: BorderRadius.circular(12),
+              child: SizedBox(width: overlayWidth, child: _buildCalendarContent(overlayWidth, targetController)),
+            ),
+          )
+              : CompositedTransformFollower(
+            link: link,
+            showWhenUnlinked: false,
+            targetAnchor: Alignment.bottomLeft,
+            followerAnchor: Alignment.topLeft,
+            offset: const Offset(0, 8),
+            child: Material(
+              elevation: 10,
+              borderRadius: BorderRadius.circular(12),
+              child: SizedBox(width: overlayWidth, child: _buildCalendarContent(overlayWidth, targetController)),
+            ),
+          ),
+        ],
+      ),
     );
   }
+
   Widget _buildCalendarContent(double width, TextEditingController targetController) {
     return CustomCalendarCustomer(
       width: width,
@@ -363,14 +363,16 @@ class CustomerController extends GetxController {
       },
     );
   }
-  static final GlobalKey<FormState> customerFormKey = GlobalKey<FormState>();
+
+  //  COUNTRY ENGINE VARIABLES & VALIDATION
+
   var dropdownErrors = <String, String>{}.obs;
+  var countryList = <Country>[].obs;
+  var isLoadingCountries = true.obs;
 
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) return "Email is required";
-    final bool emailValid = RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-        .hasMatch(value);
+    final bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
     if (!emailValid) return "Enter a valid email address";
     return null;
   }
@@ -379,22 +381,23 @@ class CustomerController extends GetxController {
     if (value == null || value.isEmpty) return "$fieldName is required";
     return null;
   }
+
   bool saveCustomer2(BuildContext context) {
     bool isFormValid = customerFormKey.currentState?.validate() ?? false;
     bool hasProfileImg = profileImage.value != null;
     if (!hasProfileImg) {
       imageError.value = true;
-      Get.snackbar("Photo Required", "Please upload customer profile photo",
-          backgroundColor: AppColors.primaryColor, colorText: Colors.white);
+      Get.snackbar("Photo Required", "Please upload customer profile photo", backgroundColor: AppColors.primaryColor, colorText: Colors.white);
     }
     bool isLicenseValid = licenseNameController.text.trim().isNotEmpty;
     if (!isLicenseValid) {
-      Get.snackbar("License Required", "License Name is required",
-          backgroundColor: AppColors.primaryColor, colorText: Colors.white);
+      Get.snackbar("License Required", "License Name is required", backgroundColor: AppColors.primaryColor, colorText: Colors.white);
     }
     return isFormValid && hasProfileImg && isLicenseValid;
   }
-   /// StepTwoCustomer
+
+  //  STEP TWO CUSTOMER (CREDENTIALS)
+
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
   var isPasswordHidden = true.obs;
@@ -405,6 +408,7 @@ class CustomerController extends GetxController {
   void togglePasswordVisibility() {
     isPasswordHidden.value = !isPasswordHidden.value;
   }
+
   bool validateFields() {
     bool isValid = true;
     if (userNameController.text.trim().isEmpty) {
@@ -427,7 +431,6 @@ class CustomerController extends GetxController {
     } else {
       passwordError.value = null;
     }
-
     return isValid;
   }
 
@@ -435,31 +438,28 @@ class CustomerController extends GetxController {
     await Future.delayed(const Duration(seconds: 3));
   }
 
-
   RxString selectedCode = "+61".obs;
   RxString selectedFlag = "🇦🇺".obs;
   var selectedCountryName = "Australia".obs;
   RxString selectedCode2 = "+61".obs;
   RxString selectedFlag2 = "🇦🇺".obs;
   var selectedCountryName2 = "Australia".obs;
+
   final phoneController = TextEditingController();
   final ageController = TextEditingController();
   final searchController = TextEditingController();
   final searchController2 = TextEditingController();
 
+  //  EDIT CUSTOMER SCREEN CONTROLLERS
 
-
-  /// Edit Customer Screen
   Rxn<ImageHolder> profileImage2 = Rxn<ImageHolder>();
   final phoneController2 = TextEditingController();
-
   final givenNameController2 = TextEditingController();
   final surnameController2 = TextEditingController();
   final dobController2 = TextEditingController();
   final contactController2 = TextEditingController();
   final emailController2 = TextEditingController();
   final addressController2 = TextEditingController();
-
   final noteController2 = TextEditingController();
 
   final licenseNameController2 = TextEditingController();
@@ -469,26 +469,15 @@ class CustomerController extends GetxController {
   RxList<Rx<DocumentHolder?>> selectedDocuments2 = <Rx<DocumentHolder?>>[].obs;
   RxList<TextEditingController> documentNameControllers2 = <TextEditingController>[].obs;
   final int maxDocuments2 = 6;
-
   RxInt totalCards = 1.obs;
-
-  void addNewCard() {
-    if (totalCards.value < 5) {
-      totalCards.value++;
-      selectedCardIndex2.value = totalCards.value - 1;
-    } else {
-      Get.snackbar("Limit Reached", "You can only add up to 5 cards.");
-    }
-  }
+  var selectedCardIndex2 = 0.obs;
 
   final ccNumberController2 = TextEditingController();
   final ccHolderController2 = TextEditingController();
   final ccExpiryController2 = TextEditingController();
   final ccCvcController2 = TextEditingController();
   final ccCountryController2 = TextEditingController();
-  var selectedCardIndex2 = 0.obs;
 
-  // Pick Profile Image
   Future<void> pickProfileImage2() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image, withData: kIsWeb);
     if (result != null) {
@@ -534,21 +523,18 @@ class CustomerController extends GetxController {
       );
     }
   }
+
   static final editCustomerFormKey = GlobalKey<FormState>();
   RxBool imageError2 = false.obs;
 
   String? validateRequired2(String? value, String fieldName) {
-    if (value == null || value.trim().isEmpty) {
-      return "$fieldName is required";
-    }
+    if (value == null || value.trim().isEmpty) return "$fieldName is required";
     return null;
   }
 
   String? validateEmail2(String? value) {
     if (value == null || value.trim().isEmpty) return "Email is required";
-    final bool emailValid = RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-        .hasMatch(value);
+    final bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
     return emailValid ? null : "Please enter a valid email";
   }
 
@@ -560,17 +546,28 @@ class CustomerController extends GetxController {
     imageError2.value = false;
     return true;
   }
+
   void updateCustomerData(BuildContext context) {
     if (editCustomerFormKey.currentState!.validate() && validateProfileImage2()) {
-      print("Form Validated! Updating...");
-    } else {
-      print("Validation Failed");
+      debugPrint("Form Validated! Updating...");
     }
   }
 
-  /// CardList Customer Header Widget
+  void addNewCard() {
+    if (totalCards.value < 5) {
+      totalCards.value++;
+      selectedCardIndex2.value = totalCards.value - 1;
+    } else {
+      Get.snackbar("Limit Reached", "You can only add up to 5 cards.");
+    }
+  }
+
+  //  HEADER & SORTING LOGIC
+
   RxBool isSearchCategoryOpen = false.obs;
   RxString selectedSearchType = "Customer Name".obs;
+  var sortColumn = "".obs;
+  var sortOrder = 0.obs;
 
   void toggleSearchCategory() {
     isSearchCategoryOpen.value = !isSearchCategoryOpen.value;
@@ -578,10 +575,6 @@ class CustomerController extends GetxController {
       isFilterOpen.value = false;
     }
   }
-
-  /// Sorting
-  var sortColumn = "".obs;
-  var sortOrder = 0.obs;
 
   void toggleSort(String columnName) {
     if (sortColumn.value == columnName) {
@@ -593,10 +586,11 @@ class CustomerController extends GetxController {
     }
   }
 
+  //  MEMORY DISPOSAL ENGINE
 
   @override
   void onClose() {
-    // 1. Add Customer Screen Controllers
+    // Add Screen Controllers Clear
     givenNameController.dispose();
     surnameController.dispose();
     dobController.dispose();
@@ -615,13 +609,16 @@ class CustomerController extends GetxController {
     ccExpiryController.dispose();
     ccCvcController.dispose();
     ccCountryController.dispose();
+    phoneController.dispose();
+    ageController.dispose();
+    searchController.dispose();
+    searchController2.dispose();
 
-    // Dynamic Document Controllers (Add Screen)
-    for (var controller in documentNameControllers) {
-      controller.dispose();
+    for (var ctrl in documentNameControllers) {
+      ctrl.dispose();
     }
 
-    // 2. Edit Customer Screen Controllers
+    // Edit Screen Controllers Clear
     givenNameController2.dispose();
     surnameController2.dispose();
     dobController2.dispose();
@@ -638,15 +635,13 @@ class CustomerController extends GetxController {
     ccExpiryController2.dispose();
     ccCvcController2.dispose();
     ccCountryController2.dispose();
+    phoneController2.dispose();
 
-    for (var controller in documentNameControllers2) {
-      controller.dispose();
+    for (var ctrl in documentNameControllers2) {
+      ctrl.dispose();
     }
 
+    calendarOverlay?.dispose();
     super.onClose();
   }
-
-
-
-
 }

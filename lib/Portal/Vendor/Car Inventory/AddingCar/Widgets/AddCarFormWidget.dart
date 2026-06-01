@@ -223,7 +223,7 @@ class AddCarFormWidget extends StatelessWidget {
           controller: controller,
           validator: validator,
           keyboardType: keyboardType,
-          style: TTextTheme.insidetextfieldWrittenText(context),
+          style: TTextTheme.titleinputTextField(context),
           inputFormatters: [
             if (maxLength != null) LengthLimitingTextInputFormatter(maxLength),
           ],
@@ -231,7 +231,9 @@ class AddCarFormWidget extends StatelessWidget {
             filled: true,
             fillColor: AppColors.secondaryColor,
             hintText: hint,
-            hintStyle: TTextTheme.pOne(context),
+            hintStyle: TTextTheme.pOne(context).copyWith(
+              color: Colors.grey,
+            ),
             prefixText: prefix,
             errorStyle: TTextTheme.ErrorStyle(context),
             border: OutlineInputBorder(
@@ -350,7 +352,7 @@ class AddCarFormWidget extends StatelessWidget {
                         style: TTextTheme.titleinputTextField(context),
                         decoration: InputDecoration(
                           hintText: "Search",
-                          hintStyle: TTextTheme.bodyRegular14Search(context),
+                          hintStyle: TTextTheme.pOne(context),
                           prefixIcon: Icon(Icons.search, color: AppColors.primaryColor, size: 18),
                           filled: true,
                           fillColor: AppColors.backgroundOfScreenColor,
@@ -458,7 +460,9 @@ class AddCarFormWidget extends StatelessWidget {
                     Expanded(
                       child: Text(
                         selected.value.isEmpty ? "Select $label..." : selected.value,
-                        style: TTextTheme.pOne(context)
+                        style:TTextTheme.pOne(context).copyWith(
+                          color: selected.value.isEmpty ? Colors.grey : Colors.black,
+                        ),
                       ),
                     ),
                     Image.asset(
@@ -544,7 +548,7 @@ class AddCarFormWidget extends StatelessWidget {
                 controller.dropdownErrors[id] = "";
               },
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
+                duration: const Duration(milliseconds: 20),
                 height: 48,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
@@ -616,7 +620,9 @@ class AddCarFormWidget extends StatelessWidget {
     Color textColor = AppColors.blackColor;
 
     if (status.isEmpty) {
-      return Text("Select Status", style: TTextTheme.pOne(context));
+      return Text("Select Status", style: TTextTheme.pOne(context).copyWith(
+        color: Colors.grey ,
+      ),);
     }
 
     String displayStatus = status;
@@ -859,7 +865,7 @@ class AddCarFormWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Text(hintText, style: TTextTheme.documnetIsnideSmallText(context)),
-                      Text(TextString.uploadSubtitle, style: TTextTheme.documnetIsnideSmallText2(context)),
+                      Text(TextString.uploadSubtitleDocument, style: TTextTheme.documnetIsnideSmallText2(context)),
                     ],
                   )
                       : isImage

@@ -1077,13 +1077,13 @@ class DashboardContent extends StatelessWidget {
   Widget _buildQuickActionsCustom(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(6),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withOpacity(0.015),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -1097,10 +1097,12 @@ class DashboardContent extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                TextString.quickActionText,
-                style: TTextTheme.quickDashboardText(context),
-                overflow: TextOverflow.ellipsis,
+              Expanded(
+                child: Text(
+                  TextString.quickActionText,
+                  style: TTextTheme.quickDashboardText(context),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               const Icon(Icons.more_horiz, size: 20, color: AppColors.textColor),
             ],
@@ -1127,17 +1129,13 @@ class DashboardContent extends StatelessWidget {
                   children: [
                     AddButtonOfDashboard(
                       text: "Add Car",
-                      onTap: () {
-                        Get.lazyPut(() => CarInventoryController(), fenix: true);
-                        context.push('/addNewCar');
-                      },
+                      onTap: () => context.push('/addNewCar'),
                       width: buttonWidth,
                       height: 35,
                     ),
                     AddButtonOfDashboard(
                       text: "Add Customer",
                       onTap: () {
-                        Get.lazyPut(() => CustomerController(), fenix: true);
                         context.push('/addNewCustomer', extra: {"hideMobileAppBar": true});
                       },
                       width: buttonWidth,
@@ -1145,18 +1143,13 @@ class DashboardContent extends StatelessWidget {
                     ),
                     AddButtonOfDashboard(
                       text: "Add Pickup",
-                      onTap: () {
-                        Get.lazyPut(() => PickupCarController(), fenix: true);
-                        context.push('/addpickup',extra: {"hideMobileAppBar": true});
-                      },
+                      onTap: () => context.push('/addpickup', extra: {"hideMobileAppBar": true}),
                       width: buttonWidth,
                       height: 35,
                     ),
                     AddButtonOfDashboard(
                       text: "Add Dropoff",
-                      onTap: (){
-                        context.push('/addDropOff');
-                      },
+                      onTap: () => context.push('/addDropOff'),
                       width: buttonWidth,
                       height: 35,
                     ),

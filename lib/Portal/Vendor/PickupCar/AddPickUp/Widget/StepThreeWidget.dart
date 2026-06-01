@@ -84,7 +84,6 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
                           ),
                           const SizedBox(height: 40),
                           Obx(() {
-                            // Checkbox validation logic
                             bool hasError = controller.isTermsAgreed.value == false &&
                                 controller.errorMessageStep2.value == "Please agree to terms";
 
