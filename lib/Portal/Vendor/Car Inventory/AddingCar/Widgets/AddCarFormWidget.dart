@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:go_router/go_router.dart';
 
 class AddCarFormWidget extends StatelessWidget {
   AddCarFormWidget({super.key});
@@ -1382,9 +1383,20 @@ class AddCarFormWidget extends StatelessWidget {
     );
   }
   void showSuccessDialog(BuildContext context) {
+    final router = GoRouter.of(context);
+
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+
+        Future.delayed(const Duration(seconds: 2), () {
+          if (dialogContext.mounted) {
+            Navigator.pop(dialogContext);
+            router.go('/carInventory');
+          }
+        });
+
         return Dialog(
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
@@ -1414,18 +1426,18 @@ class AddCarFormWidget extends StatelessWidget {
                           children: [
                             Text(
                                 TextString.dialogInventory3,
-                                style: TTextTheme.h2Style(context)
+                                style: TTextTheme.h2Style(dialogContext)
                             ),
                             const SizedBox(height: 8),
                             Text(
                                 TextString.dialogInventory4,
-                                style: TTextTheme.bodyRegular16(context)
+                                style: TTextTheme.bodyRegular16(dialogContext)
                             ),
                           ],
                         ),
                       ),
                       IconButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () => Navigator.pop(dialogContext),
                         icon: Container(
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(

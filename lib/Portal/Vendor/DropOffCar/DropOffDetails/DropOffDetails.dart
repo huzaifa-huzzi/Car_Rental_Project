@@ -146,7 +146,7 @@ class DropOffDetails extends StatelessWidget {
             {"label": "Bond Amount", "controller": controller.bondAmountControllerStepTwo, "hint": "2600 \$"},
             {"label": "Paid Bond", "controller": controller.paidBondControllerStepTwo, "hint": "600 \$"},
             {"label": TextString.subtitleLeftBondStepTwoDropOff, "controller": controller.dueBondAmountControllerStepTwo, "hint": "2000 \$"},
-            {"label": "Bond Returned", "controller": controller.dueBondReturnedControllerStepTwo, "hint": "2000 \$"},
+            {"label": "Bond Returned", "controller": controller.dueBondReturnedControllerStepTwo, "hint": "2000 \$",},
           ], isMobile),
         ),
         const SizedBox(height: 25),
@@ -365,6 +365,7 @@ class DropOffDetails extends StatelessWidget {
       runSpacing: 15,
       children: items.map((item) {
         double itemWidth = isMobile ? (availableWidth - 100) : (availableWidth / 5.5);
+        bool isSpecial = item['label'] == "Bond Returned";
 
         Widget fieldContent = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -381,6 +382,7 @@ class DropOffDetails extends StatelessWidget {
                 cursorColor: AppColors.blackColor,
                 controller: item['controller'],
                 readOnly: true,
+
                 style: TTextTheme.insidetextfieldWrittenText(context),
                 decoration: InputDecoration(
                   hintText: item['hint'],
@@ -394,9 +396,18 @@ class DropOffDetails extends StatelessWidget {
           ],
         );
 
-        return  SizedBox(
+        return SizedBox(
           width: itemWidth,
-          child: fieldContent,
+          child: isSpecial
+              ? Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: AppColors.backgroundOfPickupsWidget,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: fieldContent,
+          )
+              : fieldContent,
         );
       }).toList(),
     );

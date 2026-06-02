@@ -94,18 +94,27 @@ class HeaderWebPickupWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (showBack)
-                  GestureDetector(
-                    onTap: () {
-                      final router = GoRouter.of(context);
+        GestureDetector(
+          onTap: () {
+            final router = GoRouter.of(context);
 
-                      if (onBackPressed != null) {
-                        onBackPressed!();
-                      } else if (router.canPop()) {
-                        router.pop();
-                      } else {
-                        router.go('/pickupcar');
-                      }
-                    },
+            if (onBackPressed != null) {
+              onBackPressed!();
+            } else if (router.canPop()) {
+              router.pop();
+            } else {
+              final String location = GoRouterState.of(context).uri.toString().split('?').first;
+              if (location.contains('AddpickupT&C') || location.contains('pickupT&Cdescription')) {
+                router.go('/pickupT&C');
+              }
+              else if (location.contains('pickupT&C')) {
+                router.go('/pickupcar');
+              }
+              else {
+                router.go('/pickupcar');
+              }
+            }
+          },
                     child: Container(
                       width: isMobile ? 30 : AppSizes.buttonHeight(context) * 0.7,
                       height: isMobile ? 30 : AppSizes.buttonHeight(context) * 0.7,

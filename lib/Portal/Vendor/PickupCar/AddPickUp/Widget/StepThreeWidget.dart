@@ -739,12 +739,12 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
     const double webButtonWidth = 130.0;
     const double webButtonHeight = 45.0;
     final double spacing = AppSizes.padding(context);
-    final controller = Get.put(PickupCarController());
+    final controller = Get.find<PickupCarController>();
+
     void handleConfirm() async {
       bool isValid = controller.validateSignatureSection();
 
       if (isValid) {
-        print("Validation Success! Showing Dialog...");
         showSavingDialog(context);
       } else {
         Get.snackbar(
@@ -757,7 +757,6 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
         );
       }
     }
-
     if (isMobile) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -769,9 +768,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
               backgroundColor: Colors.transparent,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
-              onTap: () {
-                Get.back();
-              },
+              onTap: () => Get.back(),
             ),
           ),
           SizedBox(height: spacing),
@@ -797,9 +794,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
               backgroundColor: Colors.transparent,
               textColor: AppColors.textColor,
               borderColor: AppColors.quadrantalTextColor,
-              onTap: () {
-                Get.back();
-              },
+              onTap: () => Get.back(),
             ),
           ),
           SizedBox(width: spacing),
@@ -901,9 +896,18 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
     );
   }
   void showSuccessDialog(BuildContext context) {
+    final router = GoRouter.of(context);
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        Future.delayed(const Duration(seconds: 2), () {
+          if (dialogContext.mounted) {
+            Navigator.pop(dialogContext);
+            router.go('/pickupcar');
+          }
+        });
+
         return Dialog(
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
@@ -933,18 +937,18 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
                           children: [
                             Text(
                                 TextString.dialogPickup3,
-                                style: TTextTheme.h2Style(context)
+                                style: TTextTheme.h2Style(dialogContext)
                             ),
                             const SizedBox(height: 8),
                             Text(
                                 TextString.dialogPickup4,
-                                style: TTextTheme.bodyRegular16(context)
+                                style: TTextTheme.bodyRegular16(dialogContext)
                             ),
                           ],
                         ),
                       ),
                       IconButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () => Navigator.pop(dialogContext),
                         icon: Container(
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(

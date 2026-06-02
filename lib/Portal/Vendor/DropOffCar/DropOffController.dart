@@ -399,6 +399,7 @@ class DropOffController extends GetxController{
 
   final bondAmountControllerStepTwoAdd  = TextEditingController();
   final paidBondControllerStepTwoAdd  = TextEditingController();
+  final leftAmountControllerStepTwoAdd  = TextEditingController();
   final dueBondAmountControllerStepTwoAdd  = TextEditingController();
   final dueBondReturnedControllerStepTwoAdd  = TextEditingController();
 
@@ -625,25 +626,46 @@ class DropOffController extends GetxController{
     hirerNameError.value = "";
     signatureError.value = "";
     termsError.value = "";
+
     if (!isTermsAgreed.value) {
       termsError.value = "Please agree to terms and conditions";
       isValid = false;
+
+      Get.snackbar("Terms Required", "Please agree to terms and conditions",
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.orange, colorText: Colors.white);
+      return false;
     }
     if (dropOffOwnerNameFieldController.text.trim().isEmpty) {
       ownerNameError.value = "Owner name is required";
       isValid = false;
+
+      Get.snackbar("Required", "Owner name is required",
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: AppColors.primaryColor, colorText: Colors.white);
+      return false;
     }
     if (!isDropOffOwnerSignatureConfirmed.value) {
       signatureError.value = "Please confirm owner signature";
       isValid = false;
+
+      Get.snackbar("Required", "Please draw and click 'Confirm' on Owner Signature",
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: AppColors.primaryColor, colorText: Colors.white);
+      return false;
     }
     if (dropOffHirerNameFieldController.text.trim().isEmpty) {
       hirerNameError.value = "Hirer name is required";
       isValid = false;
+
+      Get.snackbar("Required", "Hirer name is required",
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: AppColors.primaryColor, colorText: Colors.white);
+      return false;
     }
     if (!isDropOffHirerSignatureConfirmed.value) {
-      if (isValid) signatureError.value = "Please confirm hirer signature";
+      signatureError.value = "Please confirm hirer signature";
       isValid = false;
+
+      Get.snackbar("Required", "Please draw and click 'Confirm' on Hirer Signature",
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: AppColors.primaryColor, colorText: Colors.white);
+      return false;
     }
 
     return isValid;

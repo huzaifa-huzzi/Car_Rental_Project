@@ -4,6 +4,7 @@ import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
 class HeaderWebDropOffWidget extends StatelessWidget {
@@ -102,19 +103,29 @@ class HeaderWebDropOffWidget extends StatelessWidget {
                       }
 
                       final router = GoRouter.of(context);
-                      final String location = GoRouterState.of(context).uri.toString();
                       if (router.canPop()) {
                         router.pop();
                       }
                       else {
-                        List<String> segments = location.split('/');
-                        if (segments.length > 2) {
-                          segments.removeLast();
-                          String previousPath = segments.join('/');
-                          context.go(previousPath.isEmpty ? '/' : previousPath);
+                        final String location = GoRouterState.of(context).uri.toString().split('?').first;
+
+                        if (location.contains('/dropOffT&Cdescription')) {
+                          router.go('/dropOffT&C');
+                        }
+                        else if (location.contains('/AdddropOffT&C')) {
+                          router.go('/dropOffT&C');
+                        }
+                        else if (location.contains('/dropOffT&C')) {
+                          router.go('/dropoffCar');
+                        }
+                        else if (location.contains('inventory') || location.contains('Inventory')) {
+                          router.go('/carInventory');
+                        }
+                        else if (location.contains('pickup') || location.contains('Pickup')) {
+                          router.go('/pickupCar');
                         }
                         else {
-                          context.go('/dropOffT&C');
+                          router.go('/dropoffCar');
                         }
                       }
                     },

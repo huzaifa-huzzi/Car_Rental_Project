@@ -101,6 +101,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                               child: _buildBondGrid(context, [
                                 {"label": "Bond Amount", "controller": controller.bondAmountControllerStepTwoAdd, "hint": "2600 \$", "isReadOnly": true},
                                 {"label": "Paid Bond", "controller": controller.paidBondControllerStepTwoAdd, "hint": "600 \$", "isReadOnly": true},
+                                {"label": "left Amount", "controller": controller.leftAmountControllerStepTwoAdd, "hint": "300 \$", "isReadOnly": true},
                                 {"label": "Bond Returned", "controller": controller.dueBondReturnedControllerStepTwoAdd, "hint": "2000 \$", "isSpecial": true},
                               ], isMobile),
                             ),

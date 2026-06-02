@@ -48,6 +48,7 @@ class CompaniesAdminController extends GetxController {
       "status": "Active",
       "plan": "Monthly",
       "planStatus": "Demo",
+      "country" : "Australia",
       "joiningDate": "7th April, 2026",
       "activeCars": 78
     },
@@ -59,6 +60,7 @@ class CompaniesAdminController extends GetxController {
       "status": "Pending",
       "plan": "Weekly",
       "planStatus": "Subscribed",
+      "country" : "USA",
       "joiningDate": "7th April, 2026",
       "activeCars": 78
     },
@@ -70,6 +72,7 @@ class CompaniesAdminController extends GetxController {
       "status": "Suspended",
       "plan": "Weekly",
       "planStatus": "Overdue",
+      "country" : "India",
       "joiningDate": "7th April, 2026",
       "activeCars": 78
     },
@@ -81,6 +84,7 @@ class CompaniesAdminController extends GetxController {
       "status": "Inactive",
       "plan": "Weekly",
       "planStatus": "Cancelled",
+      "country" : "Pakistan",
       "joiningDate": "7th April, 2026",
       "activeCars": 78
     },

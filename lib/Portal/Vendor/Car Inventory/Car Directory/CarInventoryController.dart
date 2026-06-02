@@ -356,8 +356,8 @@ class CarInventoryController extends GetxController {
 
   String? validateRegistration(String? value) {
     if (value == null || value.isEmpty) return "Registration is required";
-    if (value.trim().length < 8 || value.trim().length > 10) {
-      return "Must be between 8 to 10 characters";
+    if (value.trim().length < 5 || value.trim().length > 10) {
+      return "Must be between 5 to 10 characters";
     }
     return null;
   }
@@ -775,8 +775,6 @@ class CarInventoryController extends GetxController {
       }
     });
     final textFields = {
-      'Registration': reg2Controller.text,
-      'VIN': vin2Controller.text,
       'Seats': seats2Controller.text,
       'Engine': engine2Controller.text,
       'Color': color2Controller.text,
@@ -789,16 +787,31 @@ class CarInventoryController extends GetxController {
       if (value.trim().isEmpty) {
         textFieldErrors[id] = "Required";
         isValid = false;
-      } else if (id == 'VIN' && value.length != 17) {
-        textFieldErrors[id] = "VIN must be 17 chars";
-        isValid = false;
-      } else if (id == 'Registration' && (value.length < 8 || value.length > 10)) {
-        textFieldErrors[id] = "8-10 chars required";
-        isValid = false;
       } else {
         textFieldErrors.remove(id);
       }
     });
+    final regValue = reg2Controller.text.trim();
+    if (regValue.isEmpty) {
+      regError.value = "Required";
+      isValid = false;
+    } else if (regValue.length < 5 || regValue.length > 10) {
+      regError.value = "5-10 numbers required";
+      isValid = false;
+    } else {
+      regError.value = "";
+    }
+
+    final vinValue = vin2Controller.text.trim();
+    if (vinValue.isEmpty) {
+      vinError.value = "Required";
+      isValid = false;
+    } else if (vinValue.length != 17) {
+      vinError.value = "VIN must be 17 chars";
+      isValid = false;
+    } else {
+      vinError.value = "";
+    }
     if (selectedImages2.isEmpty) {
       imageError.value = "At least one image is required";
       isValid = false;

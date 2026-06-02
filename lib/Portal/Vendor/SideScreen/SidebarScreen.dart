@@ -38,11 +38,22 @@ class SidebarScreen extends StatelessWidget {
 
 
     final String currentRoute = GoRouterState.of(context).uri.toString();
-
-
- WidgetsBinding.instance.addPostFrameCallback((_) {
-  controller.syncWithRoute(currentRoute);
- });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final String cleanPath = currentRoute.split('?').first;
+      final String lowerPath = cleanPath.toLowerCase();
+      if (lowerPath.contains('pickupt&c')) {
+        controller.syncWithRoute('/pickupT&C');
+      }
+      else if (lowerPath.contains('pickupcar')) {
+        controller.syncWithRoute('/pickupcar');
+      }
+      else if (lowerPath.contains('dropofft&c')) {
+        controller.syncWithRoute('/dropOffT&C');
+      }
+      else {
+        controller.syncWithRoute(currentRoute);
+      }
+    });
 
     /// Sidebar content
     Widget sidebarContent({bool showLogo = true}) {
@@ -149,19 +160,27 @@ class SidebarScreen extends StatelessWidget {
     }
 
     void handleAddButtonPressed() {
-      if (currentRoute.contains('/customers')) {
+      final String lowerRoute = currentRoute.toLowerCase();
+
+      if (lowerRoute.contains('/customers')) {
         context.push('/customers/addNewCustomer', extra: {"hideMobileAppBar": true});
       }
-      else if (currentRoute.contains('/pickupcar')) {
+      else if (lowerRoute.contains('pickupt&c')) {
+        context.push('/AddpickupT&C', extra: {"hideMobileAppBar": true});
+      }
+      else if (lowerRoute.contains('pickupcar')) {
         context.push('/addpickup', extra: {"hideMobileAppBar": true});
       }
-      else if (currentRoute.contains('/dropoffCar')) {
+      else if (lowerRoute.contains('dropofft&c')) {
+        context.push('/AdddropOffT&C', extra: {"hideMobileAppBar": true});
+      }
+      else if (lowerRoute.contains('dropoffcar')) {
         context.push('/addDropOff', extra: {"hideMobileAppBar": true});
       }
-      else if (currentRoute.contains('/staff')) {
+      else if (lowerRoute.contains('/staff')) {
         context.push('/addStaff', extra: {"hideMobileAppBar": true});
       }
-      else if (currentRoute.contains('/Payment')) {
+      else if (lowerRoute.contains('/payment')) {
         context.push('/AddPayment', extra: {"hideMobileAppBar": true});
       }
       else {

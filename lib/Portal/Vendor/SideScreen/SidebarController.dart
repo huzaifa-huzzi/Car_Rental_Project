@@ -29,10 +29,11 @@ class SideBarController extends GetxController {
   }
 
   void syncWithRoute(String route) {
-    final r = route.toLowerCase();
+    final r = route.toLowerCase().split('?').first;
 
     if (r == '/dashboard' || r == '/') {
       selected.value = "Dashboard";
+      subSelected.value = null;
 
       // Car Inventory
     } else if (r.startsWith('/carinventory') ||
@@ -40,31 +41,32 @@ class SideBarController extends GetxController {
         r.startsWith('/addnewcar') ||
         r.startsWith('/editcar')) {
       selected.value = "Car Inventory";
+      subSelected.value = null;
 
       // Customers
-    }  else if (r.startsWith('/customers') ||
+    } else if (r.startsWith('/customers') ||
         r.startsWith('/addnewcustomer') ||
         r.startsWith('/editcustomers') ||
         r.startsWith('/customerdetails') ||
         r.startsWith('/steptwocustomer')) {
       selected.value = "Customers";
-
+      subSelected.value = null;
     } else if (r.startsWith('/pickupcar') ||
         r.startsWith('/pickupdetail') ||
         r.startsWith('/addpickup') ||
         r.startsWith('/steponepickup') ||
         r.startsWith('/steptwowidgetscreen') ||
         r.startsWith('/stepthreewidgetscreen') ||
-        r.startsWith('/editpickup')) {
-      selected.value = "Pickup Car";
-
-      // Pickup T&C
-    } else if (r.startsWith('/pickupt&c') ||
+        r.startsWith('/editpickup') ||
+        r.startsWith('/pickupt&c') ||
         r.startsWith('/addpickupt&c') ||
         r.startsWith('/pickupt&cdescription')) {
-      selected.value = "Pickup T&C";
-
-      // Dropoff Car
+      selected.value = "Pickup Car";
+      if (r.contains('t&c')) {
+        subSelected.value = "Pickup T&C";
+      } else {
+        subSelected.value = null;
+      }
     } else if (r.startsWith('/dropoffcar') ||
         r.startsWith('/dropoffdetail') ||
         r.startsWith('/adddropoff') ||
@@ -74,22 +76,29 @@ class SideBarController extends GetxController {
         r.startsWith('/dropofft&c') ||
         r.startsWith('/adddropofft&c') ||
         r.startsWith('/dropofft&cdescription')) {
+
       selected.value = "Dropoff Car";
+
+      if (r.contains('t&c')) {
+        subSelected.value = "DropOff T&C";
+      } else {
+        subSelected.value = null;
+      }
 
       // Staff
     } else if (r.startsWith('/staff') ||
         r.startsWith('/editstaffscreen') ||
         r.startsWith('/addstaff')) {
       selected.value = "Staff";
+      subSelected.value = null;
 
       // Payment
     } else if (r.startsWith('/payment') ||
         r.startsWith('/addpayment') ||
         r.startsWith('/invoicesdetail')) {
       selected.value = "Payment";
+      subSelected.value = null;
     }
-
-    subSelected.value = null;
   }
 }
 

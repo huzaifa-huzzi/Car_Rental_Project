@@ -337,18 +337,26 @@ class StepTwoDropOffWidget extends StatelessWidget {
                 onTapDown: (details) {
                   double dx = details.localPosition.dx / width;
                   double dy = details.localPosition.dy / height;
-
+                  var currentType = controller.damageTypes3.firstWhere(
+                        (t) => t['id'] == controller.selectedDamageType3.value,
+                  );
                   int idx = controller.damagePoints3.indexWhere((p) =>
-                  (p.dx - dx).abs() < 0.05 && (p.dy - dy).abs() < 0.05);
+                  (p.dx - dx).abs() < 0.02 &&
+                      (p.dy - dy).abs() < 0.02 &&
+                      p.typeId == currentType['id'],
+                  );
+
                   if (idx != -1) {
                     controller.damagePoints3.removeAt(idx);
                   } else {
-                    var type = controller.damageTypes3.firstWhere((
-                        t) => t['id'] == controller.selectedDamageType3.value);
-                    controller.damagePoints3.add(DamagePoint(dx: dx,
+                    controller.damagePoints3.add(
+                      DamagePoint(
+                        dx: dx,
                         dy: dy,
-                        typeId: type['id'],
-                        color: type['color']));
+                        typeId: currentType['id'],
+                        color: currentType['color'],
+                      ),
+                    );
                   }
                 },
                 child: Stack(
@@ -362,9 +370,12 @@ class StepTwoDropOffWidget extends StatelessWidget {
                           left: (point.dx * width) - 10,
                           top: (point.dy * height) - 10,
                           child: CircleAvatar(
-                            radius: 10, backgroundColor: point.color,
-                            child: Text(point.typeId.toString(),
-                                style: TTextTheme.btnNumbering(context)),
+                            radius: 10,
+                            backgroundColor: point.color,
+                            child: Text(
+                              point.typeId.toString(),
+                              style: TTextTheme.btnNumbering(context),
+                            ),
                           ),
                         )),
                   ],

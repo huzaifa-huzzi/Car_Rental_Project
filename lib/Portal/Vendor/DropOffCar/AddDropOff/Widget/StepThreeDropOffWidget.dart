@@ -696,12 +696,13 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
     const double webButtonHeight = 45.0;
 
     void onFinishPressed() {
-      bool isValid = controller.validateDropOffStep();
+      final activeController = Get.find<DropOffController>();
+      bool isValid = activeController.validateDropOffStep();
 
       if (isValid) {
         showSavingDialog(context);
       } else {
-        controller.isStep3Submitted.value = true;
+        activeController.isStep3Submitted.value = true;
 
         Get.snackbar(
           "Required",
@@ -713,7 +714,6 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
         );
       }
     }
-
     return isMobile
         ? Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -842,9 +842,20 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
     );
   }
   void showSuccessDialog(BuildContext context) {
+    final router = GoRouter.of(context);
+
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+
+        Future.delayed(const Duration(seconds: 2), () {
+          if (dialogContext.mounted) {
+            Navigator.pop(dialogContext);
+            router.go('/dropoffCar');
+          }
+        });
+
         return Dialog(
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
@@ -874,18 +885,18 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
                           children: [
                             Text(
                                 TextString.dialogDropoff3,
-                                style: TTextTheme.h2Style(context)
+                                style: TTextTheme.h2Style(dialogContext)
                             ),
                             const SizedBox(height: 8),
                             Text(
                                 TextString.dialogDropoff4,
-                                style: TTextTheme.bodyRegular16(context)
+                                style: TTextTheme.bodyRegular16(dialogContext)
                             ),
                           ],
                         ),
                       ),
                       IconButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () => Navigator.pop(dialogContext),
                         icon: Container(
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(

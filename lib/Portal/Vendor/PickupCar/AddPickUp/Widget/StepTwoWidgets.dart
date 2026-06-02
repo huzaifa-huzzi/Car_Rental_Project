@@ -173,7 +173,6 @@ class StepTwoSelectionWidget extends StatelessWidget {
         double height = responsiveWidth * 0.5;
 
         return Obx(() {
-
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -220,19 +219,24 @@ class StepTwoSelectionWidget extends StatelessWidget {
                             onTapDown: (details) {
                               double dx = details.localPosition.dx / responsiveWidth;
                               double dy = details.localPosition.dy / height;
-
-                              int existingIndex = controller.damagePoints2.indexWhere(
-                                    (p) => (p.dx - dx).abs() < 0.04 && (p.dy - dy).abs() < 0.04,
+                              var currentType = controller.damageTypes2.firstWhere(
+                                      (t) => t['id'] == controller.selectedDamageType2.value);
+                              int existingIndex = controller.damagePoints2.indexWhere((p) =>
+                              (p.dx - dx).abs() < 0.02 &&
+                                  (p.dy - dy).abs() < 0.02 &&
+                                  p.typeId == currentType['id'],
                               );
 
                               if (existingIndex != -1) {
                                 controller.damagePoints2.removeAt(existingIndex);
                               } else {
-                                var type = controller.damageTypes2.firstWhere(
-                                        (t) => t['id'] == controller.selectedDamageType2.value);
-
                                 controller.damagePoints2.add(
-                                  DamagePoint(dx: dx, dy: dy, typeId: type['id'], color: type['color']),
+                                  DamagePoint(
+                                    dx: dx,
+                                    dy: dy,
+                                    typeId: currentType['id'],
+                                    color: currentType['color'],
+                                  ),
                                 );
                               }
                             },
