@@ -149,6 +149,8 @@ class IconString {
   static const String  paytoIcon = 'assets/icons/PayTo.png';
   static const String  ddIcon = 'assets/icons/DDIcon.png';
 
+    // Reminder
+  static const String  reminderIcon = 'assets/icons/Reminder.png';
 
      /// Admin
     // Sidebar

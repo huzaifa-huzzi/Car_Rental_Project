@@ -36,6 +36,8 @@ import 'package:car_rental_project/Portal/Vendor/PickupCar/Subtabs/Pickup%20T&C/
 import 'package:car_rental_project/Portal/Vendor/PickupCar/Subtabs/Pickup%20T&C/PickupT&C.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/Subtabs/Pickup%20T&C/PickupT&CDescription.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/TableViewPicukUpScreen/TableViewPickUpScreen.dart';
+import 'package:car_rental_project/Portal/Vendor/Reminder/ReminderController.dart';
+import 'package:car_rental_project/Portal/Vendor/Reminder/ReminderScreen/Reminder.dart';
 import 'package:car_rental_project/Portal/Vendor/SideScreen/SidebarScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Staff/AddStaff/AddStaffScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Staff/EditStaff/EditStaffScreen.dart';
@@ -79,6 +81,7 @@ class VendorRoutes {
                 case "Dropoff Car":   context.go('/dropoffCar');   break;
                 case "Staff":         context.go('/staff');        break;
                 case "Payment":       context.go('/Payment');      break;
+                case "Reminder":       context.go('/reminder');      break;
               }
             }
           },
@@ -107,6 +110,10 @@ class VendorRoutes {
           return TableViewDropOffScreen();
         }),
         GoRoute(path: '/Payment', builder: (_, __) => PaymentScreen()),
+        GoRoute(path: '/reminder', builder: (_, __) {
+          Get.put(ReminderController());
+          return ReminderScreen();
+        }),
         GoRoute(path: '/staff', builder: (_, __) => TableViewOfStaffScreen()),
 
         // Car Inventory Details & Add/Edit
@@ -228,6 +235,8 @@ class VendorRoutes {
             return InvoicesDetailAutoWidget(invoiceData: data ?? {});
           },
         ),
+
+         // Reminders
       ],
     ),
   ];

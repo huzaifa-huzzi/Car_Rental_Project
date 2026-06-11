@@ -130,6 +130,13 @@ class SidebarScreen extends StatelessWidget {
               ),
               SidebarComponents.menuItem(
                 context, controller,
+                iconPath: IconString.reminderIcon,
+                title: "Reminder",
+                onTap: (val) => context.go('/reminder'),
+                scaffoldKey: _scaffoldKey,
+              ),
+              SidebarComponents.menuItem(
+                context, controller,
                 iconPath: IconString.staffIcon,
                 title: TextString.staffTitle,
                 onTap: (val) => context.go('/staff'),
