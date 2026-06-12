@@ -1,4 +1,5 @@
 import 'package:car_rental_project/Portal/Vendor/Reminder/ReminderController.dart';
+import 'package:car_rental_project/Portal/Vendor/Reminder/ReusableWidgetOfReminder/CustomCalendarReminder.dart';
 import 'package:car_rental_project/Portal/Vendor/Reminder/ReusableWidgetOfReminder/PrimaryBtnOfReminder.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:flutter/material.dart';
@@ -115,37 +116,88 @@ class ReminderWidget extends StatelessWidget {
                 Row(
                   children: [
                     // 1. Select Date Button
-                    Flexible( // Flexible use kiya taake screen choti hone par shrink ho sake
+                    Flexible(
                       child: Container(
                         height: 40,
                         constraints: const BoxConstraints(
-                          minWidth: 100, // Choti screen par minimum itna squeeze ho sake
-                          maxWidth: 160, // Web panel par is se zyada lamba na ho
+                          minWidth: 100,
+                          maxWidth: 160,
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF4F6F8),
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
-                        ),
-                        child: InkWell(
-                          onTap: () {},
-                          child: const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.calendar_today_outlined, size: 14, color: Color(0xFF4A5568)),
-                              SizedBox(width: 6),
-                              Flexible( // Text overflow block karne ke liye
-                                child: Text(
-                                  'Select Date',
-                                  style: TextStyle(color: Color(0xFF4A5568), fontSize: 12, fontWeight: FontWeight.w400),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
+                        child: Obx(() {
+                          String dateDisplay = controller.selectedDateText.value;
+                          bool hasSelected = dateDisplay != "Select Date";
+
+                          return PopupMenuButton<void>(
+                            padding: EdgeInsets.zero,
+                            elevation: 0, // Extra popup container shadow zero kar di
+                            offset: const Offset(0, 44),
+                            // Inkwell container surface wrapper matching your design background
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            color: Colors.transparent, // Isko transparent karne se double container background bilkul remove ho jayega
+
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF4F6F8),
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
                               ),
-                            ],
-                          ),
-                        ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.calendar_today_outlined,
+                                    size: 14,
+                                    color: hasSelected ? const Color(0xFFFF2D55) : const Color(0xFF4A5568),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Flexible(
+                                    child: Text(
+                                      dateDisplay,
+                                      style: TextStyle(
+                                        color: hasSelected ? const Color(0xFFFF2D55) : const Color(0xFF4A5568),
+                                        fontSize: 12,
+                                        fontWeight: hasSelected ? FontWeight.w600 : FontWeight.w400,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            itemBuilder: (BuildContext context) {
+                              return [
+                                PopupMenuItem<void>(
+                                  enabled: false, // Core body list tap handler block range selection bypass karne ke liye
+                                  padding: EdgeInsets.zero, // Padding zero karne se unwanted nested card spaces remove ho jayenge
+                                  child: CustomCalendarReminder(
+                                    width: 290,
+                                    onDateSelected: (DateTime startOfWeek) {
+                                      DateTime endOfWeek = startOfWeek.add(const Duration(days: 6));
+
+                                      // Clean formatting functionality shifted safely
+                                      String startMonth = controller.getMonthName(startOfWeek.month);
+                                      String endMonth = controller.getMonthName(endOfWeek.month);
+                                      String startYear = startOfWeek.year.toString().substring(2);
+                                      String endYear = endOfWeek.year.toString().substring(2);
+
+                                      // Format: "1 May,26 to 7 May 26" matching your info box screenshot
+                                      String formattedRange = "${startOfWeek.day} $startMonth,$startYear to ${endOfWeek.day} $endMonth $endYear";
+
+                                      controller.selectedDateText.value = formattedRange;
+                                      Navigator.of(context).pop();
+                                    },
+                                    onCancel: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ),
+                              ];
+                            },
+                          );
+                        }),
                       ),
                     ),
                     const SizedBox(width: 8), // Perfect gap dono ke darmiyan
@@ -155,33 +207,106 @@ class ReminderWidget extends StatelessWidget {
                       child: Container(
                         height: 40,
                         constraints: const BoxConstraints(
-                          minWidth: 70,  // Minimum width limit
-                          maxWidth: 100, // Web par dropdown ko zyada lamba nahi hone dega
+                          minWidth: 70,
+                          maxWidth: 110, // Items ke texts bade hain isliye halki si width barhadi
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF4F6F8),
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: 'All',
-                            isDense: true,
-                            isExpanded: true, // Internal space stretch karega layout ko hilaye bina
-                            icon: const Icon(Icons.keyboard_arrow_down, size: 18, color: Color(0xFF4A5568)),
-                            style: const TextStyle(color: Color(0xFF4A5568), fontSize: 12, fontWeight: FontWeight.w400),
-                            items: <String>['All'].map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value, overflow: TextOverflow.ellipsis),
+                        child: Obx(() {
+                          // Dropdown ki check state ko dynamic handle karne ke liye controller variable
+                          // Note: controller ke andar 'selectedFilter' aur 'isDropdownOpen' reactive variables initialize kar lein
+                          String currentSelection = controller.selectedFilter.value;
+                          bool isOpen = controller.isDropdownOpen.value;
+
+                          List<String> statusItems = ['All', 'Pending', 'Overdue', 'Failed', 'Completed'];
+
+                          return PopupMenuButton<String>(
+                            constraints: const BoxConstraints(
+                              minWidth: 140, // Dropdown menu ki list items ke liye stable width
+                              maxHeight: 250,
+                            ),
+                            offset: const Offset(0, 42), // Box ke thora niche khulega
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            color: Colors.white,
+                            elevation: 4,
+                            onOpened: () => controller.isDropdownOpen.value = true,
+                            onCanceled: () => controller.isDropdownOpen.value = false,
+                            onSelected: (val) {
+                              controller.selectedFilter.value = val;
+                              controller.isDropdownOpen.value = false;
+                            },
+                            // --- Trigger Button Container ---
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF4F6F8),
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      currentSelection,
+                                      style: const TextStyle(
+                                        color: Color(0xFF1E293B), // Dark text design ke mutabiq
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  // Dynamic state matching custom icon behaviour
+                                  Icon(
+                                    isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                    size: 18,
+                                    color: const Color(0xFF64748B),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // --- Dropdown Items List Builder ---
+                            itemBuilder: (context) => statusItems.map((item) {
+                              bool isSelected = currentSelection == item;
+                              return PopupMenuItem<String>(
+                                value: item,
+                                height: 38, // Items ko clean structure dene ke liye height control
+                                child: Row(
+                                  children: [
+                                    // Custom Red Circular Radio Indicator from your design
+                                    Container(
+                                      width: 18,
+                                      height: 18,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: const Color(0xFFFF2D55), // Red boundary line
+                                          width: 2,
+                                        ),
+                                        color: isSelected ? const Color(0xFFFF2D55) : Colors.transparent,
+                                      ),
+                                      child: isSelected
+                                          ? const Icon(Icons.done, size: 10, color: Colors.white)
+                                          : null,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    // Text Display matching the style
+                                    Text(
+                                      item,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: isSelected ? FontWeight.bold : FontWeight.w400,
+                                        color: isSelected ? const Color(0xFFFF2D55) : const Color(0xFF334155),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               );
                             }).toList(),
-                            onChanged: (newValue) {},
-                          ),
-                        ),
+                          );
+                        }),
                       ),
-                    ),
+                    )
                   ],
                 ),
                 const SizedBox(height: 14), // Row aur Search bar ke darmiyan exact vertical gap
@@ -305,6 +430,9 @@ class ReminderWidget extends StatelessWidget {
     );
   }
 
+  // Input field aur overlay ko link karne ke liye global layer link
+
+
   Widget _buildChatConversationArea(ReminderController controller, {required bool isMobile, Key? key}) {
     return LayoutBuilder(builder: (context, constraints) {
       bool isCompact = constraints.maxWidth < 450;
@@ -323,124 +451,427 @@ class ReminderWidget extends StatelessWidget {
         ),
         child: Column(
           children: [
-            // --- HEADER ---
+            // --- 1. HEADER SECTION ---
             Obx(() {
               int selectedIndex = controller.selectedChatIndex.value;
               var activeUser = chatUsersData[selectedIndex >= chatUsersData.length ? 0 : selectedIndex];
+              bool isManualMode = controller.chatMode.value == 'Manual';
 
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topRight: Radius.circular(12)), border: Border(bottom: BorderSide(color: Color(0xFFF0F2F5)))),
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(topRight: Radius.circular(12)),
+                    border: Border(bottom: BorderSide(color: Color(0xFFF0F2F5)))
+                ),
                 child: Row(
                   children: [
                     if (isMobile) ...[
-                      IconButton(icon: const Icon(Icons.arrow_back, color: Colors.black87), onPressed: () => controller.isChatDetailOpenMobile.value = false),
+                      IconButton(
+                          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+                          onPressed: () => controller.isChatDetailOpenMobile.value = false
+                      ),
                       const SizedBox(width: 4),
                     ],
-                    CircleAvatar(radius: 20, backgroundColor: Colors.grey.shade200, child: Text(activeUser['name']![0], style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blueGrey))),
+                    CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.grey.shade200,
+                        child: Text(activeUser['name']![0], style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blueGrey))
+                    ),
                     const SizedBox(width: 12),
-                    Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text(activeUser['name']!, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black)),
-                      Text(activeUser['status']!, style: TextStyle(fontSize: 11, color: activeUser['status'] == 'Online' ? Colors.green : Colors.grey)),
-                    ])),
-                    // Manual Badge
-                    Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6), decoration: BoxDecoration(color: const Color(0xFFFF2D55), borderRadius: BorderRadius.circular(6)),
-                      child: Row(children: [const Icon(Icons.pan_tool, size: 12, color: Colors.white), if (!isCompact) const Text(' Manual(Human Only)', style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w500))]),
+                    Expanded(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(activeUser['name']!, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black)),
+                              Text(activeUser['status']!, style: TextStyle(fontSize: 11, color: activeUser['status'] == 'Online' ? Colors.green : Colors.grey)),
+                            ]
+                        )
+                    ),
+                    InkWell(
+                      onTap: () => controller.toggleChatMode('Manual'),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                        decoration: BoxDecoration(color: isManualMode ? const Color(0xFFFF2D55) : Colors.transparent, borderRadius: BorderRadius.circular(6), border: Border.all(color: isManualMode ? Colors.transparent : Colors.grey.shade300)),
+                        child: Row(children: [Icon(Icons.pan_tool, size: 12, color: isManualMode ? Colors.white : Colors.grey), if (!isCompact) Text(' Manual', style: TextStyle(color: isManualMode ? Colors.white : Colors.grey.shade700, fontSize: 11, fontWeight: FontWeight.w500))]),
+                      ),
                     ),
                     const SizedBox(width: 8),
-                    // Auto Badge
-                    Row(children: [const Icon(Icons.grid_3x3, size: 14, color: Colors.grey), if (!isCompact) const Text(' Auto', style: TextStyle(color: Colors.grey, fontSize: 11))]),
+                    InkWell(
+                      onTap: () => controller.toggleChatMode('Auto'),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                        decoration: BoxDecoration(color: !isManualMode ? const Color(0xFFFF2D55) : Colors.transparent, borderRadius: BorderRadius.circular(6), border: Border.all(color: !isManualMode ? Colors.transparent : Colors.grey.shade300)),
+                        child: Row(children: [Icon(Icons.track_changes_outlined, size: 14, color: !isManualMode ? Colors.white : Colors.grey), const SizedBox(width: 4), Text(isCompact ? 'AI' : 'Auto (AI Alert)', style: TextStyle(color: !isManualMode ? Colors.white : Colors.grey, fontSize: 11, fontWeight: FontWeight.w500))]),
+                      ),
+                    ),
                   ],
                 ),
               );
             }),
 
-            // --- MESSAGES ---
-            Expanded(child: Container(color: const Color(0xFFF8FAFC), padding: const EdgeInsets.symmetric(horizontal: 16), child: Obx(() => ListView.builder(
-                itemCount: controller.dynamicMessages.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == 0) return Container(margin: const EdgeInsets.symmetric(vertical: 14), padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: const Color(0xFFFF8A9A))), child: const Center(child: Text('Rental R1 marked as failed.', style: TextStyle(color: Color(0xFFFF2D55), fontSize: 12))));
-                  var msg = controller.dynamicMessages[index - 1];
-                  return _buildMessageBubble(message: msg['message'], isMe: msg['isMe'], time: msg['time']);
-                })))),
-
-            // --- BOTTOM INPUT BAR (Responsive Fix) ---
-            Container(
-              padding: EdgeInsets.all(isCompact ? 8 : 12), // Compact mein padding kam
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  border: Border(top: BorderSide(color: Color(0xFFF0F2F5)))
+            // --- 2. MESSAGES DISPLAY AREA ---
+            Expanded(
+              child: Container(
+                color: const Color(0xFFF8FAFC),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Obx(() => ListView.builder(
+                    itemCount: controller.dynamicMessages.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return Container(
+                            margin: const EdgeInsets.symmetric(vertical: 14),
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: const Color(0xFFFF8A9A))),
+                            child: const Center(child: Text('Rental R1 marked as failed after 3 unsuccessful rent deduction attempts.', style: TextStyle(color: Color(0xFFFF2D55), fontSize: 12)))
+                        );
+                      }
+                      var msg = controller.dynamicMessages[index - 1];
+                      return _buildMessageBubble(message: msg['message'], isMe: msg['isMe'], time: msg['time']);
+                    }
+                )),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (!isCompact) const Text('Manual - Only you can send messages', style: TextStyle(color: Color(0xFFFF2D55), fontSize: 11, fontWeight: FontWeight.w500)),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      // 1. Template Button (Compact mein sirf icon)
+            ),
+
+            // --- 3. EXACT STRUCTURAL BOTTOM AREA ---
+            Obx(() {
+              bool isManualMode = controller.chatMode.value == 'Manual';
+              bool isOpen = controller.isTemplateMenuOpen.value;
+
+              if (!isManualMode) {
+                return Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      border: Border(top: BorderSide(color: Color(0xFFF0F2F5)))
+                  ),
+                  child: const Text(
+                      'Auto AI generated reply and alerts to the customer',
+                      style: TextStyle(color: Color(0xFFFF2D55), fontSize: 12)
+                  ),
+                );
+              }
+
+              return Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  border: Border(top: BorderSide(color: Color(0xFFF0F2F5))),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // EXACTLY ABOVE THE INPUT BAR (As requested in image_9282ec.png)
+                    if (isOpen)
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: isCompact ? 6 : 12, vertical: 8),
-                        decoration: BoxDecoration(color: const Color(0xFFF4F6F9), borderRadius: BorderRadius.circular(8)),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.assignment_outlined, size: 16, color: Color(0xFFFF2D55)),
-                            if (!isCompact) ...[
-                              const SizedBox(width: 6),
-                              const Text('Template', style: TextStyle(fontSize: 13, color: Colors.black87, fontWeight: FontWeight.w500)),
-                              const Icon(Icons.keyboard_arrow_down, size: 16, color: Colors.black87),
-                            ],
-                          ],
+                        height: controller.isCreatingTemplate.value ? 240 : 190,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          border: Border(bottom: BorderSide(color: Color(0xFFF0F2F5))),
                         ),
+                        // Handles inner scroll cleanly if layout compresses
+                        child: controller.isCreatingTemplate.value
+                            ? _buildCreateTemplateForm(controller, isCompact)
+                            : _buildTemplateListContent(controller, isCompact),
                       ),
-                        const SizedBox(width: 8),
-                        const Icon(Icons.attach_file, color: Colors.black87, size: 20),
 
-
-                      const SizedBox(width: 8),
-
-                      // TextField ko isi tarah set karo
-                      Flexible(
-                        child: SizedBox(
-                          height: 38,
-                          width:isCompact ?  180 : double.infinity,
-                          child: TextField(
-                            controller: controller.messageInputController,
-                            decoration: InputDecoration(
-                              // choti screen par hint chota kar dein taake overflow na ho
-                              hintText: isCompact ? 'Type' : 'Type your message here',
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                              filled: true,
-                              fillColor: Colors.white,
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
-                              ),
+                    // MAIN ACTION INPUT BAR - ALWAYS AT THE VERY BOTTOM
+                    Container(
+                      padding: EdgeInsets.all(isCompact ? 8 : 12),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (!isCompact)
+                            const Text(
+                                'Manual - Only you can send messages',
+                                style: TextStyle(color: Color(0xFFFF2D55), fontSize: 11, fontWeight: FontWeight.w500)
                             ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              // INTERACTIVE TEMPLATE TOGGLE BUTTON
+                              InkWell(
+                                onTap: () {
+                                  if (!controller.isTemplateMenuOpen.value) {
+                                    controller.isCreatingTemplate.value = false;
+                                  }
+                                  controller.isTemplateMenuOpen.value = !isOpen;
+                                },
+                                borderRadius: BorderRadius.circular(8),
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: isCompact ? 8 : 12, vertical: 8),
+                                  decoration: BoxDecoration(color: const Color(0xFFF4F6F9), borderRadius: BorderRadius.circular(8)),
+                                  child: Row(
+                                    children: [
+                                      const Icon(Icons.assignment_outlined, size: 16, color: Color(0xFFFF2D55)),
+                                      const SizedBox(width: 4),
+                                      const Text('Template', style: TextStyle(fontSize: 13, color: Colors.black87, fontWeight: FontWeight.w500)),
+                                      Icon(isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, size: 16, color: Colors.black87),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              const Icon(Icons.attach_file, color: Colors.black87, size: 20),
+                              const SizedBox(width: 8),
+
+                              // Message Input Box
+                              Flexible(
+                                child: SizedBox(
+                                  height: 38,
+                                  child: TextField(
+                                    controller: controller.messageInputController,
+                                    decoration: InputDecoration(
+                                      hintText: isCompact ? 'Type...' : 'Type your message here...',
+                                      contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                                      filled: true,
+                                      fillColor: const Color(0xFFF8FAFC),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                        borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                        borderSide: const BorderSide(color: Color(0xFFFF2D55)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+
+                              // Send Button Action
+                              PrimaryBtnReminder(
+                                text: isCompact ? '' : 'Send',
+                                height: 38,
+                                width: isCompact ? 40 : 95,
+                                borderRadius: BorderRadius.circular(8),
+                                icon: const Icon(Icons.send_outlined, color: Colors.white, size: 18),
+                                onTap: () => controller.sendMessage(),
+                              ),
+                            ],
                           ),
-                        ),
+                        ],
                       ),
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ],
+        ),
+      );
+    });
+  }
 
-                      const SizedBox(width: 8),
-
-                      PrimaryBtnReminder(
-                        text: isCompact ? '' : 'Send',
-                        height: 38,
-                        width: isCompact ? 60 : 95,
-                        borderRadius: BorderRadius.circular(8),
-                        icon: const Icon(Icons.send_outlined, color: Colors.white, size: 18),
-                        onTap: () => controller.sendMessage(),
-                      ),
-                    ],
+  Widget _buildTemplateListContent(ReminderController controller, bool isCompact) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Header Section
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('All templates', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black)),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(color: const Color(0xFFF1F5F9), borderRadius: BorderRadius.circular(12)),
+                    child: Text('${controller.templatesList.length}', style: const TextStyle(fontSize: 11, color: Colors.grey, fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
-            )
-          ]
-            )
-      );
-    });
+              PrimaryBtnReminder(
+                text: isCompact ? 'Add' : 'Add New Template',
+                height: 34,
+                width: isCompact ? 65 : 200,
+                borderRadius: BorderRadius.circular(6),
+                icon: const Icon(Icons.add, color: Colors.white, size: 14),
+                onTap: () {
+                  controller.isCreatingTemplate.value = true;
+                },
+              ),
+            ],
+          ),
+        ),
+        const Divider(height: 1, color: Color(0xFFF0F2F5)),
+
+        // Scrollable List Content
+        Expanded(
+          child: ListView.separated(
+            padding: EdgeInsets.zero,
+            physics: const AlwaysScrollableScrollPhysics(), // Ensures clean inner scrolling
+            itemCount: controller.templatesList.length,
+            separatorBuilder: (context, idx) => const Divider(height: 1, color: Color(0xFFF0F2F5)),
+            itemBuilder: (context, idx) {
+              var item = controller.templatesList[idx];
+              return InkWell(
+                onTap: () => controller.selectTemplate(item['body']!),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(item['title']!, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.black)),
+                            const SizedBox(height: 4),
+                            Text(item['body']!, style: const TextStyle(fontSize: 12, color: Colors.grey, height: 1.3)),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        icon: Icon(Icons.delete_outline_outlined, color: const Color(0xFFFF2D55).withOpacity(0.8), size: 18),
+                        onPressed: () => controller.deleteTemplate(idx),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCreateTemplateForm(ReminderController controller, bool isCompact) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // --- 1. HEADER SECTION (Bina buttons ke - Exact image_87265a.png jaisa) ---
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                  'Create Template',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)
+              ),
+              const SizedBox(height: 2),
+              Text(
+                'You can create New Template here', // Exact subtitle placeholder from screenshot
+                style: TextStyle(fontSize: 12, color: Colors.grey.shade400),
+              ),
+            ],
+          ),
+        ),
+
+        // --- 2. SCROLLABLE CONTENT AREA (Fields + Bottom Row Buttons) ---
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            physics: const ClampingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Title Field
+                const Text('Title', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Color(0xFF4A5568))),
+                const SizedBox(height: 6),
+                SizedBox(
+                  height: 40,
+                  child: TextField(
+                    controller: controller.titleController,
+                    style: const TextStyle(fontSize: 14),
+                    decoration: InputDecoration(
+                      hintText: 'Enter Title',
+                      hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 13),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(color: Colors.grey.shade300)
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(color: Color(0xFFFF2D55))
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 14),
+
+                // Description Field
+                const Text('Description', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Color(0xFF4A5568))),
+                const SizedBox(height: 6),
+                TextField(
+                  controller: controller.descriptionController,
+                  maxLines: 2,
+                  style: const TextStyle(fontSize: 14),
+                  decoration: InputDecoration(
+                    hintText: 'Enter Description',
+                    hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 13),
+                    contentPadding: const EdgeInsets.all(12),
+                    filled: true,
+                    fillColor: Colors.white,
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: Colors.grey.shade300)
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(color: Color(0xFFFF2D55))
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // --- 3. BOTTOM BUTTONS ROW (Shifted down right side - Exact image_87265a.png) ---
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    // Cancel Button (Black Rounded Background)
+                    InkWell(
+                      onTap: () => controller.isCreatingTemplate.value = false,
+                      borderRadius: BorderRadius.circular(6),
+                      child: Container(
+                        height: 34,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1A1A1A), // Dark Black background
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        alignment: Alignment.center,
+                        child: const Text(
+                            'Cancel',
+                            style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500)
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+
+                    // Save Button (Pink/Red Background)
+                    PrimaryBtnReminder(
+                      text: 'Save',
+                      height: 34,
+                      width: 65,
+                      borderRadius: BorderRadius.circular(6),
+                      onTap: () => controller.addNewTemplate(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16), // Padding bottom for safe scrolling
+              ],
+            ),
+          ),
+        )
+      ],
+    );
   }
 
   Widget _buildMessageBubble({required String message, required bool isMe, required String time}) {
