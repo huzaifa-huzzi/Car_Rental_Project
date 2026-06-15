@@ -4,7 +4,6 @@ import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
 
 class ReminderScreen extends StatelessWidget {
   const ReminderScreen({super.key}); // const add kar diya constructor par

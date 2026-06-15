@@ -151,6 +151,11 @@ class IconString {
 
     // Reminder
   static const String  reminderIcon = 'assets/icons/Reminder.png';
+  static const String  manualIcon = 'assets/icons/Manual.png';
+  static const String  autoIcon = 'assets/icons/Auto.png';
+  static const String  templateIcon = 'assets/icons/TemplateIcon.png';
+  static const String  linkIcon = 'assets/icons/LinkIcon.png';
+  static const String  sendIcon = 'assets/icons/SendIcon.png';
 
      /// Admin
     // Sidebar

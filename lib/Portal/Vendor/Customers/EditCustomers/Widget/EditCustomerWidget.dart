@@ -354,7 +354,7 @@ class EditCustomerWidget extends StatelessWidget {
   }
 
  // Large TextField
-  Widget _buildLargeTextField(BuildContext context, String hint, TextEditingController ctrl, {String? Function(String?)? validator}) {
+  Widget _buildLargeTextField(BuildContext context, String hint, TextEditingController ctrl) {
     return Focus(
       onFocusChange: (hasFocus) {
         (context as Element).markNeedsBuild();

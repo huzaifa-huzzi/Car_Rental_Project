@@ -46,6 +46,7 @@ class CarListCard extends StatefulWidget {
 class _CarListCardState extends State<CarListCard> {
   bool isHover = false;
 
+  @override
   Widget build(BuildContext context) {
     final cardPadding = AppSizes.padding(context);
 

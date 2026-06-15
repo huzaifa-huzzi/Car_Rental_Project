@@ -753,6 +753,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w500,color: AppColors.textColor);
   }
 
+  static TextStyle medium12Primary(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w500,color: AppColors.primaryColor);
+  }
+
   static TextStyle medium12White(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w500,color: Colors.white);
   }
@@ -779,6 +783,18 @@ class TTextTheme {
 
   static TextStyle tableRegular14black(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.blackColor);
+  }
+
+  static TextStyle tableRegular14Unavailable(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 12),fontWeight: FontWeight.w400,color: AppColors.tableHeading);
+  }
+
+  static TextStyle tableRegular14Signature(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 12),fontWeight: FontWeight.w400,color: AppColors.signaturePadColor);
+  }
+
+  static TextStyle tableRegular14Completed(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 12, 13),fontWeight: FontWeight.w400,color: AppColors.activeColor2);
   }
 
   static TextStyle tableRegular14Primary(BuildContext context){

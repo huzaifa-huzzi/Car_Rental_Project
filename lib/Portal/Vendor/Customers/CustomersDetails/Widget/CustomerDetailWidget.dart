@@ -1,10 +1,8 @@
 import 'package:car_rental_project/Portal/Vendor/Customers/CustomersController.dart';
-import 'package:car_rental_project/Portal/Vendor/Customers/CustomersDetails/Widget/PdfViewer.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/CustomersDetails/Widget/ResponsiveCardDetails.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/ReusableWidgetOfCustomers/AlertDialogCustomers.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
-import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
