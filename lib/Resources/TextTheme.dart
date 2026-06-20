@@ -753,6 +753,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w500,color: AppColors.textColor);
   }
 
+  static TextStyle medium16(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 15, 16),fontWeight: FontWeight.w500,color: AppColors.blackColor);
+  }
+
   static TextStyle medium12Primary(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w500,color: AppColors.primaryColor);
   }

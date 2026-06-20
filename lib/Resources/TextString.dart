@@ -830,6 +830,28 @@ class TextString {
   static const String  autoHeader10= "Action";
 
 
+    // Reminder
+  static const String  reminderOne= "'Monthly Messages'";
+  static const String  reminderTwo= '5 out of 25 messages';
+  static const String  reminderThree= 'Whatsapp Alert';
+  static const String  reminderFour= 'Sms Alert';
+  static const String  reminderFive= 'Search SMS Conversations...';
+  static const String  reminderSix= 'Search by Car';
+  static const String  reminderSeven=  'Your balance to rent car is insufficient.....';
+  static const String  reminderEight= 'Rental R1 marked as failed after 3 unsuccessful rent deduction attempts.';
+  static const String  reminderNine= 'Auto AI generated reply and alerts to the customer';
+  static const String  reminderTen= 'Manual - Only you can send messages';
+  static const String  reminderEleven= 'Template';
+  static const String  reminderTwelve= 'All templates';
+  static const String  reminderThirteen=  'You can create New Template here';
+  static const String  reminder14= 'Title';
+  static const String  reminder15=  'Enter Title';
+  static const String  reminder16= 'Description';
+  static const String  reminder17= 'Enter Description';
+  static const String  reminder18= 'Cancel';
+  static const String  reminder19= 'Save';
+
+
       /// Admin Module
    // Company
   static const String  companyTitle= "All Companies";
