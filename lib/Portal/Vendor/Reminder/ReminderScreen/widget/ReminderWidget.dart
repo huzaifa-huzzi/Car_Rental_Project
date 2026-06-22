@@ -9,36 +9,62 @@ import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+
+
 class ReminderWidget extends StatelessWidget {
   const ReminderWidget({super.key});
 
   static const List<Map<String, String>> chatUsersData = [
-    {'name': 'Jack Milson', 'car': 'RNG-1188 Range Rover Velar', 'time': '24hrs ago', 'status': 'Online'},
-    {'name': 'Andrew Myres', 'car': 'AWG-4432 Honda Civic', 'time': '24hrs ago', 'status': 'Offline'},
-    {'name': 'Ethan Miles', 'car': 'KWC-2343 Kia Sportage', 'time': '24hrs ago', 'status': 'Online'},
-    {'name': 'Jhon Doe', 'car': 'RNG-1188 Range Rover Velar', 'time': '24hrs ago', 'status': 'offline'},
-    {'name': 'Andrew Graified', 'car': 'RNG-1188 Range Rover Velar', 'time': '24hrs ago', 'status': 'Online'},
+    {
+      'name': 'Jack Milson',
+      'car': 'RNG-1188 Range Rover Velar',
+      'time': '24hrs ago',
+      'status': 'Online',
+    },
+    {
+      'name': 'Andrew Myres',
+      'car': 'AWG-4432 Honda Civic',
+      'time': '24hrs ago',
+      'status': 'Offline',
+    },
+    {
+      'name': 'Ethan Miles',
+      'car': 'KWC-2343 Kia Sportage',
+      'time': '24hrs ago',
+      'status': 'Online',
+    },
+    {
+      'name': 'Jhon Doe',
+      'car': 'RNG-1188 Range Rover Velar',
+      'time': '24hrs ago',
+      'status': 'Offline',
+    },
+    {
+      'name': 'Andrew Graified',
+      'car': 'RNG-1188 Range Rover Velar',
+      'time': '24hrs ago',
+      'status': 'Online',
+    },
   ];
 
   @override
   Widget build(BuildContext context) {
     final ReminderController controller = Get.put(ReminderController());
 
-    double screenWidth = MediaQuery.of(context).size.width;
-    bool isMobileLayout = screenWidth < 850;
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobileLayout = screenWidth < 850;
 
     return Container(
       margin: const EdgeInsets.only(top: 10),
       child: Column(
         children: [
-          _buildTopActionBar(context,controller),
+          _buildTopActionBar(context, controller),
           const SizedBox(height: 16),
+
           Expanded(
-            child: Obx(() {
-              return isMobileLayout
-                  ? _buildMobileLayout(context,controller)
-                  : _buildWebLayout(context,controller);
-            }),
+            child: isMobileLayout
+                ? _buildMobileLayout(context, controller)
+                : _buildWebLayout(context, controller),
           ),
         ],
       ),
@@ -46,9 +72,9 @@ class ReminderWidget extends StatelessWidget {
   }
 }
 
- /// ---------- Extra Widget --------- ///
+/// ---------- Extra Widget --------- ///
 
- // Web layout
+// Web layout
 Widget _buildWebLayout(BuildContext context,ReminderController controller) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +115,7 @@ Widget _buildTopActionBar(BuildContext context, ReminderController controller) {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2.0),
         decoration: BoxDecoration(
-          color: isSmsSelected ? Colors.transparent : AppColors.signaturePadColor,
+          color: isSmsSelected ? Colors.transparent : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
         ),
         constraints: BoxConstraints(
@@ -267,7 +293,7 @@ Widget _buildAlertButtons(BuildContext context, ReminderController controller) {
   });
 }
 
- // chatlist Widget
+// chatlist Widget
 Widget _buildChatList(BuildContext context,ReminderController controller, {Key? key}) {
   return Container(
     key: key,
@@ -540,7 +566,7 @@ Widget _buildChatList(BuildContext context,ReminderController controller, {Key? 
                             const SizedBox(width: 6),
                             Expanded(
                               child: Text(
-                               TextString.reminderSeven,
+                                TextString.reminderSeven,
                                 style: isSelected ? TTextTheme.btnWhiteColor(context) : TTextTheme.tableRegular14black(context),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
@@ -616,8 +642,8 @@ Widget _buildChatConversationArea(ReminderController controller, {required bool 
                     const SizedBox(width: 4),
                   ],
                   CircleAvatar(
-                      radius: 22,
-                      backgroundImage:AssetImage(ImageString.customerUser),
+                    radius: 22,
+                    backgroundImage:AssetImage(ImageString.customerUser),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -754,6 +780,7 @@ Widget _buildChatConversationArea(ReminderController controller, {required bool 
                               child: SizedBox(
                                 height: 38,
                                 child: TextField(
+                                  cursorColor: AppColors.primaryColor,
                                   controller: controller.messageInputController,
                                   decoration: InputDecoration(
                                     hintText: isCompact ? 'Type...' : 'Type your message here...',
@@ -891,7 +918,7 @@ Widget _buildCreateTemplateForm(BuildContext context,ReminderController controll
             ),
             const SizedBox(height: 2),
             Text(
-             TextString.reminderThirteen,
+              TextString.reminderThirteen,
               style: TTextTheme.btncustomer(context),
             ),
           ],

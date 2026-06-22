@@ -831,7 +831,7 @@ class TextString {
 
 
     // Reminder
-  static const String  reminderOne= "'Monthly Messages'";
+  static const String  reminderOne= "Monthly Messages";
   static const String  reminderTwo= '5 out of 25 messages';
   static const String  reminderThree= 'Whatsapp Alert';
   static const String  reminderFour= 'Sms Alert';

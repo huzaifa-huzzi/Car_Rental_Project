@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 class ReminderController extends GetxController {
   var selectedAlertType = 'whatsapp'.obs;
+  var selectedAlertType2 = 'sms'.obs;
 
   var selectedChatIndex = 0.obs;
 
@@ -59,7 +60,8 @@ class ReminderController extends GetxController {
   var isTemplateMenuOpen = false.obs;
 
   // Static list for templates as shown in image_9282ec.png
-  final List<Map<String, String>> templatesList = [
+  // FIX: 'final List<...>' ki jagah 'RxList<Map<String, String>>' use karein ya fir simple 'var' use karein
+  RxList<Map<String, String>> templatesList = [
     {
       "title": "Payment Reminder",
       "body": "Hi Marcus, friendly reminder your weekly payment of \$1440 is due 5/7/2026."
@@ -76,13 +78,14 @@ class ReminderController extends GetxController {
       "title": "Return Confirmation",
       "body": "Thanks Marcus — Range Rover Velar marked as returned. Final invoice on its way."
     },
-  ];
+  ].obs;
 
   // Jab template par click ho toh text field mein message copy ho jaye
   void selectTemplate(String body) {
     messageInputController.text = body;
     isTemplateMenuOpen.value = false; // Menu close ho jaye
   }
+
 
   var isCreatingTemplate = false.obs;
   final TextEditingController titleController = TextEditingController();
