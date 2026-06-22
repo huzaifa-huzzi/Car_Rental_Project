@@ -85,7 +85,8 @@ class SidebarAdmin extends StatelessWidget {
 
                   //  Remaining modules commented out
 
-                  /*
+
+
       SidebarComponentAdmin.menuItemAdmin(
         context, controller,
         iconPath: IconString.reportsIconAdmin,
@@ -93,6 +94,7 @@ class SidebarAdmin extends StatelessWidget {
         onTap: (val) => context.go('/reports'),
         scaffoldKey: _scaffoldKey,
       ),
+
 
       SidebarComponentAdmin.menuItemAdmin(
         context, controller,
@@ -102,6 +104,7 @@ class SidebarAdmin extends StatelessWidget {
         scaffoldKey: _scaffoldKey,
       ),
 
+                  /*
       SidebarComponentAdmin.menuItemAdmin(
         context, controller,
         iconPath: IconString.paymentIconModule,

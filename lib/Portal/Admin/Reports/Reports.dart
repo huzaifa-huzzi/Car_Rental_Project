@@ -6,6 +6,8 @@ class ReportScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Center(
+      child: Text("Report Screen coming soon!"),
+    );
   }
 }

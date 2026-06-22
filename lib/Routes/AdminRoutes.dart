@@ -53,7 +53,7 @@ class AdminRoutes {
         GoRoute(path: '/dashboard-admin', builder: (context, state) => const DashBoardAdmin()),
         GoRoute(path: '/companies', builder: (context, state) =>  ComapaniesAdmin()),
         GoRoute(path: '/reports', builder: (context, state) => const ReportScreen()),
-        GoRoute(path: '/subscription', builder: (context, state) => const SubscriptionScreen()),
+        GoRoute(path: '/subscription', builder: (context, state) =>  SubscriptionScreen()),
         GoRoute(path: '/payment-admin', builder: (context, state) => const PaymentAdmin()),
         GoRoute(path: '/branding', builder: (context, state) => const BrandingScreen()),
         GoRoute(path: '/user-role-admin', builder: (context, state) => const UserandRole()),
