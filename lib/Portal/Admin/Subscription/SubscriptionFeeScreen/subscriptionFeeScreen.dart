@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class SubscriptionFreeScreen extends StatelessWidget {
-  SubscriptionFreeScreen({super.key});
+  const SubscriptionFreeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
