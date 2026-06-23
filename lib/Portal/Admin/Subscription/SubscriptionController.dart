@@ -1,20 +1,16 @@
+import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SubscriptionController extends GetxController {
-  // --- View Toggle State ---
-  // true = Add Company View (Show Stats Cards, Filters, Table)
-  // false = Change Subscription Fee View (Hide existing design)
-  var showMainSubscriptionDesign = true.obs;
 
-  // --- Top Filters & Tab State ---
+   /// Main Screen
+  var showMainSubscriptionDesign = true.obs;
   var selectedTab = "All".obs;
   var openedDropdown2 = "".obs;
   var selectedCustomerValue = "Customer Name".obs;
 
   final searchController = TextEditingController();
-
-  // --- Your Pagination State ---
   final RxInt currentPage3 = 1.obs;
   final RxInt pageSize3 = 5.obs;
   int get totalPages => 4;
@@ -22,12 +18,8 @@ class SubscriptionController extends GetxController {
   void goToPreviousPage() { if (currentPage3.value > 1) currentPage3.value--; }
   void goToNextPage() { if (currentPage3.value < totalPages) currentPage3.value++; }
   void goToPage(int page) { currentPage3.value = page; }
-
-  // --- Sorting State ---
   var sortColumn = "".obs;
-  var sortOrder = 0.obs; // 0 = none, 1 = asc, 2 = desc
-
-  // --- Mock Data ---
+  var sortOrder = 0.obs;
   var allSubscriptions = <Map<String, dynamic>>[
     {"companyName": "Plus Drivers", "type": "Monthly", "cars": 40, "charges": "\$1,345.00", "nextBilling": "9/03/26", "status": "Active"},
     {"companyName": "Outback Wheels", "type": "Monthly", "cars": 100, "charges": "\$1,345.00", "nextBilling": "9/03/26", "status": "Active"},
@@ -57,6 +49,29 @@ class SubscriptionController extends GetxController {
       sortColumn.value = columnName;
       sortOrder.value = 1;
     }
+  }
+
+
+   /// Subscription fee
+
+  late TextEditingController monthlyFeeController;
+  late TextEditingController yearlyFeeController;
+
+  @override
+  void onInit() {
+    super.onInit();
+    monthlyFeeController = TextEditingController();
+    yearlyFeeController = TextEditingController();
+  }
+
+  void updateCarSubscriptionFees() {
+    Get.snackbar(
+      "Success",
+      "Car subscription fees updated successfully!",
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: AppColors.completedColor,
+      colorText: Colors.white,
+    );
   }
 
   @override

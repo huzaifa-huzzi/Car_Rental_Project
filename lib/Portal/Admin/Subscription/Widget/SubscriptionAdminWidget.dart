@@ -2,6 +2,7 @@ import 'package:car_rental_project/Portal/Admin/Companies/ReusableWidget/Primary
 import 'package:car_rental_project/Portal/Admin/Subscription/ReusableWidget/PaginationBarOfSubscription.dart';
 import 'package:car_rental_project/Portal/Admin/Subscription/SubscriptionController.dart' show SubscriptionController;
 import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,7 +18,6 @@ class SubscriptionAdminWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // ----------------- RESPONSIVE HEADER SECTION -----------------
         LayoutBuilder(
           builder: (context, constraints) {
             double width = constraints.maxWidth;
@@ -32,42 +32,33 @@ class SubscriptionAdminWidget extends StatelessWidget {
               ],
             );
 
-            Widget headerButtons = Obx(() {
-              bool isMainActive = controller.showMainSubscriptionDesign.value;
-
-              return Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                alignment: isMobileHeader ? WrapAlignment.start : WrapAlignment.end,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  // --- Add Company Button ---
-                  PrimaryBtnOfCompanies(
-                    text: "Add Company",
-                    // Agar button active hai toh regular styling, warna slightly dimmed background ya customized layout
-                    onTap: () {
-                      controller.showMainSubscriptionDesign.value = true;
-                      context.push('/SubscriptionScreen');
-                    },
-                    borderRadius: BorderRadius.circular(8),
+            Widget headerButtons = Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              alignment: isMobileHeader ? WrapAlignment.start : WrapAlignment.end,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                PrimaryBtnOfCompanies(
+                  text: "Add Subscription",
+                  onTap: () {
+                    context.push('/subscriptionFee');
+                  },
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                OutlinedButton(
+                  onPressed: () {
+                    context.push('/subscriptionFee');
+                  },
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    side: const BorderSide(color: AppColors.primaryColor),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   ),
-
-                  // --- Change Subscription Fee Button ---
-                  OutlinedButton(
-                    onPressed: () {
-                      controller.showMainSubscriptionDesign.value = false;
-                    },
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: !isMainActive ? AppColors.primaryColor.withOpacity(0.1) : Colors.transparent,
-                      side: const BorderSide(color: AppColors.primaryColor),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                    ),
-                    child: Text("Change subscription fee", style: TTextTheme.bodyRegular14Primary(context)),
-                  ),
-                ],
-              );
-            });
+                  child: Text("Change subscription fee", style: TTextTheme.bodyRegular14Primary(context)),
+                ),
+              ],
+            );
 
             if (isMobileHeader) {
               return Column(
@@ -92,98 +83,61 @@ class SubscriptionAdminWidget extends StatelessWidget {
         ),
 
         const SizedBox(height: 30),
-
-        // ----------------- DYNAMIC CONDITIONAL DESIGN BODY -----------------
-        Obx(() {
-          // CONDITION CHECK: Agar Change subscription fee select ho toh main design hide ho jaye
-          if (!controller.showMainSubscriptionDesign.value) {
-            return Container(
-              width: double.infinity,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildStatsGrid(context),
+            const SizedBox(height: 40),
+            Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.sideBoxesColor.withOpacity(0.5)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.02),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Change Subscription Fee", style: TTextTheme.h2Style(context)),
-                  const SizedBox(height: 10),
-                  Text(
-                    "Subscription fee custom UI configuration will go here in the future.",
-                    style: TTextTheme.bodyRegular14(context),
+                  Text("All Subscriptions", style: TTextTheme.h2Style(context)),
+                  Text("List of all subscriptions", style: TTextTheme.bodyRegular14(context)),
+
+                  const SizedBox(height: 25),
+                  _buildFiltersAndTabsRow(context, controller),
+
+                  const SizedBox(height: 25),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildTableHeader(context, controller),
+                        const SizedBox(height: 10),
+                        Obx(() => Column(
+                          children: controller.filteredSubscriptions
+                              .map((data) => _buildSubscriptionRow(context, data))
+                              .toList(),
+                        )),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+                  PaginationBarOfSubscription(
+                    isMobile: MediaQuery.of(context).size.width < 600,
+                    tablePadding: 0,
                   ),
                 ],
               ),
-            );
-          }
-
-          // DEFAULT VIEW: Add Company view par poora target layout display hoga
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildStatsGrid(context),
-              const SizedBox(height: 40),
-
-              // Main Table Card Body
-              Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.02),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("All Subscriptions", style: TTextTheme.h2Style(context)),
-                    Text("List of all subscriptions", style: TTextTheme.bodyRegular14(context)),
-
-                    const SizedBox(height: 25),
-
-                    // Filters & Horizontal Scroll Tabs Row
-                    _buildFiltersAndTabsRow(context, controller),
-
-                    const SizedBox(height: 25),
-
-                    // Scrollable Table Framework
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      physics: const BouncingScrollPhysics(),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildTableHeader(context, controller),
-                          const SizedBox(height: 10),
-                          Obx(() => Column(
-                            children: controller.filteredSubscriptions
-                                .map((data) => _buildSubscriptionRow(context, data))
-                                .toList(),
-                          )),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // Attached Pagination Component
-                    PaginationBarOfSubscription(
-                      isMobile: MediaQuery.of(context).size.width < 600,
-                      tablePadding: 0,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        }),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -250,18 +204,40 @@ class SubscriptionAdminWidget extends StatelessWidget {
           Row(
             children: [
               Container(
-                height: isUltraSmall ? 28 : 36, width: isUltraSmall ? 28 : 36,
-                decoration: BoxDecoration(color: AppColors.signaturePadColor, borderRadius: BorderRadius.circular(8)),
-                child: Center(child: Text("S", style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryColor, fontSize: isUltraSmall ? 12 : 14))),
+                height: isUltraSmall ? 28 : 36,
+                width: isUltraSmall ? 28 : 36,
+                decoration: BoxDecoration(
+                  color: AppColors.signaturePadColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Center(
+                  child: Image.asset(IconString.subscritionGrid),
+                ),
               ),
               SizedBox(width: isUltraSmall ? 6 : 10),
-              Expanded(child: Text(title, style: TTextTheme.bodyRegular12(context).copyWith(color: AppColors.tertiaryTextColor), maxLines: 1, overflow: TextOverflow.ellipsis)),
+              Expanded(
+                child: Text(
+                  title,
+                  style: TTextTheme.bodyRegular12(context).copyWith(color: AppColors.tertiaryTextColor),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ],
           ),
+
           const SizedBox(height: 12),
-          Text(value, style: TTextTheme.h2Style(context).copyWith(fontSize: isUltraSmall ? 20 : 26, fontWeight: FontWeight.w700)),
+          Text(
+            value,
+            style: TTextTheme.h2Style(context).copyWith(fontSize: isUltraSmall ? 20 : 26, fontWeight: FontWeight.w700),
+          ),
           const SizedBox(height: 2),
-          Text(subText, style: TTextTheme.bodySecondRegular10(context).copyWith(color: AppColors.tertiaryTextColor.withOpacity(0.8)), maxLines: 1, overflow: TextOverflow.ellipsis),
+          Text(
+            subText,
+            style: TTextTheme.bodySecondRegular10(context).copyWith(color: AppColors.tertiaryTextColor.withOpacity(0.8)),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       ),
     );
@@ -293,7 +269,7 @@ class SubscriptionAdminWidget extends StatelessWidget {
                     color: isSelected ? AppColors.primaryColor : Colors.transparent,
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: Text(tab, style: TextStyle(color: isSelected ? Colors.white : AppColors.tertiaryTextColor, fontSize: 13, fontWeight: FontWeight.w500)),
+                  child: Text(tab, style: isSelected ? TTextTheme.medium14White(context) : TTextTheme.tableRegular14(context)),
                 ),
               );
             });
@@ -402,12 +378,14 @@ class SubscriptionAdminWidget extends StatelessWidget {
           ),
           Expanded(
             child: TextField(
+              cursorColor: AppColors.blackColor,
               controller: controller.searchController,
-              decoration: const InputDecoration(
-                hintText: "Search Company by Name", border: InputBorder.none,
+              decoration:  InputDecoration(
+                hintText: "Search Subscription by name", border: InputBorder.none,
+                hintStyle: TTextTheme.SubscriptionSearch(context),
                 isDense: true, contentPadding: EdgeInsets.only(bottom: 2),
               ),
-              style: const TextStyle(fontSize: 13),
+              style: TTextTheme.titleinputTextField(context)
             ),
           ),
           Padding(
@@ -419,7 +397,7 @@ class SubscriptionAdminWidget extends StatelessWidget {
                 elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                 padding: const EdgeInsets.symmetric(horizontal: 16),
               ),
-              child: const Text("Search", style: TextStyle(fontSize: 12)),
+              child:  Text("Search", style: TTextTheme.medium12White(context)),
             ),
           ),
         ],
@@ -475,7 +453,6 @@ class SubscriptionAdminWidget extends StatelessWidget {
               if (canSort) ...[
                 const SizedBox(width: 4),
                 Obx(() {
-                  // Check kar rahe hain ke kya current column par hi click hua hai
                   bool isCurrent = controller.sortColumn.value == title;
                   int order = isCurrent ? controller.sortOrder.value : 0;
 
@@ -485,7 +462,6 @@ class SubscriptionAdminWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // 1st Click (order == 1): Up Arrow turns Red/Primary
                         Icon(
                           Icons.keyboard_arrow_up,
                           size: 12,
@@ -494,8 +470,6 @@ class SubscriptionAdminWidget extends StatelessWidget {
                         Transform.translate(
                           offset: const Offset(0, -4),
                           child: Icon(
-                            // 2nd Click (order == 2): Down Arrow turns Red/Primary
-                            // 3rd Click (order == 0): turns back to Grey automatically
                             Icons.keyboard_arrow_down,
                             size: 12,
                             color: order == 2 ? AppColors.primaryColor : AppColors.tertiaryTextColor,
@@ -533,11 +507,11 @@ class SubscriptionAdminWidget extends StatelessWidget {
           SizedBox(width: 100, child: Text("${data["cars"]}", style: TTextTheme.tableRegular14black(context))),
           SizedBox(width: 130, child: Text(data["charges"] ?? "-", style: TTextTheme.tableRegular14black(context))),
           SizedBox(width: 160, child: Text(data["nextBilling"] ?? "-", style: TTextTheme.tableRegular14black(context))),
-          SizedBox(width: 120, child: _buildStatusChip(data["status"])),
+          SizedBox(width: 120, child: _buildStatusChip(context,data["status"])),
           SizedBox(
             width: 100,
             child: OutlinedButton(
-              onPressed: () => context.push('/detailCompany'),
+              onPressed: () => context.push('/'),
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: AppColors.primaryColor),
                 padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
@@ -546,9 +520,9 @@ class SubscriptionAdminWidget extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.visibility, size: 12, color: AppColors.primaryColor),
+                   Image.asset(IconString.viewIcon, height: 12,width: 12, color: AppColors.primaryColor),
                   const SizedBox(width: 4),
-                  Text("View", style: TextStyle(color: AppColors.primaryColor, fontSize: 12)),
+                  Text("View", style: TTextTheme.viewBtnText(context)),
                 ],
               ),
             ),
@@ -557,18 +531,18 @@ class SubscriptionAdminWidget extends StatelessWidget {
       ),
     );
   }
-  Widget _buildStatusChip(String status) {
-    Color bg = Colors.grey;
-    if (status == "Active") bg = const Color(0xFF2EC875);
+  Widget _buildStatusChip(BuildContext context,String status) {
+    Color bg = AppColors.tertiaryTextColor;
+    if (status == "Active") bg = AppColors.completedColor;
     if (status == "Suspended") bg = Colors.red;
-    if (status == "Expired") bg = const Color(0xFF6B7280);
+    if (status == "Expired") bg = AppColors.tableHeading;
 
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(20)),
-        child: Text(status, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+        child: Text(status, style: TTextTheme.medium14White(context)),
       ),
     );
   }

@@ -179,6 +179,9 @@ class IconString {
   static const String  uploadedImageAdmin2 = 'assets/icons/Admin/UploadedImageAdmin.png';
   static const String  underMaintenanceIcon = 'assets/icons/Admin/underMaintenance.png';
 
+   // Subscription
+  static const String  subscritionGrid = 'assets/icons/Admin/SubscriptionGrid.png';
+
 
      /// Staff
      // settings
