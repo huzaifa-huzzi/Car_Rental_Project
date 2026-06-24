@@ -1,20 +1,21 @@
+import 'package:car_rental_project/Portal/Admin/Companies/AddCompany/Widget/AddCompanyWidget.dart';
+import 'package:car_rental_project/Portal/Admin/Companies/ReusableWidget/HeaderWebCompaniesWidget.dart';
+import 'package:car_rental_project/Portal/Admin/Subscription/AddSubscrition/Widget/AddSubscriptionWidget.dart';
 import 'package:car_rental_project/Portal/Admin/Subscription/ReusableWidget/HeaderWebSubscriptionWidget.dart';
-import 'package:car_rental_project/Portal/Admin/Subscription/SubscriptionController.dart';
-import 'package:car_rental_project/Portal/Admin/Subscription/Widget/SubscriptionAdminWidget.dart';
-import 'package:flutter/material.dart';
-import 'package:car_rental_project/Portal/Admin/Companies/CompaniesController.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
-import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 
-class SubscriptionScreen extends StatelessWidget {
-  SubscriptionScreen({super.key});
 
-  // Screen ke top par hi initialize kar dein taaki child widgets ko safely mil sake
-  final controller = Get.put(SubscriptionController());
+class AddSubscriptionScreen extends StatelessWidget {
+  const AddSubscriptionScreen({super.key});
+
+
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = AppSizes.isMobile(context);
+    final tablePadding = AppSizes.padding(context);
     final horizontalPadding = AppSizes.horizontalPadding(context);
     final baseVerticalSpace = AppSizes.verticalPadding(context);
 
@@ -27,17 +28,17 @@ class SubscriptionScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
             child: Column(
               children: [
-                if (AppSizes.isWeb(context))
                   HeaderWebSubscriptionWidget(
-                    mainTitle: 'Subscription',
+                    mainTitle: 'Add Subscription',
+                    showBack: true,
                     showProfile: true,
                     showNotification: true,
                     showSettings: true,
-                    showSearch: true,
+                    showSearch: false,
                   ),
-                const SizedBox(height: 30),
-                SubscriptionAdminWidget(),
-                SizedBox(height: baseVerticalSpace * 1.25),
+                const SizedBox(height: 35),
+                AddSubscriptionWidget(),
+                SizedBox(height: baseVerticalSpace * 12),
               ],
             ),
           ),

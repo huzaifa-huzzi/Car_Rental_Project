@@ -1,10 +1,23 @@
+import 'package:car_rental_project/Portal/Admin/Subscription/ReusableWidget/CustomCalendarSubscription.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+
+
+class ImageHolder {
+  final String? path;
+  final Uint8List? bytes;
+  final String? name;
+
+  ImageHolder({this.path, this.bytes, this.name});
+}
+
 class SubscriptionController extends GetxController {
 
-   /// Main Screen
+  /// Main Screen
   var showMainSubscriptionDesign = true.obs;
   var selectedTab = "All".obs;
   var openedDropdown2 = "".obs;
@@ -52,10 +65,128 @@ class SubscriptionController extends GetxController {
   }
 
 
-   /// Subscription fee
-
+  /// Subscription fee
   late TextEditingController monthlyFeeController;
   late TextEditingController yearlyFeeController;
+
+
+  /// Add Subscription
+  final companyName = TextEditingController();
+  final adressController = TextEditingController();
+  final phoneNumber = TextEditingController();
+  final emailAddress = TextEditingController();
+  final licenseNumber = TextEditingController();
+  final registrationDate = TextEditingController();
+  final taxNumber = TextEditingController();
+  var accountStatus = "Active".obs;
+  var focusedField = "".obs;
+  RxList<ImageHolder> selectedImages2 = <ImageHolder>[].obs;
+  var selectedPlan = "Monthly".obs;
+  final totalCars = TextEditingController();
+  final availableCars = TextEditingController();
+  final underMaintenance = TextEditingController();
+  final startDateController = TextEditingController(text: "4/03/2027");
+  final endDateController = TextEditingController(text: "4/03/2027");
+  var isDateDropOpen = false.obs;
+  OverlayEntry? calendarOverlay;
+
+  final LayerLink startDateLink = LayerLink();
+  final LayerLink endDateLink = LayerLink();
+  void setFocus(String fieldName) => focusedField.value = fieldName;
+  void clearFocus() => focusedField.value = "";
+  Future<void> pickImage2() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['png', 'jpg', 'jpeg', 'svg'],
+      withData: kIsWeb ? true : false,
+      withReadStream: kIsWeb ? false : true,
+    );
+
+    if (result != null) {
+      for (var file in result.files) {
+        if (kIsWeb && file.bytes != null) {
+          selectedImages2.add(ImageHolder(bytes: file.bytes, name: file.name));
+        } else if (!kIsWeb && file.path != null) {
+          selectedImages2.add(ImageHolder(path: file.path, name: file.name));
+        }
+      }
+    }
+  }
+
+  void removeImage2(int index) {
+    selectedImages2.removeAt(index);
+  }
+  void toggleCalendar(BuildContext context, LayerLink link, TextEditingController targetController) {
+    if (calendarOverlay != null) {
+      removeCalendar();
+    } else {
+      double screenWidth = MediaQuery.of(context).size.width;
+      double calendarWidth = screenWidth < 600 ? (screenWidth * 0.66) : 300;
+
+      calendarOverlay = _createCalendarOverlay(context, link, targetController, calendarWidth);
+      Overlay.of(context).insert(calendarOverlay!);
+      isDateDropOpen.value = true;
+    }
+  }
+
+  OverlayEntry _createCalendarOverlay(
+      BuildContext context,
+      LayerLink link,
+      TextEditingController targetController,
+      double width,
+      ) {
+    return OverlayEntry(
+      builder: (context) => Stack(
+        children: [
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: removeCalendar,
+              behavior: HitTestBehavior.opaque,
+              child: Container(color: Colors.transparent),
+            ),
+          ),
+
+          CompositedTransformFollower(
+            link: link,
+            showWhenUnlinked: false,
+            targetAnchor: Alignment.bottomLeft,
+            followerAnchor: Alignment.topLeft,
+            offset: const Offset(0, 6),
+            child: Material(
+              elevation: 12,
+              shadowColor: Colors.black.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: width,
+                  maxHeight: 320,
+                ),
+                child: CustomCalendarSubscription(
+                  width: width,
+                  onCancel: removeCalendar,
+                  onDateSelected: (date) {
+                    targetController.text = "${date.day}/${date.month}/${date.year}";
+                    removeCalendar();
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void removeCalendar() {
+    calendarOverlay?.remove();
+    calendarOverlay = null;
+    isDateDropOpen.value = false;
+  }
+
+  void updateDateRange(DateTime selectedDate) {
+    print("Date Updated: ${selectedDate.day}/${selectedDate.month}/${selectedDate.year}");
+  }
 
   @override
   void onInit() {
@@ -74,9 +205,50 @@ class SubscriptionController extends GetxController {
     );
   }
 
+
+   /// Detail Screen
+  Color getDetailStatusColor() {
+    switch (accountStatus.value.trim().toLowerCase()) {
+      case 'active':
+        return  AppColors.completedColor;
+      case 'suspended':
+        return Colors.red;
+      case 'expired':
+        return AppColors.tableHeading;
+      default:
+        return AppColors.toolBackground;
+    }
+  }
+  Color getDetailStatusTextColor() {
+    switch (accountStatus.value.trim().toLowerCase()) {
+      case 'active':
+        return Colors.white;
+      case 'suspended':
+        return Colors.white;
+      case 'expired':
+        return Colors.white;
+      default:
+        return AppColors.blackColor;
+    }
+  }
+
+
   @override
   void onClose() {
     searchController.dispose();
+    companyName.dispose();
+    adressController.dispose();
+    phoneNumber.dispose();
+    emailAddress.dispose();
+    licenseNumber.dispose();
+    registrationDate.dispose();
+    taxNumber.dispose();
+    totalCars.dispose();
+    availableCars.dispose();
+    underMaintenance.dispose();
+    startDateController.dispose();
+    endDateController.dispose();
+    removeCalendar();
     super.onClose();
   }
 }

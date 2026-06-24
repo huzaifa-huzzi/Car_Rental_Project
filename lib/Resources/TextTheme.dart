@@ -338,6 +338,11 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 13, 14, 16),fontWeight: FontWeight.w500,color: Colors.white);
   }
 
+
+  static TextStyle btnSavePrimary(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 13, 14, 16),fontWeight: FontWeight.w500,color: AppColors.primaryColor);
+  }
+
   static TextStyle btnNumbering(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 13),fontWeight: FontWeight.w500,color: Colors.white);
   }

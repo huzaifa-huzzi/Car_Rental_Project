@@ -1,4 +1,4 @@
-import 'package:car_rental_project/Portal/Admin/Companies/CompaniesController.dart';
+import 'package:car_rental_project/Portal/Admin/Subscription/SubscriptionController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +8,7 @@ class PaginationBarOfSubscription extends StatelessWidget {
   final bool isMobile;
   final double tablePadding;
 
-  final CompaniesAdminController controller = Get.find<CompaniesAdminController>();
+  final SubscriptionController controller = Get.find<SubscriptionController>();
 
 
   PaginationBarOfSubscription({super.key, required this.isMobile, required this.tablePadding});

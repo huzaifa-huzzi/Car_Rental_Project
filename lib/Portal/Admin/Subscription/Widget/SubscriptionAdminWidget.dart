@@ -1,5 +1,6 @@
 import 'package:car_rental_project/Portal/Admin/Companies/ReusableWidget/PrimaryButtonOfComapnies.dart';
 import 'package:car_rental_project/Portal/Admin/Subscription/ReusableWidget/PaginationBarOfSubscription.dart';
+import 'package:car_rental_project/Portal/Admin/Subscription/ReusableWidget/PrimaryButtonOfSubscription.dart';
 import 'package:car_rental_project/Portal/Admin/Subscription/SubscriptionController.dart' show SubscriptionController;
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
@@ -38,10 +39,10 @@ class SubscriptionAdminWidget extends StatelessWidget {
               alignment: isMobileHeader ? WrapAlignment.start : WrapAlignment.end,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                PrimaryBtnOfCompanies(
+                PrimaryBtnOfSubscription(
                   text: "Add Subscription",
                   onTap: () {
-                    context.push('/subscriptionFee');
+                    context.push('/addSubscription');
                   },
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -121,7 +122,7 @@ class SubscriptionAdminWidget extends StatelessWidget {
                         const SizedBox(height: 10),
                         Obx(() => Column(
                           children: controller.filteredSubscriptions
-                              .map((data) => _buildSubscriptionRow(context, data))
+                              .map((data) => _buildSubscriptionRow(context, data,controller))
                               .toList(),
                         )),
                       ],
@@ -488,7 +489,7 @@ class SubscriptionAdminWidget extends StatelessWidget {
   }
 
    // Subscription Row
-  Widget _buildSubscriptionRow(BuildContext context, Map data) {
+  Widget _buildSubscriptionRow(BuildContext context, Map data,SubscriptionController controller) {
     return Container(
       margin: const EdgeInsets.only(top: 8),
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
@@ -499,7 +500,7 @@ class SubscriptionAdminWidget extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(width: 180, child: Row(children: [
-            const Icon(Icons.wallet_membership, color: AppColors.primaryColor, size: 18),
+            Image.asset(IconString.subscritionGrid, color: AppColors.primaryColor, height: 18,width: 18,),
             const SizedBox(width: 10),
             Text(data["companyName"] ?? "-", style: TTextTheme.bodySemiBold14black(context)),
           ])),
@@ -511,7 +512,10 @@ class SubscriptionAdminWidget extends StatelessWidget {
           SizedBox(
             width: 100,
             child: OutlinedButton(
-              onPressed: () => context.push('/'),
+              onPressed: () {
+                controller.accountStatus.value = data["status"] ?? "Active";
+                context.push('/SubscriptionDetail');
+              },
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: AppColors.primaryColor),
                 padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
@@ -520,7 +524,7 @@ class SubscriptionAdminWidget extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                   Image.asset(IconString.viewIcon, height: 12,width: 12, color: AppColors.primaryColor),
+                  Image.asset(IconString.viewIcon, height: 12, width: 12, color: AppColors.primaryColor),
                   const SizedBox(width: 4),
                   Text("View", style: TTextTheme.viewBtnText(context)),
                 ],

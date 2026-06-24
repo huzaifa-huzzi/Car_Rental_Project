@@ -1,16 +1,14 @@
 import 'package:car_rental_project/Portal/Admin/Subscription/ReusableWidget/HeaderWebSubscriptionWidget.dart';
 import 'package:car_rental_project/Portal/Admin/Subscription/SubscriptionController.dart';
-import 'package:car_rental_project/Portal/Admin/Subscription/Widget/SubscriptionAdminWidget.dart';
-import 'package:flutter/material.dart';
-import 'package:car_rental_project/Portal/Admin/Companies/CompaniesController.dart';
+import 'package:car_rental_project/Portal/Admin/Subscription/SubscriptionDetail/Widget/SubscriptionDetailWidget.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SubscriptionScreen extends StatelessWidget {
-  SubscriptionScreen({super.key});
+class SubscriptionDetail extends StatelessWidget {
+  SubscriptionDetail({super.key});
 
-  // Screen ke top par hi initialize kar dein taaki child widgets ko safely mil sake
   final controller = Get.put(SubscriptionController());
 
   @override
@@ -31,12 +29,13 @@ class SubscriptionScreen extends StatelessWidget {
                   HeaderWebSubscriptionWidget(
                     mainTitle: 'Subscription',
                     showProfile: true,
+                    showBack: true,
                     showNotification: true,
                     showSettings: true,
                     showSearch: true,
                   ),
                 const SizedBox(height: 30),
-                SubscriptionAdminWidget(),
+                SubscriptionDetailWidget(),
                 SizedBox(height: baseVerticalSpace * 1.25),
               ],
             ),

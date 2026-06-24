@@ -166,7 +166,7 @@ class SubscriptionFreeScreen extends StatelessWidget {
       ),
       child: Text(
         "Save",
-        style: TTextTheme.btnSave(context),
+        style: TTextTheme.btnSavePrimary(context),
       ),
     );
   }
@@ -180,7 +180,7 @@ class SubscriptionFreeScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
-      child:  Text("Cancel", style: TTextTheme.btnCancel(context)),
+      child:  Text("Cancel", style: TTextTheme.btnSave(context)),
     );
   }
 
