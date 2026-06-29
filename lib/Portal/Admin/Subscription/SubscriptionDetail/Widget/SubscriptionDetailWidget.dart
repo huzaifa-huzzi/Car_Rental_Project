@@ -1,5 +1,6 @@
 import 'package:car_rental_project/Portal/Admin/Subscription/SubscriptionController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +71,14 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
               ]),
             ],
           ),
+        ),
+
+        const SizedBox(height: 25),
+        _buildSectionCard(
+          context,
+          title: "Invoice Breakdown",
+          subtitle: "Billing breakdown of active operations",
+          child: _buildInvoiceBreakdownContent(context, isMobile),
         ),
       ],
     );
@@ -210,6 +219,133 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildInvoiceBreakdownContent(BuildContext context, bool isMobile) {
+    Widget invoiceMeta = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("Invoice", style: TTextTheme.bodyRegular14(context)),
+        const SizedBox(height: 4),
+        Text("INV -2025-012", style: TTextTheme.hPickupStyle(context)),
+        const SizedBox(height: 2),
+        Text("April 2025", style: TTextTheme.bodyRegular14(context)),
+      ],
+    );
+    Widget actionButtons = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          decoration: BoxDecoration(
+            color: AppColors.completedColor,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Text("Paid", style: TTextTheme.medium14White(context).copyWith(fontSize: 12)),
+        ),
+        const SizedBox(width: 10),
+        ElevatedButton.icon(
+          onPressed: () {},
+          icon: Image.asset(IconString.downloadIcon, height: 14,width: 14, color: Colors.white),
+          label: Text("Download PDF", style: TTextTheme.medium12White(context)),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primaryColor,
+            elevation: 0,
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+          ),
+        ),
+      ],
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth < 420) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  invoiceMeta,
+                  const SizedBox(height: 16),
+                  actionButtons,
+                ],
+              );
+            } else {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  invoiceMeta,
+                  actionButtons,
+                ],
+              );
+            }
+          },
+        ),
+
+        const SizedBox(height: 20),
+        const Divider(color: AppColors.toolBackground, thickness: 1),
+        const SizedBox(height: 12),
+        _buildBreakdownItem(context, label: "Active Vehicle", value: "20.00", isBold: true),
+        const SizedBox(height: 12),
+        _buildBreakdownItem(context, label: "Rate per Car", value: "\$8.00", isBold: true),
+
+        const SizedBox(height: 16),
+        const Divider(color: AppColors.toolBackground, thickness: 1),
+        const SizedBox(height: 16),
+        _buildBreakdownItem(context, label: "Sub Total", value: "\$160.00", styleColor: AppColors.quadrantalTextColor.withOpacity(0.7)),
+        const SizedBox(height: 12),
+        _buildBreakdownItem(context, label: "Tax", value: "\$8.00", styleColor: AppColors.quadrantalTextColor.withOpacity(0.7)),
+
+        const SizedBox(height: 16),
+        const Divider(color: AppColors.toolBackground, thickness: 1),
+        const SizedBox(height: 16),
+        _buildBreakdownItem(
+            context,
+            label: "Total",
+            value: "\$168.00",
+            isBold: true,
+            styleColor: AppColors.primaryColor,
+            fontSize: 16
+        ),
+      ],
+    );
+  }
+
+ // breakdown list
+  Widget _buildBreakdownItem(
+      BuildContext context, {
+        required String label,
+        required String value,
+        bool isBold = false,
+        Color? styleColor,
+        double fontSize = 13
+      }) {
+    final baseStyle = isBold
+        ? TTextTheme.bodySemiBold14black(context)
+        : TTextTheme.tableRegular14black(context);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+            label,
+            style: baseStyle.copyWith(
+                fontSize: fontSize,
+                color: isBold ? AppColors.blackColor: AppColors.quadrantalTextColor.withOpacity(0.7)
+            )
+        ),
+        Text(
+            value,
+            style: baseStyle.copyWith(
+                fontSize: fontSize,
+                color: styleColor ?? AppColors.blackColor
+            )
+        ),
+      ],
     );
   }
 }

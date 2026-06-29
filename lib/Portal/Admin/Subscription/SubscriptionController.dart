@@ -233,9 +233,26 @@ class SubscriptionController extends GetxController {
   }
 
 
+  /// Invoices Detail
+  var searchCarText = "".obs;
+  var selectedYear = "2024".obs;
+  final TextEditingController searchController2 = TextEditingController();
+  int get currentYear => DateTime.now().year;
+
+  List<String> get yearsList2 {
+    return List.generate(
+      (currentYear - 1950) + 1,
+          (index) => (currentYear - index).toString(),
+    );
+  }
+
+  List<String> get yearsList => yearsList2;
+
+
   @override
   void onClose() {
     searchController.dispose();
+    searchController2.dispose();
     companyName.dispose();
     adressController.dispose();
     phoneNumber.dispose();

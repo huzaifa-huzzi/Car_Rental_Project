@@ -13,6 +13,7 @@ import 'package:car_rental_project/Portal/Admin/Subscription/AddSubscrition/Widg
 import 'package:car_rental_project/Portal/Admin/Subscription/Subscription.dart';
 import 'package:car_rental_project/Portal/Admin/Subscription/SubscriptionDetail/subscriptionDetail.dart';
 import 'package:car_rental_project/Portal/Admin/Subscription/SubscriptionFeeScreen/subscriptionFeeScreen.dart';
+import 'package:car_rental_project/Portal/Admin/Subscription/SubscriptionInvoiceDetail/SubscriptionInvoiceDetail.dart';
 import 'package:car_rental_project/Portal/Admin/UserandRole/userandRole.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -27,14 +28,11 @@ class AdminRoutes {
         Get.put(SideBarAdminController());
 
         final String path = state.uri.toString().toLowerCase();
-        bool hideMobile;
-        if (path.contains('edit') ) {
-          hideMobile = true;
-        } else if (path.contains('add') ||  path.contains('detail')) {
-          hideMobile = false;
-        } else {
-          hideMobile = false;
-        }
+        // Dynamic hiding check update
+        bool hideMobile = path.contains('edit') ||
+            path.contains('add') ||
+            path.contains('detail') ||
+            path.contains('fee');
 
         return SidebarAdmin(
           onTap: (route) {
@@ -55,54 +53,50 @@ class AdminRoutes {
       },
       routes: [
         GoRoute(path: '/dashboard-admin', builder: (context, state) => const DashBoardAdmin()),
-        GoRoute(path: '/companies', builder: (context, state) =>  ComapaniesAdmin()),
+        GoRoute(
+          path: '/companies',
+          builder: (context, state) => ComapaniesAdmin(),
+          routes: [
+            GoRoute(
+              path: 'addCompany',
+              builder: (context, state) => AddCompany(),
+            ),
+            GoRoute(
+              path: 'detailCompany',
+              builder: (context, state) => CompaniesDetail(),
+            ),
+          ],
+        ),
+
         GoRoute(path: '/reports', builder: (context, state) => const ReportScreen()),
-        GoRoute(path: '/subscription', builder: (context, state) =>  SubscriptionScreen()),
+        GoRoute(
+          path: '/subscription',
+          builder: (context, state) => SubscriptionScreen(),
+          routes: [
+            GoRoute(
+              path: 'subscriptionFee',
+              builder: (context, state) => SubscriptionFreeScreen(),
+            ),
+            GoRoute(
+              path: 'addSubscription',
+              builder: (context, state) => AddSubscriptionScreen(),
+            ),
+            GoRoute(
+              path: 'SubscriptionDetail',
+              builder: (context, state) => SubscriptionDetail(),
+            ),
+            GoRoute(
+              path: 'subscriptionInvoiceDetail',
+              builder: (context, state) => SubscriptionInvoiceDetail(),
+            ),
+          ],
+        ),
+
         GoRoute(path: '/payment-admin', builder: (context, state) => const PaymentAdmin()),
         GoRoute(path: '/branding', builder: (context, state) => const BrandingScreen()),
         GoRoute(path: '/user-role-admin', builder: (context, state) => const UserandRole()),
         GoRoute(path: '/help-admin', builder: (context, state) => const HelpCenter()),
-
-         // Companies Routes
-        GoRoute(
-            path: '/addCompany',
-            builder: (context, state) =>  AddCompany()
-        ),
-
-        GoRoute(
-            path: '/detailCompany',
-            builder: (context, state) =>  CompaniesDetail()
-        ),
-
-         // SubscriptionRoutes
-        GoRoute(
-            path: '/subscriptionFee',
-            builder: (context, state) =>  SubscriptionFreeScreen()
-        ),
-        GoRoute(
-            path: '/addSubscription',
-            builder: (context, state) =>  AddSubscriptionScreen(),
-        ),
-        GoRoute(
-          path: '/SubscriptionDetail',
-          builder: (context, state) =>  SubscriptionDetail(),
-        ),
       ],
     ),
-
-    /// External Routes
-
   ];
-
-
-  static Widget _wrapSidebar(GoRouterState state, Widget child) {
-    final String path = state.uri.toString().toLowerCase();
-    bool hideMobile = path.contains('t&c') || path.contains('add') ||
-        path.contains('edit') || path.contains('detail');
-
-    return SidebarAdmin.wrapWithSidebarIfNeeded(
-      child: child,
-      hideMobileAppBar: hideMobile,
-    );
-  }
 }

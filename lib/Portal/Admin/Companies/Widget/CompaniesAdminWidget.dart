@@ -467,7 +467,7 @@ class CompaniesAdminWidget extends StatelessWidget {
                   iconColor: Colors.white,
                   bgColor: AppColors.primaryColor,
                   onTap: (){
-                    context.push('/detailCompany');
+                    context.go('/companies/detailCompany');
                   }
                 ),
                 const SizedBox(width: 12),
@@ -633,7 +633,7 @@ class CompaniesAdminWidget extends StatelessWidget {
   Widget _buildAddPaymentButton(BuildContext context, bool isFullWidth) {
     return PrimaryBtnOfCompanies(
       text: "Add Company",
-      onTap: () =>  context.push('/addCompany'),
+      onTap: () =>  context.go('/companies/addCompany'),
       width: isFullWidth ? double.infinity : 150,
       borderRadius: BorderRadius.circular(10),
     );

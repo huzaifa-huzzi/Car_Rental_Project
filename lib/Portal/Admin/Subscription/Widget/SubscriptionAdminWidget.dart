@@ -1,6 +1,4 @@
-import 'package:car_rental_project/Portal/Admin/Companies/ReusableWidget/PrimaryButtonOfComapnies.dart';
 import 'package:car_rental_project/Portal/Admin/Subscription/ReusableWidget/PaginationBarOfSubscription.dart';
-import 'package:car_rental_project/Portal/Admin/Subscription/ReusableWidget/PrimaryButtonOfSubscription.dart';
 import 'package:car_rental_project/Portal/Admin/Subscription/SubscriptionController.dart' show SubscriptionController;
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
@@ -32,33 +30,17 @@ class SubscriptionAdminWidget extends StatelessWidget {
                 Text("Your subscription detail is given below", style: TTextTheme.bodyRegular14(context)),
               ],
             );
-
-            Widget headerButtons = Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              alignment: isMobileHeader ? WrapAlignment.start : WrapAlignment.end,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                PrimaryBtnOfSubscription(
-                  text: "Add Subscription",
-                  onTap: () {
-                    context.push('/addSubscription');
-                  },
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                OutlinedButton(
-                  onPressed: () {
-                    context.push('/subscriptionFee');
-                  },
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: Colors.transparent,
-                    side: const BorderSide(color: AppColors.primaryColor),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                  ),
-                  child: Text("Change subscription fee", style: TTextTheme.bodyRegular14Primary(context)),
-                ),
-              ],
+            Widget singleHeaderButton = OutlinedButton(
+              onPressed: () {
+                context.go('/subscription/subscriptionFee');
+              },
+              style: OutlinedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                side: const BorderSide(color: AppColors.primaryColor),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              ),
+              child: Text("Change subscription fee", style: TTextTheme.bodyRegular14Primary(context)),
             );
 
             if (isMobileHeader) {
@@ -67,7 +49,10 @@ class SubscriptionAdminWidget extends StatelessWidget {
                 children: [
                   headerTexts,
                   const SizedBox(height: 16),
-                  SizedBox(width: double.infinity, child: headerButtons),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: singleHeaderButton,
+                  ),
                 ],
               );
             } else {
@@ -76,7 +61,7 @@ class SubscriptionAdminWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(child: headerTexts),
-                  headerButtons,
+                  singleHeaderButton,
                 ],
               );
             }
@@ -511,24 +496,40 @@ class SubscriptionAdminWidget extends StatelessWidget {
           SizedBox(width: 120, child: _buildStatusChip(context,data["status"])),
           SizedBox(
             width: 100,
-            child: OutlinedButton(
-              onPressed: () {
-                controller.accountStatus.value = data["status"] ?? "Active";
-                context.push('/SubscriptionDetail');
-              },
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: AppColors.primaryColor),
-                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset(IconString.viewIcon, height: 12, width: 12, color: AppColors.primaryColor),
-                  const SizedBox(width: 4),
-                  Text("View", style: TTextTheme.viewBtnText(context)),
-                ],
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    controller.accountStatus.value = data["status"] ?? "Active";
+                    context.go('/subscription/SubscriptionDetail');
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Image.asset(
+                      IconString.viewIcon,
+                      height: 16,
+                      width: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                GestureDetector(
+                  onTap: () {
+                    context.go('/subscription/subscriptionInvoiceDetail');
+                  },
+                  child: Image.asset(
+                    IconString.subcritionInvoice,
+                    height: 16,
+                    width: 16,
+                  ),
+                ),
+              ],
             ),
           )
         ],
@@ -551,3 +552,4 @@ class SubscriptionAdminWidget extends StatelessWidget {
     );
   }
 }
+

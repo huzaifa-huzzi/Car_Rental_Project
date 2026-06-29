@@ -181,7 +181,7 @@ class IconString {
 
    // Subscription
   static const String  subscritionGrid = 'assets/icons/Admin/SubscriptionGrid.png';
-
+  static const String  subcritionInvoice = 'assets/icons/Admin/AdminInvoice.png';
 
      /// Staff
      // settings
