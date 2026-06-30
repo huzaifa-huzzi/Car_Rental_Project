@@ -250,7 +250,7 @@ class _CustomCalendarPayment2State extends State<CustomCalendarPayment2> {
         decoration: BoxDecoration(
           color: AppColors.secondaryColor,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColors.quadrantalTextColor.withOpacity(0.4)),
+          border: Border.all(color: AppColors.quadrantalTextColor.withValues(alpha: 0.4)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

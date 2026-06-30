@@ -250,7 +250,7 @@ class _CustomCalendarCustomerState extends State<CustomCalendarCustomer> {
         decoration: BoxDecoration(
           color: AppColors.secondaryColor,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColors.quadrantalTextColor.withOpacity(0.4)),
+          border: Border.all(color: AppColors.quadrantalTextColor.withValues(alpha: 0.4)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

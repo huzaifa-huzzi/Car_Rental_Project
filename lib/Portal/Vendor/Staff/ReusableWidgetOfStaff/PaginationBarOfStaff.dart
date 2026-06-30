@@ -66,7 +66,7 @@ class PaginationBarOfStaff extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: AppColors.sideBoxesColor.withOpacity(0.5)),
+                border: Border.all(color: AppColors.sideBoxesColor.withValues(alpha: 0.5)),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -168,7 +168,7 @@ class PaginationBarOfStaff extends StatelessWidget {
       isButtonDisabled = isNextDisabled;
     }
 
-    final Color disabledColor = AppColors.secondTextColor.withOpacity(0.4);
+    final Color disabledColor = AppColors.secondTextColor.withValues(alpha: 0.4);
     final Color enabledColor = AppColors.secondTextColor;
 
     final VoidCallback? buttonAction = isButtonDisabled ? null : () {

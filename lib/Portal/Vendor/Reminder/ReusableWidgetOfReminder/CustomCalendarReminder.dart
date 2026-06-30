@@ -59,7 +59,7 @@ class _CustomCalendarReminderState extends State<CustomCalendarReminder> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10)],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 10)],
       ),
       child: Stack(
         children: [
@@ -312,7 +312,7 @@ class _CustomCalendarReminderState extends State<CustomCalendarReminder> {
         decoration: BoxDecoration(
           color: AppColors.backgroundOfScreenColor,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColors.quadrantalTextColor.withOpacity(0.4)),
+          border: Border.all(color: AppColors.quadrantalTextColor.withValues(alpha: 0.4)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

@@ -149,7 +149,7 @@ class SidebarComponentStaff {
                       Stack(
                         alignment: Alignment.center,
                         children: [
-                          Container(width: 1, color: AppColors.tertiaryTextColor.withOpacity(0.7)),
+                          Container(width: 1, color: AppColors.tertiaryTextColor.withValues(alpha: 0.7)),
                           Container(
                             width: 6,
                             height: 6,

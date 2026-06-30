@@ -47,7 +47,7 @@ class SubscriptionFreeScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.01),
+                      color: Colors.black.withValues(alpha: 0.01),
                       blurRadius: 15,
                       offset: const Offset(0, 8),
                     ),
@@ -136,11 +136,11 @@ class SubscriptionFreeScreen extends StatelessWidget {
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: AppColors.sideBoxesColor.withOpacity(0.8)),
+            borderSide: BorderSide(color: AppColors.sideBoxesColor.withValues(alpha: 0.8)),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: AppColors.sideBoxesColor.withOpacity(0.8)),
+            borderSide: BorderSide(color: AppColors.sideBoxesColor.withValues(alpha: 0.8)),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
@@ -271,7 +271,7 @@ class SubscriptionFreeScreen extends StatelessWidget {
                         icon: Container(
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
-                            color: AppColors.sideBoxesColor.withOpacity(0.5),
+                            color: AppColors.sideBoxesColor.withValues(alpha: 0.5),
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(Icons.close, size: 14, color: AppColors.blackColor),
@@ -361,7 +361,7 @@ class SubscriptionFreeScreen extends StatelessWidget {
                         icon: Container(
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
-                            color: AppColors.sideBoxesColor.withOpacity(0.5),
+                            color: AppColors.sideBoxesColor.withValues(alpha: 0.5),
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(Icons.close, size: 14, color: AppColors.blackColor),

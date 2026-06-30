@@ -1120,7 +1120,7 @@ class StepOneSelectionWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: AppColors.fieldsBackground.withOpacity(0.05),
+            color: AppColors.fieldsBackground.withValues(alpha: 0.05),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),

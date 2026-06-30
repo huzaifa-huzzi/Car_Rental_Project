@@ -80,7 +80,7 @@ class DropOffTandCWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.signaturePadColor,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color:AppColors.tertiaryTextColor.withOpacity(0.7)),
+          border: Border.all(color:AppColors.tertiaryTextColor.withValues(alpha: 0.7)),
         ),
         child: Row(
           children: [
@@ -263,7 +263,7 @@ class DropOffTandCWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.signaturePadColor,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.4)),
+              border: Border.all(color: AppColors.tertiaryTextColor.withValues(alpha: 0.4)),
             ),
             child: Row(
               children: [

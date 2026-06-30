@@ -235,7 +235,7 @@ class InvoicesDetailWidget extends StatelessWidget {
                                   opacity: controller.isImageHovered2.value ? 1.0 : 0.0,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.5),
+                                      color: Colors.black.withValues(alpha: 0.5),
                                       borderRadius: const BorderRadius.only(
                                         topLeft: Radius.circular(12),
                                         topRight: Radius.circular(12),
@@ -346,7 +346,7 @@ class InvoicesDetailWidget extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               boxShadow: controller.isReasonFocused.value
-                  ? [BoxShadow(color: AppColors.fieldsBackground.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))]
+                  ? [BoxShadow(color: AppColors.fieldsBackground.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4))]
                   : [],
             ),
             child: TextField(
@@ -764,7 +764,7 @@ class InvoicesDetailWidget extends StatelessWidget {
         color: AppColors.backgroundOfTableContainer,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-            color: AppColors.sideBoxesColor.withOpacity(0.7)),
+            color: AppColors.sideBoxesColor.withValues(alpha: 0.7)),
       ),
       child: Row(
         children: [

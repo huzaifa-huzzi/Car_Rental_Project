@@ -581,7 +581,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
                 if (hasImage && isHovered)
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.5),
+                      color: Colors.black.withValues(alpha: 0.5),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Center(
@@ -622,7 +622,7 @@ class StepTwoSelectionWidget extends StatelessWidget {
 
     showDialog(
       context: context,
-      barrierColor: Colors.black.withOpacity(0.9),
+      barrierColor: Colors.black.withValues(alpha: 0.9),
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
         elevation: 0,

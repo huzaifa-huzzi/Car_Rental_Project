@@ -82,7 +82,7 @@ class SubscriptionAdminWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.02),
+                    color: Colors.black.withValues(alpha: 0.02),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   ),
@@ -182,7 +182,7 @@ class SubscriptionAdminWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.sideBoxesColor.withOpacity(0.6), width: 1),
+        border: Border.all(color: AppColors.sideBoxesColor.withValues(alpha: 0.6), width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,7 +221,7 @@ class SubscriptionAdminWidget extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             subText,
-            style: TTextTheme.bodySecondRegular10(context).copyWith(color: AppColors.tertiaryTextColor.withOpacity(0.8)),
+            style: TTextTheme.bodySecondRegular10(context).copyWith(color: AppColors.tertiaryTextColor.withValues(alpha: 0.8)),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -396,7 +396,7 @@ class SubscriptionAdminWidget extends StatelessWidget {
   Widget _buildTableHeader(BuildContext context, SubscriptionController controller) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      decoration: BoxDecoration(color: AppColors.secondaryColor.withOpacity(0.5), borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(color: AppColors.secondaryColor.withValues(alpha: 0.5), borderRadius: BorderRadius.circular(8)),
       child: Row(
         children: [
           _headerCell(TextString.SubscriptionTitle14, 180, context, controller),
@@ -481,7 +481,7 @@ class SubscriptionAdminWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       decoration: BoxDecoration(
         color: AppColors.backgroundOfTableContainer, borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.sideBoxesColor.withOpacity(0.4)),
+        border: Border.all(color: AppColors.sideBoxesColor.withValues(alpha: 0.4)),
       ),
       child: Row(
         children: [

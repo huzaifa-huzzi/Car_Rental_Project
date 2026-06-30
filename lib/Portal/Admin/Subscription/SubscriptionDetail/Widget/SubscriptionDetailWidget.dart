@@ -114,7 +114,7 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: TTextTheme.tableRegular14black(context).copyWith(fontSize: 13, color: AppColors.quadrantalTextColor.withOpacity(0.7))),
+        Text(label, style: TTextTheme.tableRegular14black(context).copyWith(fontSize: 13, color: AppColors.quadrantalTextColor.withValues(alpha: 0.7))),
         const SizedBox(height: 8),
         Container(
           height: 44,
@@ -134,7 +134,7 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: TTextTheme.tableRegular14black(context).copyWith(fontSize: 13, color: AppColors.quadrantalTextColor.withOpacity(0.7))),
+        Text(label, style: TTextTheme.tableRegular14black(context).copyWith(fontSize: 13, color: AppColors.quadrantalTextColor.withValues(alpha: 0.7))),
         const SizedBox(height: 8),
         Container(
           width: double.infinity,
@@ -163,7 +163,7 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
       children: [
         Text(
             label,
-            style: TTextTheme.tableRegular14black(context).copyWith(fontSize: 13, color: AppColors.quadrantalTextColor.withOpacity(0.7))
+            style: TTextTheme.tableRegular14black(context).copyWith(fontSize: 13, color: AppColors.quadrantalTextColor.withValues(alpha: 0.7))
         ),
         const SizedBox(height: 8),
         Container(
@@ -214,7 +214,7 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
           children: [
             Text(title, style: TTextTheme.h2Style(context).copyWith(fontSize: 15, fontWeight: FontWeight.bold)),
             const SizedBox(height: 2),
-            Text(subtitle, style: TTextTheme.bodyRegular14(context).copyWith(color: AppColors.quadrantalTextColor.withOpacity(0.7))),
+            Text(subtitle, style: TTextTheme.bodyRegular14(context).copyWith(color: AppColors.quadrantalTextColor.withValues(alpha: 0.7))),
             const SizedBox(height: 20),
             child,
           ],
@@ -296,9 +296,9 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
         const SizedBox(height: 16),
         const Divider(color: AppColors.toolBackground, thickness: 1),
         const SizedBox(height: 16),
-        _buildBreakdownItem(context, label:TextString.SubscriptionTitle85, value: "\$160.00", styleColor: AppColors.quadrantalTextColor.withOpacity(0.7)),
+        _buildBreakdownItem(context, label:TextString.SubscriptionTitle85, value: "\$160.00", styleColor: AppColors.quadrantalTextColor.withValues(alpha: 0.7)),
         const SizedBox(height: 12),
-        _buildBreakdownItem(context, label:TextString.SubscriptionTitle86 , value: "\$8.00", styleColor: AppColors.quadrantalTextColor.withOpacity(0.7)),
+        _buildBreakdownItem(context, label:TextString.SubscriptionTitle86 , value: "\$8.00", styleColor: AppColors.quadrantalTextColor.withValues(alpha: 0.7)),
 
         const SizedBox(height: 16),
         const Divider(color: AppColors.toolBackground, thickness: 1),
@@ -335,7 +335,7 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
             label,
             style: baseStyle.copyWith(
                 fontSize: fontSize,
-                color: isBold ? AppColors.blackColor: AppColors.quadrantalTextColor.withOpacity(0.7)
+                color: isBold ? AppColors.blackColor: AppColors.quadrantalTextColor.withValues(alpha: 0.7)
             )
         ),
         Text(

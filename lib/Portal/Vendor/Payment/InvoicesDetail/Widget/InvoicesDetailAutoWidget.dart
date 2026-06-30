@@ -192,7 +192,7 @@ class InvoicesDetailWidget2 extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.toolBackground.withOpacity(0.5)),
+            border: Border.all(color: AppColors.toolBackground.withValues(alpha: 0.5)),
           ),
           child: Text(
             value,

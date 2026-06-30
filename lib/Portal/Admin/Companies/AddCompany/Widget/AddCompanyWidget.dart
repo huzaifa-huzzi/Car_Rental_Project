@@ -393,7 +393,7 @@ class AddCompanyWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: AppColors.toolBackground),
             boxShadow: controller.focusedField.value == label
-                ? [BoxShadow(color: AppColors.fieldsBackground.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 4))]
+                ? [BoxShadow(color: AppColors.fieldsBackground.withValues(alpha: 0.04), blurRadius: 10, offset: const Offset(0, 4))]
                 : [],
           ),
           child: TextFormField(

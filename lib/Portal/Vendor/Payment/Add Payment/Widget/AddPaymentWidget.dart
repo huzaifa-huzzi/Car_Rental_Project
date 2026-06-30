@@ -127,7 +127,7 @@ class AddPaymentWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: hasFocus ? [
                   BoxShadow(
-                    color: AppColors.fieldsBackground.withOpacity(0.06),
+                    color: AppColors.fieldsBackground.withValues(alpha: 0.06),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
@@ -250,7 +250,7 @@ class AddPaymentWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.quadrantalTextColor.withOpacity(0.7)),
+        border: Border.all(color: AppColors.quadrantalTextColor.withValues(alpha: 0.7)),
       ),
       child: Column(
         children: [
@@ -467,7 +467,7 @@ class AddPaymentWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: AppColors.fieldsBackground.withOpacity(0.02), blurRadius: 15, offset: const Offset(0, 5))],
+        boxShadow: [BoxShadow(color: AppColors.fieldsBackground.withValues(alpha: 0.02), blurRadius: 15, offset: const Offset(0, 5))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -534,7 +534,7 @@ class AddPaymentWidget extends StatelessWidget {
                             opacity: controller.isImageHovered2.value ? 1.0 : 0.0,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.5),
+                                color: Colors.black.withValues(alpha: 0.5),
                                 borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(12),
                                   topRight: Radius.circular(12),
@@ -633,7 +633,7 @@ class AddPaymentWidget extends StatelessWidget {
                     color: AppColors.sideBoxesColor,
                     shape: BoxShape.circle,
                     boxShadow: [
-                      BoxShadow(color: AppColors.fieldsBackground.withOpacity(0.7), blurRadius: 10, spreadRadius: 1)
+                      BoxShadow(color: AppColors.fieldsBackground.withValues(alpha: 0.7), blurRadius: 10, spreadRadius: 1)
                     ],
                   ),
                   child: const Icon(
@@ -841,7 +841,7 @@ class AddPaymentWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.backgroundOfTableContainer,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.sideBoxesColor.withOpacity(0.7), width: 1),
+        border: Border.all(color: AppColors.sideBoxesColor.withValues(alpha: 0.7), width: 1),
       ),
       child: Row(
         children: [
@@ -913,7 +913,7 @@ class AddPaymentWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: hasFocus ? [
                   BoxShadow(
-                    color: AppColors.fieldsBackground.withOpacity(0.06),
+                    color: AppColors.fieldsBackground.withValues(alpha: 0.06),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
@@ -1023,7 +1023,7 @@ class AddPaymentWidget extends StatelessWidget {
                         Container(
                           height: 24,
                           width: 1,
-                          color: AppColors.toolBackground.withOpacity(0.5),
+                          color: AppColors.toolBackground.withValues(alpha: 0.5),
                           margin: const EdgeInsets.symmetric(horizontal: 8),
                         ),
                       ],

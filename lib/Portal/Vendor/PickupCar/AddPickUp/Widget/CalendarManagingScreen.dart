@@ -60,7 +60,7 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(14),
-            boxShadow: [BoxShadow(color: AppColors.fieldsBackground.withOpacity(0.8), blurRadius: 18)],
+            boxShadow: [BoxShadow(color: AppColors.fieldsBackground.withValues(alpha: 0.8), blurRadius: 18)],
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -234,7 +234,7 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
       child: GestureDetector(
         onTap: () => setState(() { _showMonthDropdown = false; _showYearDropdown = false; }),
         child: Container(
-          color: Colors.black.withOpacity(0.1),
+          color: Colors.black.withValues(alpha: 0.1),
           child: Center(
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
@@ -242,7 +242,7 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
-                boxShadow: [BoxShadow(color: AppColors.fieldsBackground.withOpacity(0.7), blurRadius: 15)],
+                boxShadow: [BoxShadow(color: AppColors.fieldsBackground.withValues(alpha: 0.7), blurRadius: 15)],
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -253,7 +253,7 @@ class _CustomCalendarPopupState extends State<CustomCalendarPopup> {
                       height: 40,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: AppColors.primaryColor.withOpacity(0.5)),
+                        border: Border.all(color: AppColors.primaryColor.withValues(alpha: 0.5)),
                       ),
                       child: TextField(
                         autofocus: true,

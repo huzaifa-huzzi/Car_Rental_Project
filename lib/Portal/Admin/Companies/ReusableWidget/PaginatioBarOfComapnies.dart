@@ -57,7 +57,7 @@ class PaginationBarOfCompanies extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.7)),
+            border: Border.all(color: AppColors.tertiaryTextColor.withValues(alpha: 0.7)),
           ),
           child: DropdownButtonHideUnderline(
             child: Obx(() => DropdownButton<int>(
@@ -150,7 +150,7 @@ class PaginationBarOfCompanies extends StatelessWidget {
       isButtonDisabled = isNextDisabled;
     }
 
-    final Color disabledColor = AppColors.secondTextColor.withOpacity(0.4);
+    final Color disabledColor = AppColors.secondTextColor.withValues(alpha: 0.4);
     final Color enabledColor = AppColors.secondTextColor;
 
     final VoidCallback? buttonAction = isButtonDisabled ? null : () {

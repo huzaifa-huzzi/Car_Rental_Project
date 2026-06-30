@@ -79,7 +79,7 @@ class ResponsiveDropOffTimer extends StatelessWidget {
       height: 85,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.2)),
+        border: Border.all(color: AppColors.tertiaryTextColor.withValues(alpha: 0.2)),
       ),
       child: Column(
         children: [

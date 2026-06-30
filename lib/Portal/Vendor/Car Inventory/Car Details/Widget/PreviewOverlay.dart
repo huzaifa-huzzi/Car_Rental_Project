@@ -19,7 +19,7 @@ class CarDocumentPreviewOverlay extends StatelessWidget {
 
       return Positioned.fill(
         child: Material(
-          color: Colors.black.withOpacity(0.85),
+          color: Colors.black.withValues(alpha: 0.85),
           child: Stack(
             children: [
               Positioned(
@@ -46,7 +46,7 @@ class CarDocumentPreviewOverlay extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(8),
                     boxShadow: [
-                      BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 20)
+                      BoxShadow(color: Colors.black.withValues(alpha: 0.3), blurRadius: 20)
                     ],
                   ),
                   child: ClipRRect(

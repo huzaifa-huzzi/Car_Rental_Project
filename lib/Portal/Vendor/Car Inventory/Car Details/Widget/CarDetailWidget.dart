@@ -181,7 +181,7 @@ class _CarDetailBodyWidgetState extends State<CarDetailBodyWidget> {
                   shape: BoxShape.circle,
                   color: _selectedIndex == index
                       ? AppColors.primaryColor
-                      : AppColors.tertiaryTextColor.withOpacity(0.5),
+                      : AppColors.tertiaryTextColor.withValues(alpha: 0.5),
                 ),
               );
             }),

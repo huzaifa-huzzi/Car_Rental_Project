@@ -220,7 +220,7 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.tertiaryTextColor.withOpacity(0.3),
+          color: AppColors.tertiaryTextColor.withValues(alpha: 0.3),
           width: 0.7,
         ),
       ),
@@ -463,7 +463,7 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.3)),
+        border: Border.all(color: AppColors.tertiaryTextColor.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -621,7 +621,7 @@ class _StepThreeDropOffWidgetState extends State<StepThreeDropOffWidget> {
           decoration: BoxDecoration(
             color: AppColors.signaturePadColor,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.1)),
+            border: Border.all(color: AppColors.tertiaryTextColor.withValues(alpha: 0.1)),
           ),
           child: isMobile
               ? Column(

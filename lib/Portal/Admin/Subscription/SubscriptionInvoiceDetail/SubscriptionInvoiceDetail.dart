@@ -55,7 +55,7 @@ class SubscriptionInvoiceDetail extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.blackColor.withOpacity(0.02),
+                      color: AppColors.blackColor.withValues(alpha: 0.02),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     )
@@ -282,7 +282,7 @@ class SubscriptionInvoiceDetail extends StatelessWidget {
                         margin: const EdgeInsets.symmetric(vertical: 4),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: AppColors.primaryColor.withOpacity(0.4)),
+                          border: Border.all(color: AppColors.primaryColor.withValues(alpha: 0.4)),
                         ),
                         child: TextFormField(
                           controller: searchController,
@@ -367,7 +367,7 @@ class SubscriptionInvoiceDetail extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        color: AppColors.secondaryColor.withOpacity(0.5),
+        color: AppColors.secondaryColor.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -456,7 +456,7 @@ class SubscriptionInvoiceDetail extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.backgroundOfTableContainer,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.sideBoxesColor.withOpacity(0.4)),
+        border: Border.all(color: AppColors.sideBoxesColor.withValues(alpha: 0.4)),
       ),
       child: Row(
         children: [

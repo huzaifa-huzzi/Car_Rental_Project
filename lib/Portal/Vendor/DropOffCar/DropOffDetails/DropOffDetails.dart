@@ -183,7 +183,7 @@ class DropOffDetails extends StatelessWidget {
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.7)),
+          border: Border.all(color: AppColors.tertiaryTextColor.withValues(alpha: 0.7)),
         ),
         child: Row(
           children: List.generate(controller.tabs.length, (index) {

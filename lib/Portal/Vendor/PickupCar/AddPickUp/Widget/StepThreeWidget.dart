@@ -257,7 +257,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.tertiaryTextColor.withOpacity(0.3),
+          color: AppColors.tertiaryTextColor.withValues(alpha: 0.3),
           width: 0.7,
         ),
       ),
@@ -423,7 +423,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
                 radius: const Radius.circular(12),
                 dashPattern: const [6, 3],
                 color: hasPadError ? AppColors.primaryColor : AppColors
-                    .primaryColor.withOpacity(0.5),
+                    .primaryColor.withValues(alpha: 0.5),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Container(
@@ -492,7 +492,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.3)),
+        border: Border.all(color: AppColors.tertiaryTextColor.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -663,7 +663,7 @@ class _StepThreeWidgetState extends State<StepThreeWidget> {
             color: AppColors.signaturePadColor,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-                color: AppColors.tertiaryTextColor.withOpacity(0.1)),
+                color: AppColors.tertiaryTextColor.withValues(alpha: 0.1)),
           ),
           child: isMobile
               ? Column(

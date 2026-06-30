@@ -141,7 +141,7 @@ class _CustomCalendarPaymentState extends State<CustomCalendarCar> {
                           style: TTextTheme.titleFour(context).copyWith(
                             fontSize: 12,
                             color: isFuture
-                                ? Colors.grey.withOpacity(0.3)
+                                ? Colors.grey.withValues(alpha: 0.3)
                                 : (isSelected ? Colors.white : AppColors.textColor),
                           ),
                         ),
@@ -194,7 +194,7 @@ class _CustomCalendarPaymentState extends State<CustomCalendarCar> {
       child: GestureDetector(
         onTap: () => setState(() { _showMonthDropdown = false; _showYearDropdown = false; }),
         child: Container(
-          color: Colors.black.withOpacity(0.05),
+          color: Colors.black.withValues(alpha: 0.05),
           child: Center(
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
@@ -202,7 +202,7 @@ class _CustomCalendarPaymentState extends State<CustomCalendarCar> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
-                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10, spreadRadius: 1)],
+                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 10, spreadRadius: 1)],
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,

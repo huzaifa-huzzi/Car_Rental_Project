@@ -538,7 +538,7 @@ class EditStaffScreenWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(height: 24, width: 1, color: Colors.grey.withOpacity(0.3)),
+                  Container(height: 24, width: 1, color: Colors.grey.withValues(alpha: 0.3)),
                   const SizedBox(width: 8),
                 ],
               ),

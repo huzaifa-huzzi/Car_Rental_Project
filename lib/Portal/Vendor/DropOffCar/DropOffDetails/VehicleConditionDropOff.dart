@@ -132,7 +132,7 @@ class VehicleConditionDropOff extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.7)),
+        border: Border.all(color: AppColors.tertiaryTextColor.withValues(alpha: 0.7)),
         borderRadius: BorderRadius.circular(8),
       ),
       child: SingleChildScrollView(
@@ -215,7 +215,7 @@ class VehicleConditionDropOff extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.7)),
+        border: Border.all(color: AppColors.tertiaryTextColor.withValues(alpha: 0.7)),
         borderRadius: BorderRadius.circular(8),
       ),
       child: SingleChildScrollView(
@@ -307,7 +307,7 @@ class VehicleConditionDropOff extends StatelessWidget {
       decoration: BoxDecoration(
           color: isPink ? AppColors.backgroundOfPickupsWidget : AppColors.secondaryColor,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.3))
+          border: Border.all(color: AppColors.tertiaryTextColor.withValues(alpha: 0.3))
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -466,7 +466,7 @@ class VehicleConditionDropOff extends StatelessWidget {
               return Container(
                 width: constraints.maxWidth,
                 height: constraints.maxHeight,
-                color: AppColors.blackColor.withOpacity(0.9),
+                color: AppColors.blackColor.withValues(alpha: 0.9),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [

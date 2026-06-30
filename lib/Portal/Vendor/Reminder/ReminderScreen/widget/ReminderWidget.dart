@@ -155,7 +155,7 @@ Widget _buildResponsiveHeader(BuildContext context, ReminderController controlle
         boxShadow: isSmsSelected
             ? [
           BoxShadow(
-            color: AppColors.blackColor.withOpacity(0.02),
+            color: AppColors.blackColor.withValues(alpha: 0.02),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -789,7 +789,7 @@ Widget _buildChatConversationArea(ReminderController controller, {required bool 
                                     fillColor: AppColors.signaturePadColor,
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
-                                      borderSide:  BorderSide(color: AppColors.quadrantalTextColor.withOpacity(0.7)),
+                                      borderSide:  BorderSide(color: AppColors.quadrantalTextColor.withValues(alpha: 0.7)),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
@@ -947,7 +947,7 @@ Widget _buildCreateTemplateForm(BuildContext context,ReminderController controll
                     fillColor: Colors.white,
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: AppColors.quadrantalTextColor.withOpacity(0.7))
+                        borderSide: BorderSide(color: AppColors.quadrantalTextColor.withValues(alpha: 0.7))
                     ),
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -972,7 +972,7 @@ Widget _buildCreateTemplateForm(BuildContext context,ReminderController controll
                   fillColor: Colors.white,
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color:  AppColors.quadrantalTextColor.withOpacity(0.7))
+                      borderSide: BorderSide(color:  AppColors.quadrantalTextColor.withValues(alpha: 0.7))
                   ),
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -1036,7 +1036,7 @@ Widget _buildMessageBubble(BuildContext context,{required String message, requir
             bottomLeft: isMe ? const Radius.circular(16) : Radius.zero,
             bottomRight: isMe ? Radius.zero : const Radius.circular(16),
           ),
-          boxShadow: [BoxShadow(color: AppColors.blackColor.withOpacity(0.05), blurRadius: 4, offset: const Offset(0, 2))],
+          boxShadow: [BoxShadow(color: AppColors.blackColor.withValues(alpha: 0.05), blurRadius: 4, offset: const Offset(0, 2))],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,

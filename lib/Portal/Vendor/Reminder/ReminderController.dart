@@ -109,7 +109,7 @@ class ReminderController extends GetxController {
         'Error',
         'Please fill both Title and Description fields',
         snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.redAccent.withOpacity(0.1),
+        backgroundColor: Colors.redAccent.withValues(alpha: 0.1),
         colorText: Colors.red,
       );
     }

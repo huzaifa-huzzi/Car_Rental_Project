@@ -85,7 +85,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               color: hasError
                   ? AppColors.primaryColor
                   : (isFocused
-                  ? AppColors.primaryColor.withOpacity(0.5)
+                  ? AppColors.primaryColor.withValues(alpha: 0.5)
                   : Colors.transparent),
               width: 1.5,
             ),

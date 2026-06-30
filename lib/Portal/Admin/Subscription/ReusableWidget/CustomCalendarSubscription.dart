@@ -113,7 +113,7 @@ class _CustomCalendarSubscriptionState extends State<CustomCalendarSubscription>
                         style: TTextTheme.titleFour(context).copyWith(
                           fontSize: 12,
                           color: isFuture
-                              ? Colors.grey.withOpacity(0.3)
+                              ? Colors.grey.withValues(alpha: 0.3)
                               : (isSelected ? Colors.white : AppColors.textColor),
                         ),
                       ),

@@ -91,7 +91,7 @@ class _PickupTandCDescriptionState extends State<PickupTandCDescription> {
           decoration: BoxDecoration(
             color: AppColors.signaturePadColor,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.1)),
+            border: Border.all(color: AppColors.tertiaryTextColor.withValues(alpha: 0.1)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,7 +139,7 @@ class _PickupTandCDescriptionState extends State<PickupTandCDescription> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.tertiaryTextColor.withOpacity(0.3),
+          color: AppColors.tertiaryTextColor.withValues(alpha: 0.3),
           width: 0.7,
         ),
       ),

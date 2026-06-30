@@ -323,7 +323,7 @@ class PersonalInfoWidget extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             boxShadow: controller.focusedField.value == label
-                ? [BoxShadow(color: AppColors.fieldsBackground.withOpacity(0.06), blurRadius: 10, offset: const Offset(0, 4))]
+                ? [BoxShadow(color: AppColors.fieldsBackground.withValues(alpha: 0.06), blurRadius: 10, offset: const Offset(0, 4))]
                 : [],
           ),
           child: field,

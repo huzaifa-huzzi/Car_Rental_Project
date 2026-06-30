@@ -75,7 +75,7 @@ class AddDropOffTandC extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.7)),
+                                border: Border.all(color: AppColors.tertiaryTextColor.withValues(alpha: 0.7)),
                               ),
                               child: Wrap(
                                 spacing: 12,
@@ -243,7 +243,7 @@ class AddDropOffTandC extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.7)),
+        border: Border.all(color: AppColors.tertiaryTextColor.withValues(alpha: 0.7)),
       ),
       child: Stack(
         children: [
@@ -254,7 +254,7 @@ class AddDropOffTandC extends StatelessWidget {
               data: Theme.of(context).copyWith(
                 textSelectionTheme: TextSelectionThemeData(
                   cursorColor: AppColors.blackColor,
-                  selectionColor: AppColors.secondTextColor.withOpacity(0.3),
+                  selectionColor: AppColors.secondTextColor.withValues(alpha: 0.3),
                   selectionHandleColor: AppColors.blackColor,
                 ),
               ),

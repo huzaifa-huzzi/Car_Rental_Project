@@ -154,7 +154,7 @@ class SubscriptionController extends GetxController {
             offset: const Offset(0, 6),
             child: Material(
               elevation: 12,
-              shadowColor: Colors.black.withOpacity(0.15),
+              shadowColor: Colors.black.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(12),
               color: Colors.white,
               child: ConstrainedBox(

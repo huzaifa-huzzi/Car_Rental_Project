@@ -702,7 +702,7 @@ class AddDropOffDetailWidget extends StatelessWidget {
                   border: Border.all(
                       color: state.hasError
                           ? AppColors.primaryColor
-                          : AppColors.tertiaryTextColor.withOpacity(0.3)
+                          : AppColors.tertiaryTextColor.withValues(alpha: 0.3)
                   ),
                 ),
                 child: AbsorbPointer(

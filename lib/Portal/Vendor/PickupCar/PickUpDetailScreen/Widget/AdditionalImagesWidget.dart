@@ -125,7 +125,7 @@ class AdditionalImagesBox extends StatelessWidget {
               return Container(
                 width: constraints.maxWidth,
                 height: constraints.maxHeight,
-                color: Colors.black.withOpacity(0.9),
+                color: Colors.black.withValues(alpha: 0.9),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [

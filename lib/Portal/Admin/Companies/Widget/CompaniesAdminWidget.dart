@@ -33,7 +33,7 @@ class CompaniesAdminWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.03),
+                color: Colors.black.withValues(alpha: 0.03),
                 blurRadius: 20,
                 offset: const Offset(0, 10),
               ),
@@ -121,7 +121,7 @@ class CompaniesAdminWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.signaturePadColor,
           borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.sideBoxesColor.withOpacity(0.7))
+            border: Border.all(color: AppColors.sideBoxesColor.withValues(alpha: 0.7))
         ),
         child: Row(
           children: [
@@ -320,7 +320,7 @@ class CompaniesAdminWidget extends StatelessWidget {
             boxShadow: id == "email_status_drop" || id == "main_filter"
                 ? [
               BoxShadow(
-                color: AppColors.fieldsBackground.withOpacity(0.08),
+                color: AppColors.fieldsBackground.withValues(alpha: 0.08),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -439,7 +439,7 @@ class CompaniesAdminWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.backgroundOfTableContainer,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.sideBoxesColor.withOpacity(0.7), width: 1),
+        border: Border.all(color: AppColors.sideBoxesColor.withValues(alpha: 0.7), width: 1),
       ),
       child: Row(
         children: [

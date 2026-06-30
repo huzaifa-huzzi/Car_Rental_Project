@@ -58,7 +58,7 @@ class _GovIdPdfViewerState extends State<GovIdPdfViewer> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                   decoration: BoxDecoration(
-                    color: AppColors.blackColor.withOpacity(0.8),
+                    color: AppColors.blackColor.withValues(alpha: 0.8),
                     borderRadius: BorderRadius.circular(25),
                   ),
                   child: Text(

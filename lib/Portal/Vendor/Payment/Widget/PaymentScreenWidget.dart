@@ -155,7 +155,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
           color: isSelected ? AppColors.primaryColor : Colors.transparent,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: isSelected ? Colors.transparent : AppColors.quadrantalTextColor.withOpacity(0.8),
+            color: isSelected ? Colors.transparent : AppColors.quadrantalTextColor.withValues(alpha: 0.8),
             width: 1,
           ),
         ),
@@ -432,7 +432,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 15,
             offset: const Offset(0, 5),
           )
@@ -588,10 +588,10 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         color: color,
         shape: BoxShape.circle,
         boxShadow: [
-          BoxShadow(color: color.withOpacity(0.5), blurRadius: 6, spreadRadius: 1)
+          BoxShadow(color: color.withValues(alpha: 0.5), blurRadius: 6, spreadRadius: 1)
         ],
         gradient: RadialGradient(
-          colors: [Colors.white.withOpacity(0.8), color],
+          colors: [Colors.white.withValues(alpha: 0.8), color],
           stops: const [0.1, 1.0],
         ),
       ),
@@ -608,7 +608,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         decoration: BoxDecoration(
             color: AppColors.signaturePadColor,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.sideBoxesColor.withOpacity(0.7))),
+            border: Border.all(color: AppColors.sideBoxesColor.withValues(alpha: 0.7))),
         child: Obx(() => Row(
           children: tabs.map((tab) {
             bool isSelected = controller.selectedTab.value == tab;
@@ -707,7 +707,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       decoration: BoxDecoration(
         color: AppColors.backgroundOfTableContainer,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.sideBoxesColor.withOpacity(0.7), width: 1),
+        border: Border.all(color: AppColors.sideBoxesColor.withValues(alpha: 0.7), width: 1),
       ),
       child: Row(
         children: [
@@ -784,7 +784,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       decoration: BoxDecoration(
         color: AppColors.backgroundOfTableContainer,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.sideBoxesColor.withOpacity(0.7), width: 1),
+        border: Border.all(color: AppColors.sideBoxesColor.withValues(alpha: 0.7), width: 1),
       ),
       child: Row(
         children: [

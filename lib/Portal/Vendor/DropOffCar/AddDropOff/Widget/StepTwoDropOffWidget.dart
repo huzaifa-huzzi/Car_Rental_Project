@@ -304,7 +304,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.4)),
+        border: Border.all(color: AppColors.tertiaryTextColor.withValues(alpha: 0.4)),
         borderRadius: BorderRadius.circular(8),
       ),
       child: isInteractive
@@ -517,7 +517,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.secondaryColor,
         borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.tertiaryTextColor.withOpacity(0.7))
+          border: Border.all(color: AppColors.tertiaryTextColor.withValues(alpha: 0.7))
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -580,7 +580,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
                 border: Border.all(
                   color: showError
                       ? AppColors.primaryColor
-                      : AppColors.tertiaryTextColor.withOpacity(0.7),
+                      : AppColors.tertiaryTextColor.withValues(alpha: 0.7),
                   width: showError ? 2 : 1,
                 )
             ),
@@ -617,7 +617,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
                         if (isHovered)
                           Container(
                             decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.5),
+                              color: Colors.black.withValues(alpha: 0.5),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child:  Center(
@@ -698,7 +698,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
 
     showDialog(
       context: context,
-      barrierColor: Colors.black.withOpacity(0.9),
+      barrierColor: Colors.black.withValues(alpha: 0.9),
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -1015,7 +1015,7 @@ class StepTwoDropOffWidget extends StatelessWidget {
               return Container(
                 width: constraints.maxWidth,
                 height: constraints.maxHeight,
-                color: AppColors.blackColor.withOpacity(0.9),
+                color: AppColors.blackColor.withValues(alpha: 0.9),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [

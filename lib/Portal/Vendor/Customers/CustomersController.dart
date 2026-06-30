@@ -325,7 +325,7 @@ class CustomerController extends GetxController {
             child: GestureDetector(
               onTap: removeCalendar,
               behavior: HitTestBehavior.opaque,
-              child: Container(color: AppColors.fieldsBackground.withOpacity(0.05)),
+              child: Container(color: AppColors.fieldsBackground.withValues(alpha: 0.05)),
             ),
           ),
           isMobile

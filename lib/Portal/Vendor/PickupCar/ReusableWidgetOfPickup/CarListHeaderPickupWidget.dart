@@ -704,7 +704,7 @@ class CardListHeaderPickupWidget extends StatelessWidget {
                         margin: const EdgeInsets.symmetric(vertical: 4),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: AppColors.primaryColor.withOpacity(0.4)),
+                          border: Border.all(color: AppColors.primaryColor.withValues(alpha: 0.4)),
                         ),
                         child: TextFormField(
                           controller: searchController,
