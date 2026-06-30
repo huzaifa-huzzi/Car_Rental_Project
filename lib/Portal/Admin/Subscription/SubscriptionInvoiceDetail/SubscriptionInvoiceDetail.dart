@@ -4,6 +4,7 @@ import 'package:car_rental_project/Portal/Admin/Subscription/SubscriptionControl
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -115,9 +116,9 @@ class SubscriptionInvoiceDetail extends StatelessWidget {
     Widget leftSideInfo = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("All Payments", style: TTextTheme.h2Style(context)),
+        Text(TextString.SubscriptionTitle21, style: TTextTheme.h2Style(context)),
         const SizedBox(height: 4),
-        Text("List of all payments", style: TTextTheme.bodyRegular14(context)),
+        Text(TextString.SubscriptionTitle22, style: TTextTheme.bodyRegular14(context)),
       ],
     );
 
@@ -180,7 +181,7 @@ class SubscriptionInvoiceDetail extends StatelessWidget {
             child: TextField(
               cursorColor: AppColors.blackColor,
               decoration: InputDecoration(
-                hintText: "Search by invoice id",
+                hintText:TextString.SubscriptionTitle23 ,
                 border: InputBorder.none,
                 hintStyle: TTextTheme.SubscriptionSearch(context),
                 isDense: true,
@@ -200,7 +201,7 @@ class SubscriptionInvoiceDetail extends StatelessWidget {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                 padding: const EdgeInsets.symmetric(horizontal: 16),
               ),
-              child: Text("Search", style: TTextTheme.medium12White(context)),
+              child: Text(TextString.SubscriptionTitle24, style: TTextTheme.medium12White(context)),
             ),
           ),
         ],
@@ -371,14 +372,14 @@ class SubscriptionInvoiceDetail extends StatelessWidget {
       ),
       child: Row(
         children: [
-          _headerCell("Invoice ID", 140, context, controller),
-          _headerCell("Payment Date", 170, context, controller),
-          _headerCell("Billing Period", 160, context, controller),
-          _headerCell("Plan", 140, context, controller),
-          _headerCell("Amount", 150, context, controller),
-          _headerCell("Method", 150, context, controller),
-          _headerCell("Status", 140, context, controller),
-          _headerCell("Receipt", 120, context, controller, canSort: false),
+          _headerCell(TextString.SubscriptionTitle25, 140, context, controller),
+          _headerCell(TextString.SubscriptionTitle26, 170, context, controller),
+          _headerCell(TextString.SubscriptionTitle27, 160, context, controller),
+          _headerCell(TextString.SubscriptionTitle28, 140, context, controller),
+          _headerCell(TextString.SubscriptionTitle29, 150, context, controller),
+          _headerCell(TextString.SubscriptionTitle30, 150, context, controller),
+          _headerCell(TextString.SubscriptionTitle31, 140, context, controller),
+          _headerCell(TextString.SubscriptionTitle32, 120, context, controller, canSort: false),
         ],
       ),
     );
@@ -486,7 +487,7 @@ class SubscriptionInvoiceDetail extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child:  Text(
-                  "Paid",
+                  TextString.SubscriptionTitle33,
                   style: TTextTheme.btnWhiteColor(context),
                 ),
               ),
@@ -510,7 +511,7 @@ class SubscriptionInvoiceDetail extends StatelessWidget {
                   children: [
                     Image.asset(IconString.viewIcon, width: 14, height: 14, color: AppColors.primaryColor),
                     const SizedBox(width: 4),
-                    Text("View", style: TTextTheme.viewBtnText(context)),
+                    Text(TextString.SubscriptionTitle34, style: TTextTheme.viewBtnText(context)),
                   ],
                 ),
               ),

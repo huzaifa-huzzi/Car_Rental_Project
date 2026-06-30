@@ -3,6 +3,7 @@ import 'package:car_rental_project/Portal/Admin/Subscription/ReusableWidget/Prim
 import 'package:car_rental_project/Portal/Admin/Subscription/SubscriptionController.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -56,17 +57,17 @@ class SubscriptionFreeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Update Car Subscription Fees",
+                      TextString.SubscriptionTitle35,
                       style: TTextTheme.h2Style(context).copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Here you can update the subscription car fee",
+                      TextString.SubscriptionTitle36,
                       style: TTextTheme.bodyRegular16(context).copyWith(color: AppColors.tertiaryTextColor),
                     ),
                     const SizedBox(height: 30),
                     Text(
-                      "Monthly Fee per Car(\$)",
+                      TextString.SubscriptionTitle37,
                       style: TTextTheme.bodyRegular14(context).copyWith(color: AppColors.blackColor),
                     ),
                     const SizedBox(height: 8),
@@ -78,7 +79,7 @@ class SubscriptionFreeScreen extends StatelessWidget {
 
                     const SizedBox(height: 24),
                     Text(
-                      "Yearly Fee Per Car(\$)",
+                      TextString.SubscriptionTitle38,
                       style: TTextTheme.bodyRegular14(context).copyWith(color: AppColors.blackColor),
                     ),
                     const SizedBox(height: 8),
@@ -96,7 +97,7 @@ class SubscriptionFreeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   PrimaryBtnOfSubscription(
-                    text: "Save Changes",
+                    text: TextString.SubscriptionTitle39,
                     onTap: () {
                       showUpdateConfirmationDialog(context);
                       controller.updateCarSubscriptionFees();
@@ -226,12 +227,12 @@ class SubscriptionFreeScreen extends StatelessWidget {
                                 children: [
                                   const SizedBox(height: 4),
                                   Text(
-                                    "Update Subscription Fees",
+                                    TextString.SubscriptionTitle40,
                                     style: TTextTheme.h2Style(dialogContext).copyWith(fontWeight: FontWeight.bold),
                                   ),
                                   const SizedBox(height: 6),
                                   Text(
-                                    "Are you sure you want to update subscription fees",
+                                    TextString.SubscriptionTitle41 ,
                                     style: TTextTheme.bodyRegular14(dialogContext).copyWith(color: AppColors.tertiaryTextColor),
                                   ),
                                 ],
@@ -333,12 +334,12 @@ class SubscriptionFreeScreen extends StatelessWidget {
                             children: [
                               const SizedBox(height: 4),
                               Text(
-                                "Subscription Fees Updated Successfully",
+                               TextString.SubscriptionTitle42,
                                 style: TTextTheme.h2Style(dialogContext).copyWith(fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 6),
                               Text(
-                                "Congratulation! you have successfully updated the subscription fees",
+                                TextString.SubscriptionTitle43,
                                 style: TTextTheme.bodyRegular14(dialogContext).copyWith(color: AppColors.tertiaryTextColor),
                               ),
                             ],

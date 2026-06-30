@@ -2,6 +2,7 @@ import 'package:car_rental_project/Portal/Admin/Subscription/ReusableWidget/Pagi
 import 'package:car_rental_project/Portal/Admin/Subscription/SubscriptionController.dart' show SubscriptionController;
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,9 +26,9 @@ class SubscriptionAdminWidget extends StatelessWidget {
             Widget headerTexts = Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Subscription detail", style: TTextTheme.h2Style(context)),
+                Text(TextString.SubscriptionTitle, style: TTextTheme.h2Style(context)),
                 const SizedBox(height: 4),
-                Text("Your subscription detail is given below", style: TTextTheme.bodyRegular14(context)),
+                Text(TextString.SubscriptionTitle2, style: TTextTheme.bodyRegular14(context)),
               ],
             );
             Widget singleHeaderButton = OutlinedButton(
@@ -40,7 +41,7 @@ class SubscriptionAdminWidget extends StatelessWidget {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               ),
-              child: Text("Change subscription fee", style: TTextTheme.bodyRegular14Primary(context)),
+              child: Text(TextString.SubscriptionTitle3, style: TTextTheme.bodyRegular14Primary(context)),
             );
 
             if (isMobileHeader) {
@@ -90,8 +91,8 @@ class SubscriptionAdminWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("All Subscriptions", style: TTextTheme.h2Style(context)),
-                  Text("List of all subscriptions", style: TTextTheme.bodyRegular14(context)),
+                  Text(TextString.SubscriptionTitle4, style: TTextTheme.h2Style(context)),
+                  Text(TextString.SubscriptionTitle5, style: TTextTheme.bodyRegular14(context)),
 
                   const SizedBox(height: 25),
                   _buildFiltersAndTabsRow(context, controller),
@@ -140,13 +141,13 @@ class SubscriptionAdminWidget extends StatelessWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(child: _statCard(context, "Total New Subscriptions", "12", "3 more subscriber added", fixedCardWidth)),
+            Expanded(child: _statCard(context,TextString.SubscriptionTitle6 , "12",TextString.SubscriptionTitle7 , fixedCardWidth)),
             const SizedBox(width: 16),
-            Expanded(child: _statCard(context, "Total weekly Subscriptions", "5", "2 more subscriber added", fixedCardWidth)),
+            Expanded(child: _statCard(context,TextString.SubscriptionTitle8 , "5",TextString.SubscriptionTitle9 , fixedCardWidth)),
             const SizedBox(width: 16),
-            Expanded(child: _statCard(context, "Total Monthly Subscriptions", "345", "3 more subscriber added", fixedCardWidth)),
+            Expanded(child: _statCard(context,TextString.SubscriptionTitle10 , "345",TextString.SubscriptionTitle11 , fixedCardWidth)),
             const SizedBox(width: 16),
-            Expanded(child: _statCard(context, "Total Yearly Subscriptions", "10k", "3 more subscriber added", fixedCardWidth)),
+            Expanded(child: _statCard(context,TextString.SubscriptionTitle12 , "10k",TextString.SubscriptionTitle13 , fixedCardWidth)),
           ],
         );
       } else if (totalWidth >= 480) {
@@ -154,20 +155,20 @@ class SubscriptionAdminWidget extends StatelessWidget {
         return Wrap(
           spacing: 16, runSpacing: 16,
           children: [
-            _statCard(context, "Total New Subscriptions", "12", "3 more subscriber added", tabletCardWidth),
-            _statCard(context, "Total weekly Subscriptions", "5", "2 more subscriber added", tabletCardWidth),
-            _statCard(context, "Total Monthly Subscriptions", "345", "3 more subscriber added", tabletCardWidth),
-            _statCard(context, "Total Yearly Subscriptions", "10k", "3 more subscriber added", tabletCardWidth),
+            _statCard(context, TextString.SubscriptionTitle6, "12", TextString.SubscriptionTitle7 , tabletCardWidth),
+            _statCard(context, TextString.SubscriptionTitle8, "5", TextString.SubscriptionTitle9, tabletCardWidth),
+            _statCard(context, TextString.SubscriptionTitle10, "345", TextString.SubscriptionTitle11, tabletCardWidth),
+            _statCard(context, TextString.SubscriptionTitle12, "10k", TextString.SubscriptionTitle13, tabletCardWidth),
           ],
         );
       } else {
         return Wrap(
           spacing: 16, runSpacing: 16,
           children: [
-            _statCard(context, "Total New Subscriptions", "12", "3 more subscriber added", totalWidth),
-            _statCard(context, "Total weekly Subscriptions", "5", "2 more subscriber added", totalWidth),
-            _statCard(context, "Total Monthly Subscriptions", "345", "3 more subscriber added", totalWidth),
-            _statCard(context, "Total Yearly Subscriptions", "10k", "3 more subscriber added", totalWidth),
+            _statCard(context, TextString.SubscriptionTitle6, "12", TextString.SubscriptionTitle7 , totalWidth),
+            _statCard(context, TextString.SubscriptionTitle8, "5", TextString.SubscriptionTitle9, totalWidth),
+            _statCard(context, TextString.SubscriptionTitle10, "345", TextString.SubscriptionTitle11, totalWidth),
+            _statCard(context,TextString.SubscriptionTitle12 , "10k", TextString.SubscriptionTitle13, totalWidth),
           ],
         );
       }
@@ -398,13 +399,13 @@ class SubscriptionAdminWidget extends StatelessWidget {
       decoration: BoxDecoration(color: AppColors.secondaryColor.withOpacity(0.5), borderRadius: BorderRadius.circular(8)),
       child: Row(
         children: [
-          _headerCell("Company Name", 180, context, controller),
-          _headerCell("Subscription Type", 160, context, controller),
-          _headerCell("Cars", 100, context, controller),
-          _headerCell("Charges", 130, context, controller),
-          _headerCell("Next Billing Date", 160, context, controller),
-          _headerCell("Status", 120, context, controller),
-          _headerCell("Action", 100, context, controller, canSort: false),
+          _headerCell(TextString.SubscriptionTitle14, 180, context, controller),
+          _headerCell(TextString.SubscriptionTitle15, 160, context, controller),
+          _headerCell(TextString.SubscriptionTitle16, 100, context, controller),
+          _headerCell(TextString.SubscriptionTitle17, 130, context, controller),
+          _headerCell(TextString.SubscriptionTitle18, 160, context, controller),
+          _headerCell(TextString.SubscriptionTitle19, 120, context, controller),
+          _headerCell(TextString.SubscriptionTitle20, 100, context, controller, canSort: false),
         ],
       ),
     );

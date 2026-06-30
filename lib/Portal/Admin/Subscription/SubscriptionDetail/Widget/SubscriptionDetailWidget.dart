@@ -2,6 +2,7 @@ import 'package:car_rental_project/Portal/Admin/Subscription/SubscriptionControl
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,26 +27,26 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
       children: [
         _buildSectionCard(
           context,
-          title: "General Information",
-          subtitle: "Basic detail about the company",
+          title: TextString.SubscriptionTitle44,
+          subtitle: TextString.SubscriptionTitle45,
           child: Column(
             children: [
               _buildResponsiveRow(isMobile, [
-                _buildReadOnlyLogoField(context, "Company Logo"),
-                _buildReadOnlyField(context, "Company Name", "Soft Snip"),
-                _buildReadOnlyField(context, "Account Status", "Active"),
+                _buildReadOnlyLogoField(context,TextString.SubscriptionTitle46),
+                _buildReadOnlyField(context,TextString.SubscriptionTitle47 ,TextString.SubscriptionTitle48),
+                _buildReadOnlyField(context,TextString.SubscriptionTitle49 ,TextString.SubscriptionTitle50 ),
               ]),
               const SizedBox(height: 20),
               _buildResponsiveRow(isMobile, [
-                _buildReadOnlyField(context, "Phone Number", "1234567-8"),
-                _buildReadOnlyField(context, "Email Address", "aussie@gmail.com"),
-                _buildReadOnlyField(context, "Email Status", "Verified"),
+                _buildReadOnlyField(context,TextString.SubscriptionTitle51 ,TextString.SubscriptionTitle52 ),
+                _buildReadOnlyField(context,TextString.SubscriptionTitle53 ,TextString.SubscriptionTitle54 ),
+                _buildReadOnlyField(context,TextString.SubscriptionTitle55,TextString.SubscriptionTitle56 ),
               ]),
               const SizedBox(height: 20),
               _buildResponsiveRow(isMobile, [
-                _buildReadOnlyField(context, "Address", "123 Hay Street"),
-                _buildReadOnlyField(context, "Tax Number", "TAX-SA-98712"),
-                _buildReadOnlyField(context, "Joining Date", "4/03/2026"),
+                _buildReadOnlyField(context,TextString.SubscriptionTitle57 ,TextString.SubscriptionTitle58 ),
+                _buildReadOnlyField(context,TextString.SubscriptionTitle59 ,TextString.SubscriptionTitle60 ),
+                _buildReadOnlyField(context,TextString.SubscriptionTitle61,TextString.SubscriptionTitle62 ),
               ]),
             ],
           ),
@@ -54,20 +55,20 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
         const SizedBox(height: 25),
         _buildSectionCard(
           context,
-          title: "Subscription Information",
-          subtitle: "Company subscription listed here",
+          title:TextString.SubscriptionTitle63,
+          subtitle:TextString.SubscriptionTitle64 ,
           child: Column(
             children: [
               _buildResponsiveRow(isMobile, [
-                _buildReadOnlyField(context, "Plan", "Monthly"),
-                _buildReadOnlyField(context, "Start Date", "4/03/2026"),
-                _buildReadOnlyField(context, "End Date", "4/03/2027"),
+                _buildReadOnlyField(context,TextString.SubscriptionTitle65 ,TextString.SubscriptionTitle66 ),
+                _buildReadOnlyField(context,TextString.SubscriptionTitle67 ,TextString.SubscriptionTitle68 ),
+                _buildReadOnlyField(context,TextString.SubscriptionTitle69 ,TextString.SubscriptionTitle70 ),
               ]),
               const SizedBox(height: 20),
               _buildResponsiveRow(isMobile, [
-                _buildDynamicStatusField(context, "Status"),
-                _buildReadOnlyField(context, "Remaining Days", "365 Days"),
-                _buildReadOnlyField(context, "Limit", "Fleet usage 35/50"),
+                _buildDynamicStatusField(context,TextString.SubscriptionTitle71 ),
+                _buildReadOnlyField(context,TextString.SubscriptionTitle72 ,TextString.SubscriptionTitle73 ),
+                _buildReadOnlyField(context,TextString.SubscriptionTitle74,TextString.SubscriptionTitle75 ),
               ]),
             ],
           ),
@@ -76,8 +77,8 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
         const SizedBox(height: 25),
         _buildSectionCard(
           context,
-          title: "Invoice Breakdown",
-          subtitle: "Billing breakdown of active operations",
+          title:TextString.SubscriptionTitle76 ,
+          subtitle:TextString.SubscriptionTitle77 ,
           child: _buildInvoiceBreakdownContent(context, isMobile),
         ),
       ],
@@ -113,7 +114,7 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: TTextTheme.tableRegular14black(context).copyWith(fontSize: 13, color: Colors.grey.shade700)),
+        Text(label, style: TTextTheme.tableRegular14black(context).copyWith(fontSize: 13, color: AppColors.quadrantalTextColor.withOpacity(0.7))),
         const SizedBox(height: 8),
         Container(
           height: 44,
@@ -133,7 +134,7 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: TTextTheme.tableRegular14black(context).copyWith(fontSize: 13, color: Colors.grey.shade700)),
+        Text(label, style: TTextTheme.tableRegular14black(context).copyWith(fontSize: 13, color: AppColors.quadrantalTextColor.withOpacity(0.7))),
         const SizedBox(height: 8),
         Container(
           width: double.infinity,
@@ -162,7 +163,7 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
       children: [
         Text(
             label,
-            style: TTextTheme.tableRegular14black(context).copyWith(fontSize: 13, color: Colors.grey.shade700)
+            style: TTextTheme.tableRegular14black(context).copyWith(fontSize: 13, color: AppColors.quadrantalTextColor.withOpacity(0.7))
         ),
         const SizedBox(height: 8),
         Container(
@@ -213,7 +214,7 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
           children: [
             Text(title, style: TTextTheme.h2Style(context).copyWith(fontSize: 15, fontWeight: FontWeight.bold)),
             const SizedBox(height: 2),
-            Text(subtitle, style: TTextTheme.bodyRegular14(context).copyWith(color: Colors.grey.shade500)),
+            Text(subtitle, style: TTextTheme.bodyRegular14(context).copyWith(color: AppColors.quadrantalTextColor.withOpacity(0.7))),
             const SizedBox(height: 20),
             child,
           ],
@@ -221,16 +222,15 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
       ),
     );
   }
-
   Widget _buildInvoiceBreakdownContent(BuildContext context, bool isMobile) {
     Widget invoiceMeta = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Invoice", style: TTextTheme.bodyRegular14(context)),
+        Text(TextString.SubscriptionTitle78, style: TTextTheme.bodyRegular14(context)),
         const SizedBox(height: 4),
-        Text("INV -2025-012", style: TTextTheme.hPickupStyle(context)),
+        Text(TextString.SubscriptionTitle79, style: TTextTheme.hPickupStyle(context)),
         const SizedBox(height: 2),
-        Text("April 2025", style: TTextTheme.bodyRegular14(context)),
+        Text(TextString.SubscriptionTitle80, style: TTextTheme.bodyRegular14(context)),
       ],
     );
     Widget actionButtons = Row(
@@ -242,13 +242,13 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
             color: AppColors.completedColor,
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Text("Paid", style: TTextTheme.medium14White(context).copyWith(fontSize: 12)),
+          child: Text(TextString.SubscriptionTitle81, style: TTextTheme.medium14White(context).copyWith(fontSize: 12)),
         ),
         const SizedBox(width: 10),
         ElevatedButton.icon(
           onPressed: () {},
           icon: Image.asset(IconString.downloadIcon, height: 14,width: 14, color: Colors.white),
-          label: Text("Download PDF", style: TTextTheme.medium12White(context)),
+          label: Text(TextString.SubscriptionTitle82, style: TTextTheme.medium12White(context)),
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primaryColor,
             elevation: 0,
@@ -289,23 +289,23 @@ class _SubscriptionDetailWidgetState extends State<SubscriptionDetailWidget> {
         const SizedBox(height: 20),
         const Divider(color: AppColors.toolBackground, thickness: 1),
         const SizedBox(height: 12),
-        _buildBreakdownItem(context, label: "Active Vehicle", value: "20.00", isBold: true),
+        _buildBreakdownItem(context, label:TextString.SubscriptionTitle83 , value: "20.00", isBold: true),
         const SizedBox(height: 12),
-        _buildBreakdownItem(context, label: "Rate per Car", value: "\$8.00", isBold: true),
+        _buildBreakdownItem(context, label:TextString.SubscriptionTitle84 , value: "\$8.00", isBold: true),
 
         const SizedBox(height: 16),
         const Divider(color: AppColors.toolBackground, thickness: 1),
         const SizedBox(height: 16),
-        _buildBreakdownItem(context, label: "Sub Total", value: "\$160.00", styleColor: AppColors.quadrantalTextColor.withOpacity(0.7)),
+        _buildBreakdownItem(context, label:TextString.SubscriptionTitle85, value: "\$160.00", styleColor: AppColors.quadrantalTextColor.withOpacity(0.7)),
         const SizedBox(height: 12),
-        _buildBreakdownItem(context, label: "Tax", value: "\$8.00", styleColor: AppColors.quadrantalTextColor.withOpacity(0.7)),
+        _buildBreakdownItem(context, label:TextString.SubscriptionTitle86 , value: "\$8.00", styleColor: AppColors.quadrantalTextColor.withOpacity(0.7)),
 
         const SizedBox(height: 16),
         const Divider(color: AppColors.toolBackground, thickness: 1),
         const SizedBox(height: 16),
         _buildBreakdownItem(
             context,
-            label: "Total",
+            label:TextString.SubscriptionTitle87 ,
             value: "\$168.00",
             isBold: true,
             styleColor: AppColors.primaryColor,
