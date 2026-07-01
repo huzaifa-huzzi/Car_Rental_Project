@@ -1,3 +1,4 @@
+import 'package:car_rental_project/Portal/Vendor/Billing/BillingScreen/BillingScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/AddingCar/AddingCar.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Details/CarDetails.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory/CarInventoryController.dart';
@@ -82,6 +83,7 @@ class VendorRoutes {
                 case "Staff":         context.go('/staff');        break;
                 case "Payment":       context.go('/Payment');      break;
                 case "Reminder":       context.go('/reminder');      break;
+                case "Billing":       context.go('/billing');      break;
               }
             }
           },
@@ -237,6 +239,9 @@ class VendorRoutes {
         ),
 
          // Reminders
+
+         // Billing
+        GoRoute(path: '/billings', builder: (_, __) => BillingScreen()),
       ],
     ),
   ];

@@ -128,6 +128,15 @@ class SidebarScreen extends StatelessWidget {
                 onTap: (val) => context.go('/Payment'),
                 scaffoldKey: _scaffoldKey,
               ),
+
+              SidebarComponents.menuItem(
+                context, controller,
+                iconPath: IconString.billingIcon,
+                title: "Billing",
+                onTap: (val) => context.go('/billings'),
+                scaffoldKey: _scaffoldKey,
+              ),
+
               SidebarComponents.menuItem(
                 context, controller,
                 iconPath: IconString.reminderIcon,

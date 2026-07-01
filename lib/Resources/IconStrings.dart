@@ -157,6 +157,10 @@ class IconString {
   static const String  linkIcon = 'assets/icons/LinkIcon.png';
   static const String  sendIcon = 'assets/icons/SendIcon.png';
 
+   // Billing
+  static const String  billingIcon = 'assets/icons/BillingIcon.png';
+  static const String  billingCard = 'assets/icons/BiilingCard.png';
+
      /// Admin
     // Sidebar
   static const String  dashboardAdmin = 'assets/icons/Admin/DasboardAdmin.png';

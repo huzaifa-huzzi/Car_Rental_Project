@@ -34,6 +34,8 @@ class AppColors {
   static const Color signaturePadColor = Color(0xFFF9FAFB);
   static const Color activeColor2 = Color(0xFF22C55E);
   static const Color toolBackground = Color(0xFFF5F6FA);
+  static const Color Card1Color = Color(0xFFDC2626);
+  static const Color Card2Colors = Color(0xFFDC5726);
    /// Payment Module Colors
   static const Color tableHeading = Color(0xFF4C596A); // table Heading
   static const Color reviewColor = Color(0xFFF97316);

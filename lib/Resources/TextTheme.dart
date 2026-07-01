@@ -468,6 +468,11 @@ class TTextTheme {
     );
   }
 
+  static TextStyle BillingFour(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 10, 11, 12),fontWeight: FontWeight.w400,color: Colors.white70,
+    );
+  }
+
   static TextStyle titleFive(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 10, 20, 11),fontWeight: FontWeight.w400,color: AppColors.secondaryColor,
     );
@@ -660,6 +665,12 @@ class TTextTheme {
   static TextStyle h2StyleOtherModule(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 20, 20, 20),fontWeight: FontWeight.w600,color: AppColors.textColor);
   }
+
+
+  static TextStyle billingWhite(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 20, 20, 20),fontWeight: FontWeight.w600,color: Colors.white);
+  }
+
 
   static TextStyle h3StyleOtherModule(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 32, 40, 40),fontWeight: FontWeight.w600,color: AppColors.textColor);
