@@ -103,7 +103,7 @@ class HeaderWebBillingWidget extends StatelessWidget {
                       } else if (router.canPop()) {
                         router.pop();
                       } else {
-                        router.go('/carInventory');
+                        router.go('/billings');
                       }
                     },
                     child: Container(

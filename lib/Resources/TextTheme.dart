@@ -711,6 +711,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.secondTextColor);
   }
 
+  static TextStyle bodyRegular14black(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.textColor);
+  }
+
   static TextStyle bodyRegular14Search(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w400,color: AppColors.quadrantalTextColor);
   }
@@ -775,6 +779,10 @@ class TTextTheme {
     return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w500,color: AppColors.textColor);
   }
 
+  static TextStyle medium12quadrantal(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w500,color: AppColors.quadrantalTextColor.withOpacity(0.7));
+  }
+
   static TextStyle medium16(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 15, 16),fontWeight: FontWeight.w500,color: AppColors.blackColor);
   }
@@ -833,6 +841,10 @@ class TTextTheme {
 
   static TextStyle tableSemiBold14(BuildContext context){
     return _textStyle(fontSize:AppTextSizes.size(context, 14, 14, 14),fontWeight: FontWeight.w600,color: Colors.white);
+  }
+
+  static TextStyle tableSemiBold18Black(BuildContext context){
+    return _textStyle(fontSize:AppTextSizes.size(context, 15, 17, 18),fontWeight: FontWeight.w600,color: AppColors.blackColor);
   }
 
 

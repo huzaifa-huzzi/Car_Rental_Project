@@ -1,3 +1,4 @@
+import 'package:car_rental_project/Portal/Vendor/Billing/BillingDetail/BillingDetail.dart';
 import 'package:car_rental_project/Portal/Vendor/Billing/BillingScreen/BillingScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/AddingCar/AddingCar.dart';
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Details/CarDetails.dart';
@@ -242,6 +243,7 @@ class VendorRoutes {
 
          // Billing
         GoRoute(path: '/billings', builder: (_, __) => BillingScreen()),
+        GoRoute(path: '/billingsDetails', builder: (_, __) => BillingDetailScreen()),
       ],
     ),
   ];

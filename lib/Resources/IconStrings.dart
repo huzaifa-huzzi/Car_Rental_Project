@@ -160,6 +160,8 @@ class IconString {
    // Billing
   static const String  billingIcon = 'assets/icons/BillingIcon.png';
   static const String  billingCard = 'assets/icons/BiilingCard.png';
+  static const String  billingEmail = 'assets/icons/BillingEmail.png';
+  static const String  billingPdf = 'assets/icons/BillingPdf.png';
 
      /// Admin
     // Sidebar

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class BillingScreenWidget extends StatelessWidget {
   const BillingScreenWidget({super.key});
@@ -48,7 +49,7 @@ class BillingScreenWidget extends StatelessWidget {
         ),
         const SizedBox(width: 24),
 
-        /// RIGHT MAIN DASHBOARD CONTENT
+        /// RIGHT MAIN DASHBOARD
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -482,6 +483,7 @@ class BillingScreenWidget extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: InkWell(
           onTap: () {
+            context.go('/billingsDetails');
           },
           borderRadius: BorderRadius.circular(6),
           child: Container(
