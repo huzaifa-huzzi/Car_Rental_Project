@@ -69,6 +69,8 @@ class VendorRoutes {
           controller.syncWithRoute(state.uri.toString());
         });
 
+        bool hideAddButton = path.contains('billing') || path.contains('reminder');
+
         return SidebarScreen(
           onTap: (route) {
             if (route.startsWith('/')) {
@@ -89,6 +91,7 @@ class VendorRoutes {
             }
           },
           hideMobileAppBar: hideMobile,
+          hideAddButton: hideAddButton,
           child: child,
         );
       },

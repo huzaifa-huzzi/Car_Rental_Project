@@ -13,14 +13,19 @@ import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 
 
-
 class SidebarScreen extends StatelessWidget {
   final Function(String) onTap;
   final Widget? child;
   final bool hideMobileAppBar;
+  final bool hideAddButton;
 
-  SidebarScreen(
-      {super.key, required this.onTap, this.child, this.hideMobileAppBar = false}) {
+  SidebarScreen({
+    super.key,
+    required this.onTap,
+    this.child,
+    this.hideMobileAppBar = false,
+    this.hideAddButton = false,
+  }) {
     Get.lazyPut<SideBarController>(() => SideBarController(), fenix: true);
   }
 
@@ -33,9 +38,6 @@ class SidebarScreen extends StatelessWidget {
     final bool isTab = AppSizes.isTablet(context);
     final bool isWeb = AppSizes.isWeb(context);
     final double sidebarWidth = isWeb ? 240 : 150;
-
-
-
 
     final String currentRoute = GoRouterState.of(context).uri.toString();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -71,8 +73,7 @@ class SidebarScreen extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      Image.asset(IconString.symbol, width: isMobile ? 30 : 36,
-                          height: isMobile ? 32 : 38),
+                      Image.asset(IconString.symbol, width: isMobile ? 30 : 36, height: isMobile ? 32 : 38),
                       SizedBox(width: AppSizes.horizontalPadding(context) / 2),
                       Text("Softsnip", style: TTextTheme.h6Style(context)),
                     ],
@@ -157,10 +158,8 @@ class SidebarScreen extends StatelessWidget {
 
               const SizedBox(height: 10),
 
-
               Padding(
-                padding: EdgeInsets.only(
-                    bottom: AppSizes.verticalPadding(context) * 0.7),
+                padding: EdgeInsets.only(bottom: AppSizes.verticalPadding(context) * 0.7),
                 child: SidebarComponents.menuItem(
                     context, controller, iconPath: IconString.logoutIcon,
                     title: TextString.logoutTitle,
@@ -203,16 +202,16 @@ class SidebarScreen extends StatelessWidget {
         context.push('/addNewCar', extra: {"hideMobileAppBar": true});
       }
     }
-
-    // Mobile and Tab check
     if (isMobile || isTab) {
-      final bool isDashboardRoute = currentRoute.contains('/dashboard');
+      final bool isDashboardRoute = currentRoute.contains('/dashboard') ||
+          currentRoute.contains('/billing') ||
+          currentRoute.contains('/billings') ||
+          currentRoute.contains('/reminder');
 
       return Scaffold(
         backgroundColor: Colors.white,
         key: _scaffoldKey,
-        drawer: Drawer(backgroundColor: Colors.white,
-            child: sidebarContent(showLogo: false)),
+        drawer: Drawer(backgroundColor: Colors.white, child: sidebarContent(showLogo: false)),
         appBar: hideMobileAppBar ? null : AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.secondaryColor,
@@ -264,6 +263,4 @@ class SidebarScreen extends StatelessWidget {
       child: child,
     );
   }
-
-
 }
