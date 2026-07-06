@@ -47,7 +47,7 @@ class BillingDetailScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.blackColor.withOpacity(0.005),
+                      color: AppColors.blackColor.withValues(alpha: 0.005),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
@@ -162,11 +162,11 @@ class BillingDetailScreen extends StatelessWidget {
               children: [
                 Text(
     TextString.billingDetailRecipientFour ,
-                  style: TTextTheme.bodyRegular14Search(context).copyWith(color: AppColors.quadrantalTextColor.withOpacity(0.7)),
+                  style: TTextTheme.bodyRegular14Search(context).copyWith(color: AppColors.quadrantalTextColor.withValues(alpha: 0.7)),
                 ),
                 Text(
     TextString.billingDetailRecipientFive,
-                  style: TTextTheme.bodyRegular14Search(context).copyWith(color:  AppColors.quadrantalTextColor.withOpacity(0.7)),
+                  style: TTextTheme.bodyRegular14Search(context).copyWith(color:  AppColors.quadrantalTextColor.withValues(alpha: 0.7)),
                 ),
               ],
             ),
@@ -175,11 +175,11 @@ class BillingDetailScreen extends StatelessWidget {
               children: [
                 Text(
     TextString.billingDetailRecipientSix,
-                  style: TTextTheme.bodyRegular14Search(context).copyWith(color:  AppColors.quadrantalTextColor.withOpacity(0.7)),
+                  style: TTextTheme.bodyRegular14Search(context).copyWith(color:  AppColors.quadrantalTextColor.withValues(alpha: 0.7)),
                 ),
                 Text(
                   TextString.billingDetailRecipientSeven,
-                  style: TTextTheme.bodyRegular14Search(context).copyWith(color:  AppColors.quadrantalTextColor.withOpacity(0.7)),
+                  style: TTextTheme.bodyRegular14Search(context).copyWith(color:  AppColors.quadrantalTextColor.withValues(alpha: 0.7)),
                 ),
               ],
             ),
@@ -411,7 +411,7 @@ class BillingDetailScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children:  [
-        Text(TextString.ImportantNoteOne, style: TTextTheme.bodyRegular14(context).copyWith(color: AppColors.quadrantalTextColor.withOpacity(0.7)) ),
+        Text(TextString.ImportantNoteOne, style: TTextTheme.bodyRegular14(context).copyWith(color: AppColors.quadrantalTextColor.withValues(alpha: 0.7)) ),
         SizedBox(height: 4),
         Text(
           TextString.ImportantNoteTwo,
@@ -466,7 +466,7 @@ class BillingDetailScreen extends StatelessWidget {
         Text.rich(
           TextSpan(
             text:TextString.billingInfotitleTwo ,
-            style: TTextTheme.tableRegular14(context).copyWith(color: AppColors.quadrantalTextColor.withOpacity(0.7)),
+            style: TTextTheme.tableRegular14(context).copyWith(color: AppColors.quadrantalTextColor.withValues(alpha: 0.7)),
             children: [
               TextSpan(
                 text:TextString.billingInfotitleThree ,
@@ -481,7 +481,7 @@ class BillingDetailScreen extends StatelessWidget {
         Text.rich(
           TextSpan(
             text:TextString.billingInfotitleFour ,
-            style:  TTextTheme.tableRegular14(context).copyWith(color: AppColors.quadrantalTextColor.withOpacity(0.7)),
+            style:  TTextTheme.tableRegular14(context).copyWith(color: AppColors.quadrantalTextColor.withValues(alpha: 0.7)),
             children: [
               TextSpan(
                 text:TextString.billingInfotitleFive ,

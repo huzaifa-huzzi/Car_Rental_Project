@@ -369,7 +369,7 @@ class BillingScreenWidget extends StatelessWidget {
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
-          border: Border.all(color: Colors.white.withOpacity(0.22), width: 1),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.22), width: 1),
         ),
         child: Image.asset(icon, color: Colors.white, height: 16, width: 16),
       ),
@@ -489,7 +489,7 @@ class BillingScreenWidget extends StatelessWidget {
     child: Row(
       children: [
         if (hasIcon) ...[
-          Icon(Icons.search, size: 16, color: (AppColors.quadrantalTextColor ).withOpacity(0.6)),
+          Icon(Icons.search, size: 16, color: (AppColors.quadrantalTextColor ).withValues(alpha: 0.6)),
           const SizedBox(width: 8),
         ],
         Expanded(
@@ -498,7 +498,7 @@ class BillingScreenWidget extends StatelessWidget {
             style: TTextTheme.titleTwo(context).copyWith(fontSize: 13, fontWeight: FontWeight.normal),
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: TTextTheme.titleFour(context).copyWith(fontSize: 13, color: (AppColors.quadrantalTextColor).withOpacity(0.6)),
+              hintStyle: TTextTheme.titleFour(context).copyWith(fontSize: 13, color: (AppColors.quadrantalTextColor).withValues(alpha: 0.6)),
               border: InputBorder.none,
               isDense: true,
               contentPadding: EdgeInsets.zero,
@@ -711,7 +711,7 @@ class BillingScreenWidget extends StatelessWidget {
                       selected.value.isEmpty ? "Select $label" : selected.value,
                       style: TTextTheme.pOne(context).copyWith(
                         color: selected.value.isEmpty
-                            ? (AppColors.quadrantalTextColor).withOpacity(0.7)
+                            ? (AppColors.quadrantalTextColor).withValues(alpha: 0.7)
                             : AppColors.blackColor,
                       ),
                       overflow: TextOverflow.ellipsis,
@@ -1010,7 +1010,7 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                         child: OutlinedButton(
                           onPressed: () => Navigator.pop(context),
                           style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: AppColors.tertiaryTextColor.withOpacity(0.7)),
+                            side: BorderSide(color: AppColors.tertiaryTextColor.withValues(alpha: 0.7)),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                           ),
@@ -1281,7 +1281,7 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: (AppColors.quadrantalTextColor).withOpacity(0.1),
+                        color: (AppColors.quadrantalTextColor).withValues(alpha: 0.1),
                       ),
                       padding: const EdgeInsets.all(6),
                       child: const Icon(Icons.close, size: 14, color: AppColors.secondTextColor),
@@ -1392,7 +1392,7 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: (AppColors.quadrantalTextColor).withOpacity(0.1),
+                        color: (AppColors.quadrantalTextColor).withValues(alpha: 0.1),
                       ),
                       padding: const EdgeInsets.all(6),
                       child: const Icon(Icons.close, size: 14, color: AppColors.secondTextColor),
@@ -1470,7 +1470,7 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: (AppColors.quadrantalTextColor).withOpacity(0.1),
+                        color: (AppColors.quadrantalTextColor).withValues(alpha: 0.1),
                       ),
                       padding: const EdgeInsets.all(6),
                       child: const Icon(Icons.close, size: 14, color: AppColors.secondTextColor),
@@ -1582,7 +1582,7 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: (AppColors.quadrantalTextColor ?? Colors.grey).withOpacity(0.1),
+                        color: (AppColors.quadrantalTextColor ?? Colors.grey).withValues(alpha: 0.1),
                       ),
                       padding: const EdgeInsets.all(6),
                       child: const Icon(Icons.close, size: 14, color: AppColors.secondTextColor),

@@ -780,7 +780,7 @@ class TTextTheme {
   }
 
   static TextStyle medium12quadrantal(BuildContext context){
-    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w500,color: AppColors.quadrantalTextColor.withOpacity(0.7));
+    return _textStyle(fontSize:AppTextSizes.size(context, 12, 12, 12),fontWeight: FontWeight.w500,color: AppColors.quadrantalTextColor.withValues(alpha: 0.7));
   }
 
   static TextStyle medium16(BuildContext context){
