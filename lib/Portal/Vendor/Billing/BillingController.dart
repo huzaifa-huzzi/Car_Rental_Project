@@ -5,6 +5,7 @@ class BillingController extends GetxController {
   var openedDropdown2 = "".obs;
   var searchCarText = "".obs;
   var isDefaultPayment = false.obs;
+  var selectedTabIndex = 0.obs;
 
   var dropdownErrors = <String, String>{}.obs;
   var selectedMonth = "".obs;
