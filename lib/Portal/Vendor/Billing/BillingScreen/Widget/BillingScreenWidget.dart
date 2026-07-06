@@ -1,6 +1,7 @@
 import 'package:car_rental_project/Portal/Vendor/Billing/BillingController.dart';
 import 'package:car_rental_project/Portal/Vendor/Billing/ResuableWidget/PrimaryBtnOfBilling.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:flutter/material.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
@@ -87,8 +88,6 @@ class BillingScreenWidget extends StatelessWidget {
               ),
             ),
           if (isOverview) const SizedBox(width: 24),
-
-          /// RIGHT MAIN DASHBOARD CONTENT (Tab ke mutabiq switch hoga)
           Expanded(
             child: isOverview
                 ? _buildAllInvoicesCard(context)
@@ -117,13 +116,13 @@ class BillingScreenWidget extends StatelessWidget {
         children: [
           _buildIndividualTabToggle(
             context,
-            title: "Billing Overview",
+            title: TextString.billingTabOne,
             isSelected: controller.selectedTabIndex.value == 0,
             onTap: () => controller.selectedTabIndex.value = 0,
           ),
           _buildIndividualTabToggle(
             context,
-            title: "Billing Settings",
+            title:TextString.billingTabTwo ,
             isSelected: controller.selectedTabIndex.value == 1,
             onTap: () => controller.selectedTabIndex.value = 1,
           ),
@@ -164,21 +163,24 @@ class BillingScreenWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Subscription Information", style: TTextTheme.h2Style(context)),
+          Text(TextString.billingSubscriptionOne, style: TTextTheme.h2Style(context)),
           const SizedBox(height: 2),
-          Text("Company subscription listed here", style: TTextTheme.bodyRegular14Search(context)),
+          Text(TextString.billingSubscriptionTwo, style: TTextTheme.bodyRegular14Search(context)),
           const SizedBox(height: 16),
-          _buildTextRow(context, "Plan", "Monthly", isValueBold: true),
-          _buildTextRow(context, "Start Date", "4/03/2026"),
-          _buildTextRow(context, "End Date", "4/03/2027"),
-          _buildTextRow(context, "Status", "Active", valueColor: AppColors.completedColor, isValueBold: false),
-          _buildTextRow(context, "Remaining Days", "365 Days"),
-          _buildTextRow(context, "Active Cars", "50", isValueBold: true),
+          _buildTextRow(context,TextString.billingSubscriptionThree , "Monthly", isValueBold: true),
+          _buildTextRow(context,TextString.billingSubscriptionFour , "4/03/2026"),
+          _buildTextRow(context,TextString.billingSubscriptionFive , "4/03/2027"),
+          _buildTextRow(context,TextString.billingSubscriptionSix , "Active", valueColor: AppColors.completedColor, isValueBold: false),
+          _buildTextRow(context,TextString.billingSubscriptionSeven , "365 Days"),
+          _buildTextRow(context,TextString.billingSubscriptionEight, "50", isValueBold: true),
         ],
       ),
     );
   }
 }
+
+
+   /// ------------------ Extra Widgets ----------- ///
 
  // Payment Cards
   Widget _buildDefaultPaymentMethodCard(BuildContext context) {
@@ -186,9 +188,9 @@ class BillingScreenWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Default Payment Method", style: TTextTheme.h2Style(context)),
+          Text(TextString.billingPaymentOne, style: TTextTheme.h2Style(context)),
           const SizedBox(height: 2),
-          Text("Primary card for changes", style: TTextTheme.bodyRegular14Search(context)),
+          Text(TextString.billingPaymentTwo, style: TTextTheme.bodyRegular14Search(context)),
           const SizedBox(height: 20),
           Container(
             width: double.infinity,
@@ -202,7 +204,7 @@ class BillingScreenWidget extends StatelessWidget {
               children: [
                 Image.asset(IconString.billingCard, height: 26, width: 26),
                 const SizedBox(height: 24),
-                Text("••••   ••••   ••••   4242", style: TTextTheme.billingWhite(context)),
+                Text(TextString.billingPaymentThree, style: TTextTheme.billingWhite(context)),
                 const SizedBox(height: 24),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -210,15 +212,15 @@ class BillingScreenWidget extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Card Holder", style: TTextTheme.BillingFour(context)),
-                        Text("Jhon Smith", style: TTextTheme.btnWhiteColor(context).copyWith(fontSize: 14)),
+                        Text(TextString.billingPaymentFour, style: TTextTheme.BillingFour(context)),
+                        Text(TextString.billingPaymentFive, style: TTextTheme.btnWhiteColor(context).copyWith(fontSize: 14)),
                       ],
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Expiry date", style: TTextTheme.BillingFour(context)),
-                        Text("4/06/2028", style: TTextTheme.btnWhiteColor(context).copyWith(fontSize: 14)),
+                        Text(TextString.billingPaymentSix, style: TTextTheme.BillingFour(context)),
+                        Text(TextString.billingPaymentSeven, style: TTextTheme.btnWhiteColor(context).copyWith(fontSize: 14)),
                       ],
                     ),
                   ],
@@ -278,9 +280,9 @@ class BillingScreenWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Payment Method", style: TTextTheme.h2Style(context)),
+        Text(TextString.billingPaymentTitle, style: TTextTheme.h2Style(context)),
         const SizedBox(height: 2),
-        Text("Manage your Save card", style: TTextTheme.bodyRegular14Search(context)),
+        Text(TextString.billingPaymentSubtitle, style: TTextTheme.bodyRegular14Search(context)),
       ],
     );
   }
@@ -296,7 +298,7 @@ class BillingScreenWidget extends StatelessWidget {
           color: AppColors.primaryColor,
           borderRadius: BorderRadius.circular(6),
         ),
-        child: Text("Add Card", style: TTextTheme.btnWhiteColor(context).copyWith(fontSize: 12)),
+        child: Text(TextString.AddCard, style: TTextTheme.btnWhiteColor(context).copyWith(fontSize: 12)),
       ),
     );
   }
@@ -320,9 +322,9 @@ class BillingScreenWidget extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("... ", style: TTextTheme.btnWhiteColor(context).copyWith(fontSize: 24)),
+                Text(TextString.dots, style: TTextTheme.btnWhiteColor(context).copyWith(fontSize: 24)),
                 const SizedBox(width: 14),
-                Text("4242", style: TTextTheme.btnWhiteColor(context).copyWith(fontSize: 24)),
+                Text(TextString.Numbers, style: TTextTheme.btnWhiteColor(context).copyWith(fontSize: 24)),
               ],
             ),
           ),
@@ -330,7 +332,7 @@ class BillingScreenWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Visa",
+               TextString.visaCard,
                 style: TTextTheme.titleFour(context).copyWith(color: Colors.white70),
               ),
               Row(
@@ -379,16 +381,16 @@ class BillingScreenWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Billing Info", style: TTextTheme.h2Style(context)),
+          Text(TextString.billingInfoOne, style: TTextTheme.h2Style(context)),
           const SizedBox(height: 2),
-          Text("Here is your billing info", style: TTextTheme.bodyRegular14Search(context)),
+          Text(TextString.billingInfoTwo, style: TTextTheme.bodyRegular14Search(context)),
           const SizedBox(height: 20),
-          _buildBillingDetailRow(context, "Phone Number", "+61 2 9876 5432"),
+          _buildBillingDetailRow(context,TextString.billingInfoThree , TextString.billingInfoFour),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 12),
             child: Divider(color: AppColors.toolBackground, thickness: 1),
           ),
-          _buildBillingDetailRow(context, "Address", "Level 5, 120 George Street\nSydney NSW 2000\nAustralia"),
+          _buildBillingDetailRow(context,TextString.billingInfoFive ,TextString.billingInfoSix ),
         ],
       ),
     );
@@ -399,9 +401,9 @@ class BillingScreenWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("All Invoices", style: TTextTheme.h2Style(context)),
+          Text(TextString.billingInvoicesTitle, style: TTextTheme.h2Style(context)),
           const SizedBox(height: 4),
-          Text("List of all Invoices", style: TTextTheme.bodyRegular14Search(context)),
+          Text(TextString.billingInvoicesSubtitle, style: TTextTheme.bodyRegular14Search(context)),
           const SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -413,7 +415,7 @@ class BillingScreenWidget extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      _buildSearchInput(context, hint: "Search Company by Name", width: 230, hasIcon: true),
+                      _buildSearchInput(context, hint:TextString.billingInvoicesSubtitleTwo , width: 230, hasIcon: true),
                     ],
                   ),
                 ),
@@ -440,12 +442,12 @@ class BillingScreenWidget extends StatelessWidget {
                       border: Border(bottom: BorderSide(color: Colors.grey.shade100, width: 1.5)),
                     ),
                     children: [
-                      _buildTableHeaderCell(context, "Invoice Id"),
-                      _buildTableHeaderCell(context, "Month"),
-                      _buildTableHeaderCell(context, "Year"),
-                      _buildTableHeaderCell(context, "Payment"),
-                      _buildTableHeaderCell(context, "Status"),
-                      _buildTableHeaderCell(context, "Action"),
+                      _buildTableHeaderCell(context,TextString.billingInvoicesTableOne ),
+                      _buildTableHeaderCell(context,TextString.billingInvoicesTableTwo),
+                      _buildTableHeaderCell(context,TextString.billingInvoicesTableThree ),
+                      _buildTableHeaderCell(context,TextString.billingInvoicesTableFour ),
+                      _buildTableHeaderCell(context,TextString.billingInvoicesTableFive ),
+                      _buildTableHeaderCell(context,TextString.billingInvoicesTableSix ),
                     ],
                   ),
                   ...List.generate(4, (index) => TableRow(
@@ -453,11 +455,11 @@ class BillingScreenWidget extends StatelessWidget {
                       border: Border(bottom: BorderSide(color: Colors.grey.shade100, width: 1)),
                     ),
                     children: [
-                      _buildTableCell(context, "Abc12345", isBold: true),
-                      _buildTableCell(context, "February"),
-                      _buildTableCell(context, "2026"),
-                      _buildTableCell(context, "\$45.00"),
-                      _buildStatusCell(context, "Paid"),
+                      _buildTableCell(context,TextString.billingInvoicesTableSeven , isBold: true),
+                      _buildTableCell(context,TextString.billingInvoicesTableEight ),
+                      _buildTableCell(context,TextString.billingInvoicesTableNine),
+                      _buildTableCell(context,TextString.billingInvoicesTableTen ),
+                      _buildStatusCell(context,TextString.billingInvoicesTableEleven),
                       _buildActionCell(context),
                     ],
                   )),
@@ -886,27 +888,27 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Edit Payment Method",
+                       TextString.EditDialogOne,
                         style: TTextTheme.h2Style(context),
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        "Save new Card Here",
+                        TextString.EditDialogTwo,
                         style: TTextTheme.bodyRegular14Search(context),
                       ),
                       const SizedBox(height: 20),
 
-                      Text("Card Holder", style: TTextTheme.titleTwo(context)),
+                      Text(TextString.EditDialogThree, style: TTextTheme.titleTwo(context)),
                       const SizedBox(height: 6),
                       _buildModalTextField(context, controller: controller.nameController, hint: "Enter Name"),
                       const SizedBox(height: 14),
 
-                      Text("Card Number", style: TTextTheme.titleTwo(context)),
+                      Text(TextString.EditDialogFour, style: TTextTheme.titleTwo(context)),
                       const SizedBox(height: 6),
                       _buildModalTextField(context, controller: controller.numberController, hint: "Enter Number"),
                       const SizedBox(height: 14),
 
-                      Text("CVC Code", style: TTextTheme.titleTwo(context)),
+                      Text(TextString.EditDialogFive, style: TTextTheme.titleTwo(context)),
                       const SizedBox(height: 6),
                       _buildModalTextField(context, controller: controller.cvcController, hint: "424242"),
                       const SizedBox(height: 14),
@@ -921,7 +923,7 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                               children: [
                                 _buildSearchableDropdown(
                                   context,
-                                  "Select Month (Expiry Date)",
+                                  TextString.EditDialogSix,
                                   controller.selectedMonth,
                                   id: "month",
                                   controller: controller,
@@ -931,7 +933,7 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                                 const SizedBox(height: 16),
                                 _buildSearchableDropdown(
                                   context,
-                                  "Select Year",
+                                  TextString.EditDialogSeven,
                                   controller.selectedYear,
                                   id: "year",
                                   controller: controller,
@@ -947,7 +949,7 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                                 Expanded(
                                   child: _buildSearchableDropdown(
                                     context,
-                                    "Select Month (Expiry Date)",
+                                    TextString.EditDialogSix,
                                     controller.selectedMonth,
                                     id: "month",
                                     controller: controller,
@@ -959,7 +961,7 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                                 Expanded(
                                   child: _buildSearchableDropdown(
                                     context,
-                                    "Select Year",
+                                    TextString.EditDialogSeven,
                                     controller.selectedYear,
                                     id: "year",
                                     controller: controller,
@@ -990,7 +992,7 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              "Set as default payment method",
+                                TextString.EditDialogEight,
                               style: TTextTheme.bodyRegular14Search(context).copyWith(fontSize: 13),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -1008,7 +1010,7 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                         child: OutlinedButton(
                           onPressed: () => Navigator.pop(context),
                           style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Colors.grey[300]!),
+                            side: BorderSide(color: AppColors.tertiaryTextColor.withOpacity(0.7)),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                           ),
@@ -1076,27 +1078,27 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Add Payment Card",
+                        TextString.EditDialogNine,
                         style: TTextTheme.h2Style(context),
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        "Save new Card Here",
+                        TextString.EditDialogTen,
                         style: TTextTheme.bodyRegular14Search(context),
                       ),
                       const SizedBox(height: 20),
 
-                      Text("Card Holder", style: TTextTheme.titleTwo(context)),
+                      Text(TextString.EditDialogThree, style: TTextTheme.titleTwo(context)),
                       const SizedBox(height: 6),
                       _buildModalTextField(context, controller: controller.nameController, hint: "Enter Name"),
                       const SizedBox(height: 14),
 
-                      Text("Card Number", style: TTextTheme.titleTwo(context)),
+                      Text(TextString.EditDialogFour, style: TTextTheme.titleTwo(context)),
                       const SizedBox(height: 6),
                       _buildModalTextField(context, controller: controller.numberController, hint: "Enter Number"),
                       const SizedBox(height: 14),
 
-                      Text("CVC Code", style: TTextTheme.titleTwo(context)),
+                      Text(TextString.EditDialogFive, style: TTextTheme.titleTwo(context)),
                       const SizedBox(height: 6),
                       _buildModalTextField(context, controller: controller.cvcController, hint: "424242"),
                       const SizedBox(height: 14),
@@ -1111,7 +1113,7 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                               children: [
                                 _buildSearchableDropdown(
                                   context,
-                                  "Select Month (Expiry Date)",
+                                  TextString.EditDialogSix,
                                   controller.selectedMonth,
                                   id: "month",
                                   controller: controller,
@@ -1121,7 +1123,7 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                                 const SizedBox(height: 16),
                                 _buildSearchableDropdown(
                                   context,
-                                  "Select Year",
+                                  TextString.EditDialogSeven,
                                   controller.selectedYear,
                                   id: "year",
                                   controller: controller,
@@ -1137,7 +1139,7 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                                 Expanded(
                                   child: _buildSearchableDropdown(
                                     context,
-                                    "Select Month (Expiry Date)",
+                                    TextString.EditDialogSix,
                                     controller.selectedMonth,
                                     id: "month",
                                     controller: controller,
@@ -1149,7 +1151,7 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                                 Expanded(
                                   child: _buildSearchableDropdown(
                                     context,
-                                    "Select Year",
+                                    TextString.EditDialogSeven,
                                     controller.selectedYear,
                                     id: "year",
                                     controller: controller,
@@ -1180,7 +1182,7 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              "Set as default payment method",
+                              TextString.EditDialogEight,
                               style: TTextTheme.bodyRegular14Search(context).copyWith(fontSize: 13),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -1309,12 +1311,12 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Delete Card",
+                                  TextString.DeleteDialogTitle,
                                   style: TTextTheme.h2Style(context).copyWith(fontSize: 16, fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  "Are you sure you want to delete Card?",
+                                  TextString.DeleteDialogSubtitle,
                                   style: TTextTheme.bodyRegular14Search(context).copyWith(fontSize: 13),
                                 ),
                               ],
@@ -1419,11 +1421,11 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Card Deleted Successfully",
+                                  TextString.DeletionSuccessTitle,
                                   style: TTextTheme.h2Style(context).copyWith(fontSize: 16, fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(height: 4),
-                                Text("Congratulation! card has deleted successfully", style: TTextTheme.bodyRegular14Search(context).copyWith(fontSize: 13)),
+                                Text(TextString.DeletionSuccessSubtitle, style: TTextTheme.bodyRegular14Search(context).copyWith(fontSize: 13)),
                               ],
                             ),
                           ),
@@ -1468,7 +1470,7 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: (AppColors.quadrantalTextColor ?? Colors.grey).withOpacity(0.1),
+                        color: (AppColors.quadrantalTextColor).withOpacity(0.1),
                       ),
                       padding: const EdgeInsets.all(6),
                       child: const Icon(Icons.close, size: 14, color: AppColors.secondTextColor),
@@ -1498,12 +1500,12 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Edit Card",
+                                  TextString.EditCardTitle,
                                   style: TTextTheme.h2Style(context).copyWith(fontSize: 16, fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  "Are you sure you want to edit Card?",
+                                  TextString.EditCardSubtitle,
                                   style: TTextTheme.bodyRegular14Search(context).copyWith(fontSize: 13),
                                 ),
                               ],
@@ -1608,9 +1610,9 @@ void showEditCardFormDialog(BuildContext context, {required BillingController co
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Card edited Successfully", style: TTextTheme.h2Style(context)),
+                                Text(TextString.EditSuccesTitle, style: TTextTheme.h2Style(context)),
                                 const SizedBox(height: 4),
-                                Text("Congratulation! card detail has edited successfully", style: TTextTheme.bodyRegular14Search(context)),
+                                Text(TextString.EditSuccesSubtitle, style: TTextTheme.bodyRegular14Search(context)),
                               ],
                             ),
                           ),

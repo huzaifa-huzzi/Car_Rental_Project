@@ -3,6 +3,7 @@ import 'package:car_rental_project/Portal/Vendor/Billing/ResuableWidget/HeaderWe
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -75,13 +76,13 @@ class BillingDetailScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child:  Text(
-                              "Paid",
+                              TextString.billingInvoicesTableEleven,
                               style: TTextTheme.btnWhiteColor(context),
                             ),
                           ),
-                          _buildActionBtn(context, text: "Download PDF", icon: IconString.billingPdf),
-                          _buildActionBtn(context, text: "Send Email", icon: IconString.billingEmail),
-                          _buildActionBtn(context, text: "Print", icon: IconString.printIcon),
+                          _buildActionBtn(context, text:TextString.billingDetailOne , icon: IconString.billingPdf),
+                          _buildActionBtn(context, text:TextString.billingDetailTwo , icon: IconString.billingEmail),
+                          _buildActionBtn(context, text:TextString.billingDetailThree , icon: IconString.printIcon),
                         ],
                       ),
                     ),
@@ -129,14 +130,14 @@ class BillingDetailScreen extends StatelessWidget {
             Image.asset(IconString.symbol),
             const SizedBox(width: 8),
             Text(
-              "SoftSnip",
+              TextString.billingDetailRecipientOne,
               style:  TTextTheme.h6Style(context),
             ),
           ],
         ),
         const SizedBox(height: 6),
         Text(
-          "Original For Recipient",
+            TextString.billingDetailRecipientTwo,
           style: TTextTheme.medium12quadrantal(context)
         ),
       ],
@@ -147,7 +148,7 @@ class BillingDetailScreen extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          "TAX INVOICE",
+        TextString.billingDetailRecipientThree,
           style: TTextTheme.h2Style(context)
         ),
         const SizedBox(height: 6),
@@ -160,11 +161,11 @@ class BillingDetailScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "Date: ",
+    TextString.billingDetailRecipientFour ,
                   style: TTextTheme.bodyRegular14Search(context).copyWith(color: AppColors.quadrantalTextColor.withOpacity(0.7)),
                 ),
                 Text(
-                  "05/12/2024",
+    TextString.billingDetailRecipientFive,
                   style: TTextTheme.bodyRegular14Search(context).copyWith(color:  AppColors.quadrantalTextColor.withOpacity(0.7)),
                 ),
               ],
@@ -173,11 +174,11 @@ class BillingDetailScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "Invoice No: ",
+    TextString.billingDetailRecipientSix,
                   style: TTextTheme.bodyRegular14Search(context).copyWith(color:  AppColors.quadrantalTextColor.withOpacity(0.7)),
                 ),
                 Text(
-                  "INV 00001",
+                  TextString.billingDetailRecipientSeven,
                   style: TTextTheme.bodyRegular14Search(context).copyWith(color:  AppColors.quadrantalTextColor.withOpacity(0.7)),
                 ),
               ],
@@ -229,17 +230,17 @@ class BillingDetailScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Invoice To :",
+         TextString.billingAddressTitleOne,
           style: TTextTheme.titleDriver(context),
         ),
         const SizedBox(height: 8),
         Text(
-          "Walter Roberson",
+          TextString.billingAddressTitleOne,
           style: TTextTheme.bodyRegular14(context),
         ),
         const SizedBox(height: 4),
         Text(
-          "92 the Avenue, Alexander Heights 6064.",
+          TextString.billingAddressTitleThree,
           style: TTextTheme.bodyRegular14(context),
         ),
       ],
@@ -249,16 +250,16 @@ class BillingDetailScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Pay To :",
+        TextString.billingAddressTitleFour,
           style: TTextTheme.titleDriver(context)),
         const SizedBox(height: 8),
         Text(
-          "Lowell H. Dominguez",
+        TextString.billingAddressTitleFive,
           style: TTextTheme.bodyRegular14(context),
         ),
         const SizedBox(height: 4),
         Text(
-          "84 Spilman Street, London United Kingdom\ndomlowell@gmail.com",
+          TextString.billingAddressTitleSix,
           style: TTextTheme.bodyRegular14(context),
         ),
       ],
@@ -284,8 +285,6 @@ class BillingDetailScreen extends StatelessWidget {
       );
     }
   }
-
-  // 4. PRICING TABLE BOX
   Widget _buildPricingAndSummaryBox(BuildContext context, double screenWidth) {
     final isDesktop = screenWidth > 768;
 
@@ -303,8 +302,8 @@ class BillingDetailScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children:  [
-                Text("Item", style: TTextTheme.medium12(context)),
-                Text("Price", style: TTextTheme.medium12(context)),
+                Text(TextString.item, style: TTextTheme.medium12(context)),
+                Text(TextString.billingPrice, style: TTextTheme.medium12(context)),
               ],
             ),
           ),
@@ -318,18 +317,18 @@ class BillingDetailScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children:  [
-                      Text("Active Vehicle", style: TTextTheme.tableRegular14black(context)),
+                      Text(TextString.ActiveVehicleOne, style: TTextTheme.tableRegular14black(context)),
                       SizedBox(height: 6),
-                      Text("Rate per Car", style: TTextTheme.tableRegular14black(context)),
+                      Text(TextString.ActiveVehicleTwo, style: TTextTheme.tableRegular14black(context)),
                     ],
                   ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children:  [
-                    Text("20.00", style: TTextTheme.medium14black(context)),
+                    Text(TextString.ActiveVehicleThree, style: TTextTheme.medium14black(context)),
                     SizedBox(height: 6),
-                    Text(r"$8.00", style: TTextTheme.medium14black(context)),
+                    Text(TextString.ActiveVehicleFour, style: TTextTheme.medium14black(context)),
                   ],
                 ),
               ],
@@ -365,14 +364,14 @@ class BillingDetailScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                  Text(
-                  "Total Items / Qty : 4 / 4.00",
+                 TextString.billingTotalQuantityOne,
                   style: TTextTheme.bodyRegular14(context),
                 ),
                 Row(
                   children:  [
-                    Text("Total", style: TTextTheme.tableSemiBold18Black(context)),
+                    Text(TextString.billingTotalQuantityTwo, style: TTextTheme.tableSemiBold18Black(context)),
                     SizedBox(width: 24),
-                    Text(r"$180.00", style: TTextTheme.tableSemiBold18Black(context)),
+                    Text(TextString.billingTotalQuantityThree, style: TTextTheme.tableSemiBold18Black(context)),
                   ],
                 ),
               ],
@@ -381,15 +380,15 @@ class BillingDetailScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                  Text(
-                  "Total Items / Qty : 4 / 4.00",
+                   TextString.billingTotalQuantityOne,
                   style: TTextTheme.bodyRegular14(context),
                 ),
                 const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children:  [
-                    Text("Total", style: TTextTheme.tableSemiBold18Black(context)),
-                    Text(r"$180.00", style: TTextTheme.tableSemiBold18Black(context)),
+                    Text(TextString.billingTotalQuantityTwo, style: TTextTheme.tableSemiBold18Black(context)),
+                    Text(TextString.billingTotalQuantityThree, style: TTextTheme.tableSemiBold18Black(context)),
                   ],
                 ),
               ],
@@ -399,7 +398,7 @@ class BillingDetailScreen extends StatelessWidget {
            Padding(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             child: Text(
-              "Total amount ( in words): One Hundred Eighty Dollars Only",
+              TextString.totalAmount,
               style:  TTextTheme.bodyRegular14(context)
             ),
           ),
@@ -412,10 +411,10 @@ class BillingDetailScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children:  [
-        Text("Important Note:", style: TTextTheme.bodyRegular14(context).copyWith(color: AppColors.quadrantalTextColor.withOpacity(0.7)) ),
+        Text(TextString.ImportantNoteOne, style: TTextTheme.bodyRegular14(context).copyWith(color: AppColors.quadrantalTextColor.withOpacity(0.7)) ),
         SizedBox(height: 4),
         Text(
-          "Payments are verified after receipt. Subscription renewals are activated once the payment has been successfully confirmed.",
+          TextString.ImportantNoteTwo,
           style: TTextTheme.bodyRegular14(context).copyWith(color: AppColors.blackColor),
         ),
       ],
@@ -430,11 +429,11 @@ class BillingDetailScreen extends StatelessWidget {
           children: [
              Padding(
               padding: EdgeInsets.symmetric(vertical: 4),
-              child: Text("Taxable Amount", textAlign: TextAlign.right, style: TTextTheme.medium14black(context)),
+              child: Text(TextString.taxableAmountTitleOne, textAlign: TextAlign.right, style: TTextTheme.medium14black(context)),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Text(r"$20.00", textAlign: TextAlign.right, style: TTextTheme.medium14black(context)),
+              child: Text(TextString.taxableAmountTitleTwo, textAlign: TextAlign.right, style: TTextTheme.medium14black(context)),
             ),
           ],
         ),
@@ -442,11 +441,11 @@ class BillingDetailScreen extends StatelessWidget {
           children: [
              Padding(
               padding: EdgeInsets.symmetric(vertical: 4),
-              child: Text("Discount 0%", textAlign: TextAlign.right, style: TTextTheme.medium14black(context)),
+              child: Text(TextString.taxableAmountTitleThree, textAlign: TextAlign.right, style: TTextTheme.medium14black(context)),
             ),
             Padding(
               padding:  EdgeInsets.symmetric(vertical: 4),
-              child: Text(r"+ $0.00", textAlign: TextAlign.right, style: TTextTheme.medium14black(context)),
+              child: Text(TextString.taxableAmountTitleFour, textAlign: TextAlign.right, style: TTextTheme.medium14black(context)),
             ),
           ],
         ),
@@ -462,15 +461,15 @@ class BillingDetailScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-         Text("Payment Info:", style: TTextTheme.tableSemiBold18Black(context)),
+         Text(TextString.billingInfotitleOne, style: TTextTheme.tableSemiBold18Black(context)),
         const SizedBox(height: 8),
         Text.rich(
           TextSpan(
-            text: "Debit Card : ",
+            text:TextString.billingInfotitleTwo ,
             style: TTextTheme.tableRegular14(context).copyWith(color: AppColors.quadrantalTextColor.withOpacity(0.7)),
             children: [
               TextSpan(
-                text: "465 ************645",
+                text:TextString.billingInfotitleThree ,
                 style: TTextTheme.bodyRegular14(context)
               ),
             ],
@@ -481,11 +480,11 @@ class BillingDetailScreen extends StatelessWidget {
         const SizedBox(height: 4),
         Text.rich(
           TextSpan(
-            text: "Amount : ",
+            text:TextString.billingInfotitleFour ,
             style:  TTextTheme.tableRegular14(context).copyWith(color: AppColors.quadrantalTextColor.withOpacity(0.7)),
             children: [
               TextSpan(
-                text: r"$1,815",
+                text:TextString.billingInfotitleFive ,
                 style:  TTextTheme.bodyRegular14(context)
               ),
             ],
@@ -500,12 +499,12 @@ class BillingDetailScreen extends StatelessWidget {
       crossAxisAlignment: isDesktop ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-         Text("From Soft Snip", style: TTextTheme.medium12quadrantal(context)),
+         Text(TextString.SignatureOne, style: TTextTheme.medium12quadrantal(context)),
         const SizedBox(height: 8),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           child:  Text(
-            "James Paulo",
+          TextString.SignatureTwo,
             style: TextStyle(
               fontStyle: FontStyle.italic,
               fontWeight: FontWeight.w700,
@@ -538,11 +537,10 @@ class BillingDetailScreen extends StatelessWidget {
         const Divider(height: 1, thickness: 1.2, color: AppColors.toolBackground),
         const SizedBox(height: 20),
 
-         Text("Terms & Conditions :", style: TTextTheme.tableSemiBold18Black(context)),
+         Text(TextString.TermAndCondition, style: TTextTheme.tableSemiBold18Black(context)),
         const SizedBox(height: 8),
          Text(
-          "1. Subscription fees are non-refundable once payment has been successfully verified and the subscription has been activated.\n"
-              "2. Customers are responsible for ensuring all billing information and payment references are accurate before submitting a payment.",
+    TextString.TermAndConditionOne,
           style: TTextTheme.bodyRegular14Search(context)
         ),
         const SizedBox(height: 32),
@@ -551,7 +549,7 @@ class BillingDetailScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 16),
           child: Center(
             child: Text(
-              "Thanks for your Business",
+              TextString.TermAndConditionTwo,
               style:  TTextTheme.bodyRegular14Search(context),
             ),
           ),
@@ -561,3 +559,4 @@ class BillingDetailScreen extends StatelessWidget {
     );
   }
 }
+
