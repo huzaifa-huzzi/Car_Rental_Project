@@ -62,7 +62,7 @@ class BillingScreenWidget extends StatelessWidget {
           ] else ...[
             _buildPaymentMethodSection(context, isCompact: true),
             const SizedBox(height: 20),
-            _buildBillingInfoCard(context),
+            _buildBillingInfoCard(context,controller: controller),
           ],
         ],
       );
@@ -96,7 +96,7 @@ class BillingScreenWidget extends StatelessWidget {
               children: [
                 _buildPaymentMethodSection(context, isCompact: false),
                 const SizedBox(height: 24),
-                _buildBillingInfoCard(context),
+                _buildBillingInfoCard(context,controller:controller),
               ],
             ),
           ),
@@ -376,25 +376,64 @@ class BillingScreenWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildBillingInfoCard(BuildContext context) {
-    return _buildCardWrapper(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(TextString.billingInfoOne, style: TTextTheme.h2Style(context)),
-          const SizedBox(height: 2),
-          Text(TextString.billingInfoTwo, style: TTextTheme.bodyRegular14Search(context)),
-          const SizedBox(height: 20),
-          _buildBillingDetailRow(context,TextString.billingInfoThree , TextString.billingInfoFour),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 12),
-            child: Divider(color: AppColors.toolBackground, thickness: 1),
-          ),
-          _buildBillingDetailRow(context,TextString.billingInfoFive ,TextString.billingInfoSix ),
-        ],
-      ),
-    );
-  }
+// Billing Info Card Widget
+Widget _buildBillingInfoCard(BuildContext context, {required BillingController controller}) {
+  return _buildCardWrapper(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(TextString.billingInfoOne, style: TTextTheme.h2Style(context)),
+                  const SizedBox(height: 2),
+                  Text(TextString.billingInfoTwo, style: TTextTheme.bodyRegular14Search(context)),
+                ],
+              ),
+            ),
+            const SizedBox(width: 10),
+            Obx(() {
+              final bool hasAddress = controller.billingAddress.value.trim().isNotEmpty;
+              return GestureDetector(
+                onTap: () => controller.showBillingAddressDialog(context),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    hasAddress ? "Edit Billing Address" : "Add Billing Address",
+                    style: TTextTheme.btnWhiteColor(context).copyWith(fontSize: 12, fontWeight: FontWeight.w500),
+                  ),
+                ),
+              );
+            }),
+          ],
+        ),
+        const SizedBox(height: 20),
+        _buildBillingDetailRow(context, TextString.billingInfoThree, TextString.billingInfoFour),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 12),
+          child: Divider(color: AppColors.toolBackground, thickness: 1),
+        ),
+        Obx(() {
+          final String currentAddress = controller.billingAddress.value;
+          return _buildBillingDetailRow(
+              context,
+              TextString.billingInfoFive,
+              currentAddress.isEmpty ? "No Address Provided" : currentAddress
+          );
+        }),
+      ],
+    ),
+  );
+}
 
   Widget _buildAllInvoicesCard(BuildContext context) {
     return _buildCardWrapper(
