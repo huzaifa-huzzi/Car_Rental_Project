@@ -50,25 +50,21 @@ class BillingController extends GetxController {
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
-        // 1. Screen size check kar rahe hain responsive behavior ke liye
         final double screenWidth = MediaQuery.of(context).size.width;
         final bool isMobile = screenWidth < 600;
 
         return Dialog(
           backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-          // Margin lagaya taake mobile par dialog screen ki side edges se bilkul na chipke
           insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
           child: Container(
-            // Agar screen mobile hai toh full horizontal space utilize kare, warna maximum 500 width par cap ho jaye
             constraints: const BoxConstraints(maxWidth: 500),
             width: isMobile ? screenWidth * 0.95 : 500,
-            padding: EdgeInsets.all(isMobile ? 16 : 24), // Padding responsive ki taake elements squeeze na hon
+            padding: EdgeInsets.all(isMobile ? 16 : 24),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(14),
             ),
-            // 2. SingleChildScrollView lagaya hai taake keyboard khulne par "Bottom Overflow" ka error kabhi na aaye
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -108,8 +104,6 @@ class BillingController extends GetxController {
                     ),
                   ),
                   const SizedBox(height: 24),
-
-                  // 3. FIXED BUTTONS OVERFLOW: Agar mobile view hai toh Buttons ko Column mein convert kar diya taake horizontal overflow na ho!
                   if (isMobile) ...[
                     SizedBox(
                       width: double.infinity,
@@ -155,7 +149,6 @@ class BillingController extends GetxController {
                       ),
                     ),
                   ] else ...[
-                    // Tablet/Web Desktop ke liye purana flat Row view bilkul perfect chalega
                     Row(
                       children: [
                         Expanded(
