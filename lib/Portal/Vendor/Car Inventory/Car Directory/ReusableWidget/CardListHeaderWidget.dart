@@ -365,12 +365,22 @@ class CardListHeaderWidget extends StatelessWidget {
 
   Widget _buildFilterContainer(BuildContext context) {
     final controller = Get.find<CarInventoryController>();
-    final SystemUniversalController universalCtrl = Get.find<SystemUniversalController>();
+
+    // 🛠️ FIX: Get.putIfAbsent safety check k sath controller retrieve karega
+    final SystemUniversalController universalCtrl = Get.isRegistered<SystemUniversalController>()
+        ? Get.find<SystemUniversalController>()
+        : Get.put(SystemUniversalController());
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: AppSizes.horizontalPadding(context), vertical: 8),
+      margin: EdgeInsets.symmetric(
+          horizontal: AppSizes.horizontalPadding(context),
+          vertical: 8
+      ),
       padding: EdgeInsets.all(AppSizes.padding(context)),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8)
+      ),
       child: Wrap(
         spacing: 16,
         runSpacing: 16,
@@ -398,16 +408,81 @@ class CardListHeaderWidget extends StatelessWidget {
             ),
             context,
           ),
-          _filterItem("Year", _dropdownBox(controller.getFilteredItems('year'), controller.selectedYear, context, id: "year"), context),
-          _filterItem("Body Type", _dropdownBox(controller.getFilteredItems('body'), controller.selectedBodyType, context, id: "body"), context),
-          _filterItem("Status", _dropdownBox(controller.getFilteredItems('status'), controller.selectedStatus, context, id: "status"), context),
-          _filterItem("Transmission", _dropdownBox(controller.getFilteredItems('trans'), controller.selectedTransmission, context, id: "trans"), context),
-          _filterItem("Capacity", _dropdownBox(controller.getFilteredItems('seats'), controller.selectedSeats, context, id: "seats"), context),
-
-          _filterItem("Fuel", _dropdownBox(controller.getFilteredItems('fuel'), controller.selectedFuel, context, id: "fuel"), context),
-
-          _filterItem("Engine Size", _dropdownBox(controller.getFilteredItems('engine'), controller.selectedEngine3, context, id: "engine"), context),
-          _filterItem("Price (Under)", _textFieldBox(r"$ 1600", context), context),
+          _filterItem(
+              "Year",
+              _dropdownBox(
+                  controller.getFilteredItems('year'),
+                  controller.selectedYear,
+                  context,
+                  id: "year"
+              ),
+              context
+          ),
+          _filterItem(
+              "Body Type",
+              _dropdownBox(
+                  controller.getFilteredItems('body'),
+                  controller.selectedBodyType,
+                  context,
+                  id: "body"
+              ),
+              context
+          ),
+          _filterItem(
+              "Status",
+              _dropdownBox(
+                  controller.getFilteredItems('status'),
+                  controller.selectedStatus,
+                  context,
+                  id: "status"
+              ),
+              context
+          ),
+          _filterItem(
+              "Transmission",
+              _dropdownBox(
+                  controller.getFilteredItems('trans'),
+                  controller.selectedTransmission,
+                  context,
+                  id: "trans"
+              ),
+              context
+          ),
+          _filterItem(
+              "Capacity",
+              _dropdownBox(
+                  controller.getFilteredItems('seats'),
+                  controller.selectedSeats,
+                  context,
+                  id: "seats"
+              ),
+              context
+          ),
+          _filterItem(
+              "Fuel",
+              _dropdownBox(
+                  controller.getFilteredItems('fuel'),
+                  controller.selectedFuel,
+                  context,
+                  id: "fuel"
+              ),
+              context
+          ),
+          _filterItem(
+              "Engine Size",
+              _dropdownBox(
+                  controller.getFilteredItems('engine'),
+                  controller.selectedEngine3,
+                  context,
+                  id: "engine"
+              ),
+              context
+          ),
+          _filterItem(
+              "Price (Under)",
+              _textFieldBox(r"$ 1600", context),
+              context
+          ),
 
           Padding(
             padding: const EdgeInsets.only(bottom: 2),

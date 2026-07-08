@@ -80,16 +80,12 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                       LayoutBuilder(
                         builder: (context, constraints) {
                           return Obx(() {
-                            // 1. Controller se current list uthao
                             var currentList = controller.displayedCarList;
                             bool isManual = controller.selectedMainTab.value == "Manual Payment";
-
-                            // 2. Scrollable container (agar zaroorat ho)
                             return SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Column(
                                 children: [
-                                  // Header Switch
                                   isManual ? _buildTableHeader(controller) : _buildAutoTableHeader(controller),
 
                                   // Data Rows
@@ -389,47 +385,38 @@ class _PaymentWidgetState extends State<PaymentWidget> {
   //  Stats Grid
   Widget _buildStatsGrid(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      int crossAxisCount = constraints.maxWidth > 850
+      double width = constraints.maxWidth;
+      int crossAxisCount = width >= 1100
           ? 4
-          : (constraints.maxWidth > 480 ? 3 : 1);
+          : (width >= 750 ? 3 : (width >= 480 ? 2 : 1));
+      double spacing = 16;
+      double totalSpacing = (crossAxisCount - 1) * spacing;
+      double cardWidth = (width - totalSpacing) / crossAxisCount;
 
-      double aspectRatio;
-      if (constraints.maxWidth > 850) {
-        aspectRatio = 1.8;
-      } else if (constraints.maxWidth > 480) {
-        aspectRatio = 1.4;
-      } else {
-        aspectRatio = constraints.maxWidth / 110;
-      }
-
-      return GridView.count(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        crossAxisCount: crossAxisCount,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        childAspectRatio: aspectRatio,
+      return Wrap(
+        spacing: spacing,
+        runSpacing: spacing,
         children: [
-          _statCard(TextString.revenue, "\$ 12345.99",TextString.revenuesubtitle , IconString.paymentIconBlack),
-          _statCard(TextString.actionRequired, "24",TextString.actionRequiredsubtitle , IconString.actionRequiredIcon),
-          _statCard(TextString.pendingpayment, "8",TextString.pendingpaymentsubtitle , IconString.pendingPaymentIcon),
-          _statCard(TextString.overduePayment, "5", TextString.overduePaymentsubtitle, IconString.overdueIcon),
-          _statCard(TextString.resubmitrequest, "8",TextString.resubmitrequestsubtitle, IconString.resubmitIcon),
-          _statCard(TextString.submitPayment, "8",TextString.submitPaymentsubtitle, IconString.submittedIcon),
-          _statCard(TextString.completedPayment, "246",TextString.completedPaymentsubtitle , IconString.completedIcon),
-          _statCard(TextString.total, "246",TextString.totalsubtitle , IconString.paymentIconBlack),
+          _statCard(context, cardWidth, TextString.revenue, "\$ 12345.99", TextString.revenuesubtitle, IconString.paymentIconBlack),
+          _statCard(context, cardWidth, TextString.actionRequired, "24", TextString.actionRequiredsubtitle, IconString.actionRequiredIcon),
+          _statCard(context, cardWidth, TextString.pendingpayment, "8", TextString.pendingpaymentsubtitle, IconString.pendingPaymentIcon),
+          _statCard(context, cardWidth, TextString.overduePayment, "5", TextString.overduePaymentsubtitle, IconString.overdueIcon),
+          _statCard(context, cardWidth, TextString.resubmitrequest, "8", TextString.resubmitrequestsubtitle, IconString.resubmitIcon),
+          _statCard(context, cardWidth, TextString.submitPayment, "8", TextString.submitPaymentsubtitle, IconString.submittedIcon),
+          _statCard(context, cardWidth, TextString.completedPayment, "246", TextString.completedPaymentsubtitle, IconString.completedIcon),
+          _statCard(context, cardWidth, TextString.total, "246", TextString.totalsubtitle, IconString.paymentIconBlack),
         ],
       );
     });
   }
-  Widget _statCard(String title, String value, String sub, String icon) {
+
+  Widget _statCard(BuildContext context, double width, String title, String value, String sub, String icon) {
     return Container(
-      width: 200,
-      height: 200,
-      padding: const EdgeInsets.only(top: 20,left: 20,bottom:0),
+      width: width,
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -442,42 +429,42 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(6),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: AppColors.secondaryColor,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Image.asset(
               icon,
-              height: 22,
-              width: 22,
+              height: 20,
+              width: 20,
             ),
           ),
-
-          const SizedBox(width: 14),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                    title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TTextTheme.bodyRegular12(context)
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TTextTheme.bodyRegular12(context),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TTextTheme.h2Style(context),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                    value,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TTextTheme.h2Style(context)
-                ),
-                const SizedBox(height: 10),
-                Text(
-                    sub,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TTextTheme.bodySecondRegular10(context)
+                  sub,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TTextTheme.bodySecondRegular10(context),
                 ),
               ],
             ),
@@ -487,52 +474,54 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     );
   }
 
-   // Auto PAyment Cards
+   // Auto payment cards
   Widget _buildAutoPaymentStatsGrid(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       double width = constraints.maxWidth;
-      int crossAxisCount = width >= 820
-          ? 3
-          : (width >= 500 ? 2 : 1);
-      double aspectRatio;
-      if (width >= 800) {
-        aspectRatio = 2.3;
-      } else if (width >= 500) {
-        aspectRatio = 2.1;
-      } else {
-        aspectRatio = width / 120;
-      }
 
-      return GridView.count(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        crossAxisCount: crossAxisCount,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        childAspectRatio: aspectRatio,
+      // Breakpoints for Auto Payment
+      int crossAxisCount = width >= 1000
+          ? 3
+          : (width >= 600 ? 2 : 1);
+
+      double spacing = 16;
+      double totalSpacing = (crossAxisCount - 1) * spacing;
+      double cardWidth = (width - totalSpacing) / crossAxisCount;
+
+      return Wrap(
+        spacing: spacing,
+        runSpacing: spacing,
         children: [
-          _autoStatCard(context, "Total Revenue", "1245567", "paid last week",
-              IconString.paymentIconBlack,  AppColors.secondaryColor),
-          _autoStatCard(context, "Successful Payments", "24", "4 more payment successfully received",
+          _autoStatCard(context, cardWidth, "Total Revenue", "1245567", "paid last week",
+              IconString.paymentIconBlack, AppColors.secondaryColor),
+          _autoStatCard(context, cardWidth, "Successful Payments", "24", "4 more payment successfully received",
               null, AppColors.secondaryColor, isDot: true, dotColor: AppColors.completedColor),
-          _autoStatCard(context, "Failed Payments", "6", "6 more payment doesnot executed on third try",
+          _autoStatCard(context, cardWidth, "Failed Payments", "6", "6 more payment doesnot executed on third try",
               null, AppColors.secondaryColor, isDot: true, dotColor: AppColors.primaryColor),
-          _autoStatCard(context, "Pending Payments", "50", "50 more payments will be executed further",
+          _autoStatCard(context, cardWidth, "Pending Payments", "50", "50 more payments will be executed further",
               IconString.pendingAuto, AppColors.secondaryColor),
-          _autoStatCard(context, "Overdue Payments", "20", "3 More Payments Overdue",
+          _autoStatCard(context, cardWidth, "Overdue Payments", "20", "3 More Payments Overdue",
               IconString.overdueIcon, AppColors.secondaryColor),
-          _autoStatCard(context, "Paused Accounts", "2", "2 more accounts got paused",
+          _autoStatCard(context, cardWidth, "Paused Accounts", "2", "2 more accounts got paused",
               IconString.PausedAccountAuto, AppColors.secondaryColor),
         ],
       );
     });
   }
-  Widget _autoStatCard(BuildContext context, String title, String value, String sub, String? icon, Color iconBg, {bool isDot = false, Color? dotColor}) {
+  Widget _autoStatCard(BuildContext context, double width, String title, String value, String sub, String? icon, Color iconBg, {bool isDot = false, Color? dotColor}) {
     return Container(
+      width: width,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          )
+        ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -545,33 +534,33 @@ class _PaymentWidgetState extends State<PaymentWidget> {
             ),
             child: isDot
                 ? _buildGlowingDot(dotColor!)
-                : Image.asset(icon!, height: 22, width: 22),
+                : Image.asset(icon!, height: 20, width: 20),
           ),
-
-          const SizedBox(width: 14),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                    title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TTextTheme.bodyRegular12(context)
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TTextTheme.bodyRegular12(context),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TTextTheme.h2Style(context),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                    value,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TTextTheme.h2Style(context)
-                ),
-                const SizedBox(height: 8),
-                Text(
-                    sub,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TTextTheme.bodySecondRegular10(context)
+                  sub,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TTextTheme.bodySecondRegular10(context),
                 ),
               ],
             ),
@@ -580,10 +569,11 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       ),
     );
   }
+
   Widget _buildGlowingDot(Color color) {
     return Container(
-      width: 18,
-      height: 18,
+      width: 20,
+      height: 20,
       decoration: BoxDecoration(
         color: color,
         shape: BoxShape.circle,
