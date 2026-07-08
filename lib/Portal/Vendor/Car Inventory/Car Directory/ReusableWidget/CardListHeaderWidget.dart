@@ -365,8 +365,6 @@ class CardListHeaderWidget extends StatelessWidget {
 
   Widget _buildFilterContainer(BuildContext context) {
     final controller = Get.find<CarInventoryController>();
-
-    // 🛠️ FIX: Get.putIfAbsent safety check k sath controller retrieve karega
     final SystemUniversalController universalCtrl = Get.isRegistered<SystemUniversalController>()
         ? Get.find<SystemUniversalController>()
         : Get.put(SystemUniversalController());
