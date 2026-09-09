@@ -10,11 +10,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class TableViewCustomerScreen extends StatelessWidget {
   TableViewCustomerScreen({super.key});

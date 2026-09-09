@@ -110,7 +110,7 @@ class BillingController extends GetxController {
                       child: OutlinedButton(
                         onPressed: () => Navigator.pop(context),
                         style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: AppColors.unavailableEnd.withOpacity(0.7)),
+                          side: BorderSide(color: AppColors.unavailableEnd.withValues(alpha: 0.7)),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                           padding: const EdgeInsets.symmetric(vertical: 14),
                         ),
@@ -155,7 +155,7 @@ class BillingController extends GetxController {
                           child: OutlinedButton(
                             onPressed: () => Navigator.pop(context),
                             style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: AppColors.unavailableEnd.withOpacity(0.7)),
+                              side: BorderSide(color: AppColors.unavailableEnd.withValues(alpha: 0.7)),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                               padding: const EdgeInsets.symmetric(vertical: 16),
                             ),
