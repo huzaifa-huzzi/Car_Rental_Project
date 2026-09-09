@@ -1,6 +1,7 @@
 
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/CustomCalendarPayment2.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/CustomCalenderPayment.dart';
+import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -38,14 +39,8 @@ class PaymentController extends GetxController {
   var selectedCountryFlag = "🇦🇺".obs;
   var selectedCountryCode = "AUD".obs;
   var selectedCurrencySymbol = "\$ ".obs;
-
-  // Search bar ke liye reactive string
   var searchCountryText = "".obs;
-
-  // Har dropdown ko tracking id dene ke liye state
   var openedDropdownPayment = "".obs;
-
-  // Poori duniya ki countries filter karne ka proper function
   List<Country> getFilteredCountries() {
     final List<Country> allCountries = CountryService().getAll();
     if (searchCountryText.value.isEmpty) {
@@ -60,8 +55,6 @@ class PaymentController extends GetxController {
   void updateCountryAndCurrency(Country country) {
     selectedCountryFlag.value = country.flagEmoji;
     String isoCode = country.countryCode.toUpperCase();
-
-    // Universal mapping table for top global currencies
     final Map<String, String> isoToCurrency = {
       "US": "USD", "GB": "GBP", "PK": "PKR", "AU": "AUD", "CA": "CAD",
       "EU": "EUR", "DE": "EUR", "FR": "EUR", "IT": "EUR", "ES": "EUR",
@@ -466,6 +459,67 @@ class PaymentController extends GetxController {
   }
 
 
+  var isPickupDropdownOpen = false.obs;
+  var searchPickupText = "".obs;
+  var selectedPickup = Rxn<Map<String, dynamic>>();
+
+  var isPaymentLinked = false.obs;
 
 
+  // Pickups Data List
+  final RxList<Map<String, dynamic>> pickupList = <Map<String, dynamic>>[
+    {
+      "title": "Mazda CX-5(2017)",
+      "subtitle": "Sedan",
+      "status": "Available",
+      "registration": "Abc12345",
+      "vin": "JTNBA3HK134567890",
+      "transmission": "Automatic",
+      "image": ImageString.sedanCar,
+    },
+    {
+      "title": "Aston 2025",
+      "subtitle": "Martin",
+      "status": "Available",
+      "registration": "1234567890",
+      "vin": "JTNBA3HK134567890",
+      "transmission": "Manual",
+      "image": ImageString.sedanCar,
+    },
+  ].obs;
+
+  List<Map<String, dynamic>> get filteredPickups {
+    if (searchPickupText.value.isEmpty) return pickupList;
+    return pickupList.where((item) {
+      final query = searchPickupText.value.toLowerCase();
+      return item['title'].toString().toLowerCase().contains(query) ||
+          item['registration'].toString().toLowerCase().contains(query);
+    }).toList();
+  }
+
+  final transmissionController = TextEditingController(text: "Automatic");
+  final carTypeController = TextEditingController(text: "Sedan");
+
+  void selectPickupItem(Map<String, dynamic> item) {
+    selectedPickup.value = item;
+    isPickupDropdownOpen.value = false;
+
+    carNameController.text = item['title'] ?? "";
+    carTypeController.text = item['subtitle'] ?? "";
+    registrationController.text = item['registration'] ?? "";
+    transmissionController.text = item['transmission'] ?? "Automatic";
+  }
+
+  // Action on Link Payment Button Click
+  void handleLinkPayment() {
+    if (selectedPickup.value != null) {
+      isPaymentLinked.value = true;
+    } else {
+      Get.snackbar("Error", "Please select a pickup car first!");
+    }
+  }
+  void resetSelection() {
+    isPaymentLinked.value = false;
+    selectedPickup.value = null;
+  }
 }

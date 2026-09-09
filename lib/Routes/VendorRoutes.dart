@@ -26,6 +26,7 @@ import 'package:car_rental_project/Portal/Vendor/DropOffCar/TableViewDropoff/Tab
 import 'package:car_rental_project/Portal/Vendor/Payment/Add%20Payment/AddPaymentScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/InvoicesDetail/InvoicesDetail.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/InvoicesDetail/Widget/InvoicesDetailAutoWidget.dart';
+import 'package:car_rental_project/Portal/Vendor/Payment/LinkPayment/LinkPayment.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/payment.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/paymentController.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/AddPickup.dart';
@@ -225,6 +226,8 @@ class VendorRoutes {
             return const AddPayment();
           },
         ),
+
+        GoRoute(path: '/linkPayment', builder: (_, __) => LinkPaymentScreen()),
 
         GoRoute(
           path: '/invoicesDetail',

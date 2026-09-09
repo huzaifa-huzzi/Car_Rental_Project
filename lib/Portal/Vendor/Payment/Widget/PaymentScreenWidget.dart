@@ -373,9 +373,9 @@ class _PaymentWidgetState extends State<PaymentWidget> {
   }
   Widget _buildAddPaymentButton(bool isFullWidth) {
     return PrimaryBtnOfPayment(
-      text: "Add Payment",
+      text: "Link Payment",
       onTap: () {
-        context.push('/AddPayment', extra: {"hideMobileAppBar": true});
+        context.push('/linkPayment', extra: {"hideMobileAppBar": true});
       },
       width: isFullWidth ? double.infinity : 160,
       borderRadius: BorderRadius.circular(10),
