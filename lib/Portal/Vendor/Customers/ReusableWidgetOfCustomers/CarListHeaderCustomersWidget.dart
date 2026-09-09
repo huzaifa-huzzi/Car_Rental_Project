@@ -36,7 +36,6 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // Main Top Search Bar Row
               Row(
                 children: [
                   _buildCategorySelection(context, controller, buttonHeight, showCategoryText),
@@ -92,11 +91,11 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
                     text: "Send Invite",
                     height: 40,
                     textColor: AppColors.primaryColor,
-                    backgroundColor: Colors.white,
+                    backgroundColor: AppColors.backgroundOfScreenColor,
                     borderColor: AppColors.primaryColor,
                     borderRadius: BorderRadius.circular(8),
                     onTap: () {
-
+                      context.go('/sendInvite');
                     },
                   ),
                 ),
