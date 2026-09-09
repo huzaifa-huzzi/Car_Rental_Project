@@ -34,38 +34,71 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
             horizontal: horizontalPadding,
             vertical: AppSizes.verticalPadding(context),
           ),
-          child: Row(
+          child: Column(
             children: [
-              _buildCategorySelection(context, controller, buttonHeight, showCategoryText),
+              // Main Top Search Bar Row
+              Row(
+                children: [
+                  _buildCategorySelection(context, controller, buttonHeight, showCategoryText),
 
-              const SizedBox(width: 8),
+                  const SizedBox(width: 8),
 
-              Expanded(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(minWidth: 120, maxWidth: 450),
-                  child: _searchBarWithButton(context, controller, buttonHeight, showRedSearchButton),
-                ),
+                  Expanded(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(minWidth: 120, maxWidth: 450),
+                      child: _searchBarWithButton(context, controller, buttonHeight, showRedSearchButton),
+                    ),
+                  ),
+
+                  SizedBox(width: smallSpacing / 2),
+
+                  Obx(() => _headerButton(
+                    context: context,
+                    icon: IconString.filterIcon,
+                    text: "Filter",
+                    isOpen: controller.isFilterOpen.value,
+                    showText: screenWidth > 450,
+                    onTap: controller.toggleFilter,
+                  )),
+                  if (isWeb) ...[
+                    const Spacer(),
+                    CustomerPrimaryBtn(
+                      text: "Send Invite",
+                      width: 110,
+                      height: 40,
+                      textColor: AppColors.primaryColor,
+                      backgroundColor: AppColors.backgroundOfScreenColor,
+                      borderColor: AppColors.primaryColor,
+                      borderRadius: BorderRadius.circular(8),
+                      onTap: () {
+                        context.go('/sendInvite');
+                      },
+                    ),
+                    const SizedBox(width: 12),
+                    AddButtonOfCustomer(
+                      text: "Add Customers",
+                      width: 135,
+                      height: 40,
+                      onTap: () => context.push('/addNewCustomer', extra: {"hideMobileAppBar": true}),
+                    ),
+                  ],
+                ],
               ),
+              if (!isWeb) ...[
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  child: CustomerPrimaryBtn(
+                    text: "Send Invite",
+                    height: 40,
+                    textColor: AppColors.primaryColor,
+                    backgroundColor: Colors.white,
+                    borderColor: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(8),
+                    onTap: () {
 
-              SizedBox(width: smallSpacing /2 ),
-
-              Obx(() => _headerButton(
-                context: context,
-                icon: IconString.filterIcon,
-                text: "Filter",
-                isOpen: controller.isFilterOpen.value,
-                showText: screenWidth > 450,
-                onTap: controller.toggleFilter,
-              )),
-
-
-              if (isWeb) ...[
-                const Spacer(),
-                AddButtonOfCustomer(
-                  text: "Add Customers",
-                  width: 135,
-                  height: 40,
-                  onTap: () => context.push('/addNewCustomer', extra: {"hideMobileAppBar": true}),
+                    },
+                  ),
                 ),
               ],
             ],
@@ -81,7 +114,6 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
   }
 
   /// ------ Extra Widgets -------- ///
-  // category Selection Widget
   Widget _buildCategorySelection(BuildContext context, CustomerController controller, double height, bool showText) {
     return Obx(() {
       final double screenWidth = MediaQuery.of(context).size.width;
@@ -117,7 +149,7 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.asset(_getIconPathForType(controller.selectedSearchType.value), width: 18,color: AppColors.quadrantalTextColor,),
+                Image.asset(_getIconPathForType(controller.selectedSearchType.value), width: 18, color: AppColors.quadrantalTextColor),
                 if (showText) ...[
                   const SizedBox(width: 6),
                   Flexible(
@@ -129,7 +161,7 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
                     ),
                   ),
                 ],
-                const Icon(Icons.keyboard_arrow_down, size: 16,color: AppColors.secondTextColor,),
+                const Icon(Icons.keyboard_arrow_down, size: 16, color: AppColors.secondTextColor),
               ],
             ),
           ),
@@ -138,7 +170,6 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
     });
   }
 
-  //  Search Bar Widget
   Widget _searchBarWithButton(BuildContext context, CustomerController controller, double height, bool showButton) {
     final double screenWidth = MediaQuery.of(context).size.width;
 
@@ -165,7 +196,7 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
                 hintText: screenWidth > 750 ? "Search Customer by Name" : "Search...",
                 hintStyle: TTextTheme.smallX(context),
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.only(bottom: 18),
+                contentPadding: const EdgeInsets.only(bottom: 18),
               ),
             ),
           ),
@@ -190,6 +221,7 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildResponsiveFilterPanel(BuildContext context, bool isMobile, CustomerController controller) {
     return Align(
       alignment: isMobile ? Alignment.center : Alignment.centerLeft,
@@ -256,7 +288,6 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
     );
   }
 
-//  TextField Widget
   Widget _textFieldBox(String label, BuildContext context, TextEditingController textController) {
     return Container(
       height: 38,
@@ -280,7 +311,7 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
       ),
     );
   }
-  // filter Item Widget
+
   Widget _filterItem(String title, Widget child, BuildContext context, {double? customWidth}) {
     double screenWidth = MediaQuery.of(context).size.width;
     bool isMobile = screenWidth < 600;
@@ -301,13 +332,12 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
     );
   }
 
-  // PopMenuItem Widget
   PopupMenuItem<String> _buildPopupItem(
       String text,
       String icon,
-      BuildContext context,
-      {bool isLast = false}
-      ) {
+      BuildContext context, {
+        bool isLast = false,
+      }) {
     return PopupMenuItem(
       value: text,
       padding: EdgeInsets.zero,
@@ -318,8 +348,8 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
             child: Row(
               children: [
                 Image.asset(
-                    icon,
-                    color: AppColors.quadrantalTextColor
+                  icon,
+                  color: AppColors.quadrantalTextColor,
                 ),
                 const SizedBox(width: 12),
                 Text(text, style: TTextTheme.titleThree(context)),
@@ -337,8 +367,14 @@ class CardListHeaderCustomerWidget extends StatelessWidget {
     );
   }
 
-  // headerButton Widget
-  Widget _headerButton({required BuildContext context, required String icon, required String text, required bool isOpen, required bool showText, VoidCallback? onTap}) {
+  Widget _headerButton({
+    required BuildContext context,
+    required String icon,
+    required String text,
+    required bool isOpen,
+    required bool showText,
+    VoidCallback? onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(

@@ -10,6 +10,7 @@ import 'package:car_rental_project/Portal/Vendor/Customers/AddCustomers/Widget/S
 import 'package:car_rental_project/Portal/Vendor/Customers/CustomersController.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/CustomersDetails/CustomersDetails.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/EditCustomers/EditCustomerScreen.dart';
+import 'package:car_rental_project/Portal/Vendor/Customers/SendInvite/SendInvite.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/TableViewCustomerScreen/TableViewScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Dashboard/DashboardScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/DropOffCar/AddDropOff/AddDropOffScreen.dart';
@@ -151,6 +152,11 @@ class VendorRoutes {
         GoRoute(path: '/stepTwoCustomer', builder: (_, __) {
           Get.put(CustomerController());
           return StepTwoCustomerWidget();
+        }),
+
+        GoRoute(path: '/sendInvite', builder: (_, __) {
+          Get.put(CustomerController());
+          return  SendInviteScreen();
         }),
 
         //  Pickup Sub-Routes

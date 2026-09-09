@@ -24,8 +24,6 @@ class ImageHolder {
 
 class CustomerController extends GetxController {
 
-  //  CORE GLOBAL & FILTER VARIABLES
-
   var selectAge = "".obs;
   RxBool isFilterOpen = false.obs;
   var hoveredRowIndex = (-1).obs;
@@ -44,6 +42,66 @@ class CustomerController extends GetxController {
   }
 
 
+  var selectedTabFilter = "All".obs;
+
+  void setTabFilter(String filter) {
+    selectedTabFilter.value = filter;
+    _updateDisplayedList();
+  }
+  void _asyncLoadData() async {
+    try {
+      isLoadingCountries.value = true;
+      await Future.delayed(const Duration(milliseconds: 50));
+
+      final List<String> statuses = ["Approved", "Pending", "Updated", ""];
+
+      carList2.assignAll(List.generate(
+        50,
+            (index) => {
+          "id": index,
+          "name": "Jack Morrison",
+          "email": "Jackmorrison@rhyta.com",
+          "age": "34 years",
+          "phone": "789-012-3456",
+          "address": "404 Spruce Road",
+          "licenseNo": "1234HGYTSA",
+          "licenseDate": "12/2/2030",
+          "editRequest": statuses[index % statuses.length],
+          "addCard": "2 Card",
+        },
+      ));
+
+      _updateDisplayedList();
+      final data = CountryService().getAll();
+      countryList.assignAll(data);
+    } catch (e) {
+      debugPrint("Error loading initialization data: $e");
+    } finally {
+      isLoadingCountries.value = false;
+    }
+  }
+  void _updateDisplayedList() {
+    if (carList2.isEmpty) {
+      displayedCarList.clear();
+      return;
+    }
+    List<Map<String, dynamic>> filtered = carList2.where((item) {
+      if (selectedTabFilter.value == "All") return true;
+      return item["editRequest"] == selectedTabFilter.value;
+    }).toList();
+
+    int start = (currentPage2.value - 1) * pageSize2.value;
+    if (start >= filtered.length) {
+      start = 0;
+    }
+
+    int end = start + pageSize2.value;
+    if (end > filtered.length) end = filtered.length;
+
+    displayedCarList.value = filtered.sublist(start, end);
+  }
+
+
   @override
   void onInit() {
     super.onInit();
@@ -55,41 +113,6 @@ class CustomerController extends GetxController {
   void onReady() {
     super.onReady();
     _asyncLoadData();
-  }
-
-  void _asyncLoadData() async {
-    try {
-      isLoadingCountries.value = true;
-      await Future.delayed(const Duration(milliseconds: 50));
-      carList2.assignAll(List.generate(
-          50, (index) => {"id": index, "Customer name": "Customer $index"}
-      ));
-      _updateDisplayedList();
-      final data = CountryService().getAll();
-      countryList.assignAll(data);
-    } catch (e) {
-      debugPrint("Error loading initialization data: $e");
-    } finally {
-      isLoadingCountries.value = false;
-    }
-  }
-
-  //  PAGINATION LOGIC
-  void _updateDisplayedList() {
-    if (carList2.isEmpty) {
-      displayedCarList.clear();
-      return;
-    }
-
-    int start = (currentPage2.value - 1) * pageSize2.value;
-    if (start >= carList2.length) {
-      start = 0;
-    }
-
-    int end = start + pageSize2.value;
-    if (end > carList2.length) end = carList2.length;
-
-    displayedCarList.value = carList2.sublist(start, end);
   }
 
   void goToPreviousPage() {
@@ -586,11 +609,34 @@ class CustomerController extends GetxController {
     }
   }
 
-  //  MEMORY DISPOSAL ENGINE
+  // Send Invite Code
+  final inviteFormKey = GlobalKey<FormState>();
+  final inviteGivenNameController = TextEditingController();
+  final inviteSurnameController = TextEditingController();
+  final inviteEmailController = TextEditingController();
+  bool sendCustomerInvite(BuildContext context) {
+    if (inviteFormKey.currentState?.validate() ?? false) {
+      Get.snackbar(
+        "Success",
+        "Invitation sent successfully to ${inviteEmailController.text.trim()}",
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      clearInviteForm();
+      return true;
+    }
+    return false;
+  }
+
+  void clearInviteForm() {
+    inviteGivenNameController.clear();
+    inviteSurnameController.clear();
+    inviteEmailController.clear();
+  }
 
   @override
   void onClose() {
-    // Add Screen Controllers Clear
     givenNameController.dispose();
     surnameController.dispose();
     dobController.dispose();
@@ -613,6 +659,9 @@ class CustomerController extends GetxController {
     ageController.dispose();
     searchController.dispose();
     searchController2.dispose();
+    inviteGivenNameController.dispose();
+    inviteSurnameController.dispose();
+     inviteEmailController.dispose();
 
     for (var ctrl in documentNameControllers) {
       ctrl.dispose();

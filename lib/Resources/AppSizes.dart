@@ -47,7 +47,7 @@ class AppSizes {
 
   // Padding / Margin
   static double padding(BuildContext context) {
-    if (isWeb(context)) return 24;
+    if (isWeb(context)) return 8;
     if (isTablet(context)) return 20;
     return 16;
   }

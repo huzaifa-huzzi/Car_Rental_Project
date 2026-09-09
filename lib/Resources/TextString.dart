@@ -58,6 +58,32 @@ class TextString {
   static const String  Subtitlename =  'jackmorrison@rhyta.com';
   static const String  licenseNumber =  '1234HGYT5A';
   static const String  licenseDate =  '12/2/2030';
+  static const String  customerTableOne= "Customers Name";
+  static const String  customerTableTwo= "Age";
+  static const String  customerTableThree= "Phone";
+  static const String  customerTableFour= "Address";
+  static const String  customerTableFive= "License Details";
+  static const String  customerTableSix= "Edit Request";
+  static const String  customerTableSeven= "Add Card";
+  static const String  customerTableAnswerOne= "34 years";
+  static const String  customerTableAnswerTwo= "789-012-3456";
+  static const String  customerTableAnswerThree= "404 Spruce Road";
+  static const String  customerTableAnswerFour= "2 Card";
+  static const String  clientDataCellTitle=  "Jack Morrison";
+  static const String  clientDataCellSubtitle= "JackMorrison@rhyta.com";
+  static const String  customerDataDialogOne= 'Approve Request';
+  static const String  customerDataDialogTwo=  'Are you sure you want to approve the edit request';
+  static const String  customerDataDialogThree=  'Edit Request Approved\nsuccessfully';
+  static const String  customerDataDialogFour= 'Congratulation! edit request has approved successfully';
+   // Send Invite Screen
+  static const String  customerInviteTitle=  'Invite Customer';
+  static const String  customerInviteSubtitle=  'Here you can invite the customer';
+  static const String  customerFieldName=  'Given Name';
+  static const String  customerFieldNameSubtitle=  'Enter Name...';
+  static const String  customerFieldNameTwo=  'Surname';
+  static const String  customerFieldNameTwoSubtitle=   'Enter Sur Name...';
+  static const String  customerEmailAddressTitle= 'Email Address';
+  static const String  customerEmailAddressSubtitle=   'Enter Email Address';
    // Edit Customer Screen
   static const String  editTitle =   'Edit Customer';
   static const String  editSubtitle =   'Edit Customer Details';

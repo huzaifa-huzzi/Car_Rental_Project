@@ -1,9 +1,7 @@
 
 import 'package:car_rental_project/Portal/Vendor/Customers/CustomersController.dart';
-import 'package:car_rental_project/Portal/Vendor/Customers/ReusableWidgetOfCustomers/AddButtonOfCustomers.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
-import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
@@ -15,127 +13,211 @@ class CustomerListTableWidget extends StatelessWidget {
   CustomerListTableWidget({super.key});
 
   final controller = Get.put(CustomerController());
-
-  final double clientColWidth = 210.0;
+  final double clientColWidth = 220.0;
   final double ageColWidth = 100.0;
-  final double phoneColWidth = 150.0;
+  final double phoneColWidth = 140.0;
   final double addressColWidth = 200.0;
   final double licenseColWidth = 180.0;
-  final double cardColWidth = 120.0;
-  final double actionColWidth = 100.0;
+  final double editReqColWidth = 140.0;
+  final double cardColWidth = 110.0;
+  final double actionColWidth = 110.0;
+
+  final double fixedTablePadding = 16.0;
+
+  double get totalTableWidth =>
+      clientColWidth +
+          ageColWidth +
+          phoneColWidth +
+          addressColWidth +
+          licenseColWidth +
+          editReqColWidth +
+          cardColWidth +
+          actionColWidth +
+          (fixedTablePadding * 2);
 
   @override
   Widget build(BuildContext context) {
-    final tablePadding = AppSizes.padding(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 12.0),
+          child: _buildTopFilterTabs(context),
+        ),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            double containerWidth = constraints.maxWidth > totalTableWidth
+                ? constraints.maxWidth
+                : totalTableWidth;
 
-    return Container(
-      margin: EdgeInsets.all(tablePadding),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
-      ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /// ---------- TABLE HEADINGS ----------
-            Container(
-              padding: EdgeInsets.only(left: tablePadding, top: 9, bottom: 12),
-              decoration: BoxDecoration(
-                color: AppColors.secondaryColor,
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(AppSizes.borderRadius(context)),
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              child: Container(
+                width: containerWidth,
+                decoration: BoxDecoration(
+                  color: AppColors.backgroundOfScreenColor,
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadius(context)),
                 ),
-              ),
-              child: Row(
-                children: [
-                  _headerCell("Customer", clientColWidth, context),
-                  _headerCell("Phone Number", phoneColWidth, context),
-                  _headerCell("Address", addressColWidth, context),
-                  _headerCell("Age", ageColWidth, context),
-                  _headerCell("License Details", licenseColWidth, context),
-                  _headerCell("Linked Card", cardColWidth, context),
-                  _headerCell("Action", actionColWidth, context, isAction: true),
-                ],
-              ),
-            ),
-
-            /// ---------- TABLE BODY
-            Obx(() {
-              final customers = controller.displayedCarList;
-              final bool enableHover = !AppSizes.isMobile(context);
-
-              if (customers.isEmpty) {
-                double totalWidth = clientColWidth + phoneColWidth + addressColWidth + ageColWidth + licenseColWidth + cardColWidth + actionColWidth;
-                return SizedBox(
-                  width: totalWidth,
-                  child: const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(30.0),
-                      child: Text("No customers found"),
-                    ),
-                  ),
-                );
-              }
-
-              return Column(
-                children: List.generate(customers.length, (rowIndex) {
-
-                  return Obx(() {
-                    bool isHovered = controller.hoveredRowIndex.value == rowIndex;
-
-                    return MouseRegion(
-                      onEnter: (_) => controller.hoveredRowIndex.value = rowIndex,
-                      onExit: (_) => controller.hoveredRowIndex.value = -1,
-                      cursor: SystemMouseCursors.click,
-                      child: Container(
-                        padding: EdgeInsets.only(left: tablePadding, top: 14, bottom: 14),
-                        decoration: BoxDecoration(
-                          color: (enableHover && isHovered) ? Colors.white : AppColors.backgroundOfScreenColor,
-                          border: Border(
-                            bottom: BorderSide(color: AppColors.sideBoxesColor, width: 0.5),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            _clientDataCell(clientColWidth, context),
-                            _dataCell("789-012-3456", phoneColWidth, context),
-                            _dataCell("404 Spruce Road", addressColWidth, context),
-                            _dataCell("34 years", ageColWidth, context),
-                            _licenseDataCell(licenseColWidth, context),
-                            _dataCell("2 Card", cardColWidth, context),
-
-                            /// ACTION BUTTON
-                            SizedBox(
-                              width: actionColWidth,
-                              child: Center(
-                                child: AddButtonOfCustomer(
-                                  text: "View",
-                                  width: 71,
-                                  height: 34,
-                                  onTap: () {
-                                    context.go('/customerDetails', extra: {"hideMobileAppBar": true});
-                                  },
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                              ),
-                            ),
-                          ],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: containerWidth,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: fixedTablePadding,
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.secondaryColor,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(AppSizes.borderRadius(context)),
                         ),
                       ),
-                    );
-                  });
-                }),
-              );
-            })
-          ],
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          _headerCell(TextString.customerTableOne, clientColWidth, context),
+                          _headerCell(TextString.customerTableTwo, ageColWidth, context),
+                          _headerCell(TextString.customerTableThree, phoneColWidth, context),
+                          _headerCell(TextString.customerTableFour, addressColWidth, context),
+                          _headerCell(TextString.customerTableFive, licenseColWidth, context),
+                          _headerCell(TextString.customerTableSix, editReqColWidth, context),
+                          _headerCell(TextString.customerTableSeven, cardColWidth, context),
+                          _headerCell("Action", actionColWidth, context, isAction: true),
+                        ],
+                      ),
+                    ),
+                    Obx(() {
+                      final customers = controller.displayedCarList;
+                      final bool enableHover = !AppSizes.isMobile(context);
+
+                      if (customers.isEmpty) {
+                        return Container(
+                          width: containerWidth,
+                          padding: const EdgeInsets.all(32.0),
+                          child: Center(
+                            child: Text(
+                              "No customers found",
+                              style: TTextTheme.pOne(context),
+                            ),
+                          ),
+                        );
+                      }
+
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: List.generate(customers.length, (rowIndex) {
+                          return Obx(() {
+                            bool isHovered = controller.hoveredRowIndex.value == rowIndex;
+
+                            return MouseRegion(
+                              onEnter: (_) {
+                                WidgetsBinding.instance.addPostFrameCallback((_) {
+                                  controller.hoveredRowIndex.value = rowIndex;
+                                });
+                              },
+                              onExit: (_) {
+                                WidgetsBinding.instance.addPostFrameCallback((_) {
+                                  controller.hoveredRowIndex.value = -1;
+                                });
+                              },
+                              cursor: SystemMouseCursors.click,
+                              child: Container(
+                                width: containerWidth,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: fixedTablePadding,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: (enableHover && isHovered)
+                                      ? Colors.white
+                                      : AppColors.backgroundOfScreenColor,
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: AppColors.sideBoxesColor,
+                                      width: 0.5,
+                                    ),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    _clientDataCell(clientColWidth, context),
+                                    _dataCell(TextString.customerTableAnswerOne, ageColWidth, context),
+                                    _dataCell(TextString.customerTableAnswerTwo, phoneColWidth, context),
+                                    _dataCell(TextString.customerTableAnswerThree, addressColWidth, context),
+                                    _licenseDataCell(licenseColWidth, context),
+                                    _statusBadgeCell(rowIndex, editReqColWidth, context),
+                                    _dataCell(TextString.customerTableAnswerFour, cardColWidth, context),
+                                    _actionDataCell(actionColWidth, context),
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
+                        }),
+                      );
+                    }),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
+      ],
+    );
+  }
+
+    /// -------- Extra Widget --------------- ///
+  // Top Filter Tabs
+  Widget _buildTopFilterTabs(BuildContext context) {
+    final List<String> tabs = ["All", "Pending", "Approved", "Updated"];
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
+      child: Container(
+        padding: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Obx(() {
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: tabs.map((tab) {
+              bool isSelected = controller.selectedTabFilter.value == tab;
+              return InkWell(
+                onTap: () => controller.setTabFilter(tab),
+                borderRadius: BorderRadius.circular(6),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  margin: const EdgeInsets.only(right: 2),
+                  decoration: BoxDecoration(
+                    color: isSelected ? AppColors.primaryColor : Colors.transparent,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    tab,
+                    style: isSelected
+                        ? TTextTheme.smallXX(context).copyWith(
+                        color: Colors.white, fontWeight: FontWeight.bold)
+                        : TTextTheme.smallXX(context).copyWith(
+                        color: AppColors.secondTextColor),
+                  ),
+                ),
+              );
+            }).toList(),
+          );
+        }),
       ),
     );
   }
 
-  /// --------- Refined Widgets for Spacing & Alignment ---------
-
+  // Header Cell
   Widget _headerCell(String title, double width, BuildContext context, {bool isAction = false}) {
     return SizedBox(
       width: width,
@@ -144,9 +226,14 @@ class CustomerListTableWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: isAction ? MainAxisAlignment.center : MainAxisAlignment.start,
           children: [
-            Text(title, style: TTextTheme.smallXX(context)),
+            Flexible(
+              child: Text(
+                title,
+                style: TTextTheme.smallXX(context),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
             const SizedBox(width: 4),
-
             if (!isAction)
               Obx(() {
                 bool isCurrent = controller.sortColumn.value == title;
@@ -161,8 +248,10 @@ class CustomerListTableWidget extends StatelessWidget {
                         heightFactor: 0.5,
                         child: Image.asset(
                           IconString.sortIcon,
-                          height: 14,
-                          color: order == 1 ? AppColors.primaryColor : AppColors.secondTextColor,
+                          height: 12,
+                          color: order == 1
+                              ? AppColors.primaryColor
+                              : AppColors.secondTextColor,
                         ),
                       ),
                     ),
@@ -173,8 +262,10 @@ class CustomerListTableWidget extends StatelessWidget {
                         heightFactor: 0.5,
                         child: Image.asset(
                           IconString.sortIcon,
-                          height: 14,
-                          color: order == 2 ? AppColors.primaryColor : AppColors.secondTextColor,
+                          height: 12,
+                          color: order == 2
+                              ? AppColors.primaryColor
+                              : AppColors.secondTextColor,
                         ),
                       ),
                     ),
@@ -187,38 +278,43 @@ class CustomerListTableWidget extends StatelessWidget {
     );
   }
 
+   // data Cell
   Widget _dataCell(String text, double width, BuildContext context) {
     return SizedBox(
       width: width,
-      child: Text(text, style: TTextTheme.pOne(context)),
+      child: Text(
+        text,
+        style: TTextTheme.pOne(context),
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 
+   // Client Data Cell
   Widget _clientDataCell(double width, BuildContext context) {
     return SizedBox(
       width: width,
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          CircleAvatar(
-            radius: 18,
-            backgroundImage: AssetImage(ImageString.customerUser),
+          Text(
+           TextString.clientDataCellTitle,
+            style: TTextTheme.pOne(context).copyWith(fontWeight: FontWeight.bold),
+            overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(TextString.titlename, style: TTextTheme.pOne(context)),
-                Text(TextString.Subtitlename, style: TTextTheme.pFour(context)),
-              ],
-            ),
+          const SizedBox(height: 2),
+          Text(
+            TextString.clientDataCellSubtitle,
+            style: TTextTheme.pFour(context),
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
     );
   }
 
+   // license Data Cell
   Widget _licenseDataCell(double width, BuildContext context) {
     return SizedBox(
       width: width,
@@ -228,41 +324,330 @@ class CustomerListTableWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                height: 18,
-                width: 18,
-                decoration: BoxDecoration(
-                  color: AppColors.secondaryColor,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Center(
-                  child: Image.asset(IconString.licenseIcon),
+              Image.asset(IconString.licenseIcon, height: 14, width: 14),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  "1234HGYTSA",
+                  style: TTextTheme.pOne(context),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(width: 6),
-              Text(TextString.licenseNumber, style: TTextTheme.pOne(context)),
             ],
           ),
           const SizedBox(height: 4),
           Row(
             children: [
-              Container(
-                height: 18,
-                width: 18,
-                decoration: BoxDecoration(
-                  color: AppColors.secondaryColor,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Center(
-                  child: Image.asset(IconString.licenseIcon),
+              Image.asset(IconString.licenseIcon, height: 14, width: 14),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  "12/2/2030",
+                  style: TTextTheme.pOne(context),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(width: 6),
-              Text(TextString.licenseDate, style: TTextTheme.pOne(context)),
             ],
           ),
         ],
       ),
     );
   }
+
+  // Status badge cell
+  Widget _statusBadgeCell(int rowIndex, double width, BuildContext context) {
+    return Obx(() {
+      String selectedTab = controller.selectedTabFilter.value;
+      String status;
+
+      if (selectedTab == "All") {
+        List<String> mockStatuses = ["Approved", "Pending", "Updated"];
+        status = mockStatuses[rowIndex % mockStatuses.length];
+      } else {
+        status = selectedTab;
+      }
+
+      Color badgeColor;
+      if (status == "Approved") {
+        badgeColor = AppColors.activeColor2;
+      } else if (status == "Pending") {
+        badgeColor = AppColors.pendingColor;
+      } else if (status == "Updated") {
+        badgeColor =AppColors.fourBackground;
+      } else {
+        return SizedBox(
+          width: width,
+          child: Text("---------", style: TTextTheme.pOne(context)),
+        );
+      }
+
+      return SizedBox(
+        width: width,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+            decoration: BoxDecoration(
+              color: badgeColor,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              status,
+              style: TTextTheme.pFour(context)
+                  .copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+            ),
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget _actionDataCell(double width, BuildContext context) {
+    return SizedBox(
+      width: width,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          InkWell(
+            onTap: () {
+              context.go('/customerDetails', extra: {"hideMobileAppBar": true});
+            },
+            child: Icon(Icons.remove_red_eye_outlined, size: 14, color: AppColors.primaryColor),
+          ),
+          const SizedBox(width: 8),
+          InkWell(
+            onTap: () {
+              showApproveRequestDialog(context);
+            },
+            borderRadius: BorderRadius.circular(20),
+            child: Image.asset(
+              IconString.approvedIcon,
+              height: 14,
+              width: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Dialogs
+  // Dialogs
+  void showApproveRequestDialog(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 600;
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Dialog(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          backgroundColor: Colors.white,
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 480),
+            padding: EdgeInsets.all(isMobile ? 16 : 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(
+                        color: AppColors.secondaryColor,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.close, size: 16, color: AppColors.blackColor),
+                    ),
+                  ),
+                ),
+
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: AppColors.emojiBackground,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Text('🤨', style: TextStyle(fontSize: 24)),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            TextString.customerDataDialogOne,
+                            style: TTextTheme.h13Style(context).copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textColor,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            TextString.customerDataDialogTwo,
+                            style: TTextTheme.bodyRegular14(context).copyWith(
+                              color: AppColors.secondTextColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        height: 42,
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            side: const BorderSide(color: AppColors.primaryColor, width: 1.2),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            showSuccessDialog(context);
+                          },
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'Save',
+                              style: TTextTheme.btnSavePrimary(context),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: SizedBox(
+                        height: 42,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            backgroundColor: AppColors.primaryColor,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'Cancel',
+                              style: TTextTheme.btnSave(context),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void showSuccessDialog(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 600;
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Dialog(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          backgroundColor: Colors.white,
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 440),
+            padding: EdgeInsets.all(isMobile ? 16 : 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(
+                        color: AppColors.secondaryColor,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.close, size: 16, color: AppColors.blackColor),
+                    ),
+                  ),
+                ),
+
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: AppColors.emojiBackground,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Text('👍', style: TextStyle(fontSize: 24)),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                           TextString.customerDataDialogThree,
+                            style: TTextTheme.h13Style(context).copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textColor,
+                              height: 1.2,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            TextString.customerDataDialogFour,
+                            style: TTextTheme.bodyRegular14(context).copyWith(
+                              color: AppColors.secondTextColor,
+                              height: 1.3,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
 }

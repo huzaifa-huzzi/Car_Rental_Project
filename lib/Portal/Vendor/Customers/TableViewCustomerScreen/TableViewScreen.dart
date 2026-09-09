@@ -10,6 +10,12 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 class TableViewCustomerScreen extends StatelessWidget {
   TableViewCustomerScreen({super.key});
 
@@ -24,32 +30,44 @@ class TableViewCustomerScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundOfScreenColor,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-          child: Column(
-            children: [
-              if (AppSizes.isWeb(context))
-                HeaderWebCustomersWidget(
-                  mainTitle: 'Customers',
-                  showProfile: true,
-                  showNotification: true,
-                  showSettings: true,
-                  showSearch: true,
-          onAddPressed: () {
-            context.push(
-              '/addNewCustomer',
-              extra: {"hideMobileAppBar": true},
-            );
-          }
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (AppSizes.isWeb(context)) ...[
+                  HeaderWebCustomersWidget(
+                    mainTitle: 'Customers',
+                    showProfile: true,
+                    showNotification: true,
+                    showSettings: true,
+                    showSearch: true,
+                    onAddPressed: () {
+                      context.push(
+                        '/addNewCustomer',
+                        extra: {"hideMobileAppBar": true},
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                ],
+                CardListHeaderCustomerWidget(),
+                const SizedBox(height: 12),
+
+                /// ---------- CUSTOMER TABLE ----------
+                CustomerListTableWidget(),
+
+                const SizedBox(height: 16),
+                PaginationBarOfCustomer(
+                  isMobile: isMobile,
+                  tablePadding: tablePadding,
                 ),
-              SizedBox(height: 3,),
-              CardListHeaderCustomerWidget(),
-              SizedBox(height: 2,),
-              CustomerListTableWidget(),
-              PaginationBarOfCustomer(isMobile: isMobile, tablePadding: tablePadding),
-              SizedBox(height: baseVerticalSpace * 1.25),
-            ],
+                SizedBox(height: baseVerticalSpace * 1.25),
+              ],
+            ),
           ),
         ),
       ),
