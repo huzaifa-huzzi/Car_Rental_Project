@@ -24,7 +24,6 @@ class InvoiceTableWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (isWeb)
             Padding(
               padding: const EdgeInsets.only(bottom: 24.0, top: 10),
               child: HeaderWebPaymentWidget(
