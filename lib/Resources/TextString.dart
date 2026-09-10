@@ -761,6 +761,10 @@ class TextString {
   static const String  dialogPaymentSubtitle3= "Are you sure you want to  cancel  payment invoice In-2026-004 as cancel? This action confirm that payment has cancelled.";
   static const String  dialogPayment4= "Payment Marked as Canceled Successfully";
   static const String  dialogPaymentSubtitle4= "Congratulation! payment has marked as Cancel successfully in the system.";
+  static const String  dialogPayment5= "Mark Payment as Completed?";
+  static const String  dialogPayment6= "Are you sure you want to confirm the payment";
+  static const String  dialogPayment7=  "Payment marked as completed Successfully";
+  static const String  dialogPayment8= "Congratulations! Payment has marked as successfully in the system";
    // Add Payment
   static const String  titlePaymentAdd= "Payment Information";
   static const String  titlePaymentAddSubtitle= "All details about the payment";
@@ -854,6 +858,29 @@ class TextString {
   static const String  autoHeader8= "Status";
   static const String  autoHeader9= "Attempts";
   static const String  autoHeader10= "Action";
+
+   // Link Payment
+  static const String  linkTitleCarDetail= "Car Detail";
+  static const String  linkTitleCarDetailSubtitle= "Your Car detail listed here";
+  static const String  linktitlePickup= "Pickup";
+  static const String  linktitlePickupSubtitle= "Select a Pickup";
+  static const String  linktitleRegistration=  "Registration";
+  static const String  linktitleVin= "Vin";
+  static const String  mainLinkPaymentTitle= "Link Payment";
+  static const String  linkCarNameTitle= "Car Name";
+  static const String  linkCarNameTitleType= "Type";
+  static const String  linkCarNameTitleTransmission= "Transmission";
+  static const String  linkRentalPeriodTitle= "Rental Period";
+  static const String  linkRentalPeriodSubtitle= "Your rental period detail listed here";
+  static const String  linkRentalFromDate=  "From Date";
+  static const String  linkRentalToDate=  "To Date";
+  static const String  linkRentalFromDuration= "Duration";
+  static const String  linkPaymentInfoTitle= "Payment Information";
+  static const String  linkPaymentInfoSubtitle= "All details about the payment";
+  static const String  linkPaymentCustomer=  "Customer Name";
+  static const String  linkPaymentPhone= "Phone Number";
+  static const String  linkPaymentPaymentAmount= "Payment Amount";
+  static const String  linkDueDate= "Due Date";
 
 
     // Reminder

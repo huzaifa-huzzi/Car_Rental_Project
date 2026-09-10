@@ -478,8 +478,6 @@ class _PaymentWidgetState extends State<PaymentWidget> {
   Widget _buildAutoPaymentStatsGrid(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       double width = constraints.maxWidth;
-
-      // Breakpoints for Auto Payment
       int crossAxisCount = width >= 1000
           ? 3
           : (width >= 600 ? 2 : 1);
@@ -708,36 +706,68 @@ class _PaymentWidgetState extends State<PaymentWidget> {
           _cell(width: 120, child: Text("\$${data["amount"]}", style: TTextTheme.bodySemiBold16(context))),
           _cell(width: 130, child: Center(child: _buildStatusChip(rawStatus))),
           SizedBox(
-            width: 100,
-            child: Center(
-              child: SizedBox(
-                height: 36,
-                width: 110,
-                child: OutlinedButton(
-                  onPressed: () {
-                    context.push('/invoicesDetail', extra: data);
-                  },
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.primaryColor,
-                    side: const BorderSide(color: AppColors.primaryColor),
-                    padding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                    const Icon(Icons.visibility_outlined, size: 16),
-                      const SizedBox(width: 6),
-                      Text(
-                         "View" ,
-                        style: TTextTheme.tableRegular14Primary(context),
+            width: 110,
+            child: Obx(() {
+              bool isCompletedTab = controller.selectedTab.value == "Completed";
+
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      context.push('/invoicesDetail', extra: data);
+                    },
+                    borderRadius: BorderRadius.circular(4),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Image.asset(
+                        IconString.viewIcon,
+                        color: AppColors.primaryColor,
+                        width: 20,
+                        height: 20,
+                        fit: BoxFit.contain,
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ),
+                  if (!isCompletedTab) ...[
+                    const SizedBox(width: 8),
+                    InkWell(
+                      onTap: () {
+                        showApproveRequestDialog(context);
+                      },
+                      borderRadius: BorderRadius.circular(4),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Image.asset(
+                          IconString.approvedIcon,
+                          width: 20,
+                          height: 20,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                  ],
+
+                  const SizedBox(width: 8),
+                  InkWell(
+                    onTap: () {
+                      context.go('/invoicesTableDetail');
+                    },
+                    borderRadius: BorderRadius.circular(4),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Image.asset(
+                        IconString.cardView,
+                        width: 22,
+                        height: 22,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }),
+          )
         ],
       ),
     );
@@ -865,7 +895,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         icon = IconString.stripeICon;
         break;
       case 'Direct Debit':
-        icon = IconString.ddIcon;
+        icon = IconString.cardView;
         break;
       case 'Pay to':
         icon = IconString.paytoIcon;
@@ -912,7 +942,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         displayStatus = "Submitted";
         break;
       default:
-        backgroundColor = Colors.grey;
+        backgroundColor = AppColors.secondTextColor;
     }
 
     return Container(
@@ -1264,4 +1294,220 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       },
     );
   }
+  void showApproveRequestDialog(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 600;
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Dialog(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          backgroundColor: Colors.white,
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 480),
+            padding: EdgeInsets.all(isMobile ? 16 : 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(
+                        color: AppColors.secondaryColor,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.close, size: 16, color: AppColors.blackColor),
+                    ),
+                  ),
+                ),
+
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: AppColors.emojiBackground,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Text('🤨', style: TextStyle(fontSize: 24)),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            TextString.dialogPayment5,
+                            style: TTextTheme.h13Style(context).copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textColor,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            TextString.dialogPayment6,
+                            style: TTextTheme.bodyRegular14(context).copyWith(
+                              color: AppColors.secondTextColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        height: 42,
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            side: const BorderSide(color: AppColors.primaryColor, width: 1.2),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            showSuccessDialog(context);
+                          },
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'Save',
+                              style: TTextTheme.btnSavePrimary(context),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: SizedBox(
+                        height: 42,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            backgroundColor: AppColors.primaryColor,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'Cancel',
+                              style: TTextTheme.btnSave(context),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+  void showSuccessDialog(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 600;
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Dialog(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          backgroundColor: Colors.white,
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 440),
+            padding: EdgeInsets.all(isMobile ? 16 : 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(
+                        color: AppColors.secondaryColor,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.close, size: 16, color: AppColors.blackColor),
+                    ),
+                  ),
+                ),
+
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: AppColors.emojiBackground,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Text('👍', style: TextStyle(fontSize: 24)),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                        TextString.dialogPayment7,
+                            style: TTextTheme.h13Style(context).copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textColor,
+                              height: 1.2,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            TextString.dialogPayment8,
+                            style: TTextTheme.bodyRegular14(context).copyWith(
+                              color: AppColors.secondTextColor,
+                              height: 1.3,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
 }

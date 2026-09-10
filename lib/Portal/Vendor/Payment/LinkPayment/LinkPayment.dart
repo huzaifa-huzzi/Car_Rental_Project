@@ -2,6 +2,7 @@ import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/HeaderWe
 import 'package:car_rental_project/Portal/Vendor/Payment/paymentController.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -76,14 +77,14 @@ class LinkPaymentScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Car Detail",
+                  TextString.linkTitleCarDetail,
                   style: TTextTheme.h2Style(context).copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  "Your Car detail listed here",
+                  TextString.linkTitleCarDetailSubtitle,
                   style: TTextTheme.h2StyleSubtitle(context).copyWith(
                     color: AppColors.secondTextColor,
                   ),
@@ -95,7 +96,7 @@ class LinkPaymentScreen extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: AppColors.sideBoxesColor.withOpacity(0.5),
+                      color: AppColors.sideBoxesColor.withValues(alpha: 0.5),
                       width: 1,
                     ),
                   ),
@@ -114,13 +115,13 @@ class LinkPaymentScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Pickup",
+                                TextString.linktitlePickup,
                                 style: TTextTheme.h2Style(context).copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Text(
-                                "Select a Pickup",
+                                TextString.linktitlePickupSubtitle,
                                 style: TTextTheme.h2StyleSubtitle(context).copyWith(
                                   color: AppColors.secondTextColor,
                                 ),
@@ -300,7 +301,7 @@ class LinkPaymentScreen extends StatelessWidget {
                                                 ),
                                                 color: AppColors.textColor,
                                                 child: Text(
-                                                  "Registration",
+                                                 TextString.linktitleRegistration,
                                                   style: TTextTheme.h10Style(context).copyWith(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.w400,
@@ -338,7 +339,7 @@ class LinkPaymentScreen extends StatelessWidget {
                                                 ),
                                                 color: AppColors.backgroundOfVin,
                                                 child: Text(
-                                                  "Vin",
+                                                  TextString.linktitleVin,
                                                   style: TTextTheme.h10Style(context).copyWith(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.w400,
@@ -415,7 +416,7 @@ class LinkPaymentScreen extends StatelessWidget {
               ),
               onPressed: controller.handleLinkPayment,
               child: Text(
-                "Link Payment",
+                TextString.mainLinkPaymentTitle,
                 style: TTextTheme.h8Style(context).copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w400,
@@ -471,7 +472,7 @@ class LinkPaymentScreen extends StatelessWidget {
               Get.snackbar("Success", "Payment linked successfully!");
             },
             child: Text(
-              "Link Payment",
+                TextString.mainLinkPaymentTitle,
               style: TTextTheme.titleTwo(context).copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.w400,
@@ -487,23 +488,23 @@ class LinkPaymentScreen extends StatelessWidget {
   Widget _buildCarDetailCard(BuildContext context) {
     return _buildCardWrapper(
       context: context,
-      title: "Car Detail",
-      subtitle: "Your Car detail listed here",
+      title: TextString.linkTitleCarDetail,
+      subtitle: TextString.linkTitleCarDetailSubtitle,
       child: Column(
         children: [
           Row(
             children: [
-              Expanded(child: _buildDisabledField(context, "Car Name", controller.carNameController)),
+              Expanded(child: _buildDisabledField(context,TextString.linkCarNameTitle , controller.carNameController)),
               const SizedBox(width: 16),
-              Expanded(child: _buildDisabledField(context, "Type", controller.carTypeController)),
+              Expanded(child: _buildDisabledField(context,TextString.linkCarNameTitleType , controller.carTypeController)),
             ],
           ),
           const SizedBox(height: 16),
           Row(
             children: [
-              Expanded(child: _buildDisabledField(context, "Registration", controller.registrationController)),
+              Expanded(child: _buildDisabledField(context,TextString.linktitleRegistration, controller.registrationController)),
               const SizedBox(width: 16),
-              Expanded(child: _buildDisabledField(context, "Transmission", controller.transmissionController)),
+              Expanded(child: _buildDisabledField(context,TextString.linkCarNameTitleTransmission , controller.transmissionController)),
             ],
           ),
         ],
@@ -515,19 +516,19 @@ class LinkPaymentScreen extends StatelessWidget {
   Widget _buildRentalPeriodCard(BuildContext context) {
     return _buildCardWrapper(
       context: context,
-      title: "Rental Period",
-      subtitle: "Your rental period detail listed here",
+      title: TextString.linkRentalPeriodTitle,
+      subtitle:TextString.linkRentalPeriodSubtitle ,
       child: Column(
         children: [
           Row(
             children: [
-              Expanded(child: _buildDisabledField(context, "From Date", controller.fromDateController)),
+              Expanded(child: _buildDisabledField(context,TextString.linkRentalFromDate, controller.fromDateController)),
               const SizedBox(width: 16),
-              Expanded(child: _buildDisabledField(context, "To Date", controller.toDateController)),
+              Expanded(child: _buildDisabledField(context,TextString.linkRentalToDate, controller.toDateController)),
             ],
           ),
           const SizedBox(height: 16),
-          _buildDisabledField(context, "Duration", controller.durationController),
+          _buildDisabledField(context,TextString.linkRentalFromDuration , controller.durationController),
         ],
       ),
     );
@@ -537,8 +538,8 @@ class LinkPaymentScreen extends StatelessWidget {
   Widget _buildPaymentInformationCard(BuildContext context) {
     return _buildCardWrapper(
       context: context,
-      title: "Payment Information",
-      subtitle: "All details about the payment",
+      title:TextString.linkPaymentInfoTitle ,
+      subtitle:TextString.linkPaymentInfoSubtitle ,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -548,20 +549,20 @@ class LinkPaymentScreen extends StatelessWidget {
               return isWide
                   ? Row(
                 children: [
-                  Expanded(child: _buildDisabledField(context, "Customer Name", controller.customerNameController)),
+                  Expanded(child: _buildDisabledField(context,TextString.linkPaymentCustomer, controller.customerNameController)),
                   const SizedBox(width: 16),
-                  Expanded(child: _buildDisabledField(context, "Phone Number", controller.phoneNumberController)),
+                  Expanded(child: _buildDisabledField(context,TextString.linkPaymentPhone , controller.phoneNumberController)),
                   const SizedBox(width: 16),
-                  Expanded(child: _buildDisabledField(context, "Payment Amount", controller.paymentAmountController)),
+                  Expanded(child: _buildDisabledField(context,TextString.linkPaymentPaymentAmount , controller.paymentAmountController)),
                 ],
               )
                   : Column(
                 children: [
-                  _buildDisabledField(context, "Customer Name", controller.customerNameController),
+                  _buildDisabledField(context, TextString.linkPaymentCustomer, controller.customerNameController),
                   const SizedBox(height: 16),
-                  _buildDisabledField(context, "Phone Number", controller.phoneNumberController),
+                  _buildDisabledField(context, TextString.linkPaymentPhone, controller.phoneNumberController),
                   const SizedBox(height: 16),
-                  _buildDisabledField(context, "Payment Amount", controller.paymentAmountController),
+                  _buildDisabledField(context, TextString.linkPaymentPaymentAmount , controller.paymentAmountController),
                 ],
               );
             },
@@ -569,7 +570,7 @@ class LinkPaymentScreen extends StatelessWidget {
           const SizedBox(height: 16),
           FractionallySizedBox(
             widthFactor: MediaQuery.of(context).size.width > 700 ? 0.32 : 1.0,
-            child: _buildDisabledField(context, "Due Date", controller.dueDateController),
+            child: _buildDisabledField(context, TextString.linkDueDate, controller.dueDateController),
           )
         ],
       ),
@@ -634,7 +635,7 @@ class LinkPaymentScreen extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: AppColors.sideBoxesColor.withOpacity(0.6)),
+            border: Border.all(color: AppColors.sideBoxesColor.withValues(alpha: 0.6)),
           ),
           alignment: Alignment.centerLeft,
           child: TextFormField(
