@@ -1,10 +1,8 @@
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/PaginationBarOfPayment.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/PrimaryBtnOfPayment.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/paymentController.dart';
-import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
-import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
@@ -28,147 +26,84 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildTopHeader(context),
-          SizedBox(height: 10,),
-          Obx(() {
-            bool isManual = controller.selectedMainTab.value == "Manual Payment";
-
-            return Column(
+          const SizedBox(height: 10),
+          _buildStatsGrid(context),
+          const SizedBox(height: 30),
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(MediaQuery.of(context).size.width < 600 ? 16 : 24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                isManual ? _buildStatsGrid(context) : _buildAutoPaymentStatsGrid(context),
-
-                const SizedBox(height: 30),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      LayoutBuilder(
-                        builder: (context, constraints) {
-                          bool isMobile = constraints.maxWidth < 330;
-                          return isMobile
-                              ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              _buildHeaderText(),
-                              const SizedBox(height: 16),
-                              _buildAddPaymentButton(isMobile),
-                            ],
-                          )
-                              : Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _buildHeaderText(),
-                              _buildAddPaymentButton(isMobile),
-                            ],
-                          );
-                        },
-                      ),
-
-                      const SizedBox(height: 25),
-                      _buildTabs(),
-                      const SizedBox(height: 20),
-
-                      _buildFiltersRow(),
-
-                      const SizedBox(height: 30),
-                      LayoutBuilder(
-                        builder: (context, constraints) {
-                          return Obx(() {
-                            var currentList = controller.displayedCarList;
-                            bool isManual = controller.selectedMainTab.value == "Manual Payment";
-                            return SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Column(
-                                children: [
-                                  isManual ? _buildTableHeader(controller) : _buildAutoTableHeader(controller),
-
-                                  // Data Rows
-                                  ...currentList.map((data) {
-                                    return isManual
-                                        ? _buildPaymentRow(data)
-                                        : _buildAutoPaymentRow(data);
-                                  }),
-                                ],
-                              ),
-                            );
-                          });
-                        },
-                      ),
-                      _buildPagination(),
-                    ],
-                  ),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    bool isMobile = constraints.maxWidth < 450;
+                    return isMobile
+                        ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _buildHeaderText(),
+                        const SizedBox(height: 16),
+                        _buildAddPaymentButton(isMobile),
+                      ],
+                    )
+                        : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(child: _buildHeaderText()),
+                        const SizedBox(width: 16),
+                        _buildAddPaymentButton(isMobile),
+                      ],
+                    );
+                  },
                 ),
+                const SizedBox(height: 25),
+                _buildTabs(),
+                const SizedBox(height: 20),
+                _buildFiltersRow(),
+                const SizedBox(height: 30),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Obx(() {
+                      var currentList = controller.displayedCarList;
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildTableHeader(controller),
+                            ...currentList.map((data) {
+                              return _buildPaymentRow(data);
+                            }),
+                          ],
+                        ),
+                      );
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+                _buildPagination(),
               ],
-            );
-          }),
-
+            ),
+          ),
         ],
       ),
     );
   }
 
-  /// --- Extra Widgets ---
-  // Top Tabs
-  Widget _buildTopHeader(BuildContext context) {
-    bool isMobile = AppSizes.isMobile(context);
+  /// ---------------Extra Widget --------------///
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Align(
-        alignment: isMobile ? Alignment.centerLeft : Alignment.centerRight,
-        child: _buildMainToggleTabs(isMobile),
-      ),
-    );
-  }
-  Widget _buildMainToggleTabs(bool isMobile) {
-    return Obx(() => Wrap(
-      spacing: 12,
-      runSpacing: 12,
-      children: [
-        _tabButton("Manual Payment", isMobile),
-        _tabButton("Auto Payment", isMobile),
-      ],
-    ));
-  }
-  Widget _tabButton(String title, bool isMobile) {
-    bool isSelected = controller.selectedMainTab.value == title;
-
-    return InkWell(
-      onTap: () {
-        controller.selectedMainTab.value = title;
-      },
-      borderRadius: BorderRadius.circular(10),
-      child: Container(
-        width: isMobile ? (MediaQuery.of(context).size.width * 0.44) : 160,
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryColor : Colors.transparent,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: isSelected ? Colors.transparent : AppColors.quadrantalTextColor.withValues(alpha: 0.8),
-            width: 1,
-          ),
-        ),
-        child: Text(
-          title,
-          textAlign: TextAlign.center,
-          style: isSelected ? TTextTheme.btnWhiteColor(context) : TTextTheme.bodyRegular14Search(context)
-        ),
-      ),
-    );
-  }
-  // Filters
+  //  Filters Row
   Widget _buildFiltersRow() {
     return LayoutBuilder(builder: (context, constraints) {
       double width = constraints.maxWidth;
       bool isMobile = width < 750;
-      double fieldHeight = 40;
+      double fieldHeight = 42;
 
       return Align(
         alignment: isMobile ? Alignment.centerLeft : Alignment.centerRight,
@@ -192,6 +127,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       );
     });
   }
+
   Widget _buildDateFilterBox(BuildContext context, bool isMobile, double height) {
     return CompositedTransformTarget(
       link: controller.dateFilterLink,
@@ -202,7 +138,6 @@ class _PaymentWidgetState extends State<PaymentWidget> {
               controller.dateFilterLink,
               controller.dateTextController,
               isMobile ? MediaQuery.of(context).size.width * 0.9 : 320
-
           );
         },
         borderRadius: BorderRadius.circular(8),
@@ -216,11 +151,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
           ),
           child: Row(
             children: [
-              Icon(
-                  Icons.calendar_today_outlined,
-                  size: 18,
-                  color: AppColors.quadrantalTextColor
-              ),
+              Icon(Icons.calendar_today_outlined, size: 18, color: AppColors.quadrantalTextColor),
               const SizedBox(width: 10),
               Expanded(
                 child: Obx(() => Text(
@@ -231,17 +162,14 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                   overflow: TextOverflow.ellipsis,
                 )),
               ),
-              Icon(
-                  Icons.keyboard_arrow_down,
-                  size: 18,
-                  color: AppColors.quadrantalTextColor
-              ),
+              Icon(Icons.keyboard_arrow_down, size: 18, color: AppColors.quadrantalTextColor),
             ],
           ),
         ),
       ),
     );
   }
+
   Widget _buildSearchBar(BuildContext context, bool isMobile, double height) {
     return Container(
       width: isMobile ? double.infinity : 320,
@@ -266,12 +194,12 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                 hintStyle: TTextTheme.smallX(context),
                 border: InputBorder.none,
                 isDense: true,
-                contentPadding: const EdgeInsets.only(bottom: 4),
+                contentPadding: const EdgeInsets.only(bottom: 2),
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(1.0),
+            padding: const EdgeInsets.all(3.0),
             child: ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
@@ -290,10 +218,9 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       ),
     );
   }
+
   Widget _buildCustomerDropdown(BuildContext context, String id, RxString selectedValue, bool isMobile, double height) {
-    List<String> items = controller.selectedMainTab.value == "Auto Payment"
-        ? ["Customer Name", "Car Name", "Registration", "Source", "Amount"]
-        : ["Customer Name", "Invoice Id"];
+    List<String> items = ["Customer Name", "Registration No", "Car Name"];
 
     return Obx(() {
       bool isOpen = controller.openedDropdown2.value == id;
@@ -304,9 +231,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
           maxWidth: isMobile ? (MediaQuery.of(context).size.width - 48) : 180,
         ),
         offset: const Offset(0, 45),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         color: Colors.white,
         elevation: 4,
         onOpened: () => controller.openedDropdown2.value = id,
@@ -327,7 +252,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
             children: [
               Expanded(
                 child: Text(
-                  selectedValue.value.isEmpty ? "Select Item" : selectedValue.value,
+                  selectedValue.value.isEmpty ? "Customer" : selectedValue.value,
                   style: TTextTheme.btncustomer(context),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -349,10 +274,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
             child: Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              child: Text(
-                item,
-                style: TTextTheme.bodyRegular14(context),
-              ),
+              child: Text(item, style: TTextTheme.bodyRegular14(context)),
             ),
           );
         }).toList(),
@@ -360,17 +282,45 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     });
   }
 
-  // Header Text
   Widget _buildHeaderText() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(TextString.titlePayment, style: TTextTheme.h2Style(context)),
-        const SizedBox(height: 4),
-        Text(TextString.subTitlePayment, style: TTextTheme.bodyRegular16(context)),
-      ],
-    );
+    return Obx(() {
+      String currentTab = controller.selectedTab.value;
+      String dynamicNote = "";
+      if (currentTab == "Submitted" || currentTab == "ReSubmit") {
+        dynamicNote = " (This tab is specifically for Manual Payment)";
+      } else if (currentTab == "Failed") {
+        dynamicNote = " (This tab is specifically for Auto Payment)";
+      }
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            text: TextSpan(
+              style: TTextTheme.h2Style(context),
+              children: [
+                const TextSpan(text: TextString.titlePayment),
+                if (dynamicNote.isNotEmpty)
+                  TextSpan(
+                    text: dynamicNote,
+                    style: TTextTheme.h2Style(context).copyWith(
+                      color: AppColors.primaryColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            TextString.subTitlePayment,
+            style: TTextTheme.bodyRegular16(context),
+          ),
+        ],
+      );
+    });
   }
+
   Widget _buildAddPaymentButton(bool isFullWidth) {
     return PrimaryBtnOfPayment(
       text: "Link Payment",
@@ -382,13 +332,11 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     );
   }
 
-  //  Stats Grid
+  // KPI Stats Grid
   Widget _buildStatsGrid(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       double width = constraints.maxWidth;
-      int crossAxisCount = width >= 1100
-          ? 4
-          : (width >= 750 ? 3 : (width >= 480 ? 2 : 1));
+      int crossAxisCount = width >= 1100 ? 4 : (width >= 750 ? 3 : (width >= 480 ? 2 : 1));
       double spacing = 16;
       double totalSpacing = (crossAxisCount - 1) * spacing;
       double cardWidth = (width - totalSpacing) / crossAxisCount;
@@ -397,23 +345,23 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         spacing: spacing,
         runSpacing: spacing,
         children: [
-          _statCard(context, cardWidth, TextString.revenue, "\$ 12345.99", TextString.revenuesubtitle, IconString.paymentIconBlack),
-          _statCard(context, cardWidth, TextString.actionRequired, "24", TextString.actionRequiredsubtitle, IconString.actionRequiredIcon),
-          _statCard(context, cardWidth, TextString.pendingpayment, "8", TextString.pendingpaymentsubtitle, IconString.pendingPaymentIcon),
-          _statCard(context, cardWidth, TextString.overduePayment, "5", TextString.overduePaymentsubtitle, IconString.overdueIcon),
-          _statCard(context, cardWidth, TextString.resubmitrequest, "8", TextString.resubmitrequestsubtitle, IconString.resubmitIcon),
-          _statCard(context, cardWidth, TextString.submitPayment, "8", TextString.submitPaymentsubtitle, IconString.submittedIcon),
-          _statCard(context, cardWidth, TextString.completedPayment, "246", TextString.completedPaymentsubtitle, IconString.completedIcon),
-          _statCard(context, cardWidth, TextString.total, "246", TextString.totalsubtitle, IconString.paymentIconBlack),
+          _statCard(context, cardWidth, TextString.revenue, "\$ 12345.99", IconString.paymentIconBlack),
+          _statCard(context, cardWidth, TextString.actionRequired, "24", IconString.actionRequiredIcon),
+          _statCard(context, cardWidth, TextString.pendingpayment, "8", IconString.pendingPaymentIcon),
+          _statCard(context, cardWidth, TextString.overduePayment, "5", IconString.overdueIcon),
+          _statCard(context, cardWidth, TextString.resubmitrequest, "8", IconString.resubmitIcon),
+          _statCard(context, cardWidth, TextString.submitPayment, "8", IconString.submittedIcon),
+          _statCard(context, cardWidth, TextString.completedPayment, "246", IconString.completedIcon),
+          _statCard(context, cardWidth, TextString.total, "246", IconString.paymentIconBlack),
         ],
       );
     });
   }
 
-  Widget _statCard(BuildContext context, double width, String title, String value, String sub, String icon) {
+  Widget _statCard(BuildContext context, double width, String title, String value, String icon) {
     return Container(
       width: width,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -426,7 +374,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
         ],
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             padding: const EdgeInsets.all(8),
@@ -434,11 +382,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
               color: AppColors.secondaryColor,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Image.asset(
-              icon,
-              height: 20,
-              width: 20,
-            ),
+            child: Image.asset(icon, height: 20, width: 20),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -446,26 +390,9 @@ class _PaymentWidgetState extends State<PaymentWidget> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TTextTheme.bodyRegular12(context),
-                ),
+                Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: TTextTheme.bodyRegular12(context)),
                 const SizedBox(height: 4),
-                Text(
-                  value,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TTextTheme.h2Style(context),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  sub,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TTextTheme.bodySecondRegular10(context),
-                ),
+                Text(value, maxLines: 1, overflow: TextOverflow.ellipsis, style: TTextTheme.h2Style(context)),
               ],
             ),
           ),
@@ -474,123 +401,13 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     );
   }
 
-   // Auto payment cards
-  Widget _buildAutoPaymentStatsGrid(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      double width = constraints.maxWidth;
-      int crossAxisCount = width >= 1000
-          ? 3
-          : (width >= 600 ? 2 : 1);
-
-      double spacing = 16;
-      double totalSpacing = (crossAxisCount - 1) * spacing;
-      double cardWidth = (width - totalSpacing) / crossAxisCount;
-
-      return Wrap(
-        spacing: spacing,
-        runSpacing: spacing,
-        children: [
-          _autoStatCard(context, cardWidth, "Total Revenue", "1245567", "paid last week",
-              IconString.paymentIconBlack, AppColors.secondaryColor),
-          _autoStatCard(context, cardWidth, "Successful Payments", "24", "4 more payment successfully received",
-              null, AppColors.secondaryColor, isDot: true, dotColor: AppColors.completedColor),
-          _autoStatCard(context, cardWidth, "Failed Payments", "6", "6 more payment doesnot executed on third try",
-              null, AppColors.secondaryColor, isDot: true, dotColor: AppColors.primaryColor),
-          _autoStatCard(context, cardWidth, "Pending Payments", "50", "50 more payments will be executed further",
-              IconString.pendingAuto, AppColors.secondaryColor),
-          _autoStatCard(context, cardWidth, "Overdue Payments", "20", "3 More Payments Overdue",
-              IconString.overdueIcon, AppColors.secondaryColor),
-          _autoStatCard(context, cardWidth, "Paused Accounts", "2", "2 more accounts got paused",
-              IconString.PausedAccountAuto, AppColors.secondaryColor),
-        ],
-      );
-    });
-  }
-  Widget _autoStatCard(BuildContext context, double width, String title, String value, String sub, String? icon, Color iconBg, {bool isDot = false, Color? dotColor}) {
-    return Container(
-      width: width,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          )
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: iconBg,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: isDot
-                ? _buildGlowingDot(dotColor!)
-                : Image.asset(icon!, height: 20, width: 20),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TTextTheme.bodyRegular12(context),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  value,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TTextTheme.h2Style(context),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  sub,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TTextTheme.bodySecondRegular10(context),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildGlowingDot(Color color) {
-    return Container(
-      width: 20,
-      height: 20,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(color: color.withValues(alpha: 0.5), blurRadius: 6, spreadRadius: 1)
-        ],
-        gradient: RadialGradient(
-          colors: [Colors.white.withValues(alpha: 0.8), color],
-          stops: const [0.1, 1.0],
-        ),
-      ),
-    );
-  }
-
-  //  Tabs
+  // Status Tabs
   Widget _buildTabs() {
-    List<String> tabs = ["Pending", "Overdue", "Submitted", "Resubmit", "Completed"];
+    List<String> tabs = ["All", "Pending", "Overdue", "Submitted", "ReSubmit", "Failed", "Completed"];
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
@@ -608,7 +425,12 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                   color: isSelected ? AppColors.primaryColor : Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Text(tab, style: isSelected ? TTextTheme.medium14White(context) : TTextTheme.bodyRegular14tertiary(context)),
+                child: Text(
+                    tab,
+                    style: isSelected
+                        ? TTextTheme.medium14White(context)
+                        : TTextTheme.bodyRegular14tertiary(context)
+                ),
               ),
             );
           }).toList(),
@@ -617,9 +439,10 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     );
   }
 
-  //  Table
+  /// Data Table Headers
   Widget _buildTableHeader(PaymentController controller) {
     return Container(
+      width: 1450,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       decoration: BoxDecoration(
         color: AppColors.secondaryColor,
@@ -627,24 +450,27 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       ),
       child: Row(
         children: [
-          SizedBox(width: 200, child: _headerCell(TextString.header1payment, controller)),
+          SizedBox(width: 110, child: _headerCell("Reg No", controller)),
           SizedBox(width: 150, child: _headerCell(TextString.header7payment, controller)),
-          SizedBox(width: 235, child: _headerCell(TextString.header2payment, controller)),
-          SizedBox(width: 200, child: _headerCell(TextString.header3payment, controller)),
-          SizedBox(width: 120, child: _headerCell(TextString.header4payment, controller)),
-          SizedBox(width: 130, child: _headerCell(TextString.header5payment, controller, isCenter: true, canSort: false)),
-          SizedBox(width: 100, child: _headerCell(TextString.header6payment, controller, isCenter: true, canSort: false)),
+          SizedBox(width: 200, child: _headerCell(TextString.header2payment, controller)),
+          SizedBox(width: 180, child: _headerCell(TextString.header3payment, controller)),
+          SizedBox(width: 110, child: _headerCell(TextString.header4payment, controller)),
+          SizedBox(width: 150, child: _headerCell("Payment Type", controller)),
+          SizedBox(width: 170, child: _headerCell("Previous Overdue", controller)),
+          SizedBox(width: 130, child: _headerCell(TextString.header5payment, controller, isCenter: true)),
+          SizedBox(width: 110, child: _headerCell("Rating", controller, isCenter: true)),
+          SizedBox(width: 110, child: _headerCell(TextString.header6payment, controller, isCenter: true, canSort: false)),
         ],
       ),
     );
   }
-  Widget _headerCell(String title, PaymentController controller,
-      {bool isCenter = false, bool canSort = true}) {
+
+  Widget _headerCell(String title, PaymentController controller, {bool isCenter = false, bool canSort = true}) {
     return InkWell(
       onTap: canSort ? () => controller.toggleSort(title) : null,
       borderRadius: BorderRadius.circular(4),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+        padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
         child: Row(
           mainAxisAlignment: isCenter ? MainAxisAlignment.center : MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -668,12 +494,10 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.keyboard_arrow_up, size: 12,
-                          color: order == 1 ? AppColors.primaryColor : AppColors.textColor),
+                      Icon(Icons.keyboard_arrow_up, size: 12, color: order == 1 ? AppColors.primaryColor : AppColors.textColor),
                       Transform.translate(
                         offset: const Offset(0, -4),
-                        child: Icon(Icons.keyboard_arrow_down, size: 12,
-                            color: order == 2 ? AppColors.primaryColor : AppColors.textColor),
+                        child: Icon(Icons.keyboard_arrow_down, size: 12, color: order == 2 ? AppColors.primaryColor : AppColors.textColor),
                       ),
                     ],
                   ),
@@ -685,11 +509,13 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       ),
     );
   }
+
+  /// Data Table Rows
   Widget _buildPaymentRow(Map data) {
     String rawStatus = data["status"] ?? "Pending";
 
     return Container(
-      width: 1180,
+      width: 1450,
       margin: const EdgeInsets.only(top: 8),
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
       decoration: BoxDecoration(
@@ -699,70 +525,104 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       ),
       child: Row(
         children: [
-          _cell(width: 200, child: Text(data["id"] ?? "", style: TTextTheme.tableRegular14black(context), overflow: TextOverflow.ellipsis)),
-          _cell(width: 150, child: Text(data["customerName"] ?? "Jhon Martin", style: TTextTheme.bodySemiBold14black(context), overflow: TextOverflow.ellipsis)),
-          _cell(width: 240, child: Text(data["duration"] ?? "", style: TTextTheme.tableRegular14black(context))),
-          _cell(width: 200, child: Text(data["car"] ?? "", style: TTextTheme.tableRegular14black(context), overflow: TextOverflow.ellipsis)),
-          _cell(width: 120, child: Text("\$${data["amount"]}", style: TTextTheme.bodySemiBold16(context))),
+          _cell(
+              width: 110,
+              child: Text(
+                   "ABC 1234",
+                  style: TTextTheme.bodySemiBold14black(context),
+                  overflow: TextOverflow.ellipsis
+              )
+          ),
+          _cell(
+              width: 150,
+              child: Text(
+                  data["customerName"] ?? "Jhon Martin",
+                  style: TTextTheme.bodySemiBold14black(context),
+                  overflow: TextOverflow.ellipsis
+              )
+          ),
+          _cell(
+              width: 200,
+              child: Text(
+                data["duration"] ?? "Mar 7, 2026 - Mar 14, 2026",
+                style: TTextTheme.tableRegular14black(context),
+                overflow: TextOverflow.ellipsis,
+              )
+          ),
+          _cell(
+              width: 180,
+              child: Text(
+                  data["car"] ?? "Toyota Corolla 2022 Altis",
+                  style: TTextTheme.tableRegular14black(context),
+                  overflow: TextOverflow.ellipsis
+              )
+          ),
+          _cell(
+              width: 110,
+              child: Text(
+                  "\$${data["amount"] ?? "245"}",
+                  style: TTextTheme.bodySemiBold16(context).copyWith(color: AppColors.primaryColor)
+              )
+          ),
+          _cell(
+              width: 150,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (data["paymentTypeIcon"] != null) ...[
+                    Image.asset(data["paymentTypeIcon"], width: 16, height: 16),
+                    const SizedBox(width: 6),
+                  ],
+                  Flexible(
+                    child: Text(
+                      data["paymentType"] ?? "Pay to",
+                      style: TTextTheme.tableRegular14black(context),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              )
+          ),
+          _cell(
+              width: 150,
+              child: Text(
+                  data["previousOverdue"] ?? "2 Week",
+                  style: TTextTheme.tableRegular14black(context)
+              )
+          ),
           _cell(width: 130, child: Center(child: _buildStatusChip(rawStatus))),
+          _cell(
+              width: 110,
+              child: Center(
+                child: Text(
+                  data["rating"] ?? "80%",
+                  style: TTextTheme.bodySemiBold14black(context).copyWith(color: AppColors.activeColor2),
+                ),
+              )
+          ),
           SizedBox(
-            width: 110,
+            width: 120,
             child: Obx(() {
               bool isCompletedTab = controller.selectedTab.value == "Completed";
 
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      context.push('/invoicesDetail', extra: data);
-                    },
-                    borderRadius: BorderRadius.circular(4),
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Image.asset(
-                        IconString.viewIcon,
-                        color: AppColors.primaryColor,
-                        width: 20,
-                        height: 20,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
+                  _buildActionIconButton(
+                    iconPath: IconString.viewIcon,
+                    onTap: () => context.push('/invoicesDetail', extra: data),
                   ),
                   if (!isCompletedTab) ...[
                     const SizedBox(width: 8),
-                    InkWell(
-                      onTap: () {
-                        showApproveRequestDialog(context);
-                      },
-                      borderRadius: BorderRadius.circular(4),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Image.asset(
-                          IconString.approvedIcon,
-                          width: 20,
-                          height: 20,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
+                    _buildActionIconButton(
+                      iconPath: IconString.approvedIconTwo,
+                      onTap: () => showApproveRequestDialog(context),
                     ),
                   ],
-
                   const SizedBox(width: 8),
-                  InkWell(
-                    onTap: () {
-                      context.go('/invoicesTableDetail');
-                    },
-                    borderRadius: BorderRadius.circular(4),
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Image.asset(
-                        IconString.cardView,
-                        width: 22,
-                        height: 22,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
+                  _buildActionIconButton(
+                    iconPath: IconString.tableIcon,
+                    onTap: () => context.go('/invoicesTableDetail'),
                   ),
                 ],
               );
@@ -772,150 +632,38 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       ),
     );
   }
-  Widget _buildAutoTableHeader(PaymentController controller) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-      decoration: BoxDecoration(
-        color: AppColors.secondaryColor,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          SizedBox(width: 220, child: _headerCell(TextString.autoHeader1, controller)),
-          SizedBox(width: 180, child: _headerCell(TextString.autoHeader2, controller)),
-          SizedBox(width: 120, child: _headerCell(TextString.autoHeader3, controller)),
-          SizedBox(width: 220, child: _headerCell(TextString.autoHeader4, controller)),
-          SizedBox(width: 140, child: _headerCell(TextString.autoHeader5, controller)),
-          SizedBox(width: 100, child: _headerCell(TextString.autoHeader6, controller)),
-          SizedBox(width: 150, child: _headerCell(TextString.autoHeader7, controller)),
-          SizedBox(width: 120, child: _headerCell(TextString.autoHeader8, controller, isCenter: true)),
-          SizedBox(width: 100, child: _headerCell(TextString.autoHeader9, controller, isCenter: true)),
-          SizedBox(width: 110, child: _headerCell(TextString.autoHeader10, controller, isCenter: true, canSort: false)),
-        ],
-      ),
-    );
-  }
-  Widget _buildAutoPaymentRow(Map data) {
-    String rawStatus = data["status"] ?? "Pending";
-    return Container(
-      width: 1530,
-      margin: const EdgeInsets.only(top: 8),
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundOfTableContainer,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.sideBoxesColor.withValues(alpha: 0.7), width: 1),
-      ),
-      child: Row(
-        children: [
-          _cell(width: 220, child: Row(
-            children: [
-              CircleAvatar(
-                radius: 14,
-                backgroundImage: AssetImage(ImageString.customerUser), 
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(data["customerName"] ?? "", style: TTextTheme.bodySemiBold14black(context), overflow: TextOverflow.ellipsis),
-                    Text(data["email"] ?? "user@example.com", style: TTextTheme.bodyRegular14(context), overflow: TextOverflow.ellipsis),
-                  ],
-                ),
-              ),
-            ],
-          )),
-          _cell(width: 180, child: Text(data["car"] ?? "", style: TTextTheme.tableRegular14black(context), overflow: TextOverflow.ellipsis)),
-          _cell(width: 120, child: Text(data["registration"] ?? "1234567890", style: TTextTheme.tableRegular14black(context))),
-          _cell(width: 220, child: Text(data["duration"] ?? "", style: TTextTheme.tableRegular14black(context))),
-          _cell(width: 140, child: _buildSourceWidget(data["source"])),
-          _cell(width: 100, child: Text("\$${data["amount"]}", style: TTextTheme.bodySemiBold14black(context))),
-          _cell(width: 150, child: Text(data["dueDate"] ?? "7th April, 2026", style: TTextTheme.tableRegular14black(context))),
-          _cell(width: 130, child: Center(child: _buildStatusChip(rawStatus))),
-          _cell(width: 100, child: Center(child: Text(data["attempts"] ?? "1/3", style: TTextTheme.tableRegular14black(context)))),
-          _cell(width: 110, child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: () {
-                  context.push('/invoicesAutoDetail', extra: data);
-                },
-                borderRadius: BorderRadius.circular(6),
-                child: Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: const Icon(
-                    Icons.visibility_outlined,
-                    size: 18,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              InkWell(
-                onTap: () => showPausedConfirmationDialog(context),
-                borderRadius: BorderRadius.circular(20),
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Icon(
-                    Icons.pause_circle_outline,
-                    size: 20,
-                    color: AppColors.blackColor,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              InkWell(
-                onTap: () => showCancelConfirmationDialog(context),
-                borderRadius: BorderRadius.circular(20),
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Icon(
-                      Icons.cancel_outlined,
-                      size: 20,
-                      color: AppColors.blackColor
-                  ),
-                ),
-              ),
-            ],
-          )),
-        ],
-      ),
-    );
-  }
-  Widget _buildSourceWidget(dynamic sourceValue) {
-    String source = sourceValue?.toString() ?? "";
-    String icon;
-    switch (source) {
-      case 'Stripe':
-        icon = IconString.stripeICon;
-        break;
-      case 'Direct Debit':
-        icon = IconString.cardView;
-        break;
-      case 'Pay to':
-        icon = IconString.paytoIcon;
-        break;
-      default:
-        icon = IconString.stripeICon;
-    }
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Image.asset(icon, height: 18, width: 18),
-        const SizedBox(width: 8),
-        Text(
-          source.isEmpty ? "N/A" : source,
-          style: TTextTheme.tableRegular14black(context).copyWith(fontSize: 12),
+  Widget _buildActionIconButton({
+    required String iconPath,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        width: 28,
+        height: 28,
+        padding: const EdgeInsets.all(5.0),
+        decoration: BoxDecoration(
+          color: AppColors.primaryColor,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.08),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
-      ],
+        child: Image.asset(
+          iconPath,
+          color: Colors.white,
+          fit: BoxFit.contain,
+        ),
+      ),
     );
   }
+
   Widget _cell({required double width, required Widget child}) {
     return SizedBox(width: width, child: child);
   }
@@ -937,6 +685,10 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       case 'resubmit':
         backgroundColor = AppColors.reviewColor;
         break;
+      case 'failed':
+        backgroundColor = AppColors.primaryColor;
+        displayStatus = "Failed";
+        break;
       case 'submitted':
         backgroundColor = AppColors.textColor;
         displayStatus = "Submitted";
@@ -955,27 +707,22 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       child: Text(
         displayStatus,
         textAlign: TextAlign.center,
-        style: TTextTheme.bodySemiBold14White(context),
+        style: TTextTheme.bodySemiBold14White(context).copyWith(fontWeight: FontWeight.w400),
       ),
     );
   }
 
-  // Pagination
   Widget _buildPagination() {
-
     bool isMobile = MediaQuery.of(context).size.width < 800;
-
     return Padding(
-      padding:
-      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: PaginationBarOfPayment(
-        isMobile: isMobile, tablePadding: 240,
+        isMobile: isMobile,
+        tablePadding: 240,
       ),
     );
   }
-
-   /// Diaogs
+   /// Dialogs
   void showPausedConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,

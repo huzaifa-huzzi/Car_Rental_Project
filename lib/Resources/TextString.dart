@@ -765,12 +765,50 @@ class TextString {
   static const String  dialogPayment6= "Are you sure you want to confirm the payment";
   static const String  dialogPayment7=  "Payment marked as completed Successfully";
   static const String  dialogPayment8= "Congratulations! Payment has marked as successfully in the system";
+  static const String save = "Save";
+  static const String cancel = "Cancel";
+  static const String resubmitTitle = "Mark payment as resubmit?";
+  static String resubmitSubTitle(String invoiceId) =>
+      "Are you sure you want to mark invoice $invoiceId as re upload? The status will be change as re upload and notification will be sent to the customer";
+  static const String resubmitSuccessTitle = "Payment Marked as resubmit Successfully";
+  static const String resubmitSuccessSubTitle =
+      "Congratulation! payment has marked as re upload successfully in the system.";
+  static const String completionTitle = "Mark payment as completed?";
+  static String completionSubTitle(String invoiceId) =>
+      "Are you sure you want to mark invoice $invoiceId as completed? This action confirm that payment has verified and proceed";
+  static const String completionSuccessTitle = "Payment Marked as completed Successfully";
+  static const String completionSuccessSubTitle =
+      "Congratulation! payment has marked as completed successfully in the system.";
+  static const String paymentInfoTitle = "Payment Information";
+  static const String paymentInfoSubtitle = "All details about the payment";
+  static const String invoiceId = "Invoice Id";
+  static const String fromDate = "From Date";
+  static const String toDate = "To Date";
+  static const String paymentAmount = "Payment Amount";
+  static const String dueDate = "Due Date";
+  static const String carName = "Car Name";
+  static const String type = "Type";
+  static const String transmission = "Transmission";
+  static const String customerDetailTitle = "Customer Detail";
+  static const String customerDetailSubtitle = "Your customer detail listed here";
+  static const String phoneNumber = "Phone Number";
+  static const String email = "Email";
+  static const String requestToUpdateCard = "Request to update card";
+  static const String reasonForRequest = "Reason for Request";
+  static const String writeReason = "Write Reason";
+  static const String requestResubmit = "Request Resubmit";
+  static const String markAsComplete = "Mark as complete";
+  static const String regNo = "Reg No";
+  static const String duration = "Duration";
+  static const String paymentType = "Payment Type";
+  static const String previousOverdue = "Previous Overdue";
+  static const String rating = "Rating";
    // Add Payment
   static const String  titlePaymentAdd= "Payment Information";
   static const String  titlePaymentAddSubtitle= "All details about the payment";
   static const String  field1= "Invoice Id";
   static const String  field2= "Customer Name";
-  static const String  field3=  "Phone Number";
+  static String get field3 => "Phone Number";
   static const String  field4=  "Payment Amount";
   static const String  field5=  "Due Date";
   static const String  field6=  "Submission Date";
@@ -822,7 +860,6 @@ class TextString {
   static const String  carDetailInvoices= "Car Detail";
   static const String  carDetailSubtitleInvoices= "Your Car detail listed here";
   static const String  submittedDate= "Submitted Date";
-  static const String  duration= "Duration";
   static const String  otherPayment= "Other Payments by ";
   static const String  adamJhones= "(Adam Jhones)";
   static const String  listOfPayment= "List of all payments";
@@ -845,8 +882,6 @@ class TextString {
   static const String  autoDetailTitle4=  "Transmission";
   static const String  autoRentalDetailTitle= "Rental Period";
   static const String  autoRentalDetailSubtitle= "Your rental period detail listed here";
-  static const String  fromDate= "from Date";
-  static const String  toDate= "to Date";
   static const String  duration2= "Duration";
   static const String  autoHeader1= "Customer";
   static const String  autoHeader2= "Car Name";
@@ -858,6 +893,10 @@ class TextString {
   static const String  autoHeader8= "Status";
   static const String  autoHeader9= "Attempts";
   static const String  autoHeader10= "Action";
+  static const String  customerDetail= 'Customer Detail';
+  static const String  licenseDetail= 'License Number';
+  static const String  rentalAmount= 'Rental Amount';
+  static const String  failedText = "Your automatic payment could not be processed because your card has insufficient funds. Please recharge your card and ensure sufficient balance to avoid any interruption to your service.";
 
    // Link Payment
   static const String  linkTitleCarDetail= "Car Detail";

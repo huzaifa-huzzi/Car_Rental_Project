@@ -324,7 +324,7 @@ class PaymentController extends GetxController {
   void loadOtherPaymentsinvoices() {
     otherPaymentsListinvoices.assignAll([
       {
-        "id": "INV-RSC-202603-0001",
+        "id": "ABC-001",
         "customerName": "Adam Jhones",
         "duration": "Mar 7, 2026 - Mar 14, 2026",
         "car": "Mazada CX-5 (2017)",
@@ -332,7 +332,7 @@ class PaymentController extends GetxController {
         "status": "Pending"
       },
       {
-        "id": "INV-RSC-202603-0002",
+        "id": "ABC-001",
         "customerName": "Adam Jhones",
         "duration": "Mar 7, 2026 - Mar 14, 2026",
         "car": "Mazada CX-5 (2017)",
@@ -522,4 +522,8 @@ class PaymentController extends GetxController {
     isPaymentLinked.value = false;
     selectedPickup.value = null;
   }
+
+  var selectedOverdueDay = "Wednesday".obs;
+  final emailController = TextEditingController(text: "adam@gmail.com");
+  final licenseController = TextEditingController(text: "#12345667");
 }

@@ -26,7 +26,7 @@ import 'package:car_rental_project/Portal/Vendor/DropOffCar/TableViewDropoff/Tab
 import 'package:car_rental_project/Portal/Vendor/Payment/Add%20Payment/AddPaymentScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/InvoiceTableWidget/InvoiceTableWidget.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/InvoicesDetail/InvoicesDetail.dart';
-import 'package:car_rental_project/Portal/Vendor/Payment/InvoicesDetail/Widget/InvoicesDetailAutoWidget.dart';
+
 import 'package:car_rental_project/Portal/Vendor/Payment/LinkPayment/LinkPayment.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/payment.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/paymentController.dart';
@@ -249,17 +249,6 @@ class VendorRoutes {
             }
             final data = state.extra as Map<String, dynamic>?;
             return InvoiceTableWidget(data: data ?? {});
-          },
-        ),
-
-        GoRoute(
-          path: '/invoicesAutoDetail',
-          builder: (context, state) {
-            if (!Get.isRegistered<PaymentController>()) {
-              Get.put(PaymentController());
-            }
-            final data = state.extra as Map<String, dynamic>?;
-            return InvoicesDetailAutoWidget(invoiceData: data ?? {});
           },
         ),
 

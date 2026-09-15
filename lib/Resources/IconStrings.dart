@@ -150,6 +150,8 @@ class IconString {
   static const String  paytoIcon = 'assets/icons/PayTo.png';
   static const String  ddIcon = 'assets/icons/DDIcon.png';
   static const String  cardView = 'assets/icons/CardView.png';
+  static const String  approvedIconTwo = 'assets/icons/approvedIconTwo.png';
+  static const String  tableIcon = 'assets/icons/TableIcon.png';
 
     // Reminder
   static const String  reminderIcon = 'assets/icons/Reminder.png';

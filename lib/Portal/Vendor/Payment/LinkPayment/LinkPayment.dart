@@ -436,75 +436,85 @@ class LinkPaymentScreen extends StatelessWidget {
       children: [
         LayoutBuilder(
           builder: (context, constraints) {
-            bool isWide = constraints.maxWidth > 800;
+            bool isWide = constraints.maxWidth > 850;
             return isWide
                 ? Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(child: _buildCarDetailCard(context)),
+                Expanded(child: _buildCarDetailCard(context, isWide)),
                 const SizedBox(width: 20),
-                Expanded(child: _buildRentalPeriodCard(context)),
+                Expanded(child: _buildCustomerDetailCard(context, isWide)),
               ],
             )
                 : Column(
               children: [
-                _buildCarDetailCard(context),
+                _buildCarDetailCard(context, isWide),
                 const SizedBox(height: 20),
-                _buildRentalPeriodCard(context),
+                _buildCustomerDetailCard(context, isWide),
               ],
             );
           },
         ),
         const SizedBox(height: 20),
-        _buildPaymentInformationCard(context),
+        _buildRentalDetailsCard(context),
         const SizedBox(height: 24),
-        Align(
-          alignment: Alignment.centerRight,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryColor,
-              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              elevation: 0,
-            ),
-            onPressed: () {
-              _showApproveRequestDialog(context);
-              Get.snackbar("Success", "Payment linked successfully!");
-            },
-            child: Text(
-                TextString.mainLinkPaymentTitle,
-              style: TTextTheme.titleTwo(context).copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w400,
+        LayoutBuilder(
+          builder: (context, constraints) {
+            bool isWeb = constraints.maxWidth > 600;
+            return Align(
+              alignment: isWeb ? Alignment.centerRight : Alignment.center,
+              child: SizedBox(
+                width: isWeb ? null : double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryColor,
+                    padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    elevation: 0,
+                  ),
+                  onPressed: () {
+                    _showApproveRequestDialog(context);
+                    Get.snackbar("Success", "Payment linked successfully!");
+                  },
+                  child: Text(
+                    TextString.mainLinkPaymentTitle,
+                    style: TTextTheme.titleTwo(context).copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ],
     );
   }
 
-  // Car Detail Form
-  Widget _buildCarDetailCard(BuildContext context) {
+    // Car Detail Form
+  Widget _buildCarDetailCard(BuildContext context, bool isWide) {
     return _buildCardWrapper(
       context: context,
-      title: TextString.linkTitleCarDetail,
-      subtitle: TextString.linkTitleCarDetailSubtitle,
+      title: TextString.carDetailTitlepayment,
+      subtitle: TextString.carDetailTitleSubtitle,
       child: Column(
         children: [
-          Row(
+          _buildResponsiveRow(
+            isWide: isWide,
             children: [
-              Expanded(child: _buildDisabledField(context,TextString.linkCarNameTitle , controller.carNameController)),
-              const SizedBox(width: 16),
-              Expanded(child: _buildDisabledField(context,TextString.linkCarNameTitleType , controller.carTypeController)),
+              _buildDisabledField(context, TextString.carField1, controller.carNameController),
+              _buildDisabledField(context, TextString.carField2, controller.carTypeController),
             ],
           ),
           const SizedBox(height: 16),
-          Row(
+          _buildResponsiveRow(
+            isWide: isWide,
             children: [
-              Expanded(child: _buildDisabledField(context,TextString.linktitleRegistration, controller.registrationController)),
-              const SizedBox(width: 16),
-              Expanded(child: _buildDisabledField(context,TextString.linkCarNameTitleTransmission , controller.transmissionController)),
+              _buildDisabledField(context, TextString.carField2, controller.registrationController),
+              _buildDisabledField(context, TextString.carField3, controller.transmissionController),
             ],
           ),
         ],
@@ -512,72 +522,262 @@ class LinkPaymentScreen extends StatelessWidget {
     );
   }
 
-  // Rental Period Form
-  Widget _buildRentalPeriodCard(BuildContext context) {
+   // Customer Detail Form
+  Widget _buildCustomerDetailCard(BuildContext context, bool isWide) {
     return _buildCardWrapper(
       context: context,
-      title: TextString.linkRentalPeriodTitle,
-      subtitle:TextString.linkRentalPeriodSubtitle ,
+      title: TextString.customerDetail,
+      subtitle: TextString.customerDetailSubtitle,
       child: Column(
         children: [
-          Row(
+          _buildResponsiveRow(
+            isWide: isWide,
             children: [
-              Expanded(child: _buildDisabledField(context,TextString.linkRentalFromDate, controller.fromDateController)),
-              const SizedBox(width: 16),
-              Expanded(child: _buildDisabledField(context,TextString.linkRentalToDate, controller.toDateController)),
+              _buildDisabledField(context, TextString.autoPaymentTitle2, controller.customerNameController),
+              _buildDisabledField(context, TextString.field3, controller.phoneNumberController),
             ],
           ),
           const SizedBox(height: 16),
-          _buildDisabledField(context,TextString.linkRentalFromDuration , controller.durationController),
+          _buildResponsiveRow(
+            isWide: isWide,
+            children: [
+              _buildDisabledField(context, TextString.titleEmailStepTwo, controller.emailController ?? TextEditingController(text: "adam@gmail.com")),
+              _buildDisabledField(context, TextString.licenseDetail, controller.licenseController ?? TextEditingController(text: "#12345667")),
+            ],
+          ),
         ],
       ),
     );
   }
 
-  // Payment Information Form
-  Widget _buildPaymentInformationCard(BuildContext context) {
+   // Rental Details Form
+  Widget _buildRentalDetailsCard(BuildContext context) {
     return _buildCardWrapper(
       context: context,
-      title:TextString.linkPaymentInfoTitle ,
-      subtitle:TextString.linkPaymentInfoSubtitle ,
-      child: Column(
+      title: TextString.autoRentalDetailTitle,
+      subtitle: TextString.autoRentalDetailSubtitle,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          bool isDesktop = constraints.maxWidth > 900;
+          bool isTablet = constraints.maxWidth > 600 && constraints.maxWidth <= 900;
+
+          if (isDesktop) {
+            return Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(child: _buildDisabledField(context, TextString.fromDate, controller.fromDateController)),
+                    const SizedBox(width: 16),
+                    Expanded(child: _buildDisabledField(context, TextString.toDate, controller.toDateController)),
+                    const SizedBox(width: 16),
+                    Expanded(child: _buildDisabledField(context, TextString.duration2, controller.durationController)),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(child: _buildDisabledField(context, TextString.rentalAmount, controller.paymentAmountController)),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: _buildCustomDropdown(
+                        context,
+                        'Overdue Day',
+                        ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                        controller.selectedOverdueDay ?? "Wednesday".obs,
+                        id: 'overdue_day_drop',
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    const Expanded(child: SizedBox()),
+                  ],
+                ),
+              ],
+            );
+          } else if (isTablet) {
+            return Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(child: _buildDisabledField(context,TextString.fromDate, controller.fromDateController)),
+                    const SizedBox(width: 16),
+                    Expanded(child: _buildDisabledField(context, TextString.toDate, controller.toDateController)),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(child: _buildDisabledField(context, TextString.duration2, controller.durationController)),
+                    const SizedBox(width: 16),
+                    Expanded(child: _buildDisabledField(context, TextString.rentalAmount, controller.paymentAmountController)),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                _buildCustomDropdown(
+                  context,
+                  'Overdue Day',
+                  ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                  controller.selectedOverdueDay ?? "Wednesday".obs,
+                  id: 'overdue_day_drop',
+                ),
+              ],
+            );
+          } else {
+            return Column(
+              children: [
+                _buildDisabledField(context, TextString.fromDate, controller.fromDateController),
+                const SizedBox(height: 16),
+                _buildDisabledField(context, TextString.toDate, controller.toDateController),
+                const SizedBox(height: 16),
+                _buildDisabledField(context, TextString.duration2, controller.durationController),
+                const SizedBox(height: 16),
+                _buildDisabledField(context, TextString.rentalAmount, controller.paymentAmountController),
+                const SizedBox(height: 16),
+                _buildCustomDropdown(
+                  context,
+                  'Overdue Day',
+                  ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                  controller.selectedOverdueDay ?? "Wednesday".obs,
+                  id: 'overdue_day_drop',
+                ),
+              ],
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  // Customer Dropdown
+  Widget _buildCustomDropdown(
+      BuildContext context,
+      String label,
+      List<String> items,
+      RxString selected, {
+        required String id,
+      }) {
+    return Obx(() {
+      bool isOpen = controller.openedDropdown2.value == id;
+      String errorMsg = controller.dropdownErrors[id] ?? "";
+      bool hasError = errorMsg.isNotEmpty;
+
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          LayoutBuilder(
-            builder: (context, constraints) {
-              bool isWide = constraints.maxWidth > 700;
-              return isWide
-                  ? Row(
-                children: [
-                  Expanded(child: _buildDisabledField(context,TextString.linkPaymentCustomer, controller.customerNameController)),
-                  const SizedBox(width: 16),
-                  Expanded(child: _buildDisabledField(context,TextString.linkPaymentPhone , controller.phoneNumberController)),
-                  const SizedBox(width: 16),
-                  Expanded(child: _buildDisabledField(context,TextString.linkPaymentPaymentAmount , controller.paymentAmountController)),
-                ],
-              )
-                  : Column(
-                children: [
-                  _buildDisabledField(context, TextString.linkPaymentCustomer, controller.customerNameController),
-                  const SizedBox(height: 16),
-                  _buildDisabledField(context, TextString.linkPaymentPhone, controller.phoneNumberController),
-                  const SizedBox(height: 16),
-                  _buildDisabledField(context, TextString.linkPaymentPaymentAmount , controller.paymentAmountController),
-                ],
-              );
-            },
+          Text(
+            label,
+            style: TTextTheme.h2StyleSubtitle(context).copyWith(
+              color: AppColors.secondTextColor,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-          const SizedBox(height: 16),
-          FractionallySizedBox(
-            widthFactor: MediaQuery.of(context).size.width > 700 ? 0.32 : 1.0,
-            child: _buildDisabledField(context, TextString.linkDueDate, controller.dueDateController),
-          )
+          const SizedBox(height: 8),
+          LayoutBuilder(builder: (context, constraints) {
+            return PopupMenuButton<String>(
+              constraints: BoxConstraints(
+                minWidth: constraints.maxWidth,
+                maxWidth: constraints.maxWidth,
+                maxHeight: 300,
+              ),
+              offset: const Offset(0, 48),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              color: Colors.white,
+              elevation: 4,
+              onOpened: () => controller.openedDropdown2.value = id,
+              onCanceled: () => controller.openedDropdown2.value = "",
+              onSelected: (val) {
+                selected.value = val;
+                if (controller.dropdownErrors.containsKey(id)) {
+                  controller.dropdownErrors[id] = "";
+                }
+                controller.openedDropdown2.value = "";
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                height: 44,
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: hasError
+                        ? AppColors.textColor
+                        : AppColors.sideBoxesColor.withValues(alpha: 0.6),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        selected.value.isEmpty ? "Select $label..." : selected.value,
+                        style: TTextTheme.h2Style(context).copyWith(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400,
+                          color: selected.value.isEmpty ? AppColors.tertiaryTextColor: Colors.black87,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                      color: AppColors.tertiaryTextColor,
+                      size: 20,
+                    ),
+                  ],
+                ),
+              ),
+              itemBuilder: (context) {
+                return items.map((item) {
+                  bool isSelected = selected.value == item;
+                  return PopupMenuItem<String>(
+                    value: item,
+                    height: 40,
+                    child: Text(
+                      item,
+                      style: TTextTheme.h2Style(context).copyWith(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
+                        color:Colors.black87,
+                      ),
+                    ),
+                  );
+                }).toList();
+              },
+            );
+          }),
+          if (hasError)
+            Padding(
+              padding: const EdgeInsets.only(top: 6, left: 4),
+              child: Text(
+                errorMsg,
+                style: TTextTheme.ErrorStyle(context),
+              ),
+            ),
         ],
-      ),
+      );
+    });
+  }
+
+// Helpers
+  Widget _buildResponsiveRow({required bool isWide, required List<Widget> children}) {
+    if (isWide) {
+      return Row(
+        children: [
+          Expanded(child: children[0]),
+          const SizedBox(width: 16),
+          Expanded(child: children[1]),
+        ],
+      );
+    }
+    return Column(
+      children: [
+        children[0],
+        const SizedBox(height: 16),
+        children[1],
+      ],
     );
   }
 
-  // Main Container Wrapper
   Widget _buildCardWrapper({
     required BuildContext context,
     required String title,
@@ -586,7 +786,7 @@ class LinkPaymentScreen extends StatelessWidget {
   }) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(MediaQuery.of(context).size.width > 600 ? 24 : 16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -615,7 +815,6 @@ class LinkPaymentScreen extends StatelessWidget {
     );
   }
 
-  // Disabled Form Field Setup
   Widget _buildDisabledField(BuildContext context, String label, TextEditingController textController) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -630,8 +829,8 @@ class LinkPaymentScreen extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Container(
-          height: 44,
-          padding: const EdgeInsets.symmetric(horizontal: 14),
+          constraints: const BoxConstraints(minHeight: 44),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
@@ -649,7 +848,7 @@ class LinkPaymentScreen extends StatelessWidget {
             decoration: const InputDecoration(
               isDense: true,
               border: InputBorder.none,
-              contentPadding: EdgeInsets.zero,
+              contentPadding: EdgeInsets.symmetric(vertical: 8),
             ),
           ),
         ),
@@ -792,7 +991,6 @@ class LinkPaymentScreen extends StatelessWidget {
       },
     );
   }
-
   void _showSuccessDialog(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final bool isMobile = screenWidth < 600;
