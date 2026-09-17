@@ -112,6 +112,14 @@ class TextString {
   static const String   cardNumberDetail =  'Card Number';
   static const String   cardNumberDetailScreen =  '41xxx xxxx xxxx 5609';
 
+   // Change Details
+  static const String   changeDetailTitle =  "Change Detail";
+  static const String   changeDetailSubtitle =  "Here you can ask the customer to change his details";
+  static const String   FieldOne = "Title";
+  static const String   FieldOneSubtitle =  "Enter Title";
+  static const String   FieldTwo =  "Description";
+  static const String   FieldTwoSubtitle =  "Enter Description";
+
   // Add Customers Screen
   static const String   addCustomerTitle = 'Add Customer';
   static const String    addCustomerSubtitle = 'Enter the specification for the new customer';

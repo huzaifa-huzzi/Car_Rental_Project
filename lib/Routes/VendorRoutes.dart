@@ -7,6 +7,7 @@ import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Car%20Directory
 import 'package:car_rental_project/Portal/Vendor/Car%20Inventory/Editing%20Car/EditingCar.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/AddCustomers/AddCustomers.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/AddCustomers/Widget/StepTwoCustomerWidget.dart';
+import 'package:car_rental_project/Portal/Vendor/Customers/ChangeDetail/ChangeDetail.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/CustomersController.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/CustomersDetails/CustomersDetails.dart';
 import 'package:car_rental_project/Portal/Vendor/Customers/EditCustomers/EditCustomerScreen.dart';
@@ -150,6 +151,10 @@ class VendorRoutes {
         GoRoute(path: '/editCustomers', builder: (_, __) {
           Get.put(CustomerController());
           return EditCustomerScreen();
+        }),
+        GoRoute(path: '/changeDetails', builder: (_, __) {
+          Get.put(CustomerController());
+          return ChangeDetail();
         }),
         GoRoute(path: '/stepTwoCustomer', builder: (_, __) {
           Get.put(CustomerController());

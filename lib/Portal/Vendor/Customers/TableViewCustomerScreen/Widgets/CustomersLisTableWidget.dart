@@ -20,7 +20,7 @@ class CustomerListTableWidget extends StatelessWidget {
   final double licenseColWidth = 180.0;
   final double editReqColWidth = 140.0;
   final double cardColWidth = 110.0;
-  final double actionColWidth = 110.0;
+  final double actionColWidth = 140.0;
 
   final double fixedTablePadding = 16.0;
 
@@ -41,10 +41,6 @@ class CustomerListTableWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 12.0),
-          child: _buildTopFilterTabs(context),
-        ),
         LayoutBuilder(
           builder: (context, constraints) {
             double containerWidth = constraints.maxWidth > totalTableWidth
@@ -86,7 +82,7 @@ class CustomerListTableWidget extends StatelessWidget {
                           _headerCell(TextString.customerTableFive, licenseColWidth, context),
                           _headerCell(TextString.customerTableSix, editReqColWidth, context),
                           _headerCell(TextString.customerTableSeven, cardColWidth, context),
-                          _headerCell("Action", actionColWidth, context, isAction: true),
+                          _headerCell(TextString.header6payment, actionColWidth, context, isAction: true),
                         ],
                       ),
                     ),
@@ -171,52 +167,6 @@ class CustomerListTableWidget extends StatelessWidget {
     );
   }
 
-    /// -------- Extra Widget --------------- ///
-  // Top Filter Tabs
-  Widget _buildTopFilterTabs(BuildContext context) {
-    final List<String> tabs = ["All", "Pending", "Approved", "Updated"];
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      physics: const BouncingScrollPhysics(),
-      child: Container(
-        padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Obx(() {
-          return Row(
-            mainAxisSize: MainAxisSize.min,
-            children: tabs.map((tab) {
-              bool isSelected = controller.selectedTabFilter.value == tab;
-              return InkWell(
-                onTap: () => controller.setTabFilter(tab),
-                borderRadius: BorderRadius.circular(6),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                  margin: const EdgeInsets.only(right: 2),
-                  decoration: BoxDecoration(
-                    color: isSelected ? AppColors.primaryColor : Colors.transparent,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    tab,
-                    style: isSelected
-                        ? TTextTheme.smallXX(context).copyWith(
-                        color: Colors.white, fontWeight: FontWeight.bold)
-                        : TTextTheme.smallXX(context).copyWith(
-                        color: AppColors.secondTextColor),
-                  ),
-                ),
-              );
-            }).toList(),
-          );
-        }),
-      ),
-    );
-  }
-
   // Header Cell
   Widget _headerCell(String title, double width, BuildContext context, {bool isAction = false}) {
     return SizedBox(
@@ -278,7 +228,7 @@ class CustomerListTableWidget extends StatelessWidget {
     );
   }
 
-   // data Cell
+  // data Cell
   Widget _dataCell(String text, double width, BuildContext context) {
     return SizedBox(
       width: width,
@@ -290,7 +240,7 @@ class CustomerListTableWidget extends StatelessWidget {
     );
   }
 
-   // Client Data Cell
+  // Client Data Cell
   Widget _clientDataCell(double width, BuildContext context) {
     return SizedBox(
       width: width,
@@ -299,7 +249,7 @@ class CustomerListTableWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-           TextString.clientDataCellTitle,
+            TextString.clientDataCellTitle,
             style: TTextTheme.pOne(context).copyWith(fontWeight: FontWeight.bold),
             overflow: TextOverflow.ellipsis,
           ),
@@ -314,7 +264,7 @@ class CustomerListTableWidget extends StatelessWidget {
     );
   }
 
-   // license Data Cell
+  // license Data Cell
   Widget _licenseDataCell(double width, BuildContext context) {
     return SizedBox(
       width: width,
@@ -354,52 +304,45 @@ class CustomerListTableWidget extends StatelessWidget {
     );
   }
 
-  // Status badge cell
+
   Widget _statusBadgeCell(int rowIndex, double width, BuildContext context) {
-    return Obx(() {
-      String selectedTab = controller.selectedTabFilter.value;
-      String status;
+    List<String> mockStatuses = ["Can Edit", "Requested", "Updated", "No"];
+    String status = mockStatuses[rowIndex % mockStatuses.length];
 
-      if (selectedTab == "All") {
-        List<String> mockStatuses = ["Approved", "Pending", "Updated"];
-        status = mockStatuses[rowIndex % mockStatuses.length];
-      } else {
-        status = selectedTab;
-      }
-
-      Color badgeColor;
-      if (status == "Approved") {
-        badgeColor = AppColors.activeColor2;
-      } else if (status == "Pending") {
-        badgeColor = AppColors.pendingColor;
-      } else if (status == "Updated") {
-        badgeColor =AppColors.fourBackground;
-      } else {
-        return SizedBox(
-          width: width,
-          child: Text("---------", style: TTextTheme.pOne(context)),
-        );
-      }
-
+    Color badgeColor;
+    if (status == "Can Edit") {
+      badgeColor = AppColors.activeColor2;
+    } else if (status == "Requested") {
+      badgeColor = AppColors.pendingColor;
+    } else if (status == "Updated") {
+      badgeColor = AppColors.fourBackground;
+    } else if (status == "No") {
+      badgeColor = AppColors.Card1Color;
+    } else {
       return SizedBox(
         width: width,
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-            decoration: BoxDecoration(
-              color: badgeColor,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              status,
-              style: TTextTheme.pFour(context)
-                  .copyWith(color: Colors.white, fontWeight: FontWeight.w400),
-            ),
+        child: Text("---------", style: TTextTheme.pOne(context)),
+      );
+    }
+
+    return SizedBox(
+      width: width,
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+          decoration: BoxDecoration(
+            color: badgeColor,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Text(
+            status,
+            style: TTextTheme.pFour(context)
+                .copyWith(color: Colors.white, fontWeight: FontWeight.w400),
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 
   Widget _actionDataCell(double width, BuildContext context) {
@@ -408,31 +351,73 @@ class CustomerListTableWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          InkWell(
+          _buildActionButton(
+            icon: Icons.remove_red_eye_outlined,
             onTap: () {
               context.go('/customerDetails', extra: {"hideMobileAppBar": true});
             },
-            child: Icon(Icons.remove_red_eye_outlined, size: 14, color: AppColors.primaryColor),
           ),
-          const SizedBox(width: 8),
-          InkWell(
+          const SizedBox(width: 6),
+          _buildActionButton(
+            imageAsset: IconString.approvedIconTwo,
+            icon: Icons.note_alt_outlined,
             onTap: () {
-              showApproveRequestDialog(context);
+             showApproveRequestDialog(context);
             },
-            borderRadius: BorderRadius.circular(20),
-            child: Image.asset(
-              IconString.approvedIcon,
-              height: 14,
-              width: 14,
-            ),
+          ),
+          const SizedBox(width: 6),
+
+          _buildActionButton(
+            imageAsset: IconString.tableEdit,
+            onTap: () {
+              context.go('/changeDetails');
+            },
           ),
         ],
       ),
     );
   }
+  Widget _buildActionButton({
+    IconData? icon,
+    String? imageAsset,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(6),
+      child: Container(
+        width: 28,
+        height: 28,
+        decoration: BoxDecoration(
+          color: AppColors.primaryColor,
+          borderRadius: BorderRadius.circular(6),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primaryColor.withValues(alpha: 0.25),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Center(
+          child: imageAsset != null
+              ? Image.asset(
+            imageAsset,
+            width: 15,
+            height: 15,
+            color: Colors.white,
+          )
+              : Icon(
+            icon,
+            size: 16,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
 
   /// Dialogs
-  // Dialogs
   void showApproveRequestDialog(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final bool isMobile = screenWidth < 600;
@@ -468,7 +453,6 @@ class CustomerListTableWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -602,7 +586,6 @@ class CustomerListTableWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -622,7 +605,7 @@ class CustomerListTableWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                           TextString.customerDataDialogThree,
+                            TextString.customerDataDialogThree,
                             style: TTextTheme.h13Style(context).copyWith(
                               fontWeight: FontWeight.bold,
                               color: AppColors.textColor,
@@ -649,5 +632,4 @@ class CustomerListTableWidget extends StatelessWidget {
       },
     );
   }
-
 }

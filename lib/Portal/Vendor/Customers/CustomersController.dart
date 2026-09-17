@@ -33,6 +33,8 @@ class CustomerController extends GetxController {
   final RxInt pageSize2 = 10.obs;
   final RxInt selectedView2 = 0.obs;
 
+
+
   RxList<Map<String, dynamic>> carList2 = <Map<String, dynamic>>[].obs;
   RxList<Map<String, dynamic>> displayedCarList = <Map<String, dynamic>>[].obs;
 
@@ -633,6 +635,27 @@ class CustomerController extends GetxController {
     inviteGivenNameController.clear();
     inviteSurnameController.clear();
     inviteEmailController.clear();
+  }
+
+  // Change Detail Screen
+  final changeDetailFormKey = GlobalKey<FormState>();
+  final changeDetailTitleController = TextEditingController();
+  final changeDetailDescriptionController = TextEditingController();
+
+  bool saveChangeDetails(BuildContext context) {
+    if (changeDetailFormKey.currentState?.validate() ?? false) {
+      Get.snackbar(
+        "Success",
+        "Change details request sent successfully",
+        backgroundColor: AppColors.activeColor2,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      changeDetailTitleController.clear();
+      changeDetailDescriptionController.clear();
+      return true;
+    }
+    return false;
   }
 
   @override
