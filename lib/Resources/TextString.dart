@@ -928,6 +928,34 @@ class TextString {
   static const String  linkPaymentPhone= "Phone Number";
   static const String  linkPaymentPaymentAmount= "Payment Amount";
   static const String  linkDueDate= "Due Date";
+    // Payment / Subtabs -> Payment Detail
+  static const String addPaymentDetails = "Add Payment Details";
+  static const String paymentInstruction = "Payment Instruction";
+  static const String belowAreTheInstructionHowToPay = "Below are the instruction how to pay";
+  static const String paymentByBankAccount = "Payment by Bank Account";
+  static const String paymentByPayId = "Payment by Pay Id";
+  static const String accountName = "Account Name";
+  static const String enterAccountName = "Enter Account Name";
+  static const String bsb = "BSB";
+  static const String enterBsbNumber = "Enter BSB Number";
+  static const String accountNumber = "Account Number";
+  static const String enterAccountNumber = "Enter Account Number";
+  static const String emailAddress = "Email Address";
+  static const String enterEmailAddress = "Enter Email Address";
+  static const String description = "Description";
+  static const String enterDescription = "Enter Description";
+  static const String edit = "Edit";
+  static const String success = "Success";
+  static const String instructionsUpdatedSuccessfully = "Instructions updated successfully";
+  static const String bankStep1 = "1. Make the payment using the bank details above.";
+  static const String bankStep2 = "2. Upload the payment receipt or transaction screenshot.";
+  static const String bankStep3 = "3. Ensure the transaction ID and amount are clearly visible.";
+  static const String bankStep4 = "4. Your payment will be verified by the admin.";
+  static const String payIdStep1 = "1. Open your banking app and select PayID Transfer.";
+  static const String payIdStep2 = "2. Enter the PayID email provided by the rental company.";
+  static const String payIdStep3 = "3. Confirm the account name.";
+  static const String payIdStep4 = "4. Enter the payment amount.";
+  static const String payIdStep5 = "5. Send the payment.";
 
 
     // Reminder
@@ -1300,5 +1328,3 @@ class TextString {
   static const String  title=   "Page Not Found";
   static const String  foundSubtitle=   "Something Went Wrong on Website Server";
 }
-
- /// Testing in mobile

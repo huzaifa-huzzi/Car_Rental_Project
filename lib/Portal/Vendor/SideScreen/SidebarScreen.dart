@@ -122,11 +122,19 @@ class SidebarScreen extends StatelessWidget {
                 ],
                 scaffoldKey: _scaffoldKey,
               ),
-              SidebarComponents.menuItem(
+              SidebarComponents.expandableMenuItem(
                 context, controller,
                 iconPath: IconString.paymentIconModule,
                 title: "Payment",
-                onTap: (val) => context.go('/Payment'),
+                route: '/Payment',
+                subItems: [
+                  {
+                    'title': 'Payment Detail',
+                    'route': '/PaymentDetail',
+                    'icon': IconString.paymentIconModule,
+                    'extra': {'hideMobileAppBar': true},
+                  },
+                ],
                 scaffoldKey: _scaffoldKey,
               ),
 

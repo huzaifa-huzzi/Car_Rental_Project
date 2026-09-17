@@ -1,8 +1,10 @@
 
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/CustomCalendarPayment2.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/CustomCalenderPayment.dart';
+import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -530,4 +532,62 @@ class PaymentController extends GetxController {
   var selectedOverdueDay = "Wednesday".obs;
   final emailController = TextEditingController(text: "adam@gmail.com");
   final licenseController = TextEditingController(text: "#12345667");
+
+  /// Sub tabs
+  var selectedPaymentMethodTab = 0.obs;
+
+  final accountNameController = TextEditingController();
+  final bsbController = TextEditingController();
+  final accountNumberController = TextEditingController();
+  final payIdController = TextEditingController();
+  var isEditingInstructions = false.obs;
+  final instructionDescriptionController = TextEditingController();
+
+  var bankInstructionsList = <String>[
+    TextString.bankStep1,
+    TextString.bankStep2,
+    TextString.bankStep3,
+    TextString.bankStep4,
+  ].obs;
+
+  var payIdInstructionsList = <String>[
+    TextString.payIdStep1,
+    TextString.payIdStep2,
+    TextString.payIdStep3,
+    TextString.payIdStep4,
+    TextString.payIdStep5,
+  ].obs;
+
+  void switchPaymentMethodTab(int index) {
+    selectedPaymentMethodTab.value = index;
+    isEditingInstructions.value = false;
+  }
+
+  void toggleEditInstruction() {
+    bool isBank = selectedPaymentMethodTab.value == 0;
+    RxList<String> currentList = isBank ? bankInstructionsList : payIdInstructionsList;
+
+    if (isEditingInstructions.value) {
+      if (instructionDescriptionController.text.trim().isNotEmpty) {
+        final lines = instructionDescriptionController.text
+            .split('\n')
+            .where((line) => line.trim().isNotEmpty)
+            .toList();
+        if (lines.isNotEmpty) {
+          currentList.assignAll(lines);
+        }
+      }
+      isEditingInstructions.value = false;
+      Get.snackbar(
+        "Success",
+        "Instructions updated successfully",
+        backgroundColor: AppColors.activeColor2,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } else {
+      instructionDescriptionController.text = currentList.join('\n');
+      isEditingInstructions.value = true;
+    }
+  }
 }
