@@ -1,6 +1,7 @@
 
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/CustomCalendarPayment2.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/CustomCalenderPayment.dart';
+import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:file_picker/file_picker.dart';
@@ -35,6 +36,7 @@ class PaymentController extends GetxController {
   var isReasonFocused = false.obs;
   var isCarSelected = false.obs;
   var dropdownErrors = <String, String>{}.obs;
+  final TextEditingController paymentTypeController = TextEditingController(text: "Manual");
 
   var selectedCountryFlag = "🇦🇺".obs;
   var selectedCountryCode = "AUD".obs;
@@ -329,6 +331,7 @@ class PaymentController extends GetxController {
         "duration": "Mar 7, 2026 - Mar 14, 2026",
         "car": "Mazada CX-5 (2017)",
         "amount": "545",
+        "paymentTypeIcon":IconString.paytoIcon,
         "status": "Pending"
       },
       {
@@ -337,6 +340,7 @@ class PaymentController extends GetxController {
         "duration": "Mar 7, 2026 - Mar 14, 2026",
         "car": "Mazada CX-5 (2017)",
         "amount": "7565",
+        "paymentTypeIcon": IconString.paytoIcon,
         "status": "Pending"
       },
     ]);

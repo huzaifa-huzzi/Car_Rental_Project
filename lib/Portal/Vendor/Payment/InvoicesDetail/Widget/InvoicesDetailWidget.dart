@@ -160,7 +160,7 @@ class InvoicesDetailWidget extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(4),
                         decoration: const BoxDecoration(
-                          color: AppColors.quadrantalTextColor,
+                          color: AppColors.sideBoxesColor,
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
@@ -502,7 +502,9 @@ class InvoicesDetailWidget extends StatelessWidget {
 
   Widget _buildOtherPaymentsTable(BuildContext context) {
     String customerName = data["customerName"] ?? "Adam Jhones";
-    const double tableWidth = 1450.0;
+    String mainStatus = (data["status"] ?? "").toString().toLowerCase();
+    bool isFailed = mainStatus == "failed";
+    double tableWidth = isFailed ? 1570.0 : 1450.0;
 
     return Container(
       width: double.infinity,
@@ -553,6 +555,9 @@ class InvoicesDetailWidget extends StatelessWidget {
                       _cell(width: 180, child: _headerCell(TextString.header3payment, context)),
                       _cell(width: 110, child: _headerCell(TextString.header4payment, context)),
                       _cell(width: 150, child: _headerCell(TextString.paymentType, context)),
+                      if (isFailed)
+                        _cell(width: 120, child: _headerCell(TextString.attempts, context, isCenter: true)),
+
                       _cell(width: 150, child: _headerCell(TextString.previousOverdue, context)),
                       _cell(width: 110, child: _headerCell(TextString.rating, context, isCenter: true)),
                       _cell(width: 130, child: _headerCell(TextString.header5payment, context, isCenter: true, canSort: false)),
@@ -575,54 +580,11 @@ class InvoicesDetailWidget extends StatelessWidget {
     );
   }
 
-  Widget _headerCell(
-      String title,
-      BuildContext context, {
-        bool isCenter = false,
-        bool canSort = true,
-      }) {
-    return InkWell(
-      onTap: canSort ? () => controller.toggleSort3(title) : null,
-      child: Row(
-        mainAxisAlignment: isCenter ? MainAxisAlignment.center : MainAxisAlignment.start,
-        children: [
-          Text(title, style: TTextTheme.medium14tableHeading(context)),
-          if (canSort) ...[
-            const SizedBox(width: 4),
-            Obx(() {
-              bool isCurrent = controller.sortColumn3.value == title;
-              int order = isCurrent ? controller.sortOrder3.value : 0;
-
-              return Padding(
-                padding: const EdgeInsets.only(top: 2),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.keyboard_arrow_up_rounded,
-                      size: 13,
-                      color: order == 1 ? AppColors.primaryColor : AppColors.quadrantalTextColor,
-                    ),
-                    Transform.translate(
-                      offset: const Offset(0, -7),
-                      child: Icon(
-                        Icons.keyboard_arrow_down_rounded,
-                        size: 13,
-                        color: order == 2 ? AppColors.primaryColor : AppColors.quadrantalTextColor,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }),
-          ],
-        ],
-      ),
-    );
-  }
-
   Widget _buildSimplePaymentRow(Map rowData, BuildContext context) {
+    String mainStatus = (data["status"] ?? "").toString().toLowerCase();
+    String rowStatus = (rowData["status"] ?? "").toString().toLowerCase();
+    bool isFailed = mainStatus == "failed" || rowStatus == "failed";
+
     String currentTabStatus = controller.selectedTab.value;
     String rawStatus = (currentTabStatus.isNotEmpty && currentTabStatus != "All")
         ? currentTabStatus
@@ -696,6 +658,18 @@ class InvoicesDetailWidget extends StatelessWidget {
               ],
             ),
           ),
+          if (isFailed)
+            _cell(
+              width: 120,
+              child: Center(
+                child: Text(
+                  rowData["attempts"] ?? "1/3",
+                  style: TTextTheme.bodySemiBold14black(context),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+
           _cell(
             width: 150,
             child: Text(
@@ -718,6 +692,53 @@ class InvoicesDetailWidget extends StatelessWidget {
               child: _buildStatusChip(rawStatus, context),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _headerCell(
+      String title,
+      BuildContext context, {
+        bool isCenter = false,
+        bool canSort = true,
+      }) {
+    return InkWell(
+      onTap: canSort ? () => controller.toggleSort3(title) : null,
+      child: Row(
+        mainAxisAlignment: isCenter ? MainAxisAlignment.center : MainAxisAlignment.start,
+        children: [
+          Text(title, style: TTextTheme.medium14tableHeading(context)),
+          if (canSort) ...[
+            const SizedBox(width: 4),
+            Obx(() {
+              bool isCurrent = controller.sortColumn3.value == title;
+              int order = isCurrent ? controller.sortOrder3.value : 0;
+
+              return Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.keyboard_arrow_up_rounded,
+                      size: 13,
+                      color: order == 1 ? AppColors.primaryColor : AppColors.quadrantalTextColor,
+                    ),
+                    Transform.translate(
+                      offset: const Offset(0, -7),
+                      child: Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        size: 13,
+                        color: order == 2 ? AppColors.primaryColor : AppColors.quadrantalTextColor,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ],
         ],
       ),
     );
@@ -879,9 +900,40 @@ class InvoicesDetailWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(TextString.fieldUploadInvoices, style: TTextTheme.h2Style(context)),
-          const SizedBox(height: 2),
-          Text(TextString.fieldUploadSubtitleInvoices, style: TTextTheme.bodyRegular16(context)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(TextString.fieldUploadInvoices, style: TTextTheme.h2Style(context)),
+                  const SizedBox(height: 2),
+                  Text(TextString.fieldUploadSubtitleInvoices, style: TTextTheme.bodyRegular16(context)),
+                ],
+              ),
+              if (status == "submitted" || status == "completed")
+                ElevatedButton(
+                  onPressed: () {
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryColor,
+                    elevation: 0,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: Text(
+                    "Download Receipt",
+                    style: TTextTheme.bodyRegular14(context).copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+            ],
+          ),
           const SizedBox(height: 24),
           Container(
             width: double.infinity,

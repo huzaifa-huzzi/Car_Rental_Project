@@ -439,30 +439,189 @@ class _PaymentWidgetState extends State<PaymentWidget> {
     );
   }
 
-  /// Data Table Headers
+  // Data Table Headers
   Widget _buildTableHeader(PaymentController controller) {
-    return Container(
-      width: 1450,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-      decoration: BoxDecoration(
-        color: AppColors.secondaryColor,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          SizedBox(width: 110, child: _headerCell("Reg No", controller)),
-          SizedBox(width: 150, child: _headerCell(TextString.header7payment, controller)),
-          SizedBox(width: 200, child: _headerCell(TextString.header2payment, controller)),
-          SizedBox(width: 180, child: _headerCell(TextString.header3payment, controller)),
-          SizedBox(width: 110, child: _headerCell(TextString.header4payment, controller)),
-          SizedBox(width: 150, child: _headerCell("Payment Type", controller)),
-          SizedBox(width: 170, child: _headerCell("Previous Overdue", controller)),
-          SizedBox(width: 130, child: _headerCell(TextString.header5payment, controller, isCenter: true)),
-          SizedBox(width: 110, child: _headerCell("Rating", controller, isCenter: true)),
-          SizedBox(width: 110, child: _headerCell(TextString.header6payment, controller, isCenter: true, canSort: false)),
-        ],
-      ),
-    );
+    return Obx(() {
+      bool isFailedTab = controller.selectedTab.value == "Failed";
+      double containerWidth = isFailedTab ? 1570 : 1450;
+
+      return Container(
+        width: containerWidth,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        decoration: BoxDecoration(
+          color: AppColors.secondaryColor,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          children: [
+            SizedBox(width: 110, child: _headerCell(TextString.regNo, controller)),
+            SizedBox(width: 150, child: _headerCell(TextString.header7payment, controller)),
+            SizedBox(width: 200, child: _headerCell(TextString.header2payment, controller)),
+            SizedBox(width: 180, child: _headerCell(TextString.header3payment, controller)),
+            SizedBox(width: 110, child: _headerCell(TextString.header4payment, controller)),
+            SizedBox(width: 150, child: _headerCell(TextString.paymentType, controller)),
+            if (isFailedTab)
+              SizedBox(width: 120, child: _headerCell(TextString.attempts, controller, isCenter: true)),
+            SizedBox(width: 170, child: _headerCell(TextString.previousOverdue, controller)),
+            SizedBox(width: 130, child: _headerCell(TextString.header5payment, controller, isCenter: true)),
+            SizedBox(width: 110, child: _headerCell(TextString.rating, controller, isCenter: true)),
+            SizedBox(width: 110, child: _headerCell(TextString.header6payment, controller, isCenter: true, canSort: false)),
+          ],
+        ),
+      );
+    });
+  }
+
+  // Data Table Rows
+  Widget _buildPaymentRow(Map data) {
+    String rawStatus = data["status"] ?? "Pending";
+
+    return Obx(() {
+      bool isFailedTab = controller.selectedTab.value == "Failed";
+      bool isCompletedTab = controller.selectedTab.value == "Completed"; // Error resolved here
+      double containerWidth = isFailedTab ? 1570 : 1450;
+
+      return Container(
+        width: containerWidth,
+        margin: const EdgeInsets.only(top: 8),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+        decoration: BoxDecoration(
+          color: AppColors.backgroundOfTableContainer,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.sideBoxesColor.withValues(alpha: 0.7), width: 1),
+        ),
+        child: Row(
+          children: [
+            _cell(
+                width: 110,
+                child: Text(
+                    "ABC 1234",
+                    style: TTextTheme.bodySemiBold14black(context),
+                    overflow: TextOverflow.ellipsis
+                )
+            ),
+            _cell(
+                width: 150,
+                child: Text(
+                    data["customerName"] ?? "Jhon Martin",
+                    style: TTextTheme.bodySemiBold14black(context),
+                    overflow: TextOverflow.ellipsis
+                )
+            ),
+            _cell(
+                width: 200,
+                child: Text(
+                  data["duration"] ?? "Mar 7, 2026 - Mar 14, 2026",
+                  style: TTextTheme.tableRegular14black(context),
+                  overflow: TextOverflow.ellipsis,
+                )
+            ),
+            _cell(
+                width: 180,
+                child: Text(
+                    data["car"] ?? "Toyota Corolla 2022 Altis",
+                    style: TTextTheme.tableRegular14black(context),
+                    overflow: TextOverflow.ellipsis
+                )
+            ),
+            _cell(
+                width: 110,
+                child: Text(
+                    "\$${data["amount"] ?? "245"}",
+                    style: TTextTheme.bodySemiBold16(context).copyWith(color: AppColors.primaryColor)
+                )
+            ),
+          _cell(
+            width: 150,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (data["paymentTypeIcon"] != null && data["paymentTypeIcon"].toString().isNotEmpty) ...[
+                  if (data["paymentTypeIcon"].toString().endsWith('.svg'))
+                    Image.asset(
+                      data["paymentTypeIcon"],
+                      width: 18,
+                      height: 18,
+                    )
+                  else
+                    Image.asset(
+                      data["paymentTypeIcon"],
+                      width: 18,
+                      height: 18,
+                      fit: BoxFit.contain,
+                    ),
+                  const SizedBox(width: 8),
+                ],
+                Flexible(
+                  child: Text(
+                    data["paymentType"] ?? "Pay to",
+                    style: TTextTheme.tableRegular14black(context),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+            if (isFailedTab)
+              _cell(
+                width: 120,
+                child: Center(
+                  child: Text(
+                    data["attempts"] ?? "1/3",
+                    style: TTextTheme.bodySemiBold14black(context).copyWith(fontWeight: FontWeight.w400),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+
+            _cell(
+                width: 150,
+                child: Text(
+                    data["previousOverdue"] ?? "2 Week",
+                    style: TTextTheme.tableRegular14black(context)
+                )
+            ),
+            _cell(width: 130, child: Center(child: _buildStatusChip(rawStatus))),
+            _cell(
+                width: 110,
+                child: Center(
+                  child: Text(
+                    data["rating"] ?? "80%",
+                    style: TTextTheme.bodySemiBold14black(context).copyWith(color: AppColors.activeColor2),
+                  ),
+                )
+            ),
+            SizedBox(
+              width: 120,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildActionIconButton(
+                    iconPath: IconString.viewIcon,
+                    onTap: () => context.push('/invoicesDetail', extra: data),
+                  ),
+                  if (!isCompletedTab) ...[
+                    const SizedBox(width: 8),
+                    _buildActionIconButton(
+                      iconPath: IconString.approvedIconTwo,
+                      onTap: () => showApproveRequestDialog(context),
+                    ),
+                  ],
+                  const SizedBox(width: 8),
+                  _buildActionIconButton(
+                    iconPath: IconString.tableIcon,
+                    onTap: () => context.go('/invoicesTableDetail'),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+    });
   }
 
   Widget _headerCell(String title, PaymentController controller, {bool isCenter = false, bool canSort = true}) {
@@ -506,129 +665,6 @@ class _PaymentWidgetState extends State<PaymentWidget> {
             ],
           ],
         ),
-      ),
-    );
-  }
-
-  /// Data Table Rows
-  Widget _buildPaymentRow(Map data) {
-    String rawStatus = data["status"] ?? "Pending";
-
-    return Container(
-      width: 1450,
-      margin: const EdgeInsets.only(top: 8),
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundOfTableContainer,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.sideBoxesColor.withValues(alpha: 0.7), width: 1),
-      ),
-      child: Row(
-        children: [
-          _cell(
-              width: 110,
-              child: Text(
-                   "ABC 1234",
-                  style: TTextTheme.bodySemiBold14black(context),
-                  overflow: TextOverflow.ellipsis
-              )
-          ),
-          _cell(
-              width: 150,
-              child: Text(
-                  data["customerName"] ?? "Jhon Martin",
-                  style: TTextTheme.bodySemiBold14black(context),
-                  overflow: TextOverflow.ellipsis
-              )
-          ),
-          _cell(
-              width: 200,
-              child: Text(
-                data["duration"] ?? "Mar 7, 2026 - Mar 14, 2026",
-                style: TTextTheme.tableRegular14black(context),
-                overflow: TextOverflow.ellipsis,
-              )
-          ),
-          _cell(
-              width: 180,
-              child: Text(
-                  data["car"] ?? "Toyota Corolla 2022 Altis",
-                  style: TTextTheme.tableRegular14black(context),
-                  overflow: TextOverflow.ellipsis
-              )
-          ),
-          _cell(
-              width: 110,
-              child: Text(
-                  "\$${data["amount"] ?? "245"}",
-                  style: TTextTheme.bodySemiBold16(context).copyWith(color: AppColors.primaryColor)
-              )
-          ),
-          _cell(
-              width: 150,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (data["paymentTypeIcon"] != null) ...[
-                    Image.asset(data["paymentTypeIcon"], width: 16, height: 16),
-                    const SizedBox(width: 6),
-                  ],
-                  Flexible(
-                    child: Text(
-                      data["paymentType"] ?? "Pay to",
-                      style: TTextTheme.tableRegular14black(context),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              )
-          ),
-          _cell(
-              width: 150,
-              child: Text(
-                  data["previousOverdue"] ?? "2 Week",
-                  style: TTextTheme.tableRegular14black(context)
-              )
-          ),
-          _cell(width: 130, child: Center(child: _buildStatusChip(rawStatus))),
-          _cell(
-              width: 110,
-              child: Center(
-                child: Text(
-                  data["rating"] ?? "80%",
-                  style: TTextTheme.bodySemiBold14black(context).copyWith(color: AppColors.activeColor2),
-                ),
-              )
-          ),
-          SizedBox(
-            width: 120,
-            child: Obx(() {
-              bool isCompletedTab = controller.selectedTab.value == "Completed";
-
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildActionIconButton(
-                    iconPath: IconString.viewIcon,
-                    onTap: () => context.push('/invoicesDetail', extra: data),
-                  ),
-                  if (!isCompletedTab) ...[
-                    const SizedBox(width: 8),
-                    _buildActionIconButton(
-                      iconPath: IconString.approvedIconTwo,
-                      onTap: () => showApproveRequestDialog(context),
-                    ),
-                  ],
-                  const SizedBox(width: 8),
-                  _buildActionIconButton(
-                    iconPath: IconString.tableIcon,
-                    onTap: () => context.go('/invoicesTableDetail'),
-                  ),
-                ],
-              );
-            }),
-          )
-        ],
       ),
     );
   }

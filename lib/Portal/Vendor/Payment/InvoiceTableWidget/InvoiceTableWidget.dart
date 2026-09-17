@@ -48,7 +48,9 @@ class InvoiceTableWidget extends StatelessWidget {
   // Table Main Container
   Widget _buildOtherPaymentsTable(BuildContext context) {
     String customerName = data["customerName"] ?? "Jhon Martin";
-    const double tableWidth = 1450.0;
+    String mainStatus = (data["status"] ?? "").toString().toLowerCase();
+    bool isFailed = mainStatus == "failed";
+    double tableWidth = isFailed ? 1570.0 : 1450.0;
 
     return Container(
       width: double.infinity,
@@ -99,6 +101,9 @@ class InvoiceTableWidget extends StatelessWidget {
                       _cell(width: 180, child: _headerCell(TextString.header3payment, context)),
                       _cell(width: 110, child: _headerCell(TextString.header4payment, context)),
                       _cell(width: 150, child: _headerCell(TextString.paymentType, context)),
+                      if (isFailed)
+                        _cell(width: 120, child: _headerCell(TextString.attempts, context, isCenter: true)),
+
                       _cell(width: 150, child: _headerCell(TextString.previousOverdue, context)),
                       _cell(width: 110, child: _headerCell(TextString.rating, context, isCenter: true)),
                       _cell(width: 130, child: _headerCell(TextString.header5payment, context, isCenter: true, canSort: false)),
@@ -115,6 +120,124 @@ class InvoiceTableWidget extends StatelessWidget {
                 )),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+// Data Mapping Row
+  Widget _buildSimplePaymentRow(Map rowData, BuildContext context) {
+    String mainStatus = (data["status"] ?? "").toString().toLowerCase();
+    String rawStatus = rowData["status"] ?? "Pending";
+    bool isFailed = mainStatus == "failed" || rawStatus.toLowerCase() == "failed";
+
+    return Container(
+      margin: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+      decoration: BoxDecoration(
+        color: AppColors.backgroundOfTableContainer,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppColors.sideBoxesColor.withValues(alpha: 0.7),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        children: [
+          _cell(
+            width: 110,
+            child: Text(
+              rowData["regNo"] ?? "ABC 1234",
+              style: TTextTheme.bodySemiBold14black(context),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          _cell(
+            width: 150,
+            child: Text(
+              rowData["customerName"] ?? "Jhon Martin",
+              style: TTextTheme.bodySemiBold14black(context),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          _cell(
+            width: 200,
+            child: Text(
+              rowData["duration"] ?? "Mar 7, 2026 - Mar 14, 2026",
+              style: TTextTheme.tableRegular14black(context),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          _cell(
+            width: 180,
+            child: Text(
+              rowData["car"] ?? "Toyota Corolla 2022 Altis",
+              style: TTextTheme.tableRegular14black(context),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          _cell(
+            width: 110,
+            child: Text(
+              "\$${rowData["amount"] ?? "245"}",
+              style: TTextTheme.bodySemiBold16(context).copyWith(
+                color: AppColors.primaryColor,
+              ),
+            ),
+          ),
+          _cell(
+            width: 150,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (rowData["paymentTypeIcon"] != null) ...[
+                  Image.asset(rowData["paymentTypeIcon"], width: 16, height: 16),
+                  const SizedBox(width: 6),
+                ],
+                Flexible(
+                  child: Text(
+                    rowData["paymentType"] ?? "Pay to",
+                    style: TTextTheme.tableRegular14black(context),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (isFailed)
+            _cell(
+              width: 120,
+              child: Center(
+                child: Text(
+                  rowData["attempts"] ?? "1/3",
+                  style: TTextTheme.bodySemiBold14black(context),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+
+          _cell(
+            width: 150,
+            child: Text(
+              rowData["previousOverdue"] ?? "2 Week",
+              style: TTextTheme.tableRegular14black(context),
+            ),
+          ),
+          _cell(
+            width: 110,
+            child: Center(
+              child: Text(
+                rowData["rating"] ?? "80%",
+                style: TTextTheme.bodySemiBold14black(context).copyWith(
+                  color: AppColors.activeColor2,
+                ),
+              ),
+            ),
+          ),
+          _cell(
+            width: 130,
+            child: Center(child: _buildStatusChip(rawStatus, context)),
           ),
         ],
       ),
@@ -173,110 +296,7 @@ class InvoiceTableWidget extends StatelessWidget {
     );
   }
 
-  // Data Mapping Row
-  Widget _buildSimplePaymentRow(Map data, BuildContext context) {
-    String rawStatus = data["status"] ?? "Pending";
-
-    return Container(
-      width: 1450,
-      margin: const EdgeInsets.only(top: 8),
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundOfTableContainer,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.sideBoxesColor.withValues(alpha: 0.7),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        children: [
-          _cell(
-            width: 110,
-            child: Text(
-              data["regNo"] ?? "ABC 1234",
-              style: TTextTheme.bodySemiBold14black(context),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          _cell(
-            width: 150,
-            child: Text(
-              data["customerName"] ?? "Jhon Martin",
-              style: TTextTheme.bodySemiBold14black(context),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          _cell(
-            width: 200,
-            child: Text(
-              data["duration"] ?? "Mar 7, 2026 - Mar 14, 2026",
-              style: TTextTheme.tableRegular14black(context),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          _cell(
-            width: 180,
-            child: Text(
-              data["car"] ?? "Toyota Corolla 2022 Altis",
-              style: TTextTheme.tableRegular14black(context),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          _cell(
-            width: 110,
-            child: Text(
-              "\$${data["amount"] ?? "245"}",
-              style: TTextTheme.bodySemiBold16(context).copyWith(
-                color: AppColors.primaryColor,
-              ),
-            ),
-          ),
-          _cell(
-            width: 150,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (data["paymentTypeIcon"] != null) ...[
-                  Image.asset(data["paymentTypeIcon"], width: 16, height: 16),
-                  const SizedBox(width: 6),
-                ],
-                Flexible(
-                  child: Text(
-                    data["paymentType"] ?? "Pay to",
-                    style: TTextTheme.tableRegular14black(context),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          _cell(
-            width: 150,
-            child: Text(
-              data["previousOverdue"] ?? "2 Week",
-              style: TTextTheme.tableRegular14black(context),
-            ),
-          ),
-          _cell(
-            width: 110,
-            child: Center(
-              child: Text(
-                data["rating"] ?? "80%",
-                style: TTextTheme.bodySemiBold14black(context).copyWith(
-                  color: AppColors.activeColor2,
-                ),
-              ),
-            ),
-          ),
-          _cell(
-            width: 130,
-            child: Center(child: _buildStatusChip(rawStatus, context)),
-          ),
-        ],
-      ),
-    );
-  }
+  // Cell
   Widget _cell({required double width, required Widget child}) {
     return SizedBox(width: width, child: child);
   }

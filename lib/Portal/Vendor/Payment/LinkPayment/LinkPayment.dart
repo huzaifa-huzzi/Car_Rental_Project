@@ -588,7 +588,13 @@ class LinkPaymentScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 16),
-                    const Expanded(child: SizedBox()),
+                    Expanded(
+                      child: _buildDisabledField(
+                        context,
+                        'Payment Type',
+                        controller.paymentTypeController,
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -598,7 +604,7 @@ class LinkPaymentScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Expanded(child: _buildDisabledField(context,TextString.fromDate, controller.fromDateController)),
+                    Expanded(child: _buildDisabledField(context, TextString.fromDate, controller.fromDateController)),
                     const SizedBox(width: 16),
                     Expanded(child: _buildDisabledField(context, TextString.toDate, controller.toDateController)),
                   ],
@@ -612,12 +618,26 @@ class LinkPaymentScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
-                _buildCustomDropdown(
-                  context,
-                  'Overdue Day',
-                  ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-                  controller.selectedOverdueDay ?? "Wednesday".obs,
-                  id: 'overdue_day_drop',
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildCustomDropdown(
+                        context,
+                        'Overdue Day',
+                        ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                        controller.selectedOverdueDay ?? "Wednesday".obs,
+                        id: 'overdue_day_drop',
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: _buildDisabledField(
+                        context,
+                        'Payment Type',
+                        controller.paymentTypeController,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             );
@@ -638,6 +658,12 @@ class LinkPaymentScreen extends StatelessWidget {
                   ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
                   controller.selectedOverdueDay ?? "Wednesday".obs,
                   id: 'overdue_day_drop',
+                ),
+                const SizedBox(height: 16),
+                _buildDisabledField(
+                  context,
+                  'Payment Type',
+                  controller.paymentTypeController,
                 ),
               ],
             );

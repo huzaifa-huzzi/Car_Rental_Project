@@ -897,7 +897,7 @@ class TextString {
   static const String  licenseDetail= 'License Number';
   static const String  rentalAmount= 'Rental Amount';
   static const String  failedText = "Your automatic payment could not be processed because your card has insufficient funds. Please recharge your card and ensure sufficient balance to avoid any interruption to your service.";
-
+  static const String  attempts= 'Attempts';
    // Link Payment
   static const String  linkTitleCarDetail= "Car Detail";
   static const String  linkTitleCarDetailSubtitle= "Your Car detail listed here";
