@@ -590,4 +590,117 @@ class PaymentController extends GetxController {
       isEditingInstructions.value = true;
     }
   }
+
+  var isCustomerSelected = false.obs;
+  var selectedCustomerData = <String, dynamic>{}.obs;
+
+  var selectedSearchCategory = "Customer".obs;
+  var isCategoryDropdownOpen = false.obs;
+  final TextEditingController paymentHistorySearchController = TextEditingController();
+
+  var paymentHistorySearchResults = <Map<String, dynamic>>[].obs;
+
+// Dummy Customers Data for Search Results
+  final List<Map<String, dynamic>> allCustomers = [
+    {
+      "id": "CUS-1234",
+      "customerName": "John Smith",
+      "email": "john.smith@gmail.com",
+      "phone": "+61 412 345 678",
+      "car": "Toyota Corolla 2022 Altis",
+      "registration": "Abc12345",
+      "vin": "JTNBA3HK134567890",
+    },
+    {
+      "id": "CUS-5678",
+      "customerName": "Ethan Miles",
+      "email": "ethan@gmail.com",
+      "phone": "+61 498 765 432",
+      "car": "Mazda CX-5 (2017)",
+      "registration": "Abc12345",
+      "vin": "JTNBA3HK987654321",
+    },
+  ];
+
+// Dummy Selected Customer Payment History Entries
+  final List<Map<String, dynamic>> selectedCustomerPaymentHistory = [
+    {
+      "registration": "123456789",
+      "carName": "Toyota Corolla 2022 Altis",
+      "duration": "Mar 7, 2026 - Mar 14, 2026",
+      "paymentType": "Manual",
+      "paymentStatus": "Pending",
+      "submissionStatus": "Nil",
+      "amount": "\$45.00",
+      "dueDate": "7th April, 2026",
+    },
+    {
+      "registration": "123456789",
+      "carName": "Mazda CX-5 (2017)",
+      "duration": "Mar 7, 2026 - Mar 14, 2026",
+      "paymentType": "Direct Debit",
+      "paymentStatus": "Overdue",
+      "submissionStatus": "Late",
+      "amount": "\$245.00",
+      "dueDate": "10th April, 2026",
+    },
+    {
+      "registration": "123456789",
+      "carName": "Toyota Corolla 2022 Altis",
+      "duration": "Mar 7, 2026 - Mar 14, 2026",
+      "paymentType": "Pay to",
+      "paymentStatus": "Overdue",
+      "submissionStatus": "Late",
+      "amount": "\$120.00",
+      "dueDate": "12th April, 2026",
+    },
+    {
+      "registration": "123456789",
+      "carName": "Mazda CX-5 (2017)",
+      "duration": "Mar 7, 2026 - Mar 14, 2026",
+      "paymentType": "Direct Debit",
+      "paymentStatus": "Completed",
+      "submissionStatus": "On Time",
+      "amount": "\$245.00",
+      "dueDate": "15th April, 2026",
+    },
+    {
+      "registration": "123456789",
+      "carName": "Toyota Corolla 2022 Altis",
+      "duration": "Mar 7, 2026 - Mar 14, 2026",
+      "paymentType": "Direct Debit",
+      "paymentStatus": "Completed",
+      "submissionStatus": "On Time",
+      "amount": "\$45.00",
+      "dueDate": "18th April, 2026",
+    },
+  ];
+
+  void performCustomerSearch(String query) {
+    if (query.trim().isEmpty) {
+      paymentHistorySearchResults.clear();
+      return;
+    }
+    final lowerQuery = query.toLowerCase();
+    paymentHistorySearchResults.assignAll(
+      allCustomers.where((cust) {
+        final name = cust['customerName'].toString().toLowerCase();
+        final reg = cust['registration'].toString().toLowerCase();
+        final car = cust['car'].toString().toLowerCase();
+        return name.contains(lowerQuery) || reg.contains(lowerQuery) || car.contains(lowerQuery);
+      }).toList(),
+    );
+  }
+
+  void selectCustomerForHistory(Map<String, dynamic> customer) {
+    selectedCustomerData.value = customer;
+    isCustomerSelected.value = true;
+    paymentHistorySearchResults.clear();
+    paymentHistorySearchController.clear();
+  }
+
+  void resetCustomerSelection() {
+    isCustomerSelected.value = false;
+    selectedCustomerData.clear();
+  }
 }

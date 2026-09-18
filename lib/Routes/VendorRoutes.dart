@@ -30,6 +30,7 @@ import 'package:car_rental_project/Portal/Vendor/Payment/InvoicesDetail/Invoices
 
 import 'package:car_rental_project/Portal/Vendor/Payment/LinkPayment/LinkPayment.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/SubTabs/PaymentDetail/PaymentDetail.dart';
+import 'package:car_rental_project/Portal/Vendor/Payment/SubTabs/PaymentDetailTab/PaymentDetailTab.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/payment.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/paymentController.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/AddPickup.dart';
@@ -259,6 +260,7 @@ class VendorRoutes {
         ),
 
         GoRoute(path: '/PaymentDetail', builder: (_, __) => PaymentDetail()),
+        GoRoute(path: '/PaymentDetailTab', builder: (_, __) => PaymentDetailTab()),
 
          // Reminders
 

@@ -606,7 +606,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                   if (!isCompletedTab) ...[
                     const SizedBox(width: 8),
                     _buildActionIconButton(
-                      iconPath: IconString.approvedIconTwo,
+                      iconPath: IconString.approvedIcon,
                       onTap: () => showApproveRequestDialog(context),
                     ),
                   ],

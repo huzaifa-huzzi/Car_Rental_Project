@@ -129,6 +129,12 @@ class SidebarScreen extends StatelessWidget {
                 route: '/Payment',
                 subItems: [
                   {
+                    'title': 'Payment History',
+                    'route': '/PaymentDetailTab',
+                    'icon': IconString.paymentIconModule,
+                    'extra': {'hideMobileAppBar': true},
+                  },
+                  {
                     'title': 'Payment Detail',
                     'route': '/PaymentDetail',
                     'icon': IconString.paymentIconModule,
