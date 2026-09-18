@@ -956,6 +956,10 @@ class TextString {
   static const String payIdStep3 = "3. Confirm the account name.";
   static const String payIdStep4 = "4. Enter the payment amount.";
   static const String payIdStep5 = "5. Send the payment.";
+  static const String paymentDetailDialogOne = "Update Pay ID Payment Instructions";
+  static const String paymentDetailDialogTwo =  "Are you sure you want to update pay id payment instruction? This action confirm that Pay ID payment instruction has updated in the system";
+  static const String paymentDetailDialogThree = "Pay ID Payment Instruction Updated Successfully";
+  static const String paymentDetailDialogFour = "Congratulation! Pay ID payment has successfully updated in the system";
 
 
     // Reminder

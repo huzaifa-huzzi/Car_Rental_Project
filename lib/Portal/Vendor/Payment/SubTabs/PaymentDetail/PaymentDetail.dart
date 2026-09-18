@@ -366,7 +366,13 @@ class PaymentDetail extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    onPressed: () => controller.toggleEditInstruction(),
+                    onPressed: () {
+                      if (controller.isEditingInstructions.value) {
+                        showPausedConfirmationDialog(context,controller);
+                      } else {
+                        controller.startEditingInstructions();
+                      }
+                    },
                     child: Text(
                       controller.isEditingInstructions.value
                           ? TextString.save
@@ -450,6 +456,170 @@ class PaymentDetail extends StatelessWidget {
           }),
         ],
       ),
+    );
+  }
+
+   /// Dialog
+  void showPausedConfirmationDialog(BuildContext context, PaymentController controller) {
+    final controller = PaymentController();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Container(
+            width: 450,
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        color: AppColors.emojiBackground,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Center(child: Text("🤨", style: TextStyle(fontSize: 24))),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(TextString.paymentDetailDialogOne, style: TTextTheme.h2Style(context)),
+                          const SizedBox(height: 8),
+                          Text(
+                            TextString.paymentDetailDialogTwo,
+                            style: TTextTheme.bodyRegular16(context),
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.close_rounded, size: 20),
+                      padding: EdgeInsets.zero,
+                    )
+                  ],
+                ),
+                const SizedBox(height: 32),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          fixedSize: const Size.fromHeight(50),
+                          side: BorderSide(color: AppColors.primaryColor),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          backgroundColor: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+
+                          showPausedSuccessDialog(context);
+                        },
+                        child: Text(
+                          "Save",
+                          style: TTextTheme.medium14Primary(context),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: const Size.fromHeight(50),
+                          backgroundColor: AppColors.primaryColor,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          elevation: 0,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          "Cancel",
+                          style: TTextTheme.btnWhiteColor(context),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+  void showPausedSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Container(
+            width: 450,
+            padding: const EdgeInsets.all(24),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: AppColors.emojiBackground,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                            TextString.paymentDetailDialogThree,
+                                style: TTextTheme.h2Style(context)
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                                TextString.paymentDetailDialogFour,
+                                style: TTextTheme.bodyRegular16(context)
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: AppColors.sideBoxesColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(Icons.close, size: 16, color: AppColors.blackColor),
+                        ),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

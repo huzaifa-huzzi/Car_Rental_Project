@@ -534,6 +534,7 @@ class PaymentController extends GetxController {
   final licenseController = TextEditingController(text: "#12345667");
 
   /// Sub tabs
+  // Payment Details
   var selectedPaymentMethodTab = 0.obs;
 
   final accountNameController = TextEditingController();
@@ -562,35 +563,30 @@ class PaymentController extends GetxController {
     selectedPaymentMethodTab.value = index;
     isEditingInstructions.value = false;
   }
-
-  void toggleEditInstruction() {
+  void startEditingInstructions() {
+    bool isBank = selectedPaymentMethodTab.value == 0;
+    RxList<String> currentList = isBank ? bankInstructionsList : payIdInstructionsList;
+    instructionDescriptionController.text = currentList.join('\n');
+    isEditingInstructions.value = true;
+  }
+  void saveInstructions() {
     bool isBank = selectedPaymentMethodTab.value == 0;
     RxList<String> currentList = isBank ? bankInstructionsList : payIdInstructionsList;
 
-    if (isEditingInstructions.value) {
-      if (instructionDescriptionController.text.trim().isNotEmpty) {
-        final lines = instructionDescriptionController.text
-            .split('\n')
-            .where((line) => line.trim().isNotEmpty)
-            .toList();
-        if (lines.isNotEmpty) {
-          currentList.assignAll(lines);
-        }
+    if (instructionDescriptionController.text.trim().isNotEmpty) {
+      final lines = instructionDescriptionController.text
+          .split('\n')
+          .where((line) => line.trim().isNotEmpty)
+          .toList();
+
+      if (lines.isNotEmpty) {
+        currentList.assignAll(lines);
       }
-      isEditingInstructions.value = false;
-      Get.snackbar(
-        "Success",
-        "Instructions updated successfully",
-        backgroundColor: AppColors.activeColor2,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } else {
-      instructionDescriptionController.text = currentList.join('\n');
-      isEditingInstructions.value = true;
     }
+    isEditingInstructions.value = false;
   }
 
+    // Payment History
   var isCustomerSelected = false.obs;
   var selectedCustomerData = <String, dynamic>{}.obs;
 
