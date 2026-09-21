@@ -25,7 +25,9 @@ class PaymentDetail extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            HeaderWebPaymentWidget(
+
+            if(!isMobile)...[
+              HeaderWebPaymentWidget(
               mainTitle: 'Payment',
               showSmallTitle: true,
               smallTitle: 'Payment / Payment Detail',
@@ -40,7 +42,8 @@ class PaymentDetail extends StatelessWidget {
                   Navigator.of(context).pop();
                 }
               },
-            ),
+            ),],
+
             Expanded(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),

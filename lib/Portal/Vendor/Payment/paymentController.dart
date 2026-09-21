@@ -1,7 +1,6 @@
 
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/CustomCalendarPayment2.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/CustomCalenderPayment.dart';
-import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/IconStrings.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
 import 'package:car_rental_project/Resources/TextString.dart';

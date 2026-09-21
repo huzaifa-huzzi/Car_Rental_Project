@@ -12,7 +12,6 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../ReusableWidgetOfCustomers/CustomerPrimaryBtn.dart' show CustomerPrimaryBtn;
 

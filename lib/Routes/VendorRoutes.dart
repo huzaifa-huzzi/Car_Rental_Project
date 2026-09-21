@@ -61,11 +61,13 @@ class VendorRoutes {
     ShellRoute(
       builder: (context, state, child) {
         final String path = state.uri.toString().toLowerCase();
-        bool hideMobile = path.contains('t&c') ||
+        bool hideMobile = (path.contains('t&c') ||
             path.contains('add') ||
             path.contains('edit') ||
             path.contains('detail') ||
-            path.contains('step');
+            path.contains('step')) &&
+            !path.contains('paymentdetail') &&
+            !path.contains('paymenthistory');
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
           final SideBarController controller = Get.put(

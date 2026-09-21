@@ -71,7 +71,7 @@ class SidebarComponents {
               ),
               child: Text(
                 "Verify Now",
-                style: TTextTheme.h16Style(context)
+                style: TTextTheme.h16Style(context),
               ),
             ),
           ),
@@ -79,7 +79,6 @@ class SidebarComponents {
       ),
     );
   }
-
 
   /// Menu item
   static Widget menuItem(
@@ -138,7 +137,7 @@ class SidebarComponents {
     );
   }
 
-   /// Expandable Item
+  /// Expandable Item
   static Widget expandableMenuItem(
       BuildContext context,
       SideBarController controller, {
@@ -152,6 +151,7 @@ class SidebarComponents {
     return Obx(() {
       bool isExpanded = controller.expandedMenus[title] ?? false;
       bool isMainActive = controller.selected.value == title;
+      final String currentRoute = GoRouterState.of(context).uri.toString().toLowerCase();
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,65 +199,75 @@ class SidebarComponents {
             ),
           ),
           if (isExpanded)
-            ...subItems.map((sub) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 28),
-                child: IntrinsicHeight(
-                  child: Row(
-                    children: [
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(width: 1, color: AppColors.tertiaryTextColor.withValues(alpha: 0.7)),
-                          Container(
-                            width: 6,
-                            height: 6,
-                            decoration: const BoxDecoration(color: AppColors.primaryColor, shape: BoxShape.circle),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            controller.selectSubItem(title, sub['title']!);
-                            context.go(sub['route']!, extra: sub['extra']);
+            Padding(
+              padding: const EdgeInsets.only(left: 28),
+              child: Column(
+                children: subItems.map((sub) {
+                  final String subRoute = (sub['route'] ?? '').toString().toLowerCase();
+                  bool isSubSelected = subRoute.isNotEmpty && currentRoute.contains(subRoute);
 
-                            closeDrawerIfMobile(context, scaffoldKey);
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.only(right: 14, top: 4, bottom: 4),
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.primaryColor),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              children: [
-                                if (sub['icon'] != null)
-                                  Image.asset(
-                                    sub['icon'],
-                                    width: 16,
-                                    height: 16,
+                  return IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(
+                          width: 12,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width: 1,
+                                color: AppColors.tertiaryTextColor.withValues(alpha: 0.5),
+                              ),
+                              if (isSubSelected)
+                                Container(
+                                  width: 6,
+                                  height: 6,
+                                  decoration: const BoxDecoration(
                                     color: AppColors.primaryColor,
-                                  )
-                                else
-                                  const Icon(Icons.circle, size: 8, color: AppColors.primaryColor),
-                                const SizedBox(width: 8),
-                                Text(
-                                  sub['title']!,
-                                  style: TTextTheme.titleExpandableItem(context),
+                                    shape: BoxShape.circle,
+                                  ),
                                 ),
-                              ],
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(8),
+                            onTap: () {
+                              controller.selectSubItem(title, sub['title']!);
+                              context.go(sub['route']!, extra: sub['extra']);
+                              closeDrawerIfMobile(context, scaffoldKey);
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 14, top: 4, bottom: 4),
+                              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                              decoration: BoxDecoration(
+                                color: isSubSelected
+                                    ? AppColors.backgroundOfScreenColor
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                sub['title']!,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: isSubSelected ? FontWeight.w500 : FontWeight.w400,
+                                  color: isSubSelected
+                                      ? AppColors.primaryColor
+                                      : AppColors.quadrantalTextColor,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
         ],
       );
     });

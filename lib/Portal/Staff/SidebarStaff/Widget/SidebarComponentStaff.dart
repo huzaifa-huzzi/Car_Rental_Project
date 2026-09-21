@@ -1,4 +1,7 @@
 import 'package:car_rental_project/Portal/Admin/SidebarAdmin/SidebarController.dart';
+import 'package:car_rental_project/Portal/Staff/SidebarStaff/SidebarStaff.dart';
+import 'package:car_rental_project/Portal/Staff/SidebarStaff/SidebarStaffController.dart';
+import 'package:car_rental_project/Portal/Vendor/SideScreen/Widget/EmailVerificationDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
@@ -8,7 +11,7 @@ import 'package:go_router/go_router.dart';
 class SidebarComponentStaff {
 
   /// Helper: Close drawer if mobile
-  static void closeDrawerIfMobileAdmin(
+  static void closeDrawerIfMobile(
       BuildContext context,
       GlobalKey<ScaffoldState> scaffoldKey,
       ) {
@@ -19,11 +22,70 @@ class SidebarComponentStaff {
     }
   }
 
+  /// Email Verification
+  static Widget emailNotVerifiedCard(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 20),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.primaryColor, width: 1),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppColors.backgroundOfPickupsWidget,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Icon(
+              Icons.report_gmailerrorred_rounded,
+              color: AppColors.primaryColor,
+              size: 24,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            "Email not verified?",
+            style: TTextTheme.h6Style(context),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            height: 40,
+            child: ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => const EmailVerificationDialog(),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                elevation: 0,
+              ),
+              child: Text(
+                "Verify Now",
+                style: TTextTheme.h16Style(context),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   /// Menu item
   static Widget menuItemStaff(
       BuildContext context,
-      dynamic controller, {
+      SidebarStaffController controller, {
         required String iconPath,
         required String title,
         Widget? trailing,
@@ -32,7 +94,7 @@ class SidebarComponentStaff {
         required GlobalKey<ScaffoldState> scaffoldKey,
       }) {
 
-    Widget buildItemContentAdmin(bool active) {
+    Widget buildItemContent(bool active) {
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -69,20 +131,18 @@ class SidebarComponentStaff {
       onTap: () {
         controller.selectMenu(title);
         onTap(title);
-        if (MediaQuery.of(context).size.width < 850) {
-          scaffoldKey.currentState?.closeDrawer();
-        }
+        closeDrawerIfMobile(context, scaffoldKey);
       },
       child: isSelected != null
-          ? buildItemContentAdmin(isSelected)
-          : Obx(() => buildItemContentAdmin(controller.selected.value == title)),
+          ? buildItemContent(isSelected)
+          : Obx(() => buildItemContent(controller.selected.value == title)),
     );
   }
 
   /// Expandable Item
   static Widget expandableMenuItem(
       BuildContext context,
-      SideBarAdminController controller, {
+      SidebarStaffController controller, {
         required String iconPath,
         required String title,
         required String route,
@@ -93,6 +153,7 @@ class SidebarComponentStaff {
     return Obx(() {
       bool isExpanded = controller.expandedMenus[title] ?? false;
       bool isMainActive = controller.selected.value == title;
+      final String currentRoute = GoRouterState.of(context).uri.toString().toLowerCase();
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,7 +162,7 @@ class SidebarComponentStaff {
             onTap: () {
               controller.selectMenu(title);
               context.go(route, extra: extra);
-              closeDrawerIfMobileAdmin(context, scaffoldKey);
+              closeDrawerIfMobile(context, scaffoldKey);
             },
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
@@ -140,65 +201,75 @@ class SidebarComponentStaff {
             ),
           ),
           if (isExpanded)
-            ...subItems.map((sub) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 28),
-                child: IntrinsicHeight(
-                  child: Row(
-                    children: [
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(width: 1, color: AppColors.tertiaryTextColor.withValues(alpha: 0.7)),
-                          Container(
-                            width: 6,
-                            height: 6,
-                            decoration: const BoxDecoration(color: AppColors.primaryColor, shape: BoxShape.circle),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            controller.selectSubItem(title, sub['title']!);
-                            context.go(sub['route']!, extra: sub['extra']);
+            Padding(
+              padding: const EdgeInsets.only(left: 28),
+              child: Column(
+                children: subItems.map((sub) {
+                  final String subRoute = (sub['route'] ?? '').toString().toLowerCase();
+                  bool isSubSelected = subRoute.isNotEmpty && currentRoute.contains(subRoute);
 
-                            closeDrawerIfMobileAdmin(context, scaffoldKey);
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.only(right: 14, top: 4, bottom: 4),
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.primaryColor),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              children: [
-                                if (sub['icon'] != null)
-                                  Image.asset(
-                                    sub['icon'],
-                                    width: 16,
-                                    height: 16,
+                  return IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(
+                          width: 12,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width: 1,
+                                color: AppColors.tertiaryTextColor.withValues(alpha: 0.5),
+                              ),
+                              if (isSubSelected)
+                                Container(
+                                  width: 6,
+                                  height: 6,
+                                  decoration: const BoxDecoration(
                                     color: AppColors.primaryColor,
-                                  )
-                                else
-                                  const Icon(Icons.circle, size: 8, color: AppColors.primaryColor),
-                                const SizedBox(width: 8),
-                                Text(
-                                  sub['title']!,
-                                  style: TTextTheme.titleExpandableItem(context),
+                                    shape: BoxShape.circle,
+                                  ),
                                 ),
-                              ],
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(8),
+                            onTap: () {
+                              controller.selectSubItem(title, sub['title']!);
+                              context.go(sub['route']!, extra: sub['extra']);
+                              closeDrawerIfMobile(context, scaffoldKey);
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 14, top: 4, bottom: 4),
+                              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                              decoration: BoxDecoration(
+                                color: isSubSelected
+                                    ? AppColors.backgroundOfScreenColor
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                sub['title']!,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: isSubSelected ? FontWeight.w500 : FontWeight.w400,
+                                  color: isSubSelected
+                                      ? AppColors.primaryColor
+                                      : AppColors.quadrantalTextColor,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
         ],
       );
     });
