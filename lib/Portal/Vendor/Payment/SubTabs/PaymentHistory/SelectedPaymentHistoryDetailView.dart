@@ -2,9 +2,11 @@ import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/Paginati
 import 'package:car_rental_project/Portal/Vendor/Payment/paymentController.dart';
 import 'package:car_rental_project/Resources/Colors.dart' show AppColors;
 import 'package:car_rental_project/Resources/IconStrings.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 
 class SelectedPaymentHistoryDetailView extends StatelessWidget {
@@ -48,7 +50,7 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
                       if (controller.selectedCustomerPaymentHistory.isEmpty)
                         const Padding(
                           padding: EdgeInsets.all(24.0),
-                          child: Text("No payment history records found."),
+                          child: Text(TextString.noPaymentHistoryRecordsFound),
                         )
                       else
                         ...controller.selectedCustomerPaymentHistory
@@ -82,10 +84,10 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
         spacing: spacing,
         runSpacing: spacing,
         children: [
-          _statCard(context, cardWidth, "Total Revenue", "\$ 1245567", IconString.paymentIconModule),
-          _statCard(context, cardWidth, "Auto Payments", "6", IconString.autoPaymentICon),
-          _statCard(context, cardWidth, "Manual Payment", "4", IconString.manualIcon),
-          _statCard(context, cardWidth, "Active paid Customer", "65", IconString.paidCustomerIcon),
+          _statCard(context, cardWidth, TextString.totalRevenue, "\$ 1245567", IconString.paymentIconModule),
+          _statCard(context, cardWidth, TextString.autoPayments, "6", IconString.autoPaymentICon),
+          _statCard(context, cardWidth, TextString.manualPayment, "4", IconString.manualIcon),
+          _statCard(context, cardWidth, TextString.activePaidCustomer, "65", IconString.paidCustomerIcon),
         ],
       );
     });
@@ -115,7 +117,7 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
               color: AppColors.secondaryColor,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Image.asset(iconData,height: 20,width: 20, color: AppColors.textColor),
+            child: Image.asset(iconData, height: 20, width: 20, color: AppColors.textColor),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -150,7 +152,7 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "All payments",
+          TextString.allPayments,
           style: TTextTheme.h2Style(context).copyWith(
             fontWeight: FontWeight.bold,
             fontSize: 20,
@@ -159,7 +161,7 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          "List of all payments",
+          TextString.listOfAllPayments,
           style: TTextTheme.bodyRegular14tertiary(context),
         ),
       ],
@@ -207,8 +209,8 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
   Widget _buildCustomerTag(BuildContext context, PaymentController controller) {
     return Obx(() {
       final customer = controller.selectedCustomerData;
-      String customerName = customer['customerName'] ?? 'John Smith';
-      String customerId = customer['id'] ?? 'CUS-1234';
+      String customerName = customer['customerName'] ?? TextString.defaultCustomerName;
+      String customerId = customer['id'] ?? TextString.defaultCustomerId;
 
       return Container(
         width: MediaQuery.of(context).size.width < 900 ? double.infinity : null,
@@ -222,7 +224,7 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
           ),
         ),
         child: Text(
-          "Customer: $customerName ($customerId)",
+          "${TextString.customer}: $customerName ($customerId)",
           style: TTextTheme.h2Style(context).copyWith(
             color: AppColors.primaryColor,
             fontWeight: FontWeight.bold,
@@ -257,12 +259,12 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Image.asset(IconString.calendarIcon,height: 18,width: 18,color: AppColors.tertiaryTextColor,),
+              Image.asset(IconString.calendarIcon, height: 18, width: 18, color: AppColors.tertiaryTextColor),
               const SizedBox(width: 10),
               Expanded(
                 child: Obx(() => Text(
                   controller.selectedDateRangeText.value.isEmpty
-                      ? "Filter by Date"
+                      ? TextString.filterByDate
                       : controller.selectedDateRangeText.value,
                   style: TTextTheme.btncustomer(context),
                   overflow: TextOverflow.ellipsis,
@@ -279,10 +281,10 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
   // Customer Dropdown
   Widget _buildCustomerDropdown(BuildContext context, PaymentController controller, bool isMobile, double height) {
     final List<String> items = [
-      "Customer Name",
-      "Car Name",
-      "Registration",
-      "Amount",
+      TextString.customerName,
+      TextString.carName,
+      TextString.registration,
+      TextString.amount,
     ];
 
     return Obx(() {
@@ -309,7 +311,7 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
               Expanded(
                 child: Text(
                   controller.selectedSearchCategory.value.isEmpty
-                      ? "Registration"
+                      ? TextString.registration
                       : controller.selectedSearchCategory.value,
                   style: TTextTheme.btncustomer(context),
                   overflow: TextOverflow.ellipsis,
@@ -385,7 +387,7 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
               textAlignVertical: TextAlignVertical.center,
               style: TTextTheme.insidetextfieldWrittenText(context),
               decoration: InputDecoration(
-                hintText: "Search Company by Name",
+                hintText: TextString.searchCompanyByName,
                 hintStyle: TTextTheme.smallX(context),
                 border: InputBorder.none,
                 isDense: true,
@@ -406,7 +408,7 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(6),
                 ),
               ),
-              child: Text("Search", style: TTextTheme.searchText(context)),
+              child: Text(TextString.search, style: TTextTheme.searchText(context)),
             ),
           ),
         ],
@@ -427,15 +429,15 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
       ),
       child: Row(
         children: [
-          _tableHeaderCell(context, "Registration", 130),
-          _tableHeaderCell(context, "Car Name", 210),
-          _tableHeaderCell(context, "Duration", 200),
-          _tableHeaderCell(context, "Payment Type", 150),
-          _tableHeaderCell(context, "Payment Status", 160),
-          _tableHeaderCell(context, "Submission Status", 170),
-          _tableHeaderCell(context, "Amount", 120),
-          _tableHeaderCell(context, "Paid Date", 140),
-          _tableHeaderCell(context, "Action", 100, isAction: true),
+          _tableHeaderCell(context, TextString.registration, 130),
+          _tableHeaderCell(context, TextString.carName, 210),
+          _tableHeaderCell(context, TextString.duration, 200),
+          _tableHeaderCell(context, TextString.paymentType, 150),
+          _tableHeaderCell(context, TextString.paymentStatus, 160),
+          _tableHeaderCell(context, TextString.submissionStatus, 170),
+          _tableHeaderCell(context, TextString.amount, 120),
+          _tableHeaderCell(context, TextString.paidDate, 140),
+          _tableHeaderCell(context, TextString.action, 100, isAction: true),
         ],
       ),
     );
@@ -531,7 +533,7 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
           SizedBox(
             width: 130,
             child: Text(
-              data["registration"] ?? "Abc12345",
+              data["registration"] ?? TextString.defaultRegistration,
               style: TTextTheme.bodySemiBold14black(context),
               overflow: TextOverflow.ellipsis,
             ),
@@ -539,7 +541,7 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
           SizedBox(
             width: 210,
             child: Text(
-              data["carName"] ?? "Toyota Corolla 2022 Altis",
+              data["carName"] ?? TextString.defaultCar,
               style: TTextTheme.tableRegular14black(context),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -563,7 +565,7 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
                 ],
                 Flexible(
                   child: Text(
-                    data["paymentType"] ?? "Manual",
+                    data["paymentType"] ?? TextString.manualPayment,
                     style: TTextTheme.tableRegular14black(context),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -607,9 +609,10 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
               children: [
                 _buildActionButton(
                   iconPath: IconString.viewIcon,
-                  onTap: () {},
+                  onTap: () {
+                    context.go('/PaymentHistoryDetail', extra: data);
+                  },
                 ),
-                // Sirf tabhi approved/completed icon dikhayega jab status "completed" NA ho
                 if (paymentStatus != 'completed') ...[
                   const SizedBox(width: 6),
                   _buildActionButton(
@@ -750,10 +753,10 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Marked Payment as Completed", style: TTextTheme.h2Style(context)),
+                          Text(TextString.markedPaymentAsCompleted, style: TTextTheme.h2Style(context)),
                           const SizedBox(height: 8),
                           Text(
-                            "Are your sure you want marked it as completed",
+                            TextString.confirmMarkedAsCompleted,
                             style: TTextTheme.bodyRegular16(context),
                           ),
                         ],
@@ -782,7 +785,7 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
                           showPausedSuccessDialog(context);
                         },
                         child: Text(
-                          "Save",
+                          TextString.save,
                           style: TTextTheme.medium14Primary(context),
                         ),
                       ),
@@ -800,7 +803,7 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
                           Navigator.pop(context);
                         },
                         child: Text(
-                          "Cancel",
+                          TextString.cancel,
                           style: TTextTheme.btnWhiteColor(context),
                         ),
                       ),
@@ -814,6 +817,7 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
       },
     );
   }
+
   void showPausedSuccessDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -846,13 +850,13 @@ class SelectedPaymentHistoryDetailView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                "Payment Marked Successfully",
-                                style: TTextTheme.h2Style(context)
+                              TextString.paymentMarkedSuccessfully,
+                              style: TTextTheme.h2Style(context),
                             ),
                             const SizedBox(height: 8),
                             Text(
-                                "Congratulations! Payment has been marked",
-                                style: TTextTheme.bodyRegular16(context)
+                              TextString.congratulationsPaymentMarked,
+                              style: TTextTheme.bodyRegular16(context),
                             ),
                           ],
                         ),

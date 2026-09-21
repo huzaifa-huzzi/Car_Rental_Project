@@ -961,6 +961,53 @@ class TextString {
   static const String paymentDetailDialogThree = "Pay ID Payment Instruction Updated Successfully";
   static const String paymentDetailDialogFour = "Congratulation! Pay ID payment has successfully updated in the system";
 
+    // Payment / Subtabs -> Payment History
+  static const String paymentHistory = "Payment History";
+  static const String paymentHistorySubTitle = "Enter the specification to search the payment history";
+  static const String customer = "Customer";
+  static const String carRegistration = "Car Registration";
+  static const String vinNumber = "VIN Number";
+  static const String searchPaymentHistoryBy = "Search Payment History by ";
+  static const String reg = "Reg";
+  static const String select = "Select";
+  static const String defaultCustomerName = "John Smith";
+  static const String defaultCustomerId = "CUS-1234";
+  static const String defaultEmail = "john.smith@gmail.com";
+  static const String defaultCar = "Toyota Corolla 2022 Altis";
+  static const String defaultRegistration = "Abc12345";
+  static const String smallTitlePaymentHistory = "Payment / Payment History";
+  static const String totalRevenue = "Total Revenue";
+  static const String autoPayments = "Auto Payments";
+  static const String manualPayment = "Manual Payment";
+  static const String activePaidCustomer = "Active paid Customer";
+  static const String allPayments = "All payments";
+  static const String listOfAllPayments = "List of all payments";
+  static const String filterByDate = "Filter by Date";
+  static const String amount = "Amount";
+  static const String searchCompanyByName = "Search Company by Name";
+  static const String paymentStatus = "Payment Status";
+  static const String submissionStatus = "Submission Status";
+  static const String paidDate = "Paid Date";
+  static const String action = "Action";
+  static const String noPaymentHistoryRecordsFound = "No payment history records found.";
+  static const String markedPaymentAsCompleted = "Marked Payment as Completed";
+  static const String confirmMarkedAsCompleted = "Are your sure you want marked it as completed";
+  static const String paymentMarkedSuccessfully = "Payment Marked Successfully";
+  static const String congratulationsPaymentMarked = "Congratulations! Payment has been marked";
+  static const String paymentDetailsPath = "Payment  /  Payment Details";
+  static const String paymentDetail = "Payment Detail";
+  static const String paymentInformation = "Payment Information";
+  static const String allDetailsAboutPayment = "All details about the payment";
+  static const String submissionDate = "Submission Date";
+  static const String defaultSubNote = "Payment Submitted 2 Days Before Due Date";
+  static const String carDetail = "Car Detail";
+  static const String screenShot = "Screen Shot";
+  static const String screenShotHere = "Screen Shot here";
+  static const String downloadReceipt = "Download Receipt";
+  static const String statusCompleted = "Completed";
+  static const String statusOverdue = "Overdue";
+  static const String statusPending = "Pending";
+
 
     // Reminder
   static const String  reminderOne= "Monthly Messages";

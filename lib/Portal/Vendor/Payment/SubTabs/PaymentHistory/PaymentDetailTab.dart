@@ -1,9 +1,10 @@
 import 'package:car_rental_project/Portal/Vendor/Payment/ReusableWidget/HeaderWebPaymentWidget.dart';
-import 'package:car_rental_project/Portal/Vendor/Payment/SubTabs/PaymentDetailTab/SelectedPaymentHistoryDetailView.dart';
+import 'package:car_rental_project/Portal/Vendor/Payment/SubTabs/PaymentHistory/SelectedPaymentHistoryDetailView.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/paymentController.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/ImageString.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,9 +35,9 @@ class PaymentDetailTab extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HeaderWebPaymentWidget(
-                mainTitle: 'Payment History',
+                mainTitle: TextString.paymentHistory,
                 showSmallTitle: true,
-                smallTitle: 'Payment / Payment History',
+                smallTitle: TextString.smallTitlePaymentHistory,
                 showNotification: true,
                 showSettings: true,
                 showBack: true,
@@ -68,9 +69,9 @@ class PaymentDetailTab extends StatelessWidget {
     );
   }
 
-   /// ------------- Extra Widget --------------- ///
+  /// ------------- Extra Widget --------------- ///
 
-   // Search Customer Card
+  // Search Customer Card
   Widget _buildSearchCustomerCard(BuildContext context, PaymentController controller) {
     return Container(
       width: double.infinity,
@@ -83,7 +84,7 @@ class PaymentDetailTab extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Payment History",
+            TextString.paymentHistory,
             style: TTextTheme.h2Style(context).copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 20,
@@ -92,7 +93,7 @@ class PaymentDetailTab extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            "Enter the specification to search the payment history",
+            TextString.paymentHistorySubTitle,
             style: TTextTheme.h2StyleSubtitle(context).copyWith(
               color: AppColors.secondTextColor,
               fontSize: 14,
@@ -181,7 +182,7 @@ class PaymentDetailTab extends StatelessWidget {
     );
   }
 
-   // Dropdown Widget
+  // Dropdown Widget
   Widget _buildCustomerDropdown(
       BuildContext context,
       PaymentController controller,
@@ -190,7 +191,12 @@ class PaymentDetailTab extends StatelessWidget {
       bool isMobile,
       double height,
       ) {
-    List<String> items = ["Customer", "Car Name", "Car Registration", "VIN Number"];
+    List<String> items = [
+      TextString.customer,
+      TextString.carName,
+      TextString.carRegistration,
+      TextString.vinNumber
+    ];
 
     return Obx(() {
       bool isOpen = controller.openedDropdown2.value == id;
@@ -228,7 +234,7 @@ class PaymentDetailTab extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  selectedValue.value.isEmpty ? "Customer" : selectedValue.value,
+                  selectedValue.value.isEmpty ? TextString.customer : selectedValue.value,
                   style: TTextTheme.btncustomer(context).copyWith(
                     color: AppColors.textColor,
                     fontWeight: FontWeight.w500,
@@ -284,7 +290,7 @@ class PaymentDetailTab extends StatelessWidget {
                 onChanged: (val) => controller.performCustomerSearch(val),
                 style: TTextTheme.h2Style(context).copyWith(fontSize: 14),
                 decoration: InputDecoration(
-                  hintText: "Search Payment History by $category",
+                  hintText: "${TextString.searchPaymentHistoryBy}$category",
                   hintStyle: TTextTheme.titleTwo(context).copyWith(
                     color: AppColors.secondTextColor.withValues(alpha: 0.7),
                     fontSize: 14,
@@ -314,7 +320,7 @@ class PaymentDetailTab extends StatelessWidget {
                   controller.paymentHistorySearchController.text,
                 ),
                 child: Text(
-                  "Search",
+                  TextString.search,
                   style: TTextTheme.titleTwo(context).copyWith(
                     color: Colors.white,
                   ),
@@ -327,7 +333,7 @@ class PaymentDetailTab extends StatelessWidget {
     });
   }
 
-   // Search Result
+  // Search Result
   Widget _buildCustomerSearchResultRow(
       BuildContext context, PaymentController controller, Map<String, dynamic> customer) {
     return Container(
@@ -362,7 +368,7 @@ class PaymentDetailTab extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "${customer['customerName'] ?? 'John Smith'} (${customer['id'] ?? 'CUS-1234'})",
+                    "${customer['customerName'] ?? TextString.defaultCustomerName} (${customer['id'] ?? TextString.defaultCustomerId})",
                     style: TTextTheme.h2Style(context).copyWith(
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
@@ -371,7 +377,7 @@ class PaymentDetailTab extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    customer['email'] ?? 'john.smith@gmail.com',
+                    customer['email'] ?? TextString.defaultEmail,
                     style: TTextTheme.h2StyleSubtitle(context).copyWith(
                       color: AppColors.secondTextColor,
                       fontSize: 12,
@@ -392,7 +398,7 @@ class PaymentDetailTab extends StatelessWidget {
               ),
               const SizedBox(width: 6),
               Text(
-                customer['car'] ?? "Toyota Corolla 2022 Altis",
+                customer['car'] ?? TextString.defaultCar,
                 style: TTextTheme.bodyRegular14(context).copyWith(
                   fontWeight: FontWeight.w600,
                   color: AppColors.textColor,
@@ -412,7 +418,7 @@ class PaymentDetailTab extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     color: AppColors.textColor,
                     child: Text(
-                      "Reg",
+                      TextString.reg,
                       style: TTextTheme.h10Style(context).copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -423,7 +429,7 @@ class PaymentDetailTab extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     child: Text(
-                      customer['registration'] ?? "Abc12345",
+                      customer['registration'] ?? TextString.defaultRegistration,
                       style: TTextTheme.stepsText(context).copyWith(
                         color: AppColors.textColor,
                         fontWeight: FontWeight.bold,
@@ -447,7 +453,7 @@ class PaymentDetailTab extends StatelessWidget {
             ),
             onPressed: () => controller.selectCustomerForHistory(customer),
             child: Text(
-              "Select",
+              TextString.select,
               style: TTextTheme.titleTwo(context).copyWith(
                 color: Colors.white,
                 fontSize: 13,

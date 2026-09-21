@@ -30,7 +30,8 @@ import 'package:car_rental_project/Portal/Vendor/Payment/InvoicesDetail/Invoices
 
 import 'package:car_rental_project/Portal/Vendor/Payment/LinkPayment/LinkPayment.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/SubTabs/PaymentDetail/PaymentDetail.dart';
-import 'package:car_rental_project/Portal/Vendor/Payment/SubTabs/PaymentDetailTab/PaymentDetailTab.dart';
+import 'package:car_rental_project/Portal/Vendor/Payment/SubTabs/PaymentHistory/PaymentDetailTab.dart';
+import 'package:car_rental_project/Portal/Vendor/Payment/SubTabs/PaymentHistory/PaymentHistoryDetail.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/payment.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/paymentController.dart';
 import 'package:car_rental_project/Portal/Vendor/PickupCar/AddPickUp/AddPickup.dart';
@@ -260,7 +261,14 @@ class VendorRoutes {
         ),
 
         GoRoute(path: '/PaymentDetail', builder: (_, __) => PaymentDetail()),
-        GoRoute(path: '/PaymentDetailTab', builder: (_, __) => PaymentDetailTab()),
+        GoRoute(path: '/PaymentHistory', builder: (_, __) => PaymentDetailTab()),
+        GoRoute(
+          path: '/PaymentHistoryDetail',
+          builder: (context, state) {
+            final Map<String, dynamic> rowData = state.extra as Map<String, dynamic>? ?? {};
+            return PaymentHistoryDetail(data: rowData);
+          },
+        ),
 
          // Reminders
 
