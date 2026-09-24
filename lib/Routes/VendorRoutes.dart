@@ -47,6 +47,7 @@ import 'package:car_rental_project/Portal/Vendor/PickupCar/Subtabs/Pickup%20T&C/
 import 'package:car_rental_project/Portal/Vendor/PickupCar/TableViewPicukUpScreen/TableViewPickUpScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Reminder/ReminderController.dart';
 import 'package:car_rental_project/Portal/Vendor/Reminder/ReminderScreen/Reminder.dart';
+import 'package:car_rental_project/Portal/Vendor/Reminder/ReminderScreen/ReminderTemplate/ReminderTemplate.dart';
 import 'package:car_rental_project/Portal/Vendor/SideScreen/SidebarScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Staff/AddStaff/AddStaffScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Staff/EditStaff/EditStaffScreen.dart';
@@ -273,6 +274,7 @@ class VendorRoutes {
         ),
 
          // Reminders
+        GoRoute(path: '/reminderCreateTemplate', builder: (_, __) => ReminderTemplate()),
 
          // Billing
         GoRoute(path: '/billings', builder: (_, __) => BillingScreen()),

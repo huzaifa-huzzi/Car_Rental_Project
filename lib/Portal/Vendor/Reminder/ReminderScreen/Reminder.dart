@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 
 class ReminderScreen extends StatelessWidget {
-  const ReminderScreen({super.key}); // const add kar diya constructor par
+  const ReminderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,6 @@ class ReminderScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 1. Web Header Section
               if (AppSizes.isWeb(context)) ...[
                 HeaderWebReminder(
                   mainTitle: 'Whatsapp',
@@ -38,7 +37,7 @@ class ReminderScreen extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: tablePadding),
-                  child: const ReminderWidget(), // const keyword laga rehne dein agar widget independent hai
+                  child: const ReminderWidget(),
                 ),
               ),
             ],

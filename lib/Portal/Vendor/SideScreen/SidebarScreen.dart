@@ -153,11 +153,19 @@ class SidebarScreen extends StatelessWidget {
                 scaffoldKey: _scaffoldKey,
               ),
 
-              SidebarComponents.menuItem(
-                context, controller,
+              SidebarComponents.expandableMenuItem(
+                context,
+                controller,
                 iconPath: IconString.reminderIcon,
                 title: "Reminder",
-                onTap: (val) => context.go('/reminder'),
+                route: '/reminder',
+                subItems: [
+                  {
+                    'title': 'Create Template',
+                    'route': '/reminderCreateTemplate',
+                    'extra': {'hideMobileAppBar': false},
+                  },
+                ],
                 scaffoldKey: _scaffoldKey,
               ),
               SidebarComponents.menuItem(

@@ -1,3 +1,4 @@
+import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -57,10 +58,27 @@ class ReminderController extends GetxController {
     chatMode.value = mode;
   }
 
+
+  var isSearching = false.obs;
+  var filteredTemplatesList = <Map<String, String>>[].obs;
+
+  void filterTemplates(String query) {
+    if (query.trim().isEmpty) {
+      isSearching.value = false;
+      filteredTemplatesList.clear();
+    } else {
+      isSearching.value = true;
+      filteredTemplatesList.assignAll(
+        templatesList.where((template) =>
+        template['title']!.toLowerCase().contains(query.toLowerCase()) ||
+            template['body']!.toLowerCase().contains(query.toLowerCase())
+        ).toList(),
+      );
+    }
+  }
+
   var isTemplateMenuOpen = false.obs;
 
-  // Static list for templates as shown in image_9282ec.png
-  // FIX: 'final List<...>' ki jagah 'RxList<Map<String, String>>' use karein ya fir simple 'var' use karein
   RxList<Map<String, String>> templatesList = [
     {
       "title": "Payment Reminder",
@@ -79,11 +97,9 @@ class ReminderController extends GetxController {
       "body": "Thanks Marcus — Range Rover Velar marked as returned. Final invoice on its way."
     },
   ].obs;
-
-  // Jab template par click ho toh text field mein message copy ho jaye
   void selectTemplate(String body) {
     messageInputController.text = body;
-    isTemplateMenuOpen.value = false; // Menu close ho jaye
+    isTemplateMenuOpen.value = false;
   }
 
 
@@ -96,21 +112,17 @@ class ReminderController extends GetxController {
         'title': titleController.text.trim(),
         'body': descriptionController.text.trim(),
       });
-
-      // Clear inputs after successful save
       titleController.clear();
       descriptionController.clear();
 
-      // Wapis list view par switch karne ke liye flag false
       isCreatingTemplate.value = false;
     } else {
-      // Agar fields khali hon toh error alert
       Get.snackbar(
         'Error',
         'Please fill both Title and Description fields',
         snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.redAccent.withValues(alpha: 0.1),
-        colorText: Colors.red,
+        colorText: AppColors.primaryColor,
       );
     }
   }

@@ -106,84 +106,53 @@ Widget _buildMobileLayout(BuildContext context,ReminderController controller) {
 
 // Top Action bar
 Widget _buildTopActionBar(BuildContext context, ReminderController controller) {
-  return Obx(() {
-    bool isSmsSelected = controller.selectedAlertType.value == 'sms';
+  return Container(
+    width: double.infinity,
+    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(color: AppColors.signaturePadColor, width: 1),
+      boxShadow: [
+        BoxShadow(
+          color: AppColors.blackColor.withValues(alpha: 0.03),
+          blurRadius: 8,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
+    child: LayoutBuilder(
+      builder: (context, constraints) {
+        bool isMobile = constraints.maxWidth < 600;
 
-    return Align(
-      alignment: isSmsSelected ? Alignment.topCenter : Alignment.topRight,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2.0),
-        decoration: BoxDecoration(
-          color: isSmsSelected ? Colors.transparent : Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        constraints: BoxConstraints(
-          maxWidth: isSmsSelected ? MediaQuery.of(context).size.width : 600,
-        ),
-        child: isSmsSelected
-            ? _buildResponsiveHeader(context, controller)
-            : Wrap(
-          spacing: 16.0,
-          runSpacing: 12.0,
-          alignment: WrapAlignment.end,
-          crossAxisAlignment: WrapCrossAlignment.center,
+        if (isMobile) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildAlertButtons(context, controller, isMobile: true),
+              const SizedBox(height: 12),
+              _buildProgressSection(context, isRightAligned: false),
+            ],
+          );
+        }
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _buildResponsiveHeader(context, controller),
+            _buildAlertButtons(context, controller, isMobile: false),
+            _buildProgressSection(context, isRightAligned: true),
           ],
-        ),
-      ),
-    );
-  });
+        );
+      },
+    ),
+  );
 }
 
-Widget _buildResponsiveHeader(BuildContext context, ReminderController controller) {
-  return Obx(() {
-    bool isSmsSelected = controller.selectedAlertType.value == 'sms';
-
-    return Container(
-      width: double.infinity,
-      padding: isSmsSelected
-          ? const EdgeInsets.symmetric(horizontal: 10, vertical: 12)
-          : EdgeInsets.zero,
-      decoration: BoxDecoration(
-        color: isSmsSelected ? Colors.white : Colors.transparent,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: isSmsSelected ? AppColors.signaturePadColor : Colors.transparent,
-        ),
-        boxShadow: isSmsSelected
-            ? [
-          BoxShadow(
-            color: AppColors.blackColor.withValues(alpha: 0.02),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ]
-            : [],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Flexible(
-            flex: 3,
-            child: _buildProgressSection(context, isSmsSelected),
-          ),
-          const SizedBox(width: 4),
-          Flexible(
-            flex: 4,
-            child: _buildAlertButtons(context, controller),
-          ),
-        ],
-      ),
-    );
-  });
-}
-
-Widget _buildProgressSection(BuildContext context, bool isSmsSelected) {
+// Progress Section
+Widget _buildProgressSection(BuildContext context, {bool isRightAligned = true}) {
   return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
+    crossAxisAlignment: isRightAligned ? CrossAxisAlignment.end : CrossAxisAlignment.start,
     mainAxisSize: MainAxisSize.min,
     children: [
       Text(
@@ -192,14 +161,13 @@ Widget _buildProgressSection(BuildContext context, bool isSmsSelected) {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      const SizedBox(height: 4),
+      const SizedBox(height: 6),
       Container(
-        height: 12,
-        constraints: BoxConstraints(maxWidth: isSmsSelected ? 250 : 160),
-        width: double.infinity,
+        height: 10,
+        width: 170,
         decoration: BoxDecoration(
           color: AppColors.signaturePadColor,
-          borderRadius: BorderRadius.circular(6),
+          borderRadius: BorderRadius.circular(10),
         ),
         alignment: Alignment.centerLeft,
         child: FractionallySizedBox(
@@ -207,12 +175,12 @@ Widget _buildProgressSection(BuildContext context, bool isSmsSelected) {
           child: Container(
             decoration: BoxDecoration(
               color: AppColors.primaryColor,
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
         ),
       ),
-      const SizedBox(height: 2),
+      const SizedBox(height: 4),
       Text(
         TextString.reminderTwo,
         style: TTextTheme.bodyRegular12Gay10(context),
@@ -223,68 +191,56 @@ Widget _buildProgressSection(BuildContext context, bool isSmsSelected) {
   );
 }
 
-Widget _buildAlertButtons(BuildContext context, ReminderController controller) {
+// Alert Switcher Buttons
+Widget _buildAlertButtons(BuildContext context, ReminderController controller, {required bool isMobile}) {
   return Obx(() {
     bool isWhatsappSelected = controller.selectedAlertType.value == 'whatsapp';
     bool isSmsSelected = controller.selectedAlertType.value == 'sms';
 
-    const double desktopButtonWidth = 100;
-    const double mobileMinWidth     = 70;
-
-    bool useFlexLayout = MediaQuery.of(context).size.width < 500;
-
-    Widget buildSingleButton({
+    Widget buildPillButton({
       required String label,
       required bool isSelected,
       required VoidCallback onTap,
     }) {
-      Widget buttonBody = Container(
-        height: 34,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryColor : Colors.white,
-          borderRadius: BorderRadius.circular(6),
-          border: Border.all(
-            color: isSelected ? Colors.transparent : AppColors.secondTextColor,
+      Widget buttonBody = GestureDetector(
+        onTap: onTap,
+        child: Container(
+          height: 38,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.primaryColor : Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: isSelected ? Colors.transparent : AppColors.primaryColor.withValues(alpha: 0.5),
+              width: 1,
+            ),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4),
           child: FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
               label,
-              style: isSelected ? TTextTheme.btnWhiteColor(context) : TTextTheme.btnTwo(context),
+              style: isSelected
+                  ? TTextTheme.btnWhiteColor(context)
+                  : TTextTheme.btnTwo(context).copyWith(color: AppColors.primaryColor),
             ),
           ),
         ),
       );
-
-      return useFlexLayout
-          ? Expanded(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minWidth: mobileMinWidth, maxWidth: desktopButtonWidth),
-          child: GestureDetector(onTap: onTap, child: buttonBody),
-        ),
-      )
-          : SizedBox(
-        width: desktopButtonWidth,
-        child: GestureDetector(onTap: onTap, child: buttonBody),
-      );
+      return isMobile ? Expanded(child: buttonBody) : buttonBody;
     }
 
     return Row(
-      mainAxisSize: useFlexLayout ? MainAxisSize.max : MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        buildSingleButton(
+        buildPillButton(
           label: TextString.reminderThree,
           isSelected: isWhatsappSelected,
           onTap: () => controller.selectedAlertType.value = 'whatsapp',
         ),
-        const SizedBox(width: 6),
-        buildSingleButton(
-          label:TextString.reminderFour ,
+        const SizedBox(width: 12),
+        buildPillButton(
+          label: TextString.reminderFour,
           isSelected: isSmsSelected,
           onTap: () => controller.selectedAlertType.value = 'sms',
         ),
@@ -293,7 +249,7 @@ Widget _buildAlertButtons(BuildContext context, ReminderController controller) {
   });
 }
 
-// chatlist Widget
+// Chatlist Widget
 Widget _buildChatList(BuildContext context,ReminderController controller, {Key? key}) {
   return Container(
     key: key,
@@ -615,7 +571,8 @@ Widget _buildChatConversationArea(ReminderController controller, {required bool 
         children: [
           Obx(() {
             int selectedIndex = controller.selectedChatIndex.value;
-            var activeUser = ReminderWidget.chatUsersData[selectedIndex >= ReminderWidget.chatUsersData.length ? 0 : selectedIndex];
+            var activeUser = ReminderWidget.chatUsersData[
+            selectedIndex >= ReminderWidget.chatUsersData.length ? 0 : selectedIndex];
             bool isManualMode = controller.chatMode.value == 'Manual';
 
             TextStyle statusStyle;
@@ -630,20 +587,18 @@ Widget _buildChatConversationArea(ReminderController controller, {required bool 
               decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(topRight: Radius.circular(12)),
-                  border: Border(bottom: BorderSide(color: AppColors.conversationAreaColors))
-              ),
+                  border: Border(bottom: BorderSide(color: AppColors.conversationAreaColors))),
               child: Row(
                 children: [
                   if (isMobile) ...[
                     IconButton(
                         icon: const Icon(Icons.arrow_back, color: AppColors.secondTextColor),
-                        onPressed: () => controller.isChatDetailOpenMobile.value = false
-                    ),
+                        onPressed: () => controller.isChatDetailOpenMobile.value = false),
                     const SizedBox(width: 4),
                   ],
                   CircleAvatar(
                     radius: 22,
-                    backgroundImage:AssetImage(ImageString.customerUser),
+                    backgroundImage: AssetImage(ImageString.customerUser),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -652,15 +607,25 @@ Widget _buildChatConversationArea(ReminderController controller, {required bool 
                           children: [
                             Text(activeUser['name']!, style: TTextTheme.medium14black(context)),
                             Text(activeUser['status']!, style: statusStyle),
-                          ]
-                      )
-                  ),
+                          ])),
                   InkWell(
                     onTap: () => controller.toggleChatMode('Manual'),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                      decoration: BoxDecoration(color: isManualMode ? AppColors.primaryColor : Colors.transparent, borderRadius: BorderRadius.circular(6)),
-                      child: Row(children: [Image.asset(IconString.manualIcon, height: 16,width: 16, color: isManualMode ? Colors.white : AppColors.unavailableEnd), if (!isCompact) Text(' Manual (Human Only)', style: isManualMode ? TTextTheme.medium14White(context) : TTextTheme.tableRegular14(context) )]),
+                      decoration: BoxDecoration(
+                          color: isManualMode ? AppColors.primaryColor : Colors.transparent,
+                          borderRadius: BorderRadius.circular(6)),
+                      child: Row(children: [
+                        Image.asset(IconString.manualIcon,
+                            height: 16,
+                            width: 16,
+                            color: isManualMode ? Colors.white : AppColors.unavailableEnd),
+                        if (!isCompact)
+                          Text(' Manual (Human)',
+                              style: isManualMode
+                                  ? TTextTheme.medium14White(context)
+                                  : TTextTheme.tableRegular14(context))
+                      ]),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -668,8 +633,21 @@ Widget _buildChatConversationArea(ReminderController controller, {required bool 
                     onTap: () => controller.toggleChatMode('Auto'),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                      decoration: BoxDecoration(color: !isManualMode ? AppColors.primaryColor: Colors.transparent, borderRadius: BorderRadius.circular(6),),
-                      child: Row(children: [Image.asset(IconString.autoIcon, height: 14,width: 14, color: !isManualMode ? Colors.white : Colors.grey), const SizedBox(width: 4), Text(isCompact ? 'AI' : 'Auto', style: !isManualMode ? TTextTheme.medium14White(context) : TTextTheme.tableRegular14(context) )]),
+                      decoration: BoxDecoration(
+                        color: !isManualMode ? AppColors.primaryColor : Colors.transparent,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Row(children: [
+                        Image.asset(IconString.autoIcon,
+                            height: 14,
+                            width: 14,
+                            color: !isManualMode ? Colors.white : Colors.grey),
+                        const SizedBox(width: 4),
+                        Text(isCompact ? 'AI' : 'Auto AI',
+                            style: !isManualMode
+                                ? TTextTheme.medium14White(context)
+                                : TTextTheme.tableRegular14(context))
+                      ]),
                     ),
                   ),
                 ],
@@ -687,20 +665,23 @@ Widget _buildChatConversationArea(ReminderController controller, {required bool 
                       return Container(
                           margin: const EdgeInsets.symmetric(vertical: 14),
                           padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: AppColors.primaryColor)),
-                          child: Center(child: Text(TextString.reminderEight, style: TTextTheme.medium14Primary(context)))
-                      );
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: AppColors.primaryColor)),
+                          child: Center(
+                              child: Text(TextString.reminderEight,
+                                  style: TTextTheme.medium14Primary(context))));
                     }
                     var msg = controller.dynamicMessages[index - 1];
-                    return _buildMessageBubble(context,message: msg['message'], isMe: msg['isMe'], time: msg['time']);
-                  }
-              )),
+                    return _buildMessageBubble(context,
+                        message: msg['message'], isMe: msg['isMe'], time: msg['time']);
+                  })),
             ),
           ),
           Obx(() {
             bool isManualMode = controller.chatMode.value == 'Manual';
             bool isOpen = controller.isTemplateMenuOpen.value;
-            bool isSmsSelected = controller.selectedAlertType.value == 'sms';
 
             if (!isManualMode) {
               return Container(
@@ -708,13 +689,10 @@ Widget _buildChatConversationArea(ReminderController controller, {required bool 
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 decoration: const BoxDecoration(
                     color: Colors.white,
-                    border: Border(top: BorderSide(color: AppColors.signaturePadColor))
-                ),
-                child:  Text(
-                    isSmsSelected
-                        ? TextString.reminderNine
-                        : TextString.reminderNine,
-                    style: TTextTheme.medium12Primary(context)
+                    border: Border(top: BorderSide(color: AppColors.signaturePadColor))),
+                child: Text(
+                  TextString.reminderNine,
+                  style: TTextTheme.medium12Primary(context),
                 ),
               );
             }
@@ -729,14 +707,12 @@ Widget _buildChatConversationArea(ReminderController controller, {required bool 
                 children: [
                   if (isOpen)
                     Container(
-                      height: controller.isCreatingTemplate.value ? 240 : 190,
+                      height: 190,
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         border: Border(bottom: BorderSide(color: AppColors.signaturePadColor)),
                       ),
-                      child: controller.isCreatingTemplate.value
-                          ? _buildCreateTemplateForm(context,controller, isCompact)
-                          : _buildTemplateListContent(context,controller, isCompact),
+                      child: _buildTemplateListContent(context, controller, isCompact),
                     ),
                   Container(
                     padding: EdgeInsets.all(isCompact ? 8 : 12),
@@ -746,35 +722,43 @@ Widget _buildChatConversationArea(ReminderController controller, {required bool 
                       children: [
                         if (!isCompact)
                           Text(
-                              TextString.reminderTen,
-                              style: TTextTheme.medium12Primary(context)
+                            TextString.reminderTen,
+                            style: TTextTheme.medium12Primary(context),
                           ),
                         const SizedBox(height: 8),
                         Row(
                           children: [
                             InkWell(
                               onTap: () {
-                                if (!controller.isTemplateMenuOpen.value) {
-                                  controller.isCreatingTemplate.value = false;
-                                }
                                 controller.isTemplateMenuOpen.value = !isOpen;
                               },
                               borderRadius: BorderRadius.circular(8),
                               child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: isCompact ? 8 : 12, vertical: 8),
-                                decoration: BoxDecoration(color: AppColors.signaturePadColor, borderRadius: BorderRadius.circular(8)),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: isCompact ? 8 : 12, vertical: 8),
+                                decoration: BoxDecoration(
+                                    color: AppColors.signaturePadColor,
+                                    borderRadius: BorderRadius.circular(8)),
                                 child: Row(
                                   children: [
-                                    Image.asset(IconString.templateIcon, height: 16,width: 16),
+                                    Image.asset(IconString.templateIcon, height: 16, width: 16),
                                     const SizedBox(width: 4),
                                     Text(TextString.reminderEleven, style: TTextTheme.medium12(context)),
-                                    Icon(isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, size: 16, color: AppColors.textColor),
+                                    Icon(
+                                        isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                        size: 16,
+                                        color: AppColors.textColor),
                                   ],
                                 ),
                               ),
                             ),
                             const SizedBox(width: 8),
-                            Image.asset(IconString.linkIcon, color: AppColors.textColor,width: 20,height: 20,),
+                            Image.asset(
+                              IconString.linkIcon,
+                              color: AppColors.textColor,
+                              width: 20,
+                              height: 20,
+                            ),
                             const SizedBox(width: 8),
                             Flexible(
                               child: SizedBox(
@@ -789,11 +773,12 @@ Widget _buildChatConversationArea(ReminderController controller, {required bool 
                                     fillColor: AppColors.signaturePadColor,
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
-                                      borderSide:  BorderSide(color: AppColors.quadrantalTextColor.withValues(alpha: 0.7)),
+                                      borderSide: BorderSide(
+                                          color: AppColors.quadrantalTextColor.withValues(alpha: 0.7)),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
-                                      borderSide:  BorderSide(color: AppColors.primaryColor),
+                                      borderSide: BorderSide(color: AppColors.primaryColor),
                                     ),
                                   ),
                                 ),
@@ -805,7 +790,11 @@ Widget _buildChatConversationArea(ReminderController controller, {required bool 
                               height: 38,
                               width: isCompact ? 65 : 95,
                               borderRadius: BorderRadius.circular(8),
-                              icon: Image.asset(IconString.sendIcon, width: 18,height: 18,),
+                              icon: Image.asset(
+                                IconString.sendIcon,
+                                width: 18,
+                                height: 18,
+                              ),
                               onTap: () => controller.sendMessage(),
                             ),
                           ],
@@ -823,7 +812,7 @@ Widget _buildChatConversationArea(ReminderController controller, {required bool 
   });
 }
 
-Widget _buildTemplateListContent(BuildContext context,ReminderController controller, bool isCompact) {
+Widget _buildTemplateListContent(BuildContext context, ReminderController controller, bool isCompact) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -836,186 +825,119 @@ Widget _buildTemplateListContent(BuildContext context,ReminderController control
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(TextString.reminderTwelve, style: TTextTheme.PickupPayment(context)),
-                const SizedBox(width: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: BoxDecoration(color: AppColors.signaturePadColor, borderRadius: BorderRadius.circular(12)),
-                  child: Text('${controller.templatesList.length}', style: TTextTheme.medium12(context)),
+                Text(
+                  TextString.reminderTwelve,
+                  style: TTextTheme.PickupPayment(context),
                 ),
+                const SizedBox(width: 8),
+                Obx(() => Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: AppColors.signaturePadColor,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    '${controller.templatesList.length}',
+                    style: TTextTheme.medium12(context),
+                  ),
+                )),
               ],
             ),
-            PrimaryBtnReminder(
-              text: isCompact ? 'Add' : 'Add New Template',
+            SizedBox(
+              width: isCompact ? 140 : 220,
               height: 34,
-              width: isCompact ? 65 : 200,
-              borderRadius: BorderRadius.circular(6),
-              icon: const Icon(Icons.add, color: Colors.white, size: 14),
-              onTap: () {
-                controller.isCreatingTemplate.value = true;
-              },
-            ),
-          ],
-        ),
-      ),
-      Divider(height: 1, color: AppColors.blackColor),
-      Expanded(
-        child: ListView.separated(
-          padding: EdgeInsets.zero,
-          physics: const AlwaysScrollableScrollPhysics(),
-          itemCount: controller.templatesList.length,
-          separatorBuilder: (context, idx) => const Divider(height: 1, color: AppColors.unavailableEnd),
-          itemBuilder: (context, idx) {
-            var item = controller.templatesList[idx];
-            return InkWell(
-              onTap: () => controller.selectTemplate(item['body']!),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(item['title']!, style: TTextTheme.medium16(context)),
-                          const SizedBox(height: 4),
-                          Text(item['body']!, style: TTextTheme.CalendarSubtitle(context)),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                      icon: Image.asset(IconString.deleteIcon, color: AppColors.primaryColor, width: 18,height: 18,),
-                      onPressed: () => controller.deleteTemplate(idx),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-    ],
-  );
-}
-
-Widget _buildCreateTemplateForm(BuildContext context,ReminderController controller, bool isCompact) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-                TextString.reminderTwelve,
-                style: TTextTheme.PickupPayment(context)
-            ),
-            const SizedBox(height: 2),
-            Text(
-              TextString.reminderThirteen,
-              style: TTextTheme.btncustomer(context),
-            ),
-          ],
-        ),
-      ),
-      Expanded(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          physics: const ClampingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(TextString.reminder14, style: TTextTheme.CalendarSubtitle(context)),
-              const SizedBox(height: 6),
-              SizedBox(
-                height: 40,
-                child: TextField(
-                  cursorColor: AppColors.blackColor,
-                  controller: controller.titleController,
-                  style: TTextTheme.titleTwo(context),
-                  decoration: InputDecoration(
-                    hintText:TextString.reminder15,
-                    hintStyle: TTextTheme.bodyRegular16(context),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    filled: true,
-                    fillColor: Colors.white,
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: AppColors.quadrantalTextColor.withValues(alpha: 0.7))
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide:  BorderSide(color: AppColors.primaryColor)
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 14),
-              Text(TextString.reminder16, style: TTextTheme.CalendarSubtitle(context)),
-              const SizedBox(height: 6),
-              TextField(
+              child: TextField(
                 cursorColor: AppColors.blackColor,
-                controller: controller.descriptionController,
-                maxLines: 2,
-                style:TTextTheme.titleTwo(context),
+                style: TTextTheme.titleTwo(context).copyWith(fontSize: 13),
+                onChanged: (query) => controller.filterTemplates(query),
                 decoration: InputDecoration(
-                  hintText: TextString.reminder17,
-                  hintStyle: TTextTheme.bodyRegular16(context),
-                  contentPadding: const EdgeInsets.all(12),
+                  hintText: 'Search Template',
+                  hintStyle: TTextTheme.bodyRegular16(context).copyWith(fontSize: 13),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   filled: true,
                   fillColor: Colors.white,
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color:  AppColors.quadrantalTextColor.withValues(alpha: 0.7))
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(color: AppColors.quadrantalTextColor.withValues(alpha: 0.7)),
                   ),
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide:  BorderSide(color:AppColors.primaryColor )
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(color: AppColors.primaryColor),
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  InkWell(
-                    onTap: () => controller.isCreatingTemplate.value = false,
-                    borderRadius: BorderRadius.circular(6),
-                    child: Container(
-                      height: 34,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: AppColors.secondTextColor,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      alignment: Alignment.center,
-                      child:  Text(
-                        TextString.reminder18,
-                        style: TTextTheme.btnSave(context),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  PrimaryBtnReminder(
-                    text: TextString.reminder19,
-                    height: 34,
-                    width: 65,
-                    borderRadius: BorderRadius.circular(6),
-                    onTap: () => controller.addNewTemplate(),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-            ],
-          ),
+            ),
+          ],
         ),
-      )
+      ),
+      Divider(height: 1, color: AppColors.blackColor.withValues(alpha: 0.1)),
+      Expanded(
+        child: Obx(() {
+          var currentList = controller.filteredTemplatesList.isNotEmpty || controller.isSearching.value
+              ? controller.filteredTemplatesList
+              : controller.templatesList;
+
+          if (currentList.isEmpty) {
+            return Center(
+              child: Text(
+                'No templates found',
+                style: TTextTheme.CalendarSubtitle(context),
+              ),
+            );
+          }
+
+          return ListView.separated(
+            padding: EdgeInsets.zero,
+            physics: const AlwaysScrollableScrollPhysics(),
+            itemCount: currentList.length,
+            separatorBuilder: (context, idx) => const Divider(height: 1, color: AppColors.unavailableEnd),
+            itemBuilder: (context, idx) {
+              var item = currentList[idx];
+              return InkWell(
+                onTap: () => controller.selectTemplate(item['body']!),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item['title']!,
+                              style: TTextTheme.medium16(context).copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              item['body']!,
+                              style: TTextTheme.CalendarSubtitle(context),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        icon: Image.asset(
+                          IconString.deleteIcon,
+                          color: AppColors.primaryColor,
+                          width: 18,
+                          height: 18,
+                        ),
+                        onPressed: () => controller.deleteTemplate(idx),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        }),
+      ),
     ],
   );
 }
