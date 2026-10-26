@@ -478,7 +478,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
 
     return Obx(() {
       bool isFailedTab = controller.selectedTab.value == "Failed";
-      bool isCompletedTab = controller.selectedTab.value == "Completed"; // Error resolved here
+      bool isCompletedTab = controller.selectedTab.value == "Completed";
       double containerWidth = isFailedTab ? 1570 : 1450;
 
       return Container(

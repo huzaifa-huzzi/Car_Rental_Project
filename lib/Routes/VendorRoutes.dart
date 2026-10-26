@@ -24,10 +24,10 @@ import 'package:car_rental_project/Portal/Vendor/DropOffCar/Subtabs/DropOffT&C/A
 import 'package:car_rental_project/Portal/Vendor/DropOffCar/Subtabs/DropOffT&C/DropOffT&C.dart';
 import 'package:car_rental_project/Portal/Vendor/DropOffCar/Subtabs/DropOffT&C/DropOffT&CDescription.dart';
 import 'package:car_rental_project/Portal/Vendor/DropOffCar/TableViewDropoff/TableViewDropoffScreen.dart';
+import 'package:car_rental_project/Portal/Vendor/Invoice/InvoiceMainScreen/InvoiceMainScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/Add%20Payment/AddPaymentScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/InvoiceTableWidget/InvoiceTableWidget.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/InvoicesDetail/InvoicesDetail.dart';
-
 import 'package:car_rental_project/Portal/Vendor/Payment/LinkPayment/LinkPayment.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/SubTabs/PaymentDetail/PaymentDetail.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/SubTabs/PaymentHistory/PaymentDetailTab.dart';
@@ -93,6 +93,7 @@ class VendorRoutes {
                 case "Pickup Car":    context.go('/pickupcar');    break;
                 case "Pickup T&C":    context.go('/pickupT&C');    break;
                 case "Dropoff Car":   context.go('/dropoffCar');   break;
+                case "Invoice":     context.go('/invoice');    break;
                 case "Staff":         context.go('/staff');        break;
                 case "Payment":       context.go('/Payment');      break;
                 case "Reminder":       context.go('/reminder');      break;
@@ -108,6 +109,10 @@ class VendorRoutes {
       routes: [
         // Main module routes
         GoRoute(path: '/dashboard', builder: (_, __) => const DashboardScreen()),
+        GoRoute(
+          path: '/invoiceScreen',
+          builder: (context, state) => InvoiceScreen(),
+        ),
         GoRoute(path: '/carInventory', builder: (_, __) {
           Get.put(CarInventoryController());
           return CarInventoryMainScreen();

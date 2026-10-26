@@ -147,6 +147,14 @@ class SidebarScreen extends StatelessWidget {
 
               SidebarComponents.menuItem(
                 context, controller,
+                iconPath: IconString.invoicesIcon,
+                title: "Invoice",
+                onTap: (val) => context.go('/invoiceScreen'),
+                scaffoldKey: _scaffoldKey,
+              ),
+
+              SidebarComponents.menuItem(
+                context, controller,
                 iconPath: IconString.billingIcon,
                 title: "Billing",
                 onTap: (val) => context.go('/billings'),
