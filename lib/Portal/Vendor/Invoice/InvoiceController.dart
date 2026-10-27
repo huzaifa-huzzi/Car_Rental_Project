@@ -1,7 +1,5 @@
-
-
-
-import 'package:car_rental_project/Portal/Vendor/Invoice/ReusableWidget/CustomCalendarInvoice.dart';
+import 'package:car_rental_project/Portal/Vendor/Invoice/ReusableWidget/CustomCalendarInvoice2.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,12 +13,34 @@ class InvoiceController extends GetxController {
   var openedDropdown = "".obs;
   var selectedCustomerValue = "Customer Name".obs;
   final TextEditingController searchController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  var selectedCountryName = "Australia".obs;
+  var selectedCode = "+61".obs;
+  var isLoadingCountries = false.obs;
+  var selectedInvoiceType = "Manual Invoice".obs;
+  bool isBillDropdownOpen = false;
+
+  List<Country> getFilteredCountries() {
+    final List<Country> allCountries = CountryService().getAll();
+    if (searchController.text.isEmpty) {
+      return allCountries;
+    }
+    return allCountries.where((country) {
+      return country.name.toLowerCase().contains(searchController.text.toLowerCase()) ||
+          country.countryCode.toLowerCase().contains(searchController.text.toLowerCase());
+    }).toList();
+  }
+
   final LayerLink dateFilterLink = LayerLink();
   final TextEditingController dateTextController = TextEditingController();
+  final TextEditingController fromDateController = TextEditingController();
+  final TextEditingController toDateController = TextEditingController();
+
   var isDateDropOpen = false.obs;
   var selectedFilter = "Weekly".obs;
   var selectedDateRangeText = "".obs;
   OverlayEntry? calendarOverlay;
+
   var sortColumn = "".obs;
   var sortOrder = 0.obs;
 
@@ -104,6 +124,7 @@ class InvoiceController extends GetxController {
       sortOrder.value = 1;
     }
   }
+
   void toggleCalendar(BuildContext context, LayerLink link, TextEditingController targetController, double width) {
     if (calendarOverlay != null) {
       removeCalendar();
@@ -151,7 +172,7 @@ class InvoiceController extends GetxController {
               elevation: 10,
               borderRadius: BorderRadius.circular(12),
               color: Colors.white,
-              child: CustomCalendarInvoice(
+              child: CustomCalendarInvoice2(
                 width: overlayWidth,
                 onCancel: removeCalendar,
                 onDateSelected: (date) {
@@ -171,7 +192,7 @@ class InvoiceController extends GetxController {
     DateTime endDate = startDate.add(const Duration(days: 6));
     String startStr = "${startDate.day} ${_getMonthAbbr(startDate.month)}, ${startDate.year}";
     String endStr = "${endDate.day} ${_getMonthAbbr(endDate.month)}, ${endDate.year}";
-    selectedDateRangeText.value = "$startStr - $endStr";
+    selectedDateRangeText.value = "$startStr\n$endStr";
   }
 
   String _getMonthAbbr(int month) => [
@@ -179,10 +200,65 @@ class InvoiceController extends GetxController {
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
   ][month - 1];
 
+   // Invoice Add Details
+  final LayerLink pickupDateLink = LayerLink();
+  final LayerLink returnDateLink = LayerLink();
+
+  final TextEditingController pickupDateController = TextEditingController();
+  final TextEditingController returnDateController = TextEditingController();
+
+  void toggleSingleDateCalendar(BuildContext context, LayerLink link, TextEditingController targetController) {
+    if (calendarOverlay != null) {
+      removeCalendar();
+    } else {
+      double screenWidth = MediaQuery.of(context).size.width;
+      double dynamicWidth = screenWidth < 500 ? screenWidth * 0.85 : 300;
+
+      calendarOverlay = OverlayEntry(
+        builder: (context) => Stack(
+          children: [
+            Positioned.fill(
+              child: GestureDetector(
+                onTap: removeCalendar,
+                child: Container(color: Colors.transparent),
+              ),
+            ),
+            CompositedTransformFollower(
+              link: link,
+              showWhenUnlinked: false,
+              targetAnchor: Alignment.bottomLeft,
+              followerAnchor: Alignment.topLeft,
+              offset: const Offset(0, 8),
+              child: Material(
+                elevation: 10,
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.white,
+                child: CustomCalendarInvoice2(
+                  width: dynamicWidth,
+                  onCancel: removeCalendar,
+                  onDateSelected: (date) {
+                    targetController.text = "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year.toString().substring(2)}";
+                    removeCalendar();
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
+      Overlay.of(context).insert(calendarOverlay!);
+      isDateDropOpen.value = true;
+    }
+  }
+
   @override
   void onClose() {
     searchController.dispose();
     dateTextController.dispose();
+    fromDateController.dispose();
+    toDateController.dispose();
+    phoneController.dispose();
     super.onClose();
   }
 }

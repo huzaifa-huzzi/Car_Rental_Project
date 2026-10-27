@@ -4,6 +4,7 @@ import 'package:car_rental_project/Resources/Colors.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../Resources/IconStrings.dart' show IconString;
 
@@ -96,7 +97,7 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
     bool isMobile = MediaQuery.of(context).size.width < 450;
     return ElevatedButton.icon(
       onPressed: () {
-
+           context.go('/InvoiceAddDetail');
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primaryColor,
@@ -461,7 +462,9 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
               children: [
                 _buildActionIconButton(
                   iconPath: IconString.viewIcon,
-                  onTap: () {},
+                  onTap: () {
+                    context.go('/InvoiceDetail');
+                  },
                 ),
               ],
             ),

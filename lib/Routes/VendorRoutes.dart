@@ -24,6 +24,9 @@ import 'package:car_rental_project/Portal/Vendor/DropOffCar/Subtabs/DropOffT&C/A
 import 'package:car_rental_project/Portal/Vendor/DropOffCar/Subtabs/DropOffT&C/DropOffT&C.dart';
 import 'package:car_rental_project/Portal/Vendor/DropOffCar/Subtabs/DropOffT&C/DropOffT&CDescription.dart';
 import 'package:car_rental_project/Portal/Vendor/DropOffCar/TableViewDropoff/TableViewDropoffScreen.dart';
+import 'package:car_rental_project/Portal/Vendor/Invoice/InvoiceAddDetail/InvoiceAddDetail.dart';
+import 'package:car_rental_project/Portal/Vendor/Invoice/InvoiceController.dart';
+import 'package:car_rental_project/Portal/Vendor/Invoice/InvoiceDetail/InvoiceDetailScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Invoice/InvoiceMainScreen/InvoiceMainScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/Add%20Payment/AddPaymentScreen.dart';
 import 'package:car_rental_project/Portal/Vendor/Payment/InvoiceTableWidget/InvoiceTableWidget.dart';
@@ -111,7 +114,15 @@ class VendorRoutes {
         GoRoute(path: '/dashboard', builder: (_, __) => const DashboardScreen()),
         GoRoute(
           path: '/invoiceScreen',
-          builder: (context, state) => InvoiceScreen(),
+          builder: (context, state) {
+            if (!Get.isRegistered<InvoiceController>()) {
+              Get.put(InvoiceController());
+            }
+            if (!Get.isRegistered<PaymentController>()) {
+              Get.put(PaymentController());
+            }
+            return InvoiceScreen();
+          },
         ),
         GoRoute(path: '/carInventory', builder: (_, __) {
           Get.put(CarInventoryController());
@@ -277,6 +288,17 @@ class VendorRoutes {
             return PaymentHistoryDetail(data: rowData);
           },
         ),
+
+         // Invoice Detail
+        GoRoute(path: '/InvoiceAddDetail', builder: (_, __) {
+          Get.put(InvoiceController());
+          return InvoiceAddDetail();
+        }),
+
+        GoRoute(path: '/InvoiceDetail', builder: (_, __) {
+          Get.put(InvoiceController());
+          return InvoiceDetailScreen();
+        }),
 
          // Reminders
         GoRoute(path: '/reminderCreateTemplate', builder: (_, __) => ReminderTemplate()),

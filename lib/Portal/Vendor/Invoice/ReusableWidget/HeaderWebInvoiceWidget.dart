@@ -80,8 +80,16 @@ class HeaderWebInvoiceWidget extends StatelessWidget {
                   final String currentPath = GoRouterState.of(context).uri.toString();
                   if (currentPath.startsWith('/payment/detail')) {
                     context.go('/payment');
+                  } else if (currentPath.contains('InvoiceAddDetail') || currentPath.contains('invoice')) {
+                    context.go('/invoiceScreen');
+                  } else if (currentPath.contains('InvoiceDetail') || currentPath.contains('invoice')) {
+                    context.go('/invoiceScreen');
                   } else {
-                    context.pop();
+                    if (context.canPop()) {
+                      context.pop();
+                    } else {
+                      context.go('/dashboard');
+                    }
                   }
                 }
               }),
