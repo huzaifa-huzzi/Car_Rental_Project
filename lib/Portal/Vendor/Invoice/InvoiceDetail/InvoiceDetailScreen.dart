@@ -1,12 +1,13 @@
 import 'package:car_rental_project/Portal/Vendor/Invoice/InvoiceController.dart';
 import 'package:car_rental_project/Portal/Vendor/Invoice/ReusableWidget/HeaderWebInvoiceWidget.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../Resources/Colors.dart' show AppColors;
 import '../../../../Resources/IconStrings.dart' show IconString;
-
+import 'package:go_router/go_router.dart';
 
 class InvoiceDetailScreen extends StatefulWidget {
   const InvoiceDetailScreen({super.key});
@@ -37,8 +38,8 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 24.0, top: 10),
                 child: HeaderWebInvoiceWidget(
-                  mainTitle: 'Invoice Detail',
-                  smallTitle: "Invoice / Invoice Detail",
+                  mainTitle: TextString.invoiceDetailTitle,
+                  smallTitle: TextString.invoiceDetailSmallTitle,
                   showSmallTitle: true,
                   showBack: true,
                   showProfile: true,
@@ -83,7 +84,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
     );
   }
 
-   /// ----------- Extra Widget --------------- ///
+  /// ----------- Extra Widget --------------- ///
 
   // Invoice Slip Card
   Widget _buildInvoiceSlipCard(BuildContext context) {
@@ -112,22 +113,22 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
             children: [
               Row(
                 children: [
-                  Image.asset(IconString.symbol,height: 20,width: 20,),
+                  Image.asset(IconString.symbol, height: 20, width: 20),
                   const SizedBox(width: 8),
                   Text(
-                    "SoftSnip",
+                    TextString.brandName,
                     style: TTextTheme.h2Style(context).copyWith(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
               const SizedBox(height: 12),
               Text(
-                "TAX INVOICE",
+                TextString.taxInvoiceLabel,
                 style: TTextTheme.h2Style(context).copyWith(fontSize: 16, letterSpacing: 0.5),
               ),
               const SizedBox(height: 4),
-              Text("Date: 05/12/2024", style: TTextTheme.bodyRegular12(context).copyWith(color: AppColors.fieldsBackground)),
-              Text("Invoice No: INV 00001", style: TTextTheme.bodyRegular12(context).copyWith(color:  AppColors.fieldsBackground)),
+              Text(TextString.invoiceDate, style: TTextTheme.bodyRegular12(context).copyWith(color: AppColors.fieldsBackground)),
+              Text(TextString.invoiceNo, style: TTextTheme.bodyRegular12(context).copyWith(color: AppColors.fieldsBackground)),
             ],
           )
               : Row(
@@ -146,7 +147,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    "SoftSnip",
+                    TextString.brandName,
                     style: TTextTheme.h2Style(context).copyWith(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -155,15 +156,15 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    "TAX INVOICE",
+                    TextString.taxInvoiceLabel,
                     style: TTextTheme.h2Style(context).copyWith(fontSize: 18, letterSpacing: 0.5),
                   ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      Text("Date: 05/12/2024", style: TTextTheme.bodyRegular12(context).copyWith(color: AppColors.secondTextColor)),
+                      Text(TextString.invoiceDate, style: TTextTheme.bodyRegular12(context).copyWith(color: AppColors.secondTextColor)),
                       const SizedBox(width: 12),
-                      Text("Invoice No: INV 00001", style: TTextTheme.bodyRegular12(context).copyWith(color: AppColors.secondTextColor)),
+                      Text(TextString.invoiceNo, style: TTextTheme.bodyRegular12(context).copyWith(color: AppColors.secondTextColor)),
                     ],
                   ),
                 ],
@@ -173,7 +174,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
 
           const SizedBox(height: 8),
           Text(
-            "Original For Recipient",
+            TextString.originalForRecipient,
             style: TTextTheme.bodyRegular12(context).copyWith(color: AppColors.secondTextColor),
           ),
           const Padding(
@@ -184,27 +185,27 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
               ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildAddressSection(context, "Invoice To :", "Walter Roberson", "92 the Avenue, Alexander Heights 6064."),
+              _buildAddressSection(context, TextString.invoiceTo, TextString.invoiceToName, TextString.invoiceToAddress),
               const SizedBox(height: 16),
-              _buildAddressSection(context, "Pay To :", "Lowell H. Dominguez", "84 Spilman Street, London United Kingdom\ndomlowell@gmail.com"),
+              _buildAddressSection(context, TextString.payTo, TextString.payToName, TextString.payToAddress),
             ],
           )
               : Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: _buildAddressSection(context, "Invoice To :", "Walter Roberson", "92 the Avenue, Alexander Heights 6064."),
+                child: _buildAddressSection(context, TextString.invoiceTo, TextString.invoiceToName, TextString.invoiceToAddress),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: _buildAddressSection(context, "Pay To :", "Lowell H. Dominguez", "84 Spilman Street, London United Kingdom\ndomlowell@gmail.com"),
+                child: _buildAddressSection(context, TextString.payTo, TextString.payToName, TextString.payToAddress),
               ),
             ],
           ),
 
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 20),
-            child: Divider(color:AppColors.fieldsBackground, height: 1),
+            child: Divider(color: AppColors.fieldsBackground, height: 1),
           ),
           isSmallScreen
               ? Column(
@@ -236,10 +237,10 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Description", style: TTextTheme.bodySemiBold14black(context).copyWith(color: AppColors.secondTextColor)),
+                    Text(TextString.descriptionHeader, style: TTextTheme.bodySemiBold14black(context).copyWith(color: AppColors.secondTextColor)),
                     const SizedBox(height: 8),
                     Text(
-                      "Rental 3 days * \$120.00",
+                      TextString.descriptionValue,
                       style: TTextTheme.bodyRegular14(context).copyWith(color: Colors.black87),
                     ),
                   ],
@@ -248,10 +249,10 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text("Amount", style: TTextTheme.bodySemiBold14black(context).copyWith(color: AppColors.secondTextColor)),
+                  Text(TextString.amountHeaderLabel, style: TTextTheme.bodySemiBold14black(context).copyWith(color: AppColors.secondTextColor)),
                   const SizedBox(height: 8),
                   Text(
-                    "\$ 36.00",
+                    TextString.amountValue,
                     style: TTextTheme.bodySemiBold16(context).copyWith(color: AppColors.primaryColor, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -263,7 +264,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
     );
   }
 
-   // Address Section
+  // Address Section
   Widget _buildAddressSection(BuildContext context, String title, String name, String details) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -280,37 +281,36 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
     );
   }
 
-   // Vehicle Section
+  // Vehicle Section
   Widget _buildVehicleSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Vehicle", style: TTextTheme.bodySemiBold14black(context).copyWith(color: AppColors.secondTextColor)),
+        Text(TextString.vehicleHeader, style: TTextTheme.bodySemiBold14black(context).copyWith(color: AppColors.secondTextColor)),
         const SizedBox(height: 6),
-        Text("Tesla Model 3", style: TTextTheme.bodySemiBold14black(context)),
+        Text(TextString.vehicleModel, style: TTextTheme.bodySemiBold14black(context)),
         const SizedBox(height: 4),
         Text(
-          "7EV ZR009",
+          TextString.vehicleReg,
           style: TTextTheme.bodyRegular14(context).copyWith(color: Colors.black87),
         ),
       ],
     );
   }
 
-
   Widget _buildDateSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Date", style: TTextTheme.bodySemiBold14black(context).copyWith(color: AppColors.secondTextColor)),
+        Text(TextString.dateHeaderLabel, style: TTextTheme.bodySemiBold14black(context).copyWith(color: AppColors.secondTextColor)),
         const SizedBox(height: 6),
         Row(
           children: [
             SizedBox(
               width: 90,
-              child: Text("Pick up Date:", style: TTextTheme.bodyRegular14(context).copyWith(color: AppColors.secondTextColor)),
+              child: Text(TextString.pickUpDateLabel, style: TTextTheme.bodyRegular14(context).copyWith(color: AppColors.secondTextColor)),
             ),
-            Text("17/05/26", style: TTextTheme.bodySemiBold14black(context)),
+            Text(TextString.pickUpDateValue, style: TTextTheme.bodySemiBold14black(context)),
           ],
         ),
         const SizedBox(height: 4),
@@ -318,9 +318,9 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
           children: [
             SizedBox(
               width: 90,
-              child: Text("Return Date:", style: TTextTheme.bodyRegular14(context).copyWith(color: AppColors.secondTextColor)),
+              child: Text(TextString.returnDateLabel, style: TTextTheme.bodyRegular14(context).copyWith(color: AppColors.secondTextColor)),
             ),
-            Text("26/05/26", style: TTextTheme.bodySemiBold14black(context)),
+            Text(TextString.returnDateValue, style: TTextTheme.bodySemiBold14black(context)),
           ],
         ),
       ],
@@ -349,7 +349,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "This is a preview. Finalize to issue it.",
+            TextString.previewNotice,
             style: TTextTheme.bodyRegular14(context).copyWith(color: AppColors.secondTextColor),
             textAlign: TextAlign.center,
           ),
@@ -364,7 +364,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
               child: Text(
-                "Edit Draft",
+                TextString.editDraft,
                 style: TTextTheme.bodySemiBold14black(context).copyWith(color: AppColors.primaryColor),
               ),
             ),
@@ -381,7 +381,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
               child: Text(
-                "Finalize Invoice",
+                TextString.finalizeInvoice,
                 style: TTextTheme.bodySemiBold14White(context),
               ),
             ),
@@ -397,7 +397,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
               child: Text(
-                "Print",
+                TextString.printAction,
                 style: TTextTheme.bodySemiBold14black(context).copyWith(color: AppColors.primaryColor),
               ),
             ),
@@ -413,7 +413,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
               child: Text(
-                "Download PDF",
+                TextString.downloadPdf,
                 style: TTextTheme.bodySemiBold14black(context).copyWith(color: AppColors.primaryColor),
               ),
             ),

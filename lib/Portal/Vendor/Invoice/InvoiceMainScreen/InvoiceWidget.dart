@@ -1,12 +1,14 @@
 import 'package:car_rental_project/Portal/Vendor/Invoice/InvoiceController.dart';
 import 'package:car_rental_project/Portal/Vendor/Invoice/ReusableWidget/PaginationBarOfInvoice.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../Resources/IconStrings.dart' show IconString;
+
 
 
 class InvoiceWidget extends StatefulWidget {
@@ -67,7 +69,7 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
                               Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 12),
                                 child: Text(
-                                  "No invoices found",
+                                  TextString.noInvoicesFound,
                                   style: TTextTheme.bodyRegular14tertiary(context),
                                 ),
                               )
@@ -93,11 +95,12 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
 
   /// --------------- Extra Widgets --------------///
 
+   // Top Add Invoice Button
   Widget _buildTopAddInvoiceButton(BuildContext context) {
     bool isMobile = MediaQuery.of(context).size.width < 450;
     return ElevatedButton.icon(
       onPressed: () {
-           context.go('/InvoiceAddDetail');
+        context.go('/InvoiceAddDetail');
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primaryColor,
@@ -109,10 +112,11 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
         ),
       ),
       icon: const Icon(Icons.add, size: 18, color: Colors.white),
-      label: Text("New Invoice", style: TTextTheme.searchText(context)),
+      label: Text(TextString.newInvoice, style: TTextTheme.searchText(context)),
     );
   }
 
+   // Filter Row
   Widget _buildFiltersRow() {
     return LayoutBuilder(builder: (context, constraints) {
       double width = constraints.maxWidth;
@@ -142,6 +146,7 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
     });
   }
 
+   // Date Filter Row
   Widget _buildDateFilterBox(BuildContext context, bool isMobile, double height) {
     return CompositedTransformTarget(
       link: controller.dateFilterLink,
@@ -165,12 +170,12 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
           ),
           child: Row(
             children: [
-              Icon(Icons.calendar_today_outlined, size: 18, color: AppColors.quadrantalTextColor),
+              Icon(Icons.event, size: 18, color: AppColors.quadrantalTextColor),
               const SizedBox(width: 10),
               Expanded(
                 child: Obx(() => Text(
                   controller.selectedDateRangeText.value.isEmpty
-                      ? "Filter by Week"
+                      ? TextString.filterByWeek
                       : controller.selectedDateRangeText.value,
                   style: TTextTheme.btncustomer(context),
                   overflow: TextOverflow.ellipsis,
@@ -184,6 +189,7 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
     );
   }
 
+   // Searchbar
   Widget _buildSearchBar(BuildContext context, bool isMobile, double height) {
     return Container(
       width: isMobile ? double.infinity : 300,
@@ -206,7 +212,7 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
               style: TTextTheme.insidetextfieldWrittenText(context),
               onChanged: (_) => controller.baseInvoiceData.refresh(),
               decoration: InputDecoration(
-                hintText: "Search Company by Name",
+                hintText: TextString.searchHint,
                 hintStyle: TTextTheme.smallX(context),
                 border: InputBorder.none,
                 isDense: true,
@@ -227,7 +233,7 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
                   borderRadius: BorderRadius.circular(6),
                 ),
               ),
-              child: Text("Search", style: TTextTheme.searchText(context)),
+              child: Text(TextString.searchButton, style: TTextTheme.searchText(context)),
             ),
           ),
         ],
@@ -235,8 +241,9 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
     );
   }
 
+   // Custom Dropdown
   Widget _buildCustomerDropdown(BuildContext context, String id, RxString selectedValue, bool isMobile, double height) {
-    List<String> items = ["Customer Name", "Registration No", "Car Name"];
+    List<String> items = [TextString.customerNameFilter, TextString.registrationNoFilter, TextString.carNameFilter];
 
     return Obx(() {
       bool isOpen = controller.openedDropdown.value == id;
@@ -268,7 +275,7 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
             children: [
               Expanded(
                 child: Text(
-                  selectedValue.value.isEmpty ? "Customer" : selectedValue.value,
+                  selectedValue.value.isEmpty ? TextString.customerDefault : selectedValue.value,
                   style: TTextTheme.btncustomer(context),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -298,17 +305,19 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
     });
   }
 
+   // Header Text
   Widget _buildHeaderText() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("All Invoices", style: TTextTheme.h2Style(context)),
+        Text(TextString.allInvoicesTitle, style: TTextTheme.h2Style(context)),
         const SizedBox(height: 4),
-        Text("List of all Invoices", style: TTextTheme.bodyRegular16(context)),
+        Text(TextString.allInvoicesSubtitle, style: TTextTheme.bodyRegular16(context)),
       ],
     );
   }
 
+   // Stats Grid
   Widget _buildStatsGrid(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       double width = constraints.maxWidth;
@@ -321,9 +330,9 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
         spacing: spacing,
         runSpacing: spacing,
         children: [
-          _statCard(context, cardWidth, "Total Revenue", "\$ 1245567", IconString.paymentIconBlack),
-          _statCard(context, cardWidth, "Pending payment", "8", IconString.pendingPaymentIcon),
-          _statCard(context, cardWidth, "Completed payments", "246", IconString.completedIcon),
+          _statCard(context, cardWidth, TextString.totalRevenue, TextString.totalRevenueValue, IconString.paymentIconBlack),
+          _statCard(context, cardWidth, TextString.pendingPayment, TextString.pendingPaymentValue, IconString.pendingPaymentIcon),
+          _statCard(context, cardWidth, TextString.completedPayments, TextString.completedPaymentsValue, IconString.completedIcon),
         ],
       );
     });
@@ -372,8 +381,9 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
     );
   }
 
+   // Tabs
   Widget _buildTabs() {
-    List<String> tabs = ["All", "Pending", "Overdue", "Completed"];
+    List<String> tabs = [TextString.tabAll, TextString.tabPending, TextString.tabOverdue, TextString.tabCompleted];
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -422,20 +432,20 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
       ),
       child: Row(
         children: [
-          SizedBox(width: 140, child: _headerCell("Inv No :", controller)),
-          SizedBox(width: 220, child: _headerCell("Customer Name :", controller)),
-          SizedBox(width: 280, child: _headerCell("Car Name :", controller)),
-          SizedBox(width: 150, child: _headerCell("Date :", controller)),
-          SizedBox(width: 140, child: _headerCell("Amount :", controller)),
-          SizedBox(width: 140, child: _headerCell("Status :", controller, isCenter: true)),
-          SizedBox(width: 110, child: _headerCell("Action :", controller, isCenter: true, canSort: false)),
+          SizedBox(width: 140, child: _headerCell(TextString.invNoHeader, controller)),
+          SizedBox(width: 220, child: _headerCell(TextString.customerNameHeader, controller)),
+          SizedBox(width: 280, child: _headerCell(TextString.carNameHeader, controller)),
+          SizedBox(width: 150, child: _headerCell(TextString.dateHeader, controller)),
+          SizedBox(width: 140, child: _headerCell(TextString.amountHeader, controller)),
+          SizedBox(width: 140, child: _headerCell(TextString.statusHeader, controller, isCenter: true)),
+          SizedBox(width: 110, child: _headerCell(TextString.actionHeader, controller, isCenter: true, canSort: false)),
         ],
       ),
     );
   }
 
   Widget _buildInvoiceRow(Map data) {
-    String rawStatus = data["status"] ?? "Pending";
+    String rawStatus = data["status"] ?? TextString.statusPending;
     const double containerWidth = 1210;
 
     return Container(
@@ -519,6 +529,7 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
     );
   }
 
+   // Action Button
   Widget _buildActionIconButton({required String iconPath, required VoidCallback onTap}) {
     return InkWell(
       onTap: onTap,

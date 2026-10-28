@@ -1008,6 +1008,102 @@ class TextString {
   static const String statusOverdue = "Overdue";
   static const String statusPending = "Pending";
 
+   /// Invoices Screen
+  // Invoice Main Screen
+  static const String newInvoice = "New Invoice";
+  static const String allInvoicesTitle = "All Invoices";
+  static const String allInvoicesSubtitle = "List of all Invoices";
+  static const String totalRevenueValue = "\$ 1245567";
+  static const String pendingPaymentValue = "8";
+  static const String completedPayments = "Completed payments";
+  static const String completedPaymentsValue = "246";
+  static const String tabAll = "All";
+  static const String tabPending = "Pending";
+  static const String tabOverdue = "Overdue";
+  static const String tabCompleted = "Completed";
+  static const String filterByWeek = "Filter by Week";
+  static const String searchHint = "Search Company by Name";
+  static const String searchButton = "Search";
+  static const String customerDefault = "Customer";
+  static const String customerNameFilter = "Customer Name";
+  static const String registrationNoFilter = "Registration No";
+  static const String carNameFilter = "Car Name";
+  static const String invNoHeader = "Inv No :";
+  static const String customerNameHeader = "Customer Name :";
+  static const String carNameHeader = "Car Name :";
+  static const String dateHeader = "Date :";
+  static const String amountHeader = "Amount :";
+  static const String statusHeader = "Status :";
+  static const String actionHeader = "Action :";
+  static const String noInvoicesFound = "No invoices found";
+   // Invoice Detail Screen
+  static const String invoiceDetailTitle = "Invoice Detail";
+  static const String invoiceDetailSmallTitle = "Invoice / Invoice Detail";
+  static const String brandName = "SoftSnip";
+  static const String taxInvoiceLabel = "TAX INVOICE";
+  static const String invoiceDate = "Date: 05/12/2024";
+  static const String invoiceNo = "Invoice No: INV 00001";
+  static const String originalForRecipient = "Original For Recipient";
+  static const String invoiceTo = "Invoice To :";
+  static const String invoiceToName = "Walter Roberson";
+  static const String invoiceToAddress = "92 the Avenue, Alexander Heights 6064.";
+  static const String payTo = "Pay To :";
+  static const String payToName = "Lowell H. Dominguez";
+  static const String payToAddress = "84 Spilman Street, London United Kingdom\ndomlowell@gmail.com";
+  static const String vehicleHeader = "Vehicle";
+  static const String vehicleModel = "Tesla Model 3";
+  static const String vehicleReg = "7EV ZR009";
+  static const String dateHeaderLabel = "Date";
+  static const String pickUpDateLabel = "Pick up Date:";
+  static const String pickUpDateValue = "17/05/26";
+  static const String returnDateLabel = "Return Date:";
+  static const String returnDateValue = "26/05/26";
+  static const String descriptionHeader = "Description";
+  static const String descriptionValue = "Rental 3 days * \$120.00";
+  static const String amountHeaderLabel = "Amount";
+  static const String amountValue = "\$ 36.00";
+  static const String previewNotice = "This is a preview. Finalize to issue it.";
+  static const String editDraft = "Edit Draft";
+  static const String finalizeInvoice = "Finalize Invoice";
+  static const String printAction = "Print";
+  static const String downloadPdf = "Download PDF";
+    // Invoice Add Detail
+  // --- Invoice Add Detail Screen Strings ---
+  static const String addInvoiceHeaderTitle = "Invoice Detail";
+  static const String addInvoiceSmallTitle = "Invoice / Invoice Add Detail";
+  static const String billFromTitle = "Bill From Rental Record";
+  static const String manualInvoice = "Manual Invoice";
+  static const String automaticInvoice = "Automatic Invoice";
+  static const String nameLabel = "Name";
+  static const String nameHint = "Enter Name";
+  static const String emailLabel = "Email Address";
+  static const String emailHint = "Enter Email Address";
+  static const String phoneLabel = "Phone No";
+  static const String phoneHint = "Enter number";
+  static const String searchCountryHint = "Search country...";
+  static const String addressLabel = "Address";
+  static const String addressHint = "Enter Address";
+  static const String rentalDetailTitle = "Rental Detail";
+  static const String rentalDetailSubtitle = "Here you can fill rental detail";
+  static const String carNameLabel = "Car Name";
+  static const String carNameHint = "Enter Name";
+  static const String regNoLabel = "Registration No";
+  static const String regNoHint = "Enter Registration Number";
+  static const String pickupDateLabel = "Pick up Date";
+  static const String pickupDateDefault = "18/10/26";
+  static const String returnDateDefault = "18/10/26";
+  static const String dailyRateLabel = "Daily Rate";
+  static const String dailyRateDefault = "0";
+  static const String summaryTitle = "Summary";
+  static const String summarySubtitle = "Here is the summary detail";
+  static const String rentalSummaryLabel = "Rental";
+  static const String extrasSummaryLabel = "Extras";
+  static const String taxSummaryLabel = "Tax (8%)";
+  static const String totalSummaryLabel = "Total";
+  static const String zeroAmount = "\$ 0.00";
+  static const String saveAsDraftButton = "Save as Draft Preview";
+  static const String finalizeInvoiceButton = "Finalize Invoice";
+
 
     // Reminder
   static const String  reminderOne= "Monthly Messages";

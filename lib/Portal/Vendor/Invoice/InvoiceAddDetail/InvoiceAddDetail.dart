@@ -2,14 +2,12 @@ import 'package:car_rental_project/Portal/Vendor/Invoice/InvoiceController.dart'
 import 'package:car_rental_project/Portal/Vendor/Invoice/ReusableWidget/HeaderWebInvoiceWidget.dart';
 import 'package:car_rental_project/Resources/AppSizes.dart';
 import 'package:car_rental_project/Resources/Colors.dart';
+import 'package:car_rental_project/Resources/TextString.dart';
 import 'package:car_rental_project/Resources/TextTheme.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:dropdown_button2/dropdown_button2.dart';
-
-
 
 class InvoiceAddDetail extends StatefulWidget {
   const InvoiceAddDetail({super.key});
@@ -40,8 +38,8 @@ class _InvoiceAddDetailState extends State<InvoiceAddDetail> {
               Padding(
                 padding: EdgeInsets.only(bottom: isWeb ? 36.0 : 24.0, top: 0),
                 child: HeaderWebInvoiceWidget(
-                  mainTitle: 'Invoice Detail',
-                  smallTitle: "Invoice / Invoice Add Detail",
+                  mainTitle: TextString.addInvoiceHeaderTitle,
+                  smallTitle: TextString.addInvoiceSmallTitle,
                   showSmallTitle: true,
                   showBack: true,
                   showProfile: true,
@@ -97,11 +95,11 @@ class _InvoiceAddDetailState extends State<InvoiceAddDetail> {
     );
   }
 
-   /// -------------- Extra Widget ------------------------ ///
+  /// -------------- Extra Widget ------------------------ ///
 
   // Bill From Card
   Widget _buildBillFromCard(BuildContext context) {
-    List<String> invoiceTypes = ["Manual Invoice", "Automatic Invoice"];
+    List<String> invoiceTypes = [TextString.manualInvoice, TextString.automaticInvoice];
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -119,7 +117,7 @@ class _InvoiceAddDetailState extends State<InvoiceAddDetail> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Bill From Rental Record", style: TTextTheme.bodySemiBold14black(context)),
+          Text(TextString.billFromTitle, style: TTextTheme.bodySemiBold14black(context)),
           const SizedBox(height: 12),
           DropdownButtonHideUnderline(
             child: DropdownButton2<String>(
@@ -190,37 +188,37 @@ class _InvoiceAddDetailState extends State<InvoiceAddDetail> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Customer Detail", style: TTextTheme.h2Style(context).copyWith(fontSize: 18)),
+          Text(TextString.customerDetailTitle, style: TTextTheme.h2Style(context).copyWith(fontSize: 18)),
           const SizedBox(height: 4),
-          Text("Here you can fill customer detail", style: TTextTheme.bodyRegular14(context).copyWith(color: Colors.grey)),
+          Text(TextString.customerDetailSubtitle, style: TTextTheme.bodyRegular14(context).copyWith(color: Colors.grey)),
           const SizedBox(height: 24),
           isMobile
               ? Column(
             children: [
-              _buildTextField(context, "Name", "Enter Name"),
+              _buildTextField(context, TextString.nameLabel, TextString.nameHint),
               const SizedBox(height: 16),
-              _buildTextField(context, "Email Address", "Enter Email Address"),
+              _buildTextField(context, TextString.emailLabel, TextString.emailHint),
               const SizedBox(height: 16),
-              _buildPhoneField(context, "Phone No"),
+              _buildPhoneField(context, TextString.phoneLabel),
               const SizedBox(height: 16),
-              _buildTextField(context, "Address", "Enter Address"),
+              _buildTextField(context, TextString.addressLabel, TextString.addressHint),
             ],
           )
               : Column(
             children: [
               Row(
                 children: [
-                  Expanded(child: _buildTextField(context, "Name", "Enter Name")),
+                  Expanded(child: _buildTextField(context, TextString.nameLabel, TextString.nameHint)),
                   const SizedBox(width: 16),
-                  Expanded(child: _buildTextField(context, "Email Address", "Enter Email Address")),
+                  Expanded(child: _buildTextField(context, TextString.emailLabel, TextString.emailHint)),
                 ],
               ),
               const SizedBox(height: 20),
               Row(
                 children: [
-                  Expanded(child: _buildPhoneField(context, "Phone No")),
+                  Expanded(child: _buildPhoneField(context, TextString.phoneLabel)),
                   const SizedBox(width: 16),
-                  Expanded(child: _buildTextField(context, "Address", "Enter Address")),
+                  Expanded(child: _buildTextField(context, TextString.addressLabel, TextString.addressHint)),
                 ],
               ),
             ],
@@ -251,45 +249,45 @@ class _InvoiceAddDetailState extends State<InvoiceAddDetail> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Rental Detail", style: TTextTheme.h2Style(context).copyWith(fontSize: 18)),
+          Text(TextString.rentalDetailTitle, style: TTextTheme.h2Style(context).copyWith(fontSize: 18)),
           const SizedBox(height: 4),
-          Text("Here you can fill rental detail", style: TTextTheme.bodyRegular14(context).copyWith(color: Colors.grey)),
+          Text(TextString.rentalDetailSubtitle, style: TTextTheme.bodyRegular14(context).copyWith(color: Colors.grey)),
           const SizedBox(height: 24),
           isMobile
               ? Column(
             children: [
-              _buildTextField(context, "Car Name", "Enter Name"),
+              _buildTextField(context, TextString.carNameLabel, TextString.carNameHint),
               const SizedBox(height: 16),
-              _buildTextField(context, "Registration No", "Enter Registration Number"),
+              _buildTextField(context, TextString.regNoLabel, TextString.regNoHint),
               const SizedBox(height: 16),
-              _buildDateField(context, controller.pickupDateController, controller.pickupDateLink, "Pick up Date", "18/10/26"),
+              _buildDateField(context, controller.pickupDateController, controller.pickupDateLink, TextString.pickupDateLabel, TextString.pickupDateDefault),
               const SizedBox(height: 16),
-              _buildDateField(context, controller.returnDateController, controller.returnDateLink, "Return Date", "18/10/26"),
+              _buildDateField(context, controller.returnDateController, controller.returnDateLink, TextString.returnDateLabel, TextString.returnDateDefault),
               const SizedBox(height: 16),
-              _buildTextField(context, "Daily Rate", "0"),
+              _buildTextField(context, TextString.dailyRateLabel, TextString.dailyRateDefault),
             ],
           )
               : Column(
             children: [
               Row(
                 children: [
-                  Expanded(child: _buildTextField(context, "Car Name", "Enter Name")),
+                  Expanded(child: _buildTextField(context, TextString.carNameLabel, TextString.carNameHint)),
                   const SizedBox(width: 16),
-                  Expanded(child: _buildTextField(context, "Registration No", "Enter Registration Number")),
+                  Expanded(child: _buildTextField(context, TextString.regNoLabel, TextString.regNoHint)),
                 ],
               ),
               const SizedBox(height: 20),
               Row(
                 children: [
-                  Expanded(child: _buildDateField(context, controller.pickupDateController, controller.pickupDateLink, "Pick up Date", "18/10/26")),
+                  Expanded(child: _buildDateField(context, controller.pickupDateController, controller.pickupDateLink, TextString.pickupDateLabel, TextString.pickupDateDefault)),
                   const SizedBox(width: 16),
-                  Expanded(child: _buildDateField(context, controller.returnDateController, controller.returnDateLink, "Return Date", "18/10/26")),
+                  Expanded(child: _buildDateField(context, controller.returnDateController, controller.returnDateLink, TextString.returnDateLabel, TextString.returnDateDefault)),
                 ],
               ),
               const SizedBox(height: 20),
               Row(
                 children: [
-                  Expanded(child: _buildTextField(context, "Daily Rate", "0")),
+                  Expanded(child: _buildTextField(context, TextString.dailyRateLabel, TextString.dailyRateDefault)),
                   const SizedBox(width: 16),
                   const Spacer(),
                 ],
@@ -320,20 +318,20 @@ class _InvoiceAddDetailState extends State<InvoiceAddDetail> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Summary", style: TTextTheme.h2Style(context).copyWith(fontSize: 18)),
+          Text(TextString.summaryTitle, style: TTextTheme.h2Style(context).copyWith(fontSize: 18)),
           const SizedBox(height: 4),
-          Text("Here is the summary detail", style: TTextTheme.bodyRegular14(context).copyWith(color: Colors.grey)),
+          Text(TextString.summarySubtitle, style: TTextTheme.bodyRegular14(context).copyWith(color: Colors.grey)),
           const SizedBox(height: 24),
-          _buildSummaryRow("Rental", "\$ 0.00"),
+          _buildSummaryRow(TextString.rentalSummaryLabel, TextString.zeroAmount),
           const SizedBox(height: 14),
-          _buildSummaryRow("Extras", "\$ 0.00"),
+          _buildSummaryRow(TextString.extrasSummaryLabel, TextString.zeroAmount),
           const SizedBox(height: 14),
-          _buildSummaryRow("Tax (8%)", "\$ 0.00"),
+          _buildSummaryRow(TextString.taxSummaryLabel, TextString.zeroAmount),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 20),
             child: Divider(height: 1, color: Colors.grey),
           ),
-          _buildSummaryRow("Total", "\$ 0.00", isTotal: true),
+          _buildSummaryRow(TextString.totalSummaryLabel, TextString.zeroAmount, isTotal: true),
           const SizedBox(height: 28),
           SizedBox(
             width: double.infinity,
@@ -345,7 +343,7 @@ class _InvoiceAddDetailState extends State<InvoiceAddDetail> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
               child: Text(
-                "Save as Draft Preview",
+                TextString.saveAsDraftButton,
                 style: TTextTheme.bodySemiBold14(context).copyWith(color: AppColors.primaryColor),
               ),
             ),
@@ -362,7 +360,7 @@ class _InvoiceAddDetailState extends State<InvoiceAddDetail> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
               child: Text(
-                "Finalize Invoice",
+                TextString.finalizeInvoiceButton,
                 style: TTextTheme.bodySemiBold14White(context),
               ),
             ),
@@ -414,7 +412,7 @@ class _InvoiceAddDetailState extends State<InvoiceAddDetail> {
     );
   }
 
-   // Date Field
+  // Date Field
   Widget _buildDateField(BuildContext context, TextEditingController dateController, LayerLink link, String label, String hint) {
     return CompositedTransformTarget(
       link: link,
@@ -450,7 +448,7 @@ class _InvoiceAddDetailState extends State<InvoiceAddDetail> {
     );
   }
 
-   // Phone Field
+  // Phone Field
   Widget _buildPhoneField(BuildContext context, String label) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -468,7 +466,7 @@ class _InvoiceAddDetailState extends State<InvoiceAddDetail> {
             decoration: InputDecoration(
               filled: true,
               fillColor: AppColors.secondaryColor,
-              hintText: "Enter number",
+              hintText: TextString.phoneHint,
               hintStyle: TTextTheme.bodyRegular14(context).copyWith(color: Colors.grey[400]),
               prefixIcon: Padding(
                 padding: const EdgeInsets.only(left: 4),
@@ -551,7 +549,7 @@ class _InvoiceAddDetailState extends State<InvoiceAddDetail> {
                             child: TextField(
                               controller: controller.searchController,
                               decoration: InputDecoration(
-                                hintText: "Search country...",
+                                hintText: TextString.searchCountryHint,
                                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                                 isDense: true,
                               ),
